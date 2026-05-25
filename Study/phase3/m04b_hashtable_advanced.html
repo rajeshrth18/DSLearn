@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4B — Hash Tables: Advanced Patterns</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 4 — Part B</h1>
+    <div class="tagline">Hash Tables: Advanced Patterns &amp; Classic Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Two-Sum, anagrams, LRU Cache, frequency analysis, rolling hash</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3–4 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part B of Module 4</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 4 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m04a_hashtable_basics.html">Hash Functions, Collisions, Dictionary, HashSet</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Advanced Patterns<br>
+    ⬜ <strong>Part C</strong> — <a href="m04c_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part B</h2>
+    <ol>
+        <li>Section 1 — The Two-Sum Pattern <span>— One-pass hash map lookup</span></li>
+        <li>Section 2 — Frequency Maps &amp; Counting <span>— Word frequency, top-K elements</span></li>
+        <li>Section 3 — Grouping &amp; Anagram Detection <span>— Sorted key trick, character frequency</span></li>
+        <li>Section 4 — Prefix Sum + Hash Map <span>— Subarray sum problems in O(n)</span></li>
+        <li>Section 5 — LRU Cache <span>— Dictionary + Doubly Linked List, full implementation</span></li>
+        <li>Section 6 — Rolling Hash &amp; Rabin-Karp <span>— String matching in O(n+m)</span></li>
+        <li>Section 7 — Pattern Summary <span>— When to use each technique</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Two-Sum Pattern</div>
+
+<p>The <strong>Two-Sum pattern</strong> is the most fundamental hash table technique in competitive
+programming and interviews. It transforms an O(n²) brute-force search into an O(n) solution by
+using the dictionary to "remember what we've seen" and look up the complement in O(1).</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World Example:</strong> A supermarket checkout system needs to find any two
+    items whose prices total exactly $50. Brute force checks every pair (O(n²)). Hash map approach:
+    for each item, check if ($50 - item.price) is already in the map — O(n).
+</div>
+
+<h3>1.1 — Classic Two Sum (return indices)</h3>
+
+<div class="diagram">TWO SUM TRACE — nums=[2,7,11,15], target=9
+
+  One-pass hash map: store  {value → index}  as we scan
+
+  i=0: value=2, complement=9-2=7. Map={}.       7 not in map. Add {2→0}
+  i=1: value=7, complement=9-7=2. Map={2:0}.    2 IS in map at index 0!
+       → return [0, 1] ✓
+
+  Map never grows beyond current index → O(1) lookup per element → O(n) total</div>
+
+<pre><span class="cm">// Two Sum — Classic LeetCode #1</span>
+<span class="kw">public int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
+{
+    <span class="kw">var</span> map = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(); <span class="cm">// value → index</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+    {
+        <span class="kw">int</span> complement = target - nums[i];
+        <span class="kw">if</span> (map.<span class="mt">TryGetValue</span>(complement, <span class="kw">out int</span> j))
+            <span class="kw">return new</span> [] { j, i };
+        map[nums[i]] = i;
+    }
+    <span class="kw">return</span> <span class="tp">Array</span>.<span class="mt">Empty</span>&lt;<span class="kw">int</span>&gt;();
+}
+<span class="cm">// [2,7,11,15], target=9  → [0, 1]
+// [3,2,4],     target=6  → [1, 2]
+// [3,3],       target=6  → [0, 1]
+// Time: O(n), Space: O(n)</span></pre>
+
+<h3>1.2 — Two Sum Variants</h3>
+
+<pre><span class="cm">// Variant: Does ANY pair sum to target? (return bool)</span>
+<span class="kw">public bool</span> <span class="mt">HasPairWithSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
+{
+    <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums)
+    {
+        <span class="kw">if</span> (seen.<span class="mt">Contains</span>(target - n)) <span class="kw">return true</span>;
+        seen.<span class="mt">Add</span>(n);
+    }
+    <span class="kw">return false</span>;
+}
+
+<span class="cm">// Variant: Count ALL pairs that sum to target</span>
+<span class="kw">public int</span> <span class="mt">CountPairs</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
+{
+    <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">int</span> count = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums)
+    {
+        count += freq.<span class="mt">GetValueOrDefault</span>(target - n);
+        freq[n] = freq.<span class="mt">GetValueOrDefault</span>(n) + <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> count;
+}
+<span class="cm">// [1,5,3,3,1,5,1], target=6 → 3 pairs: (1,5),(3,3),(1,5)</span>
+
+<span class="cm">// Variant: Four Sum Count (LeetCode 454)
+// Count tuples (i,j,k,l) such that A[i]+B[j]+C[k]+D[l] == 0
+// Key insight: split into two halves → O(n²) instead of O(n⁴)</span>
+<span class="kw">public int</span> <span class="mt">FourSumCount</span>(<span class="kw">int</span>[] A, <span class="kw">int</span>[] B, <span class="kw">int</span>[] C, <span class="kw">int</span>[] D)
+{
+    <span class="kw">var</span> abSums = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">int</span> a <span class="kw">in</span> A)
+        <span class="kw">foreach</span> (<span class="kw">int</span> b <span class="kw">in</span> B)
+            abSums[a + b] = abSums.<span class="mt">GetValueOrDefault</span>(a + b) + <span class="nm">1</span>;
+    <span class="kw">int</span> count = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> c <span class="kw">in</span> C)
+        <span class="kw">foreach</span> (<span class="kw">int</span> d <span class="kw">in</span> D)
+            count += abSums.<span class="mt">GetValueOrDefault</span>(-(c + d));
+    <span class="kw">return</span> count;
+}
+<span class="cm">// Time: O(n²) — far better than O(n⁴) brute force</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Frequency Maps &amp; Counting</div>
+
+<p>Counting how many times each element appears is one of the most common operations in data
+processing, text analysis, and algorithm optimization. A frequency map (<code>Dictionary&lt;T,int&gt;</code>)
+answers "how many times does X appear?" in O(1) after O(n) build time.</p>
+
+<h3>2.1 — Building a Frequency Map</h3>
+
+<pre><span class="cm">// ── Word frequency in a sentence ──────────────────────────</span>
+<span class="kw">string</span> text = <span class="st">"the cat sat on the mat the cat"</span>;
+<span class="kw">string</span>[] wordsArr = text.<span class="mt">Split</span>(<span class="st">' '</span>);
+
+<span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+<span class="kw">foreach</span> (<span class="kw">string</span> w <span class="kw">in</span> wordsArr)
+    freq[w] = freq.<span class="mt">GetValueOrDefault</span>(w) + <span class="nm">1</span>;
+<span class="cm">// freq: { "the":3, "cat":2, "sat":1, "on":1, "mat":1 }</span>
+
+<span class="cm">// LINQ alternative (concise but slightly slower)</span>
+<span class="kw">var</span> freqLinq = wordsArr.<span class="mt">GroupBy</span>(w =&gt; w)
+                        .<span class="mt">ToDictionary</span>(g =&gt; g.Key, g =&gt; g.Count());
+
+<span class="cm">// ── Character frequency (useful for anagrams) ─────────────</span>
+<span class="kw">int</span>[] <span class="mt">CharFreq</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">int</span>[] count = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) count[c - <span class="st">'a'</span>]++;
+    <span class="kw">return</span> count;
+}
+<span class="cm">// Use array[26] instead of Dictionary when keys are only 'a'-'z' — faster!</span></pre>
+
+<h3>2.2 — Top K Frequent Elements</h3>
+
+<div class="diagram">TOP K FREQUENT — nums=[1,1,1,2,2,3], k=2 → [1,2]
+
+  Step 1: Build frequency map
+    {1:3, 2:2, 3:1}
+
+  Step 2: Use MinHeap of size k to track top-k
+    - Push (freq=3, val=1) → heap: [(3,1)]
+    - Push (freq=2, val=2) → heap: [(2,2),(3,1)]
+    - Push (freq=1, val=3) → heap size = k+1 = 3
+      → Pop minimum (1,3): heap: [(2,2),(3,1)]
+    Result: extract remaining → [1, 2] ✓
+
+  Alternative: Bucket Sort — O(n) time, O(n) space
+    - Create buckets[0..n], where bucket[i] = all elements with frequency i
+    - Scan buckets from high to low, collect k elements</div>
+
+<pre><span class="cm">// Top K Frequent — MinHeap approach (general, O(n log k))</span>
+<span class="kw">public int</span>[] <span class="mt">TopKFrequent</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums) freq[n] = freq.<span class="mt">GetValueOrDefault</span>(n) + <span class="nm">1</span>;
+
+    <span class="cm">// Min-heap keyed by frequency (smallest freq at top)</span>
+    <span class="kw">var</span> heap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> (val, cnt) <span class="kw">in</span> freq)
+    {
+        heap.<span class="mt">Enqueue</span>(val, cnt);
+        <span class="kw">if</span> (heap.Count &gt; k) heap.<span class="mt">Dequeue</span>(); <span class="cm">// evict least frequent</span>
+    }
+    <span class="kw">var</span> result = <span class="kw">new int</span>[k];
+    <span class="kw">for</span> (<span class="kw">int</span> i = k - <span class="nm">1</span>; i &gt;= <span class="nm">0</span>; i--) result[i] = heap.<span class="mt">Dequeue</span>();
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// Top K Frequent — Bucket Sort approach (O(n) time)</span>
+<span class="kw">public int</span>[] <span class="mt">TopKFrequentBucket</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums) freq[n] = freq.<span class="mt">GetValueOrDefault</span>(n) + <span class="nm">1</span>;
+
+    <span class="cm">// Buckets: index = frequency, value = list of numbers with that frequency</span>
+    <span class="kw">var</span> buckets = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[nums.Length + <span class="nm">1</span>];
+    <span class="kw">foreach</span> (<span class="kw">var</span> (val, cnt) <span class="kw">in</span> freq)
+    {
+        buckets[cnt] ??= <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        buckets[cnt].<span class="mt">Add</span>(val);
+    }
+
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = buckets.Length - <span class="nm">1</span>; i &gt;= <span class="nm">1</span> &amp;&amp; result.Count &lt; k; i--)
+        <span class="kw">if</span> (buckets[i] != <span class="kw">null</span>) result.<span class="mt">AddRange</span>(buckets[i]);
+    <span class="kw">return</span> result.<span class="mt">Take</span>(k).<span class="mt">ToArray</span>();
+}
+<span class="cm">// [1,1,1,2,2,3], k=2 → [1, 2]</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Grouping &amp; Anagram Detection</div>
+
+<p>Anagram detection is a classic hash map pattern. Two strings are anagrams if they contain the
+same characters with the same frequencies. The key insight: <strong>represent each string by a
+canonical key that all its anagrams share</strong>.</p>
+
+<h3>3.1 — Is Anagram? (single pair)</h3>
+
+<pre><span class="cm">// Method 1: Sort both strings — O(n log n)</span>
+<span class="kw">public bool</span> <span class="mt">IsAnagramSort</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
+{
+    <span class="kw">if</span> (s.Length != t.Length) <span class="kw">return false</span>;
+    <span class="kw">char</span>[] a = s.<span class="mt">ToCharArray</span>(), b = t.<span class="mt">ToCharArray</span>();
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(a); <span class="tp">Array</span>.<span class="mt">Sort</span>(b);
+    <span class="kw">return new string</span>(a) == <span class="kw">new string</span>(b);
+}
+
+<span class="cm">// Method 2: Character frequency array — O(n) time, O(1) space</span>
+<span class="kw">public bool</span> <span class="mt">IsAnagram</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
+{
+    <span class="kw">if</span> (s.Length != t.Length) <span class="kw">return false</span>;
+    <span class="kw">int</span>[] count = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) count[c - <span class="st">'a'</span>]++;
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> t) count[c - <span class="st">'a'</span>]--;
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> count) <span class="kw">if</span> (n != <span class="nm">0</span>) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}
+<span class="cm">// "anagram","nagaram" → true
+// "rat","car"         → false</span></pre>
+
+<h3>3.2 — Group Anagrams (classic interview problem)</h3>
+
+<div class="diagram">GROUP ANAGRAMS — ["eat","tea","tan","ate","nat","bat"]
+
+  Canonical key: sorted string of the word
+  "eat" → sorted → "aet"
+  "tea" → sorted → "aet"   SAME KEY as "eat"
+  "tan" → sorted → "ant"
+  "ate" → sorted → "aet"   SAME KEY
+  "nat" → sorted → "ant"   SAME KEY as "tan"
+  "bat" → sorted → "abt"
+
+  Dictionary: "aet" → ["eat","tea","ate"]
+              "ant" → ["tan","nat"]
+              "abt" → ["bat"]
+
+  Result: [["eat","tea","ate"],["tan","nat"],["bat"]] ✓</div>
+
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">GroupAnagrams</span>(<span class="kw">string</span>[] strs)
+{
+    <span class="kw">var</span> groups = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">string</span> s <span class="kw">in</span> strs)
+    {
+        <span class="kw">char</span>[] chars = s.<span class="mt">ToCharArray</span>();
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(chars);
+        <span class="kw">string</span> key = <span class="kw">new string</span>(chars);  <span class="cm">// canonical key</span>
+
+        <span class="kw">if</span> (!groups.<span class="mt">ContainsKey</span>(key))
+            groups[key] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+        groups[key].<span class="mt">Add</span>(s);
+    }
+    <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt;(groups.Values);
+}
+
+<span class="cm">// Optimized key: encode character counts as "#1#2#0#..." instead of sorting</span>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">GroupAnagramsFast</span>(<span class="kw">string</span>[] strs)
+{
+    <span class="kw">var</span> groups = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">string</span> s <span class="kw">in</span> strs)
+    {
+        <span class="kw">int</span>[] cnt = <span class="kw">new int</span>[<span class="nm">26</span>];
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) cnt[c - <span class="st">'a'</span>]++;
+        <span class="kw">string</span> key = <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>, cnt);  <span class="cm">// "1,0,0,0,1,0,...,1,0,0" — O(1) since 26 chars</span>
+
+        <span class="kw">if</span> (!groups.<span class="mt">ContainsKey</span>(key)) groups[key] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+        groups[key].<span class="mt">Add</span>(s);
+    }
+    <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt;(groups.Values);
+}
+<span class="cm">// O(n·k) time where k = average string length. Better than O(n·k log k) with sorting.</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Prefix Sum + Hash Map</div>
+
+<p>Combining prefix sums with a hash map unlocks O(n) solutions for subarray problems that would
+otherwise require O(n²) nested loops. The key idea: store previously seen prefix sums in a map,
+so you can check in O(1) whether a subarray ending here has the required sum.</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> You're tracking your cumulative spending each day. You want to know
+    if there's any period where you spent exactly $500. You store each day's cumulative total in a map.
+    If today's total minus $500 appears in the map, that period existed.
+</div>
+
+<h3>4.1 — Subarray Sum Equals K</h3>
+
+<div class="diagram">SUBARRAY SUM = K — nums=[3,4,7,2,-3,1,4,2], k=7
+
+  Prefix sums: [0, 3, 7, 14, 16, 13, 14, 18, 20]
+                ↑
+                prefix[0]=0 is always in map (empty subarray)
+
+  Key insight: subarray[i..j] sum = prefix[j+1] - prefix[i]
+  If prefix[j+1] - prefix[i] = k, then prefix[i] = prefix[j+1] - k
+
+  For each position, check: does (current_prefix - k) exist in map?
+
+  i=0: prefix=3.  Need 3-7=-4. Map={0:1}. Not found. Add {3:1}
+  i=1: prefix=7.  Need 7-7=0.  Map={0:1,3:1}. FOUND! count+=1
+  i=2: prefix=14. Need 14-7=7. Map has 7:1. count+=1
+  ...
+  Final count = 4 subarrays summing to 7</div>
+
+<pre><span class="kw">public int</span> <span class="mt">SubarraySum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> prefixCount = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; { [<span class="nm">0</span>] = <span class="nm">1</span> }; <span class="cm">// empty subarray</span>
+    <span class="kw">int</span> prefix = <span class="nm">0</span>, count = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums)
+    {
+        prefix += n;
+        count += prefixCount.<span class="mt">GetValueOrDefault</span>(prefix - k);
+        prefixCount[prefix] = prefixCount.<span class="mt">GetValueOrDefault</span>(prefix) + <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> count;
+}
+<span class="cm">// [1,1,1], k=2 → 2  ([1,1] at positions [0,1] and [1,2])
+// [1,2,3], k=3 → 2  ([3] and [1,2])
+// Time: O(n), Space: O(n)</span>
+
+<span class="cm">// Variant: Longest subarray with sum = 0</span>
+<span class="kw">public int</span> <span class="mt">MaxLenSubarrayZeroSum</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">var</span> firstSeen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; { [<span class="nm">0</span>] = -<span class="nm">1</span> }; <span class="cm">// prefix → first index</span>
+    <span class="kw">int</span> prefix = <span class="nm">0</span>, maxLen = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+    {
+        prefix += nums[i];
+        <span class="kw">if</span> (firstSeen.<span class="mt">TryGetValue</span>(prefix, <span class="kw">out int</span> j))
+            maxLen = <span class="tp">Math</span>.<span class="mt">Max</span>(maxLen, i - j);
+        <span class="kw">else</span>
+            firstSeen[prefix] = i;
+    }
+    <span class="kw">return</span> maxLen;
+}
+<span class="cm">// [15,-2,2,-8,1,7,10,23] → 5  (subarray [-2,2,-8,1,7])</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — LRU Cache</div>
+
+<p>An <strong>LRU (Least Recently Used) Cache</strong> evicts the least-recently-accessed item
+when the cache is full. It is one of the most commonly asked system design and coding interview
+problems because it combines a hash map (O(1) lookup) with a doubly linked list
+(O(1) reordering).</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World Usage:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Browser cache:</strong> Recently visited pages are kept; old ones evicted when memory fills</li>
+        <li><strong>CPU L1/L2 cache:</strong> Recently used memory lines stay; cold lines are evicted</li>
+        <li><strong>ASP.NET MemoryCache:</strong> Sliding expiry is an LRU variant</li>
+        <li><strong>Database buffer pool:</strong> Recently read pages stay in RAM; cold pages are flushed</li>
+    </ul>
+</div>
+
+<div class="diagram">LRU CACHE DESIGN — capacity=3
+
+  Data structure:
+  - Dictionary: key → node (O(1) lookup)
+  - Doubly Linked List: MRU ←→ ... ←→ LRU
+    - head (dummy) ↔ [most recent] ↔ ... ↔ [least recent] ↔ tail (dummy)
+    - When accessed → move node to front (most recent)
+    - When full and inserting → remove tail (least recently used)
+
+  Operations trace (capacity=3):
+  put(1,1): List: [1]         Map: {1→node1}
+  put(2,2): List: [2,1]       Map: {1,2}
+  put(3,3): List: [3,2,1]     Map: {1,2,3}
+  get(1):   List: [1,3,2]     Map: {1,2,3}  → move 1 to front, return 1
+  put(4,4): FULL! evict tail (2)
+            List: [4,1,3]     Map: {1,3,4}  → 2 evicted
+  get(2):   returns -1  (evicted!)
+  get(3):   List: [3,4,1]     returns 3
+  get(4):   List: [4,3,1]     returns 4</div>
+
+<pre><span class="kw">public class</span> <span class="tp">LRUCache</span>
+{
+    <span class="kw">private class</span> <span class="tp">Node</span>
+    {
+        <span class="kw">public int</span> Key, Val;
+        <span class="kw">public</span> <span class="tp">Node</span>? Prev, Next;
+        <span class="kw">public</span> <span class="tp">Node</span>(<span class="kw">int</span> k, <span class="kw">int</span> v) { Key = k; Val = v; }
+    }
+
+    <span class="kw">private readonly int</span> _cap;
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">Node</span>&gt; _map;
+    <span class="kw">private readonly</span> <span class="tp">Node</span> _head, _tail; <span class="cm">// dummy sentinels</span>
+
+    <span class="kw">public</span> <span class="tp">LRUCache</span>(<span class="kw">int</span> capacity)
+    {
+        _cap  = capacity;
+        _map  = <span class="kw">new</span>(<span class="nm">capacity</span>);
+        _head = <span class="kw">new</span>(- <span class="nm">1</span>, -<span class="nm">1</span>); _tail = <span class="kw">new</span>(-<span class="nm">1</span>, -<span class="nm">1</span>);
+        _head.Next = _tail; _tail.Prev = _head;
+    }
+
+    <span class="kw">public int</span> <span class="mt">Get</span>(<span class="kw">int</span> key)
+    {
+        <span class="kw">if</span> (!_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> node)) <span class="kw">return</span> -<span class="nm">1</span>;
+        <span class="mt">MoveToFront</span>(node);
+        <span class="kw">return</span> node.Val;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Put</span>(<span class="kw">int</span> key, <span class="kw">int</span> value)
+    {
+        <span class="kw">if</span> (_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> node))
+        {
+            node.Val = value;
+            <span class="mt">MoveToFront</span>(node);
+            <span class="kw">return</span>;
+        }
+        <span class="kw">if</span> (_map.Count == _cap)
+        {
+            <span class="kw">var</span> lru = _tail.Prev!;
+            <span class="mt">Unlink</span>(lru);
+            _map.<span class="mt">Remove</span>(lru.Key);
+        }
+        <span class="kw">var</span> newNode = <span class="kw">new</span> <span class="tp">Node</span>(key, value);
+        <span class="mt">InsertFront</span>(newNode);
+        _map[key] = newNode;
+    }
+
+    <span class="kw">private void</span> <span class="mt">MoveToFront</span>(<span class="tp">Node</span> n) { <span class="mt">Unlink</span>(n); <span class="mt">InsertFront</span>(n); }
+
+    <span class="kw">private void</span> <span class="mt">Unlink</span>(<span class="tp">Node</span> n)
+    {
+        n.Prev!.Next = n.Next;
+        n.Next!.Prev = n.Prev;
+    }
+
+    <span class="kw">private void</span> <span class="mt">InsertFront</span>(<span class="tp">Node</span> n)
+    {
+        n.Next = _head.Next;
+        n.Prev = _head;
+        _head.Next!.Prev = n;
+        _head.Next = n;
+    }
+}
+
+<span class="cm">// Usage:</span>
+<span class="kw">var</span> cache = <span class="kw">new</span> <span class="tp">LRUCache</span>(<span class="nm">3</span>);
+cache.<span class="mt">Put</span>(<span class="nm">1</span>, <span class="nm">10</span>); cache.<span class="mt">Put</span>(<span class="nm">2</span>, <span class="nm">20</span>); cache.<span class="mt">Put</span>(<span class="nm">3</span>, <span class="nm">30</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(cache.<span class="mt">Get</span>(<span class="nm">1</span>));     <span class="cm">// 10 — moves 1 to front</span>
+cache.<span class="mt">Put</span>(<span class="nm">4</span>, <span class="nm">40</span>);                    <span class="cm">// evicts 2 (LRU)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(cache.<span class="mt">Get</span>(<span class="nm">2</span>));     <span class="cm">// -1 (evicted)</span>
+<span class="cm">// All operations: O(1) time — dictionary for lookup, DLL for order</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Rolling Hash &amp; Rabin-Karp String Matching</div>
+
+<p>The <strong>Rolling Hash</strong> technique lets you compute the hash of a sliding window in O(1)
+per step (rather than O(k) per step). Combined with a hash map, it enables the
+<strong>Rabin-Karp</strong> algorithm for finding all occurrences of a pattern in a text in O(n+m).</p>
+
+<div class="diagram">ROLLING HASH — Sliding window of size k=3 over "abcde"
+
+  Naive: hash("abc") → hash("bcd") → hash("cde")
+         Each hash = O(k) time → total O(n·k) — too slow
+
+  Rolling: remove old character, add new character in O(1)
+    hash("abc") = a*31² + b*31 + c
+    hash("bcd") = hash("abc") - a*31² ... * 31 + d
+                = (hash("abc") - a*p^(k-1)) * 31 + d
+
+  This slide happens in O(1) — no re-reading old characters!
+
+  Use case: Find all positions where pattern P occurs in text T
+  - Compute hash(P)
+  - Slide window of size |P| across T
+  - When hash matches: verify exact equality (to handle hash collisions)
+  - O(n + m) average, O(nm) worst (many false hash matches)</div>
+
+<pre><span class="cm">// Rabin-Karp — find all start indices where pattern occurs in text</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">RabinKarp</span>(<span class="kw">string</span> text, <span class="kw">string</span> pattern)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">int</span> n = text.Length, m = pattern.Length;
+    <span class="kw">if</span> (m &gt; n) <span class="kw">return</span> result;
+
+    <span class="kw">const long</span> base_ = <span class="nm">31</span>, mod = <span class="nm">1_000_000_007</span>;
+
+    <span class="cm">// Compute base^(m-1) mod p (for removing leftmost character)</span>
+    <span class="kw">long</span> power = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; m - <span class="nm">1</span>; i++) power = power * base_ % mod;
+
+    <span class="cm">// Compute hash of pattern and first window</span>
+    <span class="kw">long</span> patHash = <span class="nm">0</span>, winHash = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; m; i++)
+    {
+        patHash = (patHash * base_ + pattern[i]) % mod;
+        winHash = (winHash * base_ + text[i])    % mod;
+    }
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt;= n - m; i++)
+    {
+        <span class="kw">if</span> (winHash == patHash &amp;&amp; text.<span class="mt">Substring</span>(i, m) == pattern)
+            result.<span class="mt">Add</span>(i);
+
+        <span class="cm">// Roll the window: remove text[i], add text[i+m]</span>
+        <span class="kw">if</span> (i &lt; n - m)
+        {
+            winHash = (winHash - text[i] * power % mod + mod) % mod;
+            winHash = (winHash * base_ + text[i + m]) % mod;
+        }
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// RabinKarp("abcababc", "abc") → [0, 5]
+// RabinKarp("aaaa", "aa")     → [0, 1, 2]
+
+// Practical application: Find all anagrams in a string (LeetCode 438)
+// Use rolling hash on sorted windows OR rolling character frequency array</span>
+
+<span class="cm">// Find all anagram start positions of p in s — O(n) with rolling frequency array</span>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">FindAnagrams</span>(<span class="kw">string</span> s, <span class="kw">string</span> p)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">if</span> (s.Length &lt; p.Length) <span class="kw">return</span> result;
+    <span class="kw">int</span>[] need = <span class="kw">new int</span>[<span class="nm">26</span>], window = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> p) need[c - <span class="st">'a'</span>]++;
+    <span class="kw">int</span> k = p.Length;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; s.Length; i++)
+    {
+        window[s[i] - <span class="st">'a'</span>]++;
+        <span class="kw">if</span> (i &gt;= k) window[s[i - k] - <span class="st">'a'</span>]--;   <span class="cm">// slide out left</span>
+        <span class="kw">if</span> (i &gt;= k - <span class="nm">1</span> &amp;&amp; window.<span class="mt">SequenceEqual</span>(need)) result.<span class="mt">Add</span>(i - k + <span class="nm">1</span>);
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// FindAnagrams("cbaebabacd","abc") → [0, 6]
+// FindAnagrams("abab","ab")        → [0, 1, 2]</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Pattern Summary</div>
+
+<table>
+    <thead>
+        <tr><th>Pattern</th><th>Key Idea</th><th>Template</th><th>Classic Problems</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Two Sum</strong></td>
+            <td>Store seen values; check complement in O(1)</td>
+            <td><code>map[target - x]</code></td>
+            <td>Two Sum, 3Sum (sort+2ptr+hash), 4Sum Count</td>
+        </tr>
+        <tr>
+            <td><strong>Frequency Map</strong></td>
+            <td>Count occurrences of each element</td>
+            <td><code>freq[x]++</code></td>
+            <td>Top K Frequent, Valid Anagram, Character Counts</td>
+        </tr>
+        <tr>
+            <td><strong>Grouping</strong></td>
+            <td>Map each item to a canonical key</td>
+            <td><code>groups[key].Add(x)</code></td>
+            <td>Group Anagrams, Group by Property</td>
+        </tr>
+        <tr>
+            <td><strong>Prefix Sum + Map</strong></td>
+            <td>Store prefix[i]; check if prefix[j]-k exists</td>
+            <td><code>map[prefix - k]</code></td>
+            <td>Subarray Sum = K, Longest Subarray with Sum 0</td>
+        </tr>
+        <tr>
+            <td><strong>LRU Cache</strong></td>
+            <td>Dict for O(1) lookup + DLL for O(1) reorder</td>
+            <td>Dict + Sentinel DLL</td>
+            <td>LRU Cache, LFU Cache, Browser History</td>
+        </tr>
+        <tr>
+            <td><strong>Rolling Hash</strong></td>
+            <td>Slide window hash in O(1) per step</td>
+            <td>Remove left, add right</td>
+            <td>Rabin-Karp, Find All Anagrams, Repeated DNA</td>
+        </tr>
+        <tr>
+            <td><strong>Deduplication</strong></td>
+            <td>HashSet auto-ignores duplicates on Add</td>
+            <td><code>set.Add(x)</code></td>
+            <td>Longest Consecutive Sequence, Contains Duplicate</td>
+        </tr>
+        <tr>
+            <td><strong>Memoization</strong></td>
+            <td>Cache computed results by input</td>
+            <td><code>memo[args] = result</code></td>
+            <td>Fibonacci, Coin Change, Unique Paths</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 Interview Heuristic:</strong><br>
+    Whenever you see an O(n²) brute-force solution involving nested loops or repeated scanning,
+    ask: <em>"Can I use a hash map to remember something and check it in O(1)?"</em><br><br>
+    Common transformations:
+    <ul style="margin-top:8px;">
+        <li>"Find a pair" → O(n²) → hash complement → <strong>O(n)</strong></li>
+        <li>"Count occurrences" → O(n²) → frequency map → <strong>O(n)</strong></li>
+        <li>"Find subarray with sum" → O(n²) → prefix sum + map → <strong>O(n)</strong></li>
+        <li>"Group similar items" → O(n²) → canonical key + dict → <strong>O(n·k)</strong></li>
+    </ul>
+</div>
+
+<div class="nav-box">
+    <strong>✅ Module 4 Part B Complete!</strong><br><br>
+    <strong>Key Takeaways:</strong><br>
+    • Two-Sum: store complements in a map — converts O(n²) to O(n)<br>
+    • Frequency maps power counting, grouping, anagram detection<br>
+    • Prefix sum + hash map = O(n) subarray sum solutions<br>
+    • LRU Cache = Dictionary (O(1) lookup) + DLL (O(1) reorder) combined<br>
+    • Rolling hash enables O(n) substring/anagram search<br><br>
+    ◀ <strong>Prev:</strong> <a href="m04a_hashtable_basics.html">Part A — Basics</a> &nbsp;|&nbsp;
+    ➡ <strong>Next:</strong> <a href="m04c_practice.html">Part C — Practice</a><br>
+    🏠 <a href="../Index.html">Course Index</a>
+</div>
+
+</body>
+</html>

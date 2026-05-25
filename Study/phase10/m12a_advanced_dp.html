@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 12A: Advanced DP Patterns</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.2em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  h4 { font-size: 1em; color: #89dceb; margin: 16px 0 8px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+  .diagram { background: #0d1117; border: 1px solid #30363d; border-left: 4px solid #e74c3c; border-radius: 8px; padding: 20px; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85em; color: #58a6ff; overflow-x: auto; white-space: pre; line-height: 1.5; }
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .warning { background: #2d1e1e; border-left: 4px solid #f38ba8; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .warning strong { color: #f38ba8; }
+  .realworld { background: #1e2235; border-left: 4px solid #89b4fa; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .realworld strong { color: #89b4fa; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+  th { background: #313244; color: #cba6f7; padding: 10px 14px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 9px 14px; border: 1px solid #313244; color: #cdd6f4; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 10</span> <span class="badge">Module 12A</span> <span class="badge">Final Phase</span></div>
+    <h1>Advanced DP Patterns</h1>
+    <div class="subtitle">Bitmask DP · Interval DP · Digit DP · Tree DP · Stock Problems</div>
+    <div class="tagline">The hardest DP patterns seen in top-tier interviews — explained simply</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../phase9/m11c_practice.html">&#8592; Module 11C: Practice</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m12b_final_review.html">Module 12B: Final Review &#8594;</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>1. Bitmask DP</h2>
+  <p>When n is small (≤ 20), you can use a bitmask to represent a <strong>subset of elements</strong> as a DP state. This turns exponential enumeration into manageable DP.</p>
+
+  <div class="diagram">
+  Problem: Assign n tasks to n workers. Cost[i][j] = cost for worker i to do task j.
+  Minimize total cost. (n ≤ 15)
+
+  State: dp[mask] = min cost to complete the set of tasks in 'mask'
+  The number of set bits = number of workers used so far.
+
+  Transition: if mask has k set bits, worker k does the next task.
+  For each unset bit j in mask:
+    dp[mask | (1<<j)] = min(dp[mask | (1<<j)], dp[mask] + cost[k][j])
+
+  Total states: 2^n, each takes O(n) → O(n * 2^n)</div>
+
+  <pre><span class="cm">// Minimum Cost to Assign Tasks (Hungarian-like via bitmask DP)</span>
+<span class="kw">public int</span> <span class="mt">AssignTasks</span>(<span class="tp">int</span>[][] cost)
+{
+    <span class="tp">int</span> n = cost.Length;
+    <span class="tp">int</span>[] dp = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">int</span>.MaxValue, <span class="nm">1</span> &lt;&lt; n).<span class="mt">ToArray</span>();
+    dp[<span class="nm">0</span>] = <span class="nm">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> mask = <span class="nm">0</span>; mask &lt; (<span class="nm">1</span> &lt;&lt; n); mask++)
+    {
+        <span class="kw">if</span> (dp[mask] == <span class="tp">int</span>.MaxValue) <span class="kw">continue</span>;
+        <span class="tp">int</span> worker = <span class="tp">Integer</span>.<span class="mt">BitCount</span>(mask); <span class="cm">// = how many tasks assigned = which worker is next</span>
+        <span class="kw">if</span> (worker == n) <span class="kw">continue</span>;
+
+        <span class="kw">for</span> (<span class="tp">int</span> task = <span class="nm">0</span>; task &lt; n; task++)
+        {
+            <span class="kw">if</span> ((mask &amp; (<span class="nm">1</span> &lt;&lt; task)) != <span class="nm">0</span>) <span class="kw">continue</span>; <span class="cm">// Task already assigned</span>
+            <span class="tp">int</span> next = mask | (<span class="nm">1</span> &lt;&lt; task);
+            dp[next] = <span class="tp">Math</span>.<span class="mt">Min</span>(dp[next], dp[mask] + cost[worker][task]);
+        }
+    }
+    <span class="kw">return</span> dp[(<span class="nm">1</span> &lt;&lt; n) - <span class="nm">1</span>]; <span class="cm">// All tasks assigned</span>
+}
+<span class="cm">// Time: O(n² * 2^n), Space: O(2^n)</span></pre>
+
+  <h3>Traveling Salesman Problem (TSP)</h3>
+  <pre><span class="cm">// Visit all n cities exactly once and return to start — minimize total distance</span>
+<span class="cm">// dp[mask][i] = min cost to visit all cities in mask, ending at city i</span>
+<span class="kw">public int</span> <span class="mt">TSP</span>(<span class="tp">int</span>[,] dist, <span class="tp">int</span> n)
+{
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[<span class="nm">1</span> &lt;&lt; n, n];
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; (<span class="nm">1</span> &lt;&lt; n); i++)
+        <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">0</span>; j &lt; n; j++)
+            dp[i, j] = <span class="tp">int</span>.MaxValue / <span class="nm">2</span>;
+
+    dp[<span class="nm">1</span>, <span class="nm">0</span>] = <span class="nm">0</span>; <span class="cm">// Start at city 0, only city 0 visited (mask=0001)</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> mask = <span class="nm">1</span>; mask &lt; (<span class="nm">1</span> &lt;&lt; n); mask++)
+    <span class="kw">for</span> (<span class="tp">int</span> u = <span class="nm">0</span>; u &lt; n; u++)
+    {
+        <span class="kw">if</span> ((mask &amp; (<span class="nm">1</span> &lt;&lt; u)) == <span class="nm">0</span>) <span class="kw">continue</span>; <span class="cm">// u not in current path</span>
+        <span class="kw">if</span> (dp[mask, u] == <span class="tp">int</span>.MaxValue / <span class="nm">2</span>) <span class="kw">continue</span>;
+
+        <span class="kw">for</span> (<span class="tp">int</span> v = <span class="nm">0</span>; v &lt; n; v++)
+        {
+            <span class="kw">if</span> ((mask &amp; (<span class="nm">1</span> &lt;&lt; v)) != <span class="nm">0</span>) <span class="kw">continue</span>; <span class="cm">// v already visited</span>
+            <span class="tp">int</span> next = mask | (<span class="nm">1</span> &lt;&lt; v);
+            dp[next, v] = <span class="tp">Math</span>.<span class="mt">Min</span>(dp[next, v], dp[mask, u] + dist[u, v]);
+        }
+    }
+
+    <span class="tp">int</span> full = (<span class="nm">1</span> &lt;&lt; n) - <span class="nm">1</span>;
+    <span class="tp">int</span> ans = <span class="tp">int</span>.MaxValue;
+    <span class="kw">for</span> (<span class="tp">int</span> u = <span class="nm">1</span>; u &lt; n; u++) <span class="cm">// Return to city 0</span>
+        ans = <span class="tp">Math</span>.<span class="mt">Min</span>(ans, dp[full, u] + dist[u, <span class="nm">0</span>]);
+    <span class="kw">return</span> ans;
+}
+<span class="cm">// Time: O(n² * 2^n), Space: O(n * 2^n) — feasible for n ≤ 20</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>2. Interval DP</h2>
+  <p>Interval DP solves problems on <strong>contiguous subarrays</strong>. The key pattern: enumerate the <strong>split point</strong> k within interval [i, j] and combine results from [i,k] and [k+1,j] (or [i,k] and [k,j]).</p>
+
+  <div class="diagram">
+  General pattern:
+  for length = 2 to n:              ← build from small to large intervals
+    for i = 0 to n-length:
+      j = i + length - 1
+      for k = i to j-1:             ← try all split points
+        dp[i][j] = min/max(dp[i][j], combine(dp[i][k], dp[k+1][j], cost))
+
+  Base case: dp[i][i] = cost of single element (or 0)</div>
+
+  <h3>Matrix Chain Multiplication</h3>
+  <pre><span class="cm">// Minimum multiplications to chain-multiply matrices</span>
+<span class="cm">// dims[i] = rows of matrix i, dims[i+1] = cols of matrix i</span>
+<span class="kw">public int</span> <span class="mt">MatrixChain</span>(<span class="tp">int</span>[] dims)
+{
+    <span class="tp">int</span> n = dims.Length - <span class="nm">1</span>; <span class="cm">// number of matrices</span>
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[n, n];
+
+    <span class="kw">for</span> (<span class="tp">int</span> len = <span class="nm">2</span>; len &lt;= n; len++)
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt;= n - len; i++)
+    {
+        <span class="tp">int</span> j = i + len - <span class="nm">1</span>;
+        dp[i, j] = <span class="tp">int</span>.MaxValue;
+        <span class="kw">for</span> (<span class="tp">int</span> k = i; k &lt; j; k++)
+            dp[i, j] = <span class="tp">Math</span>.<span class="mt">Min</span>(dp[i, j],
+                dp[i, k] + dp[k+<span class="nm">1</span>, j] + dims[i] * dims[k+<span class="nm">1</span>] * dims[j+<span class="nm">1</span>]);
+    }
+    <span class="kw">return</span> dp[<span class="nm">0</span>, n - <span class="nm">1</span>];
+}
+<span class="cm">// Time: O(n³), Space: O(n²)</span></pre>
+
+  <h3>Burst Balloons (LeetCode 312)</h3>
+  <pre><span class="cm">// Burst all balloons to maximize coins. Bursting balloon i gives nums[i-1]*nums[i]*nums[i+1]</span>
+<span class="cm">// Key insight: think about which balloon is burst LAST in interval [i..j]</span>
+<span class="kw">public int</span> <span class="mt">MaxCoins</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="cm">// Add boundary balloons of value 1</span>
+    <span class="tp">int</span> n = nums.Length;
+    <span class="tp">int</span>[] arr = <span class="kw">new</span> <span class="tp">int</span>[n + <span class="nm">2</span>];
+    arr[<span class="nm">0</span>] = arr[n + <span class="nm">1</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++) arr[i + <span class="nm">1</span>] = nums[i];
+
+    <span class="tp">int</span> m = arr.Length;
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[m, m]; <span class="cm">// dp[i][j] = max coins from open interval (i,j)</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> len = <span class="nm">2</span>; len &lt; m; len++)   <span class="cm">// interval length</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; m - len; i++)
+    {
+        <span class="tp">int</span> j = i + len;
+        <span class="kw">for</span> (<span class="tp">int</span> k = i + <span class="nm">1</span>; k &lt; j; k++) <span class="cm">// k = last balloon burst in (i,j)</span>
+            dp[i, j] = <span class="tp">Math</span>.<span class="mt">Max</span>(dp[i, j],
+                dp[i, k] + arr[i] * arr[k] * arr[j] + dp[k, j]);
+    }
+    <span class="kw">return</span> dp[<span class="nm">0</span>, m - <span class="nm">1</span>];
+}
+<span class="cm">// Time: O(n³), Space: O(n²)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>3. Digit DP</h2>
+  <p>Digit DP counts integers in range [0, n] that satisfy a digit-based condition. The key state variables are: <strong>position</strong>, <strong>tight</strong> (are we still bounded by n's digits?), and any problem-specific state (digit sum, count of specific digits, etc.).</p>
+
+  <div class="diagram">
+  Count numbers ≤ 1234 with digit sum = 10
+
+  State: dp[pos][sum][tight]
+  - pos: which digit position we're filling (left to right)
+  - sum: current digit sum so far
+  - tight: if true, digit at pos must be ≤ n's digit at pos
+
+  At each position, try digits 0..limit (limit = n[pos] if tight, else 9)
+  If tight AND we pick digit < n[pos]: subsequent positions are "free" (tight=false)
+  If tight AND we pick n[pos]: still tight in next position
+
+  Build memoized DFS → count satisfying numbers efficiently</div>
+
+  <pre><span class="cm">// Count numbers from 1 to n that do NOT contain digit 4 (example)</span>
+<span class="kw">public int</span> <span class="mt">CountNoFour</span>(<span class="tp">int</span> n)
+{
+    <span class="tp">string</span> s = n.<span class="mt">ToString</span>();
+    <span class="tp">int</span> len = s.Length;
+    <span class="cm">// memo[pos][tight] — tight is bool → 2 states</span>
+    <span class="tp">int</span>[,] memo = <span class="kw">new</span> <span class="tp">int</span>[len, <span class="nm">2</span>];
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; len; i++) memo[i, <span class="nm">0</span>] = memo[i, <span class="nm">1</span>] = -<span class="nm">1</span>;
+
+    <span class="kw">return</span> <span class="mt">Dp</span>(<span class="nm">0</span>, <span class="kw">true</span>);
+
+    <span class="tp">int</span> <span class="mt">Dp</span>(<span class="tp">int</span> pos, <span class="tp">bool</span> tight)
+    {
+        <span class="kw">if</span> (pos == len) <span class="kw">return</span> <span class="nm">1</span>; <span class="cm">// Fully built a valid number</span>
+        <span class="tp">int</span> t = tight ? <span class="nm">1</span> : <span class="nm">0</span>;
+        <span class="kw">if</span> (memo[pos, t] != -<span class="nm">1</span>) <span class="kw">return</span> memo[pos, t];
+
+        <span class="tp">int</span> limit = tight ? (s[pos] - <span class="st">'0'</span>) : <span class="nm">9</span>;
+        <span class="tp">int</span> count = <span class="nm">0</span>;
+        <span class="kw">for</span> (<span class="tp">int</span> d = <span class="nm">0</span>; d &lt;= limit; d++)
+        {
+            <span class="kw">if</span> (d == <span class="nm">4</span>) <span class="kw">continue</span>; <span class="cm">// Skip digit 4</span>
+            count += <span class="mt">Dp</span>(pos + <span class="nm">1</span>, tight &amp;&amp; d == limit);
+        }
+        <span class="kw">return</span> memo[pos, t] = count;
+    }
+}
+<span class="cm">// Time: O(10 * len * 2) = O(len), Space: O(len)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>4. Tree DP</h2>
+  <p>Tree DP computes values bottom-up from leaves to root. Each node aggregates answers from its children. Common patterns: maximum path sum, diameter, independent set on tree.</p>
+
+  <h3>Binary Tree Maximum Path Sum (LeetCode 124)</h3>
+  <pre><span class="cm">// Each node contributes: value + max(0, best from left) + max(0, best from right)</span>
+<span class="cm">// But a path can only go in ONE direction from each node (no branching upward)</span>
+<span class="tp">int</span> maxSum = <span class="tp">int</span>.MinValue;
+
+<span class="kw">public int</span> <span class="mt">MaxPathSum</span>(<span class="tp">TreeNode</span> root)
+{
+    <span class="mt">DFS</span>(root);
+    <span class="kw">return</span> maxSum;
+}
+
+<span class="kw">private int</span> <span class="mt">DFS</span>(<span class="tp">TreeNode</span> node)
+{
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="tp">int</span> left  = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="mt">DFS</span>(node.left));  <span class="cm">// Ignore negative branches</span>
+    <span class="tp">int</span> right = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="mt">DFS</span>(node.right));
+    maxSum = <span class="tp">Math</span>.<span class="mt">Max</span>(maxSum, node.val + left + right); <span class="cm">// Path through this node</span>
+    <span class="kw">return</span> node.val + <span class="tp">Math</span>.<span class="mt">Max</span>(left, right); <span class="cm">// Best single-direction path upward</span>
+}
+<span class="cm">// Time: O(n), Space: O(h) recursion stack</span></pre>
+
+  <h3>House Robber III — Robbery on a Tree (LeetCode 337)</h3>
+  <pre><span class="cm">// Can't rob parent AND child. dp returns (rob_this_node, skip_this_node)</span>
+<span class="kw">public int</span> <span class="mt">Rob</span>(<span class="tp">TreeNode</span> root)
+{
+    <span class="tp">var</span> (withRoot, withoutRoot) = <span class="mt">DFS</span>(root);
+    <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Max</span>(withRoot, withoutRoot);
+}
+
+<span class="kw">private</span> (<span class="tp">int</span> rob, <span class="tp">int</span> skip) <span class="mt">DFS</span>(<span class="tp">TreeNode</span> node)
+{
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> (<span class="nm">0</span>, <span class="nm">0</span>);
+
+    <span class="tp">var</span> (lr, ls) = <span class="mt">DFS</span>(node.left);
+    <span class="tp">var</span> (rr, rs) = <span class="mt">DFS</span>(node.right);
+
+    <span class="tp">int</span> rob  = node.val + ls + rs;              <span class="cm">// Rob this: skip both children</span>
+    <span class="tp">int</span> skip = <span class="tp">Math</span>.<span class="mt">Max</span>(lr, ls) + <span class="tp">Math</span>.<span class="mt">Max</span>(rr, rs); <span class="cm">// Skip this: best from each child</span>
+    <span class="kw">return</span> (rob, skip);
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>5. Stock Trading Problems</h2>
+  <p>The stock problems form a family of DP questions. Master the state transitions and they all become easy.</p>
+
+  <div class="diagram">
+  Unified state machine:
+  States per day: HOLD (own stock), EMPTY (no stock), COOLDOWN (sold yesterday)
+
+  Transitions:
+  HOLD[i]     = max(HOLD[i-1], EMPTY[i-1] - price)   ← hold or buy
+  EMPTY[i]    = max(EMPTY[i-1], COOLDOWN[i-1])        ← stay empty or end cooldown
+  COOLDOWN[i] = HOLD[i-1] + price                     ← sold today
+
+  Answer: max(EMPTY[last], COOLDOWN[last])</div>
+
+  <pre><span class="cm">// Best Time to Buy and Sell Stock with Cooldown (LeetCode 309)</span>
+<span class="kw">public int</span> <span class="mt">MaxProfit</span>(<span class="tp">int</span>[] prices)
+{
+    <span class="tp">int</span> hold = -prices[<span class="nm">0</span>], empty = <span class="nm">0</span>, cooldown = <span class="nm">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt; prices.Length; i++)
+    {
+        <span class="tp">int</span> newHold     = <span class="tp">Math</span>.<span class="mt">Max</span>(hold, empty - prices[i]);
+        <span class="tp">int</span> newEmpty    = <span class="tp">Math</span>.<span class="mt">Max</span>(empty, cooldown);
+        <span class="tp">int</span> newCooldown = hold + prices[i]; <span class="cm">// Sold today</span>
+        hold = newHold; empty = newEmpty; cooldown = newCooldown;
+    }
+    <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Max</span>(empty, cooldown);
+}
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+
+  <pre><span class="cm">// Best Time to Buy with Transaction Fee (LeetCode 714)</span>
+<span class="kw">public int</span> <span class="mt">MaxProfitFee</span>(<span class="tp">int</span>[] prices, <span class="tp">int</span> fee)
+{
+    <span class="tp">int</span> hold = -prices[<span class="nm">0</span>], empty = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt; prices.Length; i++)
+    {
+        <span class="tp">int</span> newHold  = <span class="tp">Math</span>.<span class="mt">Max</span>(hold,  empty - prices[i]);
+        <span class="tp">int</span> newEmpty = <span class="tp">Math</span>.<span class="mt">Max</span>(empty, hold + prices[i] - fee); <span class="cm">// Pay fee on sell</span>
+        hold = newHold; empty = newEmpty;
+    }
+    <span class="kw">return</span> empty;
+}
+
+<span class="cm">// At Most K Transactions (LeetCode 188)</span>
+<span class="kw">public int</span> <span class="mt">MaxProfitK</span>(<span class="tp">int</span> k, <span class="tp">int</span>[] prices)
+{
+    <span class="tp">int</span> n = prices.Length;
+    <span class="kw">if</span> (k &gt;= n / <span class="nm">2</span>) <span class="cm">// Unlimited transactions</span>
+        <span class="kw">return</span> prices.<span class="mt">Zip</span>(prices.<span class="mt">Skip</span>(<span class="nm">1</span>), (a, b) =&gt; <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, b - a)).<span class="mt">Sum</span>();
+
+    <span class="cm">// buy[j] = max profit after buying in at most j transactions</span>
+    <span class="cm">// sell[j] = max profit after selling in at most j transactions</span>
+    <span class="tp">int</span>[] buy = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">int</span>.MinValue, k + <span class="nm">1</span>).<span class="mt">ToArray</span>();
+    <span class="tp">int</span>[] sell = <span class="kw">new</span> <span class="tp">int</span>[k + <span class="nm">1</span>];
+
+    <span class="kw">foreach</span> (<span class="tp">int</span> price <span class="kw">in</span> prices)
+    <span class="kw">for</span> (<span class="tp">int</span> j = k; j &gt;= <span class="nm">1</span>; j--)
+    {
+        sell[j] = <span class="tp">Math</span>.<span class="mt">Max</span>(sell[j], buy[j] + price);
+        buy[j]  = <span class="tp">Math</span>.<span class="mt">Max</span>(buy[j],  sell[j - <span class="nm">1</span>] - price);
+    }
+    <span class="kw">return</span> sell[k];
+}
+<span class="cm">// Time: O(n*k), Space: O(k)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>6. DP Optimization — Monotonic Deque</h2>
+  <p>When a DP transition requires a sliding window maximum/minimum, a monotonic deque converts O(n²) DP to O(n).</p>
+
+  <div class="diagram">
+  Jump Game VI (LeetCode 1696):
+  dp[i] = nums[i] + max(dp[j]) for j in [i-k, i-1]
+
+  Naively: O(n*k) — for each i, look back k positions
+  With deque: O(n) — maintain deque of indices with decreasing dp values
+
+  Deque invariant: front = best index in current window
+  When dp[i] computed: remove from back any index with dp ≤ dp[i] (they're useless)</div>
+
+  <pre><span class="cm">// Jump Game VI: reach end in max score, jump up to k steps each time</span>
+<span class="kw">public int</span> <span class="mt">MaxResult</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> k)
+{
+    <span class="tp">int</span> n = nums.Length;
+    <span class="tp">int</span>[] dp = <span class="kw">new</span> <span class="tp">int</span>[n];
+    dp[<span class="nm">0</span>] = nums[<span class="nm">0</span>];
+    <span class="tp">var</span> dq = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="tp">int</span>&gt;(); <span class="cm">// Stores indices; front = max dp index in window</span>
+    dq.<span class="mt">AddLast</span>(<span class="nm">0</span>);
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt; n; i++)
+    {
+        <span class="cm">// Remove indices outside window [i-k, i-1]</span>
+        <span class="kw">while</span> (dq.Count &gt; <span class="nm">0</span> &amp;&amp; dq.First.Value &lt; i - k)
+            dq.<span class="mt">RemoveFirst</span>();
+
+        dp[i] = nums[i] + dp[dq.First.Value]; <span class="cm">// Best from window</span>
+
+        <span class="cm">// Maintain decreasing monotone: remove worse indices from back</span>
+        <span class="kw">while</span> (dq.Count &gt; <span class="nm">0</span> &amp;&amp; dp[dq.Last.Value] &lt;= dp[i])
+            dq.<span class="mt">RemoveLast</span>();
+        dq.<span class="mt">AddLast</span>(i);
+    }
+    <span class="kw">return</span> dp[n - <span class="nm">1</span>];
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>7. Summary — When to Use Which DP Pattern</h2>
+  <table>
+    <tr><th>Pattern</th><th>When to Use</th><th>State Size</th><th>Classic Problems</th></tr>
+    <tr><td>Bitmask DP</td><td>Subsets of small n (≤ 20)</td><td>O(2^n * n)</td><td>TSP, task assignment, broken profile</td></tr>
+    <tr><td>Interval DP</td><td>Merge/split subarrays optimally</td><td>O(n²) states * O(n) split</td><td>Matrix chain, burst balloons, palindrome partition</td></tr>
+    <tr><td>Digit DP</td><td>Count numbers in [0,n] with digit property</td><td>O(digits * states)</td><td>Count digit sums, no consecutive, Atcoder-style</td></tr>
+    <tr><td>Tree DP</td><td>Optimal value on trees with parent/child constraints</td><td>O(n)</td><td>Max path sum, house robber III, tree diameter</td></tr>
+    <tr><td>Stock DP</td><td>Buy/sell with state constraints (cooldown, fee, k-tx)</td><td>O(n * k)</td><td>LeetCode 121-188 family</td></tr>
+    <tr><td>Deque DP</td><td>DP transition = sliding window max/min</td><td>O(n)</td><td>Jump Game VI, max sum of k-length subarray</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>DP Problem-Solving Framework:</strong>
+    <ol>
+      <li><strong>Define state:</strong> What information uniquely describes a sub-problem?</li>
+      <li><strong>Write recurrence:</strong> How does dp[i] depend on smaller sub-problems?</li>
+      <li><strong>Identify base cases:</strong> What's the smallest valid sub-problem?</li>
+      <li><strong>Determine order:</strong> Which direction to fill the table (top-down memoization or bottom-up)?</li>
+      <li><strong>Optimize space:</strong> Can you reduce from O(n²) to O(n) by only keeping previous row?</li>
+    </ol>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../phase9/m11c_practice.html">&#8592; Module 11C: Practice</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m12b_final_review.html">Module 12B: Final Review &#8594;</a>
+  </div>
+
+</div>
+</body>
+</html>

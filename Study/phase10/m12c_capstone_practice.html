@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 12C: Capstone Practice — Zero to Hero</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.15em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .easy   { display: inline-block; background: #1e3a2a; color: #a6e3a1; border: 1px solid #a6e3a1; border-radius: 12px; padding: 2px 12px; font-size: 0.8em; font-weight: 600; }
+  .medium { display: inline-block; background: #2d2b1e; color: #f9e2af; border: 1px solid #f9e2af; border-radius: 12px; padding: 2px 12px; font-size: 0.8em; font-weight: 600; }
+  .hard   { display: inline-block; background: #2d1e1e; color: #f38ba8; border: 1px solid #f38ba8; border-radius: 12px; padding: 2px 12px; font-size: 0.8em; font-weight: 600; }
+  .topic  { display: inline-block; background: #1e2235; color: #89b4fa; border: 1px solid #45475a; border-radius: 12px; padding: 2px 10px; font-size: 0.78em; margin: 2px; }
+  .problem { background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 24px; margin-bottom: 20px; }
+  .problem-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .problem-num { font-size: 1.1em; font-weight: 700; color: #89dceb; }
+  .problem-title { font-size: 1.1em; font-weight: 600; color: #cdd6f4; }
+  input[type="checkbox"].spoiler-toggle { display: none; }
+  .spoiler-label { display: inline-block; cursor: pointer; background: #2c3e50; color: #89b4fa; border: 1px solid #313244; border-radius: 6px; padding: 6px 14px; font-size: 0.9em; margin-top: 10px; user-select: none; }
+  .spoiler-toggle:checked ~ .spoiler-label { background: #1e3a2f; color: #a6e3a1; border-color: #a6e3a1; }
+  .spoiler-content { display: none; margin-top: 14px; }
+  .spoiler-toggle:checked ~ .spoiler-label ~ .spoiler-content { display: block; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+  th { background: #313244; color: #cba6f7; padding: 10px 14px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 9px 14px; border: 1px solid #313244; color: #cdd6f4; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+  .complete-banner { background: linear-gradient(135deg, #1a2e1a, #1e3a1e); border: 2px solid #a6e3a1; border-radius: 16px; padding: 30px 40px; text-align: center; margin: 40px 0; }
+  .complete-banner h2 { background: none; color: #a6e3a1; margin: 0 0 10px; }
+  .complete-banner p { color: #cdd6f4; font-size: 1.1em; margin: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 10</span> <span class="badge">Module 12C</span> <span class="badge">Capstone</span> <span class="badge">Final</span></div>
+    <h1>Capstone Practice</h1>
+    <div class="subtitle">15 mixed problems spanning the entire course</div>
+    <div class="tagline">From arrays to bitmask DP — prove you've gone from zero to hero</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="m12b_final_review.html">&#8592; Module 12B: Final Review</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <span style="color:#a6adc8; font-size:0.9em;">&#127941; Course Complete</span>
+  </div>
+
+  <!-- ═══════════════════════════ MEDIUM ═══════════════════════════ -->
+  <h2>Medium Problems (9)</h2>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#1</span>
+      <span class="problem-title">Trapping Rain Water</span>
+      <span class="medium">Medium</span>
+      <span class="topic">Two Pointers</span>
+      <span class="topic">Arrays</span>
+    </div>
+    <p>Given an array of bar heights, compute how much water can be trapped between bars.</p>
+    <p><strong>Example:</strong> <code>[0,1,0,2,1,0,1,3,2,1,2,1]</code> → <code>6</code></p>
+    <input type="checkbox" class="spoiler-toggle" id="p1">
+    <label class="spoiler-label" for="p1">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Key Insight:</strong> Water above position i = min(maxLeft[i], maxRight[i]) - height[i]. Use two-pointer to avoid O(n) prefix arrays.</div>
+<pre><span class="kw">public int</span> <span class="mt">Trap</span>(<span class="tp">int</span>[] h)
+{
+    <span class="tp">int</span> l = <span class="nm">0</span>, r = h.Length - <span class="nm">1</span>, lMax = <span class="nm">0</span>, rMax = <span class="nm">0</span>, water = <span class="nm">0</span>;
+    <span class="kw">while</span> (l &lt; r)
+    {
+        <span class="kw">if</span> (h[l] &lt; h[r])
+        {
+            <span class="kw">if</span> (h[l] &gt;= lMax) lMax = h[l];
+            <span class="kw">else</span> water += lMax - h[l];
+            l++;
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">if</span> (h[r] &gt;= rMax) rMax = h[r];
+            <span class="kw">else</span> water += rMax - h[r];
+            r--;
+        }
+    }
+    <span class="kw">return</span> water;
+}
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#2</span>
+      <span class="problem-title">LRU Cache</span>
+      <span class="medium">Medium</span>
+      <span class="topic">LinkedList</span>
+      <span class="topic">HashMap</span>
+    </div>
+    <p>Design a data structure that follows the LRU (Least Recently Used) cache eviction policy. O(1) get and put.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p2">
+    <label class="spoiler-label" for="p2">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Design:</strong> Dictionary maps key → LinkedListNode for O(1) access. LinkedList maintains order (most-recent at front). On access/add: move to front. On eviction: remove from back.</div>
+<pre><span class="kw">public class</span> <span class="tp">LRUCache</span>
+{
+    <span class="kw">private readonly int</span> _cap;
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="tp">int</span>, <span class="tp">LinkedListNode</span>&lt;(<span class="tp">int</span> key, <span class="tp">int</span> val)&gt;&gt; _map;
+    <span class="kw">private readonly</span> <span class="tp">LinkedList</span>&lt;(<span class="tp">int</span> key, <span class="tp">int</span> val)&gt; _list;
+
+    <span class="kw">public</span> <span class="mt">LRUCache</span>(<span class="tp">int</span> capacity)
+    {
+        _cap  = capacity;
+        _map  = <span class="kw">new</span>();
+        _list = <span class="kw">new</span>();
+    }
+
+    <span class="kw">public int</span> <span class="mt">Get</span>(<span class="tp">int</span> key)
+    {
+        <span class="kw">if</span> (!_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> node)) <span class="kw">return</span> -<span class="nm">1</span>;
+        _list.<span class="mt">Remove</span>(node);
+        _list.<span class="mt">AddFirst</span>(node);
+        <span class="kw">return</span> node.Value.val;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Put</span>(<span class="tp">int</span> key, <span class="tp">int</span> value)
+    {
+        <span class="kw">if</span> (_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> existing))
+        {
+            _list.<span class="mt">Remove</span>(existing);
+            _map.<span class="mt">Remove</span>(key);
+        }
+        <span class="kw">else if</span> (_list.Count == _cap)
+        {
+            _map.<span class="mt">Remove</span>(_list.Last.Value.key);
+            _list.<span class="mt">RemoveLast</span>();
+        }
+        <span class="tp">var</span> node = _list.<span class="mt">AddFirst</span>((key, value));
+        _map[key] = node;
+    }
+}
+<span class="cm">// Get: O(1), Put: O(1), Space: O(capacity)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#3</span>
+      <span class="problem-title">Combination Sum IV (Count Ways)</span>
+      <span class="medium">Medium</span>
+      <span class="topic">Dynamic Programming</span>
+    </div>
+    <p>Given an array of distinct integers and a target, return the number of possible combinations that add up to target. Order matters: [1,2] and [2,1] are different.</p>
+    <p><strong>Example:</strong> nums=[1,2,3], target=4 → <code>7</code></p>
+    <input type="checkbox" class="spoiler-toggle" id="p3">
+    <label class="spoiler-label" for="p3">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Unlike 0/1 knapsack:</strong> Order matters → iterate target in outer loop, numbers in inner loop. This counts permutations, not combinations.</div>
+<pre><span class="kw">public int</span> <span class="mt">CombinationSum4</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span>[] dp = <span class="kw">new</span> <span class="tp">int</span>[target + <span class="nm">1</span>];
+    dp[<span class="nm">0</span>] = <span class="nm">1</span>; <span class="cm">// One way to make 0: pick nothing</span>
+    <span class="kw">for</span> (<span class="tp">int</span> t = <span class="nm">1</span>; t &lt;= target; t++)
+        <span class="kw">foreach</span> (<span class="tp">int</span> n <span class="kw">in</span> nums)
+            <span class="kw">if</span> (n &lt;= t) dp[t] += dp[t - n];
+    <span class="kw">return</span> dp[target];
+}
+<span class="cm">// Time: O(target * nums.Length), Space: O(target)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#4</span>
+      <span class="problem-title">Decode Ways</span>
+      <span class="medium">Medium</span>
+      <span class="topic">Dynamic Programming</span>
+      <span class="topic">Strings</span>
+    </div>
+    <p>A string of digits can be decoded (1→A, 2→B, ..., 26→Z). Count how many ways to decode it.</p>
+    <p><strong>Example:</strong> "226" → 3 (2-2-6 = BBF, 22-6 = VF, 2-26 = BZ)</p>
+    <input type="checkbox" class="spoiler-toggle" id="p4">
+    <label class="spoiler-label" for="p4">Show Solution</label>
+    <div class="spoiler-content">
+<pre><span class="kw">public int</span> <span class="mt">NumDecodings</span>(<span class="tp">string</span> s)
+{
+    <span class="tp">int</span> n = s.Length;
+    <span class="tp">int</span>[] dp = <span class="kw">new</span> <span class="tp">int</span>[n + <span class="nm">1</span>];
+    dp[<span class="nm">0</span>] = <span class="nm">1</span>;                                   <span class="cm">// Empty string = 1 way</span>
+    dp[<span class="nm">1</span>] = s[<span class="nm">0</span>] == <span class="st">'0'</span> ? <span class="nm">0</span> : <span class="nm">1</span>;                <span class="cm">// Leading zero = 0 ways</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">2</span>; i &lt;= n; i++)
+    {
+        <span class="tp">int</span> one = s[i-<span class="nm">1</span>] - <span class="st">'0'</span>;                  <span class="cm">// Single digit</span>
+        <span class="tp">int</span> two = (s[i-<span class="nm">2</span>] - <span class="st">'0'</span>) * <span class="nm">10</span> + one;   <span class="cm">// Two-digit number</span>
+        <span class="kw">if</span> (one &gt;= <span class="nm">1</span>)             dp[i] += dp[i - <span class="nm">1</span>]; <span class="cm">// Valid single</span>
+        <span class="kw">if</span> (two &gt;= <span class="nm">10</span> &amp;&amp; two &lt;= <span class="nm">26</span>) dp[i] += dp[i - <span class="nm">2</span>]; <span class="cm">// Valid double</span>
+    }
+    <span class="kw">return</span> dp[n];
+}
+<span class="cm">// Time: O(n), Space: O(n) → can reduce to O(1) with rolling variables</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#5</span>
+      <span class="problem-title">Partition Equal Subset Sum</span>
+      <span class="medium">Medium</span>
+      <span class="topic">DP / 0-1 Knapsack</span>
+    </div>
+    <p>Given an array, determine if it can be partitioned into two subsets with equal sum.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p5">
+    <label class="spoiler-label" for="p5">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Reduce to:</strong> Can we find a subset summing to total/2? 0/1 knapsack with boolean DP.</div>
+<pre><span class="kw">public bool</span> <span class="mt">CanPartition</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">int</span> sum = nums.<span class="mt">Sum</span>();
+    <span class="kw">if</span> (sum % <span class="nm">2</span> != <span class="nm">0</span>) <span class="kw">return false</span>;
+    <span class="tp">int</span> target = sum / <span class="nm">2</span>;
+
+    <span class="tp">bool</span>[] dp = <span class="kw">new</span> <span class="tp">bool</span>[target + <span class="nm">1</span>];
+    dp[<span class="nm">0</span>] = <span class="kw">true</span>;
+
+    <span class="kw">foreach</span> (<span class="tp">int</span> num <span class="kw">in</span> nums)
+        <span class="kw">for</span> (<span class="tp">int</span> j = target; j &gt;= num; j--) <span class="cm">// Reverse to avoid using num twice</span>
+            dp[j] |= dp[j - num];
+
+    <span class="kw">return</span> dp[target];
+}
+<span class="cm">// Time: O(n * sum), Space: O(sum)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#6</span>
+      <span class="problem-title">Rotting Oranges (Multi-Source BFS)</span>
+      <span class="medium">Medium</span>
+      <span class="topic">BFS</span>
+      <span class="topic">Graphs</span>
+    </div>
+    <p>Grid contains 0 (empty), 1 (fresh), 2 (rotten). Each minute, fresh oranges adjacent to rotten become rotten. Return minimum minutes to rot all oranges, or -1 if impossible.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p6">
+    <label class="spoiler-label" for="p6">Show Solution</label>
+    <div class="spoiler-content">
+<pre><span class="kw">public int</span> <span class="mt">OrangesRotting</span>(<span class="tp">int</span>[][] grid)
+{
+    <span class="tp">int</span> m = grid.Length, n = grid[<span class="nm">0</span>].Length;
+    <span class="tp">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="tp">int</span>, <span class="tp">int</span>)&gt;();
+    <span class="tp">int</span> fresh = <span class="nm">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> r = <span class="nm">0</span>; r &lt; m; r++)
+    <span class="kw">for</span> (<span class="tp">int</span> c = <span class="nm">0</span>; c &lt; n; c++)
+    {
+        <span class="kw">if</span> (grid[r][c] == <span class="nm">2</span>) q.<span class="mt">Enqueue</span>((r, c));
+        <span class="kw">if</span> (grid[r][c] == <span class="nm">1</span>) fresh++;
+    }
+    <span class="kw">if</span> (fresh == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+
+    <span class="tp">int</span>[] dr = {-<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>}, dc = {<span class="nm">0</span>, <span class="nm">0</span>, -<span class="nm">1</span>, <span class="nm">1</span>};
+    <span class="tp">int</span> minutes = <span class="nm">0</span>;
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="tp">int</span> sz = q.Count; minutes++;
+        <span class="kw">while</span> (sz-- &gt; <span class="nm">0</span>)
+        {
+            <span class="tp">var</span> (r, c) = q.<span class="mt">Dequeue</span>();
+            <span class="kw">for</span> (<span class="tp">int</span> d = <span class="nm">0</span>; d &lt; <span class="nm">4</span>; d++)
+            {
+                <span class="tp">int</span> nr = r + dr[d], nc = c + dc[d];
+                <span class="kw">if</span> (nr &gt;= <span class="nm">0</span> &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= <span class="nm">0</span> &amp;&amp; nc &lt; n &amp;&amp; grid[nr][nc] == <span class="nm">1</span>)
+                { grid[nr][nc] = <span class="nm">2</span>; fresh--; q.<span class="mt">Enqueue</span>((nr, nc)); }
+            }
+        }
+    }
+    <span class="kw">return</span> fresh == <span class="nm">0</span> ? minutes - <span class="nm">1</span> : -<span class="nm">1</span>;
+}
+<span class="cm">// Time: O(m*n), Space: O(m*n)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#7</span>
+      <span class="problem-title">Kth Largest Element in a Stream</span>
+      <span class="medium">Medium</span>
+      <span class="topic">Heap</span>
+    </div>
+    <p>Design a class that finds the kth largest element in a stream. add(val) adds a value and returns the kth largest.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p7">
+    <label class="spoiler-label" for="p7">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Min-heap of size k:</strong> The smallest element in the heap is the k-th largest overall. When heap exceeds size k, pop the minimum.</div>
+<pre><span class="kw">public class</span> <span class="tp">KthLargest</span>
+{
+    <span class="kw">private readonly int</span> _k;
+    <span class="kw">private readonly</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt; _minHeap = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="mt">KthLargest</span>(<span class="tp">int</span> k, <span class="tp">int</span>[] nums)
+    {
+        _k = k;
+        <span class="kw">foreach</span> (<span class="tp">int</span> n <span class="kw">in</span> nums) <span class="mt">Add</span>(n);
+    }
+
+    <span class="kw">public int</span> <span class="mt">Add</span>(<span class="tp">int</span> val)
+    {
+        _minHeap.<span class="mt">Enqueue</span>(val, val);
+        <span class="kw">while</span> (_minHeap.Count &gt; _k) _minHeap.<span class="mt">Dequeue</span>();
+        <span class="kw">return</span> _minHeap.<span class="mt">Peek</span>();
+    }
+}
+<span class="cm">// Add: O(log k), Space: O(k)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#8</span>
+      <span class="problem-title">Jump Game II (Minimum Jumps)</span>
+      <span class="medium">Medium</span>
+      <span class="topic">Greedy</span>
+      <span class="topic">Arrays</span>
+    </div>
+    <p>Given jump lengths at each position, find the minimum number of jumps to reach the last index.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p8">
+    <label class="spoiler-label" for="p8">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Greedy:</strong> At each step, track the farthest reachable position. When you reach the end of the current jump range, you must take another jump — greedily extend to the farthest seen.</div>
+<pre><span class="kw">public int</span> <span class="mt">Jump</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">int</span> jumps = <span class="nm">0</span>, currEnd = <span class="nm">0</span>, farthest = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length - <span class="nm">1</span>; i++)
+    {
+        farthest = <span class="tp">Math</span>.<span class="mt">Max</span>(farthest, i + nums[i]);
+        <span class="kw">if</span> (i == currEnd) <span class="cm">// Must jump — current range exhausted</span>
+        {
+            jumps++;
+            currEnd = farthest;
+        }
+    }
+    <span class="kw">return</span> jumps;
+}
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#9</span>
+      <span class="problem-title">Coin Change II (Number of Ways)</span>
+      <span class="medium">Medium</span>
+      <span class="topic">DP / Unbounded Knapsack</span>
+    </div>
+    <p>Given coins of different denominations and amount, return the number of combinations to make that amount.</p>
+    <p><strong>Example:</strong> amount=5, coins=[1,2,5] → <code>4</code> (5=5, 5=2+2+1, 5=2+1+1+1, 5=1+1+1+1+1)</p>
+    <input type="checkbox" class="spoiler-toggle" id="p9">
+    <label class="spoiler-label" for="p9">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Unbounded knapsack (combinations, order doesn't matter):</strong> Iterate coins in outer loop, amount in inner. This ensures each combination is counted once.</div>
+<pre><span class="kw">public int</span> <span class="mt">Change</span>(<span class="tp">int</span> amount, <span class="tp">int</span>[] coins)
+{
+    <span class="tp">int</span>[] dp = <span class="kw">new</span> <span class="tp">int</span>[amount + <span class="nm">1</span>];
+    dp[<span class="nm">0</span>] = <span class="nm">1</span>;
+    <span class="kw">foreach</span> (<span class="tp">int</span> coin <span class="kw">in</span> coins)        <span class="cm">// Outer = coins (prevents duplicate combinations)</span>
+        <span class="kw">for</span> (<span class="tp">int</span> a = coin; a &lt;= amount; a++) <span class="cm">// Inner = amount (forward = reuse coin)</span>
+            dp[a] += dp[a - coin];
+    <span class="kw">return</span> dp[amount];
+}
+<span class="cm">// Time: O(amount * coins), Space: O(amount)</span></pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ HARD ═══════════════════════════ -->
+  <h2>Hard Problems (6)</h2>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#10</span>
+      <span class="problem-title">Burst Balloons (Interval DP)</span>
+      <span class="hard">Hard</span>
+      <span class="topic">Interval DP</span>
+    </div>
+    <p>Given n balloons, each with a number. Bursting balloon i earns coins[i-1] * coins[i] * coins[i+1]. Burst all to maximize coins. Boundary balloons have value 1.</p>
+    <p><strong>Example:</strong> [3,1,5,8] → <code>167</code></p>
+    <input type="checkbox" class="spoiler-toggle" id="p10">
+    <label class="spoiler-label" for="p10">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Think backwards:</strong> Instead of "which to burst first", think "which balloon is burst LAST in interval (i,j)". The last balloon left earns coins[i] * coins[k] * coins[j] where i and j are the boundaries.</div>
+<pre><span class="kw">public int</span> <span class="mt">MaxCoins</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">int</span> n = nums.Length;
+    <span class="tp">int</span>[] arr = <span class="kw">new</span> <span class="tp">int</span>[n + <span class="nm">2</span>];
+    arr[<span class="nm">0</span>] = arr[n + <span class="nm">1</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++) arr[i + <span class="nm">1</span>] = nums[i];
+
+    <span class="tp">int</span> m = n + <span class="nm">2</span>;
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[m, m];
+
+    <span class="kw">for</span> (<span class="tp">int</span> len = <span class="nm">2</span>; len &lt; m; len++)
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; m - len; i++)
+    {
+        <span class="tp">int</span> j = i + len;
+        <span class="kw">for</span> (<span class="tp">int</span> k = i + <span class="nm">1</span>; k &lt; j; k++)
+            dp[i, j] = <span class="tp">Math</span>.<span class="mt">Max</span>(dp[i, j],
+                dp[i, k] + arr[i] * arr[k] * arr[j] + dp[k, j]);
+    }
+    <span class="kw">return</span> dp[<span class="nm">0</span>, m - <span class="nm">1</span>];
+}
+<span class="cm">// Time: O(n³), Space: O(n²)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#11</span>
+      <span class="problem-title">Count Vowel Strings in Range (Digit DP Style)</span>
+      <span class="hard">Hard</span>
+      <span class="topic">DP</span>
+      <span class="topic">Strings</span>
+    </div>
+    <p>Count strings of length n using only vowels (a,e,i,o,u) in lexicographically non-decreasing order. This generalizes to: count combinations with repetition.</p>
+    <p><strong>Example:</strong> n=1 → 5, n=2 → 15 (aa,ae,ai,ao,au,ee,ei,...)</p>
+    <input type="checkbox" class="spoiler-toggle" id="p11">
+    <label class="spoiler-label" for="p11">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>DP:</strong> dp[i][v] = count of non-decreasing strings of length i ending with vowel index v. Transition: dp[i][v] = sum of dp[i-1][0..v].</div>
+<pre><span class="kw">public int</span> <span class="mt">CountVowelStrings</span>(<span class="tp">int</span> n)
+{
+    <span class="tp">int</span>[] dp = {<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>}; <span class="cm">// 5 vowels, each 1 string of length 1</span>
+    <span class="kw">for</span> (<span class="tp">int</span> len = <span class="nm">2</span>; len &lt;= n; len++)
+        <span class="kw">for</span> (<span class="tp">int</span> v = <span class="nm">3</span>; v &gt;= <span class="nm">0</span>; v--) <span class="cm">// v=0→'a', accumulate from right</span>
+            dp[v] += dp[v + <span class="nm">1</span>];
+    <span class="kw">return</span> dp.<span class="mt">Sum</span>();
+}
+<span class="cm">// This is C(n+4, 4) = stars-and-bars. DP is O(5n), closed form O(1).</span>
+
+<span class="cm">// Closed form: (n+1)(n+2)(n+3)(n+4) / 24</span>
+<span class="kw">public int</span> <span class="mt">CountVowelStringsClosed</span>(<span class="tp">int</span> n)
+    =&gt; (<span class="tp">int</span>)((<span class="tp">long</span>)(n+<span class="nm">1</span>) * (n+<span class="nm">2</span>) * (n+<span class="nm">3</span>) * (n+<span class="nm">4</span>) / <span class="nm">24</span>);</pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#12</span>
+      <span class="problem-title">Maximum Profit with K Transactions</span>
+      <span class="hard">Hard</span>
+      <span class="topic">Stock DP</span>
+      <span class="topic">State Machine</span>
+    </div>
+    <p>You can complete at most k buy-sell transactions. Find the maximum profit.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p12">
+    <label class="spoiler-label" for="p12">Show Solution</label>
+    <div class="spoiler-content">
+<pre><span class="kw">public int</span> <span class="mt">MaxProfit</span>(<span class="tp">int</span> k, <span class="tp">int</span>[] prices)
+{
+    <span class="tp">int</span> n = prices.Length;
+    <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+
+    <span class="cm">// If k >= n/2, unlimited transactions (can do every profitable day)</span>
+    <span class="kw">if</span> (k &gt;= n / <span class="nm">2</span>)
+        <span class="kw">return</span> prices.<span class="mt">Zip</span>(prices.<span class="mt">Skip</span>(<span class="nm">1</span>), (a, b) =&gt; <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, b-a)).<span class="mt">Sum</span>();
+
+    <span class="cm">// buy[j]: max profit when we OWN stock with j completed transactions so far</span>
+    <span class="cm">// sell[j]: max profit when we DO NOT own stock with j completed transactions</span>
+    <span class="tp">int</span>[] buy  = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">int</span>.MinValue / <span class="nm">2</span>, k + <span class="nm">1</span>).<span class="mt">ToArray</span>();
+    <span class="tp">int</span>[] sell = <span class="kw">new</span> <span class="tp">int</span>[k + <span class="nm">1</span>];
+
+    <span class="kw">foreach</span> (<span class="tp">int</span> price <span class="kw">in</span> prices)
+    <span class="kw">for</span> (<span class="tp">int</span> j = k; j &gt;= <span class="nm">1</span>; j--)
+    {
+        sell[j] = <span class="tp">Math</span>.<span class="mt">Max</span>(sell[j], buy[j] + price);    <span class="cm">// Sell: complete tx j</span>
+        buy[j]  = <span class="tp">Math</span>.<span class="mt">Max</span>(buy[j], sell[j-<span class="nm">1</span>] - price);  <span class="cm">// Buy: start tx j</span>
+    }
+    <span class="kw">return</span> sell[k];
+}
+<span class="cm">// Time: O(n * k), Space: O(k)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#13</span>
+      <span class="problem-title">Minimum Cost to Hire K Workers (Bitmask / Heap)</span>
+      <span class="hard">Hard</span>
+      <span class="topic">Greedy</span>
+      <span class="topic">Heap</span>
+    </div>
+    <p>Hire exactly K workers. Pay a "wage group" where every worker is paid proportional to their quality relative to wage ratio. Minimize total cost.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p13">
+    <label class="spoiler-label" for="p13">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Key Insight:</strong> Sort by wage/quality ratio. For each worker as the "captain" (highest ratio), all K workers must be paid at captain's ratio. To minimize total: pick K workers with minimum quality sum from workers considered so far.</div>
+<pre><span class="kw">public double</span> <span class="mt">MincostToHireWorkers</span>(<span class="tp">int</span>[] quality, <span class="tp">int</span>[] wage, <span class="tp">int</span> k)
+{
+    <span class="tp">int</span> n = quality.Length;
+    <span class="cm">// Sort by wage/quality ratio ascending</span>
+    <span class="tp">var</span> workers = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n)
+        .<span class="mt">Select</span>(i =&gt; ((double)wage[i] / quality[i], quality[i]))
+        .<span class="mt">OrderBy</span>(w =&gt; w.Item1)
+        .<span class="mt">ToArray</span>();
+
+    <span class="cm">// Max-heap to track the k smallest quality values seen so far</span>
+    <span class="tp">var</span> maxHeap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt;(); <span class="cm">// (quality, -quality) for max</span>
+    <span class="tp">int</span> qualSum = <span class="nm">0</span>;
+    <span class="kw">double</span> ans = <span class="kw">double</span>.MaxValue;
+
+    <span class="kw">foreach</span> (<span class="tp">var</span> (ratio, q) <span class="kw">in</span> workers)
+    {
+        maxHeap.<span class="mt">Enqueue</span>(q, -q); <span class="cm">// Negative priority → max heap behavior</span>
+        qualSum += q;
+        <span class="kw">if</span> (maxHeap.Count &gt; k) <span class="cm">// Remove the largest quality to keep minimum k</span>
+        {
+            maxHeap.<span class="mt">TryDequeue</span>(<span class="kw">out int</span> maxQ, <span class="kw">out</span> _);
+            qualSum -= maxQ;
+        }
+        <span class="kw">if</span> (maxHeap.Count == k)
+            ans = <span class="tp">Math</span>.<span class="mt">Min</span>(ans, ratio * qualSum);
+    }
+    <span class="kw">return</span> ans;
+}
+<span class="cm">// Time: O(n log n + n log k), Space: O(k)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#14</span>
+      <span class="problem-title">Serialize and Deserialize Binary Tree</span>
+      <span class="hard">Hard</span>
+      <span class="topic">Trees</span>
+      <span class="topic">BFS</span>
+    </div>
+    <p>Design an algorithm to serialize a binary tree to a string and deserialize it back. No constraints on format.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p14">
+    <label class="spoiler-label" for="p14">Show Solution</label>
+    <div class="spoiler-content">
+<pre><span class="kw">public class</span> <span class="tp">Codec</span>
+{
+    <span class="cm">// BFS level-order serialization (like LeetCode's own format)</span>
+    <span class="kw">public string</span> <span class="mt">Serialize</span>(<span class="tp">TreeNode</span> root)
+    {
+        <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> <span class="st">"#"</span>;
+        <span class="tp">var</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>();
+        <span class="tp">var</span> q  = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+        q.<span class="mt">Enqueue</span>(root);
+        <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="tp">var</span> node = q.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (node == <span class="kw">null</span>) { sb.<span class="mt">Append</span>(<span class="st">"#,"</span>); <span class="kw">continue</span>; }
+            sb.<span class="mt">Append</span>(node.val).<span class="mt">Append</span>(<span class="st">','</span>);
+            q.<span class="mt">Enqueue</span>(node.left);
+            q.<span class="mt">Enqueue</span>(node.right);
+        }
+        <span class="kw">return</span> sb.<span class="mt">ToString</span>().<span class="mt">TrimEnd</span>(<span class="st">','</span>);
+    }
+
+    <span class="kw">public</span> <span class="tp">TreeNode</span> <span class="mt">Deserialize</span>(<span class="tp">string</span> data)
+    {
+        <span class="kw">if</span> (data == <span class="st">"#"</span>) <span class="kw">return null</span>;
+        <span class="tp">var</span> parts = data.<span class="mt">Split</span>(<span class="st">','</span>);
+        <span class="tp">var</span> root  = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="tp">int</span>.<span class="mt">Parse</span>(parts[<span class="nm">0</span>]));
+        <span class="tp">var</span> q     = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+        q.<span class="mt">Enqueue</span>(root);
+        <span class="tp">int</span> i = <span class="nm">1</span>;
+        <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span> &amp;&amp; i &lt; parts.Length)
+        {
+            <span class="tp">var</span> node = q.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (i &lt; parts.Length &amp;&amp; parts[i] != <span class="st">"#"</span>)
+                { node.left = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="tp">int</span>.<span class="mt">Parse</span>(parts[i])); q.<span class="mt">Enqueue</span>(node.left); }
+            i++;
+            <span class="kw">if</span> (i &lt; parts.Length &amp;&amp; parts[i] != <span class="st">"#"</span>)
+                { node.right = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="tp">int</span>.<span class="mt">Parse</span>(parts[i])); q.<span class="mt">Enqueue</span>(node.right); }
+            i++;
+        }
+        <span class="kw">return</span> root;
+    }
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+    </div>
+  </div>
+
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#15</span>
+      <span class="problem-title">Median of Two Sorted Arrays</span>
+      <span class="hard">Hard</span>
+      <span class="topic">Binary Search</span>
+      <span class="topic">Arrays</span>
+    </div>
+    <p>Given two sorted arrays nums1 and nums2, find the median of both combined in O(log(m+n)) time.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p15">
+    <label class="spoiler-label" for="p15">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Binary Search on Partition:</strong> Find a partition of both arrays such that left half and right half contain equal elements and max(left) ≤ min(right). Binary search on the partition index of the smaller array.</div>
+<pre><span class="kw">public double</span> <span class="mt">FindMedianSortedArrays</span>(<span class="tp">int</span>[] A, <span class="tp">int</span>[] B)
+{
+    <span class="kw">if</span> (A.Length &gt; B.Length) (A, B) = (B, A); <span class="cm">// Always binary search on smaller</span>
+    <span class="tp">int</span> m = A.Length, n = B.Length;
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = m;
+
+    <span class="kw">while</span> (lo &lt;= hi)
+    {
+        <span class="tp">int</span> pA = (lo + hi) / <span class="nm">2</span>;   <span class="cm">// Partition A: pA elements on left</span>
+        <span class="tp">int</span> pB = (m + n + <span class="nm">1</span>) / <span class="nm">2</span> - pA; <span class="cm">// Partition B: pB elements on left</span>
+
+        <span class="tp">int</span> maxLeftA  = pA == <span class="nm">0</span> ? <span class="tp">int</span>.MinValue : A[pA - <span class="nm">1</span>];
+        <span class="tp">int</span> minRightA = pA == m ? <span class="tp">int</span>.MaxValue : A[pA];
+        <span class="tp">int</span> maxLeftB  = pB == <span class="nm">0</span> ? <span class="tp">int</span>.MinValue : B[pB - <span class="nm">1</span>];
+        <span class="tp">int</span> minRightB = pB == n ? <span class="tp">int</span>.MaxValue : B[pB];
+
+        <span class="kw">if</span> (maxLeftA &lt;= minRightB &amp;&amp; maxLeftB &lt;= minRightA)
+        {
+            <span class="cm">// Perfect partition found</span>
+            <span class="kw">if</span> ((m + n) % <span class="nm">2</span> == <span class="nm">1</span>)
+                <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Max</span>(maxLeftA, maxLeftB);
+            <span class="kw">return</span> (<span class="tp">Math</span>.<span class="mt">Max</span>(maxLeftA, maxLeftB) + <span class="tp">Math</span>.<span class="mt">Min</span>(minRightA, minRightB)) / <span class="nm">2.0</span>;
+        }
+        <span class="kw">else if</span> (maxLeftA &gt; minRightB) hi = pA - <span class="nm">1</span>; <span class="cm">// Move partition left in A</span>
+        <span class="kw">else</span>                           lo = pA + <span class="nm">1</span>; <span class="cm">// Move partition right in A</span>
+    }
+    <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(); <span class="cm">// Should never reach here</span>
+}
+<span class="cm">// Time: O(log(min(m,n))), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- Course Complete Banner -->
+  <div class="complete-banner">
+    <h2>Course Complete — Zero to Hero!</h2>
+    <p>You have completed all 10 phases and 30+ modules of the C# Data Structures &amp; Algorithms course.<br>
+    From Big-O notation to TSP bitmask DP — you've covered it all.</p>
+  </div>
+
+  <h2>Final Problem Summary</h2>
+  <table>
+    <tr><th>#</th><th>Problem</th><th>Difficulty</th><th>Pattern</th></tr>
+    <tr><td>1</td><td>Trapping Rain Water</td><td>Medium</td><td>Two Pointers</td></tr>
+    <tr><td>2</td><td>LRU Cache</td><td>Medium</td><td>LinkedList + HashMap</td></tr>
+    <tr><td>3</td><td>Combination Sum IV</td><td>Medium</td><td>DP (order-sensitive)</td></tr>
+    <tr><td>4</td><td>Decode Ways</td><td>Medium</td><td>1D DP</td></tr>
+    <tr><td>5</td><td>Partition Equal Subset Sum</td><td>Medium</td><td>0/1 Knapsack DP</td></tr>
+    <tr><td>6</td><td>Rotting Oranges</td><td>Medium</td><td>Multi-source BFS</td></tr>
+    <tr><td>7</td><td>Kth Largest in Stream</td><td>Medium</td><td>Min-Heap of size k</td></tr>
+    <tr><td>8</td><td>Jump Game II</td><td>Medium</td><td>Greedy</td></tr>
+    <tr><td>9</td><td>Coin Change II</td><td>Medium</td><td>Unbounded Knapsack</td></tr>
+    <tr><td>10</td><td>Burst Balloons</td><td>Hard</td><td>Interval DP</td></tr>
+    <tr><td>11</td><td>Count Vowel Strings</td><td>Hard</td><td>Combinatorics DP</td></tr>
+    <tr><td>12</td><td>Max Profit K Transactions</td><td>Hard</td><td>Stock State Machine DP</td></tr>
+    <tr><td>13</td><td>Min Cost to Hire K Workers</td><td>Hard</td><td>Greedy + Max-Heap</td></tr>
+    <tr><td>14</td><td>Serialize/Deserialize Tree</td><td>Hard</td><td>BFS + Design</td></tr>
+    <tr><td>15</td><td>Median of Two Sorted Arrays</td><td>Hard</td><td>Binary Search on Partition</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>What's next?</strong> Practice on LeetCode, focusing on the patterns you found hardest. For interviews, target 2–3 problems per day, time yourself to 30 minutes per problem, and always explain your thought process aloud. Good luck!
+  </div>
+
+  <div class="nav-bar">
+    <a href="m12b_final_review.html">&#8592; Module 12B: Final Review</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <span style="color:#a6e3a1; font-size:0.9em;">&#127941; You've completed the course!</span>
+  </div>
+
+</div>
+</body>
+</html>

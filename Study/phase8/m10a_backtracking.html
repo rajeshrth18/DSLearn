@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 10A: Backtracking</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.2em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  h4 { font-size: 1em; color: #89dceb; margin: 16px 0 8px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+
+  .diagram { background: #0d1117; border: 1px solid #30363d; border-left: 4px solid #e74c3c; border-radius: 8px; padding: 20px; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85em; color: #58a6ff; overflow-x: auto; white-space: pre; line-height: 1.5; }
+
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .warning { background: #2d1e1e; border-left: 4px solid #f38ba8; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .warning strong { color: #f38ba8; }
+  .realworld { background: #1e2235; border-left: 4px solid #89b4fa; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .realworld strong { color: #89b4fa; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+  th { background: #313244; color: #cba6f7; padding: 10px 14px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 9px 14px; border: 1px solid #313244; color: #cdd6f4; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .box { background: #181825; border: 1px solid #313244; border-radius: 8px; padding: 16px; }
+  .box h4 { color: #89dceb; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 8</span> <span class="badge">Module 10A</span></div>
+    <h1>Backtracking</h1>
+    <div class="subtitle">Systematic search through all possibilities with intelligent pruning</div>
+    <div class="tagline">Permutations · Combinations · Subsets · N-Queens · Sudoku · Word Search</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../phase7/m09c_practice.html">&#8592; Module 9C: Searching Practice</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m10b_bit_math.html">Module 10B: Bit Manipulation &#8594;</a>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>1. What Is Backtracking?</h2>
+  <p>Backtracking is a <strong>systematic way to search through all possible solutions</strong> to a problem. It builds solutions incrementally, and when a partial solution can never lead to a complete valid solution, it <em>backtracks</em> — undoes the last choice and tries the next option.</p>
+
+  <p>Think of it as exploring a decision tree: at each node you make a choice, recurse deeper, and when you hit a dead end (or find a solution), you undo that choice and try another branch.</p>
+
+  <div class="diagram">
+  Backtracking decision tree for permutations of [1,2,3]:
+
+  Start: []
+  ├── Choose 1: [1]
+  │   ├── Choose 2: [1,2]
+  │   │   └── Choose 3: [1,2,3] ✓ (add to results)
+  │   └── Choose 3: [1,3]
+  │       └── Choose 2: [1,3,2] ✓
+  ├── Choose 2: [2]
+  │   ├── Choose 1: [2,1]
+  │   │   └── Choose 3: [2,1,3] ✓
+  │   └── Choose 3: [2,3]
+  │       └── Choose 1: [2,3,1] ✓
+  └── Choose 3: [3]
+      ├── Choose 1: [3,1]
+      │   └── Choose 2: [3,1,2] ✓
+      └── Choose 2: [3,2]
+          └── Choose 1: [3,2,1] ✓
+
+  Each leaf is a solution. Backtrack = go back up after each leaf.</div>
+
+  <div class="two-col">
+    <div class="box">
+      <h4>Universal Backtracking Template</h4>
+      <ol>
+        <li><strong>Base case:</strong> solution is complete → add to results</li>
+        <li><strong>For each choice:</strong> try it (modify state)</li>
+        <li><strong>Recurse</strong> deeper</li>
+        <li><strong>Undo</strong> the choice (restore state)</li>
+        <li><strong>Prune:</strong> skip invalid choices early</li>
+      </ol>
+    </div>
+    <div class="box">
+      <h4>When to Use Backtracking</h4>
+      <ul>
+        <li>Find ALL solutions (not just one)</li>
+        <li>Combinatorial problems (permutations, subsets)</li>
+        <li>Constraint satisfaction (N-Queens, Sudoku)</li>
+        <li>Path-finding in grids (Word Search)</li>
+        <li>Partitioning problems</li>
+      </ul>
+    </div>
+  </div>
+
+  <pre><span class="cm">// Universal backtracking skeleton</span>
+<span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="tp">State</span> current, <span class="tp">List</span>&lt;<span class="tp">Solution</span>&gt; results)
+{
+    <span class="kw">if</span> (<span class="mt">IsComplete</span>(current))
+    {
+        results.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">Solution</span>(current)); <span class="cm">// Deep copy if needed!</span>
+        <span class="kw">return</span>;
+    }
+
+    <span class="kw">foreach</span> (<span class="tp">var</span> choice <span class="kw">in</span> <span class="mt">GetChoices</span>(current))
+    {
+        <span class="kw">if</span> (!<span class="mt">IsValid</span>(current, choice)) <span class="kw">continue</span>; <span class="cm">// Prune!</span>
+
+        <span class="mt">ApplyChoice</span>(current, choice);          <span class="cm">// Make move</span>
+        <span class="mt">Backtrack</span>(current, results);           <span class="cm">// Recurse</span>
+        <span class="mt">UndoChoice</span>(current, choice);           <span class="cm">// Undo move (backtrack)</span>
+    }
+}</pre>
+
+  <!-- SECTION 2 -->
+  <h2>2. Subsets (Power Set)</h2>
+  <p>Generate all 2ⁿ subsets of a given set. Each element is either <em>included</em> or <em>excluded</em>.</p>
+
+  <div class="diagram">
+  nums = [1, 2, 3]   → 2³ = 8 subsets
+
+  At each step: include current element OR skip it
+
+  []                        ← start
+  ├── include 1: [1]
+  │   ├── include 2: [1,2]
+  │   │   ├── include 3: [1,2,3] ✓
+  │   │   └── skip   3: [1,2]   ✓
+  │   └── skip   2: [1]
+  │       ├── include 3: [1,3]   ✓
+  │       └── skip   3: [1]     ✓
+  └── skip   1: []
+      ├── include 2: [2]
+      │   ├── include 3: [2,3]   ✓
+      │   └── skip   3: [2]     ✓
+      └── skip   2: []
+          ├── include 3: [3]     ✓
+          └── skip   3: []       ✓</div>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">Subsets</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(nums, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> start, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current, <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current)); <span class="cm">// Add snapshot (every node is a valid subset)</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; nums.Length; i++)
+    {
+        current.<span class="mt">Add</span>(nums[i]);              <span class="cm">// Choose: include nums[i]</span>
+        <span class="mt">Backtrack</span>(nums, i + <span class="nm">1</span>, current, result); <span class="cm">// Recurse: only go forward</span>
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>); <span class="cm">// Undo choice</span>
+    }
+}
+<span class="cm">// Time: O(n * 2ⁿ) — 2ⁿ subsets, each takes O(n) to copy</span>
+<span class="cm">// Space: O(n) recursion depth</span>
+<span class="cm">// Key: start index prevents duplicates (only look at elements after current)</span></pre>
+
+  <h3>Subsets II — With Duplicates</h3>
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">SubsetsWithDup</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(nums); <span class="cm">// Sort to group duplicates together</span>
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(nums, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> start, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current, <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current));
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; nums.Length; i++)
+    {
+        <span class="cm">// Skip duplicates at the same recursion level</span>
+        <span class="kw">if</span> (i &gt; start &amp;&amp; nums[i] == nums[i - <span class="nm">1</span>]) <span class="kw">continue</span>;
+
+        current.<span class="mt">Add</span>(nums[i]);
+        <span class="mt">Backtrack</span>(nums, i + <span class="nm">1</span>, current, result);
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+    }
+}</pre>
+
+  <!-- SECTION 3 -->
+  <h2>3. Combinations</h2>
+  <p>Choose exactly <strong>k</strong> elements from <strong>n</strong> numbers (1 to n), in any order. Unlike subsets, all results have the same size k.</p>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">Combine</span>(<span class="tp">int</span> n, <span class="tp">int</span> k)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(<span class="nm">1</span>, n, k, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span> start, <span class="tp">int</span> n, <span class="tp">int</span> k, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current, <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (current.Count == k)
+    {
+        result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current));
+        <span class="kw">return</span>;
+    }
+
+    <span class="cm">// Pruning: remaining slots needed = k - current.Count</span>
+    <span class="cm">// Last valid start = n - (k - current.Count) + 1</span>
+    <span class="tp">int</span> remaining = k - current.Count;
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt;= n - remaining + <span class="nm">1</span>; i++) <span class="cm">// Pruning!</span>
+    {
+        current.<span class="mt">Add</span>(i);
+        <span class="mt">Backtrack</span>(i + <span class="nm">1</span>, n, k, current, result);
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+    }
+}
+<span class="cm">// Time: O(C(n,k) * k), Space: O(k)</span>
+<span class="cm">// Pruning: if start > n - remaining + 1, can't fill k elements anymore</span></pre>
+
+  <h3>Combination Sum — Unlimited Reuse (LeetCode 39)</h3>
+  <p>Find all combinations from <code>candidates</code> that sum to <code>target</code>. Each number can be used unlimited times.</p>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">CombinationSum</span>(<span class="tp">int</span>[] candidates, <span class="tp">int</span> target)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(candidates); <span class="cm">// Sort for pruning</span>
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(candidates, <span class="nm">0</span>, target, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] cands, <span class="tp">int</span> start, <span class="tp">int</span> remaining,
+                         <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current, <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (remaining == <span class="nm">0</span>) { result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current)); <span class="kw">return</span>; }
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; cands.Length; i++)
+    {
+        <span class="kw">if</span> (cands[i] &gt; remaining) <span class="kw">break</span>; <span class="cm">// Sorted → all further elements too big</span>
+
+        current.<span class="mt">Add</span>(cands[i]);
+        <span class="mt">Backtrack</span>(cands, i, remaining - cands[i], current, result); <span class="cm">// i (not i+1): reuse allowed</span>
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+    }
+}</pre>
+
+  <!-- SECTION 4 -->
+  <h2>4. Permutations</h2>
+  <p>Generate all n! orderings of a given array. Every element appears in every position exactly once across all permutations.</p>
+
+  <div class="diagram">
+  [1,2,3] → 3! = 6 permutations
+
+  Strategy: at each step, pick any UNUSED element
+  Track which elements are used with a boolean array
+
+  Recursion depth = n, branching factor shrinks each level:
+  Level 0: 3 choices (1, 2, or 3)
+  Level 1: 2 choices (any unused)
+  Level 2: 1 choice  (last unused)
+  Level 3: base case → add permutation
+
+  Total leaves = 3 * 2 * 1 = 6 ✓</div>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">Permute</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(nums, <span class="kw">new</span> <span class="tp">bool</span>[nums.Length], <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] nums, <span class="tp">bool</span>[] used, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current,
+                         <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (current.Count == nums.Length)
+    {
+        result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current));
+        <span class="kw">return</span>;
+    }
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+    {
+        <span class="kw">if</span> (used[i]) <span class="kw">continue</span>;      <span class="cm">// Already in current path</span>
+
+        used[i] = <span class="kw">true</span>;
+        current.<span class="mt">Add</span>(nums[i]);
+        <span class="mt">Backtrack</span>(nums, used, current, result);
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+        used[i] = <span class="kw">false</span>;
+    }
+}
+<span class="cm">// Time: O(n * n!), Space: O(n)</span></pre>
+
+  <h3>Permutations II — With Duplicates</h3>
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">PermuteUnique</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(nums);
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(nums, <span class="kw">new</span> <span class="tp">bool</span>[nums.Length], <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] nums, <span class="tp">bool</span>[] used, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current,
+                         <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (current.Count == nums.Length) { result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current)); <span class="kw">return</span>; }
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+    {
+        <span class="kw">if</span> (used[i]) <span class="kw">continue</span>;
+        <span class="cm">// Skip: same value as previous, and previous was NOT used in this path</span>
+        <span class="cm">// (if previous WAS used, this is a different branch — allow it)</span>
+        <span class="kw">if</span> (i &gt; <span class="nm">0</span> &amp;&amp; nums[i] == nums[i - <span class="nm">1</span>] &amp;&amp; !used[i - <span class="nm">1</span>]) <span class="kw">continue</span>;
+
+        used[i] = <span class="kw">true</span>;
+        current.<span class="mt">Add</span>(nums[i]);
+        <span class="mt">Backtrack</span>(nums, used, current, result);
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+        used[i] = <span class="kw">false</span>;
+    }
+}</pre>
+
+  <!-- SECTION 5 -->
+  <h2>5. N-Queens — Classic Constraint Satisfaction</h2>
+  <p>Place N queens on an N×N chessboard so no two queens attack each other (no two in same row, column, or diagonal).</p>
+
+  <div class="diagram">
+  N=4 solution (one of 2 solutions):
+
+  . Q . .        Row 0: queen at col 1
+  . . . Q        Row 1: queen at col 3
+  Q . . .        Row 2: queen at col 0
+  . . Q .        Row 3: queen at col 2
+
+  Constraint check for row r, col c:
+  - No queen in same column:     colUsed[c] == false
+  - No queen on same diagonal:   (r-c) not in diag1Set  ← top-left to bottom-right
+  - No queen on same anti-diag:  (r+c) not in diag2Set  ← top-right to bottom-left</div>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt; <span class="mt">SolveNQueens</span>(<span class="tp">int</span> n)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt;();
+    <span class="tp">int</span>[] queens = <span class="kw">new</span> <span class="tp">int</span>[n]; <span class="cm">// queens[row] = column of queen in that row</span>
+    <span class="tp">var</span> cols   = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;();
+    <span class="tp">var</span> diag1  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;(); <span class="cm">// row - col (same for top-left diagonal)</span>
+    <span class="tp">var</span> diag2  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;(); <span class="cm">// row + col (same for anti-diagonal)</span>
+
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>, n, queens, cols, diag1, diag2, result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span> row, <span class="tp">int</span> n, <span class="tp">int</span>[] queens,
+    <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt; cols, <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt; diag1, <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt; diag2,
+    <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (row == n)
+    {
+        result.<span class="mt">Add</span>(<span class="mt">BuildBoard</span>(queens, n));
+        <span class="kw">return</span>;
+    }
+
+    <span class="kw">for</span> (<span class="tp">int</span> col = <span class="nm">0</span>; col &lt; n; col++)
+    {
+        <span class="kw">if</span> (cols.<span class="mt">Contains</span>(col))        <span class="kw">continue</span>; <span class="cm">// Column taken</span>
+        <span class="kw">if</span> (diag1.<span class="mt">Contains</span>(row - col)) <span class="kw">continue</span>; <span class="cm">// Diagonal taken</span>
+        <span class="kw">if</span> (diag2.<span class="mt">Contains</span>(row + col)) <span class="kw">continue</span>; <span class="cm">// Anti-diagonal taken</span>
+
+        queens[row] = col;
+        cols.<span class="mt">Add</span>(col); diag1.<span class="mt">Add</span>(row - col); diag2.<span class="mt">Add</span>(row + col);
+
+        <span class="mt">Backtrack</span>(row + <span class="nm">1</span>, n, queens, cols, diag1, diag2, result);
+
+        cols.<span class="mt">Remove</span>(col); diag1.<span class="mt">Remove</span>(row - col); diag2.<span class="mt">Remove</span>(row + col);
+    }
+}
+
+<span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; <span class="mt">BuildBoard</span>(<span class="tp">int</span>[] queens, <span class="tp">int</span> n)
+{
+    <span class="tp">var</span> board = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+    <span class="kw">for</span> (<span class="tp">int</span> r = <span class="nm">0</span>; r &lt; n; r++)
+    {
+        <span class="tp">char</span>[] row = <span class="kw">new</span> <span class="tp">char</span>[n];
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(row, <span class="st">'.'</span>);
+        row[queens[r]] = <span class="st">'Q'</span>;
+        board.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">string</span>(row));
+    }
+    <span class="kw">return</span> board;
+}
+<span class="cm">// Time: O(n!), Space: O(n)</span></pre>
+
+  <!-- SECTION 6 -->
+  <h2>6. Sudoku Solver</h2>
+  <p>Fill a 9×9 board with digits 1-9 such that each row, column, and 3×3 box contains each digit exactly once.</p>
+
+  <pre><span class="kw">public void</span> <span class="mt">SolveSudoku</span>(<span class="tp">char</span>[][] board)
+{
+    <span class="mt">Solve</span>(board);
+}
+
+<span class="kw">private bool</span> <span class="mt">Solve</span>(<span class="tp">char</span>[][] board)
+{
+    <span class="kw">for</span> (<span class="tp">int</span> r = <span class="nm">0</span>; r &lt; <span class="nm">9</span>; r++)
+    {
+        <span class="kw">for</span> (<span class="tp">int</span> c = <span class="nm">0</span>; c &lt; <span class="nm">9</span>; c++)
+        {
+            <span class="kw">if</span> (board[r][c] != <span class="st">'.'</span>) <span class="kw">continue</span>; <span class="cm">// Already filled</span>
+
+            <span class="kw">for</span> (<span class="tp">char</span> digit = <span class="st">'1'</span>; digit &lt;= <span class="st">'9'</span>; digit++)
+            {
+                <span class="kw">if</span> (!<span class="mt">IsValid</span>(board, r, c, digit)) <span class="kw">continue</span>;
+
+                board[r][c] = digit;                 <span class="cm">// Place digit</span>
+                <span class="kw">if</span> (<span class="mt">Solve</span>(board)) <span class="kw">return true</span>;    <span class="cm">// Solution found</span>
+                board[r][c] = <span class="st">'.'</span>;                 <span class="cm">// Backtrack</span>
+            }
+            <span class="kw">return false</span>; <span class="cm">// No valid digit → backtrack further</span>
+        }
+    }
+    <span class="kw">return true</span>; <span class="cm">// All cells filled!</span>
+}
+
+<span class="kw">private bool</span> <span class="mt">IsValid</span>(<span class="tp">char</span>[][] board, <span class="tp">int</span> row, <span class="tp">int</span> col, <span class="tp">char</span> digit)
+{
+    <span class="tp">int</span> boxRow = (row / <span class="nm">3</span>) * <span class="nm">3</span>, boxCol = (col / <span class="nm">3</span>) * <span class="nm">3</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">9</span>; i++)
+    {
+        <span class="kw">if</span> (board[row][i] == digit) <span class="kw">return false</span>;        <span class="cm">// Same row</span>
+        <span class="kw">if</span> (board[i][col] == digit) <span class="kw">return false</span>;        <span class="cm">// Same column</span>
+        <span class="kw">if</span> (board[boxRow + i / <span class="nm">3</span>][boxCol + i % <span class="nm">3</span>] == digit) <span class="kw">return false</span>; <span class="cm">// Same box</span>
+    }
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Time: O(9^(empty cells)), Space: O(81) = O(1)</span></pre>
+
+  <!-- SECTION 7 -->
+  <h2>7. Word Search in a Grid</h2>
+  <p>Given a 2D grid of characters and a word, return true if the word exists as a path of adjacent cells (horizontally or vertically). Each cell can only be used once per path.</p>
+
+  <div class="diagram">
+  Grid:              Word: "ABCCED"
+  A B C E
+  S F C S
+  A D E E
+
+  Path: A(0,0)→B(0,1)→C(0,2)→C(1,2)→E(2,2)→D(2,1) ✓
+
+  Strategy: DFS from every cell that matches first letter.
+  Mark cell as visited during DFS, unmark when backtracking.</div>
+
+  <pre><span class="kw">public bool</span> <span class="mt">Exist</span>(<span class="tp">char</span>[][] board, <span class="tp">string</span> word)
+{
+    <span class="tp">int</span> m = board.Length, n = board[<span class="nm">0</span>].Length;
+
+    <span class="kw">for</span> (<span class="tp">int</span> r = <span class="nm">0</span>; r &lt; m; r++)
+        <span class="kw">for</span> (<span class="tp">int</span> c = <span class="nm">0</span>; c &lt; n; c++)
+            <span class="kw">if</span> (<span class="mt">DFS</span>(board, word, r, c, <span class="nm">0</span>)) <span class="kw">return true</span>;
+
+    <span class="kw">return false</span>;
+}
+
+<span class="kw">private bool</span> <span class="mt">DFS</span>(<span class="tp">char</span>[][] board, <span class="tp">string</span> word, <span class="tp">int</span> r, <span class="tp">int</span> c, <span class="tp">int</span> idx)
+{
+    <span class="kw">if</span> (idx == word.Length) <span class="kw">return true</span>;  <span class="cm">// All chars matched!</span>
+    <span class="kw">if</span> (r &lt; <span class="nm">0</span> || r &gt;= board.Length || c &lt; <span class="nm">0</span> || c &gt;= board[<span class="nm">0</span>].Length) <span class="kw">return false</span>;
+    <span class="kw">if</span> (board[r][c] != word[idx]) <span class="kw">return false</span>;
+
+    <span class="tp">char</span> temp = board[r][c];
+    board[r][c] = <span class="st">'#'</span>; <span class="cm">// Mark visited (in-place, no extra visited array)</span>
+
+    <span class="tp">bool</span> found = <span class="mt">DFS</span>(board, word, r + <span class="nm">1</span>, c, idx + <span class="nm">1</span>)
+              || <span class="mt">DFS</span>(board, word, r - <span class="nm">1</span>, c, idx + <span class="nm">1</span>)
+              || <span class="mt">DFS</span>(board, word, r, c + <span class="nm">1</span>, idx + <span class="nm">1</span>)
+              || <span class="mt">DFS</span>(board, word, r, c - <span class="nm">1</span>, idx + <span class="nm">1</span>);
+
+    board[r][c] = temp; <span class="cm">// Restore (backtrack)</span>
+    <span class="kw">return</span> found;
+}
+<span class="cm">// Time: O(m*n * 4^L) where L = word length. Space: O(L) recursion depth</span></pre>
+
+  <!-- SECTION 8 -->
+  <h2>8. Letter Combinations of a Phone Number</h2>
+  <p>Map digits to letters (like phone keypad). Return all possible letter combinations a string of digits could represent.</p>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">string</span>&gt; <span class="mt">LetterCombinations</span>(<span class="tp">string</span> digits)
+{
+    <span class="kw">if</span> (digits.Length == <span class="nm">0</span>) <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+
+    <span class="tp">string</span>[] map = { <span class="st">""</span>, <span class="st">""</span>, <span class="st">"abc"</span>, <span class="st">"def"</span>, <span class="st">"ghi"</span>, <span class="st">"jkl"</span>, <span class="st">"mno"</span>, <span class="st">"pqrs"</span>, <span class="st">"tuv"</span>, <span class="st">"wxyz"</span> };
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+    <span class="mt">Backtrack</span>(digits, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">StringBuilder</span>(), map, result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">string</span> digits, <span class="tp">int</span> idx, <span class="tp">StringBuilder</span> current,
+                         <span class="tp">string</span>[] map, <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; result)
+{
+    <span class="kw">if</span> (idx == digits.Length) { result.<span class="mt">Add</span>(current.<span class="mt">ToString</span>()); <span class="kw">return</span>; }
+
+    <span class="kw">foreach</span> (<span class="tp">char</span> c <span class="kw">in</span> map[digits[idx] - <span class="st">'0'</span>])
+    {
+        current.<span class="mt">Append</span>(c);
+        <span class="mt">Backtrack</span>(digits, idx + <span class="nm">1</span>, current, map, result);
+        current.<span class="mt">Remove</span>(current.Length - <span class="nm">1</span>, <span class="nm">1</span>); <span class="cm">// Backtrack</span>
+    }
+}
+<span class="cm">// Time: O(4^n * n), Space: O(n)</span>
+<span class="cm">// StringBuilder is faster than string concatenation for backtracking</span></pre>
+
+  <!-- SECTION 9 -->
+  <h2>9. Palindrome Partitioning</h2>
+  <p>Partition a string so that every substring is a palindrome. Return all possible ways.</p>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt; <span class="mt">Partition</span>(<span class="tp">string</span> s)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(s, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">string</span> s, <span class="tp">int</span> start, <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; current,
+                         <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (start == s.Length) { result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;(current)); <span class="kw">return</span>; }
+
+    <span class="kw">for</span> (<span class="tp">int</span> end = start; end &lt; s.Length; end++)
+    {
+        <span class="kw">if</span> (!<span class="mt">IsPalindrome</span>(s, start, end)) <span class="kw">continue</span>; <span class="cm">// Prune non-palindromes</span>
+
+        current.<span class="mt">Add</span>(s.<span class="mt">Substring</span>(start, end - start + <span class="nm">1</span>));
+        <span class="mt">Backtrack</span>(s, end + <span class="nm">1</span>, current, result);
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+    }
+}
+
+<span class="kw">private bool</span> <span class="mt">IsPalindrome</span>(<span class="tp">string</span> s, <span class="tp">int</span> lo, <span class="tp">int</span> hi)
+{
+    <span class="kw">while</span> (lo &lt; hi) { <span class="kw">if</span> (s[lo++] != s[hi--]) <span class="kw">return false</span>; }
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Optimization: precompute palindrome DP table to check isPalindrome in O(1)</span></pre>
+
+  <!-- SECTION 10 -->
+  <h2>10. Pruning Strategies &amp; Complexity</h2>
+  <p>Backtracking without pruning explores the full search tree. Good pruning can reduce time dramatically — sometimes from O(n!) to feasible.</p>
+
+  <div class="two-col">
+    <div class="box">
+      <h4>Common Pruning Techniques</h4>
+      <ul>
+        <li><strong>Constraint propagation:</strong> Check constraints before going deeper (N-Queens, Sudoku)</li>
+        <li><strong>Sorted input + break:</strong> If candidates are sorted and current is too large, break early (Combination Sum)</li>
+        <li><strong>Bounds check:</strong> If remaining slots &lt; elements needed, stop (Combinations)</li>
+        <li><strong>Duplicate skipping:</strong> Skip elements equal to previous at same level</li>
+        <li><strong>DP memoization:</strong> Cache sub-problem results if structure allows</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>Complexity Reference</h4>
+      <table style="font-size:0.82em;">
+        <tr><th>Problem</th><th>Time</th></tr>
+        <tr><td>Subsets</td><td>O(n · 2ⁿ)</td></tr>
+        <tr><td>Combinations C(n,k)</td><td>O(k · C(n,k))</td></tr>
+        <tr><td>Permutations</td><td>O(n · n!)</td></tr>
+        <tr><td>N-Queens</td><td>O(n!)</td></tr>
+        <tr><td>Sudoku</td><td>O(9^81) worst</td></tr>
+        <tr><td>Word Search</td><td>O(m·n · 4^L)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Problem Type</th><th>Template Key Points</th><th>Avoid Duplicates</th></tr>
+    <tr><td>Subsets</td><td>Add at every node, start index moves forward</td><td>Sort + skip at same level</td></tr>
+    <tr><td>Combinations</td><td>Add only at leaf, start index moves forward</td><td>Sort + skip at same level</td></tr>
+    <tr><td>Permutations</td><td>Add only at leaf, use boolean <code>used[]</code></td><td>Sort + skip if prev same and !used[prev]</td></tr>
+    <tr><td>Grid DFS</td><td>Mark visited in-place, restore on backtrack</td><td>In-place marking prevents revisit</td></tr>
+    <tr><td>Constraint satisfaction</td><td>Try all values, prune with constraint check</td><td>Constraints naturally prevent dups</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>Key Mental Model:</strong> Every backtracking solution has the same three parts: <strong>Choose</strong> (pick a candidate), <strong>Explore</strong> (recurse), <strong>Un-choose</strong> (undo the choice). If you can write these three clearly, the rest is just filling in the constraints.
+  </div>
+
+  <div class="warning">
+    <strong>Common Mistake — Shallow Copy:</strong> When adding the current path to results, <strong>always deep copy it</strong>: <code>result.Add(new List&lt;int&gt;(current))</code>. If you add the reference directly, all results will point to the same (empty) list after backtracking completes.
+  </div>
+
+  <div class="nav-bar">
+    <a href="../phase7/m09c_practice.html">&#8592; Module 9C: Searching Practice</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m10b_bit_math.html">Module 10B: Bit Manipulation &#8594;</a>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5D — Practice: Trees</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        .problem-card { border: 2px solid #dee2e6; border-radius: 12px; padding: 24px 28px; margin: 32px 0; background: #fafafa; }
+        .problem-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+        .problem-num { font-size: 1.3em; font-weight: 700; color: #2c3e50; }
+        .problem-title { font-size: 1.25em; color: #1a5276; font-weight: 600; margin-left: 10px; }
+        .badges-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .diff { padding: 3px 12px; border-radius: 20px; font-size: 0.82em; font-weight: 700; }
+        .diff.easy   { background: #d5f5e3; color: #1e8449; }
+        .diff.medium { background: #fef9e7; color: #b7950b; }
+        .diff.hard   { background: #fdecea; color: #c0392b; }
+        .meta-badge { background: #eaf0fb; color: #1a5276; padding: 3px 10px; border-radius: 20px; font-size: 0.82em; }
+        input[type=checkbox].spoiler-toggle { display: none; }
+        .spoiler-label { display: inline-block; background: #2c3e50; color: #fff; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9em; margin-top: 12px; user-select: none; }
+        .spoiler-label:hover { background: #1a252f; }
+        .spoiler-content { display: none; margin-top: 14px; }
+        .spoiler-toggle:checked ~ .spoiler-label { background: #16a085; }
+        .spoiler-toggle:checked ~ .spoiler-label ~ .spoiler-content { display: block; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .spoiler-content { display: block !important; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 5 — Part D</h1>
+    <div class="tagline">Practice — 15 Tree Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From inverting a tree to hard problems — test your tree mastery</p>
+    <div class="badges">
+        <span>📝 15 Problems</span>
+        <span>🟢 Easy × 5</span>
+        <span>🟡 Medium × 7</span>
+        <span>🔴 Hard × 3</span>
+        <span>💻 Language: C#</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 5 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m05a_bst.html">Binary Search Trees</a><br>
+    ✅ <strong>Part B</strong> — <a href="m05b_tree_traversals.html">Tree Traversals</a><br>
+    ✅ <strong>Part C</strong> — <a href="m05c_tree_problems.html">Tree Problems</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Practice<br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="tip">
+    <strong>💡 How to Approach Tree Problems:</strong><br>
+    1. Draw the tree for the given example<br>
+    2. Ask: Do I need DFS or BFS? Do I process top-down or bottom-up?<br>
+    3. Define what your recursive function returns — make it clear<br>
+    4. Handle the base case (null node) first
+</div>
+
+<!-- ═══════ EASY ═══════ -->
+<div class="section-heading">Easy Problems (1–5)</div>
+
+<!-- Problem 1 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#1</span><span class="problem-title">Invert Binary Tree</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">DFS</span></div>
+    </div>
+    <p>Invert a binary tree (mirror it). Return its root.</p>
+    <div class="diagram">Input:       Output:
+     [4]          [4]
+    /   \        /   \
+  [2]   [7]    [7]   [2]
+  / \ / \      / \   / \
+[1][3][6][9] [9][6] [3][1]</div>
+    <input type="checkbox" class="spoiler-toggle" id="p1">
+    <label class="spoiler-label" for="p1">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Post-order DFS: invert left subtree, invert right subtree, then swap left and right children of current node.</div>
+        <pre><span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">InvertTree</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return null</span>;
+    (root.Left, root.Right) = (<span class="mt">InvertTree</span>(root.Right), <span class="mt">InvertTree</span>(root.Left));
+    <span class="kw">return</span> root;
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 2 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#2</span><span class="problem-title">Symmetric Tree</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">DFS</span></div>
+    </div>
+    <p>Check whether a binary tree is a mirror of itself (symmetric around its center).</p>
+    <strong>Example:</strong> <code>[1,2,2,3,4,4,3]</code> → <code>true</code>. <code>[1,2,2,null,3,null,3]</code> → <code>false</code>
+    <input type="checkbox" class="spoiler-toggle" id="p2">
+    <label class="spoiler-label" for="p2">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Compare the left subtree with a mirrored right subtree. isMirror(left, right): check left.val == right.val AND isMirror(left.left, right.right) AND isMirror(left.right, right.left).</div>
+        <pre><span class="kw">public bool</span> <span class="mt">IsSymmetric</span>(<span class="tp">TreeNode</span>? root)
+    =&gt; <span class="mt">IsMirror</span>(root?.Left, root?.Right);
+
+<span class="kw">private bool</span> <span class="mt">IsMirror</span>(<span class="tp">TreeNode</span>? l, <span class="tp">TreeNode</span>? r)
+{
+    <span class="kw">if</span> (l == <span class="kw">null</span> &amp;&amp; r == <span class="kw">null</span>) <span class="kw">return true</span>;
+    <span class="kw">if</span> (l == <span class="kw">null</span> || r == <span class="kw">null</span>) <span class="kw">return false</span>;
+    <span class="kw">return</span> l.Val == r.Val
+        &amp;&amp; <span class="mt">IsMirror</span>(l.Left,  r.Right)
+        &amp;&amp; <span class="mt">IsMirror</span>(l.Right, r.Left);
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 3 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#3</span><span class="problem-title">Maximum Depth of Binary Tree</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">DFS or BFS</span></div>
+    </div>
+    <p>Given the root of a binary tree, return its maximum depth (number of nodes along the longest root-to-leaf path).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p3">
+    <label class="spoiler-label" for="p3">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Simple recursive post-order: return 1 + max(depth(left), depth(right)). Base case: null = 0.</div>
+        <pre><span class="kw">public int</span> <span class="mt">MaxDepth</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="mt">MaxDepth</span>(root.Left), <span class="mt">MaxDepth</span>(root.Right));
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 4 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#4</span><span class="problem-title">Same Tree</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">DFS</span></div>
+    </div>
+    <p>Given the roots of two binary trees, check if they are the same (structurally identical and nodes have the same values).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p4">
+    <label class="spoiler-label" for="p4">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Recursively check: both null → true; one null → false; values different → false; recurse on both sides.</div>
+        <pre><span class="kw">public bool</span> <span class="mt">IsSameTree</span>(<span class="tp">TreeNode</span>? p, <span class="tp">TreeNode</span>? q)
+{
+    <span class="kw">if</span> (p == <span class="kw">null</span> &amp;&amp; q == <span class="kw">null</span>) <span class="kw">return true</span>;
+    <span class="kw">if</span> (p == <span class="kw">null</span> || q == <span class="kw">null</span>) <span class="kw">return false</span>;
+    <span class="kw">return</span> p.Val == q.Val
+        &amp;&amp; <span class="mt">IsSameTree</span>(p.Left,  q.Left)
+        &amp;&amp; <span class="mt">IsSameTree</span>(p.Right, q.Right);
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 5 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#5</span><span class="problem-title">Path Sum I</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">DFS</span></div>
+    </div>
+    <p>Given a binary tree and target sum, return <code>true</code> if any root-to-leaf path sums to target.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p5">
+    <label class="spoiler-label" for="p5">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Subtract current node value from target. At a leaf, check if remaining is 0.</div>
+        <pre><span class="kw">public bool</span> <span class="mt">HasPathSum</span>(<span class="tp">TreeNode</span>? node, <span class="kw">int</span> target)
+{
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return false</span>;
+    target -= node.Val;
+    <span class="kw">if</span> (node.Left == <span class="kw">null</span> &amp;&amp; node.Right == <span class="kw">null</span>)
+        <span class="kw">return</span> target == <span class="nm">0</span>;
+    <span class="kw">return</span> <span class="mt">HasPathSum</span>(node.Left, target) || <span class="mt">HasPathSum</span>(node.Right, target);
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- ═══════ MEDIUM ═══════ -->
+<div class="section-heading">Medium Problems (6–12)</div>
+
+<!-- Problem 6 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#6</span><span class="problem-title">Binary Tree Level Order Traversal</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">BFS</span><span class="meta-badge">Queue</span></div>
+    </div>
+    <p>Return level-order traversal of a tree's node values as a list of lists (each sublist = one level).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p6">
+    <label class="spoiler-label" for="p6">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> BFS with queue. Snapshot <code>queue.Count</code> at start of each level — that's how many nodes belong to this level.</div>
+        <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">LevelOrder</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> result;
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+    q.<span class="mt">Enqueue</span>(root);
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> sz = q.Count;
+        <span class="kw">var</span> level = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; sz; i++)
+        {
+            <span class="kw">var</span> n = q.<span class="mt">Dequeue</span>();
+            level.<span class="mt">Add</span>(n.Val);
+            <span class="kw">if</span> (n.Left  != <span class="kw">null</span>) q.<span class="mt">Enqueue</span>(n.Left);
+            <span class="kw">if</span> (n.Right != <span class="kw">null</span>) q.<span class="mt">Enqueue</span>(n.Right);
+        }
+        result.<span class="mt">Add</span>(level);
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 7 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#7</span><span class="problem-title">Kth Smallest Element in BST</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">In-Order</span><span class="meta-badge">BST</span></div>
+    </div>
+    <p>Given the root of a BST and integer k, return the kth smallest value (1-indexed).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p7">
+    <label class="spoiler-label" for="p7">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> In-order traversal of a BST produces sorted values. Count down k during in-order — stop when k reaches 0.</div>
+        <pre><span class="kw">public int</span> <span class="mt">KthSmallest</span>(<span class="tp">TreeNode</span>? root, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span> result = <span class="nm">0</span>;
+    <span class="mt">InOrder</span>(root, <span class="kw">ref</span> k, <span class="kw">ref</span> result);
+    <span class="kw">return</span> result;
+}
+<span class="kw">private void</span> <span class="mt">InOrder</span>(<span class="tp">TreeNode</span>? n, <span class="kw">ref int</span> k, <span class="kw">ref int</span> res)
+{
+    <span class="kw">if</span> (n == <span class="kw">null</span> || k == <span class="nm">0</span>) <span class="kw">return</span>;
+    <span class="mt">InOrder</span>(n.Left, <span class="kw">ref</span> k, <span class="kw">ref</span> res);
+    <span class="kw">if</span> (--k == <span class="nm">0</span>) { res = n.Val; <span class="kw">return</span>; }
+    <span class="mt">InOrder</span>(n.Right, <span class="kw">ref</span> k, <span class="kw">ref</span> res);
+}
+<span class="cm">// Time: O(h + k), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 8 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#8</span><span class="problem-title">Validate Binary Search Tree</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">BST Validation</span></div>
+    </div>
+    <p>Given the root of a binary tree, determine if it is a valid BST.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p8">
+    <label class="spoiler-label" for="p8">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Pass min/max bounds down. Each node must be strictly in (min, max). Left subtree: max becomes node.val. Right subtree: min becomes node.val.</div>
+        <pre><span class="kw">public bool</span> <span class="mt">IsValidBST</span>(<span class="tp">TreeNode</span>? root)
+    =&gt; <span class="mt">Validate</span>(root, <span class="kw">long</span>.MinValue, <span class="kw">long</span>.MaxValue);
+
+<span class="kw">private bool</span> <span class="mt">Validate</span>(<span class="tp">TreeNode</span>? n, <span class="kw">long</span> min, <span class="kw">long</span> max)
+{
+    <span class="kw">if</span> (n == <span class="kw">null</span>) <span class="kw">return true</span>;
+    <span class="kw">if</span> (n.Val &lt;= min || n.Val &gt;= max) <span class="kw">return false</span>;
+    <span class="kw">return</span> <span class="mt">Validate</span>(n.Left,  min,    n.Val) &amp;&amp;
+           <span class="mt">Validate</span>(n.Right, n.Val, max);
+}
+<span class="cm">// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 9 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#9</span><span class="problem-title">Construct Binary Tree from Preorder and Inorder</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Divide &amp; Conquer</span></div>
+    </div>
+    <p>Given preorder and inorder traversal arrays, reconstruct the binary tree.</p>
+    <strong>Example:</strong> <code>preorder=[3,9,20,15,7], inorder=[9,3,15,20,7]</code>
+    <div class="diagram">preorder: [3, 9, 20, 15, 7]  — first element is always root
+inorder:  [9, 3, 15, 20, 7] — root splits left and right subtrees
+
+Root = 3. In inorder: index of 3 = 1.
+Left subtree:  inorder=[9],      preorder=[9]
+Right subtree: inorder=[15,20,7], preorder=[20,15,7]</div>
+    <input type="checkbox" class="spoiler-toggle" id="p9">
+    <label class="spoiler-label" for="p9">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> preorder[0] = root. Find root in inorder → left subtree has that many elements. Use HashMap for O(1) inorder lookup.</div>
+        <pre><span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">BuildTree</span>(<span class="kw">int</span>[] preorder, <span class="kw">int</span>[] inorder)
+{
+    <span class="kw">var</span> indexMap = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; inorder.Length; i++) indexMap[inorder[i]] = i;
+    <span class="kw">int</span> preIdx = <span class="nm">0</span>;
+    <span class="kw">return</span> <span class="mt">Build</span>(preorder, <span class="nm">0</span>, inorder.Length - <span class="nm">1</span>, indexMap, <span class="kw">ref</span> preIdx);
+}
+<span class="kw">private</span> <span class="tp">TreeNode</span>? <span class="mt">Build</span>(<span class="kw">int</span>[] pre, <span class="kw">int</span> inL, <span class="kw">int</span> inR,
+    <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; map, <span class="kw">ref int</span> preIdx)
+{
+    <span class="kw">if</span> (inL &gt; inR) <span class="kw">return null</span>;
+    <span class="kw">int</span> rootVal = pre[preIdx++];
+    <span class="kw">var</span> node = <span class="kw">new</span> <span class="tp">TreeNode</span>(rootVal);
+    <span class="kw">int</span> mid = map[rootVal];
+    node.Left  = <span class="mt">Build</span>(pre, inL,    mid - <span class="nm">1</span>, map, <span class="kw">ref</span> preIdx);
+    node.Right = <span class="mt">Build</span>(pre, mid + <span class="nm">1</span>, inR,     map, <span class="kw">ref</span> preIdx);
+    <span class="kw">return</span> node;
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 10 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#10</span><span class="problem-title">Binary Tree Right Side View</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">BFS</span></div>
+    </div>
+    <p>Given the root of a binary tree, imagine you're standing on the right side. Return the values of the nodes visible (rightmost node of each level).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p10">
+    <label class="spoiler-label" for="p10">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> BFS level-order. The last node dequeued on each level is visible from the right side.</div>
+        <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">RightSideView</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> result;
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+    q.<span class="mt">Enqueue</span>(root);
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> sz = q.Count;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; sz; i++)
+        {
+            <span class="kw">var</span> n = q.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (i == sz - <span class="nm">1</span>) result.<span class="mt">Add</span>(n.Val);
+            <span class="kw">if</span> (n.Left  != <span class="kw">null</span>) q.<span class="mt">Enqueue</span>(n.Left);
+            <span class="kw">if</span> (n.Right != <span class="kw">null</span>) q.<span class="mt">Enqueue</span>(n.Right);
+        }
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 11 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#11</span><span class="problem-title">Lowest Common Ancestor of BST</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">BST</span><span class="meta-badge">LCA</span></div>
+    </div>
+    <p>Given a BST and two nodes p, q, find their lowest common ancestor.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p11">
+    <label class="spoiler-label" for="p11">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Use BST property. If both p and q are less than current → LCA in left. If both greater → LCA in right. Otherwise → current node is LCA.</div>
+        <pre><span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">LowestCommonAncestor</span>(<span class="tp">TreeNode</span>? root,
+    <span class="tp">TreeNode</span> p, <span class="tp">TreeNode</span> q)
+{
+    <span class="kw">while</span> (root != <span class="kw">null</span>)
+    {
+        <span class="kw">if</span> (p.Val &lt; root.Val &amp;&amp; q.Val &lt; root.Val)
+            root = root.Left;
+        <span class="kw">else if</span> (p.Val &gt; root.Val &amp;&amp; q.Val &gt; root.Val)
+            root = root.Right;
+        <span class="kw">else</span>
+            <span class="kw">return</span> root; <span class="cm">// split point = LCA</span>
+    }
+    <span class="kw">return null</span>;
+}
+<span class="cm">// Time: O(h), Space: O(1)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 12 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#12</span><span class="problem-title">Path Sum II — All Paths</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Backtracking</span><span class="meta-badge">DFS</span></div>
+    </div>
+    <p>Find all root-to-leaf paths in a binary tree that sum to a given target. Return all such paths.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p12">
+    <label class="spoiler-label" for="p12">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Backtracking DFS: add current node → recurse → remove (backtrack). At a leaf, if sum matches, copy path to results.</div>
+        <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">PathSum</span>(<span class="tp">TreeNode</span>? root, <span class="kw">int</span> target)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="mt">DFS</span>(root, target, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+<span class="kw">private void</span> <span class="mt">DFS</span>(<span class="tp">TreeNode</span>? n, <span class="kw">int</span> rem, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; path,
+                  <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (n == <span class="kw">null</span>) <span class="kw">return</span>;
+    path.<span class="mt">Add</span>(n.Val); rem -= n.Val;
+    <span class="kw">if</span> (n.Left == <span class="kw">null</span> &amp;&amp; n.Right == <span class="kw">null</span> &amp;&amp; rem == <span class="nm">0</span>)
+        result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(path));
+    <span class="mt">DFS</span>(n.Left, rem, path, result);
+    <span class="mt">DFS</span>(n.Right, rem, path, result);
+    path.<span class="mt">RemoveAt</span>(path.Count - <span class="nm">1</span>); <span class="cm">// backtrack</span>
+}
+<span class="cm">// Time: O(n²) worst case — O(n·h) more precisely
+// Remember: new List&lt;int&gt;(path) copies the list — without this you store a reference!</span></pre>
+    </div>
+</div>
+
+<!-- ═══════ HARD ═══════ -->
+<div class="section-heading">Hard Problems (13–15)</div>
+
+<!-- Problem 13 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#13</span><span class="problem-title">Binary Tree Maximum Path Sum</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">DFS</span><span class="meta-badge">Global Max</span></div>
+    </div>
+    <p>Find the path in a binary tree with maximum sum. The path can start and end at any node.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p13">
+    <label class="spoiler-label" for="p13">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Post-order. At each node: update global max with left_gain + node + right_gain. Return only the better single branch (node + max(left, right)) since a path can't branch when going up.</div>
+        <pre><span class="kw">public int</span> <span class="mt">MaxPathSum</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">int</span> max = <span class="kw">int</span>.MinValue;
+    <span class="mt">Gain</span>(root, <span class="kw">ref</span> max);
+    <span class="kw">return</span> max;
+}
+<span class="kw">private int</span> <span class="mt">Gain</span>(<span class="tp">TreeNode</span>? n, <span class="kw">ref int</span> max)
+{
+    <span class="kw">if</span> (n == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">int</span> L = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="mt">Gain</span>(n.Left,  <span class="kw">ref</span> max));
+    <span class="kw">int</span> R = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="mt">Gain</span>(n.Right, <span class="kw">ref</span> max));
+    max = <span class="tp">Math</span>.<span class="mt">Max</span>(max, n.Val + L + R);
+    <span class="kw">return</span> n.Val + <span class="tp">Math</span>.<span class="mt">Max</span>(L, R);
+}
+<span class="cm">// [-10,9,20,15,7] → 42
+// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 14 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#14</span><span class="problem-title">Serialize and Deserialize Binary Tree</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">Design</span><span class="meta-badge">Pre-order</span></div>
+    </div>
+    <p>Design an algorithm to serialize a binary tree to a string and deserialize that string back to the original tree structure.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p14">
+    <label class="spoiler-label" for="p14">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Pre-order traversal with "#" for null nodes. Serialize: pre-order append. Deserialize: queue of tokens, pre-order reconstruction.</div>
+        <pre><span class="kw">public string</span> <span class="mt">Serialize</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> sb = <span class="kw">new</span> <span class="tp">System.Text.StringBuilder</span>();
+    <span class="mt">Ser</span>(root, sb);
+    <span class="kw">return</span> sb.<span class="mt">ToString</span>();
+}
+<span class="kw">private void</span> <span class="mt">Ser</span>(<span class="tp">TreeNode</span>? n, <span class="tp">System.Text.StringBuilder</span> sb)
+{
+    <span class="kw">if</span> (n == <span class="kw">null</span>) { sb.<span class="mt">Append</span>(<span class="st">"#,"</span>); <span class="kw">return</span>; }
+    sb.<span class="mt">Append</span>(n.Val).<span class="mt">Append</span>(<span class="st">','</span>);
+    <span class="mt">Ser</span>(n.Left, sb); <span class="mt">Ser</span>(n.Right, sb);
+}
+<span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">Deserialize</span>(<span class="kw">string</span> data)
+{
+    <span class="kw">var</span> tokens = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">string</span>&gt;(data.<span class="mt">Split</span>(<span class="st">','</span>,
+        <span class="tp">StringSplitOptions</span>.RemoveEmptyEntries));
+    <span class="kw">return</span> <span class="mt">Des</span>(tokens);
+}
+<span class="kw">private</span> <span class="tp">TreeNode</span>? <span class="mt">Des</span>(<span class="tp">Queue</span>&lt;<span class="kw">string</span>&gt; t)
+{
+    <span class="kw">string</span> v = t.<span class="mt">Dequeue</span>();
+    <span class="kw">if</span> (v == <span class="st">"#"</span>) <span class="kw">return null</span>;
+    <span class="kw">var</span> n = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="kw">int</span>.<span class="mt">Parse</span>(v));
+    n.Left = <span class="mt">Des</span>(t); n.Right = <span class="mt">Des</span>(t);
+    <span class="kw">return</span> n;
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 15 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#15</span><span class="problem-title">Diameter of Binary Tree</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">DFS</span><span class="meta-badge">Global Max</span></div>
+    </div>
+    <p>Given the root of a binary tree, return the length of the diameter (longest path between any two nodes, measured in edges).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p15">
+    <label class="spoiler-label" for="p15">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> At each node, the diameter through it = left_height + right_height + 2. Track the max globally. Return height upward.</div>
+        <pre><span class="kw">public int</span> <span class="mt">DiameterOfBinaryTree</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">int</span> max = <span class="nm">0</span>;
+    <span class="mt">Height</span>(root, <span class="kw">ref</span> max);
+    <span class="kw">return</span> max;
+}
+<span class="kw">private int</span> <span class="mt">Height</span>(<span class="tp">TreeNode</span>? n, <span class="kw">ref int</span> max)
+{
+    <span class="kw">if</span> (n == <span class="kw">null</span>) <span class="kw">return</span> -<span class="nm">1</span>;
+    <span class="kw">int</span> L = <span class="mt">Height</span>(n.Left,  <span class="kw">ref</span> max);
+    <span class="kw">int</span> R = <span class="mt">Height</span>(n.Right, <span class="kw">ref</span> max);
+    max = <span class="tp">Math</span>.<span class="mt">Max</span>(max, L + R + <span class="nm">2</span>);
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(L, R);
+}
+<span class="cm">// [1,2,3,4,5] → 3
+// Single node [1] → 0 (no edges)
+// Time: O(n), Space: O(h)</span></pre>
+    </div>
+</div>
+
+<hr>
+
+<!-- ═══════ SUMMARY TABLE ═══════ -->
+<div class="section-heading">Quick Reference — Tree Pattern Cheatsheet</div>
+
+<table>
+    <thead>
+        <tr><th>Pattern</th><th>Algorithm Template</th><th>Problems</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Bottom-up: compute from children</td><td>Post-order, return value up</td><td>#3, #15</td></tr>
+        <tr><td>Track global while returning local</td><td>ref int + post-order</td><td>#13, #15</td></tr>
+        <tr><td>Mirror comparison</td><td>Recurse left+right, swap sides</td><td>#1, #2, #4</td></tr>
+        <tr><td>Subtract toward zero</td><td>DFS: target -= val, check leaf</td><td>#5, #12</td></tr>
+        <tr><td>Level grouping</td><td>BFS: snapshot queue.Count</td><td>#6, #10</td></tr>
+        <tr><td>BST in-order = sorted</td><td>In-order with counter/check</td><td>#7, #8</td></tr>
+        <tr><td>Divide by root index</td><td>Pre-order first = root; find in inorder</td><td>#9</td></tr>
+        <tr><td>BST split point = LCA</td><td>Walk left/right until p/q split</td><td>#11</td></tr>
+        <tr><td>Backtrack path collection</td><td>add → recurse → RemoveAt(last)</td><td>#12</td></tr>
+        <tr><td>Serialize with nulls</td><td>Pre-order + "#" markers, queue deser</td><td>#14</td></tr>
+    </tbody>
+</table>
+
+<div class="nav-box">
+    <strong>🎉 Module 5 Complete — Trees!</strong><br><br>
+    You've mastered Binary Search Trees, all traversal orders (DFS/BFS), and 7 classic tree
+    algorithms. Trees are one of the most tested topics in interviews — these patterns
+    cover &gt;90% of tree problems you'll encounter.<br><br>
+    ◀ <strong>Prev:</strong> <a href="m05c_tree_problems.html">Part C — Tree Problems</a><br>
+    ➡ <strong>Next Module:</strong> <a href="../phase4/m06a_heaps.html">Module 6A — Heaps &amp; Priority Queues</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+</body>
+</html>

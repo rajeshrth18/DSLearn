@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-World DSA Challenges — Zero to Hero Applied</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.5em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.2em; color: #cba6f7; margin: 24px 0 10px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  h4 { font-size: 1em; color: #89dceb; margin: 14px 0 6px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+  .diagram { background: #0d1117; border: 1px solid #30363d; border-left: 4px solid #e74c3c; border-radius: 8px; padding: 20px; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.84em; color: #58a6ff; overflow-x: auto; white-space: pre; line-height: 1.5; }
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .warning { background: #2d1e1e; border-left: 4px solid #f38ba8; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .warning strong { color: #f38ba8; }
+  .realworld { background: #1e2235; border-left: 4px solid #89b4fa; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .realworld strong { color: #89b4fa; }
+  .challenge { background: #181825; border: 1px solid #313244; border-radius: 12px; padding: 24px; margin-bottom: 28px; }
+  .challenge-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  .challenge-icon { font-size: 2em; min-width: 48px; text-align: center; line-height: 1.2; }
+  .challenge-meta { flex: 1; }
+  .challenge-meta h3 { margin: 0 0 6px; border: none; padding: 0; }
+  .challenge-meta .company { font-size: 0.85em; color: #a6adc8; }
+  .algo-tag { display: inline-block; background: #313244; color: #cba6f7; border: 1px solid #45475a; border-radius: 10px; padding: 2px 10px; font-size: 0.78em; margin: 2px; }
+  .phase-ref { display: inline-block; background: #1e2235; color: #89b4fa; border: 1px solid #45475a; border-radius: 10px; padding: 2px 10px; font-size: 0.78em; margin: 2px; }
+  .scale { font-size: 0.82em; color: #f9e2af; background: #2d2b1e; border: 1px solid #f9e2af; border-radius: 10px; padding: 2px 10px; margin: 2px; display: inline-block; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88em; }
+  th { background: #313244; color: #cba6f7; padding: 9px 12px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 8px 12px; border: 1px solid #313244; color: #cdd6f4; vertical-align: top; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Bonus</span> <span class="badge">Real-World</span> <span class="badge">Applied DSA</span></div>
+    <h1>Real-World Complex Challenges</h1>
+    <div class="subtitle">How the algorithms you learned power the technology you use every day</div>
+    <div class="tagline">GPS · Social Networks · Compilers · Trading Systems · Search Engines · and more</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="phase10/m12c_capstone_practice.html">&#8592; Capstone Practice</a>
+    <a href="Index.html" class="home">&#8962; Course Home</a>
+  </div>
+
+  <div class="realworld">
+    <strong>How to Read This Page:</strong> Each challenge describes a real system used by millions. It shows the exact algorithmic problem underneath, the data structures involved, and C# code modelling the core logic — all mapped back to the course phases you completed.
+  </div>
+
+  <!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
+  <h2>1. GPS Navigation — Google Maps / Waze</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#127758;</div>
+      <div class="challenge-meta">
+        <h3>Find the Fastest Route Through a City</h3>
+        <div class="company">Google Maps · Waze · Apple Maps · HERE Technologies</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Dijkstra's Algorithm</span>
+          <span class="algo-tag">A* Search</span>
+          <span class="algo-tag">Bidirectional BFS</span>
+          <span class="phase-ref">Phase 5 — Graphs</span>
+          <span class="phase-ref">Phase 9 — Advanced Graphs</span>
+          <span class="scale">Scale: 10⁹ road segments</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Google Maps has over <strong>1 billion users</strong> requesting routes every day. The road network of a country contains hundreds of millions of intersections (nodes) and roads (edges). A naive Dijkstra would be too slow — real systems use a hierarchy of optimizations.</p>
+
+    <div class="diagram">
+  Road Network Graph:
+  ┌─────────────────────────────────────────┐
+  │  Node = Intersection (lat/lng)          │
+  │  Edge = Road segment (direction, speed) │
+  │  Weight = travel time (seconds)         │
+  └─────────────────────────────────────────┘
+
+  Challenge: London → Edinburgh (700km, millions of nodes in-between)
+
+  Naive Dijkstra: explores ~10 million nodes → too slow for real-time
+  A* with heuristic: focuses search toward destination → 100x faster
+  Contraction Hierarchies: pre-contract road graph → 1000x faster</div>
+
+    <h4>Core Algorithm: A* (Dijkstra + Heuristic)</h4>
+    <p>A* extends Dijkstra by adding a <strong>heuristic function</strong> — an estimate of the remaining distance to the goal (usually straight-line distance). This focuses the search toward the destination and drastically reduces nodes explored.</p>
+
+<pre><span class="kw">public class</span> <span class="tp">AStarRouter</span>
+{
+    <span class="cm">// Node = intersection, heuristic = straight-line distance to target</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; <span class="mt">FindRoute</span>(<span class="tp">int</span> src, <span class="tp">int</span> dst,
+        <span class="tp">List</span>&lt;(<span class="tp">int</span> to, <span class="tp">double</span> time)&gt;[] adj, <span class="kw">double</span>[] lat, <span class="kw">double</span>[] lng)
+    {
+        <span class="tp">int</span> n = adj.Length;
+        <span class="tp">double</span>[] gScore = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">double</span>.MaxValue, n).<span class="mt">ToArray</span>();
+        <span class="tp">int</span>[] prev = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(-<span class="nm">1</span>, n).<span class="mt">ToArray</span>();
+        gScore[src] = <span class="nm">0</span>;
+
+        <span class="cm">// Priority queue sorted by f = g (actual) + h (heuristic)</span>
+        <span class="tp">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">int</span>, <span class="kw">double</span>&gt;();
+        pq.<span class="mt">Enqueue</span>(src, <span class="mt">Heuristic</span>(src, dst, lat, lng));
+
+        <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+        {
+            pq.<span class="mt">TryDequeue</span>(<span class="kw">out int</span> u, <span class="kw">out</span> _);
+            <span class="kw">if</span> (u == dst) <span class="kw">return</span> <span class="mt">ReconstructPath</span>(prev, src, dst);
+
+            <span class="kw">foreach</span> (<span class="tp">var</span> (v, w) <span class="kw">in</span> adj[u])
+            {
+                <span class="kw">double</span> tentative = gScore[u] + w;
+                <span class="kw">if</span> (tentative &lt; gScore[v])
+                {
+                    gScore[v] = tentative;
+                    prev[v] = u;
+                    <span class="cm">// f = actual cost + straight-line estimate to destination</span>
+                    pq.<span class="mt">Enqueue</span>(v, tentative + <span class="mt">Heuristic</span>(v, dst, lat, lng));
+                }
+            }
+        }
+        <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(); <span class="cm">// No path</span>
+    }
+
+    <span class="kw">private double</span> <span class="mt">Heuristic</span>(<span class="tp">int</span> a, <span class="tp">int</span> b, <span class="kw">double</span>[] lat, <span class="kw">double</span>[] lng)
+    {
+        <span class="cm">// Haversine distance (straight-line on Earth's surface)</span>
+        <span class="kw">double</span> dlat = lat[b] - lat[a], dlng = lng[b] - lng[a];
+        <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Sqrt</span>(dlat*dlat + dlng*dlng) * <span class="nm">111000</span>; <span class="cm">// rough meters</span>
+    }
+}
+<span class="cm">// Real Google Maps uses Contraction Hierarchies (CH) on top of A*</span>
+<span class="cm">// CH pre-computes shortcuts: contracts low-importance nodes, creating a hierarchy</span>
+<span class="cm">// Result: London→Edinburgh in milliseconds on a billion-node graph</span></pre>
+
+    <div class="note"><strong>Real-World Scale:</strong> Google Maps' road network has ~300 million nodes. Standard Dijkstra explores all of them. Contraction Hierarchies reduce this to ~10,000 nodes per query. Live traffic updates modify edge weights — the system re-runs routing every few seconds for active navigations.</div>
+  </div>
+
+  <!-- ═══════════════════════ SOCIAL NETWORKS ═══════════════════════ -->
+  <h2>2. Social Network — LinkedIn / Facebook</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128101;</div>
+      <div class="challenge-meta">
+        <h3>"People You May Know" — Connection Recommendations</h3>
+        <div class="company">LinkedIn · Facebook · Twitter · Instagram</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">BFS (Degree of Separation)</span>
+          <span class="algo-tag">Union-Find</span>
+          <span class="algo-tag">Hash Maps</span>
+          <span class="phase-ref">Phase 5 — Graphs</span>
+          <span class="phase-ref">Phase 3 — Hash Tables</span>
+          <span class="scale">Scale: LinkedIn has 950M users</span>
+        </div>
+      </div>
+    </div>
+
+    <p>LinkedIn's "People You May Know" finds users who share mutual connections. This is a classic graph problem: find all nodes within 2 hops from the current user. At LinkedIn's scale, the social graph has billions of edges.</p>
+
+<pre><span class="cm">// Find 2nd-degree connections (friends of friends)</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; <span class="mt">GetSuggestions</span>(<span class="tp">int</span> userId, <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;[] graph)
+{
+    <span class="tp">var</span> direct = graph[userId];   <span class="cm">// 1st-degree connections</span>
+    <span class="tp">var</span> counts = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt;(); <span class="cm">// candidate → mutual count</span>
+
+    <span class="kw">foreach</span> (<span class="tp">int</span> friend <span class="kw">in</span> direct)
+    <span class="kw">foreach</span> (<span class="tp">int</span> fof <span class="kw">in</span> graph[friend])  <span class="cm">// Friend-of-friend</span>
+    {
+        <span class="kw">if</span> (fof == userId || direct.<span class="mt">Contains</span>(fof)) <span class="kw">continue</span>; <span class="cm">// Already connected</span>
+        counts[fof] = counts.<span class="mt">GetValueOrDefault</span>(fof) + <span class="nm">1</span>;
+    }
+    <span class="cm">// Sort by mutual connection count (most mutuals → best suggestion)</span>
+    <span class="kw">return</span> counts.<span class="mt">OrderByDescending</span>(kv =&gt; kv.Value)
+                  .<span class="mt">Take</span>(<span class="nm">10</span>).<span class="mt">Select</span>(kv =&gt; kv.Key).<span class="mt">ToList</span>();
+}
+
+<span class="cm">// Six Degrees of Separation: BFS to find shortest path between any two users</span>
+<span class="kw">public int</span> <span class="mt">DegreesOfSeparation</span>(<span class="tp">int</span> a, <span class="tp">int</span> b, <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;[] graph)
+{
+    <span class="kw">if</span> (a == b) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="tp">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt; { a };
+    <span class="tp">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">int</span>&gt;();
+    q.<span class="mt">Enqueue</span>(a);
+    <span class="tp">int</span> degree = <span class="nm">0</span>;
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        degree++;
+        <span class="tp">int</span> sz = q.Count;
+        <span class="kw">while</span> (sz-- &gt; <span class="nm">0</span>)
+        {
+            <span class="tp">int</span> u = q.<span class="mt">Dequeue</span>();
+            <span class="kw">foreach</span> (<span class="tp">int</span> v <span class="kw">in</span> graph[u])
+            {
+                <span class="kw">if</span> (v == b) <span class="kw">return</span> degree;
+                <span class="kw">if</span> (visited.<span class="mt">Add</span>(v)) q.<span class="mt">Enqueue</span>(v);
+            }
+        }
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>; <span class="cm">// Not connected</span>
+}
+<span class="cm">// LinkedIn famously showed that average degrees of separation = 4.7 (not 6)</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ PACKAGE MANAGER ═══════════════════════ -->
+  <h2>3. Package Manager — npm / NuGet / Maven</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128230;</div>
+      <div class="challenge-meta">
+        <h3>Dependency Resolution — Install Packages in Correct Order</h3>
+        <div class="company">npm · NuGet · Maven · Cargo · pip</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Topological Sort</span>
+          <span class="algo-tag">Cycle Detection</span>
+          <span class="algo-tag">DAG</span>
+          <span class="phase-ref">Phase 5 — Graph Algorithms</span>
+          <span class="phase-ref">Phase 9 — Advanced Graphs</span>
+          <span class="scale">npm registry: 2.5M packages</span>
+        </div>
+      </div>
+    </div>
+
+    <p>When you run <code>dotnet add package Newtonsoft.Json</code>, the package manager must install all dependencies in the correct order — a package must be installed <strong>after</strong> all its dependencies. This is exactly <strong>topological sort</strong>. If a circular dependency exists, installation must fail with an error.</p>
+
+    <div class="diagram">
+  Your App
+    ├── EntityFramework 8.0
+    │     ├── Microsoft.Data.SqlClient 5.0
+    │     │     └── Microsoft.Identity.Client 4.0
+    │     └── System.Text.Json 8.0
+    └── Serilog 3.0
+          └── System.Text.Json 8.0  ← shared dependency
+
+  Install order (topological): Microsoft.Identity.Client → Microsoft.Data.SqlClient
+                                → System.Text.Json → EntityFramework → Serilog → App
+
+  Circular dependency example (ILLEGAL):
+    PackageA depends on PackageB
+    PackageB depends on PackageA  ← cycle detected → error!</div>
+
+<pre><span class="kw">public class</span> <span class="tp">PackageInstaller</span>
+{
+    <span class="cm">// Returns install order or throws if circular dependency exists</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; <span class="mt">ResolveOrder</span>(<span class="tp">Dictionary</span>&lt;<span class="tp">string</span>, <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;&gt; deps)
+    {
+        <span class="tp">var</span> inDegree = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">string</span>, <span class="tp">int</span>&gt;();
+        <span class="kw">foreach</span> (<span class="tp">var</span> pkg <span class="kw">in</span> deps.Keys) inDegree[pkg] = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="tp">var</span> (_, depList) <span class="kw">in</span> deps)
+            <span class="kw">foreach</span> (<span class="tp">string</span> dep <span class="kw">in</span> depList)
+                inDegree[dep] = inDegree.<span class="mt">GetValueOrDefault</span>(dep) + <span class="nm">1</span>;
+
+        <span class="cm">// Kahn's Algorithm — packages with no remaining dependencies install first</span>
+        <span class="tp">var</span> ready = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">string</span>&gt;(inDegree.<span class="mt">Where</span>(kv =&gt; kv.Value == <span class="nm">0</span>).<span class="mt">Select</span>(kv =&gt; kv.Key));
+        <span class="tp">var</span> order = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+
+        <span class="kw">while</span> (ready.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="tp">string</span> pkg = ready.<span class="mt">Dequeue</span>();
+            order.<span class="mt">Add</span>(pkg);
+            <span class="kw">foreach</span> (<span class="tp">string</span> dependant <span class="kw">in</span> deps.<span class="mt">GetValueOrDefault</span>(pkg, <span class="kw">new</span>()))
+                <span class="kw">if</span> (--inDegree[dependant] == <span class="nm">0</span>) ready.<span class="mt">Enqueue</span>(dependant);
+        }
+
+        <span class="kw">if</span> (order.Count != deps.Count)
+            <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Circular dependency detected!"</span>);
+        <span class="kw">return</span> order;
+    }
+}
+<span class="cm">// Time: O(V+E), Space: O(V)</span>
+<span class="cm">// This is literally what `npm install` and `dotnet restore` do internally</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ SEARCH ENGINE ═══════════════════════ -->
+  <h2>4. Search Engine — Google / Bing</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128270;</div>
+      <div class="challenge-meta">
+        <h3>Autocomplete + Typo Correction + Document Search</h3>
+        <div class="company">Google · Bing · Elasticsearch · Algolia</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Trie</span>
+          <span class="algo-tag">Edit Distance DP</span>
+          <span class="algo-tag">Rolling Hash</span>
+          <span class="algo-tag">Inverted Index</span>
+          <span class="phase-ref">Phase 4 — Trie</span>
+          <span class="phase-ref">Phase 6 — DP</span>
+          <span class="phase-ref">Phase 9 — String Algorithms</span>
+          <span class="scale">Google: 8.5B searches/day</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Google's search box has three algorithmic layers working together: <strong>Trie</strong> for instant prefix autocomplete, <strong>Edit Distance DP</strong> for "Did you mean X?" spell correction, and <strong>Inverted Index</strong> (hash map from word → documents) for finding matching pages.</p>
+
+<pre><span class="cm">// Layer 1: Autocomplete via Trie (shows suggestions as you type)</span>
+<span class="kw">public class</span> <span class="tp">SearchTrie</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">TrieNode</span> _root = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="tp">string</span> query, <span class="tp">int</span> frequency)
+    {
+        <span class="tp">var</span> node = _root;
+        <span class="kw">foreach</span> (<span class="tp">char</span> c <span class="kw">in</span> query)
+            node = node.Children.<span class="mt">GetOrAdd</span>(c, _ =&gt; <span class="kw">new</span> <span class="tp">TrieNode</span>());
+        node.Frequency = frequency;
+    }
+
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; <span class="mt">TopSuggestions</span>(<span class="tp">string</span> prefix, <span class="tp">int</span> k)
+    {
+        <span class="tp">var</span> node = _root;
+        <span class="kw">foreach</span> (<span class="tp">char</span> c <span class="kw">in</span> prefix)
+            <span class="kw">if</span> (!node.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out</span> node)) <span class="kw">return new</span>();
+
+        <span class="cm">// BFS / DFS to collect top-k frequent completions</span>
+        <span class="tp">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">int</span> freq, <span class="tp">string</span> word)&gt;();
+        <span class="mt">CollectAll</span>(node, <span class="kw">new</span> <span class="tp">StringBuilder</span>(prefix), results);
+        <span class="kw">return</span> results.<span class="mt">OrderByDescending</span>(x =&gt; x.freq).<span class="mt">Take</span>(k).<span class="mt">Select</span>(x =&gt; x.word).<span class="mt">ToList</span>();
+    }
+}
+
+<span class="cm">// Layer 2: "Did you mean?" via Edit Distance DP</span>
+<span class="kw">public int</span> <span class="mt">EditDistance</span>(<span class="tp">string</span> s, <span class="tp">string</span> t)
+{
+    <span class="tp">int</span> m = s.Length, n = t.Length;
+    <span class="tp">int</span>[] prev = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n + <span class="nm">1</span>).<span class="mt">ToArray</span>();
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt;= m; i++)
+    {
+        <span class="tp">int</span>[] curr = <span class="kw">new</span> <span class="tp">int</span>[n + <span class="nm">1</span>];
+        curr[<span class="nm">0</span>] = i;
+        <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">1</span>; j &lt;= n; j++)
+            curr[j] = s[i-<span class="nm">1</span>] == t[j-<span class="nm">1</span>] ? prev[j-<span class="nm">1</span>]
+                    : <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Min</span>(prev[j-<span class="nm">1</span>], <span class="tp">Math</span>.<span class="mt">Min</span>(prev[j], curr[j-<span class="nm">1</span>]));
+        prev = curr;
+    }
+    <span class="kw">return</span> prev[n];
+}
+<span class="cm">// Google compares your query against millions of known queries</span>
+<span class="cm">// Those within edit distance 1-2 become "Did you mean?" suggestions</span>
+
+<span class="cm">// Layer 3: Inverted Index (hash map: word → [doc1, doc2, ...])</span>
+<span class="cm">// For query "C# algorithms book":</span>
+<span class="cm">//   index["C#"] → {doc1, doc5, doc9}</span>
+<span class="cm">//   index["algorithms"] → {doc1, doc3, doc9}</span>
+<span class="cm">//   INTERSECT → {doc1, doc9} → ranked by PageRank score</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ COMPILER ═══════════════════════ -->
+  <h2>5. Compiler / IDE — Visual Studio / Roslyn</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128736;</div>
+      <div class="challenge-meta">
+        <h3>Expression Evaluation, Syntax Checking &amp; Build Ordering</h3>
+        <div class="company">Roslyn (.NET) · JVM · Clang · GCC · IntelliJ</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Stack (Expression Parsing)</span>
+          <span class="algo-tag">Trie (Symbol Table)</span>
+          <span class="algo-tag">Topological Sort (Build)</span>
+          <span class="algo-tag">Interval DP (Regex)</span>
+          <span class="phase-ref">Phase 2 — Stacks</span>
+          <span class="phase-ref">Phase 4 — Trie</span>
+          <span class="phase-ref">Phase 9 — Graphs</span>
+          <span class="scale">Roslyn: compiles millions of lines/sec</span>
+        </div>
+      </div>
+    </div>
+
+    <p>When you write <code>int x = (3 + 4) * 2 - 1;</code>, the C# compiler uses a stack to parse and evaluate that expression. The Roslyn compiler also uses a Trie-based symbol table for name resolution and topological sort for build project ordering.</p>
+
+<pre><span class="cm">// Evaluate arithmetic expression: "3 + 4 * 2 - 1" → 10</span>
+<span class="cm">// Uses two stacks: one for numbers, one for operators</span>
+<span class="kw">public int</span> <span class="mt">Evaluate</span>(<span class="tp">string</span> expr)
+{
+    <span class="tp">var</span> nums = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="tp">int</span>&gt;();
+    <span class="tp">var</span> ops  = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="tp">char</span>&gt;();
+    <span class="tp">var</span> prec = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">int</span>&gt; { {<span class="st">'+'</span>,<span class="nm">1</span>},{<span class="st">'-'</span>,<span class="nm">1</span>},{<span class="st">'*'</span>,<span class="nm">2</span>},{<span class="st">'/'</span>,<span class="nm">2</span>} };
+
+    <span class="kw">void</span> <span class="mt">Apply</span>() {
+        <span class="tp">int</span> b = nums.<span class="mt">Pop</span>(), a = nums.<span class="mt">Pop</span>();
+        nums.<span class="mt">Push</span>(ops.<span class="mt">Pop</span>() <span class="kw">switch</span> { <span class="st">'+'</span> =&gt; a+b, <span class="st">'-'</span> =&gt; a-b, <span class="st">'*'</span> =&gt; a*b, _ =&gt; a/b });
+    }
+
+    <span class="tp">int</span> i = <span class="nm">0</span>;
+    <span class="kw">while</span> (i &lt; expr.Length)
+    {
+        <span class="tp">char</span> c = expr[i];
+        <span class="kw">if</span> (c == <span class="st">' '</span>) { i++; <span class="kw">continue</span>; }
+        <span class="kw">if</span> (<span class="tp">char</span>.<span class="mt">IsDigit</span>(c)) {
+            <span class="tp">int</span> num = <span class="nm">0</span>;
+            <span class="kw">while</span> (i &lt; expr.Length &amp;&amp; <span class="tp">char</span>.<span class="mt">IsDigit</span>(expr[i])) num = num*<span class="nm">10</span> + expr[i++]-<span class="st">'0'</span>;
+            nums.<span class="mt">Push</span>(num); <span class="kw">continue</span>;
+        }
+        <span class="kw">if</span> (c == <span class="st">'('</span>) { ops.<span class="mt">Push</span>(c); }
+        <span class="kw">else if</span> (c == <span class="st">')'</span>) { <span class="kw">while</span> (ops.<span class="mt">Peek</span>() != <span class="st">'('</span>) <span class="mt">Apply</span>(); ops.<span class="mt">Pop</span>(); }
+        <span class="kw">else if</span> (prec.<span class="mt">ContainsKey</span>(c)) {
+            <span class="kw">while</span> (ops.Count &gt; <span class="nm">0</span> &amp;&amp; ops.<span class="mt">Peek</span>() != <span class="st">'('</span> &amp;&amp; prec.<span class="mt">GetValueOrDefault</span>(ops.<span class="mt">Peek</span>()) &gt;= prec[c])
+                <span class="mt">Apply</span>();
+            ops.<span class="mt">Push</span>(c);
+        }
+        i++;
+    }
+    <span class="kw">while</span> (ops.Count &gt; <span class="nm">0</span>) <span class="mt">Apply</span>();
+    <span class="kw">return</span> nums.<span class="mt">Pop</span>();
+}
+<span class="cm">// This is the Shunting-Yard algorithm — how every compiler/interpreter works</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ STOCK EXCHANGE ═══════════════════════ -->
+  <h2>6. Stock Exchange — NASDAQ / NYSE Order Book</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128200;</div>
+      <div class="challenge-meta">
+        <h3>Real-Time Order Book — Match Buy/Sell Orders</h3>
+        <div class="company">NASDAQ · NYSE · Binance · Interactive Brokers</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">SortedDictionary (Price Levels)</span>
+          <span class="algo-tag">Priority Queue</span>
+          <span class="algo-tag">Monotonic Stack (Next Greater Price)</span>
+          <span class="phase-ref">Phase 2 — Monotonic Stack</span>
+          <span class="phase-ref">Phase 4 — Heaps</span>
+          <span class="scale">NASDAQ: 30 billion orders/day</span>
+        </div>
+      </div>
+    </div>
+
+    <p>An exchange's order book matches buyers and sellers. Buy orders are sorted by <strong>descending price</strong> (highest bid wins), sell orders by <strong>ascending price</strong> (lowest ask wins). When the best bid ≥ best ask, a trade executes. This uses two priority queues (max-heap for bids, min-heap for asks).</p>
+
+<pre><span class="kw">public class</span> <span class="tp">OrderBook</span>
+{
+    <span class="cm">// Bids: max-heap (highest price first)</span>
+    <span class="kw">private</span> <span class="tp">SortedDictionary</span>&lt;<span class="tp">int</span>, <span class="tp">Queue</span>&lt;<span class="tp">Order</span>&gt;&gt; _bids = <span class="kw">new</span>(<span class="tp">Comparer</span>&lt;<span class="tp">int</span>&gt;.<span class="mt">Create</span>((a,b) =&gt; b-a));
+    <span class="cm">// Asks: min-heap (lowest price first)</span>
+    <span class="kw">private</span> <span class="tp">SortedDictionary</span>&lt;<span class="tp">int</span>, <span class="tp">Queue</span>&lt;<span class="tp">Order</span>&gt;&gt; _asks = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Trade</span>&gt; <span class="mt">AddOrder</span>(<span class="tp">Order</span> order)
+    {
+        <span class="tp">var</span> trades = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">Trade</span>&gt;();
+        <span class="kw">if</span> (order.IsBuy)
+        {
+            <span class="cm">// Try to match against asks (sell orders at or below our bid price)</span>
+            <span class="kw">while</span> (order.Qty &gt; <span class="nm">0</span> &amp;&amp; _asks.Count &gt; <span class="nm">0</span> &amp;&amp; _asks.<span class="mt">First</span>().Key &lt;= order.Price)
+            {
+                <span class="tp">var</span> ask = _asks.<span class="mt">First</span>().Value.<span class="mt">Peek</span>();
+                <span class="tp">int</span> filled = <span class="tp">Math</span>.<span class="mt">Min</span>(order.Qty, ask.Qty);
+                trades.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">Trade</span> { Price = ask.Price, Qty = filled });
+                ask.Qty -= filled; order.Qty -= filled;
+                <span class="kw">if</span> (ask.Qty == <span class="nm">0</span>) { _asks.<span class="mt">First</span>().Value.<span class="mt">Dequeue</span>(); <span class="mt">CleanEmpty</span>(_asks); }
+            }
+            <span class="kw">if</span> (order.Qty &gt; <span class="nm">0</span>) <span class="mt">AddToBook</span>(_bids, order); <span class="cm">// Rest goes to book</span>
+        }
+        <span class="cm">// Symmetric for sell orders...</span>
+        <span class="kw">return</span> trades;
+    }
+}
+<span class="cm">// Real exchanges use lock-free data structures and FPGA hardware</span>
+<span class="cm">// Latency target: match an order in under 1 microsecond</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ WAREHOUSE ROUTING ═══════════════════════ -->
+  <h2>7. Warehouse Robotics — Amazon Fulfillment Centers</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#127959;</div>
+      <div class="challenge-meta">
+        <h3>Optimal Item Pick Path — Traveling Robot Problem</h3>
+        <div class="company">Amazon Robotics · Ocado · DHL · FedEx</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Bitmask DP (TSP variant)</span>
+          <span class="algo-tag">Dijkstra (grid navigation)</span>
+          <span class="algo-tag">BFS (obstacle avoidance)</span>
+          <span class="phase-ref">Phase 5 — Graphs</span>
+          <span class="phase-ref">Phase 10 — Bitmask DP</span>
+          <span class="scale">Amazon: 750,000 robots deployed</span>
+        </div>
+      </div>
+    </div>
+
+    <p>An order might contain 7 items scattered across a warehouse. A robot must pick all items and return to the packing station in the minimum total distance. With 7 items, there are 7! = 5040 possible orders — manageable with bitmask DP (<strong>n ≤ 20</strong> is the sweet spot).</p>
+
+<pre><span class="cm">// Minimum distance to pick all items and return to start</span>
+<span class="cm">// Distances pre-computed via BFS/Dijkstra on the warehouse grid</span>
+<span class="kw">public int</span> <span class="mt">OptimalPickPath</span>(<span class="tp">int</span>[] items, <span class="tp">int</span>[,] dist, <span class="tp">int</span> start)
+{
+    <span class="tp">int</span> n = items.Length;
+    <span class="cm">// dp[mask][i] = min cost to pick items in mask, currently at item i</span>
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[<span class="nm">1</span> &lt;&lt; n, n];
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; (<span class="nm">1</span>&lt;&lt;n); i++)
+        <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">0</span>; j &lt; n; j++) dp[i, j] = <span class="tp">int</span>.MaxValue / <span class="nm">2</span>;
+
+    <span class="cm">// Initialize: cost to travel from start to each item</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++) dp[<span class="nm">1</span> &lt;&lt; i, i] = dist[start, items[i]];
+
+    <span class="kw">for</span> (<span class="tp">int</span> mask = <span class="nm">1</span>; mask &lt; (<span class="nm">1</span>&lt;&lt;n); mask++)
+    <span class="kw">for</span> (<span class="tp">int</span> u = <span class="nm">0</span>; u &lt; n; u++)
+    {
+        <span class="kw">if</span> ((mask &amp; (<span class="nm">1</span>&lt;&lt;u)) == <span class="nm">0</span> || dp[mask, u] == <span class="tp">int</span>.MaxValue/<span class="nm">2</span>) <span class="kw">continue</span>;
+        <span class="kw">for</span> (<span class="tp">int</span> v = <span class="nm">0</span>; v &lt; n; v++)
+            <span class="kw">if</span> ((mask &amp; (<span class="nm">1</span>&lt;&lt;v)) == <span class="nm">0</span>)
+                dp[mask|(<span class="nm">1</span>&lt;&lt;v), v] = <span class="tp">Math</span>.<span class="mt">Min</span>(dp[mask|(<span class="nm">1</span>&lt;&lt;v), v],
+                                              dp[mask, u] + dist[items[u], items[v]]);
+    }
+
+    <span class="tp">int</span> full = (<span class="nm">1</span>&lt;&lt;n) - <span class="nm">1</span>, ans = <span class="tp">int</span>.MaxValue;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++)  <span class="cm">// Return to packing station</span>
+        ans = <span class="tp">Math</span>.<span class="mt">Min</span>(ans, dp[full, i] + dist[items[i], start]);
+    <span class="kw">return</span> ans;
+}
+<span class="cm">// O(n² * 2^n) — Amazon limits order batches to ~15 items per robot trip</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ GIT ═══════════════════════ -->
+  <h2>8. Version Control — Git</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#127800;</div>
+      <div class="challenge-meta">
+        <h3>Diff, Merge &amp; Commit Graph</h3>
+        <div class="company">Git · GitHub · GitLab · Azure DevOps</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">LCS / Edit Distance DP</span>
+          <span class="algo-tag">DAG (Commit History)</span>
+          <span class="algo-tag">SHA Hash (Content Addressing)</span>
+          <span class="algo-tag">Topological Sort (rebase)</span>
+          <span class="phase-ref">Phase 6 — DP</span>
+          <span class="phase-ref">Phase 5 — Graphs</span>
+          <span class="scale">GitHub: 420M repositories</span>
+        </div>
+      </div>
+    </div>
+
+    <p>When you run <code>git diff</code>, Git computes the <strong>Longest Common Subsequence (LCS)</strong> between two file versions to find the minimal set of line additions/deletions. The commit history is a <strong>Directed Acyclic Graph (DAG)</strong> where <code>git rebase</code> is a topological sort.</p>
+
+<pre><span class="cm">// git diff — Longest Common Subsequence shows what changed between versions</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; <span class="mt">DiffFiles</span>(<span class="tp">string</span>[] oldLines, <span class="tp">string</span>[] newLines)
+{
+    <span class="tp">int</span> m = oldLines.Length, n = newLines.Length;
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[m+<span class="nm">1</span>, n+<span class="nm">1</span>];
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt;= m; i++)
+    <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">1</span>; j &lt;= n; j++)
+        dp[i,j] = oldLines[i-<span class="nm">1</span>] == newLines[j-<span class="nm">1</span>]
+            ? dp[i-<span class="nm">1</span>,j-<span class="nm">1</span>] + <span class="nm">1</span>
+            : <span class="tp">Math</span>.<span class="mt">Max</span>(dp[i-<span class="nm">1</span>,j], dp[i,j-<span class="nm">1</span>]);
+
+    <span class="cm">// Reconstruct diff by backtracking through dp table</span>
+    <span class="tp">var</span> diff = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+    <span class="tp">int</span> r = m, c = n;
+    <span class="kw">while</span> (r &gt; <span class="nm">0</span> || c &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">if</span> (r &gt; <span class="nm">0</span> &amp;&amp; c &gt; <span class="nm">0</span> &amp;&amp; oldLines[r-<span class="nm">1</span>] == newLines[c-<span class="nm">1</span>])
+            { diff.<span class="mt">Add</span>(<span class="st">"  "</span> + oldLines[--r]); c--; }
+        <span class="kw">else if</span> (c &gt; <span class="nm">0</span> &amp;&amp; (r == <span class="nm">0</span> || dp[r,c-<span class="nm">1</span>] &gt;= dp[r-<span class="nm">1</span>,c]))
+            { diff.<span class="mt">Add</span>(<span class="st">"+ "</span> + newLines[--c]); }
+        <span class="kw">else</span>
+            { diff.<span class="mt">Add</span>(<span class="st">"- "</span> + oldLines[--r]); }
+    }
+    diff.<span class="mt">Reverse</span>();
+    <span class="kw">return</span> diff;
+}
+<span class="cm">// Git also uses content-defined chunking with rolling hashes (Rabin-Karp)</span>
+<span class="cm">// to split large files into blocks before diffing — reducing O(n²) work</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ FRAUD DETECTION ═══════════════════════ -->
+  <h2>9. Banking — Real-Time Fraud Detection</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128176;</div>
+      <div class="challenge-meta">
+        <h3>Detect Fraudulent Transaction Clusters</h3>
+        <div class="company">Visa · Mastercard · PayPal · Stripe · HSBC</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Sliding Window (velocity checks)</span>
+          <span class="algo-tag">Union-Find (fraud rings)</span>
+          <span class="algo-tag">Hash Map (deduplication)</span>
+          <span class="algo-tag">Graph Anomaly Detection</span>
+          <span class="phase-ref">Phase 3 — Hash Tables</span>
+          <span class="phase-ref">Phase 5 — Union-Find</span>
+          <span class="phase-ref">Phase 1 — Sliding Window</span>
+          <span class="scale">Visa: 65,000 transactions/second</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Fraud detection runs multiple checks simultaneously: a <strong>sliding window</strong> checks if too many transactions occurred in the last 60 seconds (velocity fraud), <strong>Union-Find</strong> clusters accounts that share devices/IPs to find fraud rings, and <strong>rolling hashes</strong> deduplicate retry attempts.</p>
+
+<pre><span class="cm">// Velocity check: flag if > k transactions in last t seconds (sliding window)</span>
+<span class="kw">public bool</span> <span class="mt">IsVelocityFraud</span>(<span class="tp">Queue</span>&lt;<span class="tp">long</span>&gt; txTimestamps, <span class="tp">long</span> nowMs, <span class="tp">int</span> maxTx, <span class="tp">int</span> windowSec)
+{
+    <span class="tp">long</span> windowMs = windowSec * <span class="nm">1000L</span>;
+    <span class="kw">while</span> (txTimestamps.Count &gt; <span class="nm">0</span> &amp;&amp; nowMs - txTimestamps.<span class="mt">Peek</span>() &gt; windowMs)
+        txTimestamps.<span class="mt">Dequeue</span>(); <span class="cm">// Remove expired transactions</span>
+    txTimestamps.<span class="mt">Enqueue</span>(nowMs);
+    <span class="kw">return</span> txTimestamps.Count &gt; maxTx;
+}
+
+<span class="cm">// Fraud ring detection: group accounts by shared fingerprints</span>
+<span class="cm">// If account A and B share device_id → union them → same cluster = suspicious</span>
+<span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="tp">int</span>, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">FindFraudClusters</span>(
+    <span class="tp">int</span>[] accounts, <span class="tp">Dictionary</span>&lt;<span class="tp">string</span>, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;&gt; fingerprintToAccounts)
+{
+    <span class="tp">int</span>[] parent = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, accounts.Length).<span class="mt">ToArray</span>();
+    <span class="tp">int</span> <span class="mt">Find</span>(<span class="tp">int</span> x) =&gt; parent[x] == x ? x : (parent[x] = <span class="mt">Find</span>(parent[x]));
+
+    <span class="cm">// Accounts sharing any fingerprint (device, IP, card) get unioned</span>
+    <span class="kw">foreach</span> (<span class="tp">var</span> (_, accts) <span class="kw">in</span> fingerprintToAccounts)
+        <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt; accts.Count; i++)
+            parent[<span class="mt">Find</span>(accts[<span class="nm">0</span>])] = <span class="mt">Find</span>(accts[i]);
+
+    <span class="cm">// Group by root → clusters of 3+ accounts are fraud ring candidates</span>
+    <span class="kw">return</span> accounts.<span class="mt">GroupBy</span>(a =&gt; <span class="mt">Find</span>(a))
+                   .<span class="mt">Where</span>(g =&gt; g.Count() &gt;= <span class="nm">3</span>)  <span class="cm">// Suspicious if 3+ share fingerprint</span>
+                   .<span class="mt">ToDictionary</span>(g =&gt; g.Key, g =&gt; g.<span class="mt">ToList</span>());
+}
+<span class="cm">// Visa processes these checks in under 100 milliseconds per transaction</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ VIDEO GAME ═══════════════════════ -->
+  <h2>10. Video Game AI — NPC Pathfinding</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#127918;</div>
+      <div class="challenge-meta">
+        <h3>NPC Navigation in a Game World with Obstacles</h3>
+        <div class="company">Unreal Engine · Unity · Valve · CD Projekt · Ubisoft</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">A* Search</span>
+          <span class="algo-tag">BFS (visibility graph)</span>
+          <span class="algo-tag">Priority Queue</span>
+          <span class="algo-tag">Grid Graph</span>
+          <span class="phase-ref">Phase 5 — Graphs + BFS</span>
+          <span class="scale">Unity: 5B+ installs</span>
+        </div>
+      </div>
+    </div>
+
+    <p>In every open-world game, NPCs (enemies, allies, vehicles) navigate around obstacles in real time. This is A* on a grid or navigation mesh. Games like The Witcher 3 run hundreds of pathfinding queries per frame (60fps), so optimization is critical.</p>
+
+<pre><span class="cm">// A* pathfinding on a 2D game grid (0=walkable, 1=wall)</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;(<span class="tp">int</span>,<span class="tp">int</span>)&gt; <span class="mt">FindPath</span>(<span class="tp">int</span>[,] grid, (<span class="tp">int</span> r, <span class="tp">int</span> c) src, (<span class="tp">int</span> r, <span class="tp">int</span> c) dst)
+{
+    <span class="tp">int</span> rows = grid.<span class="mt">GetLength</span>(<span class="nm">0</span>), cols = grid.<span class="mt">GetLength</span>(<span class="nm">1</span>);
+    <span class="tp">double</span>[,] g = <span class="kw">new</span> <span class="tp">double</span>[rows, cols];
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; rows; i++) <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">0</span>; j &lt; cols; j++) g[i,j] = <span class="tp">double</span>.MaxValue;
+    g[src.r, src.c] = <span class="nm">0</span>;
+
+    <span class="tp">var</span> prev = <span class="kw">new</span> (<span class="tp">int</span>,<span class="tp">int</span>)?[rows, cols];
+    <span class="tp">var</span> pq   = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;(<span class="tp">int</span>,<span class="tp">int</span>), <span class="tp">double</span>&gt;();
+    pq.<span class="mt">Enqueue</span>(src, <span class="mt">H</span>(src, dst));
+
+    <span class="tp">int</span>[] dr = {-<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>,-<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>}; <span class="cm">// 8-directional movement</span>
+    <span class="tp">int</span>[] dc = {<span class="nm">0</span>,<span class="nm">0</span>,-<span class="nm">1</span>,<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">1</span>};
+    <span class="kw">double</span>[] cost = {<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>, <span class="nm">1.414</span>,<span class="nm">1.414</span>,<span class="nm">1.414</span>,<span class="nm">1.414</span>}; <span class="cm">// √2 for diagonal</span>
+
+    <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+    {
+        pq.<span class="mt">TryDequeue</span>(<span class="kw">out var</span> u, <span class="kw">out</span> _);
+        <span class="kw">if</span> (u == dst) <span class="kw">return</span> <span class="mt">ReconstructPath</span>(prev, src, dst);
+        <span class="kw">for</span> (<span class="tp">int</span> d = <span class="nm">0</span>; d &lt; <span class="nm">8</span>; d++) {
+            <span class="tp">int</span> nr = u.Item1+dr[d], nc = u.Item2+dc[d];
+            <span class="kw">if</span> (nr&lt;<span class="nm">0</span>||nr&gt;=rows||nc&lt;<span class="nm">0</span>||nc&gt;=cols||grid[nr,nc]==<span class="nm">1</span>) <span class="kw">continue</span>;
+            <span class="kw">double</span> ng = g[u.Item1,u.Item2] + cost[d];
+            <span class="kw">if</span> (ng &lt; g[nr,nc]) {
+                g[nr,nc] = ng; prev[nr,nc] = u;
+                pq.<span class="mt">Enqueue</span>((nr,nc), ng + <span class="mt">H</span>((nr,nc), dst));
+            }
+        }
+    }
+    <span class="kw">return new</span>(); <span class="cm">// No path</span>
+}
+
+<span class="kw">private double</span> <span class="mt">H</span>((<span class="tp">int</span> r, <span class="tp">int</span> c) a, (<span class="tp">int</span> r, <span class="tp">int</span> c) b)
+    =&gt; <span class="tp">Math</span>.<span class="mt">Sqrt</span>((a.r-b.r)*(a.r-b.r) + (a.c-b.c)*(a.c-b.c)); <span class="cm">// Euclidean</span>
+<span class="cm">// Games use navigation meshes (NavMesh) instead of raw grids for large worlds</span>
+<span class="cm">// NavMesh = convex polygon graph → A* on much fewer nodes</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ DNA / BIOINFORMATICS ═══════════════════════ -->
+  <h2>11. Bioinformatics — DNA Sequence Alignment</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#129516;</div>
+      <div class="challenge-meta">
+        <h3>Align Two DNA Sequences to Find Mutations</h3>
+        <div class="company">NCBI BLAST · 23andMe · Illumina · DeepMind AlphaFold</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Edit Distance DP (Smith-Waterman)</span>
+          <span class="algo-tag">LCS (Needleman-Wunsch)</span>
+          <span class="algo-tag">Rolling Hash (k-mer indexing)</span>
+          <span class="algo-tag">KMP (pattern in genome)</span>
+          <span class="phase-ref">Phase 6 — DP (LCS)</span>
+          <span class="phase-ref">Phase 9 — String Algorithms</span>
+          <span class="scale">Human genome: 3.2 billion base pairs</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Comparing two DNA sequences to find genetic mutations is equivalent to computing edit distance. The Smith-Waterman algorithm (a DP variant) finds the <strong>best local alignment</strong> — the most similar substring between two sequences, ignoring mismatched ends.</p>
+
+<pre><span class="cm">// Smith-Waterman local alignment: find best matching region between two DNA strings</span>
+<span class="cm">// Used to find where a gene mutation occurred</span>
+<span class="kw">public</span> (<span class="tp">int</span> score, <span class="tp">string</span> aligned) <span class="mt">SmithWaterman</span>(<span class="tp">string</span> seq1, <span class="tp">string</span> seq2,
+    <span class="tp">int</span> matchScore = <span class="nm">2</span>, <span class="tp">int</span> mismatch = -<span class="nm">1</span>, <span class="tp">int</span> gap = -<span class="nm">1</span>)
+{
+    <span class="tp">int</span> m = seq1.Length, n = seq2.Length;
+    <span class="tp">int</span>[,] dp = <span class="kw">new</span> <span class="tp">int</span>[m+<span class="nm">1</span>, n+<span class="nm">1</span>];
+    <span class="tp">int</span> maxScore = <span class="nm">0</span>; (<span class="tp">int</span>,<span class="tp">int</span>) maxPos = (<span class="nm">0</span>,<span class="nm">0</span>);
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">1</span>; i &lt;= m; i++)
+    <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">1</span>; j &lt;= n; j++)
+    {
+        <span class="tp">int</span> match = dp[i-<span class="nm">1</span>,j-<span class="nm">1</span>] + (seq1[i-<span class="nm">1</span>]==seq2[j-<span class="nm">1</span>] ? matchScore : mismatch);
+        dp[i,j] = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="tp">Math</span>.<span class="mt">Max</span>(match, <span class="tp">Math</span>.<span class="mt">Max</span>(dp[i-<span class="nm">1</span>,j]+gap, dp[i,j-<span class="nm">1</span>]+gap)));
+        <span class="kw">if</span> (dp[i,j] &gt; maxScore) { maxScore = dp[i,j]; maxPos = (i,j); }
+    }
+
+    <span class="cm">// Traceback from maxPos to find the aligned region</span>
+    <span class="kw">var</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>();
+    <span class="kw">var</span> (r, c) = maxPos;
+    <span class="kw">while</span> (dp[r, c] &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">if</span>      (r &gt; <span class="nm">0</span> &amp;&amp; c &gt; <span class="nm">0</span> &amp;&amp; dp[r,c] == dp[r-<span class="nm">1</span>,c-<span class="nm">1</span>] + (seq1[r-<span class="nm">1</span>]==seq2[c-<span class="nm">1</span>] ? matchScore : mismatch))
+            { sb.<span class="mt">Insert</span>(<span class="nm">0</span>, seq1[--r]); c--; }
+        <span class="kw">else if</span> (r &gt; <span class="nm">0</span> &amp;&amp; dp[r,c] == dp[r-<span class="nm">1</span>,c] + gap)
+            { sb.<span class="mt">Insert</span>(<span class="nm">0</span>, <span class="st">'-'</span>); r--; }
+        <span class="kw">else</span>    { sb.<span class="mt">Insert</span>(<span class="nm">0</span>, <span class="st">'-'</span>); c--; }
+    }
+    <span class="kw">return</span> (maxScore, sb.<span class="mt">ToString</span>());
+}
+<span class="cm">// NCBI BLAST uses this to align your DNA sample against 3 billion known sequences</span>
+<span class="cm">// Hashing (k-mer seeds) narrows candidates before running full Smith-Waterman</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ CDN ═══════════════════════ -->
+  <h2>12. Cloud CDN — Content Delivery &amp; Load Balancing</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#127760;</div>
+      <div class="challenge-meta">
+        <h3>Consistent Hashing — Distribute Requests Across Servers</h3>
+        <div class="company">Akamai · Cloudflare · AWS CloudFront · Netflix CDN</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Consistent Hashing</span>
+          <span class="algo-tag">SortedDictionary (Ring)</span>
+          <span class="algo-tag">LRU Cache (Edge Caching)</span>
+          <span class="phase-ref">Phase 3 — Hash Tables</span>
+          <span class="phase-ref">Phase 2 — LRU Cache</span>
+          <span class="scale">Cloudflare: 55M HTTP requests/sec</span>
+        </div>
+      </div>
+    </div>
+
+    <p>When you stream Netflix, your request is routed to one of hundreds of edge servers. <strong>Consistent hashing</strong> maps both requests and servers onto a virtual ring. A request goes to the nearest server clockwise on the ring — adding/removing servers only remaps a fraction of keys (vs. ~100% with plain modulo hashing).</p>
+
+<pre><span class="kw">public class</span> <span class="tp">ConsistentHashRing</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">SortedDictionary</span>&lt;<span class="tp">int</span>, <span class="tp">string</span>&gt; _ring = <span class="kw">new</span>();
+    <span class="kw">private readonly int</span> _virtualNodes;
+
+    <span class="kw">public</span> <span class="mt">ConsistentHashRing</span>(<span class="tp">int</span> virtualNodes = <span class="nm">150</span>) =&gt; _virtualNodes = virtualNodes;
+
+    <span class="kw">public void</span> <span class="mt">AddServer</span>(<span class="tp">string</span> server)
+    {
+        <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; _virtualNodes; i++)
+        {
+            <span class="tp">int</span> hash = <span class="mt">Hash</span>($<span class="st">"{server}#{i}"</span>);
+            _ring[hash] = server;
+        }
+    }
+
+    <span class="kw">public void</span> <span class="mt">RemoveServer</span>(<span class="tp">string</span> server)
+    {
+        <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; _virtualNodes; i++)
+            _ring.<span class="mt">Remove</span>(<span class="mt">Hash</span>($<span class="st">"{server}#{i}"</span>));
+    }
+
+    <span class="kw">public string</span> <span class="mt">GetServer</span>(<span class="tp">string</span> requestKey)
+    {
+        <span class="kw">if</span> (_ring.Count == <span class="nm">0</span>) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"No servers"</span>);
+        <span class="tp">int</span> hash = <span class="mt">Hash</span>(requestKey);
+        <span class="cm">// Find nearest server clockwise: first key ≥ hash</span>
+        <span class="kw">foreach</span> (<span class="tp">var</span> kv <span class="kw">in</span> _ring)
+            <span class="kw">if</span> (kv.Key &gt;= hash) <span class="kw">return</span> kv.Value;
+        <span class="kw">return</span> _ring.<span class="mt">First</span>().Value; <span class="cm">// Wrap around the ring</span>
+    }
+
+    <span class="kw">private int</span> <span class="mt">Hash</span>(<span class="tp">string</span> key) =&gt; (<span class="tp">int</span>)(<span class="tp">uint</span>)key.<span class="mt">GetHashCode</span>(); <span class="cm">// Always non-negative</span>
+}
+<span class="cm">// Adding 1 server redistributes only 1/n requests (not all)</span>
+<span class="cm">// Virtual nodes ensure even distribution even with heterogeneous servers</span></pre>
+  </div>
+
+  <!-- ═══════════════════════ RIDE HAILING ═══════════════════════ -->
+  <h2 id="ridehail">13. Ride-Hailing — Uber / Lyft</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128663;</div>
+      <div class="challenge-meta">
+        <h3>Find the Nearest Available Driver in Real Time</h3>
+        <div class="company">Uber · Lyft · Grab · Bolt · DiDi</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Geohash (Spatial Indexing)</span>
+          <span class="algo-tag">Min-Heap (Nearest K)</span>
+          <span class="algo-tag">Haversine Distance</span>
+          <span class="phase-ref">Phase 3 — Hash Tables</span>
+          <span class="phase-ref">Phase 4 — Heaps</span>
+          <span class="scale">Uber: 14M location updates/sec</span>
+        </div>
+      </div>
+    </div>
+
+    <p>When you request a ride, Uber must find the nearest available driver among millions of moving vehicles — in under 100ms. Brute-force O(n) scan of every driver is too slow. <strong>Geohashing</strong> partitions the Earth into a grid; only drivers in nearby cells are evaluated, shrinking the candidate pool from millions to dozens.</p>
+
+    <div class="diagram">
+  Geohash Grid (each cell ≈ 1.2km × 0.6km at precision 6):
+  ┌──────┬──────┬──────┬──────┐
+  │ A3   │ B3   │ C3   │ D3   │
+  ├──────┼──────┼──────┼──────┤
+  │ A2   │[B2]  │ C2   │ D2   │  ← rider in cell B2
+  ├──────┼──────┼──────┼──────┤    search B2 + 8 neighbours = 9 cells
+  │ A1   │ B1   │ C1   │ D1   │    ~50-200 drivers vs 5.4M total
+  └──────┴──────┴──────┴──────┘
+  Key insight: nearby cells share a common geohash prefix
+  "9q8yh" and "9q8yk" are adjacent — O(1) dictionary lookup per cell</div>
+
+    <h4>Core Algorithm: Geohash Dictionary + Min-Heap Nearest K</h4>
+    <p>Drivers send GPS updates ~every 4 seconds, re-registering in their current geohash cell. On a ride request, look up the rider's cell plus 8 neighbours, then use a <strong>min-heap</strong> to extract the k nearest drivers by actual Haversine distance.</p>
+
+<pre><span class="kw">public class</span> <span class="tp">DriverDispatch</span>
+{
+    <span class="cm">// Spatial index: geohash cell → list of available drivers in that cell</span>
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="tp">string</span>, <span class="tp">List</span>&lt;<span class="tp">Driver</span>&gt;&gt; _grid = <span class="kw">new</span>();
+
+    <span class="cm">// Encode lat/lng to a grid cell string (simplified geohash)</span>
+    <span class="kw">private string</span> <span class="mt">Encode</span>(<span class="kw">double</span> lat, <span class="kw">double</span> lng, <span class="tp">int</span> bits = <span class="nm">6</span>)
+    {
+        <span class="tp">int</span> latB = (<span class="tp">int</span>)((lat + <span class="nm">90</span>) / <span class="nm">180.0</span> * (<span class="nm">1</span> &lt;&lt; bits));
+        <span class="tp">int</span> lngB = (<span class="tp">int</span>)((lng + <span class="nm">180</span>) / <span class="nm">360.0</span> * (<span class="nm">1</span> &lt;&lt; bits));
+        <span class="kw">return</span> $<span class="st">"{latB}:{lngB}"</span>;
+    }
+
+    <span class="kw">public void</span> <span class="mt">UpdateDriver</span>(<span class="tp">Driver</span> d, <span class="kw">double</span> lat, <span class="kw">double</span> lng)
+    {
+        <span class="cm">// Remove from old cell, register in new cell</span>
+        <span class="kw">if</span> (d.Cell != <span class="kw">null</span> &amp;&amp; _grid.<span class="mt">TryGetValue</span>(d.Cell, <span class="kw">out var</span> old)) old.<span class="mt">Remove</span>(d);
+        d.Cell = <span class="mt">Encode</span>(lat, lng);
+        <span class="kw">if</span> (!_grid.<span class="mt">TryGetValue</span>(d.Cell, <span class="kw">out var</span> list)) _grid[d.Cell] = list = <span class="kw">new</span>();
+        list.<span class="mt">Add</span>(d);
+    }
+
+    <span class="cm">// Find k nearest drivers: geohash lookup → min-heap sort by real distance</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Driver</span>&gt; <span class="mt">FindNearest</span>(<span class="kw">double</span> lat, <span class="kw">double</span> lng, <span class="tp">int</span> k)
+    {
+        <span class="tp">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">Driver</span>, <span class="kw">double</span>&gt;(); <span class="cm">// min-heap: nearest first</span>
+        <span class="kw">foreach</span> (<span class="tp">string</span> cell <span class="kw">in</span> <span class="mt">GetNeighborCells</span>(<span class="mt">Encode</span>(lat, lng))) <span class="cm">// cell + 8 neighbours</span>
+        {
+            <span class="kw">if</span> (!_grid.<span class="mt">TryGetValue</span>(cell, <span class="kw">out var</span> drivers)) <span class="kw">continue</span>;
+            <span class="kw">foreach</span> (<span class="tp">var</span> d <span class="kw">in</span> drivers)
+                pq.<span class="mt">Enqueue</span>(d, <span class="mt">HaversineKm</span>(lat, lng, d.Lat, d.Lng));
+        }
+        <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">Driver</span>&gt;();
+        <span class="kw">while</span> (result.Count &lt; k &amp;&amp; pq.Count &gt; <span class="nm">0</span>) result.<span class="mt">Add</span>(pq.<span class="mt">Dequeue</span>());
+        <span class="kw">return</span> result;
+    }
+    <span class="cm">// GetNeighborCells: decode "latB:lngB", offset ±1 in each direction, re-encode</span>
+}
+<span class="cm">// Uber's real system uses Google S2 geometry: hierarchical spherical cells</span>
+<span class="cm">// Redis GEOSEARCH / GEORADIUS implements the same pattern in O(1) cache lookup</span>
+<span class="cm">// 5.4M drivers × 1 update/4sec = 1.35M location writes/sec → sharded Redis</span></pre>
+
+    <div class="note"><strong>Real-World Scale:</strong> Without geohashing, matching 1 rider against 5.4M drivers takes ~500ms. With geohash precision-6 cells (~1.2km wide), only ~50 drivers per cell are evaluated — &lt;1ms. Uber's S2 library extends this to curved-Earth geometry with hierarchical cells from 0.44cm² to half the globe.</div>
+  </div>
+
+  <!-- ═══════════════════════ STREAMING RECOMMENDATIONS ═══════════════════════ -->
+  <h2 id="streaming">14. Music &amp; Video Streaming — Spotify / Netflix</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#127925;</div>
+      <div class="challenge-meta">
+        <h3>Top-K Personalised Recommendations at Scale</h3>
+        <div class="company">Spotify · Netflix · YouTube · Apple Music · TikTok</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Min-Heap (Top-K Selection)</span>
+          <span class="algo-tag">Sliding Window (Trending)</span>
+          <span class="algo-tag">Hash Map (Frequency Count)</span>
+          <span class="phase-ref">Phase 4 — Heaps</span>
+          <span class="phase-ref">Phase 1 — Sliding Window</span>
+          <span class="scale">Spotify: 600M users · 100M tracks</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Spotify's "Discover Weekly" selects 30 personalised songs from ~50,000 candidates per user. Fully sorting 50,000 songs to take 30 wastes work. A <strong>min-heap of size K</strong> does it in O(n log K) — maintaining only the current Top-30, instantly evicting the weakest candidate as a better one arrives.</p>
+
+    <div class="diagram">
+  Top-K with min-heap of size K=3 (weakest score always on top for fast eviction):
+
+  Candidates: [0.95, 0.82, 0.78, 0.91, 0.65, 0.88, 0.97, ...]
+  Push 0.95 → heap: {0.95}              min=0.95
+  Push 0.82 → heap: {0.82, 0.95}        min=0.82
+  Push 0.78 → heap: {0.78, 0.95, 0.82}  min=0.78
+  Push 0.91 → 0.91 > min(0.78) → pop 0.78, push 0.91 → {0.82, 0.95, 0.91}
+  Push 0.65 → 0.65 < min(0.82) → skip (cannot improve top-3)
+  Push 0.88 → 0.88 > min(0.82) → pop 0.82, push 0.88 → {0.88, 0.95, 0.91}
+  Push 0.97 → 0.97 > min(0.88) → pop 0.88, push 0.97 → {0.91, 0.95, 0.97}
+  Result: [0.91, 0.95, 0.97] — Top-3 in O(n log K) vs O(n log n) full sort</div>
+
+    <h4>Core Algorithm: Min-Heap Top-K + Sliding Window Trending</h4>
+
+<pre><span class="cm">// Top-K recommendations: O(n log K) — optimal for large n, small K</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Song</span>&gt; <span class="mt">TopKRecommendations</span>(<span class="tp">IEnumerable</span>&lt;<span class="tp">Song</span>&gt; candidates, <span class="tp">int</span> k)
+{
+    <span class="cm">// Min-heap: smallest score at top, so we evict weak candidates cheaply</span>
+    <span class="tp">var</span> heap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">Song</span>, <span class="kw">double</span>&gt;();
+    <span class="kw">foreach</span> (<span class="tp">var</span> song <span class="kw">in</span> candidates)
+    {
+        heap.<span class="mt">Enqueue</span>(song, song.Score);
+        <span class="kw">if</span> (heap.Count &gt; k) heap.<span class="mt">Dequeue</span>(); <span class="cm">// evict lowest scorer — O(log K)</span>
+    }
+    <span class="kw">return</span> heap.<span class="mt">UnorderedItems</span>.<span class="mt">Select</span>(x =&gt; x.Element)
+                             .<span class="mt">OrderByDescending</span>(s =&gt; s.Score).<span class="mt">ToList</span>();
+}
+
+<span class="cm">// Trending this week: sliding window over a stream of play events (Kafka-style)</span>
+<span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt; <span class="mt">TrendingTracks</span>(
+    <span class="tp">List</span>&lt;(<span class="tp">long</span> timestampMs, <span class="tp">int</span> trackId)&gt; plays, <span class="tp">long</span> nowMs,
+    <span class="tp">long</span> windowMs = <span class="nm">7L</span> * <span class="nm">24</span> * <span class="nm">3600</span> * <span class="nm">1000</span>) <span class="cm">// 7-day rolling window</span>
+{
+    <span class="tp">var</span> counts = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt;();
+    <span class="tp">int</span> left = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> right = <span class="nm">0</span>; right &lt; plays.Count; right++)
+    {
+        counts[plays[right].trackId] = counts.<span class="mt">GetValueOrDefault</span>(plays[right].trackId) + <span class="nm">1</span>;
+        <span class="kw">while</span> (nowMs - plays[left].timestampMs &gt; windowMs) <span class="cm">// expire old plays</span>
+        {
+            <span class="kw">if</span> (--counts[plays[left].trackId] == <span class="nm">0</span>) counts.<span class="mt">Remove</span>(plays[left].trackId);
+            left++;
+        }
+    }
+    <span class="kw">return</span> counts; <span class="cm">// trackId → play count in the last 7 days</span>
+}
+<span class="cm">// Final score = α × personalisation + β × trending + γ × freshness</span>
+<span class="cm">// Then TopKRecommendations(scoredCandidates, k=30) → your Discover Weekly</span>
+<span class="cm">// Runs as a Spark batch job every Monday for 600M users in parallel</span></pre>
+
+    <div class="tip"><strong>Real-World Scale:</strong> Spotify generates Discover Weekly for 600M users every Monday. Per user: ~50K candidates × log(30) ≈ 750K heap operations. Across 600M users on a distributed Spark cluster, this completes over the weekend. The min-heap ensures each worker holds only 30 items in memory regardless of the candidate pool size — a crucial memory bound at scale.</div>
+  </div>
+
+  <!-- ═══════════════════════ DATABASE ═══════════════════════ -->
+  <h2 id="database">15. Database Indexing — PostgreSQL / SQL Server</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128451;</div>
+      <div class="challenge-meta">
+        <h3>B-Tree Index — Fast Range Queries on a Billion-Row Table</h3>
+        <div class="company">PostgreSQL · MySQL · SQL Server · Oracle · SQLite</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">B-Tree (Balanced m-way Tree)</span>
+          <span class="algo-tag">Binary Search</span>
+          <span class="algo-tag">Linked Leaf Pages</span>
+          <span class="phase-ref">Phase 3 — Trees / BST</span>
+          <span class="phase-ref">Phase 7 — Binary Search</span>
+          <span class="scale">Handles trillion-row tables</span>
+        </div>
+      </div>
+    </div>
+
+    <p>When you run <code>SELECT * FROM orders WHERE date BETWEEN '2024-01-01' AND '2024-12-31'</code>, without an index the database scans every row (O(n) — catastrophic on a billion rows). A <strong>B-Tree index</strong> jumps directly to the matching range in O(log n) disk-page reads. Every <code>CREATE INDEX</code> builds one.</p>
+
+    <div class="diagram">
+  B-Tree index on orders.date (m = 100 keys/page, each page = 8 KB):
+
+           [Jan'23 | Jul'23 | Jan'24]              ← root (1 disk read)
+          /         |            |         \
+  [..Dec'22]  [Jan–Jun'23]  [Jul–Dec'23]  [Jan'24–Dec'24]  ← internal
+                                                  |
+                                    [Jan 1 → row#1093847]   ← leaf pages
+                                    [Jan 2 → row#1093901]   (linked list
+                                    [Jan 3 → row#1094002]    for range scan)
+                                    ...
+
+  Query WHERE date BETWEEN Jan'24 AND Dec'24:
+  → 3 disk reads (root → internal → first leaf) → stream leaf entries forward
+  vs 1,000,000,000 row reads for a full table scan</div>
+
+    <h4>Core Algorithm: Binary Search to Find Range Start → Stream Leaf Pages</h4>
+
+<pre><span class="cm">// Simulate a B-Tree index using SortedList (uses binary search internally)</span>
+<span class="kw">public class</span> <span class="tp">BTreeIndex</span>&lt;<span class="tp">TKey</span>, <span class="tp">TRow</span>&gt; <span class="kw">where</span> <span class="tp">TKey</span> : <span class="tp">IComparable</span>&lt;<span class="tp">TKey</span>&gt;
+{
+    <span class="cm">// SortedList keeps keys in order — mirrors B-Tree leaf pages in sorted sequence</span>
+    <span class="kw">private readonly</span> <span class="tp">SortedList</span>&lt;<span class="tp">TKey</span>, <span class="tp">List</span>&lt;<span class="tp">TRow</span>&gt;&gt; _pages = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="tp">TKey</span> key, <span class="tp">TRow</span> row)
+    {
+        <span class="kw">if</span> (!_pages.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> rows)) _pages[key] = rows = <span class="kw">new</span>();
+        rows.<span class="mt">Add</span>(row);
+    }
+
+    <span class="cm">// Range scan: O(log n) to find start + O(k) to stream k matching rows</span>
+    <span class="kw">public</span> <span class="tp">IEnumerable</span>&lt;<span class="tp">TRow</span>&gt; <span class="mt">RangeScan</span>(<span class="tp">TKey</span> lo, <span class="tp">TKey</span> hi)
+    {
+        <span class="cm">// Binary search for the first key ≥ lo (B-Tree internal node traversal)</span>
+        <span class="tp">int</span> left = <span class="nm">0</span>, right = _pages.Count - <span class="nm">1</span>, start = _pages.Count;
+        <span class="kw">while</span> (left &lt;= right)
+        {
+            <span class="tp">int</span> mid = (left + right) / <span class="nm">2</span>;
+            <span class="kw">if</span> (_pages.<span class="mt">GetKeyAtIndex</span>(mid).<span class="mt">CompareTo</span>(lo) &gt;= <span class="nm">0</span>)
+                { start = mid; right = mid - <span class="nm">1</span>; }
+            <span class="kw">else</span> left = mid + <span class="nm">1</span>;
+        }
+        <span class="cm">// Stream forward through leaf pages while key ≤ hi (linked-list scan)</span>
+        <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; _pages.Count; i++)
+        {
+            <span class="kw">if</span> (_pages.<span class="mt">GetKeyAtIndex</span>(i).<span class="mt">CompareTo</span>(hi) &gt; <span class="nm">0</span>) <span class="kw">yield break</span>;
+            <span class="kw">foreach</span> (<span class="tp">var</span> row <span class="kw">in</span> _pages.<span class="mt">GetValueAtIndex</span>(i)) <span class="kw">yield return</span> row;
+        }
+    }
+}
+<span class="cm">// Same as: SELECT * FROM orders WHERE date BETWEEN lo AND hi</span>
+<span class="cm">// Real PostgreSQL B-Tree: 8KB pages, ~100 keys/page</span>
+<span class="cm">// On 1 billion rows: height = log₁₀₀(1B) ≈ 5 → max 5 disk reads to reach leaf</span>
+<span class="cm">// CREATE INDEX is O(n log n) to build; every subsequent query is O(log n + k)</span></pre>
+
+    <div class="note"><strong>Real-World Scale:</strong> On a 1-billion-row table, a B-Tree date range query touches just 4–5 disk pages to reach the first matching row, then streams results sequentially. Without an index: 1 billion row reads. With index: 5 reads. Adding <code>CREATE INDEX ON orders(date)</code> can make a query <strong>200,000,000× faster</strong>. This is why database indexing is the highest-ROI optimization in backend engineering.</div>
+  </div>
+
+  <!-- ═══════════════════════ BLOCKCHAIN ═══════════════════════ -->
+  <h2 id="blockchain">16. Blockchain — Bitcoin Transaction Verification</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#129981;</div>
+      <div class="challenge-meta">
+        <h3>Merkle Tree — Prove a Transaction Exists Without Downloading the Whole Block</h3>
+        <div class="company">Bitcoin · Ethereum · Solana · Hyperledger · AWS QLDB</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Merkle Tree (Hash Tree)</span>
+          <span class="algo-tag">Divide &amp; Conquer (Bottom-up)</span>
+          <span class="algo-tag">SHA-256 Cryptographic Hash</span>
+          <span class="phase-ref">Phase 3 — Trees / Hashing</span>
+          <span class="phase-ref">Phase 4 — Tree Traversal</span>
+          <span class="scale">Bitcoin: 900M+ transactions</span>
+        </div>
+      </div>
+    </div>
+
+    <p>A Bitcoin block holds ~3000 transactions (~1.5MB). A mobile wallet needs to confirm one transaction without downloading the full block. A <strong>Merkle tree</strong> hashes pairs of transactions bottom-up into a single root hash. To prove TxA is in the block requires only O(log n) sibling hashes — just 12 hashes (384 bytes) for a 4096-transaction block.</p>
+
+    <div class="diagram">
+  Merkle Tree (4 transactions → height = 2):
+
+                 RootHash = H(H(AB) ‖ H(CD))
+                /                             \
+         H(TxA ‖ TxB)                    H(TxC ‖ TxD)
+          /        \                      /        \
+       H(TxA)    H(TxB)              H(TxC)    H(TxD)
+
+  Merkle Proof that TxA is in block (mobile wallet):
+    Need: H(TxB)       — sibling at leaf level
+          H(TxC ‖ TxD) — sibling at next level
+  Verify: H(H(H(TxA) ‖ H(TxB)) ‖ H(TxC ‖ TxD)) == RootHash? ✓
+  Only 2 hashes (64 bytes) to verify 1 of 4 transactions
+  Only 12 hashes (384 bytes) to verify 1 of 4096 transactions</div>
+
+    <h4>Core Algorithm: Build Merkle Tree + Generate and Verify Proof</h4>
+
+<pre><span class="kw">public class</span> <span class="tp">MerkleTree</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">List</span>&lt;<span class="tp">byte</span>[]&gt; _leaves;
+
+    <span class="kw">public</span> <span class="mt">MerkleTree</span>(<span class="tp">IEnumerable</span>&lt;<span class="tp">string</span>&gt; transactions)
+        =&gt; _leaves = transactions.<span class="mt">Select</span>(<span class="mt">Hash</span>).<span class="mt">ToList</span>();
+
+    <span class="cm">// Build bottom-up: pair-hash each level until one root hash remains</span>
+    <span class="kw">public</span> <span class="tp">byte</span>[] <span class="mt">Root</span>()
+    {
+        <span class="tp">var</span> level = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">byte</span>[]&gt;(_leaves);
+        <span class="kw">while</span> (level.Count &gt; <span class="nm">1</span>)
+        {
+            <span class="kw">if</span> (level.Count % <span class="nm">2</span> != <span class="nm">0</span>) level.<span class="mt">Add</span>(level[^<span class="nm">1</span>]); <span class="cm">// duplicate last if odd count</span>
+            <span class="tp">var</span> next = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">byte</span>[]&gt;();
+            <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; level.Count; i += <span class="nm">2</span>)
+                next.<span class="mt">Add</span>(<span class="mt">HashPair</span>(level[i], level[i + <span class="nm">1</span>]));
+            level = next;
+        }
+        <span class="kw">return</span> level[<span class="nm">0</span>];
+    }
+
+    <span class="cm">// Merkle proof: O(log n) sibling hashes needed to prove leaf at index</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;(<span class="tp">byte</span>[] sibling, <span class="kw">bool</span> siblingOnRight)&gt; <span class="mt">GetProof</span>(<span class="tp">int</span> idx)
+    {
+        <span class="tp">var</span> proof = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">byte</span>[], <span class="kw">bool</span>)&gt;();
+        <span class="tp">var</span> level = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">byte</span>[]&gt;(_leaves);
+        <span class="kw">while</span> (level.Count &gt; <span class="nm">1</span>)
+        {
+            <span class="kw">if</span> (level.Count % <span class="nm">2</span> != <span class="nm">0</span>) level.<span class="mt">Add</span>(level[^<span class="nm">1</span>]);
+            <span class="tp">bool</span> isLeft = idx % <span class="nm">2</span> == <span class="nm">0</span>;              <span class="cm">// is current node a left child?</span>
+            proof.<span class="mt">Add</span>((level[isLeft ? idx + <span class="nm">1</span> : idx - <span class="nm">1</span>], !isLeft)); <span class="cm">// add sibling</span>
+            <span class="tp">var</span> next = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">byte</span>[]&gt;();
+            <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; level.Count; i += <span class="nm">2</span>)
+                next.<span class="mt">Add</span>(<span class="mt">HashPair</span>(level[i], level[i + <span class="nm">1</span>]));
+            level = next; idx /= <span class="nm">2</span>;
+        }
+        <span class="kw">return</span> proof;
+    }
+
+    <span class="cm">// Verify: mobile wallet recomputes root from just O(log n) hashes</span>
+    <span class="kw">public static bool</span> <span class="mt">Verify</span>(<span class="tp">string</span> tx,
+        <span class="tp">List</span>&lt;(<span class="tp">byte</span>[] sibling, <span class="kw">bool</span> sibOnRight)&gt; proof, <span class="tp">byte</span>[] expectedRoot)
+    {
+        <span class="tp">byte</span>[] cur = <span class="mt">Hash</span>(tx);
+        <span class="kw">foreach</span> (<span class="tp">var</span> (sib, right) <span class="kw">in</span> proof)
+            cur = right ? <span class="mt">HashPair</span>(cur, sib) : <span class="mt">HashPair</span>(sib, cur);
+        <span class="kw">return</span> cur.<span class="mt">SequenceEqual</span>(expectedRoot);
+    }
+
+    <span class="kw">private static</span> <span class="tp">byte</span>[] <span class="mt">Hash</span>(<span class="tp">string</span> s)
+        =&gt; <span class="tp">SHA256</span>.<span class="mt">HashData</span>(<span class="tp">Encoding</span>.UTF8.<span class="mt">GetBytes</span>(s));
+    <span class="kw">private static</span> <span class="tp">byte</span>[] <span class="mt">HashPair</span>(<span class="tp">byte</span>[] a, <span class="tp">byte</span>[] b)
+        =&gt; <span class="tp">SHA256</span>.<span class="mt">HashData</span>([..a, ..b]);
+}
+<span class="cm">// Bitcoin SPV wallets: store only 80-byte block headers (not full blocks)</span>
+<span class="cm">// To verify a payment: request Merkle proof → download ~384 bytes vs 1.5MB block</span>
+<span class="cm">// Ethereum extends this to Merkle-Patricia Tries for state, transactions, receipts</span></pre>
+
+    <div class="tip"><strong>Real-World Scale:</strong> Bitcoin SPV (Simplified Payment Verification) wallets — used by millions of mobile apps — never download the full 500GB+ blockchain. They store only 80-byte block headers and request Merkle proofs on demand. To verify 1 transaction in a 4096-transaction block: download 12 hashes (384 bytes) vs ~2MB of raw transactions. That's a 5000× bandwidth saving — all thanks to a binary hash tree.</div>
+  </div>
+
+  <!-- ═══════════════════════ CALENDAR ═══════════════════════ -->
+  <h2 id="calendar">17. Calendar &amp; Scheduling — Google Calendar / Calendly</h2>
+
+  <div class="challenge">
+    <div class="challenge-header">
+      <div class="challenge-icon">&#128197;</div>
+      <div class="challenge-meta">
+        <h3>Merge Meeting Conflicts, Count Rooms &amp; Find Free Time Slots</h3>
+        <div class="company">Google Calendar · Outlook · Calendly · Zoom · Microsoft Teams</div>
+        <div style="margin-top:6px">
+          <span class="algo-tag">Interval Merge (Sort + Sweep)</span>
+          <span class="algo-tag">Min-Heap (Meeting Rooms)</span>
+          <span class="algo-tag">Two Pointers (Free Slots)</span>
+          <span class="phase-ref">Phase 1 — Arrays / Two Pointers</span>
+          <span class="phase-ref">Phase 4 — Heaps</span>
+          <span class="phase-ref">Phase 7 — Sorting</span>
+          <span class="scale">Google Calendar: 500M users</span>
+        </div>
+      </div>
+    </div>
+
+    <p>Calendar apps constantly solve three interval problems: (1) <strong>merge overlapping meetings</strong> into consolidated busy blocks, (2) <strong>count rooms needed</strong> at peak (minimum conference rooms for a day), and (3) <strong>find free slots</strong> long enough for a new meeting. All three are solved with sort + sweep line.</p>
+
+    <div class="diagram">
+  Meetings: [9-11] [10-12] [13-15] [14-16] [16-17]
+  Sorted by start: same order
+
+  Merge overlapping (sweep line):
+    [9-11] + [10-12] → overlap → extend to [9-12]
+    [9-12] + [13-15] → gap    → new block [13-15]
+    [13-15] + [14-16] → overlap → extend to [13-16]
+    [13-16] + [16-17] → touch  → extend to [13-17]
+  Result: [9-12] [13-17]   → free slot: [12-13] = 1 hr gap
+
+  Min-rooms (heap tracks active end times):
+    9am: add 11  → endTimes:{11}       → 1 room
+    10am: add 12 → endTimes:{11,12}    → 2 rooms
+    11am: add 15 → pop 11, add 15      → still 2 rooms (reuse freed room)
+    14am: add 16 → pop 12, add 16      → still 2 rooms</div>
+
+    <h4>Core Algorithm: Interval Merge + Min-Heap Room Counter + Free Slot Finder</h4>
+
+<pre><span class="cm">// Problem 1: Merge overlapping meetings — collapses conflicts into busy blocks</span>
+<span class="kw">public int</span>[][] <span class="mt">MergeIntervals</span>(<span class="tp">int</span>[][] meetings)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(meetings, (a, b) =&gt; a[<span class="nm">0</span>] - b[<span class="nm">0</span>]); <span class="cm">// sort by start time — O(n log n)</span>
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>[]&gt; { meetings[<span class="nm">0</span>] };
+    <span class="kw">foreach</span> (<span class="tp">var</span> m <span class="kw">in</span> meetings.<span class="mt">Skip</span>(<span class="nm">1</span>))
+    {
+        <span class="tp">var</span> last = result[^<span class="nm">1</span>];
+        <span class="kw">if</span> (m[<span class="nm">0</span>] &lt;= last[<span class="nm">1</span>])              <span class="cm">// overlaps or touches → extend</span>
+            last[<span class="nm">1</span>] = <span class="tp">Math</span>.<span class="mt">Max</span>(last[<span class="nm">1</span>], m[<span class="nm">1</span>]);
+        <span class="kw">else</span>
+            result.<span class="mt">Add</span>(m);               <span class="cm">// gap → start new block</span>
+    }
+    <span class="kw">return</span> result.<span class="mt">ToArray</span>();
+}
+
+<span class="cm">// Problem 2: Minimum rooms needed = max simultaneous meetings</span>
+<span class="kw">public int</span> <span class="mt">MinRoomsRequired</span>(<span class="tp">int</span>[][] meetings)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(meetings, (a, b) =&gt; a[<span class="nm">0</span>] - b[<span class="nm">0</span>]);
+    <span class="tp">var</span> endTimes = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt;(); <span class="cm">// min-heap of active meeting end times</span>
+    <span class="kw">foreach</span> (<span class="tp">var</span> m <span class="kw">in</span> meetings)
+    {
+        <span class="kw">if</span> (endTimes.Count &gt; <span class="nm">0</span> &amp;&amp; endTimes.<span class="mt">Peek</span>() &lt;= m[<span class="nm">0</span>])
+            endTimes.<span class="mt">Dequeue</span>();        <span class="cm">// reuse room whose meeting just ended</span>
+        endTimes.<span class="mt">Enqueue</span>(m[<span class="nm">1</span>], m[<span class="nm">1</span>]); <span class="cm">// assign room, track its end time</span>
+    }
+    <span class="kw">return</span> endTimes.Count; <span class="cm">// rooms still occupied = peak rooms needed</span>
+}
+
+<span class="cm">// Problem 3: Find free slots ≥ minDuration for a new meeting</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;(<span class="tp">int</span> start, <span class="tp">int</span> end)&gt; <span class="mt">FindFreeSlots</span>(
+    <span class="tp">int</span>[][] busy, <span class="tp">int</span> dayStart, <span class="tp">int</span> dayEnd, <span class="tp">int</span> minDuration)
+{
+    <span class="tp">var</span> merged = <span class="mt">MergeIntervals</span>(busy);
+    <span class="tp">var</span> free = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">int</span>, <span class="tp">int</span>)&gt;();
+    <span class="tp">int</span> prev = dayStart;
+    <span class="kw">foreach</span> (<span class="tp">var</span> m <span class="kw">in</span> merged)
+    {
+        <span class="kw">if</span> (m[<span class="nm">0</span>] - prev &gt;= minDuration) free.<span class="mt">Add</span>((prev, m[<span class="nm">0</span>])); <span class="cm">// gap before meeting</span>
+        prev = <span class="tp">Math</span>.<span class="mt">Max</span>(prev, m[<span class="nm">1</span>]);
+    }
+    <span class="kw">if</span> (dayEnd - prev &gt;= minDuration) free.<span class="mt">Add</span>((prev, dayEnd)); <span class="cm">// gap after last</span>
+    <span class="kw">return</span> free;
+}
+<span class="cm">// Calendly runs FindFreeSlots across your calendar entries to show booking windows</span>
+<span class="cm">// Google "Find a time": fetch all attendees' calendars → intersect free slots</span>
+<span class="cm">// Intersection of two free-slot lists: O(m+n) two-pointer merge</span></pre>
+
+    <div class="note"><strong>Real-World Scale:</strong> Calendly processes millions of scheduling requests daily. For each booking link visit, it fetches the host's calendar (n busy slots), runs MergeIntervals + FindFreeSlots in O(n log n), and displays available windows in under 200ms. Google "Find a time" extends this to 10+ attendees by intersecting each person's free slots with a two-pointer O(m+n) merge — the same algorithm you learned in Phase 1.</div>
+  </div>
+
+  <!-- ══════════════════════ SUMMARY TABLE ══════════════════════ -->
+  <h2>Challenge → Algorithm Mapping</h2>
+  <table>
+    <tr>
+      <th>Real-World System</th>
+      <th>Core Algorithm</th>
+      <th>Course Phase</th>
+      <th>Problem Size</th>
+    </tr>
+    <tr><td>Google Maps routing</td><td>Dijkstra / A* / Contraction Hierarchies</td><td>Phase 5, 9</td><td>10⁹ nodes</td></tr>
+    <tr><td>LinkedIn recommendations</td><td>BFS (2-hop), Union-Find</td><td>Phase 5</td><td>10⁹ users</td></tr>
+    <tr><td>npm / NuGet install</td><td>Topological Sort (Kahn's), cycle detection</td><td>Phase 5, 9</td><td>2.5M packages</td></tr>
+    <tr><td>Google Search autocomplete</td><td>Trie + Edit Distance DP + Inverted Index</td><td>Phase 4, 6, 9</td><td>8.5B queries/day</td></tr>
+    <tr><td>C# compiler / Roslyn</td><td>Stack (expression), Trie (symbols), Topo sort</td><td>Phase 2, 4, 5</td><td>Millions of LOC/sec</td></tr>
+    <tr><td>NASDAQ order book</td><td>SortedDictionary, Priority Queue</td><td>Phase 4</td><td>30B orders/day</td></tr>
+    <tr><td>Amazon warehouse robots</td><td>Bitmask DP (TSP), Dijkstra (grid)</td><td>Phase 5, 10</td><td>750K robots</td></tr>
+    <tr><td>Git diff / merge</td><td>LCS DP, DAG, Rolling Hash</td><td>Phase 6, 9</td><td>420M repos</td></tr>
+    <tr><td>Visa fraud detection</td><td>Sliding Window, Union-Find, Hash Map</td><td>Phase 1, 3, 5</td><td>65K tx/sec</td></tr>
+    <tr><td>Game NPC pathfinding</td><td>A* on grid / NavMesh</td><td>Phase 5</td><td>100s queries/frame</td></tr>
+    <tr><td>DNA alignment (NCBI BLAST)</td><td>Smith-Waterman DP, KMP, Rolling Hash</td><td>Phase 6, 9</td><td>3.2B base pairs</td></tr>
+    <tr><td>CDN load balancing</td><td>Consistent Hashing, LRU Cache</td><td>Phase 2, 3</td><td>55M req/sec</td></tr>
+    <tr><td>Uber/Lyft driver dispatch</td><td>Geohash (spatial index) + Min-Heap nearest-K</td><td>Phase 3, 4</td><td>14M updates/sec</td></tr>
+    <tr><td>Spotify/Netflix Top-K</td><td>Min-Heap Top-K selection + Sliding Window</td><td>Phase 1, 4</td><td>600M users</td></tr>
+    <tr><td>PostgreSQL B-Tree index</td><td>B-Tree + Binary Search range scan</td><td>Phase 3, 7</td><td>Trillion-row tables</td></tr>
+    <tr><td>Bitcoin Merkle proof</td><td>Merkle Tree (hash tree) + SHA-256</td><td>Phase 3, 4</td><td>900M+ transactions</td></tr>
+    <tr><td>Google Calendar scheduling</td><td>Interval Merge + Min-Heap rooms + Two Pointers</td><td>Phase 1, 4, 7</td><td>500M users</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>The Takeaway:</strong> Every algorithm in this course appears in production systems handling billions of operations. The same Dijkstra you coded in Phase 5 runs inside Google Maps. The same LCS DP from Phase 6 is what <code>git diff</code> uses. The same Trie from Phase 4 powers IDE autocomplete. You now have the vocabulary to build — or contribute to — any of these systems.
+  </div>
+
+  <div class="nav-bar">
+    <a href="phase10/m12c_capstone_practice.html">&#8592; Capstone Practice</a>
+    <a href="Index.html" class="home">&#8962; Course Home</a>
+  </div>
+
+</div>
+</body>
+</html>

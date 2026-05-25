@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3E — Practice: Stacks &amp; Queues</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        /* Problem cards */
+        .problem-card { border: 2px solid #dee2e6; border-radius: 12px; padding: 24px 28px; margin: 32px 0; background: #fafafa; }
+        .problem-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+        .problem-num { font-size: 1.3em; font-weight: 700; color: #2c3e50; }
+        .problem-title { font-size: 1.25em; color: #1a5276; font-weight: 600; margin-left: 10px; }
+        .badges-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .diff { padding: 3px 12px; border-radius: 20px; font-size: 0.82em; font-weight: 700; }
+        .diff.easy   { background: #d5f5e3; color: #1e8449; }
+        .diff.medium { background: #fef9e7; color: #b7950b; }
+        .diff.hard   { background: #fdecea; color: #c0392b; }
+        .meta-badge { background: #eaf0fb; color: #1a5276; padding: 3px 10px; border-radius: 20px; font-size: 0.82em; }
+        /* Spoiler toggle */
+        input[type=checkbox].spoiler-toggle { display: none; }
+        .spoiler-label { display: inline-block; background: #2c3e50; color: #fff; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9em; margin-top: 12px; user-select: none; }
+        .spoiler-label:hover { background: #1a252f; }
+        .spoiler-content { display: none; margin-top: 14px; }
+        .spoiler-toggle:checked ~ .spoiler-label { background: #16a085; }
+        .spoiler-toggle:checked ~ .spoiler-label ~ .spoiler-content { display: block; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .spoiler-content { display: block !important; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 3 — Part E</h1>
+    <div class="tagline">Practice — 15 Stacks &amp; Queues Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From balanced parentheses to sliding window maximum — test your mastery</p>
+    <div class="badges">
+        <span>📝 15 Problems</span>
+        <span>🟢 Easy × 5</span>
+        <span>🟡 Medium × 7</span>
+        <span>🔴 Hard × 3</span>
+        <span>💻 Language: C#</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 3 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m03a_stacks.html">Stacks</a><br>
+    ✅ <strong>Part B</strong> — <a href="m03b_queues.html">Queues &amp; Deque</a><br>
+    ✅ <strong>Part C</strong> — <a href="m03c_priority_queue.html">Priority Queue</a><br>
+    ✅ <strong>Part D</strong> — <a href="m03d_monotonic.html">Monotonic Stack &amp; Queue</a><br>
+    ▶ <strong>Part E</strong> — <em>You are here</em> — Practice<br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="tip">
+    <strong>💡 How to Use This Page:</strong> Try each problem on your own first. When you're ready,
+    click "Show Solution" to reveal the full C# solution with explanations. Solutions are hidden by
+    default — no JavaScript required.
+</div>
+
+<!-- ═══════ EASY SECTION ═══════ -->
+<div class="section-heading">Easy Problems (1–5)</div>
+
+<!-- Problem 1 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#1</span><span class="problem-title">Valid Parentheses</span></div>
+        <div class="badges-row">
+            <span class="diff easy">Easy</span>
+            <span class="meta-badge">Stack</span>
+            <span class="meta-badge">String</span>
+        </div>
+    </div>
+    <p>Given a string <code>s</code> containing only <code>'('</code>, <code>')'</code>, <code>'{'</code>,
+    <code>'}'</code>, <code>'['</code>, <code>']'</code>, determine if the input string is valid.
+    A string is valid if every open bracket is closed by the same type of bracket in the correct order.</p>
+    <strong>Examples:</strong>
+    <ul>
+        <li><code>"()"</code> → <code>true</code></li>
+        <li><code>"()[]{}"</code> → <code>true</code></li>
+        <li><code>"(]"</code> → <code>false</code></li>
+        <li><code>"([)]"</code> → <code>false</code></li>
+    </ul>
+    <strong>Constraints:</strong> 1 ≤ s.length ≤ 10⁴. Time: O(n). Space: O(n).
+
+    <input type="checkbox" class="spoiler-toggle" id="p1">
+    <label class="spoiler-label" for="p1">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Use a stack. Push opening brackets. When a closing bracket appears, pop and check if it matches. Stack must be empty at the end.</div>
+        <pre><span class="kw">public bool</span> <span class="mt">IsValid</span>(<span class="kw">string</span> s)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">char</span>&gt; stack = <span class="kw">new</span>();
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+    {
+        <span class="kw">if</span> (c <span class="kw">is</span> <span class="st">'('</span> <span class="kw">or</span> <span class="st">'['</span> <span class="kw">or</span> <span class="st">'{'</span>)
+        {
+            stack.<span class="mt">Push</span>(c);
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">if</span> (stack.Count == <span class="nm">0</span>) <span class="kw">return false</span>;
+            <span class="kw">char</span> top = stack.<span class="mt">Pop</span>();
+            <span class="kw">if</span> (c == <span class="st">')'</span> &amp;&amp; top != <span class="st">'('</span>) <span class="kw">return false</span>;
+            <span class="kw">if</span> (c == <span class="st">']'</span> &amp;&amp; top != <span class="st">'['</span>) <span class="kw">return false</span>;
+            <span class="kw">if</span> (c == <span class="st">'}'</span> &amp;&amp; top != <span class="st">'{'</span>) <span class="kw">return false</span>;
+        }
+    }
+    <span class="kw">return</span> stack.Count == <span class="nm">0</span>;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 2 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#2</span><span class="problem-title">Min Stack</span></div>
+        <div class="badges-row">
+            <span class="diff easy">Easy</span>
+            <span class="meta-badge">Stack</span>
+            <span class="meta-badge">Design</span>
+        </div>
+    </div>
+    <p>Design a stack that supports Push, Pop, Top, and retrieving the minimum element in O(1).
+    Implement the <code>MinStack</code> class with: <code>Push(val)</code>, <code>Pop()</code>,
+    <code>Top()</code> (returns top element), and <code>GetMin()</code> (returns minimum element).</p>
+    <strong>Example:</strong>
+    <pre style="margin-top:8px;font-size:0.88em;">MinStack minStack = new MinStack();
+minStack.Push(-2); minStack.Push(0); minStack.Push(-3);
+minStack.GetMin(); // returns -3
+minStack.Pop();
+minStack.Top();    // returns 0
+minStack.GetMin(); // returns -2</pre>
+
+    <input type="checkbox" class="spoiler-toggle" id="p2">
+    <label class="spoiler-label" for="p2">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Maintain two stacks: the main stack and a "min stack". The min stack's top always holds the current minimum. Only push to min stack when the new value is ≤ current minimum; only pop from min stack when the popped value equals the current minimum.</div>
+        <pre><span class="kw">public class</span> <span class="tp">MinStack</span>
+{
+    <span class="kw">private</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; main = <span class="kw">new</span>();
+    <span class="kw">private</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; mins = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">Push</span>(<span class="kw">int</span> val)
+    {
+        main.<span class="mt">Push</span>(val);
+        <span class="kw">if</span> (mins.Count == <span class="nm">0</span> || val &lt;= mins.<span class="mt">Peek</span>())
+            mins.<span class="mt">Push</span>(val);
+    }
+
+    <span class="kw">public void</span> <span class="mt">Pop</span>()
+    {
+        <span class="kw">int</span> val = main.<span class="mt">Pop</span>();
+        <span class="kw">if</span> (val == mins.<span class="mt">Peek</span>()) mins.<span class="mt">Pop</span>();
+    }
+
+    <span class="kw">public int</span> <span class="mt">Top</span>()    =&gt; main.<span class="mt">Peek</span>();
+    <span class="kw">public int</span> <span class="mt">GetMin</span>() =&gt; mins.<span class="mt">Peek</span>();
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 3 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#3</span><span class="problem-title">Evaluate Reverse Polish Notation</span></div>
+        <div class="badges-row">
+            <span class="diff easy">Easy</span>
+            <span class="meta-badge">Stack</span>
+            <span class="meta-badge">Math</span>
+        </div>
+    </div>
+    <p>Evaluate the value of an expression in Reverse Polish Notation (postfix). Valid operators are
+    <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> (integer division, truncate toward zero).
+    Each operand or operator is a separate token.</p>
+    <strong>Examples:</strong>
+    <ul>
+        <li><code>["2","1","+","3","*"]</code> → <code>9</code> — ((2+1)*3)</li>
+        <li><code>["4","13","5","/","+"]</code> → <code>6</code> — (4+(13/5))</li>
+    </ul>
+
+    <input type="checkbox" class="spoiler-toggle" id="p3">
+    <label class="spoiler-label" for="p3">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Scan tokens left to right. Push numbers. When an operator appears, pop two numbers (b = right operand, a = left), compute result, push back.</div>
+        <pre><span class="kw">public int</span> <span class="mt">EvalRPN</span>(<span class="kw">string</span>[] tokens)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+    <span class="kw">foreach</span> (<span class="kw">string</span> t <span class="kw">in</span> tokens)
+    {
+        <span class="kw">if</span> (<span class="kw">int</span>.<span class="mt">TryParse</span>(t, <span class="kw">out int</span> num))
+        {
+            stack.<span class="mt">Push</span>(num);
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">int</span> b = stack.<span class="mt">Pop</span>(), a = stack.<span class="mt">Pop</span>();
+            stack.<span class="mt">Push</span>(t <span class="kw">switch</span>
+            {
+                <span class="st">"+"</span> =&gt; a + b,
+                <span class="st">"-"</span> =&gt; a - b,
+                <span class="st">"*"</span> =&gt; a * b,
+                <span class="st">"/"</span> =&gt; a / b,  <span class="cm">// C# integer division truncates toward zero</span>
+                _   =&gt; <span class="kw">throw new</span> <span class="tp">ArgumentException</span>()
+            });
+        }
+    }
+    <span class="kw">return</span> stack.<span class="mt">Pop</span>();
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 4 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#4</span><span class="problem-title">Implement Queue Using Two Stacks</span></div>
+        <div class="badges-row">
+            <span class="diff easy">Easy</span>
+            <span class="meta-badge">Stack</span>
+            <span class="meta-badge">Queue</span>
+            <span class="meta-badge">Design</span>
+        </div>
+    </div>
+    <p>Implement a first-in first-out (FIFO) queue using only two stacks. The queue should support
+    <code>Push</code> (adds to back), <code>Pop</code> (removes from front), <code>Peek</code> (views front),
+    and <code>Empty</code>. All operations should be amortized O(1).</p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p4">
+    <label class="spoiler-label" for="p4">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — "Lazy Transfer":</strong> Use an "in" stack for pushes and an "out" stack for pops/peeks. When the out stack is empty, transfer everything from in to out (this reverses order, giving FIFO). Each element is transferred at most once — amortized O(1).</div>
+        <pre><span class="kw">public class</span> <span class="tp">MyQueue</span>
+{
+    <span class="kw">private</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; inStack  = <span class="kw">new</span>();
+    <span class="kw">private</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; outStack = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">Push</span>(<span class="kw">int</span> x) =&gt; inStack.<span class="mt">Push</span>(x);
+
+    <span class="kw">public int</span> <span class="mt">Pop</span>()
+    {
+        <span class="mt">Transfer</span>();
+        <span class="kw">return</span> outStack.<span class="mt">Pop</span>();
+    }
+
+    <span class="kw">public int</span> <span class="mt">Peek</span>()
+    {
+        <span class="mt">Transfer</span>();
+        <span class="kw">return</span> outStack.<span class="mt">Peek</span>();
+    }
+
+    <span class="kw">public bool</span> Empty =&gt; inStack.Count == <span class="nm">0</span> &amp;&amp; outStack.Count == <span class="nm">0</span>;
+
+    <span class="kw">private void</span> <span class="mt">Transfer</span>()
+    {
+        <span class="kw">if</span> (outStack.Count == <span class="nm">0</span>)
+            <span class="kw">while</span> (inStack.Count &gt; <span class="nm">0</span>)
+                outStack.<span class="mt">Push</span>(inStack.<span class="mt">Pop</span>());
+    }
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 5 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#5</span><span class="problem-title">Daily Temperatures</span></div>
+        <div class="badges-row">
+            <span class="diff easy">Easy</span>
+            <span class="meta-badge">Monotonic Stack</span>
+            <span class="meta-badge">Array</span>
+        </div>
+    </div>
+    <p>Given an array <code>temperatures</code>, for each day return how many days you have to wait
+    until a warmer temperature. If there is no future warmer day, return 0 for that day.</p>
+    <strong>Example:</strong> <code>[73,74,75,71,69,72,76,73]</code> → <code>[1,1,4,2,1,1,0,0]</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p5">
+    <label class="spoiler-label" for="p5">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Monotonic Decreasing Stack:</strong> Maintain a stack of indices with decreasing temperatures. When a warmer day is found, pop all cooler indices and record the distance.</div>
+        <pre><span class="kw">public int</span>[] <span class="mt">DailyTemperatures</span>(<span class="kw">int</span>[] temps)
+{
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[temps.Length];
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; temps.Length; i++)
+    {
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; temps[stack.<span class="mt">Peek</span>()] &lt; temps[i])
+        {
+            <span class="kw">int</span> j = stack.<span class="mt">Pop</span>();
+            result[j] = i - j;
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> result;
+}</pre>
+    </div>
+</div>
+
+<!-- ═══════ MEDIUM SECTION ═══════ -->
+<div class="section-heading">Medium Problems (6–12)</div>
+
+<!-- Problem 6 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#6</span><span class="problem-title">Next Greater Element II (Circular)</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Monotonic Stack</span>
+            <span class="meta-badge">Circular Array</span>
+        </div>
+    </div>
+    <p>Given a circular integer array <code>nums</code>, return the next greater number for every element.
+    The next greater number is the first greater number to the right (wrapping around).
+    Return -1 if none exists.</p>
+    <strong>Example:</strong> <code>[1,2,1]</code> → <code>[2,-1,2]</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p6">
+    <label class="spoiler-label" for="p6">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Double Pass:</strong> Loop from 0 to 2n-1 using index % n. Only push indices in the first pass (i &lt; n). When popping, the current element is the next greater for the popped index.</div>
+        <pre><span class="kw">public int</span>[] <span class="mt">NextGreaterElements</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n];
+    <span class="tp">Array</span>.<span class="mt">Fill</span>(result, -<span class="nm">1</span>);
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">2</span> * n; i++)
+    {
+        <span class="kw">int</span> idx = i % n;
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; nums[stack.<span class="mt">Peek</span>()] &lt; nums[idx])
+            result[stack.<span class="mt">Pop</span>()] = nums[idx];
+        <span class="kw">if</span> (i &lt; n) stack.<span class="mt">Push</span>(idx);
+    }
+    <span class="kw">return</span> result;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 7 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#7</span><span class="problem-title">Number of Visible People in a Queue</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Monotonic Stack</span>
+            <span class="meta-badge">Array</span>
+        </div>
+    </div>
+    <p>There are <code>n</code> people standing in a queue and their heights are given by array <code>heights</code>.
+    For each person <code>i</code>, count how many people to the right they can see. Person i can see person j
+    (j &gt; i) if all people between them have heights strictly less than min(heights[i], heights[j]).</p>
+    <strong>Example:</strong> <code>[10,6,8,5,11,9]</code> → <code>[3,1,2,1,1,0]</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p7">
+    <label class="spoiler-label" for="p7">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Scan Right to Left:</strong> Process from right to left. Maintain a decreasing stack. For each person, count how many they can see (those popped because current is taller) + possibly 1 more (the one that stopped the popping).</div>
+        <pre><span class="kw">public int</span>[] <span class="mt">CanSeePersonsCount</span>(<span class="kw">int</span>[] heights)
+{
+    <span class="kw">int</span> n = heights.Length;
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n];
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();  <span class="cm">// Decreasing heights (values, not indices)</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = n - <span class="nm">1</span>; i &gt;= <span class="nm">0</span>; i--)
+    {
+        <span class="kw">int</span> count = <span class="nm">0</span>;
+        <span class="cm">// Count all shorter people visible before they're blocked</span>
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; stack.<span class="mt">Peek</span>() &lt; heights[i])
+        {
+            stack.<span class="mt">Pop</span>();
+            count++;
+        }
+        <span class="cm">// If stack is not empty, the top (taller) person is also visible</span>
+        <span class="kw">if</span> (stack.Count &gt; <span class="nm">0</span>) count++;
+        result[i] = count;
+        stack.<span class="mt">Push</span>(heights[i]);
+    }
+    <span class="kw">return</span> result;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 8 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#8</span><span class="problem-title">Decode String</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Stack</span>
+            <span class="meta-badge">String</span>
+        </div>
+    </div>
+    <p>Given an encoded string, return its decoded string. The encoding rule is <code>k[encoded_string]</code>
+    — the encoded_string inside brackets is repeated exactly k times.</p>
+    <strong>Examples:</strong>
+    <ul>
+        <li><code>"3[a]2[bc]"</code> → <code>"aaabcbc"</code></li>
+        <li><code>"3[a2[c]]"</code> → <code>"accaccacc"</code></li>
+        <li><code>"2[abc]3[cd]ef"</code> → <code>"abcabccdcdcdef"</code></li>
+    </ul>
+
+    <input type="checkbox" class="spoiler-toggle" id="p8">
+    <label class="spoiler-label" for="p8">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Two Stacks:</strong> One stack for repeat counts, one for string contexts. When '[' is found, push current state and start fresh. When ']' is found, pop the count and context, and build the repeated string.</div>
+        <pre><span class="kw">public string</span> <span class="mt">DecodeString</span>(<span class="kw">string</span> s)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;    countStack  = <span class="kw">new</span>();
+    <span class="tp">Stack</span>&lt;<span class="tp">StringBuilder</span>&gt; strStack = <span class="kw">new</span>();
+    <span class="tp">StringBuilder</span> current = <span class="kw">new</span>();
+    <span class="kw">int</span> k = <span class="nm">0</span>;
+
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+    {
+        <span class="kw">if</span> (<span class="tp">char</span>.<span class="mt">IsDigit</span>(c))
+        {
+            k = k * <span class="nm">10</span> + (c - <span class="st">'0'</span>);  <span class="cm">// Handle multi-digit numbers</span>
+        }
+        <span class="kw">else if</span> (c == <span class="st">'['</span>)
+        {
+            countStack.<span class="mt">Push</span>(k);
+            strStack.<span class="mt">Push</span>(current);
+            current = <span class="kw">new</span> <span class="tp">StringBuilder</span>();
+            k = <span class="nm">0</span>;
+        }
+        <span class="kw">else if</span> (c == <span class="st">']'</span>)
+        {
+            <span class="kw">int</span> repeat = countStack.<span class="mt">Pop</span>();
+            <span class="tp">StringBuilder</span> prev = strStack.<span class="mt">Pop</span>();
+            <span class="kw">string</span> seg = current.<span class="mt">ToString</span>();
+            <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; repeat; i++) prev.<span class="mt">Append</span>(seg);
+            current = prev;
+        }
+        <span class="kw">else</span>
+        {
+            current.<span class="mt">Append</span>(c);
+        }
+    }
+    <span class="kw">return</span> current.<span class="mt">ToString</span>();
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 9 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#9</span><span class="problem-title">Asteroid Collision</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Stack</span>
+            <span class="meta-badge">Simulation</span>
+        </div>
+    </div>
+    <p>An array of integers represents asteroids. The absolute value is the asteroid's size; the sign
+    indicates direction (positive = right, negative = left). Asteroids move at equal speed. If two
+    asteroids meet, the smaller one explodes. Equal-size ones both explode. Moving in the same direction
+    never collide. Return the state after all collisions.</p>
+    <strong>Examples:</strong>
+    <ul>
+        <li><code>[5,10,-5]</code> → <code>[5,10]</code> — -5 collides with 10 and explodes</li>
+        <li><code>[8,-8]</code> → <code>[]</code> — both explode</li>
+        <li><code>[10,2,-5]</code> → <code>[10]</code> — -5 destroys 2, then 10 destroys -5</li>
+    </ul>
+
+    <input type="checkbox" class="spoiler-toggle" id="p9">
+    <label class="spoiler-label" for="p9">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Stack holds surviving asteroids. Only a collision occurs when stack top is positive AND current asteroid is negative. Handle: current destroyed (top larger), both destroyed (equal), or top destroyed (current larger — keep processing).</div>
+        <pre><span class="kw">public int</span>[] <span class="mt">AsteroidCollision</span>(<span class="kw">int</span>[] asteroids)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="kw">foreach</span> (<span class="kw">int</span> ast <span class="kw">in</span> asteroids)
+    {
+        <span class="kw">bool</span> destroyed = <span class="kw">false</span>;
+
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; stack.<span class="mt">Peek</span>() &gt; <span class="nm">0</span> &amp;&amp; ast &lt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> top = stack.<span class="mt">Peek</span>();
+            <span class="kw">if</span> (top &lt; -ast)        { stack.<span class="mt">Pop</span>(); <span class="kw">continue</span>; }  <span class="cm">// Top destroyed</span>
+            <span class="kw">else if</span> (top == -ast)  { stack.<span class="mt">Pop</span>(); }              <span class="cm">// Both destroyed</span>
+            destroyed = <span class="kw">true</span>;  <span class="cm">// Current asteroid destroyed (top >= -ast)</span>
+            <span class="kw">break</span>;
+        }
+
+        <span class="kw">if</span> (!destroyed) stack.<span class="mt">Push</span>(ast);
+    }
+
+    <span class="kw">return</span> stack.<span class="mt">Reverse</span>().<span class="mt">ToArray</span>();
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 10 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#10</span><span class="problem-title">Binary Tree Level Order Traversal (BFS)</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Queue</span>
+            <span class="meta-badge">BFS</span>
+            <span class="meta-badge">Tree</span>
+        </div>
+    </div>
+    <p>Given the root of a binary tree, return its level-order traversal as a list of lists of values
+    (from left to right, level by level).</p>
+    <strong>Example:</strong> Tree <code>[3,9,20,null,null,15,7]</code> → <code>[[3],[9,20],[15,7]]</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p10">
+    <label class="spoiler-label" for="p10">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — BFS with Queue:</strong> Enqueue root. Each iteration, process exactly <code>queue.Count</code> nodes (the whole current level), then enqueue their children. This naturally groups nodes by level.</div>
+        <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">LevelOrder</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> result;
+
+    <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt; q = <span class="kw">new</span>();
+    q.<span class="mt">Enqueue</span>(root);
+
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> size = q.Count;
+        <span class="kw">var</span> level = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; size; i++)
+        {
+            <span class="kw">var</span> node = q.<span class="mt">Dequeue</span>();
+            level.<span class="mt">Add</span>(node.Val);
+            <span class="kw">if</span> (node.Left  != <span class="kw">null</span>) q.<span class="mt">Enqueue</span>(node.Left);
+            <span class="kw">if</span> (node.Right != <span class="kw">null</span>) q.<span class="mt">Enqueue</span>(node.Right);
+        }
+        result.<span class="mt">Add</span>(level);
+    }
+    <span class="kw">return</span> result;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 11 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#11</span><span class="problem-title">Rotting Oranges</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Queue</span>
+            <span class="meta-badge">BFS</span>
+            <span class="meta-badge">Grid</span>
+        </div>
+    </div>
+    <p>You have a grid of cells: 0 = empty, 1 = fresh orange, 2 = rotten orange. Every minute, any
+    fresh orange adjacent (4-directionally) to a rotten orange also becomes rotten. Return the minimum
+    number of minutes until no fresh orange remains. Return -1 if impossible.</p>
+    <strong>Example:</strong> <code>[[2,1,1],[1,1,0],[0,1,1]]</code> → <code>4</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p11">
+    <label class="spoiler-label" for="p11">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Multi-Source BFS:</strong> Seed the BFS queue with ALL initially rotten oranges. Each BFS "level" represents one minute of rotting. After BFS completes, check if any fresh oranges remain.</div>
+        <pre><span class="kw">public int</span> <span class="mt">OrangesRotting</span>(<span class="kw">int</span>[][] grid)
+{
+    <span class="kw">int</span> rows = grid.Length, cols = grid[<span class="nm">0</span>].Length;
+    <span class="tp">Queue</span>&lt;(<span class="kw">int</span> r, <span class="kw">int</span> c)&gt; queue = <span class="kw">new</span>();
+    <span class="kw">int</span> fresh = <span class="nm">0</span>;
+
+    <span class="cm">// Seed all initially rotten oranges + count fresh</span>
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; rows; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; cols; c++)
+        {
+            <span class="kw">if</span> (grid[r][c] == <span class="nm">2</span>) queue.<span class="mt">Enqueue</span>((r, c));
+            <span class="kw">if</span> (grid[r][c] == <span class="nm">1</span>) fresh++;
+        }
+
+    <span class="kw">if</span> (fresh == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+
+    <span class="kw">int</span>[][] dirs = [[<span class="nm">0</span>,<span class="nm">1</span>],[<span class="nm">0</span>,-<span class="nm">1</span>],[<span class="nm">1</span>,<span class="nm">0</span>],[-<span class="nm">1</span>,<span class="nm">0</span>]];
+    <span class="kw">int</span> minutes = <span class="nm">0</span>;
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span> &amp;&amp; fresh &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> size = queue.Count;
+        minutes++;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; size; i++)
+        {
+            <span class="kw">var</span> (r, c) = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">foreach</span> (<span class="kw">var</span> d <span class="kw">in</span> dirs)
+            {
+                <span class="kw">int</span> nr = r + d[<span class="nm">0</span>], nc = c + d[<span class="nm">1</span>];
+                <span class="kw">if</span> (nr &lt; <span class="nm">0</span> || nr &gt;= rows || nc &lt; <span class="nm">0</span> || nc &gt;= cols) <span class="kw">continue</span>;
+                <span class="kw">if</span> (grid[nr][nc] != <span class="nm">1</span>) <span class="kw">continue</span>;
+                grid[nr][nc] = <span class="nm">2</span>;
+                fresh--;
+                queue.<span class="mt">Enqueue</span>((nr, nc));
+            }
+        }
+    }
+    <span class="kw">return</span> fresh == <span class="nm">0</span> ? minutes : -<span class="nm">1</span>;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 12 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#12</span><span class="problem-title">Task Scheduler</span></div>
+        <div class="badges-row">
+            <span class="diff medium">Medium</span>
+            <span class="meta-badge">Priority Queue</span>
+            <span class="meta-badge">Greedy</span>
+        </div>
+    </div>
+    <p>Given tasks with a cooldown interval <code>n</code>, schedule them to minimize total execution
+    time. Identical tasks must be at least <code>n</code> intervals apart. Return total intervals needed.</p>
+    <strong>Example:</strong> <code>tasks=["A","A","A","B","B","B"], n=2</code> → <code>8</code>
+    (A B _ A B _ A B)
+
+    <input type="checkbox" class="spoiler-toggle" id="p12">
+    <label class="spoiler-label" for="p12">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Greedy + Max-Heap + Queue:</strong> Always schedule the most frequent available task (max-heap). After scheduling, the task enters a cooldown queue until it becomes available again. Each tick either runs a task or idles.</div>
+        <pre><span class="kw">public int</span> <span class="mt">LeastInterval</span>(<span class="kw">char</span>[] tasks, <span class="kw">int</span> n)
+{
+    <span class="kw">int</span>[] freq = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> t <span class="kw">in</span> tasks) freq[t - <span class="st">'A'</span>]++;
+
+    <span class="kw">var</span> maxHeap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(
+        <span class="tp">Comparer</span>&lt;<span class="kw">int</span>&gt;.<span class="mt">Create</span>((a, b) =&gt; b - a));
+    <span class="kw">foreach</span> (<span class="kw">int</span> f <span class="kw">in</span> freq) <span class="kw">if</span> (f &gt; <span class="nm">0</span>) maxHeap.<span class="mt">Enqueue</span>(f, f);
+
+    <span class="kw">var</span> cooldown = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt;();  <span class="cm">// (remaining, availableAt)</span>
+    <span class="kw">int</span> time = <span class="nm">0</span>;
+
+    <span class="kw">while</span> (maxHeap.Count &gt; <span class="nm">0</span> || cooldown.Count &gt; <span class="nm">0</span>)
+    {
+        time++;
+        <span class="kw">if</span> (cooldown.Count &gt; <span class="nm">0</span> &amp;&amp; cooldown.<span class="mt">Peek</span>().Item2 == time)
+        {
+            <span class="kw">var</span> (cnt, _) = cooldown.<span class="mt">Dequeue</span>();
+            maxHeap.<span class="mt">Enqueue</span>(cnt, cnt);
+        }
+        <span class="kw">if</span> (maxHeap.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> rem = maxHeap.<span class="mt">Dequeue</span>() - <span class="nm">1</span>;
+            <span class="kw">if</span> (rem &gt; <span class="nm">0</span>) cooldown.<span class="mt">Enqueue</span>((rem, time + n + <span class="nm">1</span>));
+        }
+    }
+    <span class="kw">return</span> time;
+}</pre>
+    </div>
+</div>
+
+<!-- ═══════ HARD SECTION ═══════ -->
+<div class="section-heading">Hard Problems (13–15)</div>
+
+<!-- Problem 13 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#13</span><span class="problem-title">Largest Rectangle in Histogram</span></div>
+        <div class="badges-row">
+            <span class="diff hard">Hard</span>
+            <span class="meta-badge">Monotonic Stack</span>
+            <span class="meta-badge">Array</span>
+        </div>
+    </div>
+    <p>Given an array of integers <code>heights</code> representing histogram bar heights (each of width 1),
+    return the area of the largest rectangle in the histogram.</p>
+    <strong>Example:</strong> <code>[2,1,5,6,2,3]</code> → <code>10</code> (bars at index 2 and 3,
+    height=5 spanning width=2)
+
+    <input type="checkbox" class="spoiler-toggle" id="p13">
+    <label class="spoiler-label" for="p13">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Monotonic Increasing Stack:</strong> For each bar, when we find a shorter bar, we pop — the popped bar defines the maximum height for a rectangle. The width is from the new top to the current index. A virtual bar of height 0 at the end flushes all remaining bars.</div>
+        <pre><span class="kw">public int</span> <span class="mt">LargestRectangleArea</span>(<span class="kw">int</span>[] heights)
+{
+    <span class="kw">int</span> n = heights.Length;
+    <span class="kw">int</span> maxArea = <span class="nm">0</span>;
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt;= n; i++)
+    {
+        <span class="kw">int</span> h = (i == n) ? <span class="nm">0</span> : heights[i];
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; heights[stack.<span class="mt">Peek</span>()] &gt; h)
+        {
+            <span class="kw">int</span> height = heights[stack.<span class="mt">Pop</span>()];
+            <span class="kw">int</span> left   = stack.Count == <span class="nm">0</span> ? -<span class="nm">1</span> : stack.<span class="mt">Peek</span>();
+            <span class="kw">int</span> width  = i - left - <span class="nm">1</span>;
+            maxArea = <span class="tp">Math</span>.<span class="mt">Max</span>(maxArea, height * width);
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> maxArea;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 14 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#14</span><span class="problem-title">Trapping Rain Water</span></div>
+        <div class="badges-row">
+            <span class="diff hard">Hard</span>
+            <span class="meta-badge">Monotonic Stack</span>
+            <span class="meta-badge">Two Pointers</span>
+            <span class="meta-badge">Array</span>
+        </div>
+    </div>
+    <p>Given <code>n</code> non-negative integers representing an elevation map where each bar has width 1,
+    compute how much water can be trapped after raining.</p>
+    <strong>Example:</strong> <code>[0,1,0,2,1,0,1,3,2,1,2,1]</code> → <code>6</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p14">
+    <label class="spoiler-label" for="p14">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note">
+            <strong>Two Approaches shown:</strong>
+            <ul>
+                <li><strong>Stack approach</strong> — O(n) time, O(n) space. Natural extension of histogram pattern.</li>
+                <li><strong>Two-pointer approach</strong> — O(n) time, O(1) space. More optimal for space.</li>
+            </ul>
+        </div>
+        <pre><span class="cm">// Approach 1: Monotonic Stack — O(n) time, O(n) space</span>
+<span class="kw">public int</span> <span class="mt">TrapStack</span>(<span class="kw">int</span>[] height)
+{
+    <span class="kw">int</span> water = <span class="nm">0</span>;
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; height.Length; i++)
+    {
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; height[stack.<span class="mt">Peek</span>()] &lt; height[i])
+        {
+            <span class="kw">int</span> bottom = stack.<span class="mt">Pop</span>();
+            <span class="kw">if</span> (stack.Count == <span class="nm">0</span>) <span class="kw">break</span>;
+            <span class="kw">int</span> left = stack.<span class="mt">Peek</span>();
+            <span class="kw">int</span> h = <span class="tp">Math</span>.<span class="mt">Min</span>(height[left], height[i]) - height[bottom];
+            water += h * (i - left - <span class="nm">1</span>);
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> water;
+}
+
+<span class="cm">// Approach 2: Two Pointers — O(n) time, O(1) space</span>
+<span class="kw">public int</span> <span class="mt">TrapTwoPointers</span>(<span class="kw">int</span>[] height)
+{
+    <span class="kw">int</span> l = <span class="nm">0</span>, r = height.Length - <span class="nm">1</span>;
+    <span class="kw">int</span> leftMax = <span class="nm">0</span>, rightMax = <span class="nm">0</span>, water = <span class="nm">0</span>;
+
+    <span class="kw">while</span> (l &lt; r)
+    {
+        <span class="kw">if</span> (height[l] &lt; height[r])
+        {
+            leftMax = <span class="tp">Math</span>.<span class="mt">Max</span>(leftMax, height[l]);
+            water += leftMax - height[l];
+            l++;
+        }
+        <span class="kw">else</span>
+        {
+            rightMax = <span class="tp">Math</span>.<span class="mt">Max</span>(rightMax, height[r]);
+            water += rightMax - height[r];
+            r--;
+        }
+    }
+    <span class="kw">return</span> water;
+}
+<span class="cm">// [0,1,0,2,1,0,1,3,2,1,2,1] → 6
+// [4,2,0,3,2,5]              → 9</span></pre>
+    </div>
+</div>
+
+<!-- Problem 15 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#15</span><span class="problem-title">Sliding Window Maximum</span></div>
+        <div class="badges-row">
+            <span class="diff hard">Hard</span>
+            <span class="meta-badge">Monotonic Deque</span>
+            <span class="meta-badge">Sliding Window</span>
+        </div>
+    </div>
+    <p>Given an integer array <code>nums</code> and an integer <code>k</code>, find the maximum value
+    in every contiguous subarray of size k. Return an array of these maxima.</p>
+    <strong>Example:</strong> <code>[1,3,-1,-3,5,3,6,7], k=3</code> → <code>[3,3,5,5,6,7]</code>
+
+    <input type="checkbox" class="spoiler-toggle" id="p15">
+    <label class="spoiler-label" for="p15">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach — Monotonic Deque (Decreasing):</strong> The deque stores indices. Its front is always the index of the maximum in the current window. When adding a new element, remove from back all indices with smaller values (they can never be max while current element is in the window). Remove from front indices that fall outside the window.</div>
+        <pre><span class="kw">public int</span>[] <span class="mt">MaxSlidingWindow</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n - k + <span class="nm">1</span>];
+    <span class="tp">LinkedList</span>&lt;<span class="kw">int</span>&gt; dq = <span class="kw">new</span>();  <span class="cm">// Decreasing deque of indices</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="cm">// Evict indices outside the window</span>
+        <span class="kw">while</span> (dq.Count &gt; <span class="nm">0</span> &amp;&amp; dq.First!.Value &lt; i - k + <span class="nm">1</span>)
+            dq.<span class="mt">RemoveFirst</span>();
+
+        <span class="cm">// Remove smaller values from back (useless)</span>
+        <span class="kw">while</span> (dq.Count &gt; <span class="nm">0</span> &amp;&amp; nums[dq.Last!.Value] &lt; nums[i])
+            dq.<span class="mt">RemoveLast</span>();
+
+        dq.<span class="mt">AddLast</span>(i);
+
+        <span class="cm">// Record maximum once window is full</span>
+        <span class="kw">if</span> (i &gt;= k - <span class="nm">1</span>)
+            result[i - k + <span class="nm">1</span>] = nums[dq.First!.Value];
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// [1,3,-1,-3,5,3,6,7], k=3 → [3,3,5,5,6,7]
+// [1], k=1                  → [1]
+// [9,11], k=2               → [11]</span></pre>
+    </div>
+</div>
+
+<!-- ═══════ Quick Reference ═══════ -->
+<div class="section-heading">Quick Reference — Stack &amp; Queue Patterns</div>
+
+<table>
+    <thead>
+        <tr><th>Pattern</th><th>Structure</th><th>Trigger to Use</th><th>Examples</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Bracket Matching</td><td>Stack</td><td>Matching pairs, balanced sequences</td><td>#1, Decode String</td></tr>
+        <tr><td>Running Minimum/Maximum</td><td>Auxiliary Stack</td><td>Need min/max in O(1) alongside regular ops</td><td>#2 Min Stack</td></tr>
+        <tr><td>Expression Evaluation</td><td>Stack(s)</td><td>RPN, infix, decode with nesting</td><td>#3, #8</td></tr>
+        <tr><td>Queue from Two Stacks</td><td>Two Stacks</td><td>FIFO needed, only Stack API available</td><td>#4</td></tr>
+        <tr><td>Next/Previous Greater/Smaller</td><td>Monotonic Stack</td><td>O(n²) brute-force comparisons visible</td><td>#5,#6,#7,#13</td></tr>
+        <tr><td>Level-Order / BFS</td><td>Queue</td><td>Process node neighbors before deeper nodes</td><td>#10, #11</td></tr>
+        <tr><td>Multi-Source BFS</td><td>Queue (pre-seeded)</td><td>All starting points active simultaneously</td><td>#11</td></tr>
+        <tr><td>Priority Scheduling</td><td>Max-Heap + Queue</td><td>Process highest-priority item with cooldown</td><td>#12</td></tr>
+        <tr><td>Horizontal Water/Area</td><td>Monotonic Stack</td><td>Width × height bounded area calculations</td><td>#13, #14</td></tr>
+        <tr><td>Sliding Window Max/Min</td><td>Monotonic Deque</td><td>Max/min in every window of fixed size</td><td>#15</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<div class="nav-box">
+    <strong>🎉 Module 3 Complete!</strong><br><br>
+    You have finished all 5 parts of Module 3: Stacks, Queues, Priority Queue, Monotonic Stack/Queue,
+    and 15 practice problems. These are among the most frequently tested topics in software engineering interviews.<br><br>
+    🏠 <a href="../Index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m03d_monotonic.html">Part D — Monotonic</a>
+</div>
+
+</body>
+</html>

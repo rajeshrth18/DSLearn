@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1B — Strings &amp; StringBuilder</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 1 — Part B</h1>
+    <div class="tagline">Strings &amp; StringBuilder</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Immutability, performance, character operations, comparison, formatting</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 60–75 Min</span>
+        <span>🎯 Beginner Level</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part B of Module 1</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 1 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m01a_bigO_arrays.html">Big O, Complexity, Arrays</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Strings &amp; StringBuilder<br>
+    ⬜ <strong>Part C</strong> — <a href="m01c_listT.html">List&lt;T&gt; Dynamic Arrays</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m01d_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part B</h2>
+    <ol start="6">
+        <li>Section 6.1 — The String Immutability Problem <span>— Why + in a loop is O(n²)</span></li>
+        <li>Section 6.2 — StringBuilder: The Correct Solution <span>— O(n) buffer approach</span></li>
+        <li>Section 6.3 — All Common String Methods <span>— Inspect, transform, search, split</span></li>
+        <li>Section 6.4 — Character-Level Operations <span>— char, ASCII, frequency counting</span></li>
+        <li>Section 6.5 — String Comparison &amp; Equality <span>— Gotchas explained</span></li>
+        <li>Section 6.6 — String Formatting <span>— Interpolation, format specifiers, verbatim</span></li>
+        <li>Section 6.7 — Complexity Summary Table</li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 6.1 ═══════ -->
+<div class="section-heading">Section 6.1 — The String Immutability Problem</div>
+
+<p>Strings are the most-used data type in every real program — user input, file paths, API responses,
+log messages, HTML, JSON. In C#, the <code>string</code> type has one critical rule that causes
+serious performance bugs if you don't understand it: <strong>strings are immutable</strong>.</p>
+
+<div class="note">
+    <strong>📌 Immutable = Cannot Change After Creation</strong><br>
+    Once a string object exists in memory, its characters can <em>never</em> be modified.
+    Every operation that <em>looks like</em> a modification — <code>+</code>, <code>Replace</code>,
+    <code>ToUpper</code>, <code>Trim</code> — secretly creates a <strong>brand-new string object</strong>
+    in memory. The old one is abandoned and eventually garbage-collected.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Real-World Analogy:</strong><br>
+    Imagine string concatenation like writing a book.<br>
+    <strong>With immutability (+= each time):</strong> Every time you add a sentence, you must re-type the ENTIRE book from scratch on a new piece of paper. After 100 pages, adding one sentence requires copying 100 pages. After 1,000 pages... you see the problem.<br><br>
+    <strong>With StringBuilder:</strong> You write on a whiteboard. Adding a sentence just means writing at the end. When the whole book is done, you print it once.
+</div>
+
+<h3>Why Was Immutability Designed This Way?</h3>
+<ul>
+    <li><strong>Thread safety:</strong> Multiple threads can read the same string simultaneously — no locks needed, because nobody can change it.</li>
+    <li><strong>String interning:</strong> The CLR maintains a pool of string literals. <code>"hello"</code> used 1,000 times in your code shares <em>one</em> memory address.</li>
+    <li><strong>Security:</strong> A file path, password, or URL passed to a function can't be changed behind your back by malicious code.</li>
+    <li><strong>Hash stability:</strong> Strings can be safely used as Dictionary keys because their hash code never changes.</li>
+</ul>
+
+<h3>Seeing Immutability in Memory</h3>
+
+<div class="diagram">IMMUTABILITY — What Really Happens in Memory
+
+  string name = "Alice";
+  ─────────────────────────────────────────────────
+  Heap:   [ A | l | i | c | e ]    ← address 0x4A20
+  Stack:  name ──────────────────────────────→ 0x4A20
+
+  name = name.ToUpper();   ← looks like modification, but...
+  ─────────────────────────────────────────────────
+  Heap:   [ A | l | i | c | e ]    ← 0x4A20 (UNTOUCHED)
+          [ A | L | I | C | E ]    ← 0x4B30 (brand new!)
+  Stack:  name ──────────────────────────────→ 0x4B30
+
+  Old string 0x4A20 is now abandoned → garbage collector
+  will eventually free that memory.</div>
+
+<pre><span class="kw">string</span> city = <span class="st">"london"</span>;
+
+<span class="cm">// These do NOT modify city — they return new strings</span>
+<span class="kw">string</span> upper   = city.<span class="mt">ToUpper</span>();     <span class="cm">// "LONDON"  — new object</span>
+<span class="kw">string</span> titled  = city.<span class="mt">Replace</span>(<span class="st">'l'</span>, <span class="st">'L'</span>); <span class="cm">// "London"  — new object</span>
+
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(city);    <span class="cm">// "london"  — completely unchanged!</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(upper);   <span class="cm">// "LONDON"</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(titled);  <span class="cm">// "London"</span>
+
+<span class="cm">// You CAN reassign the variable (changes the reference, not the object):</span>
+city = city.<span class="mt">ToUpper</span>(); <span class="cm">// city now points to "LONDON" — old "london" is abandoned</span>
+
+<span class="cm">// You CANNOT modify individual characters — no setter on string indexer:</span>
+<span class="cm">// city[0] = 'l';  ← COMPILE ERROR: string indexer has no setter</span></pre>
+
+<h3>The O(n²) Concatenation Disaster</h3>
+<p>The most common beginner performance bug is building a string inside a loop with <code>+=</code>:</p>
+
+<div class="diagram">WHY += IN A LOOP IS O(n²) — Counting character copies
+
+Building a string from 5 words: ["The","quick","brown","fox","jumps"]
+
+Pass 1:  "" + "The"                  → copy  3 chars → new string "The"
+Pass 2:  "The" + " quick"            → copy  9 chars → new string "The quick"
+Pass 3:  "The quick" + " brown"      → copy 15 chars → new string "The quick brown"
+Pass 4:  "The quick brown" + " fox"  → copy 19 chars → ...
+Pass 5:  ... + " jumps"              → copy 25 chars
+
+Total: 3+9+15+19+25 = 71 copies for 5 words.
+
+For n words of average length k:
+  Total copies = k×(1+2+3+...+n) = k × n(n+1)/2 = O(n²)
+
+For 10,000 words: billions of character copies = MINUTES to complete.</div>
+
+<pre><span class="cm">// ❌ NEVER DO THIS IN A LOOP — O(n²)</span>
+<span class="kw">string</span>[] words  = <span class="mt">GetWords</span>(); <span class="cm">// thousands of words</span>
+<span class="kw">string</span>  result = <span class="st">""</span>;
+<span class="kw">foreach</span> (<span class="kw">string</span> word <span class="kw">in</span> words)
+    result += word + <span class="st">" "</span>; <span class="cm">// Each += copies EVERYTHING again from scratch</span>
+<span class="cm">// Fine for 5 words. Catastrophic for 50,000 words.</span></pre>
+
+<div class="warning">
+    <strong>🚨 Real Performance Benchmark:</strong><br>
+    Building a string from 50,000 words using <code>+=</code>: approximately <strong>12 seconds</strong>.<br>
+    The same operation with <code>StringBuilder</code>: approximately <strong>2 milliseconds</strong>.<br>
+    <strong>That is 6,000× slower.</strong> This has crashed production servers.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6.2 ═══════ -->
+<div class="section-heading">Section 6.2 — StringBuilder: The Correct Solution</div>
+
+<p><code>StringBuilder</code> (namespace: <code>System.Text</code>) maintains a <strong>mutable,
+resizable character buffer</strong> internally. Appending characters writes directly into this buffer
+without creating new string objects. The final string is constructed <em>only once</em> when
+you call <code>.ToString()</code>.</p>
+
+<h3>How the Buffer Works</h3>
+
+<div class="diagram">STRINGBUILDER INTERNAL BUFFER — Visual
+
+Default capacity = 16. After sb.Append("Hello"):
+  Buffer: [ H ][ e ][ l ][ l ][ o ][ _ ][ _ ][ _ ][ _ ][ _ ][ _ ][ _ ][ _ ][ _ ][ _ ][ _ ]
+  Length=5, Capacity=16, WritePos=5
+
+After sb.Append(", World!"):
+  Buffer: [ H ][ e ][ l ][ l ][ o ][ , ][ ][ W ][ o ][ r ][ l ][ d ][ ! ][ _ ][ _ ][ _ ]
+  Length=13, Capacity=16, WritePos=13
+
+Buffer almost full. Next large Append triggers RESIZE:
+  → Allocate new buffer of 32 chars (capacity doubles)
+  → Copy 16 existing chars to new buffer  ← O(n) cost, happens rarely
+  → Continue appending                    ← O(1) per char again
+
+TOTAL: n appends at O(1) each + rare O(n) doublings = O(n) amortized ✓
+vs String +=: every append is O(total length so far)             = O(n²) ✗</div>
+
+<h4>Basic Usage</h4>
+<pre><span class="kw">using</span> System.Text; <span class="cm">// Required namespace</span>
+
+<span class="cm">// ✅ CORRECT — O(n) — StringBuilder for loop concatenation</span>
+<span class="kw">string</span>[] words = { <span class="st">"Hello"</span>, <span class="st">"from"</span>, <span class="st">"C#"</span>, <span class="st">"DSA"</span>, <span class="st">"Course"</span> };
+
+<span class="tp">StringBuilder</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>();
+<span class="kw">foreach</span> (<span class="kw">string</span> word <span class="kw">in</span> words)
+{
+    sb.<span class="mt">Append</span>(word);
+    sb.<span class="mt">Append</span>(<span class="st">' '</span>); <span class="cm">// direct buffer write — no new object created</span>
+}
+<span class="kw">string</span> result = sb.<span class="mt">ToString</span>(); <span class="cm">// ONE string built here, at the end</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(result); <span class="cm">// "Hello from C# DSA Course "</span></pre>
+
+<h4>All StringBuilder Methods</h4>
+<pre><span class="tp">StringBuilder</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"Start"</span>);
+
+<span class="cm">// ── APPEND (adds to end) ─────────────────────────────────────────</span>
+sb.<span class="mt">Append</span>(<span class="st">" World"</span>);           <span class="cm">// "Start World"       — string</span>
+sb.<span class="mt">Append</span>(<span class="nm">42</span>);                 <span class="cm">// "Start World42"     — int (any type)</span>
+sb.<span class="mt">Append</span>(<span class="nm">3.14</span>);               <span class="cm">// "Start World423.14"</span>
+sb.<span class="mt">AppendLine</span>(<span class="st">"!"</span>);            <span class="cm">// appends "!" then newline</span>
+sb.<span class="mt">AppendLine</span>();                <span class="cm">// appends just a newline</span>
+sb.<span class="mt">AppendFormat</span>(<span class="st">"{0} + {1} = {2}"</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">5</span>); <span class="cm">// "2 + 3 = 5"</span>
+
+<span class="cm">// ── INSERT (adds at a specific index) ────────────────────────────</span>
+<span class="tp">StringBuilder</span> sb2 = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"Hello World"</span>);
+sb2.<span class="mt">Insert</span>(<span class="nm">5</span>, <span class="st">","</span>);             <span class="cm">// "Hello, World"</span>
+sb2.<span class="mt">Insert</span>(<span class="nm">0</span>, <span class="st">"Say: "</span>);         <span class="cm">// "Say: Hello, World"</span>
+
+<span class="cm">// ── REMOVE (deletes a section) ────────────────────────────────────</span>
+<span class="tp">StringBuilder</span> sb3 = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"Hello, World!"</span>);
+sb3.<span class="mt">Remove</span>(<span class="nm">5</span>, <span class="nm">2</span>);              <span class="cm">// "Hello World!" — removes ", " (2 chars at index 5)</span>
+
+<span class="cm">// ── REPLACE (substitutes text) ────────────────────────────────────</span>
+<span class="tp">StringBuilder</span> sb4 = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"the cat sat on the mat"</span>);
+sb4.<span class="mt">Replace</span>(<span class="st">"the"</span>, <span class="st">"a"</span>);       <span class="cm">// "a cat sat on a mat" — replaces ALL</span>
+sb4.<span class="mt">Replace</span>(<span class="st">'a'</span>, <span class="st">'A'</span>);         <span class="cm">// "A cAt sAt on A mAt" — char replace</span>
+
+<span class="cm">// ── READ / INSPECT ────────────────────────────────────────────────</span>
+<span class="tp">StringBuilder</span> sb5 = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"CSharp"</span>);
+<span class="kw">int</span>  len  = sb5.Length;           <span class="cm">// 6 — current length</span>
+<span class="kw">int</span>  cap  = sb5.Capacity;         <span class="cm">// 16 (or whatever it was allocated)</span>
+<span class="kw">char</span> ch   = sb5[<span class="nm">2</span>];              <span class="cm">// 'h' — O(1) index access</span>
+sb5[<span class="nm">0</span>]    = <span class="st">'c'</span>;                 <span class="cm">// direct char assignment (unlike string!)</span>
+
+<span class="cm">// ── CLEAR &amp; RESET ────────────────────────────────────────────────</span>
+sb5.<span class="mt">Clear</span>();                      <span class="cm">// resets to "" — buffer is REUSED (fast)</span>
+sb5.Length = <span class="nm">0</span>;                  <span class="cm">// faster alternative — same effect</span>
+
+<span class="cm">// ── CONVERT TO STRING ─────────────────────────────────────────────</span>
+<span class="kw">string</span> final = sb5.<span class="mt">ToString</span>();   <span class="cm">// the ONLY time a string is created</span></pre>
+
+<h4>Fluent Chaining (Method Chaining)</h4>
+<pre><span class="cm">// All StringBuilder methods return 'this' — so you can chain:</span>
+<span class="kw">string</span> html = <span class="kw">new</span> <span class="tp">StringBuilder</span>()
+    .<span class="mt">Append</span>(<span class="st">"&lt;ul&gt;\n"</span>)
+    .<span class="mt">Append</span>(<span class="st">"  &lt;li&gt;Arrays&lt;/li&gt;\n"</span>)
+    .<span class="mt">Append</span>(<span class="st">"  &lt;li&gt;Strings&lt;/li&gt;\n"</span>)
+    .<span class="mt">Append</span>(<span class="st">"  &lt;li&gt;List&lt;T&gt;&lt;/li&gt;\n"</span>)
+    .<span class="mt">Append</span>(<span class="st">"&lt;/ul&gt;"</span>)
+    .<span class="mt">ToString</span>();
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(html);</pre>
+
+<h4>Pre-Sizing for Maximum Performance</h4>
+<pre><span class="cm">// If you know the approximate final size, pre-allocate to skip ALL buffer doublings</span>
+<span class="kw">int</span> estimatedSize = logLines.Length * <span class="nm">80</span>; <span class="cm">// ~80 chars per line</span>
+<span class="tp">StringBuilder</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>(capacity: estimatedSize);
+
+<span class="kw">foreach</span> (<span class="kw">string</span> line <span class="kw">in</span> logLines)
+{
+    sb.<span class="mt">Append</span>(line);
+    sb.<span class="mt">Append</span>(<span class="st">'\n'</span>);
+}
+<span class="cm">// Zero resizes = maximum throughput</span></pre>
+
+<div class="tip">
+    <strong>💡 When to Use What:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>String +:</strong> 1–3 concatenations, outside loops. <code>"Hello " + name + "!"</code> is fine.</li>
+        <li><strong>StringBuilder:</strong> Any concatenation in a loop. Building HTML/CSV/JSON/SQL dynamically.</li>
+        <li><strong>string.Join():</strong> Joining a collection with a separator. Clean, readable, O(n).</li>
+        <li><strong>$"" interpolation:</strong> Formatting a single string with values mixed in.</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6.3 ═══════ -->
+<div class="section-heading">Section 6.3 — All Common String Methods</div>
+
+<p>Every string method returns either a <strong>new string</strong> or a non-string result.
+The original is <em>always</em> unchanged. Always assign the result: <code>s = s.Trim();</code></p>
+
+<h3>6.3.1 — Inspection (Read-Only, No New String)</h3>
+<pre><span class="kw">string</span> s = <span class="st">"  Hello, World!  "</span>;
+
+<span class="cm">// Size</span>
+<span class="kw">int</span>  len    = s.Length;                          <span class="cm">// 18  — O(1), stored property</span>
+<span class="kw">char</span> first  = s[<span class="nm">0</span>];                             <span class="cm">// ' ' — O(1) index access</span>
+
+<span class="cm">// Null checks</span>
+<span class="kw">bool</span> empty  = <span class="kw">string</span>.<span class="mt">IsNullOrEmpty</span>(s);            <span class="cm">// false</span>
+<span class="kw">bool</span> ws     = <span class="kw">string</span>.<span class="mt">IsNullOrWhiteSpace</span>(<span class="st">"  "</span>);   <span class="cm">// true</span>
+
+<span class="cm">// Search</span>
+<span class="kw">bool</span> has    = s.<span class="mt">Contains</span>(<span class="st">"World"</span>);               <span class="cm">// true  — O(n)</span>
+<span class="kw">int</span>  idx    = s.<span class="mt">IndexOf</span>(<span class="st">"World"</span>);                <span class="cm">// 9     — first occurrence, -1 if absent</span>
+<span class="kw">int</span>  last   = s.<span class="mt">LastIndexOf</span>(<span class="st">'l'</span>);               <span class="cm">// 12    — last occurrence</span>
+<span class="kw">bool</span> starts = s.<span class="mt">StartsWith</span>(<span class="st">"  He"</span>);             <span class="cm">// true  — O(prefix length)</span>
+<span class="kw">bool</span> ends   = s.<span class="mt">EndsWith</span>(<span class="st">"!  "</span>);               <span class="cm">// true</span>
+
+<span class="cm">// Case-insensitive search (C# 10+):</span>
+<span class="kw">bool</span> hasCI  = s.<span class="mt">Contains</span>(<span class="st">"world"</span>, <span class="tp">StringComparison</span>.OrdinalIgnoreCase); <span class="cm">// true</span></pre>
+
+<h3>6.3.2 — Transformation (Returns New String)</h3>
+<pre><span class="kw">string</span> s = <span class="st">"  Hello, World!  "</span>;
+
+<span class="cm">// Whitespace</span>
+<span class="kw">string</span> t   = s.<span class="mt">Trim</span>();        <span class="cm">// "Hello, World!"     — both ends</span>
+<span class="kw">string</span> tL  = s.<span class="mt">TrimStart</span>();   <span class="cm">// "Hello, World!  "   — left only</span>
+<span class="kw">string</span> tR  = s.<span class="mt">TrimEnd</span>();     <span class="cm">// "  Hello, World!"   — right only</span>
+
+<span class="cm">// Case</span>
+<span class="kw">string</span> up  = s.<span class="mt">ToUpper</span>();     <span class="cm">// "  HELLO, WORLD!  "</span>
+<span class="kw">string</span> lo  = s.<span class="mt">ToLower</span>();     <span class="cm">// "  hello, world!  "</span>
+
+<span class="cm">// Extract — all create new strings (memory copies)</span>
+<span class="kw">string</span> sub = s.<span class="mt">Substring</span>(<span class="nm">2</span>, <span class="nm">5</span>);   <span class="cm">// "Hello"   (start=2, length=5)</span>
+<span class="kw">string</span> rng = s[<span class="nm">2</span>..<span class="nm">7</span>];              <span class="cm">// "Hello"   (C# 8+ range syntax)</span>
+<span class="kw">string</span> end = s[<span class="nm">9</span>..];               <span class="cm">// "World!  " (from 9 to end)</span>
+
+<span class="cm">// Replace (all occurrences)</span>
+<span class="kw">string</span> r1  = s.<span class="mt">Replace</span>(<span class="st">"World"</span>, <span class="st">"C#"</span>);  <span class="cm">// "  Hello, C#!  "</span>
+<span class="kw">string</span> r2  = s.<span class="mt">Replace</span>(<span class="st">'!'</span>, <span class="st">'.'</span>);       <span class="cm">// "  Hello, World.  "</span>
+
+<span class="cm">// Split — divides into array of strings</span>
+<span class="kw">string</span>   csv   = <span class="st">"Alice,Bob,Carol,David"</span>;
+<span class="kw">string</span>[] parts = csv.<span class="mt">Split</span>(<span class="st">','</span>);              <span class="cm">// ["Alice","Bob","Carol","David"]</span>
+<span class="kw">string</span>[] two   = csv.<span class="mt">Split</span>(<span class="st">','</span>, <span class="nm">2</span>);          <span class="cm">// ["Alice","Bob,Carol,David"] — limit 2</span>
+<span class="kw">string</span>[] words = <span class="st">"a  b   c"</span>.<span class="mt">Split</span>(
+    <span class="kw">new char</span>[] {<span class="st">' '</span>}, <span class="tp">StringSplitOptions</span>.RemoveEmptyEntries); <span class="cm">// ["a","b","c"]</span>
+
+<span class="cm">// Join — combines array into one string</span>
+<span class="kw">string</span> joined = <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" | "</span>, parts);  <span class="cm">// "Alice | Bob | Carol | David"</span>
+<span class="kw">string</span> nums   = <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, <span class="kw">new int</span>[] { <span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span> }); <span class="cm">// "1, 2, 3"</span>
+
+<span class="cm">// Padding</span>
+<span class="kw">string</span> pl  = <span class="st">"42"</span>.<span class="mt">PadLeft</span>(<span class="nm">6</span>);          <span class="cm">// "    42" — space padded</span>
+<span class="kw">string</span> pl2 = <span class="st">"42"</span>.<span class="mt">PadLeft</span>(<span class="nm">6</span>, <span class="st">'0'</span>);    <span class="cm">// "000042" — zero padded</span>
+<span class="kw">string</span> pr  = <span class="st">"Hi"</span>.<span class="mt">PadRight</span>(<span class="nm">8</span>, <span class="st">'-'</span>);   <span class="cm">// "Hi------"</span></pre>
+
+<div class="realworld">
+    <strong>🌍 Real-World Use — Building a CSV Report:</strong>
+<pre style="margin:10px 0 0 0;"><span class="kw">var</span> employees = <span class="kw">new</span>[] {
+    (<span class="st">"Alice"</span>, <span class="nm">30</span>, <span class="st">"Engineering"</span>),
+    (<span class="st">"Bob"</span>,   <span class="nm">25</span>, <span class="st">"Marketing"</span>  )
+};
+<span class="tp">StringBuilder</span> csv = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"Name,Age,Department\n"</span>);
+<span class="kw">foreach</span> (<span class="kw">var</span> (name, age, dept) <span class="kw">in</span> employees)
+    csv.<span class="mt">AppendLine</span>(<span class="st">$"{name},{age},{dept}"</span>);
+<span class="tp">File</span>.<span class="mt">WriteAllText</span>(<span class="st">"staff.csv"</span>, csv.<span class="mt">ToString</span>());</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6.4 ═══════ -->
+<div class="section-heading">Section 6.4 — Character-Level Operations</div>
+
+<p>A string is fundamentally a <strong>read-only array of <code>char</code> values</strong>.
+Each <code>char</code> is a 16-bit Unicode character. Working at the character level is essential
+for DSA problems: palindrome checking, anagram detection, frequency counting, custom parsing.</p>
+
+<h3>ASCII Values — Memorize These Ranges!</h3>
+
+<div class="diagram">ASCII RANGES TO MEMORIZE — Used constantly in DSA
+
+  '0'–'9'  →  ASCII  48–57   (10 digit characters)
+  'A'–'Z'  →  ASCII  65–90   (26 uppercase letters)
+  'a'–'z'  →  ASCII  97–122  (26 lowercase letters)
+
+KEY ARITHMETIC:
+  c - '0'      = integer digit value   ('7' - '0' = 7)
+  c - 'a'      = 0-based letter index  ('e' - 'a' = 4)
+  c - 'A'      = 0-based letter index  ('E' - 'A' = 4)
+  'a' - 'A'    = 32                    (case offset)
+  (char)(c+32) = lowercase of c        ('A'+32 = 'a')
+  (char)(c-32) = uppercase of c        ('a'-32 = 'A')</div>
+
+<pre><span class="cm">// ── char arithmetic ──────────────────────────────────────────────</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>((<span class="kw">int</span>)<span class="st">'A'</span>);          <span class="cm">// 65</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>((<span class="kw">char</span>)(<span class="st">'A'</span> + <span class="nm">1</span>)); <span class="cm">// 'B'</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>((<span class="kw">char</span>)(<span class="st">'a'</span> + <span class="nm">4</span>)); <span class="cm">// 'e' — 5th letter of alphabet</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">'7'</span> - <span class="st">'0'</span>);        <span class="cm">// 7   — convert digit char to int</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">'e'</span> - <span class="st">'a'</span>);        <span class="cm">// 4   — 0-based index of 'e'</span>
+
+<span class="cm">// ── char classification ──────────────────────────────────────────</span>
+<span class="tp">char</span>.<span class="mt">IsLetter</span>(<span class="st">'a'</span>);          <span class="cm">// true</span>
+<span class="tp">char</span>.<span class="mt">IsDigit</span>(<span class="st">'5'</span>);           <span class="cm">// true</span>
+<span class="tp">char</span>.<span class="mt">IsUpper</span>(<span class="st">'A'</span>);           <span class="cm">// true</span>
+<span class="tp">char</span>.<span class="mt">IsLower</span>(<span class="st">'a'</span>);           <span class="cm">// true</span>
+<span class="tp">char</span>.<span class="mt">IsWhiteSpace</span>(<span class="st">' '</span>);      <span class="cm">// true (also \t, \n)</span>
+<span class="tp">char</span>.<span class="mt">IsLetterOrDigit</span>(<span class="st">'3'</span>);   <span class="cm">// true</span>
+<span class="tp">char</span>.<span class="mt">IsPunctuation</span>(<span class="st">'!'</span>);     <span class="cm">// true</span>
+<span class="tp">char</span>.<span class="mt">ToUpper</span>(<span class="st">'a'</span>);           <span class="cm">// 'A'</span>
+<span class="tp">char</span>.<span class="mt">ToLower</span>(<span class="st">'Z'</span>);           <span class="cm">// 'z'</span></pre>
+
+<h3>String ↔ char[] Conversion</h3>
+<pre><span class="cm">// string → char[] — creates a modifiable copy</span>
+<span class="kw">char</span>[] chars = <span class="st">"hello"</span>.<span class="mt">ToCharArray</span>(); <span class="cm">// ['h','e','l','l','o']</span>
+chars[<span class="nm">0</span>] = <span class="st">'H'</span>;                       <span class="cm">// can modify!</span>
+<span class="kw">string</span> back = <span class="kw">new</span> <span class="kw">string</span>(chars);      <span class="cm">// "Hello" — build new string from chars</span>
+
+<span class="cm">// Reverse a string — classic DSA technique:</span>
+<span class="kw">char</span>[] rev = <span class="st">"algorithm"</span>.<span class="mt">ToCharArray</span>();
+<span class="tp">Array</span>.<span class="mt">Reverse</span>(rev);
+<span class="kw">string</span> reversed = <span class="kw">new</span> <span class="kw">string</span>(rev); <span class="cm">// "mhtirogla"</span>
+
+<span class="cm">// Create string of repeated chars:</span>
+<span class="kw">string</span> line  = <span class="kw">new</span> <span class="kw">string</span>(<span class="st">'-'</span>, <span class="nm">50</span>);  <span class="cm">// "--------------------------------------------------"</span>
+<span class="kw">string</span> zeros = <span class="kw">new</span> <span class="kw">string</span>(<span class="st">'0'</span>, <span class="nm">8</span>);  <span class="cm">// "00000000"</span></pre>
+
+<h3>Essential DSA Pattern — Frequency Counting with char Array</h3>
+<pre><span class="cm">// Count character frequencies — O(n) time, O(1) space (fixed 26-char array)</span>
+<span class="kw">public static int</span>[] <span class="mt">LetterFrequency</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">int</span>[] freq = <span class="kw">new int</span>[<span class="nm">26</span>]; <span class="cm">// index 0='a', 1='b', ..., 25='z'</span>
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s.<span class="mt">ToLower</span>())
+        <span class="kw">if</span> (c &gt;= <span class="st">'a'</span> &amp;&amp; c &lt;= <span class="st">'z'</span>)
+            freq[c - <span class="st">'a'</span>]++;
+    <span class="kw">return</span> freq;
+}
+
+<span class="cm">// Check anagram — O(n)</span>
+<span class="kw">public static bool</span> <span class="mt">IsAnagram</span>(<span class="kw">string</span> a, <span class="kw">string</span> b)
+{
+    <span class="kw">if</span> (a.Length != b.Length) <span class="kw">return false</span>;
+    <span class="kw">int</span>[] count = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; a.Length; i++)
+    {
+        count[a[i] - <span class="st">'a'</span>]++; <span class="cm">// increment for 'a'</span>
+        count[b[i] - <span class="st">'a'</span>]--; <span class="cm">// decrement for 'b'</span>
+    }
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> count) <span class="kw">if</span> (n != <span class="nm">0</span>) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsAnagram</span>(<span class="st">"listen"</span>, <span class="st">"silent"</span>)); <span class="cm">// true</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsAnagram</span>(<span class="st">"hello"</span>, <span class="st">"world"</span>));   <span class="cm">// false</span>
+
+<span class="cm">// Check palindrome — O(n) time, O(1) space</span>
+<span class="kw">public static bool</span> <span class="mt">IsPalindrome</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">int</span> l = <span class="nm">0</span>, r = s.Length - <span class="nm">1</span>;
+    <span class="kw">while</span> (l &lt; r)
+    {
+        <span class="kw">if</span> (s[l] != s[r]) <span class="kw">return false</span>;
+        l++; r--;
+    }
+    <span class="kw">return true</span>;
+}
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsPalindrome</span>(<span class="st">"racecar"</span>));  <span class="cm">// true</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsPalindrome</span>(<span class="st">"madam"</span>));    <span class="cm">// true</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsPalindrome</span>(<span class="st">"hello"</span>));    <span class="cm">// false</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6.5 ═══════ -->
+<div class="section-heading">Section 6.5 — String Comparison &amp; Equality</div>
+
+<p>String comparison is a common source of subtle bugs. C# gives you multiple comparison methods,
+each with different behavior around case sensitivity and cultural rules.</p>
+
+<pre><span class="kw">string</span> a = <span class="st">"Hello"</span>, b = <span class="st">"hello"</span>, c = <span class="st">"Hello"</span>;
+
+<span class="cm">// ── == operator ──────────────────────────────────────────────────</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(a == c);   <span class="cm">// true  — same value</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(a == b);   <span class="cm">// false — case differs!</span>
+
+<span class="cm">// ── Equals with StringComparison ─────────────────────────────────</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(a.<span class="mt">Equals</span>(b, <span class="tp">StringComparison</span>.OrdinalIgnoreCase));  <span class="cm">// true ✓</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(a.<span class="mt">Equals</span>(b, <span class="tp">StringComparison</span>.Ordinal));           <span class="cm">// false</span>
+
+<span class="cm">// ── string.Compare — returns -1, 0, or +1 ────────────────────────</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Compare</span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>));            <span class="cm">// -1 (a &lt; b)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Compare</span>(<span class="st">"HELLO"</span>, <span class="st">"hello"</span>, ignoreCase: <span class="kw">true</span>)); <span class="cm">// 0</span>
+
+<span class="cm">// ── Null-safe comparison ──────────────────────────────────────────</span>
+<span class="kw">string</span>? nullStr = <span class="kw">null</span>;
+<span class="kw">bool</span> safe = <span class="kw">string</span>.<span class="mt">Equals</span>(nullStr, <span class="st">"hello"</span>, <span class="tp">StringComparison</span>.OrdinalIgnoreCase);
+<span class="cm">// false — no NullReferenceException (static Equals handles null)</span>
+<span class="cm">// nullStr.Equals("hello") would THROW NullReferenceException!</span></pre>
+
+<table>
+    <thead>
+        <tr><th>StringComparison</th><th>Case Sensitive</th><th>Culture Aware</th><th>Best For</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>Ordinal</code></td><td class="g">Yes</td><td class="r">No</td><td>File paths, IDs, keys, passwords</td></tr>
+        <tr><td><code>OrdinalIgnoreCase</code></td><td class="r">No</td><td class="r">No</td><td>URLs, config keys, user input matching</td></tr>
+        <tr><td><code>CurrentCulture</code></td><td class="g">Yes</td><td class="g">Yes</td><td>User-visible text in UI</td></tr>
+        <tr><td><code>InvariantCulture</code></td><td class="g">Yes</td><td class="o">Fixed</td><td>Serialization, stored data, databases</td></tr>
+    </tbody>
+</table>
+
+<div class="warning">
+    <strong>🚨 The Turkish 'i' Problem — Why Culture Matters:</strong><br>
+    In Turkish locale, <code>ToUpper('i')</code> produces <code>'İ'</code> (dotted I), not <code>'I'</code>.<br>
+    If you use <code>.ToUpper()</code> for technical comparisons, your code breaks on Turkish machines.<br>
+    <strong>Rule:</strong> For any technical/non-display comparison, always use <code>StringComparison.Ordinal</code> or <code>OrdinalIgnoreCase</code>.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6.6 ═══════ -->
+<div class="section-heading">Section 6.6 — String Formatting</div>
+
+<h3>Tool 1 — String Interpolation $"..." (Preferred)</h3>
+<pre><span class="kw">string</span> name  = <span class="st">"Alice"</span>;
+<span class="kw">int</span>    score = <span class="nm">9542</span>;
+<span class="kw">double</span> price = <span class="nm">1234.5678</span>;
+
+<span class="cm">// Basic:</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Player {name} scored {score} points"</span>);
+
+<span class="cm">// Format specifiers inside {}:</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Price:   {price:F2}"</span>);   <span class="cm">// "1234.57"  — 2 decimals</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Score:   {score:N0}"</span>);   <span class="cm">// "9,542"    — thousands separator</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Hex:     {score:X}"</span>);    <span class="cm">// "2545E"    — hexadecimal</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Percent: {0.875:P0}"</span>);  <span class="cm">// "88 %"     — percentage</span>
+
+<span class="cm">// Column alignment (negative = left, positive = right):</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"{"Name",-12}{"Score",8}{"Grade",6}"</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"{name,-12}{score,8}{"A+",6}"</span>);
+<span class="cm">// Name           9542    A+</span>
+
+<span class="cm">// Expressions are allowed inside {}:</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Length &gt; 3: {name.Length &gt; 3}"</span>); <span class="cm">// "Length > 3: True"</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Upper: {name.ToUpper()}"</span>);        <span class="cm">// "Upper: ALICE"</span></pre>
+
+<table>
+    <thead>
+        <tr><th>Specifier</th><th>Description</th><th>Input</th><th>Output</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>F2</code></td><td>Fixed 2 decimal places</td><td>3.14159</td><td>3.14</td></tr>
+        <tr><td><code>N0</code></td><td>Number with thousands, 0 decimals</td><td>9542</td><td>9,542</td></tr>
+        <tr><td><code>N2</code></td><td>Number with thousands, 2 decimals</td><td>9542.5</td><td>9,542.50</td></tr>
+        <tr><td><code>C</code></td><td>Currency (locale-aware)</td><td>1234.5</td><td>$1,234.50</td></tr>
+        <tr><td><code>P0</code></td><td>Percentage, 0 decimals</td><td>0.875</td><td>88 %</td></tr>
+        <tr><td><code>X</code></td><td>Hexadecimal uppercase</td><td>255</td><td>FF</td></tr>
+        <tr><td><code>D5</code></td><td>Integer zero-padded to 5 digits</td><td>42</td><td>00042</td></tr>
+        <tr><td><code>yyyy-MM-dd</code></td><td>ISO date format</td><td>DateTime</td><td>2026-05-25</td></tr>
+    </tbody>
+</table>
+
+<h3>Tool 2 — Verbatim @"..." and Raw """..."""</h3>
+<pre><span class="cm">// Verbatim — backslash is NOT an escape character</span>
+<span class="kw">string</span> path = <span class="st">@"C:\Users\Alice\Documents\report.pdf"</span>; <span class="cm">// cleaner than escaping</span>
+
+<span class="cm">// Combined verbatim + interpolation:</span>
+<span class="kw">string</span> dir  = <span class="st">"Projects"</span>;
+<span class="kw">string</span> full = <span class="st">$@"C:\Users\Alice\{dir}\data.csv"</span>;
+
+<span class="cm">// C# 11+ Raw string literal — zero escaping needed:</span>
+<span class="kw">string</span> json = <span class="st">"""
+{
+    "name": "Alice",
+    "path": "C:\Users\Alice"
+}
+"""</span>;</pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6.7 ═══════ -->
+<div class="section-heading">Section 6.7 — Complexity Summary</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Complexity</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>s[i]</code> index access</td><td class="g">O(1)</td><td>Direct memory lookup</td></tr>
+        <tr><td><code>s.Length</code></td><td class="g">O(1)</td><td>Stored property</td></tr>
+        <tr><td><code>s == t</code>, <code>.Equals()</code></td><td class="o">O(n)</td><td>Compares all chars worst case</td></tr>
+        <tr><td><code>s.Contains(t)</code>, <code>.IndexOf(t)</code></td><td class="r">O(n·m)</td><td>n=string length, m=pattern length</td></tr>
+        <tr><td><code>s.StartsWith(t)</code></td><td class="o">O(k)</td><td>k = prefix length, stops early</td></tr>
+        <tr><td><code>s.Substring(i, k)</code></td><td class="o">O(k)</td><td>Copies k chars to new string</td></tr>
+        <tr><td><code>s.Replace()</code></td><td class="r">O(n)</td><td>Scans entire string</td></tr>
+        <tr><td><code>s.ToUpper()</code> / <code>ToLower()</code></td><td class="r">O(n)</td><td>Converts every char</td></tr>
+        <tr><td><code>s.Trim()</code></td><td class="r">O(n)</td><td>Scans from both ends</td></tr>
+        <tr><td><code>s.Split()</code></td><td class="r">O(n)</td><td>Scans all delimiters</td></tr>
+        <tr><td><code>string.Join()</code></td><td class="r">O(n)</td><td>Uses StringBuilder internally</td></tr>
+        <tr><td><code>s += t</code> in loop</td><td class="r">O(n²)</td><td>⚠️ Never — use StringBuilder</td></tr>
+        <tr><td><code>sb.Append()</code></td><td class="g">O(1) amortized</td><td>Buffer write, rare resize</td></tr>
+        <tr><td><code>sb.ToString()</code></td><td class="r">O(n)</td><td>Final build — called once</td></tr>
+        <tr><td><code>.ToCharArray()</code></td><td class="r">O(n)</td><td>Copies all chars</td></tr>
+    </tbody>
+</table>
+
+<div class="nav-box">
+    <strong>✅ Module 1 Part B Complete!</strong><br><br>
+    <strong>Key Takeaways:</strong><br>
+    • Strings are immutable — every modification creates a NEW string object<br>
+    • Never use <code>+=</code> inside a loop — that's O(n²). Use <code>StringBuilder</code> for O(n)<br>
+    • <code>StringBuilder</code> uses a resizable buffer — amortized O(1) append, O(n) for final ToString<br>
+    • Use <code>StringComparison.OrdinalIgnoreCase</code> for safe case-insensitive comparison<br>
+    • Char arithmetic (<code>'e' - 'a' = 4</code>) is essential for frequency counting in DSA problems<br><br>
+    ⬅ <strong>Previous:</strong> <a href="m01a_bigO_arrays.html">Part A — Big O &amp; Arrays</a><br>
+    ➡ <strong>Next:</strong> <a href="m01c_listT.html">Part C — List&lt;T&gt; Dynamic Arrays</a><br>
+    🏠 <a href="../Index.html">Course Index</a>
+</div>
+
+</body>
+</html>

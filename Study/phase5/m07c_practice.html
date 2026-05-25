@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7C — Practice: Graph Problems</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        .problem-card { border: 2px solid #dee2e6; border-radius: 12px; padding: 24px 28px; margin: 32px 0; background: #fafafa; }
+        .problem-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+        .problem-num { font-size: 1.3em; font-weight: 700; color: #2c3e50; }
+        .problem-title { font-size: 1.25em; color: #1a5276; font-weight: 600; margin-left: 10px; }
+        .badges-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .diff { padding: 3px 12px; border-radius: 20px; font-size: 0.82em; font-weight: 700; }
+        .diff.easy   { background: #d5f5e3; color: #1e8449; }
+        .diff.medium { background: #fef9e7; color: #b7950b; }
+        .diff.hard   { background: #fdecea; color: #c0392b; }
+        .meta-badge { background: #eaf0fb; color: #1a5276; padding: 3px 10px; border-radius: 20px; font-size: 0.82em; }
+        input[type=checkbox].spoiler-toggle { display: none; }
+        .spoiler-label { display: inline-block; background: #2c3e50; color: #fff; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9em; margin-top: 12px; user-select: none; }
+        .spoiler-label:hover { background: #1a252f; }
+        .spoiler-content { display: none; margin-top: 14px; }
+        .spoiler-toggle:checked ~ .spoiler-label { background: #16a085; }
+        .spoiler-toggle:checked ~ .spoiler-label ~ .spoiler-content { display: block; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .spoiler-content { display: block !important; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 7 — Part C</h1>
+    <div class="tagline">Practice — 15 Graph Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">BFS • DFS • Topological Sort • Dijkstra • Union-Find</p>
+    <div class="badges">
+        <span>📝 15 Problems</span>
+        <span>🟢 Easy × 3</span>
+        <span>🟡 Medium × 8</span>
+        <span>🔴 Hard × 4</span>
+        <span>💻 Language: C#</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 5 — Graphs:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m07a_graphs.html">Graph Fundamentals &amp; BFS</a><br>
+    ✅ <strong>Part B</strong> — <a href="m07b_graph_algorithms.html">DFS, Topological Sort, Dijkstra &amp; Union-Find</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Practice<br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="tip">
+    <strong>💡 Graph Problem Recognition:</strong>
+    If the problem involves cells/nodes with connections → think graph.
+    Fewest steps/moves → BFS. Reachability/groups → DFS or Union-Find.
+    Ordering/dependencies → Topological Sort. Minimum cost path → Dijkstra.
+</div>
+
+<!-- ═══════ EASY ═══════ -->
+<div class="section-heading">Easy Problems (1–3)</div>
+
+<!-- Problem 1 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#1</span><span class="problem-title">Number of Islands</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">Grid DFS/BFS</span></div>
+    </div>
+    <p>Given a 2D grid of '1' (land) and '0' (water), count the number of islands.
+    An island is surrounded by water and formed by connecting adjacent lands horizontally or vertically.</p>
+    <strong>Example:</strong>
+    <pre style="font-size:0.88em;padding:12px;margin:8px 0;">11110
+11010
+11000
+00000  → 1 island</pre>
+    <input type="checkbox" class="spoiler-toggle" id="p1">
+    <label class="spoiler-label" for="p1">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Scan the grid. When we find '1', increment count and DFS/BFS to mark all connected land as '0' (visited). Count = number of times we start a new flood-fill.</div>
+        <pre><span class="kw">public int</span> <span class="mt">NumIslands</span>(<span class="kw">char</span>[][] grid)
+{
+    <span class="kw">int</span> rows = grid.Length, cols = grid[<span class="nm">0</span>].Length, count = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; rows; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; cols; c++)
+            <span class="kw">if</span> (grid[r][c] == <span class="st">'1'</span>) { count++; <span class="mt">Sink</span>(grid, r, c, rows, cols); }
+    <span class="kw">return</span> count;
+}
+<span class="kw">private void</span> <span class="mt">Sink</span>(<span class="kw">char</span>[][] g, <span class="kw">int</span> r, <span class="kw">int</span> c, <span class="kw">int</span> rows, <span class="kw">int</span> cols)
+{
+    <span class="kw">if</span> (r &lt; <span class="nm">0</span> || r &gt;= rows || c &lt; <span class="nm">0</span> || c &gt;= cols || g[r][c] != <span class="st">'1'</span>) <span class="kw">return</span>;
+    g[r][c] = <span class="st">'0'</span>; <span class="cm">// mark visited by sinking</span>
+    <span class="mt">Sink</span>(g, r+<span class="nm">1</span>, c, rows, cols); <span class="mt">Sink</span>(g, r-<span class="nm">1</span>, c, rows, cols);
+    <span class="mt">Sink</span>(g, r, c+<span class="nm">1</span>, rows, cols); <span class="mt">Sink</span>(g, r, c-<span class="nm">1</span>, rows, cols);
+}
+<span class="cm">// Time: O(rows×cols), Space: O(rows×cols) recursion stack
+// Modifies input grid — clone first if that's a concern</span></pre>
+    </div>
+</div>
+
+<!-- Problem 2 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#2</span><span class="problem-title">Flood Fill</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">Grid DFS</span></div>
+    </div>
+    <p>Given an image (2D int array), a starting pixel (sr,sc), and a new color, perform flood fill.
+    Change the color of the starting pixel and all adjacent pixels of the same original color to the new color.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p2">
+    <label class="spoiler-label" for="p2">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> DFS from (sr,sc). Spread to neighbors that have the same original color. Edge case: if starting color already equals new color, return immediately to avoid infinite loop.</div>
+        <pre><span class="kw">public int</span>[][] <span class="mt">FloodFill</span>(<span class="kw">int</span>[][] image, <span class="kw">int</span> sr, <span class="kw">int</span> sc, <span class="kw">int</span> color)
+{
+    <span class="kw">int</span> orig = image[sr][sc];
+    <span class="kw">if</span> (orig == color) <span class="kw">return</span> image; <span class="cm">// avoid infinite loop</span>
+    <span class="mt">Fill</span>(image, sr, sc, orig, color);
+    <span class="kw">return</span> image;
+}
+<span class="kw">private void</span> <span class="mt">Fill</span>(<span class="kw">int</span>[][] img, <span class="kw">int</span> r, <span class="kw">int</span> c, <span class="kw">int</span> orig, <span class="kw">int</span> newColor)
+{
+    <span class="kw">if</span> (r &lt; <span class="nm">0</span> || r &gt;= img.Length || c &lt; <span class="nm">0</span> || c &gt;= img[<span class="nm">0</span>].Length) <span class="kw">return</span>;
+    <span class="kw">if</span> (img[r][c] != orig) <span class="kw">return</span>;
+    img[r][c] = newColor;
+    <span class="mt">Fill</span>(img, r+<span class="nm">1</span>, c, orig, newColor); <span class="mt">Fill</span>(img, r-<span class="nm">1</span>, c, orig, newColor);
+    <span class="mt">Fill</span>(img, r, c+<span class="nm">1</span>, orig, newColor); <span class="mt">Fill</span>(img, r, c-<span class="nm">1</span>, orig, newColor);
+}
+<span class="cm">// Time: O(rows×cols), Space: O(rows×cols) recursion stack</span></pre>
+    </div>
+</div>
+
+<!-- Problem 3 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#3</span><span class="problem-title">Find if Path Exists in Graph</span></div>
+        <div class="badges-row"><span class="diff easy">Easy</span><span class="meta-badge">BFS/DFS or Union-Find</span></div>
+    </div>
+    <p>Given n nodes (0 to n-1), edges array, source, and destination — return true if a valid path exists from source to destination.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p3">
+    <label class="spoiler-label" for="p3">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach (Union-Find):</strong> Union all edges. Check if source and destination have the same root — they're connected.</div>
+        <pre><span class="kw">public bool</span> <span class="mt">ValidPath</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] edges, <span class="kw">int</span> source, <span class="kw">int</span> destination)
+{
+    <span class="kw">if</span> (source == destination) <span class="kw">return true</span>;
+    <span class="kw">var</span> uf = <span class="kw">new</span> <span class="tp">UnionFind</span>(n);
+    <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> edges) uf.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>]);
+    <span class="kw">return</span> uf.<span class="mt">Connected</span>(source, destination);
+}
+<span class="cm">// Alternatively: BFS from source, check if we reach destination
+// Union-Find is cleaner for pure connectivity queries</span></pre>
+    </div>
+</div>
+
+<!-- ═══════ MEDIUM ═══════ -->
+<div class="section-heading">Medium Problems (4–11)</div>
+
+<!-- Problem 4 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#4</span><span class="problem-title">Clone Graph</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">BFS</span><span class="meta-badge">HashMap</span></div>
+    </div>
+    <p>Given a reference to a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node has a val and a list of neighbors.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p4">
+    <label class="spoiler-label" for="p4">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> BFS traversal. Use a HashMap from original node → cloned node. When visiting a neighbor: if not in map, create clone and enqueue. Always connect cloned neighbors.</div>
+        <pre><span class="kw">public</span> <span class="tp">Node</span>? <span class="mt">CloneGraph</span>(<span class="tp">Node</span>? node)
+{
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return null</span>;
+    <span class="kw">var</span> clones = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">Node</span>, <span class="tp">Node</span>&gt;();
+    clones[node] = <span class="kw">new</span> <span class="tp">Node</span>(node.val);
+
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">Node</span>&gt;();
+    q.<span class="mt">Enqueue</span>(node);
+
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> cur = q.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span> (<span class="kw">var</span> nb <span class="kw">in</span> cur.neighbors)
+        {
+            <span class="kw">if</span> (!clones.<span class="mt">ContainsKey</span>(nb))
+            {
+                clones[nb] = <span class="kw">new</span> <span class="tp">Node</span>(nb.val);
+                q.<span class="mt">Enqueue</span>(nb);
+            }
+            clones[cur].neighbors.<span class="mt">Add</span>(clones[nb]); <span class="cm">// wire cloned neighbors</span>
+        }
+    }
+    <span class="kw">return</span> clones[node];
+}
+<span class="cm">// Time: O(V+E), Space: O(V+E)
+// Key: create clone when FIRST SEEN, wire neighbors for every edge</span></pre>
+    </div>
+</div>
+
+<!-- Problem 5 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#5</span><span class="problem-title">Course Schedule (Can Finish?)</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Directed Cycle Detection</span><span class="meta-badge">Topological Sort</span></div>
+    </div>
+    <p>Given numCourses and prerequisites array where [a,b] means "b must be taken before a", return true if you can finish all courses.</p>
+    <strong>Example:</strong> numCourses=2, prerequisites=[[1,0]] → true. [[1,0],[0,1]] → false (cycle).
+    <input type="checkbox" class="spoiler-toggle" id="p5">
+    <label class="spoiler-label" for="p5">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Build directed graph. Run Kahn's topological sort. If we can process all n nodes = no cycle = all courses finishable.</div>
+        <pre><span class="kw">public bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs)
+{
+    <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+    <span class="kw">int</span>[] inDeg = <span class="kw">new int</span>[n];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> prereqs)
+    {
+        adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]); <span class="cm">// p[1] → p[0] (prereq → course)</span>
+        inDeg[p[<span class="nm">0</span>]]++;
+    }
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) <span class="kw">if</span> (inDeg[i] == <span class="nm">0</span>) q.<span class="mt">Enqueue</span>(i);
+    <span class="kw">int</span> processed = <span class="nm">0</span>;
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> c = q.<span class="mt">Dequeue</span>(); processed++;
+        <span class="kw">foreach</span> (<span class="kw">int</span> next <span class="kw">in</span> adj[c])
+            <span class="kw">if</span> (--inDeg[next] == <span class="nm">0</span>) q.<span class="mt">Enqueue</span>(next);
+    }
+    <span class="kw">return</span> processed == n;
+}
+<span class="cm">// Time: O(V+E), Space: O(V+E)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 6 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#6</span><span class="problem-title">Course Schedule II (Return Order)</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Topological Sort</span></div>
+    </div>
+    <p>Same as #5 but return an ordering of courses you should take. Return empty if impossible.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p6">
+    <label class="spoiler-label" for="p6">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Kahn's algorithm — collect processed nodes into result list. If result.Count == n, return it. Otherwise cycle exists, return empty.</div>
+        <pre><span class="kw">public int</span>[] <span class="mt">FindOrder</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs)
+{
+    <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+    <span class="kw">int</span>[] inDeg = <span class="kw">new int</span>[n];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> prereqs) { adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]); inDeg[p[<span class="nm">0</span>]]++; }
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) <span class="kw">if</span> (inDeg[i] == <span class="nm">0</span>) q.<span class="mt">Enqueue</span>(i);
+    <span class="kw">var</span> order = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> c = q.<span class="mt">Dequeue</span>(); order.<span class="mt">Add</span>(c);
+        <span class="kw">foreach</span> (<span class="kw">int</span> next <span class="kw">in</span> adj[c])
+            <span class="kw">if</span> (--inDeg[next] == <span class="nm">0</span>) q.<span class="mt">Enqueue</span>(next);
+    }
+    <span class="kw">return</span> order.Count == n ? order.<span class="mt">ToArray</span>() : <span class="tp">Array</span>.Empty&lt;<span class="kw">int</span>&gt;();
+}
+<span class="cm">// Time: O(V+E), Space: O(V+E)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 7 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#7</span><span class="problem-title">Number of Connected Components</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Union-Find</span></div>
+    </div>
+    <p>Given n nodes (0 to n-1) and an array of undirected edges, return the number of connected components.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p7">
+    <label class="spoiler-label" for="p7">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Union-Find is perfect here. Start with n components. Each successful union reduces count by 1. Return final count.</div>
+        <pre><span class="kw">public int</span> <span class="mt">CountComponents</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] edges)
+{
+    <span class="kw">var</span> uf = <span class="kw">new</span> <span class="tp">UnionFind</span>(n);
+    <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> edges) uf.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>]);
+    <span class="kw">return</span> uf.Components;
+}
+<span class="cm">// Time: O(E·α(n)) ≈ O(E), Space: O(n)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 8 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#8</span><span class="problem-title">Pacific Atlantic Water Flow</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Multi-source BFS</span></div>
+    </div>
+    <p>Given m×n grid of heights, water can flow to adjacent cells with equal or lower height.
+    Find all cells from which water can flow to both the Pacific (top/left) and Atlantic (bottom/right) ocean.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p8">
+    <label class="spoiler-label" for="p8">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Reverse the flow direction — instead of water flowing DOWN from each cell, do BFS/DFS flowing UP from ocean borders. Pacific BFS from top/left edges. Atlantic BFS from bottom/right edges. Answer = cells reachable by both.</div>
+        <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">PacificAtlantic</span>(<span class="kw">int</span>[][] heights)
+{
+    <span class="kw">int</span> rows=heights.Length, cols=heights[<span class="nm">0</span>].Length;
+    <span class="kw">bool</span>[,] pac = <span class="mt">BFSOcean</span>(heights, rows, cols, <span class="kw">true</span>);
+    <span class="kw">bool</span>[,] atl = <span class="mt">BFSOcean</span>(heights, rows, cols, <span class="kw">false</span>);
+    <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;rows;r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;cols;c++)
+            <span class="kw">if</span> (pac[r,c] &amp;&amp; atl[r,c]) res.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;{r,c});
+    <span class="kw">return</span> res;
+}
+<span class="kw">private bool</span>[,] <span class="mt">BFSOcean</span>(<span class="kw">int</span>[][] h, <span class="kw">int</span> R, <span class="kw">int</span> C, <span class="kw">bool</span> pacific)
+{
+    <span class="kw">bool</span>[,] vis = <span class="kw">new bool</span>[R,C];
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+    <span class="kw">int</span>[][] dirs = {{<span class="nm">0</span>,<span class="nm">1</span>},{<span class="nm">0</span>,-<span class="nm">1</span>},{<span class="nm">1</span>,<span class="nm">0</span>},{-<span class="nm">1</span>,<span class="nm">0</span>}};
+    <span class="cm">// Seed border cells adjacent to the ocean</span>
+    <span class="kw">for</span> (<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;R;r++) { <span class="kw">int</span> c=pacific?<span class="nm">0</span>:C-<span class="nm">1</span>; vis[r,c]=<span class="kw">true</span>; q.<span class="mt">Enqueue</span>((r,c)); }
+    <span class="kw">for</span> (<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;C;c++) { <span class="kw">int</span> r=pacific?<span class="nm">0</span>:R-<span class="nm">1</span>; <span class="kw">if</span>(!vis[r,c]){vis[r,c]=<span class="kw">true</span>;q.<span class="mt">Enqueue</span>((r,c));} }
+    <span class="kw">while</span> (q.Count&gt;<span class="nm">0</span>) {
+        <span class="kw">var</span>(r,c)=q.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span>(<span class="kw">var</span> d <span class="kw">in</span> dirs) {
+            <span class="kw">int</span> nr=r+d[<span class="nm">0</span>],nc=c+d[<span class="nm">1</span>];
+            <span class="kw">if</span>(nr&gt;=<span class="nm">0</span>&amp;&amp;nr&lt;R&amp;&amp;nc&gt;=<span class="nm">0</span>&amp;&amp;nc&lt;C&amp;&amp;!vis[nr,nc]&amp;&amp;h[nr][nc]&gt;=h[r][c])
+            { vis[nr,nc]=<span class="kw">true</span>; q.<span class="mt">Enqueue</span>((nr,nc)); }
+        }
+    }
+    <span class="kw">return</span> vis;
+}
+<span class="cm">// Time: O(rows×cols), Space: O(rows×cols)
+// KEY INSIGHT: flow UP (neighbor height >= current) from ocean borders</span></pre>
+    </div>
+</div>
+
+<!-- Problem 9 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#9</span><span class="problem-title">Rotting Oranges</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Multi-source BFS</span></div>
+    </div>
+    <p>Grid of 0 (empty), 1 (fresh), 2 (rotten). Every minute, rotten oranges infect adjacent fresh ones.
+    Return minimum minutes to rot all oranges, or -1 if impossible.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p9">
+    <label class="spoiler-label" for="p9">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Multi-source BFS — all rotten oranges expand simultaneously. Track count of fresh oranges. Return minutes when fresh=0, or -1 if any fresh remain.</div>
+        <pre><span class="kw">public int</span> <span class="mt">OrangesRotting</span>(<span class="kw">int</span>[][] grid)
+{
+    <span class="kw">int</span> rows=grid.Length, cols=grid[<span class="nm">0</span>].Length, fresh=<span class="nm">0</span>, min=<span class="nm">0</span>;
+    <span class="kw">int</span>[][] dirs={{<span class="nm">0</span>,<span class="nm">1</span>},{<span class="nm">0</span>,-<span class="nm">1</span>},{<span class="nm">1</span>,<span class="nm">0</span>},{-<span class="nm">1</span>,<span class="nm">0</span>}};
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+    <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;rows;r++) <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;cols;c++)
+    {
+        <span class="kw">if</span>(grid[r][c]==<span class="nm">2</span>) q.<span class="mt">Enqueue</span>((r,c));
+        <span class="kw">if</span>(grid[r][c]==<span class="nm">1</span>) fresh++;
+    }
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span> &amp;&amp; fresh&gt;<span class="nm">0</span>)
+    {
+        min++; <span class="kw">int</span> sz=q.Count;
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;sz;i++) {
+            <span class="kw">var</span>(r,c)=q.<span class="mt">Dequeue</span>();
+            <span class="kw">foreach</span>(<span class="kw">var</span> d <span class="kw">in</span> dirs) {
+                <span class="kw">int</span> nr=r+d[<span class="nm">0</span>],nc=c+d[<span class="nm">1</span>];
+                <span class="kw">if</span>(nr&gt;=<span class="nm">0</span>&amp;&amp;nr&lt;rows&amp;&amp;nc&gt;=<span class="nm">0</span>&amp;&amp;nc&lt;cols&amp;&amp;grid[nr][nc]==<span class="nm">1</span>)
+                { grid[nr][nc]=<span class="nm">2</span>; fresh--; q.<span class="mt">Enqueue</span>((nr,nc)); }
+            }
+        }
+    }
+    <span class="kw">return</span> fresh==<span class="nm">0</span> ? min : -<span class="nm">1</span>;
+}</pre>
+    </div>
+</div>
+
+<!-- Problem 10 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#10</span><span class="problem-title">Graph Valid Tree</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Union-Find</span></div>
+    </div>
+    <p>Given n nodes (0 to n-1) and a list of undirected edges, return true if these edges form a valid tree.
+    A valid tree = connected + no cycles (equivalently: n nodes and exactly n-1 edges with 1 component).</p>
+    <input type="checkbox" class="spoiler-toggle" id="p10">
+    <label class="spoiler-label" for="p10">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Two checks: 1) exactly n-1 edges (tree property), 2) all nodes connected (Union-Find: 1 component after all unions, and no edge creates a cycle).</div>
+        <pre><span class="kw">public bool</span> <span class="mt">ValidTree</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] edges)
+{
+    <span class="kw">if</span> (edges.Length != n - <span class="nm">1</span>) <span class="kw">return false</span>; <span class="cm">// tree needs exactly n-1 edges</span>
+    <span class="kw">var</span> uf = <span class="kw">new</span> <span class="tp">UnionFind</span>(n);
+    <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> edges)
+        <span class="kw">if</span> (!uf.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>])) <span class="kw">return false</span>; <span class="cm">// cycle detected</span>
+    <span class="kw">return</span> uf.Components == <span class="nm">1</span>; <span class="cm">// all nodes connected</span>
+}
+<span class="cm">// Actually with n-1 edges and no cycle, it must be connected.
+// The two checks are sufficient. Time: O(n·α(n)) ≈ O(n)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 11 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#11</span><span class="problem-title">Walls and Gates (BFS Distance)</span></div>
+        <div class="badges-row"><span class="diff medium">Medium</span><span class="meta-badge">Multi-source BFS</span></div>
+    </div>
+    <p>Given an m×n grid with -1 (wall), 0 (gate), INF (empty room). Fill each empty room with the distance to its nearest gate. INF = 2147483647.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p11">
+    <label class="spoiler-label" for="p11">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Multi-source BFS starting from all gates (value 0) simultaneously. Expand outward incrementing distance. Only update cells that are INF.</div>
+        <pre><span class="kw">public void</span> <span class="mt">WallsAndGates</span>(<span class="kw">int</span>[][] rooms)
+{
+    <span class="kw">int</span> R=rooms.Length, C=rooms[<span class="nm">0</span>].Length, INF=<span class="kw">int</span>.MaxValue;
+    <span class="kw">int</span>[][] dirs={{<span class="nm">0</span>,<span class="nm">1</span>},{<span class="nm">0</span>,-<span class="nm">1</span>},{<span class="nm">1</span>,<span class="nm">0</span>},{-<span class="nm">1</span>,<span class="nm">0</span>}};
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+    <span class="cm">// Seed all gates</span>
+    <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;R;r++) <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;C;c++)
+        <span class="kw">if</span>(rooms[r][c]==<span class="nm">0</span>) q.<span class="mt">Enqueue</span>((r,c));
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>) {
+        <span class="kw">var</span>(r,c)=q.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span>(<span class="kw">var</span> d <span class="kw">in</span> dirs) {
+            <span class="kw">int</span> nr=r+d[<span class="nm">0</span>],nc=c+d[<span class="nm">1</span>];
+            <span class="kw">if</span>(nr&gt;=<span class="nm">0</span>&amp;&amp;nr&lt;R&amp;&amp;nc&gt;=<span class="nm">0</span>&amp;&amp;nc&lt;C&amp;&amp;rooms[nr][nc]==INF) {
+                rooms[nr][nc]=rooms[r][c]+<span class="nm">1</span>;
+                q.<span class="mt">Enqueue</span>((nr,nc));
+            }
+        }
+    }
+}
+<span class="cm">// Time: O(rows×cols), Space: O(rows×cols)</span></pre>
+    </div>
+</div>
+
+<!-- ═══════ HARD ═══════ -->
+<div class="section-heading">Hard Problems (12–15)</div>
+
+<!-- Problem 12 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#12</span><span class="problem-title">Word Ladder</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">BFS</span><span class="meta-badge">String Graph</span></div>
+    </div>
+    <p>Given beginWord, endWord, and a wordList — find the length of the shortest transformation sequence from beginWord to endWord,
+    where each step changes exactly one letter and each intermediate word must exist in wordList.</p>
+    <strong>Example:</strong> begin="hit", end="cog", list=["hot","dot","dog","lot","log","cog"] → 5 (hit→hot→dot→dog→cog)
+    <input type="checkbox" class="spoiler-toggle" id="p12">
+    <label class="spoiler-label" for="p12">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> BFS on "word graph" — two words are connected if they differ by exactly 1 character. Use a set for O(1) lookup. BFS gives shortest path.</div>
+        <pre><span class="kw">public int</span> <span class="mt">LadderLength</span>(<span class="kw">string</span> begin, <span class="kw">string</span> end, <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; wordList)
+{
+    <span class="kw">var</span> wordSet = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt;(wordList);
+    <span class="kw">if</span> (!wordSet.<span class="mt">Contains</span>(end)) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">string</span> w, <span class="kw">int</span> steps)&gt;();
+    q.<span class="mt">Enqueue</span>((begin, <span class="nm">1</span>));
+    wordSet.<span class="mt">Remove</span>(begin);
+    <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> (word, steps) = q.<span class="mt">Dequeue</span>();
+        <span class="kw">if</span> (word == end) <span class="kw">return</span> steps;
+        <span class="kw">char</span>[] arr = word.<span class="mt">ToCharArray</span>();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length; i++)
+        {
+            <span class="kw">char</span> orig = arr[i];
+            <span class="kw">for</span> (<span class="kw">char</span> c = <span class="st">'a'</span>; c &lt;= <span class="st">'z'</span>; c++)
+            {
+                arr[i] = c;
+                <span class="kw">string</span> next = <span class="kw">new string</span>(arr);
+                <span class="kw">if</span> (wordSet.<span class="mt">Contains</span>(next))
+                {
+                    wordSet.<span class="mt">Remove</span>(next); <span class="cm">// mark visited by removing from set</span>
+                    q.<span class="mt">Enqueue</span>((next, steps + <span class="nm">1</span>));
+                }
+            }
+            arr[i] = orig;
+        }
+    }
+    <span class="kw">return</span> <span class="nm">0</span>;
+}
+<span class="cm">// Time: O(M² × N) where M=word length, N=wordList size
+// Space: O(M² × N)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 13 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#13</span><span class="problem-title">Alien Dictionary</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">Topological Sort</span></div>
+    </div>
+    <p>Given a sorted list of words in an alien language, determine the order of characters.
+    Return any valid ordering of the alien alphabet, or "" if invalid.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p13">
+    <label class="spoiler-label" for="p13">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Compare adjacent words to extract character ordering rules. Build directed graph of char→char. Topological sort. If cycle → invalid (return ""). If result contains fewer chars than unique chars → cycle.</div>
+        <pre><span class="kw">public string</span> <span class="mt">AlienOrder</span>(<span class="kw">string</span>[] words)
+{
+    <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="tp">HashSet</span>&lt;<span class="kw">char</span>&gt;&gt;();
+    <span class="kw">var</span> inDeg = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> words) <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> w) { adj[c]=<span class="kw">new</span>(); inDeg[c]=<span class="nm">0</span>; }
+
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;words.Length-<span class="nm">1</span>;i++)
+    {
+        <span class="kw">string</span> w1=words[i], w2=words[i+<span class="nm">1</span>];
+        <span class="kw">int</span> minLen=<span class="tp">Math</span>.<span class="mt">Min</span>(w1.Length,w2.Length);
+        <span class="kw">if</span>(w1.Length&gt;w2.Length &amp;&amp; w1.<span class="mt">StartsWith</span>(w2)) <span class="kw">return</span> <span class="st">""</span>; <span class="cm">// invalid: "ab" before "a"</span>
+        <span class="kw">for</span>(<span class="kw">int</span> j=<span class="nm">0</span>;j&lt;minLen;j++)
+        {
+            <span class="kw">if</span>(w1[j]!=w2[j]) { <span class="kw">if</span>(!adj[w1[j]].<span class="mt">Contains</span>(w2[j])){adj[w1[j]].<span class="mt">Add</span>(w2[j]);inDeg[w2[j]]++;} <span class="kw">break</span>; }
+        }
+    }
+    <span class="cm">// Kahn's topo sort on character graph</span>
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">char</span>&gt;();
+    <span class="kw">foreach</span>(<span class="kw">var</span> (c,d) <span class="kw">in</span> inDeg) <span class="kw">if</span>(d==<span class="nm">0</span>) q.<span class="mt">Enqueue</span>(c);
+    <span class="kw">var</span> sb=<span class="kw">new</span> <span class="tp">System.Text.StringBuilder</span>();
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>) {
+        <span class="kw">char</span> c=q.<span class="mt">Dequeue</span>(); sb.<span class="mt">Append</span>(c);
+        <span class="kw">foreach</span>(<span class="kw">char</span> nb <span class="kw">in</span> adj[c]) <span class="kw">if</span>(--inDeg[nb]==<span class="nm">0</span>) q.<span class="mt">Enqueue</span>(nb);
+    }
+    <span class="kw">return</span> sb.Length==inDeg.Count ? sb.<span class="mt">ToString</span>() : <span class="st">""</span>;
+}
+<span class="cm">// Time: O(C + U + min(n,U)) where C=total chars in all words, U=unique chars</span></pre>
+    </div>
+</div>
+
+<!-- Problem 14 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#14</span><span class="problem-title">Network Delay Time</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">Dijkstra</span></div>
+    </div>
+    <p>Given directed weighted edges times[i]=[u,v,w] (signal travel time), a source k, and n nodes —
+    return the minimum time for all n nodes to receive the signal, or -1 if impossible.</p>
+    <input type="checkbox" class="spoiler-toggle" id="p14">
+    <label class="spoiler-label" for="p14">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Dijkstra from source k. The answer = max of all shortest distances (last node to receive signal). If any node is unreachable (dist = ∞), return -1.</div>
+        <pre><span class="kw">public int</span> <span class="mt">NetworkDelayTime</span>(<span class="kw">int</span>[][] times, <span class="kw">int</span> n, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">int</span> to, <span class="kw">int</span> w)&gt;[n + <span class="nm">1</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt;= n; i++) g[i] = <span class="kw">new</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> t <span class="kw">in</span> times) g[t[<span class="nm">0</span>]].<span class="mt">Add</span>((t[<span class="nm">1</span>], t[<span class="nm">2</span>]));
+
+    <span class="kw">int</span>[] dist = <span class="kw">new int</span>[n + <span class="nm">1</span>]; <span class="tp">Array</span>.<span class="mt">Fill</span>(dist, <span class="kw">int</span>.MaxValue); dist[k] = <span class="nm">0</span>;
+    <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    pq.<span class="mt">Enqueue</span>(k, <span class="nm">0</span>);
+
+    <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>) {
+        pq.<span class="mt">TryDequeue</span>(<span class="kw">out int</span> node, <span class="kw">out int</span> d);
+        <span class="kw">if</span> (d &gt; dist[node]) <span class="kw">continue</span>;
+        <span class="kw">foreach</span> (<span class="kw">var</span> (nb, w) <span class="kw">in</span> g[node]) {
+            <span class="kw">if</span> (dist[node] + w &lt; dist[nb]) {
+                dist[nb] = dist[node] + w;
+                pq.<span class="mt">Enqueue</span>(nb, dist[nb]);
+            }
+        }
+    }
+    <span class="kw">int</span> maxDist = dist.<span class="mt">Skip</span>(<span class="nm">1</span>).<span class="mt">Max</span>();
+    <span class="kw">return</span> maxDist == <span class="kw">int</span>.MaxValue ? -<span class="nm">1</span> : maxDist;
+}
+<span class="cm">// Time: O((V+E) log V), Space: O(V+E)</span></pre>
+    </div>
+</div>
+
+<!-- Problem 15 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <div><span class="problem-num">#15</span><span class="problem-title">Cheapest Flights Within K Stops</span></div>
+        <div class="badges-row"><span class="diff hard">Hard</span><span class="meta-badge">Bellman-Ford</span></div>
+    </div>
+    <p>Given n cities, flights[i]=[from,to,price], src, dst, and k — find cheapest price from src to dst with at most k stops. Return -1 if impossible.</p>
+    <strong>Note:</strong> K stops = K+1 edges in path.
+    <input type="checkbox" class="spoiler-toggle" id="p15">
+    <label class="spoiler-label" for="p15">Show Solution</label>
+    <div class="spoiler-content">
+        <div class="note"><strong>Approach:</strong> Bellman-Ford with exactly K+1 iterations. Copy dist array before each iteration to prevent using updates from the same round (otherwise we'd allow more than 1 edge per step).</div>
+        <pre><span class="kw">public int</span> <span class="mt">FindCheapestPrice</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] flights, <span class="kw">int</span> src, <span class="kw">int</span> dst, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span>[] dist = <span class="kw">new int</span>[n]; <span class="tp">Array</span>.<span class="mt">Fill</span>(dist, <span class="kw">int</span>.MaxValue); dist[src] = <span class="nm">0</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt;= k; i++) <span class="cm">// at most k+1 edges = k stops</span>
+    {
+        <span class="kw">int</span>[] temp = (<span class="kw">int</span>[])dist.<span class="mt">Clone</span>(); <span class="cm">// snapshot before this round</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> f <span class="kw">in</span> flights)
+        {
+            <span class="kw">int</span> u=f[<span class="nm">0</span>], v=f[<span class="nm">1</span>], w=f[<span class="nm">2</span>];
+            <span class="kw">if</span> (dist[u] != <span class="kw">int</span>.MaxValue &amp;&amp; dist[u] + w &lt; temp[v])
+                temp[v] = dist[u] + w;
+        }
+        dist = temp;
+    }
+    <span class="kw">return</span> dist[dst] == <span class="kw">int</span>.MaxValue ? -<span class="nm">1</span> : dist[dst];
+}
+<span class="cm">// Time: O(k × E), Space: O(n)
+// KEY: clone dist before each iteration — ensures we only extend paths by 1 edge per round
+// This is the K-constrained Bellman-Ford variant</span></pre>
+    </div>
+</div>
+
+<hr>
+
+<!-- Quick Reference -->
+<div class="section-heading">Quick Reference — Graph Pattern Summary</div>
+
+<table>
+    <thead>
+        <tr><th>Pattern</th><th>Algorithm</th><th>Key Signal</th><th>Problems</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Count groups/islands</td><td>DFS/BFS flood fill</td><td>"islands", "components", "regions"</td><td>#1, #2</td></tr>
+        <tr><td>Connectivity query</td><td>Union-Find</td><td>"connected", "same group"</td><td>#3, #7, #10</td></tr>
+        <tr><td>Deep copy graph</td><td>BFS + HashMap</td><td>"clone", "copy"</td><td>#4</td></tr>
+        <tr><td>Cycle = impossible?</td><td>Topological Sort (Kahn)</td><td>"can finish", "prerequisites"</td><td>#5, #6</td></tr>
+        <tr><td>Ordering constraints</td><td>Topological Sort</td><td>"order", "schedule", "alien dict"</td><td>#6, #13</td></tr>
+        <tr><td>Multi-source spread</td><td>Multi-source BFS</td><td>"all sources", "spread from multiple"</td><td>#8, #9, #11</td></tr>
+        <tr><td>Valid tree check</td><td>Union-Find</td><td>n-1 edges + 1 component + no cycle</td><td>#10</td></tr>
+        <tr><td>Shortest word path</td><td>BFS on word graph</td><td>"transform one char at a time"</td><td>#12</td></tr>
+        <tr><td>Minimum cost path</td><td>Dijkstra</td><td>"cheapest", "minimum time", weights ≥ 0</td><td>#14</td></tr>
+        <tr><td>K-constrained shortest</td><td>Bellman-Ford K rounds</td><td>"at most K stops/hops"</td><td>#15</td></tr>
+    </tbody>
+</table>
+
+<div class="nav-box">
+    <strong>🎉 Phase 5 Complete — Graphs!</strong><br><br>
+    You've mastered the full graph toolkit: BFS (shortest unweighted), DFS (components, cycles),
+    Topological Sort (DAG ordering), Dijkstra (weighted shortest path), Bellman-Ford (negative weights /
+    K-constrained), and Union-Find (dynamic connectivity). These algorithms power real-world systems
+    from GPS navigation to dependency managers.<br><br>
+    ◀ <strong>Prev:</strong> <a href="m07b_graph_algorithms.html">Module 7B — Graph Algorithms</a><br>
+    ➡ <strong>Next Phase:</strong> <a href="../phase6/m08a_dp_intro.html">Module 8A — Dynamic Programming Intro</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+</body>
+</html>

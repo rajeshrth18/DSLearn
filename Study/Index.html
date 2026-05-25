@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# DSA Complete Course — Master Index</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8; color: #2c2c2c;
+            max-width: 980px; margin: 0 auto;
+            padding: 40px 20px; background: #f5f6fa;
+        }
+
+        /* ── Cover ─────────────────────────────────────────────── */
+        .cover {
+            text-align: center; padding: 70px 30px;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white; border-radius: 20px; margin-bottom: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .cover .course-label {
+            font-size: 0.85em; letter-spacing: 4px;
+            text-transform: uppercase; opacity: 0.6; margin-bottom: 14px;
+        }
+        .cover h1 { font-size: 2.8em; margin-bottom: 10px; font-weight: 800; }
+        .cover .sub { font-size: 1.15em; opacity: 0.8; margin-bottom: 30px; }
+        .cover .stats {
+            display: flex; justify-content: center; gap: 30px;
+            flex-wrap: wrap; margin-bottom: 28px;
+        }
+        .cover .stat { text-align: center; }
+        .cover .stat .num { font-size: 2.2em; font-weight: 800; color: #f39c12; }
+        .cover .stat .lbl { font-size: 0.8em; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+        .cover .badges span {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 5px 16px; border-radius: 20px;
+            font-size: 0.85em; margin: 4px;
+        }
+
+        /* ── How-To Box ─────────────────────────────────────────── */
+        .howto {
+            background: #fff; border-radius: 14px;
+            padding: 28px 32px; margin-bottom: 40px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .howto h2 {
+            font-size: 1.15em; color: #2c3e50; margin-bottom: 16px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .howto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .howto-step {
+            background: #f8f9fa; border-radius: 10px; padding: 14px 16px;
+            border-top: 3px solid #3498db;
+        }
+        .howto-step .step-num { font-size: 1.8em; font-weight: 800; color: #3498db; line-height: 1; }
+        .howto-step p { font-size: 0.88em; color: #555; margin-top: 6px; margin-bottom: 0; }
+
+        /* ── Phase Blocks ───────────────────────────────────────── */
+        .phase-block { margin-bottom: 44px; }
+        .phase-bar {
+            color: white; padding: 11px 22px; border-radius: 10px;
+            margin-bottom: 16px; font-size: 1em; font-weight: 700;
+            letter-spacing: 0.5px; display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 6px;
+        }
+        .phase-bar .phase-time {
+            font-size: 0.82em; font-weight: 400; opacity: 0.85;
+            background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 10px;
+        }
+        .p1  { background: linear-gradient(90deg, #2980b9, #3498db); }
+        .p2  { background: linear-gradient(90deg, #1e8449, #27ae60); }
+        .p3  { background: linear-gradient(90deg, #7d3c98, #9b59b6); }
+        .p4  { background: linear-gradient(90deg, #d35400, #e67e22); }
+        .p5  { background: linear-gradient(90deg, #0e6655, #16a085); }
+        .p6  { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+        .p7  { background: linear-gradient(90deg, #1a252f, #2c3e50); }
+        .p8  { background: linear-gradient(90deg, #5d4037, #795548); }
+        .p9  { background: linear-gradient(90deg, #922b21, #c0392b); }
+        .p10 { background: linear-gradient(90deg, #d68910, #f39c12); }
+
+        /* ── Module Grid ─────────────────────────────────────────── */
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .module-card {
+            background: #fff; border-radius: 12px;
+            padding: 18px 20px; border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s;
+        }
+        .module-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+        .card-title {
+            font-size: 0.97em; font-weight: 700; color: #2c3e50;
+            margin-bottom: 12px; padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .part-list { list-style: none; margin: 0 0 12px 0; padding: 0; }
+        .part-list li {
+            font-size: 0.85em; padding: 5px 0;
+            border-bottom: 1px dashed #f0f0f0; color: #555;
+            display: flex; align-items: center; justify-content: space-between; gap: 6px;
+        }
+        .part-list li:last-child { border-bottom: none; }
+        .part-list li .pl { flex: 1; }
+        .part-list a {
+            color: #2980b9; text-decoration: none; font-weight: 600;
+            font-size: 0.82em; background: #eaf0fb; padding: 2px 7px;
+            border-radius: 4px; white-space: nowrap;
+        }
+        .part-list a:hover { background: #2980b9; color: #fff; }
+        .part-list .t { font-size: 0.78em; color: #999; white-space: nowrap; }
+        .done-li { color: #27ae60 !important; }
+        .done-li .pl { color: #27ae60; }
+        .here-li { color: #e67e22 !important; font-weight: 600; }
+        .card-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .badge {
+            font-size: 0.75em; padding: 3px 9px; border-radius: 10px;
+            font-weight: 700; letter-spacing: 0.3px;
+        }
+        .b-beg  { background: #d5f5e3; color: #1e8449; }
+        .b-int  { background: #fef9e7; color: #b7950b; }
+        .b-adv  { background: #fde8e8; color: #c0392b; }
+        .b-time { background: #eaf0fb; color: #1a5276; }
+
+        /* ── Legend ─────────────────────────────────────────────── */
+        .legend {
+            background: #fff; border-radius: 10px;
+            padding: 16px 22px; margin-bottom: 30px;
+            border: 1px solid #dee2e6; font-size: 0.88em;
+            display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
+        }
+        .legend strong { color: #2c3e50; margin-right: 6px; }
+
+        /* ── Quick Ref ───────────────────────────────────────────── */
+        .quick-ref {
+            background: #1e1e1e; color: #d4d4d4;
+            border-radius: 14px; padding: 28px 32px; margin-top: 50px;
+        }
+        .quick-ref h2 {
+            color: #569cd6; font-size: 1.1em; margin-bottom: 20px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .quick-ref table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+        .quick-ref th {
+            background: #2d2d2d; color: #9cdcfe; padding: 10px 14px;
+            text-align: left; font-size: 0.85em;
+        }
+        .quick-ref td { padding: 8px 14px; border-bottom: 1px solid #333; }
+        .quick-ref tr:nth-child(even) td { background: #252525; }
+        .qg { color: #4ec9b0; font-weight: 700; }
+        .qo { color: #ce9178; font-weight: 700; }
+        .qr { color: #f48771; font-weight: 700; }
+
+        /* ── Footer ─────────────────────────────────────────────── */
+        .footer {
+            text-align: center; margin-top: 50px; padding: 24px;
+            color: #888; font-size: 0.88em;
+            border-top: 2px dashed #dee2e6;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .phase-bar, .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+    <div class="course-label">Complete Learning Program</div>
+    <h1>C# Data Structures &amp; Algorithms</h1>
+    <div class="sub">Zero to Hero — Beginner to Advanced — Everything in One Place</div>
+    <div class="stats">
+        <div class="stat"><div class="num">20</div><div class="lbl">Modules</div></div>
+        <div class="stat"><div class="num">77</div><div class="lbl">HTML Files</div></div>
+        <div class="stat"><div class="num">10</div><div class="lbl">Phases</div></div>
+        <div class="stat"><div class="num">80+</div><div class="lbl">Practice Problems</div></div>
+        <div class="stat"><div class="num">100h</div><div class="lbl">Est. Study Time</div></div>
+    </div>
+    <div class="badges">
+        <span>💻 Language: C#</span>
+        <span>📐 Beginner → Advanced</span>
+        <span>📖 Self-Paced</span>
+        <span>🖨️ PDF-Printable</span>
+    </div>
+</div>
+
+<!-- HOW TO USE -->
+<div class="howto">
+    <h2>📖 How to Use This Course</h2>
+    <div class="howto-grid">
+        <div class="howto-step">
+            <div class="step-num">01</div>
+            <p><strong>Follow the phases in order.</strong> Each phase builds on the last. Don't skip ahead — foundations matter.</p>
+        </div>
+        <div class="howto-step">
+            <div class="step-num">02</div>
+            <p><strong>Read every diagram.</strong> ASCII art diagrams show exactly how memory and algorithms work step by step.</p>
+        </div>
+        <div class="howto-step">
+            <div class="step-num">03</div>
+            <p><strong>Type the code yourself.</strong> Don't just read it. Create a .cs file and run every example. Muscle memory matters.</p>
+        </div>
+        <div class="howto-step">
+            <div class="step-num">04</div>
+            <p><strong>Try practice problems blind.</strong> Attempt each problem without peeking. Then click "Reveal Solution" to compare.</p>
+        </div>
+    </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+    <div><strong>Status Icons:</strong></div>
+    <div>✅ Complete &nbsp;▶ In Progress &nbsp;⬜ Not Started</div>
+    <div><strong>Difficulty:</strong></div>
+    <div>
+        <span class="badge b-beg">Beginner</span> &nbsp;
+        <span class="badge b-int">Intermediate</span> &nbsp;
+        <span class="badge b-adv">Advanced</span>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 1 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p1">
+        📐 Phase 1 — Foundations
+        <span class="phase-time">⏱ ~8–10 hrs · Beginner</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 1 — Complexity &amp; Basic Data Types</div>
+            <ul class="part-list">
+                <li class="done-li">
+                    <span class="pl">✅ Part A — Big O Notation &amp; Arrays</span>
+                    <a href="phase1/m01a_bigO_arrays.html" target="_blank">Open</a>
+                    <span class="t">3–4h</span>
+                </li>
+                <li class="done-li">
+                    <span class="pl">✅ Part B — Strings &amp; StringBuilder</span>
+                    <a href="phase1/m01b_strings.html" target="_blank">Open</a>
+                    <span class="t">1h</span>
+                </li>
+                <li>
+                    <span class="pl">⬜ Part C — List&lt;T&gt; Dynamic Arrays</span>
+                    <a href="phase1/m01c_listT.html" target="_blank">Open</a>
+                    <span class="t">1h</span>
+                </li>
+                <li>
+                    <span class="pl">⬜ Part D — Practice: 15 Problems</span>
+                    <a href="phase1/m01d_practice.html" target="_blank">Open</a>
+                    <span class="t">1.5h</span>
+                </li>
+            </ul>
+            <div class="card-meta">
+                <span class="badge b-beg">Beginner</span>
+                <span class="badge b-time">~7 hrs</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 2 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p2">
+        🔗 Phase 2 — Linear Data Structures
+        <span class="phase-time">⏱ ~12–15 hrs · Beginner–Intermediate</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 2 — Linked Lists</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Singly Linked List</span><a href="phase2/m02a_singly_ll.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Doubly &amp; Circular Lists</span><a href="phase2/m02b_doubly_circular.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Practice: 12 Problems</span><a href="phase2/m02c_ll_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~5.5 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 3 — Stacks, Queues &amp; Monotonic</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Stacks</span><a href="phase2/m03a_stacks.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part B — Queues &amp; Deque</span><a href="phase2/m03b_queues.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Priority Queue</span><a href="phase2/m03c_priority_queue.html" target="_blank">Open</a><span class="t">1h</span></li>
+                <li><span class="pl">⬜ Part D — Monotonic Stack &amp; Queue</span><a href="phase2/m03d_monotonic.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part E — Practice: 15 Problems</span><a href="phase2/m03e_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~7.5 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 3 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p3">
+        🔄 Phase 3 — Recursion &amp; Sorting
+        <span class="phase-time">⏱ ~15–18 hrs · Intermediate</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 4 — Recursion</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Recursion Fundamentals</span><a href="phase3/m04a_recursion.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+                <li><span class="pl">⬜ Part B — Backtracking Preview</span><a href="phase3/m04b_backtrack_intro.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Practice: 12 Problems</span><a href="phase3/m04c_recursion_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~6 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 5 — Sorting Algorithms</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — O(n²) Sorts</span><a href="phase3/m05a_basic_sorts.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Merge &amp; Quick Sort</span><a href="phase3/m05b_efficient_sorts.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+                <li><span class="pl">⬜ Part C — Linear Sorts</span><a href="phase3/m05c_linear_sorts.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part D — .NET Sorting APIs</span><a href="phase3/m05d_dotnet_sorting.html" target="_blank">Open</a><span class="t">1h</span></li>
+                <li><span class="pl">⬜ Part E — Practice &amp; Comparison</span><a href="phase3/m05e_sorting_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~9 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 4 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p4">
+        🌳 Phase 4 — Trees
+        <span class="phase-time">⏱ ~22–28 hrs · Intermediate–Advanced</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 6 — Binary Trees &amp; BST</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Binary Trees &amp; Traversals</span><a href="phase4/m06a_binary_trees.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+                <li><span class="pl">⬜ Part B — Binary Search Trees</span><a href="phase4/m06b_bst.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part C — Practice: 15 Problems</span><a href="phase4/m06c_trees_practice.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~7 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 7 — Advanced Trees</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — AVL Trees (Full Rotations)</span><a href="phase4/m07a_avl_trees.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+                <li><span class="pl">⬜ Part B — Red-Black Trees</span><a href="phase4/m07b_rb_trees.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+                <li><span class="pl">⬜ Part C — Heaps &amp; PriorityQueue</span><a href="phase4/m07c_heaps.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part D — Trie (Prefix Tree)</span><a href="phase4/m07d_trie.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part E — B-Trees</span><a href="phase4/m07e_btrees.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part F — LCA &amp; Binary Lifting</span><a href="phase4/m07f_lca.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part G — Practice: 15 Problems</span><a href="phase4/m07g_practice.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~15 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 5 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p5">
+        #️⃣ Phase 5 — Hashing
+        <span class="phase-time">⏱ ~7–9 hrs · Intermediate</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 8 — Hash Tables, Sets &amp; Probabilistic</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Hash Functions &amp; Collisions</span><a href="phase5/m08a_hashing.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Dictionary, HashSet, LRU Cache</span><a href="phase5/m08b_collections.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Bloom Filters</span><a href="phase5/m08c_bloom_filters.html" target="_blank">Open</a><span class="t">1h</span></li>
+                <li><span class="pl">⬜ Part D — Practice: 12 Problems</span><a href="phase5/m08d_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~6.5 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 6 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p6">
+        🕸️ Phase 6 — Graphs
+        <span class="phase-time">⏱ ~22–28 hrs · Intermediate–Advanced</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 9 — Graph Fundamentals</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Graph Theory &amp; Representations</span><a href="phase6/m09a_graph_theory.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part B — Breadth-First Search (BFS)</span><a href="phase6/m09b_bfs.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Depth-First Search (DFS)</span><a href="phase6/m09c_dfs.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part D — Practice: 12 Problems</span><a href="phase6/m09d_graph_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-int">Intermediate</span><span class="badge b-time">~6.5 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 10 — Graph Algorithms</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Dijkstra's Shortest Path</span><a href="phase6/m10a_dijkstra.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Bellman-Ford &amp; Floyd-Warshall</span><a href="phase6/m10b_bf_fw.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part C — MST: Prim's &amp; Kruskal's</span><a href="phase6/m10c_mst.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part D — Topological Sort &amp; SCC</span><a href="phase6/m10d_topo_scc.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part E — Articulation Points &amp; Bridges</span><a href="phase6/m10e_bridges.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part F — Max Flow Algorithms</span><a href="phase6/m10f_maxflow.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+                <li><span class="pl">⬜ Part G — Practice: 12 Problems</span><a href="phase6/m10g_practice.html" target="_blank">Open</a><span class="t">2.5h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~14 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 7 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p7">
+        ⚙️ Phase 7 — Advanced Data Structures
+        <span class="phase-time">⏱ ~8–10 hrs · Advanced</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 11 — Advanced Structures</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Segment Trees</span><a href="phase7/m11a_segment_trees.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Fenwick Trees (BIT)</span><a href="phase7/m11b_fenwick_trees.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Disjoint Set Union (Union-Find)</span><a href="phase7/m11c_union_find.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part D — Sparse Tables</span><a href="phase7/m11d_sparse_tables.html" target="_blank">Open</a><span class="t">1h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~6 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 8 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p8">
+        🧩 Phase 8 — Algorithm Design Paradigms
+        <span class="phase-time">⏱ ~22–28 hrs · Advanced</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 12 — Dynamic Programming</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — DP Introduction</span><a href="phase8/m12a_dp_intro.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — 1D DP (Coin Change, LIS…)</span><a href="phase8/m12b_dp_1d.html" target="_blank">Open</a><span class="t">3h</span></li>
+                <li><span class="pl">⬜ Part C — 2D DP (Knapsack, LCS…)</span><a href="phase8/m12c_dp_2d.html" target="_blank">Open</a><span class="t">3h</span></li>
+                <li><span class="pl">⬜ Part D — DP on Trees &amp; Graphs</span><a href="phase8/m12d_dp_trees.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part E — Practice: 20 Problems</span><a href="phase8/m12e_dp_practice.html" target="_blank">Open</a><span class="t">4h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~14 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 13 — Greedy Algorithms</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Greedy Strategy &amp; Proofs</span><a href="phase8/m13a_greedy.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part B — Huffman &amp; Interval Scheduling</span><a href="phase8/m13b_huffman.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Practice: 10 Problems</span><a href="phase8/m13c_greedy_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~5 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 14 — Divide &amp; Conquer</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — D&amp;C &amp; Binary Search Deep Dive</span><a href="phase8/m14a_divide_conquer.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Closest Pair &amp; Master Theorem</span><a href="phase8/m14b_advanced_dc.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~4 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 9 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p9">
+        🔤 Phase 9 — String, Bit &amp; Backtracking Algorithms
+        <span class="phase-time">⏱ ~18–22 hrs · Advanced</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 15 — String Algorithms</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — KMP Algorithm</span><a href="phase9/m15a_kmp.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Rabin-Karp &amp; Z-Algorithm</span><a href="phase9/m15b_rabin_z.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Manacher's Algorithm</span><a href="phase9/m15c_palindromes.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part D — Suffix Array &amp; LCP</span><a href="phase9/m15d_suffix_array.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~7 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 16 — Bit Manipulation</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Bit Operations &amp; Tricks</span><a href="phase9/m16a_bit_manipulation.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part B — Classic Bit Problems</span><a href="phase9/m16b_bit_problems.html" target="_blank">Open</a><span class="t">1h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~2.5 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 17 — Backtracking</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — N-Queens &amp; Sudoku</span><a href="phase9/m17a_backtracking.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Permutations &amp; Combinations</span><a href="phase9/m17b_backtracking2.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Practice: 10 Problems</span><a href="phase9/m17c_practice.html" target="_blank">Open</a><span class="t">2h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~5.5 hrs</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ PHASE 10 ═══════════════ -->
+<div class="phase-block">
+    <div class="phase-bar p10">
+        🎯 Phase 10 — Interview Preparation
+        <span class="phase-time">⏱ ~18–22 hrs · Advanced</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card">
+            <div class="card-title">Module 18 — Problem-Solving Patterns</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Two Pointers &amp; Sliding Window</span><a href="phase10/m18a_patterns1.html" target="_blank">Open</a><span class="t">2h</span></li>
+                <li><span class="pl">⬜ Part B — Intervals &amp; Top K Elements</span><a href="phase10/m18b_patterns2.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+                <li><span class="pl">⬜ Part C — Modified Binary Search &amp; Subsets</span><a href="phase10/m18c_patterns3.html" target="_blank">Open</a><span class="t">1.5h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~5 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 19 — Top 50 Interview Problems</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Part A — Arrays &amp; Strings (15 Problems)</span><a href="phase10/m19a_interview_arrays.html" target="_blank">Open</a><span class="t">3h</span></li>
+                <li><span class="pl">⬜ Part B — Trees &amp; Graphs (15 Problems)</span><a href="phase10/m19b_interview_trees.html" target="_blank">Open</a><span class="t">3h</span></li>
+                <li><span class="pl">⬜ Part C — DP &amp; Advanced (20 Problems)</span><a href="phase10/m19c_interview_dp.html" target="_blank">Open</a><span class="t">4h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Advanced</span><span class="badge b-time">~10 hrs</span></div>
+        </div>
+        <div class="module-card">
+            <div class="card-title">Module 20 — Final Review &amp; Roadmap</div>
+            <ul class="part-list">
+                <li><span class="pl">⬜ Complexity Cheat Sheet — All Structures</span><a href="phase10/m20_final_review.html" target="_blank">Open</a><span class="t">1h</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-beg">All Levels</span><span class="badge b-time">~1 hr</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- QUICK COMPLEXITY REFERENCE -->
+<div class="quick-ref">
+    <h2>⚡ Quick Complexity Reference — Common Data Structures</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data Structure</th>
+                <th>Access</th>
+                <th>Search</th>
+                <th>Insert</th>
+                <th>Delete</th>
+                <th>Space</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Array</td><td class="qg">O(1)</td><td class="qo">O(n)</td><td class="qo">O(n)</td><td class="qo">O(n)</td><td class="qo">O(n)</td></tr>
+            <tr><td>Dynamic Array (List&lt;T&gt;)</td><td class="qg">O(1)</td><td class="qo">O(n)</td><td class="qg">O(1)*</td><td class="qo">O(n)</td><td class="qo">O(n)</td></tr>
+            <tr><td>Singly Linked List</td><td class="qo">O(n)</td><td class="qo">O(n)</td><td class="qg">O(1)</td><td class="qg">O(1)**</td><td class="qo">O(n)</td></tr>
+            <tr><td>Stack</td><td class="qg">O(1)</td><td class="qo">O(n)</td><td class="qg">O(1)</td><td class="qg">O(1)</td><td class="qo">O(n)</td></tr>
+            <tr><td>Queue</td><td class="qg">O(1)</td><td class="qo">O(n)</td><td class="qg">O(1)</td><td class="qg">O(1)</td><td class="qo">O(n)</td></tr>
+            <tr><td>Binary Search Tree</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(n)</td></tr>
+            <tr><td>AVL / Red-Black Tree</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(n)</td></tr>
+            <tr><td>Hash Table (Dictionary)</td><td class="qg">O(1)*</td><td class="qg">O(1)*</td><td class="qg">O(1)*</td><td class="qg">O(1)*</td><td class="qo">O(n)</td></tr>
+            <tr><td>Heap (Min/Max)</td><td class="qo">O(1) top</td><td class="qo">O(n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(n)</td></tr>
+            <tr><td>Trie</td><td class="qg">O(k)</td><td class="qg">O(k)</td><td class="qg">O(k)</td><td class="qg">O(k)</td><td class="qr">O(n·k)</td></tr>
+            <tr><td>Segment Tree</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(log n)</td><td class="qo">O(n)</td></tr>
+        </tbody>
+    </table>
+    <p style="color:#888;font-size:0.82em;margin-top:12px;">
+        * Amortized · ** With reference to node · k = key/string length · log n = balanced tree height
+    </p>
+</div>
+
+<!-- ═══════════════ BONUS ═══════════════ -->
+<div class="phase-block" style="border-color:#a6e3a1;">
+    <div class="phase-bar" style="background:linear-gradient(90deg,#1a3a1a,#1e4a2e);">
+        &#127758; Bonus — Real-World DSA Challenges
+        <span class="phase-time">&#8987; Applied · Industry Systems</span>
+    </div>
+    <div class="module-grid">
+        <div class="module-card" style="border-top:3px solid #a6e3a1;">
+            <div class="card-title">Real-World Complex Challenges</div>
+            <ul class="part-list">
+                <li><span class="pl">&#9989; GPS Navigation — A* / Dijkstra (Google Maps)</span><a href="real_world_challenges.html#gps" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Social Networks — BFS / Union-Find (LinkedIn)</span><a href="real_world_challenges.html#social" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Package Manager — Topo Sort (npm / NuGet)</span><a href="real_world_challenges.html#pkg" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Search Engine — Trie + DP (Google)</span><a href="real_world_challenges.html#search" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Compiler — Stack + Trie (Roslyn / VS)</span><a href="real_world_challenges.html#compiler" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Stock Exchange — Heap + SortedDict (NASDAQ)</span><a href="real_world_challenges.html#exchange" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Warehouse Robots — Bitmask DP (Amazon)</span><a href="real_world_challenges.html#warehouse" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Git Diff — LCS DP + DAG</span><a href="real_world_challenges.html#git" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Fraud Detection — Sliding Window + UF (Visa)</span><a href="real_world_challenges.html#fraud" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Game AI — A* Pathfinding (Unity / Unreal)</span><a href="real_world_challenges.html#game" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; DNA Alignment — Smith-Waterman DP (NCBI)</span><a href="real_world_challenges.html#dna" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; CDN Routing — Consistent Hashing (Cloudflare)</span><a href="real_world_challenges.html#cdn" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Ride-Hailing — Geohash + Heap (Uber/Lyft)</span><a href="real_world_challenges.html#ridehail" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Music Streaming — Top-K Heap (Spotify)</span><a href="real_world_challenges.html#streaming" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Database Indexing — B-Tree (PostgreSQL)</span><a href="real_world_challenges.html#database" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Blockchain — Merkle Tree (Bitcoin)</span><a href="real_world_challenges.html#blockchain" target="_blank">Open</a><span class="t">read</span></li>
+                <li><span class="pl">&#9989; Calendar Scheduling — Intervals (Calendly)</span><a href="real_world_challenges.html#calendar" target="_blank">Open</a><span class="t">read</span></li>
+            </ul>
+            <div class="card-meta"><span class="badge b-adv">Applied</span><span class="badge b-time">All Levels</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    C# Data Structures &amp; Algorithms — Complete Course &nbsp;·&nbsp;
+    20 Modules · 77 HTML Files · 80+ Practice Problems &nbsp;·&nbsp;
+    Start at <a href="phase1/m01a_bigO_arrays.html" style="color:#3498db;">Module 1A</a>
+</div>
+
+</body>
+</html>
+

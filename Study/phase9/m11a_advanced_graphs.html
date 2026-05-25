@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 11A: Advanced Graph Algorithms</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.2em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  h4 { font-size: 1em; color: #89dceb; margin: 16px 0 8px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+
+  .diagram { background: #0d1117; border: 1px solid #30363d; border-left: 4px solid #e74c3c; border-radius: 8px; padding: 20px; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85em; color: #58a6ff; overflow-x: auto; white-space: pre; line-height: 1.5; }
+
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .warning { background: #2d1e1e; border-left: 4px solid #f38ba8; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .warning strong { color: #f38ba8; }
+  .realworld { background: #1e2235; border-left: 4px solid #89b4fa; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .realworld strong { color: #89b4fa; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+  th { background: #313244; color: #cba6f7; padding: 10px 14px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 9px 14px; border: 1px solid #313244; color: #cdd6f4; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 9</span> <span class="badge">Module 11A</span></div>
+    <h1>Advanced Graph Algorithms</h1>
+    <div class="subtitle">Union-Find · MST · Bellman-Ford · Floyd-Warshall · Network Flow</div>
+    <div class="tagline">From connectivity to shortest paths — the complete advanced graph toolkit</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../phase8/m10c_practice.html">&#8592; Module 10C: Practice</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m11b_string_algorithms.html">Module 11B: String Algorithms &#8594;</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>1. Union-Find (Disjoint Set Union)</h2>
+  <p>Union-Find tracks connected components in a graph. Two operations: <strong>Find</strong> (which component is this node in?) and <strong>Union</strong> (merge two components). With optimizations, both run in near-O(1) amortized time.</p>
+
+  <div class="diagram">
+  Initial state: each node is its own parent
+  Nodes: [0] [1] [2] [3] [4]
+  parent: [0,  1,  2,  3,  4]
+  rank:   [0,  0,  0,  0,  0]
+
+  Union(0,1): merge sets containing 0 and 1
+  parent: [0,  0,  2,  3,  4]   (1's root becomes 0)
+
+  Union(2,3): merge 2 and 3
+  parent: [0,  0,  2,  2,  4]
+
+  Union(0,2): merge {0,1} and {2,3}
+  parent: [0,  0,  0,  2,  4]   (root of 2's tree → 0)
+
+  Path Compression: when finding root, flatten the tree
+  Find(3): 3→2→0, then set parent[3]=0 directly
+  parent: [0,  0,  0,  0,  4]   ← flat!</div>
+
+  <pre><span class="kw">public class</span> <span class="tp">UnionFind</span>
+{
+    <span class="kw">private int</span>[] parent, rank;
+
+    <span class="kw">public</span> <span class="mt">UnionFind</span>(<span class="tp">int</span> n)
+    {
+        parent = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">ToArray</span>(); <span class="cm">// parent[i] = i initially</span>
+        rank   = <span class="kw">new</span> <span class="tp">int</span>[n];
+    }
+
+    <span class="cm">// Find root with path compression (flatten tree)</span>
+    <span class="kw">public int</span> <span class="mt">Find</span>(<span class="tp">int</span> x)
+    {
+        <span class="kw">if</span> (parent[x] != x)
+            parent[x] = <span class="mt">Find</span>(parent[x]); <span class="cm">// Path compression: point directly to root</span>
+        <span class="kw">return</span> parent[x];
+    }
+
+    <span class="cm">// Union by rank: attach smaller tree under larger tree's root</span>
+    <span class="kw">public bool</span> <span class="mt">Union</span>(<span class="tp">int</span> x, <span class="tp">int</span> y)
+    {
+        <span class="tp">int</span> rx = <span class="mt">Find</span>(x), ry = <span class="mt">Find</span>(y);
+        <span class="kw">if</span> (rx == ry) <span class="kw">return false</span>; <span class="cm">// Already in same set → would form cycle</span>
+
+        <span class="kw">if</span> (rank[rx] &lt; rank[ry]) (rx, ry) = (ry, rx); <span class="cm">// Make rx the taller root</span>
+        parent[ry] = rx;
+        <span class="kw">if</span> (rank[rx] == rank[ry]) rank[rx]++;
+        <span class="kw">return true</span>;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">Connected</span>(<span class="tp">int</span> x, <span class="tp">int</span> y) =&gt; <span class="mt">Find</span>(x) == <span class="mt">Find</span>(y);
+}
+<span class="cm">// Time: O(α(n)) per operation — α is the inverse Ackermann function, effectively O(1)</span>
+<span class="cm">// Space: O(n)</span></pre>
+
+  <h3>Classic Use Case: Detect Cycle in Undirected Graph</h3>
+  <pre><span class="kw">public bool</span> <span class="mt">HasCycle</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] edges)
+{
+    <span class="tp">var</span> uf = <span class="kw">new</span> <span class="tp">UnionFind</span>(n);
+    <span class="kw">foreach</span> (<span class="tp">var</span> edge <span class="kw">in</span> edges)
+    {
+        <span class="cm">// If both endpoints already share a root, adding this edge creates a cycle</span>
+        <span class="kw">if</span> (!uf.<span class="mt">Union</span>(edge[<span class="nm">0</span>], edge[<span class="nm">1</span>])) <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>;
+}</pre>
+
+  <h3>Number of Connected Components (LeetCode 323)</h3>
+  <pre><span class="kw">public int</span> <span class="mt">CountComponents</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] edges)
+{
+    <span class="tp">var</span> uf = <span class="kw">new</span> <span class="tp">UnionFind</span>(n);
+    <span class="tp">int</span> components = n;
+    <span class="kw">foreach</span> (<span class="tp">var</span> e <span class="kw">in</span> edges)
+        <span class="kw">if</span> (uf.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>])) components--;
+    <span class="kw">return</span> components;
+}</pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>2. Minimum Spanning Tree — Kruskal's Algorithm</h2>
+  <p>A <strong>Minimum Spanning Tree (MST)</strong> connects all n nodes with n-1 edges of minimum total weight. Kruskal's sorts edges by weight and adds them greedily if they don't form a cycle (detected via Union-Find).</p>
+
+  <div class="diagram">
+  Graph edges sorted by weight: (0-1,w=2),(1-2,w=3),(1-4,w=4),(2-5,w=5),(0-3,w=6),(3-4,w=7)
+
+  Process:
+  Add (0-1, w=2): ✓ no cycle  MST edges: 1
+  Add (1-2, w=3): ✓ no cycle  MST edges: 2
+  Add (1-4, w=4): ✓ no cycle  MST edges: 3
+  Add (2-5, w=5): ✓ no cycle  MST edges: 4
+  Add (0-3, w=6): ✓ no cycle  MST edges: 5 = n-1 ← DONE
+  Total weight: 2+3+4+5+6 = 20</div>
+
+  <pre><span class="kw">public int</span> <span class="mt">MinCostConnectPoints</span>(<span class="tp">int</span>[][] edges, <span class="tp">int</span> n)
+{
+    <span class="cm">// edges = [u, v, weight]; sort by weight ascending</span>
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(edges, (a, b) =&gt; a[<span class="nm">2</span>] - b[<span class="nm">2</span>]);
+
+    <span class="tp">var</span> uf   = <span class="kw">new</span> <span class="tp">UnionFind</span>(n);
+    <span class="tp">int</span> cost = <span class="nm">0</span>, edgesUsed = <span class="nm">0</span>;
+
+    <span class="kw">foreach</span> (<span class="tp">var</span> e <span class="kw">in</span> edges)
+    {
+        <span class="kw">if</span> (!uf.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>])) <span class="kw">continue</span>; <span class="cm">// Skip: would form cycle</span>
+        cost += e[<span class="nm">2</span>];
+        <span class="kw">if</span> (++edgesUsed == n - <span class="nm">1</span>) <span class="kw">break</span>;     <span class="cm">// MST complete</span>
+    }
+    <span class="kw">return</span> cost;
+}
+<span class="cm">// Time: O(E log E) for sorting, O(E α(V)) for Union-Find → O(E log E)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>3. Minimum Spanning Tree — Prim's Algorithm</h2>
+  <p>Prim's grows the MST from a starting node by always picking the cheapest edge that connects the current MST to a new node. Uses a min-heap (priority queue) instead of sorting all edges upfront.</p>
+
+  <div class="diagram">
+  Key difference from Kruskal's:
+  Kruskal's: global sort of all edges, union-find to avoid cycles
+  Prim's:    grow from one node, min-heap picks cheapest frontier edge
+
+  Best for dense graphs (Prim's) vs sparse graphs (Kruskal's)</div>
+
+  <pre><span class="kw">public int</span> <span class="mt">PrimMST</span>(<span class="tp">int</span> n, <span class="tp">List</span>&lt;(<span class="tp">int</span> to, <span class="tp">int</span> w)&gt;[] adj)
+{
+    <span class="cm">// Min-heap: (weight, node)</span>
+    <span class="tp">var</span> pq      = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;(<span class="tp">int</span> w, <span class="tp">int</span> node), <span class="tp">int</span>&gt;();
+    <span class="tp">bool</span>[] inMST = <span class="kw">new</span> <span class="tp">bool</span>[n];
+    <span class="tp">int</span> totalCost = <span class="nm">0</span>, edgesUsed = <span class="nm">0</span>;
+
+    pq.<span class="mt">Enqueue</span>((<span class="nm">0</span>, <span class="nm">0</span>), <span class="nm">0</span>); <span class="cm">// Start from node 0 with cost 0</span>
+
+    <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span> &amp;&amp; edgesUsed &lt; n)
+    {
+        <span class="tp">var</span> (w, u) = pq.<span class="mt">Dequeue</span>();
+        <span class="kw">if</span> (inMST[u]) <span class="kw">continue</span>; <span class="cm">// Already in MST</span>
+
+        inMST[u] = <span class="kw">true</span>;
+        totalCost += w;
+        edgesUsed++;
+
+        <span class="kw">foreach</span> (<span class="tp">var</span> (to, weight) <span class="kw">in</span> adj[u])
+            <span class="kw">if</span> (!inMST[to]) pq.<span class="mt">Enqueue</span>((weight, to), weight);
+    }
+    <span class="kw">return</span> totalCost;
+}
+<span class="cm">// Time: O((V + E) log V) with binary heap</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>4. Bellman-Ford Algorithm</h2>
+  <p>Dijkstra's fails with negative edge weights. Bellman-Ford handles negative weights and can <strong>detect negative cycles</strong> (a cycle whose total weight is negative, making shortest path undefined).</p>
+
+  <div class="diagram">
+  Why Dijkstra fails with negative edges:
+  A →(4)→ B →(-6)→ C
+  A →(2)→ C
+
+  Dijkstra greedily visits A→C first (cost 2), marks C as "done"
+  But A→B→C costs 4+(-6) = -2 which is BETTER — Dijkstra missed it!
+
+  Bellman-Ford: relax ALL edges V-1 times
+  After each "round", guaranteed to find shortest paths using ≤ k edges
+  After V-1 rounds, all shortest paths found (longest simple path = V-1 edges)
+  Round V: if any edge still relaxes → NEGATIVE CYCLE detected</div>
+
+  <pre><span class="kw">public int</span>[] <span class="mt">BellmanFord</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] edges, <span class="tp">int</span> src)
+{
+    <span class="tp">int</span>[] dist = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">int</span>.MaxValue, n).<span class="mt">ToArray</span>();
+    dist[src] = <span class="nm">0</span>;
+
+    <span class="cm">// Relax all edges V-1 times</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n - <span class="nm">1</span>; i++)
+    {
+        <span class="kw">foreach</span> (<span class="tp">var</span> e <span class="kw">in</span> edges) <span class="cm">// e = [u, v, weight]</span>
+        {
+            <span class="tp">int</span> u = e[<span class="nm">0</span>], v = e[<span class="nm">1</span>], w = e[<span class="nm">2</span>];
+            <span class="kw">if</span> (dist[u] != <span class="tp">int</span>.MaxValue &amp;&amp; dist[u] + w &lt; dist[v])
+                dist[v] = dist[u] + w;
+        }
+    }
+
+    <span class="cm">// V-th round: detect negative cycle</span>
+    <span class="kw">foreach</span> (<span class="tp">var</span> e <span class="kw">in</span> edges)
+        <span class="kw">if</span> (dist[e[<span class="nm">0</span>]] != <span class="tp">int</span>.MaxValue &amp;&amp; dist[e[<span class="nm">0</span>]] + e[<span class="nm">2</span>] &lt; dist[e[<span class="nm">1</span>]])
+            <span class="kw">throw new</span> <span class="tp">Exception</span>(<span class="st">"Negative cycle detected"</span>);
+
+    <span class="kw">return</span> dist;
+}
+<span class="cm">// Time: O(V * E), Space: O(V)</span>
+<span class="cm">// Use case: currency arbitrage detection, network routing with negative costs</span></pre>
+
+  <h3>Cheapest Flights Within K Stops (LeetCode 787)</h3>
+  <pre><span class="cm">// Bellman-Ford variant: at most k+1 edges (k stops = k+1 flights)</span>
+<span class="kw">public int</span> <span class="mt">FindCheapestPrice</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] flights, <span class="tp">int</span> src, <span class="tp">int</span> dst, <span class="tp">int</span> k)
+{
+    <span class="tp">int</span>[] dist = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">int</span>.MaxValue, n).<span class="mt">ToArray</span>();
+    dist[src] = <span class="nm">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt;= k; i++) <span class="cm">// k+1 iterations = at most k+1 edges</span>
+    {
+        <span class="tp">int</span>[] temp = (<span class="tp">int</span>[])dist.<span class="mt">Clone</span>(); <span class="cm">// Snapshot: only use THIS round's distances</span>
+        <span class="kw">foreach</span> (<span class="tp">var</span> f <span class="kw">in</span> flights)
+        {
+            <span class="tp">int</span> u = f[<span class="nm">0</span>], v = f[<span class="nm">1</span>], w = f[<span class="nm">2</span>];
+            <span class="kw">if</span> (dist[u] != <span class="tp">int</span>.MaxValue &amp;&amp; dist[u] + w &lt; temp[v])
+                temp[v] = dist[u] + w;
+        }
+        dist = temp;
+    }
+    <span class="kw">return</span> dist[dst] == <span class="tp">int</span>.MaxValue ? -<span class="nm">1</span> : dist[dst];
+}
+<span class="cm">// Key: use temp array — prevents relaxing within same iteration (would allow > k stops)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>5. Floyd-Warshall — All-Pairs Shortest Paths</h2>
+  <p>Find shortest paths between <strong>every pair</strong> of nodes in O(V³). Handles negative weights (not negative cycles). Uses DP: can we improve path i→j by going through intermediate node k?</p>
+
+  <div class="diagram">
+  DP definition:
+  dist[i][j] = shortest path from i to j
+
+  Recurrence: for each intermediate node k:
+    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+  Process all k from 0..n-1. After considering k, dist[i][j] holds
+  the shortest path using only nodes 0..k as intermediates.</div>
+
+  <pre><span class="kw">public int</span>[,] <span class="mt">FloydWarshall</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] edges)
+{
+    <span class="tp">int</span>[,] dist = <span class="kw">new</span> <span class="tp">int</span>[n, n];
+
+    <span class="cm">// Initialize: same node=0, direct edge=weight, else infinity</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">0</span>; j &lt; n; j++)
+        dist[i, j] = (i == j) ? <span class="nm">0</span> : <span class="tp">int</span>.MaxValue / <span class="nm">2</span>; <span class="cm">// /2 avoids overflow in addition</span>
+
+    <span class="kw">foreach</span> (<span class="tp">var</span> e <span class="kw">in</span> edges)
+        dist[e[<span class="nm">0</span>], e[<span class="nm">1</span>]] = e[<span class="nm">2</span>];
+
+    <span class="cm">// Try every node k as an intermediate</span>
+    <span class="kw">for</span> (<span class="tp">int</span> k = <span class="nm">0</span>; k &lt; n; k++)
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">0</span>; j &lt; n; j++)
+        <span class="kw">if</span> (dist[i, k] + dist[k, j] &lt; dist[i, j])
+            dist[i, j] = dist[i, k] + dist[k, j];
+
+    <span class="cm">// Negative cycle check: if dist[i,i] < 0, negative cycle exists</span>
+    <span class="kw">return</span> dist;
+}
+<span class="cm">// Time: O(V³), Space: O(V²)</span>
+<span class="cm">// Use when: dense graph, all-pairs needed, small n (≤ ~400)</span></pre>
+
+  <div class="note">
+    <strong>Algorithm Comparison — Shortest Path:</strong>
+    <ul>
+      <li><strong>Dijkstra:</strong> single-source, non-negative weights, O((V+E) log V)</li>
+      <li><strong>Bellman-Ford:</strong> single-source, negative weights ok, O(V*E)</li>
+      <li><strong>Floyd-Warshall:</strong> all-pairs, negative weights ok, O(V³)</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>6. Topological Sort — Kahn's BFS Algorithm</h2>
+  <p>Kahn's algorithm uses <strong>in-degree</strong> counts to find topological order iteratively. Start with all nodes of in-degree 0, process them, reduce neighbors' in-degrees, and enqueue any new zeros.</p>
+
+  <div class="diagram">
+  Course prerequisites: 0→1, 0→2, 1→3, 2→3
+  In-degrees: [0:0, 1:1, 2:1, 3:2]
+
+  Queue: [0]  (in-degree 0)
+  Process 0: reduce in-degree of 1→0, 2→0. Queue: [1, 2]
+  Process 1: reduce in-degree of 3→1. Queue: [2]
+  Process 2: reduce in-degree of 3→0. Queue: [3]
+  Process 3: done. Order: [0, 1, 2, 3]
+
+  If processed count < n → CYCLE EXISTS (can't complete all courses)</div>
+
+  <pre><span class="kw">public int</span>[] <span class="mt">TopoSortKahn</span>(<span class="tp">int</span> n, <span class="tp">int</span>[][] prerequisites)
+{
+    <span class="tp">var</span> adj     = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;[n].<span class="mt">Select</span>(_ =&gt; <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;()).<span class="mt">ToArray</span>();
+    <span class="tp">int</span>[] inDeg = <span class="kw">new</span> <span class="tp">int</span>[n];
+
+    <span class="kw">foreach</span> (<span class="tp">var</span> p <span class="kw">in</span> prerequisites)
+    {
+        adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]); <span class="cm">// p[1] must come before p[0]</span>
+        inDeg[p[<span class="nm">0</span>]]++;
+    }
+
+    <span class="tp">var</span> queue  = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">int</span>&gt;();
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;();
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+        <span class="kw">if</span> (inDeg[i] == <span class="nm">0</span>) queue.<span class="mt">Enqueue</span>(i);
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="tp">int</span> node = queue.<span class="mt">Dequeue</span>();
+        result.<span class="mt">Add</span>(node);
+        <span class="kw">foreach</span> (<span class="tp">int</span> next <span class="kw">in</span> adj[node])
+            <span class="kw">if</span> (--inDeg[next] == <span class="nm">0</span>) queue.<span class="mt">Enqueue</span>(next);
+    }
+
+    <span class="kw">return</span> result.Count == n ? result.<span class="mt">ToArray</span>() : <span class="tp">Array</span>.Empty&lt;<span class="tp">int</span>&gt;(); <span class="cm">// Empty = cycle</span>
+}
+<span class="cm">// Time: O(V + E), Space: O(V + E)</span></pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>7. Alien Dictionary (Topological Sort Application)</h2>
+  <p>Given a sorted list of words in an alien language, determine the ordering of characters. Build a directed graph from character comparisons between adjacent words.</p>
+
+  <pre><span class="kw">public string</span> <span class="mt">AlienOrder</span>(<span class="tp">string</span>[] words)
+{
+    <span class="tp">var</span> adj    = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">HashSet</span>&lt;<span class="tp">char</span>&gt;&gt;();
+    <span class="tp">var</span> inDeg  = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">int</span>&gt;();
+
+    <span class="kw">foreach</span> (<span class="tp">var</span> w <span class="kw">in</span> words)
+        <span class="kw">foreach</span> (<span class="tp">char</span> c <span class="kw">in</span> w)
+        {
+            adj[c]   = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">char</span>&gt;();
+            inDeg[c] = <span class="nm">0</span>;
+        }
+
+    <span class="cm">// Compare adjacent words to extract ordering</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; words.Length - <span class="nm">1</span>; i++)
+    {
+        <span class="tp">string</span> a = words[i], b = words[i + <span class="nm">1</span>];
+        <span class="tp">int</span> len = <span class="tp">Math</span>.<span class="mt">Min</span>(a.Length, b.Length);
+
+        <span class="kw">if</span> (a.Length &gt; b.Length &amp;&amp; a.<span class="mt">StartsWith</span>(b)) <span class="kw">return</span> <span class="st">""</span>; <span class="cm">// Invalid: "abc" before "ab"</span>
+
+        <span class="kw">for</span> (<span class="tp">int</span> j = <span class="nm">0</span>; j &lt; len; j++)
+        {
+            <span class="kw">if</span> (a[j] == b[j]) <span class="kw">continue</span>;
+            <span class="kw">if</span> (!adj[a[j]].<span class="mt">Contains</span>(b[j]))
+            {
+                adj[a[j]].<span class="mt">Add</span>(b[j]);
+                inDeg[b[j]]++;
+            }
+            <span class="kw">break</span>;
+        }
+    }
+
+    <span class="cm">// Kahn's topological sort on character DAG</span>
+    <span class="tp">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">char</span>&gt;(inDeg.<span class="mt">Where</span>(kv =&gt; kv.Value == <span class="nm">0</span>).<span class="mt">Select</span>(kv =&gt; kv.Key));
+    <span class="tp">var</span> sb    = <span class="kw">new</span> <span class="tp">StringBuilder</span>();
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="tp">char</span> c = queue.<span class="mt">Dequeue</span>(); sb.<span class="mt">Append</span>(c);
+        <span class="kw">foreach</span> (<span class="tp">char</span> next <span class="kw">in</span> adj[c])
+            <span class="kw">if</span> (--inDeg[next] == <span class="nm">0</span>) queue.<span class="mt">Enqueue</span>(next);
+    }
+    <span class="kw">return</span> sb.Length == inDeg.Count ? sb.<span class="mt">ToString</span>() : <span class="st">""</span>; <span class="cm">// "" = cycle</span>
+}</pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>8. Summary Table</h2>
+  <table>
+    <tr><th>Algorithm</th><th>Use Case</th><th>Time</th><th>Space</th><th>Notes</th></tr>
+    <tr><td>Union-Find</td><td>Connected components, cycle detection</td><td>O(α(n)) per op</td><td>O(n)</td><td>Near O(1) with path compression + union by rank</td></tr>
+    <tr><td>Kruskal's MST</td><td>Minimum spanning tree (sparse graphs)</td><td>O(E log E)</td><td>O(V)</td><td>Sort edges, use Union-Find to avoid cycles</td></tr>
+    <tr><td>Prim's MST</td><td>Minimum spanning tree (dense graphs)</td><td>O((V+E) log V)</td><td>O(V)</td><td>Grow from one node using min-heap</td></tr>
+    <tr><td>Dijkstra</td><td>Single-source shortest path (no negative)</td><td>O((V+E) log V)</td><td>O(V)</td><td>Greedy; fails with negative edge weights</td></tr>
+    <tr><td>Bellman-Ford</td><td>Shortest path with negative edges</td><td>O(V*E)</td><td>O(V)</td><td>Also detects negative cycles</td></tr>
+    <tr><td>Floyd-Warshall</td><td>All-pairs shortest paths</td><td>O(V³)</td><td>O(V²)</td><td>Simple triple loop; good for small n</td></tr>
+    <tr><td>Kahn's Topo Sort</td><td>Task scheduling, dependency ordering</td><td>O(V+E)</td><td>O(V+E)</td><td>BFS with in-degree counter</td></tr>
+  </table>
+
+  <div class="realworld">
+    <strong>Real-World Applications:</strong>
+    <ul>
+      <li><strong>Union-Find:</strong> Social network friend circles, image segmentation, Kruskal's MST</li>
+      <li><strong>MST:</strong> Network cable layout, cluster analysis, approximation algorithms</li>
+      <li><strong>Bellman-Ford:</strong> Currency arbitrage detection (negative cycle = profit loop), RIP routing protocol</li>
+      <li><strong>Floyd-Warshall:</strong> Road network analysis, "six degrees of separation" in social graphs</li>
+      <li><strong>Topological Sort:</strong> Build systems (make, gradle), course scheduling, spreadsheet calculation order</li>
+    </ul>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../phase8/m10c_practice.html">&#8592; Module 10C: Practice</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m11b_string_algorithms.html">Module 11B: String Algorithms &#8594;</a>
+  </div>
+
+</div>
+</body>
+</html>
+        <span class="kw">if</span> (uf.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>])) components--; <span class="cm">// Each successful union reduces count</span>
+    <span class="kw">return</span> components;
+}</pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>2. Minimum Spanning Tree — Kruskal's Algorithm</h2>
+  <p>A <strong>Minimum Spanning Tree (MST)</strong> connects all n nodes with n-1 edges of minimum total weight, with no cycles. Kruskal's algorithm sorts edges by weight and greedily adds them if they don't form a cycle (using Union-Find).</p>
+
+  <div class="diagram">
+  Graph:
+       2        3
+  0 ------- 1 ------- 2
+  |       / |         |
+  6      /  |4        |5
+  |    8/   |         |
+  3 ------- 4 ------- 5
+       7        9
+
+  Edges sorted by weight: (0,1,2),(0,3,6),(1,2,3),(1,4,4),(3,4,7),(2,5,5),(1,3,8),(4,5,9)
+
+  Kruskal's process:
+  Add (0,1,2): ✓ no cycle, MST={0-1}
+  Add (0,3,6): ✓ no cycle, MST={0-1, 0-3}
+  Add (1,2,3): ✓ no cycle, MST={0-1, 0-3, 1-2}
+  Add (1,4,4): ✓ no cycle, MST={0-1, 0-3, 1-2, 1-4}
+  Add (3,4,7): ✗ CYCLE! 3 and 4 already connected via 0-1-4
+  Add (2,5,5): ✓ no cycle, MST={0-1, 0-3, 1-2, 1-4, 2-5} ← DONE (n-1=5 edges)

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 12B: Final Review &amp; Cheat Sheet</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.2em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  h4 { font-size: 1em; color: #89dceb; margin: 16px 0 8px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .warning { background: #2d1e1e; border-left: 4px solid #f38ba8; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .warning strong { color: #f38ba8; }
+  .realworld { background: #1e2235; border-left: 4px solid #89b4fa; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .realworld strong { color: #89b4fa; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.87em; }
+  th { background: #313244; color: #cba6f7; padding: 9px 12px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 8px 12px; border: 1px solid #313244; color: #cdd6f4; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+  .tag { display: inline-block; border-radius: 10px; padding: 1px 10px; font-size: 0.78em; font-weight: 600; margin-right: 4px; }
+  .tag-o1 { background: #1a2e1a; color: #a6e3a1; border: 1px solid #a6e3a1; }
+  .tag-on { background: #2d2b1e; color: #f9e2af; border: 1px solid #f9e2af; }
+  .tag-on2 { background: #2d1e1e; color: #f38ba8; border: 1px solid #f38ba8; }
+  .pattern-card { background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
+  .pattern-card h4 { color: #89dceb; margin: 0 0 8px; }
+  .phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin: 16px 0; }
+  .phase-card { background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 16px; }
+  .phase-card h4 { color: #cba6f7; margin-bottom: 8px; font-size: 1em; }
+  .phase-card ul { margin: 0; padding-left: 16px; font-size: 0.9em; }
+  .phase-card li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 10</span> <span class="badge">Module 12B</span> <span class="badge">Cheat Sheet</span></div>
+    <h1>Final Review &amp; Cheat Sheet</h1>
+    <div class="subtitle">Every complexity, every pattern, every tip — on one page</div>
+    <div class="tagline">Your last-minute interview preparation guide</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="m12a_advanced_dp.html">&#8592; Module 12A: Advanced DP</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m12c_capstone_practice.html">Module 12C: Capstone Practice &#8594;</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>1. Big-O Complexity Reference</h2>
+
+  <h3>Data Structure Operations</h3>
+  <table>
+    <tr><th>Data Structure</th><th>Access</th><th>Search</th><th>Insert</th><th>Delete</th><th>Space</th></tr>
+    <tr><td>Array</td><td><span class="tag tag-o1">O(1)</span></td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-on">O(n)</span></td><td>O(n)</td></tr>
+    <tr><td>Dynamic Array (List&lt;T&gt;)</td><td><span class="tag tag-o1">O(1)</span></td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-o1">O(1) amort</span></td><td><span class="tag tag-on">O(n)</span></td><td>O(n)</td></tr>
+    <tr><td>Singly Linked List</td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-o1">O(1) head</span></td><td><span class="tag tag-on">O(n)</span></td><td>O(n)</td></tr>
+    <tr><td>Doubly Linked List</td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-o1">O(1) ends</span></td><td><span class="tag tag-o1">O(1) given ptr</span></td><td>O(n)</td></tr>
+    <tr><td>Stack / Queue</td><td>top/front <span class="tag tag-o1">O(1)</span></td><td>—</td><td><span class="tag tag-o1">O(1)</span></td><td><span class="tag tag-o1">O(1)</span></td><td>O(n)</td></tr>
+    <tr><td>HashSet / Dictionary</td><td>—</td><td><span class="tag tag-o1">O(1) avg</span></td><td><span class="tag tag-o1">O(1) avg</span></td><td><span class="tag tag-o1">O(1) avg</span></td><td>O(n)</td></tr>
+    <tr><td>Binary Search Tree (balanced)</td><td><span class="tag tag-on">O(log n)</span></td><td><span class="tag tag-on">O(log n)</span></td><td><span class="tag tag-on">O(log n)</span></td><td><span class="tag tag-on">O(log n)</span></td><td>O(n)</td></tr>
+    <tr><td>Min/Max Heap (PriorityQueue)</td><td>top <span class="tag tag-o1">O(1)</span></td><td><span class="tag tag-on">O(n)</span></td><td><span class="tag tag-on">O(log n)</span></td><td><span class="tag tag-on">O(log n)</span></td><td>O(n)</td></tr>
+    <tr><td>Trie</td><td>—</td><td>O(m) key len</td><td>O(m)</td><td>O(m)</td><td>O(ALPHABET * n)</td></tr>
+    <tr><td>Union-Find (path compress)</td><td>—</td><td>O(α(n))≈O(1)</td><td>O(α(n))≈O(1)</td><td>—</td><td>O(n)</td></tr>
+  </table>
+
+  <h3>Sorting Algorithms</h3>
+  <table>
+    <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable?</th></tr>
+    <tr><td>Bubble Sort</td><td>O(n)</td><td><span class="tag tag-on2">O(n²)</span></td><td><span class="tag tag-on2">O(n²)</span></td><td>O(1)</td><td>Yes</td></tr>
+    <tr><td>Insertion Sort</td><td>O(n)</td><td><span class="tag tag-on2">O(n²)</span></td><td><span class="tag tag-on2">O(n²)</span></td><td>O(1)</td><td>Yes</td></tr>
+    <tr><td>Selection Sort</td><td><span class="tag tag-on2">O(n²)</span></td><td><span class="tag tag-on2">O(n²)</span></td><td><span class="tag tag-on2">O(n²)</span></td><td>O(1)</td><td>No</td></tr>
+    <tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+    <tr><td>Quick Sort</td><td>O(n log n)</td><td>O(n log n)</td><td><span class="tag tag-on2">O(n²)</span> rare</td><td>O(log n)</td><td>No</td></tr>
+    <tr><td>Heap Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>No</td></tr>
+    <tr><td>Counting Sort</td><td>O(n+k)</td><td>O(n+k)</td><td>O(n+k)</td><td>O(k)</td><td>Yes</td></tr>
+    <tr><td>Radix Sort</td><td>O(d*(n+k))</td><td>O(d*(n+k))</td><td>O(d*(n+k))</td><td>O(n+k)</td><td>Yes</td></tr>
+    <tr><td>Array.Sort (C#)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(log n)</td><td>No (Introsort)</td></tr>
+  </table>
+
+  <h3>Graph Algorithms</h3>
+  <table>
+    <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Use Case</th></tr>
+    <tr><td>BFS</td><td>O(V+E)</td><td>O(V)</td><td>Shortest path (unweighted), level traversal</td></tr>
+    <tr><td>DFS</td><td>O(V+E)</td><td>O(V)</td><td>Cycle detect, topo sort, connected components</td></tr>
+    <tr><td>Dijkstra</td><td>O((V+E) log V)</td><td>O(V)</td><td>SSSP, non-negative weights</td></tr>
+    <tr><td>Bellman-Ford</td><td>O(V*E)</td><td>O(V)</td><td>SSSP, negative weights, detect negative cycles</td></tr>
+    <tr><td>Floyd-Warshall</td><td>O(V³)</td><td>O(V²)</td><td>All-pairs shortest paths</td></tr>
+    <tr><td>Kruskal's MST</td><td>O(E log E)</td><td>O(V)</td><td>MST via sorted edges + Union-Find</td></tr>
+    <tr><td>Prim's MST</td><td>O((V+E) log V)</td><td>O(V)</td><td>MST starting from one node</td></tr>
+    <tr><td>Kahn's Topo Sort</td><td>O(V+E)</td><td>O(V)</td><td>Topological ordering (DAG)</td></tr>
+    <tr><td>Tarjan's Bridges</td><td>O(V+E)</td><td>O(V)</td><td>Find critical edges (bridges)</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>2. Pattern Recognition Guide</h2>
+  <p>When you see these clues in a problem — reach for the corresponding algorithm.</p>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Find two numbers that sum to target" / "Pair with difference k"</h4>
+    <p>→ <strong>Two Pointers</strong> (sorted array) or <strong>HashSet</strong> for O(n) lookup. If array is sorted: l++/r--. If unsorted: store complements.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Subarray with property X" / "Longest window where..."</h4>
+    <p>→ <strong>Sliding Window</strong>. Use two pointers l, r. Expand r, shrink l when constraint violated. Track running count/sum with a frequency map or running variable.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "k-th largest / smallest" / "Top k elements" / "Median of stream"</h4>
+    <p>→ <strong>Heap (PriorityQueue)</strong>. Min-heap of size k for k-th largest. Two heaps (max + min) for median. QuickSelect for O(n) average k-th element.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Can you reach from A to B?" / "Are they connected?" / "Count groups"</h4>
+    <p>→ <strong>BFS/DFS</strong> or <strong>Union-Find</strong>. BFS for shortest path count. DFS for reachability. Union-Find for dynamic connectivity / grouping queries.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Shortest path" / "Minimum steps"</h4>
+    <p>→ <strong>BFS</strong> (unweighted/equal weights) or <strong>Dijkstra</strong> (weighted, non-negative). Bellman-Ford if negative weights. Floyd-Warshall if all-pairs needed.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Is there a valid ordering?" / "Detect circular dependency"</h4>
+    <p>→ <strong>Topological Sort</strong> (Kahn's BFS). If all nodes can be processed → no cycle → valid order exists. If remaining nodes with in-degree > 0 → cycle exists.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Maximum profit / minimum cost over time" / "State changes (buy/sell/hold)"</h4>
+    <p>→ <strong>DP with states</strong>. Model each day's state as hold/empty/cooldown. Transition between states by price action. O(n * states) time.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "How many ways to..." / "Minimum operations to reach..." / "Is it possible?"</h4>
+    <p>→ <strong>Dynamic Programming</strong>. Define sub-problem state, write recurrence, check overlapping sub-problems. Memoize top-down or tabulate bottom-up.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "All subsets / all permutations / all combinations"</h4>
+    <p>→ <strong>Backtracking</strong>. Build choices recursively with undo. Use index to avoid duplicates in combinations. Sort + skip duplicates for unique results.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Word search / prefix autocomplete / count words with prefix"</h4>
+    <p>→ <strong>Trie</strong>. Each node stores children and isEnd. For wildcard matching, DFS with '.' matching any child. Prefix count uses an integer at each node.</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "Binary search on the answer" / "Find minimum k such that condition holds"</h4>
+    <p>→ <strong>Binary Search on value space</strong>. If a predicate f(k) is monotone (false → true), binary search on k in range [lo, hi]. Check mid with f(mid) in O(n) or O(n log n).</p>
+  </div>
+
+  <div class="pattern-card">
+    <h4>&#128269; "n is small (≤ 20)" + subset enumeration + optimal assignment</h4>
+    <p>→ <strong>Bitmask DP</strong>. State = subset represented as integer. Iterate over all 2^n masks. For each mask, compute best transition from sub-masks.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>3. C# Interview Tips</h2>
+
+  <h3>Essential Built-in Data Structures</h3>
+  <table>
+    <tr><th>Need</th><th>C# Type</th><th>Key Methods</th></tr>
+    <tr><td>Dynamic array</td><td><code>List&lt;T&gt;</code></td><td>Add, Remove, RemoveAt, IndexOf, Sort, Reverse, Contains</td></tr>
+    <tr><td>Stack</td><td><code>Stack&lt;T&gt;</code></td><td>Push, Pop, Peek, Count</td></tr>
+    <tr><td>Queue / BFS</td><td><code>Queue&lt;T&gt;</code></td><td>Enqueue, Dequeue, Peek, Count</td></tr>
+    <tr><td>Deque (both ends)</td><td><code>LinkedList&lt;T&gt;</code></td><td>AddFirst/Last, RemoveFirst/Last, First, Last</td></tr>
+    <tr><td>Min-Heap</td><td><code>PriorityQueue&lt;T,P&gt;</code></td><td>Enqueue(elem,priority), TryDequeue, Peek</td></tr>
+    <tr><td>Max-Heap</td><td><code>PriorityQueue&lt;T,P&gt;</code> with negated priority</td><td>Enqueue(x, -x), then negate on dequeue</td></tr>
+    <tr><td>Hash map</td><td><code>Dictionary&lt;K,V&gt;</code></td><td>TryAdd, TryGetValue, ContainsKey, GetValueOrDefault</td></tr>
+    <tr><td>Hash set</td><td><code>HashSet&lt;T&gt;</code></td><td>Add (returns bool!), Remove, Contains, UnionWith, IntersectWith</td></tr>
+    <tr><td>Sorted set</td><td><code>SortedSet&lt;T&gt;</code></td><td>Add, Remove, Min, Max, GetViewBetween</td></tr>
+    <tr><td>Sorted map</td><td><code>SortedDictionary&lt;K,V&gt;</code></td><td>Like Dictionary but O(log n) ops, ordered keys</td></tr>
+  </table>
+
+  <h3>Useful LINQ Patterns for Interviews</h3>
+  <pre><span class="cm">// Frequency map from array</span>
+<span class="tp">var</span> freq = arr.<span class="mt">GroupBy</span>(x =&gt; x).<span class="mt">ToDictionary</span>(g =&gt; g.Key, g =&gt; g.Count());
+
+<span class="cm">// Sort strings by length, then alphabetically</span>
+arr.<span class="mt">OrderBy</span>(s =&gt; s.Length).<span class="mt">ThenBy</span>(s =&gt; s).<span class="mt">ToArray</span>();
+
+<span class="cm">// Flatten 2D array</span>
+<span class="tp">int</span>[] flat = matrix.<span class="mt">SelectMany</span>(row =&gt; row).<span class="mt">ToArray</span>();
+
+<span class="cm">// Check if all elements satisfy condition</span>
+<span class="tp">bool</span> ok = arr.<span class="mt">All</span>(x =&gt; x &gt; <span class="nm">0</span>);
+
+<span class="cm">// Distinct values with count</span>
+arr.<span class="mt">Distinct</span>().<span class="mt">Count</span>();
+
+<span class="cm">// Zip two arrays together</span>
+<span class="tp">var</span> pairs = a.<span class="mt">Zip</span>(b, (x, y) =&gt; x + y).<span class="mt">ToArray</span>();
+
+<span class="cm">// Sum of absolute differences</span>
+arr.<span class="mt">Zip</span>(arr.<span class="mt">Skip</span>(<span class="nm">1</span>), (a, b) =&gt; <span class="tp">Math</span>.<span class="mt">Abs</span>(b - a)).<span class="mt">Sum</span>();
+
+<span class="cm">// Top k elements</span>
+arr.<span class="mt">OrderByDescending</span>(x =&gt; x).<span class="mt">Take</span>(k).<span class="mt">ToArray</span>();
+
+<span class="cm">// Range array [0..n-1]</span>
+<span class="tp">int</span>[] range = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">ToArray</span>();</pre>
+
+  <h3>Common C# Gotchas</h3>
+  <div class="warning">
+    <strong>Watch Out For:</strong>
+    <ul>
+      <li><strong>Integer overflow:</strong> Use <code>long</code> when multiplying two <code>int</code> values that could exceed 2^31-1 ≈ 2.1 billion. Common in graph weights, DP sums.</li>
+      <li><strong>int.MaxValue + anything = negative:</strong> When checking <code>dp[u] + w &lt; dp[v]</code>, guard with <code>dp[u] != int.MaxValue</code>.</li>
+      <li><strong>string is immutable:</strong> String concatenation in a loop is O(n²). Use <code>StringBuilder</code> instead.</li>
+      <li><strong>List.Remove(value) vs RemoveAt(index):</strong> <code>Remove(x)</code> removes the first occurrence of value x. <code>RemoveAt(0)</code> removes by index.</li>
+      <li><strong>Dictionary default:</strong> Accessing a missing key throws. Use <code>GetValueOrDefault(key, 0)</code> or check <code>ContainsKey</code> first.</li>
+      <li><strong>char arithmetic:</strong> <code>s[i] - 'a'</code> gives 0-25 index. <code>(char)('a' + i)</code> goes back to char.</li>
+      <li><strong>Array.Sort on 2D:</strong> Sort <code>int[][]</code> with <code>Array.Sort(arr, (a,b) =&gt; a[0] - b[0])</code>.</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>4. Code Templates</h2>
+
+  <h3>Binary Search Template (find leftmost)</h3>
+  <pre><span class="kw">int</span> lo = <span class="nm">0</span>, hi = n; <span class="cm">// [lo, hi) — hi is exclusive</span>
+<span class="kw">while</span> (lo &lt; hi)
+{
+    <span class="kw">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>; <span class="cm">// Prevents overflow vs (lo+hi)/2</span>
+    <span class="kw">if</span> (<span class="mt">condition</span>(mid)) hi = mid;   <span class="cm">// mid could be the answer — shrink right</span>
+    <span class="kw">else</span>               lo = mid + <span class="nm">1</span>; <span class="cm">// mid is definitely not — skip it</span>
+}
+<span class="cm">// lo == hi == first index where condition is true (or n if none)</span></pre>
+
+  <h3>DFS Backtracking Template</h3>
+  <pre><span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="tp">int</span>&gt;&gt; result = <span class="kw">new</span>();
+
+<span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span> start, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current)
+{
+    result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current)); <span class="cm">// Snapshot current state (if collecting all)</span>
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; nums.Length; i++)
+    {
+        <span class="kw">if</span> (i &gt; start &amp;&amp; nums[i] == nums[i-<span class="nm">1</span>]) <span class="kw">continue</span>; <span class="cm">// Skip duplicates (sorted array)</span>
+        current.<span class="mt">Add</span>(nums[i]);   <span class="cm">// Choose</span>
+        <span class="mt">Backtrack</span>(i + <span class="nm">1</span>, current); <span class="cm">// Explore (i+1 for combinations, i for repetition)</span>
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>); <span class="cm">// Undo</span>
+    }
+}
+<span class="mt">Backtrack</span>(<span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;());</pre>
+
+  <h3>BFS Shortest Path Template</h3>
+  <pre><span class="tp">var</span> queue   = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">int</span>&gt;();
+<span class="tp">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;();
+queue.<span class="mt">Enqueue</span>(start);
+visited.<span class="mt">Add</span>(start);
+<span class="tp">int</span> steps = <span class="nm">0</span>;
+
+<span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+{
+    <span class="tp">int</span> size = queue.Count; <span class="cm">// Process entire level at once</span>
+    <span class="kw">while</span> (size-- &gt; <span class="nm">0</span>)
+    {
+        <span class="tp">int</span> node = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">if</span> (node == target) <span class="kw">return</span> steps;
+        <span class="kw">foreach</span> (<span class="tp">int</span> neighbor <span class="kw">in</span> <span class="mt">GetNeighbors</span>(node))
+            <span class="kw">if</span> (visited.<span class="mt">Add</span>(neighbor)) <span class="cm">// Add returns true if new</span>
+                queue.<span class="mt">Enqueue</span>(neighbor);
+    }
+    steps++;
+}
+<span class="kw">return</span> -<span class="nm">1</span>; <span class="cm">// Not reachable</span></pre>
+
+  <h3>Dijkstra Template</h3>
+  <pre><span class="tp">int</span>[] dist = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="tp">int</span>.MaxValue, n).<span class="mt">ToArray</span>();
+dist[src] = <span class="nm">0</span>;
+<span class="tp">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt;(); <span class="cm">// (node, dist)</span>
+pq.<span class="mt">Enqueue</span>(src, <span class="nm">0</span>);
+
+<span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+{
+    pq.<span class="mt">TryDequeue</span>(<span class="kw">out int</span> u, <span class="kw">out int</span> d);
+    <span class="kw">if</span> (d &gt; dist[u]) <span class="kw">continue</span>; <span class="cm">// Stale entry — skip</span>
+    <span class="kw">foreach</span> (<span class="tp">var</span> (v, w) <span class="kw">in</span> adj[u])
+        <span class="kw">if</span> (dist[u] + w &lt; dist[v])
+        {
+            dist[v] = dist[u] + w;
+            pq.<span class="mt">Enqueue</span>(v, dist[v]);
+        }
+}</pre>
+
+  <h3>Union-Find Template (Path Compression + Union by Rank)</h3>
+  <pre><span class="tp">int</span>[] parent = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">ToArray</span>();
+<span class="tp">int</span>[] rank   = <span class="kw">new</span> <span class="tp">int</span>[n];
+
+<span class="tp">int</span> <span class="mt">Find</span>(<span class="tp">int</span> x) =&gt; parent[x] == x ? x : (parent[x] = <span class="mt">Find</span>(parent[x]));
+
+<span class="kw">bool</span> <span class="mt">Union</span>(<span class="tp">int</span> a, <span class="tp">int</span> b)
+{
+    <span class="tp">int</span> ra = <span class="mt">Find</span>(a), rb = <span class="mt">Find</span>(b);
+    <span class="kw">if</span> (ra == rb) <span class="kw">return false</span>; <span class="cm">// Already connected (cycle!)</span>
+    <span class="kw">if</span> (rank[ra] &lt; rank[rb]) (ra, rb) = (rb, ra);
+    parent[rb] = ra;
+    <span class="kw">if</span> (rank[ra] == rank[rb]) rank[ra]++;
+    <span class="kw">return true</span>;
+}</pre>
+
+  <h3>Rolling Hash (Substring Comparison in O(1))</h3>
+  <pre><span class="kw">const long</span> BASE = <span class="nm">31</span>, MOD = <span class="nm">1_000_000_007</span>;
+<span class="tp">long</span>[] hash = <span class="kw">new</span> <span class="tp">long</span>[n + <span class="nm">1</span>], pw = <span class="kw">new</span> <span class="tp">long</span>[n + <span class="nm">1</span>];
+pw[<span class="nm">0</span>] = <span class="nm">1</span>;
+<span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+{
+    hash[i+<span class="nm">1</span>] = (hash[i] * BASE + (s[i] - <span class="st">'a'</span> + <span class="nm">1</span>)) % MOD;
+    pw[i+<span class="nm">1</span>]   = pw[i] * BASE % MOD;
+}
+<span class="cm">// Hash of s[l..r] (0-indexed, inclusive)</span>
+<span class="tp">long</span> <span class="mt">GetHash</span>(<span class="tp">int</span> l, <span class="tp">int</span> r) =&gt; (hash[r+<span class="nm">1</span>] - hash[l] * pw[r-l+<span class="nm">1</span>] % MOD + MOD * MOD) % MOD;</pre>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>5. Interview Strategy</h2>
+
+  <h3>The 5-Minute Approach Framework</h3>
+  <ol>
+    <li><strong>Clarify (1 min):</strong> Edge cases — empty input? Single element? Negative numbers? Duplicates? What to return if no answer?</li>
+    <li><strong>Pattern identify (1 min):</strong> Map the problem to a known pattern (see Section 2). Say it out loud: "This looks like a sliding window problem because we need a contiguous subarray…"</li>
+    <li><strong>State the approach (1 min):</strong> Explain your algorithm at a high level before coding. Confirm complexity is acceptable.</li>
+    <li><strong>Code (5-10 min):</strong> Write clean, readable code. Use meaningful variable names. Comment non-obvious parts.</li>
+    <li><strong>Test (2 min):</strong> Trace through examples — including edge cases. Fix bugs. Re-confirm complexity.</li>
+  </ol>
+
+  <h3>Complexity Targets by Problem Size</h3>
+  <table>
+    <tr><th>Input Size n</th><th>Acceptable Complexities</th><th>Avoid</th></tr>
+    <tr><td>n ≤ 10</td><td>O(n!), O(2^n)</td><td>Nothing off-limits</td></tr>
+    <tr><td>n ≤ 20</td><td>O(2^n * n), O(n!)</td><td>O(n!) is borderline</td></tr>
+    <tr><td>n ≤ 100</td><td>O(n³), O(n² log n)</td><td>O(n!), O(2^n)</td></tr>
+    <tr><td>n ≤ 1,000</td><td>O(n²), O(n² log n)</td><td>O(n³) borderline</td></tr>
+    <tr><td>n ≤ 100,000</td><td>O(n log n), O(n sqrt n)</td><td>O(n²)</td></tr>
+    <tr><td>n ≤ 1,000,000</td><td>O(n), O(n log n)</td><td>O(n sqrt n) borderline</td></tr>
+    <tr><td>n ≤ 10^9</td><td>O(log n), O(1)</td><td>Anything O(n)</td></tr>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <h2>6. Course Summary — Zero to Hero</h2>
+  <div class="phase-grid">
+    <div class="phase-card">
+      <h4>Phase 1 — Foundations</h4>
+      <ul>
+        <li>Big-O notation &amp; analysis</li>
+        <li>Arrays: two pointers, prefix sums</li>
+        <li>Strings: manipulation, StringBuilder</li>
+        <li>List&lt;T&gt; dynamic arrays</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 2 — Linear Structures</h4>
+      <ul>
+        <li>Singly &amp; doubly linked lists</li>
+        <li>Circular linked lists</li>
+        <li>Stacks (LIFO) and applications</li>
+        <li>Queues, Priority Queues</li>
+        <li>Monotonic stack &amp; queue</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 3 — Hash &amp; Trees</h4>
+      <ul>
+        <li>Hash tables, collision strategies</li>
+        <li>Binary Search Trees</li>
+        <li>Tree traversals (DFS/BFS)</li>
+        <li>Classic tree problems</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 4 — Advanced Trees</h4>
+      <ul>
+        <li>Heaps: min/max, heap sort, k-way merge</li>
+        <li>Trie: prefix tree, wildcard search</li>
+        <li>Word frequency, autocomplete</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 5 — Graphs</h4>
+      <ul>
+        <li>Graph representation (adj list/matrix)</li>
+        <li>BFS (shortest path, level traversal)</li>
+        <li>DFS (cycles, components)</li>
+        <li>Topological sort, Dijkstra, Union-Find</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 6 — Dynamic Programming</h4>
+      <ul>
+        <li>Memoization vs tabulation</li>
+        <li>1D DP: Fibonacci, climbing stairs</li>
+        <li>2D DP: LCS, edit distance, knapsack</li>
+        <li>DP on grids and sequences</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 7 — Sorting &amp; Searching</h4>
+      <ul>
+        <li>Merge sort, quick sort, heap sort</li>
+        <li>Linear sorts: counting, radix</li>
+        <li>Binary search (value space)</li>
+        <li>Order statistics, nth element</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 8 — Backtracking &amp; Math</h4>
+      <ul>
+        <li>Subsets, permutations, combinations</li>
+        <li>N-Queens, Sudoku solver, word search</li>
+        <li>Bit manipulation tricks</li>
+        <li>Primes, GCD, modular arithmetic</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 9 — Advanced Algorithms</h4>
+      <ul>
+        <li>Kruskal's &amp; Prim's MST</li>
+        <li>Bellman-Ford, Floyd-Warshall</li>
+        <li>KMP, Z-algorithm, Rabin-Karp</li>
+        <li>Manacher's, Trie advanced</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 10 — Expert Patterns</h4>
+      <ul>
+        <li>Bitmask DP (TSP, task assign)</li>
+        <li>Interval DP (matrix chain, balloons)</li>
+        <li>Digit DP (count with constraints)</li>
+        <li>Tree DP, stock state machines</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>You made it! 🎉</strong> You've covered every major data structure and algorithm used in competitive programming and top tech interviews. The final module (12C) puts it all together with 15 capstone problems spanning the full course.
+  </div>
+
+  <div class="nav-bar">
+    <a href="m12a_advanced_dp.html">&#8592; Module 12A: Advanced DP</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m12c_capstone_practice.html">Module 12C: Capstone Practice &#8594;</a>
+  </div>
+
+</div>
+</body>
+</html>

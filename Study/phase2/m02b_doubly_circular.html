@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2B — Doubly &amp; Circular Linked Lists</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 2 — Part B</h1>
+    <div class="tagline">Doubly &amp; Circular Linked Lists — Bidirectional Navigation</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Two pointers per node — traverse in both directions, delete in O(1)</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2–3 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part B of Module 2</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 2 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m02a_singly_ll.html">Singly Linked List</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Doubly &amp; Circular Linked Lists<br>
+    ⬜ <strong>Part C</strong> — <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part B</h2>
+    <ol>
+        <li>Section 1 — Doubly Linked List: The Concept <span>— Prev + Next pointers</span></li>
+        <li>Section 2 — Doubly Node Class <span>— Three fields instead of two</span></li>
+        <li>Section 3 — Insert &amp; Delete in a Doubly List <span>— Always wire both directions</span></li>
+        <li>Section 4 — Full DoublyLinkedList&lt;T&gt; Implementation <span>— Complete code</span></li>
+        <li>Section 5 — C#'s Built-in LinkedList&lt;T&gt; <span>— Real-world doubly list</span></li>
+        <li>Section 6 — Circular Linked Lists <span>— The ring structure</span></li>
+        <li>Section 7 — Circular List Use Cases <span>— Round-robin, Josephus</span></li>
+        <li>Section 8 — Comparison: All Three Variants <span>— When to use which</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Doubly Linked List: The Concept</div>
+
+<p>In a singly linked list, each node only knows its <strong>next</strong> neighbor. This creates
+one critical weakness: to delete a node or traverse backwards, you need O(n) traversal from the head.</p>
+
+<p>A <strong>Doubly Linked List</strong> fixes this by adding a second pointer to each node: <code>Prev</code>
+— a reference to the <em>previous</em> node. Now every node knows its two neighbors, enabling
+<strong>O(1) deletion of any node you already have a reference to</strong> and <strong>bidirectional traversal</strong>.</p>
+
+<div class="diagram">SINGLY vs DOUBLY — Structural Difference
+
+SINGLY — Each node has ONE link (forward only):
+  head ──▶ [10|▶] ──▶ [20|▶] ──▶ [30|null]
+
+DOUBLY — Each node has TWO links (forward AND backward):
+  head ──▶ [null|10|▶] ⇄ [◀|20|▶] ⇄ [◀|30|null] ◀── tail
+            prev  data next  prev data next  prev  data next
+
+  Each node:
+  ┌──────┬──────┬──────┐
+  │ Prev │ Data │ Next │
+  └──────┴──────┴──────┘
+    ▲                │
+    │                ▼
+  previous node    next node</div>
+
+<div class="tip">
+    <strong>💡 The Key Advantage — O(1) Delete:</strong> In a singly list, deleting a node requires finding
+    its <em>previous</em> node (O(n)). In a doubly list, the node already has a <code>Prev</code>
+    reference — just re-link its neighbors and you're done in O(1). This is why C#'s
+    <code>LinkedList&lt;T&gt;</code> is a doubly linked list.
+</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Singly</th><th>Doubly</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Insert at head/tail</td><td class="g">O(1)</td><td class="g">O(1)</td></tr>
+        <tr><td>Insert at middle (by ref)</td><td class="r">O(n) — find prev</td><td class="g">O(1) — node has Prev</td></tr>
+        <tr><td>Delete given a node reference</td><td class="r">O(n) — find prev</td><td class="g">O(1)</td></tr>
+        <tr><td>Delete tail</td><td class="r">O(n)</td><td class="g">O(1)</td></tr>
+        <tr><td>Traverse forward</td><td class="g">O(n)</td><td class="g">O(n)</td></tr>
+        <tr><td>Traverse backward</td><td class="r">Not possible</td><td class="g">O(n)</td></tr>
+        <tr><td>Memory per node</td><td class="g">Data + 1 pointer</td><td class="o">Data + 2 pointers</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Doubly Node Class</div>
+
+<pre><span class="kw">public class</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">public</span> <span class="tp">T</span> Data;
+    <span class="kw">public</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? Prev;   <span class="cm">// ← NEW: points to previous node</span>
+    <span class="kw">public</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? Next;   <span class="cm">// points to next node</span>
+
+    <span class="kw">public</span> <span class="mt">DNode</span>(<span class="tp">T</span> data)
+    {
+        Data = data;
+        Prev = <span class="kw">null</span>;
+        Next = <span class="kw">null</span>;
+    }
+}</pre>
+
+<div class="diagram">DOUBLY NODE in Memory
+
+  ┌────────────────────────────────────────┐
+  │              DNode Object              │
+  │  ┌──────────────────────────────────┐  │
+  │  │  Prev: ◀─────────────────────── ─ ─ ─ (previous node)
+  │  ├──────────────────────────────────┤  │
+  │  │  Data: 42                        │  │
+  │  ├──────────────────────────────────┤  │
+  │  │  Next: ──────────────────────────────▶ (next node)
+  │  └──────────────────────────────────┘  │
+  └────────────────────────────────────────┘
+
+First node:  Prev = null  (no previous)
+Last node:   Next = null  (no next)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Insert &amp; Delete in a Doubly List</div>
+
+<h3>3.1 — Insert at Head — O(1)</h3>
+<p>Four pointer updates are needed (vs two in singly). Always update the <code>Prev</code> of the old head first.</p>
+
+<div class="diagram">INSERT AT HEAD — Adding (5) to: 10 ⇄ 20 ⇄ 30 → null
+
+BEFORE:  head ──▶ [null|10|▶] ⇄ [◀|20|▶] ⇄ [◀|30|null]
+
+Step 1: Create newNode(5).  newNode.Prev=null, newNode.Next=null
+Step 2: newNode.Next = head          →   newNode ──▶ [null|10|▶]
+Step 3: head.Prev = newNode          →   [null|10|▶].Prev = newNode  ← BIDIRECTIONAL
+Step 4: head = newNode
+
+AFTER:   head ──▶ [null|5|▶] ⇄ [◀|10|▶] ⇄ [◀|20|▶] ⇄ [◀|30|null]</div>
+
+<h3>3.2 — Delete a Node (given reference) — O(1)</h3>
+<p>The crown jewel of doubly linked lists. If you already have a reference to the node you want to remove,
+you can delete it in O(1) without any traversal. Just rewire its two neighbors.</p>
+
+<div class="diagram">DELETE NODE with value 20 — List: 10 ⇄ 20 ⇄ 30 ⇄ 40
+
+We have a reference to node(20). No traversal needed!
+
+node(20).Prev = node(10)
+node(20).Next = node(30)
+
+Step 1: node(20).Prev.Next = node(20).Next   →   node(10).Next = node(30)
+Step 2: node(20).Next.Prev = node(20).Prev   →   node(30).Prev = node(10)
+Step 3: node(20).Prev = null  (optional cleanup)
+        node(20).Next = null  (optional cleanup)
+
+AFTER: 10 ⇄ 30 ⇄ 40  (node(20) garbage collected)
+
+Edge cases:
+  If deleting HEAD: no node(20).Prev → skip step 1, update head
+  If deleting TAIL: no node(20).Next → skip step 2, update tail</div>
+
+<pre><span class="cm">// Delete a specific node reference — O(1)!</span>
+<span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveNode</span>(<span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; node)
+{
+    <span class="tp">T</span> value = node.Data;
+
+    <span class="kw">if</span> (node.Prev != <span class="kw">null</span>)
+        node.Prev.Next = node.Next;  <span class="cm">// wire prev → next</span>
+    <span class="kw">else</span>
+        head = node.Next;            <span class="cm">// deleting head</span>
+
+    <span class="kw">if</span> (node.Next != <span class="kw">null</span>)
+        node.Next.Prev = node.Prev;  <span class="cm">// wire next → prev</span>
+    <span class="kw">else</span>
+        tail = node.Prev;            <span class="cm">// deleting tail</span>
+
+    node.Prev = node.Next = <span class="kw">null</span>;   <span class="cm">// cleanup (optional, helps GC)</span>
+    Count--;
+    <span class="kw">return</span> value;
+}</pre>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Full DoublyLinkedList&lt;T&gt; Implementation</div>
+
+<pre><span class="kw">public class</span> <span class="tp">DoublyLinkedList</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">private</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? head;
+    <span class="kw">private</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? tail;
+    <span class="kw">public int</span> Count { <span class="kw">get</span>; <span class="kw">private set</span>; }
+    <span class="kw">public bool</span> IsEmpty =&gt; Count == <span class="nm">0</span>;
+
+    <span class="cm">// ── Add Operations ──────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">AddFirst</span>(<span class="tp">T</span> value)
+    {
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value);
+        <span class="kw">if</span> (IsEmpty) { head = tail = n; }
+        <span class="kw">else</span>
+        {
+            n.Next = head;
+            head!.Prev = n;   <span class="cm">// ← bidirectional link</span>
+            head = n;
+        }
+        Count++;
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddLast</span>(<span class="tp">T</span> value)
+    {
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value);
+        <span class="kw">if</span> (IsEmpty) { head = tail = n; }
+        <span class="kw">else</span>
+        {
+            n.Prev = tail;
+            tail!.Next = n;   <span class="cm">// ← bidirectional link</span>
+            tail = n;
+        }
+        Count++;
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddBefore</span>(<span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; node, <span class="tp">T</span> value)
+    {
+        <span class="kw">if</span> (node == head) { <span class="mt">AddFirst</span>(value); <span class="kw">return</span>; }
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value)
+        {
+            Next = node,
+            Prev = node.Prev
+        };
+        node.Prev!.Next = n;
+        node.Prev = n;
+        Count++;
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddAfter</span>(<span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; node, <span class="tp">T</span> value)
+    {
+        <span class="kw">if</span> (node == tail) { <span class="mt">AddLast</span>(value); <span class="kw">return</span>; }
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value)
+        {
+            Prev = node,
+            Next = node.Next
+        };
+        node.Next!.Prev = n;
+        node.Next = n;
+        Count++;
+    }
+
+    <span class="cm">// ── Remove Operations ───────────────────────────────</span>
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveFirst</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"List is empty"</span>);
+        <span class="tp">T</span> val = head!.Data;
+        head = head.Next;
+        <span class="kw">if</span> (head != <span class="kw">null</span>) head.Prev = <span class="kw">null</span>;  <span class="cm">// clear backward link</span>
+        <span class="kw">else</span> tail = <span class="kw">null</span>;
+        Count--;
+        <span class="kw">return</span> val;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveLast</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"List is empty"</span>);
+        <span class="tp">T</span> val = tail!.Data;
+        tail = tail.Prev;
+        <span class="kw">if</span> (tail != <span class="kw">null</span>) tail.Next = <span class="kw">null</span>;  <span class="cm">// ← O(1)! No traversal needed</span>
+        <span class="kw">else</span> head = <span class="kw">null</span>;
+        Count--;
+        <span class="kw">return</span> val;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveNode</span>(<span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; node)  <span class="cm">// O(1) given reference</span>
+    {
+        <span class="tp">T</span> val = node.Data;
+        <span class="kw">if</span> (node.Prev != <span class="kw">null</span>) node.Prev.Next = node.Next;
+        <span class="kw">else</span> head = node.Next;
+        <span class="kw">if</span> (node.Next != <span class="kw">null</span>) node.Next.Prev = node.Prev;
+        <span class="kw">else</span> tail = node.Prev;
+        node.Prev = node.Next = <span class="kw">null</span>;
+        Count--;
+        <span class="kw">return</span> val;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">Remove</span>(<span class="tp">T</span> value)
+    {
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? node = <span class="mt">Find</span>(value);
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return false</span>;
+        <span class="mt">RemoveNode</span>(node);
+        <span class="kw">return true</span>;
+    }
+
+    <span class="cm">// ── Search ──────────────────────────────────────────</span>
+    <span class="kw">public</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? <span class="mt">Find</span>(<span class="tp">T</span> value)
+    {
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? c = head;
+        <span class="kw">while</span> (c != <span class="kw">null</span>)
+        {
+            <span class="kw">if</span> (c.Data!.<span class="mt">Equals</span>(value)) <span class="kw">return</span> c;
+            c = c.Next;
+        }
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// ── Traversal ───────────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">PrintForward</span>()
+    {
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? c = head;
+        <span class="kw">while</span> (c != <span class="kw">null</span>) { <span class="tp">Console</span>.<span class="mt">Write</span>(c.Data + <span class="st">" ⇄ "</span>); c = c.Next; }
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"null"</span>);
+    }
+
+    <span class="kw">public void</span> <span class="mt">PrintBackward</span>()  <span class="cm">// ← Unique to doubly!</span>
+    {
+        <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? c = tail;
+        <span class="kw">while</span> (c != <span class="kw">null</span>) { <span class="tp">Console</span>.<span class="mt">Write</span>(c.Data + <span class="st">" ⇄ "</span>); c = c.Prev; }
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"null"</span>);
+    }
+}
+
+<span class="cm">// ── Usage ────────────────────────────────────────────────</span>
+<span class="kw">var</span> dl = <span class="kw">new</span> <span class="tp">DoublyLinkedList</span>&lt;<span class="kw">int</span>&gt;();
+dl.<span class="mt">AddLast</span>(<span class="nm">10</span>); dl.<span class="mt">AddLast</span>(<span class="nm">20</span>); dl.<span class="mt">AddLast</span>(<span class="nm">30</span>);
+dl.<span class="mt">AddFirst</span>(<span class="nm">5</span>);
+dl.<span class="mt">PrintForward</span>();   <span class="cm">// 5 ⇄ 10 ⇄ 20 ⇄ 30 ⇄ null</span>
+dl.<span class="mt">PrintBackward</span>();  <span class="cm">// 30 ⇄ 20 ⇄ 10 ⇄ 5 ⇄ null</span>
+
+<span class="tp">DNode</span>&lt;<span class="kw">int</span>&gt;? node20 = dl.<span class="mt">Find</span>(<span class="nm">20</span>);
+dl.<span class="mt">RemoveNode</span>(node20!);  <span class="cm">// O(1) — no traversal!</span>
+dl.<span class="mt">PrintForward</span>();   <span class="cm">// 5 ⇄ 10 ⇄ 30 ⇄ null</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — C#'s Built-in LinkedList&lt;T&gt;</div>
+
+<p>C# provides a built-in <code>LinkedList&lt;T&gt;</code> in <code>System.Collections.Generic</code>.
+It is a <strong>doubly linked list</strong> and is the data structure you should use in production
+code rather than rolling your own. Understanding what we built in Section 4 is exactly what lets you
+use this class with confidence.</p>
+
+<pre><span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// LinkedList&lt;T&gt; — C#'s built-in doubly linked list</span>
+<span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt; songs = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt;();
+
+<span class="cm">// Adding elements — returns a LinkedListNode&lt;T&gt;</span>
+<span class="tp">LinkedListNode</span>&lt;<span class="kw">string</span>&gt; node1 = songs.<span class="mt">AddLast</span>(<span class="st">"Bohemian Rhapsody"</span>);
+<span class="tp">LinkedListNode</span>&lt;<span class="kw">string</span>&gt; node2 = songs.<span class="mt">AddLast</span>(<span class="st">"Hotel California"</span>);
+<span class="tp">LinkedListNode</span>&lt;<span class="kw">string</span>&gt; node3 = songs.<span class="mt">AddLast</span>(<span class="st">"Stairway to Heaven"</span>);
+songs.<span class="mt">AddFirst</span>(<span class="st">"Yesterday"</span>);
+songs.<span class="mt">AddBefore</span>(node2, <span class="st">"Let It Be"</span>);    <span class="cm">// Insert before "Hotel California"</span>
+songs.<span class="mt">AddAfter</span>(node3, <span class="st">"Purple Haze"</span>);   <span class="cm">// Insert after "Stairway..."</span>
+
+<span class="cm">// Access</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(songs.First!.Value);  <span class="cm">// "Yesterday" — O(1)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(songs.Last!.Value);   <span class="cm">// "Purple Haze" — O(1)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(songs.Count);         <span class="cm">// 6</span>
+
+<span class="cm">// Remove — O(1) given a node, O(n) by value</span>
+songs.<span class="mt">Remove</span>(node2);              <span class="cm">// O(1) — remove "Hotel California"</span>
+songs.<span class="mt">Remove</span>(<span class="st">"Let It Be"</span>);         <span class="cm">// O(n) — find then remove</span>
+songs.<span class="mt">RemoveFirst</span>();               <span class="cm">// O(1)</span>
+songs.<span class="mt">RemoveLast</span>();                <span class="cm">// O(1)</span>
+
+<span class="cm">// Traversal — forward and backward</span>
+<span class="tp">LinkedListNode</span>&lt;<span class="kw">string</span>&gt;? current = songs.First;
+<span class="kw">while</span> (current != <span class="kw">null</span>)
+{
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>(current.Value);
+    current = current.Next;    <span class="cm">// Forward</span>
+}
+
+current = songs.Last;
+<span class="kw">while</span> (current != <span class="kw">null</span>)
+{
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>(current.Value);
+    current = current.Previous;  <span class="cm">// Backward!</span>
+}
+
+<span class="cm">// Contains / Find</span>
+<span class="kw">bool</span> has = songs.<span class="mt">Contains</span>(<span class="st">"Bohemian Rhapsody"</span>);       <span class="cm">// O(n)</span>
+<span class="tp">LinkedListNode</span>&lt;<span class="kw">string</span>&gt;? found = songs.<span class="mt">Find</span>(<span class="st">"Bohemian Rhapsody"</span>); <span class="cm">// O(n)</span></pre>
+
+<div class="realworld">
+    <strong>🌍 Real-World: LRU Cache (Most Common Interview Pattern)</strong><br>
+    An LRU (Least Recently Used) cache keeps the N most recently accessed items. When full, it evicts
+    the least recently used. The ideal structure: <code>LinkedList&lt;T&gt;</code> + <code>Dictionary</code>.
+    <ul style="margin-top:8px;">
+        <li>Move accessed item to front → O(1) (LinkedListNode reference in Dictionary)</li>
+        <li>Evict least recently used → O(1) (RemoveLast)</li>
+        <li>Look up by key → O(1) (Dictionary)</li>
+    </ul>
+    This is exactly how browser history, CPU caches, and database buffer pools work.
+</div>
+
+<pre><span class="cm">// Classic LRU Cache using LinkedList&lt;T&gt; + Dictionary</span>
+<span class="kw">public class</span> <span class="tp">LRUCache</span>&lt;<span class="tp">TKey</span>, <span class="tp">TValue</span>&gt;
+{
+    <span class="kw">private readonly int</span> capacity;
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="tp">TKey</span>, <span class="tp">LinkedListNode</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt;&gt; map;
+    <span class="kw">private readonly</span> <span class="tp">LinkedList</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt; list;
+
+    <span class="kw">public</span> <span class="mt">LRUCache</span>(<span class="kw">int</span> capacity)
+    {
+        <span class="kw">this</span>.capacity = capacity;
+        map  = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">TKey</span>, <span class="tp">LinkedListNode</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt;&gt;();
+        list = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt;();
+    }
+
+    <span class="kw">public</span> <span class="tp">TValue</span>? <span class="mt">Get</span>(<span class="tp">TKey</span> key)
+    {
+        <span class="kw">if</span> (!map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> node)) <span class="kw">return default</span>;
+        list.<span class="mt">Remove</span>(node);        <span class="cm">// O(1) — have the node ref</span>
+        list.<span class="mt">AddFirst</span>(node);      <span class="cm">// Move to front (most recent)</span>
+        <span class="kw">return</span> node.Value.Item2;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Put</span>(<span class="tp">TKey</span> key, <span class="tp">TValue</span> value)
+    {
+        <span class="kw">if</span> (map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> existing))
+        {
+            list.<span class="mt">Remove</span>(existing);
+            map.<span class="mt">Remove</span>(key);
+        }
+        <span class="kw">else if</span> (list.Count == capacity)
+        {
+            <span class="kw">var</span> lru = list.Last!;
+            map.<span class="mt">Remove</span>(lru.Value.Item1);  <span class="cm">// Evict LRU</span>
+            list.<span class="mt">RemoveLast</span>();
+        }
+        <span class="kw">var</span> node = list.<span class="mt">AddFirst</span>((key, value));
+        map[key] = node;
+    }
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> cache = <span class="kw">new</span> <span class="tp">LRUCache</span>&lt;<span class="kw">int</span>, <span class="kw">string</span>&gt;(<span class="nm">3</span>);
+cache.<span class="mt">Put</span>(<span class="nm">1</span>, <span class="st">"Alice"</span>);
+cache.<span class="mt">Put</span>(<span class="nm">2</span>, <span class="st">"Bob"</span>);
+cache.<span class="mt">Put</span>(<span class="nm">3</span>, <span class="st">"Carol"</span>);
+cache.<span class="mt">Get</span>(<span class="nm">1</span>);               <span class="cm">// Access Alice → moves to front</span>
+cache.<span class="mt">Put</span>(<span class="nm">4</span>, <span class="st">"Dave"</span>);       <span class="cm">// Evicts Bob (LRU), adds Dave</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(cache.<span class="mt">Get</span>(<span class="nm">2</span>));  <span class="cm">// null — Bob was evicted</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Circular Linked Lists</div>
+
+<p>A <strong>Circular Linked List</strong> is a singly or doubly linked list where the <strong>last node's
+<code>Next</code> points back to the first node</strong> (and in the doubly variant, the first node's
+<code>Prev</code> points to the last node), forming a closed ring with no null terminus.</p>
+
+<div class="diagram">CIRCULAR SINGLY LINKED LIST
+
+  ┌──────────────────────────────────────────────────────┐
+  │                                                       │
+  ▼                                                       │
+ [1|▶] ──▶ [2|▶] ──▶ [3|▶] ──▶ [4|▶] ──▶ [5|▶] ──────┘
+  ▲
+  head (or any designated start node)
+
+  No null — the tail's Next WRAPS BACK to the head.
+
+CIRCULAR DOUBLY LINKED LIST
+
+        ┌─────────────────────────────────────────┐
+        ▼                                         │
+  ◀──[1|▶] ⇄ [◀|2|▶] ⇄ [◀|3|▶] ⇄ [◀|4|▶] ──▶ ┘
+  └──────────────────────────────────────────────▶
+  
+  Head.Prev = Tail, Tail.Next = Head</div>
+
+<h3>6.1 — Circular Singly Linked List Implementation</h3>
+<p>The core difference in implementation: instead of checking for <code>null</code> to detect the end,
+you check whether you've looped back to the <code>head</code>.</p>
+
+<pre><span class="kw">public class</span> <span class="tp">CircularLinkedList</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">private</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? head;
+    <span class="kw">private</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? tail;
+    <span class="kw">public int</span> Count { <span class="kw">get</span>; <span class="kw">private set</span>; }
+
+    <span class="kw">public void</span> <span class="mt">AddLast</span>(<span class="tp">T</span> value)
+    {
+        <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value);
+        <span class="kw">if</span> (head == <span class="kw">null</span>)
+        {
+            head = tail = n;
+            n.Next = n;         <span class="cm">// Points to itself!</span>
+        }
+        <span class="kw">else</span>
+        {
+            n.Next = head;      <span class="cm">// New node points back to head</span>
+            tail!.Next = n;     <span class="cm">// Old tail points to new node</span>
+            tail = n;
+        }
+        Count++;
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddFirst</span>(<span class="tp">T</span> value)
+    {
+        <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value);
+        <span class="kw">if</span> (head == <span class="kw">null</span>) { head = tail = n; n.Next = n; }
+        <span class="kw">else</span>
+        {
+            n.Next = head;
+            tail!.Next = n;  <span class="cm">// tail must ALWAYS point to head</span>
+            head = n;
+        }
+        Count++;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Print</span>()
+    {
+        <span class="kw">if</span> (head == <span class="kw">null</span>) { <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"(empty)"</span>); <span class="kw">return</span>; }
+        <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? current = head;
+        <span class="kw">do</span>
+        {
+            <span class="tp">Console</span>.<span class="mt">Write</span>(current.Data + <span class="st">" → "</span>);
+            current = current.Next;
+        } <span class="kw">while</span> (current != head);  <span class="cm">// Stop when back at head!</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"(HEAD)"</span>);
+    }
+}</pre>
+
+<div class="warning">
+    <strong>⚠️ Infinite Loop Danger:</strong> When traversing a circular list, use a <code>do-while</code>
+    loop with <code>current != head</code> as the stopping condition. A regular <code>while (current != null)</code>
+    loop will run FOREVER because there is no null — the list loops back around!
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Circular List Use Cases</div>
+
+<h3>7.1 — Round-Robin Scheduling</h3>
+<p>Operating systems give each process a time slice in a cycle. A circular list is perfect —
+move to <code>next</code> after each slice, wrapping around forever.</p>
+
+<pre><span class="kw">var</span> processes = <span class="kw">new</span> <span class="tp">CircularLinkedList</span>&lt;<span class="kw">string</span>&gt;();
+processes.<span class="mt">AddLast</span>(<span class="st">"Process A"</span>);
+processes.<span class="mt">AddLast</span>(<span class="st">"Process B"</span>);
+processes.<span class="mt">AddLast</span>(<span class="st">"Process C"</span>);
+
+<span class="cm">// Simulate 7 time slices (round-robin)</span>
+<span class="tp">Node</span>&lt;<span class="kw">string</span>&gt;? current = processes.Head;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">7</span>; i++)
+{
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Slice {i+1}: Running {current!.Data}"</span>);
+    current = current.Next;
+}
+<span class="cm">// Output: A B C A B C A  (cycles endlessly)</span></pre>
+
+<h3>7.2 — Josephus Problem</h3>
+<p>Classic algorithm puzzle: N people stand in a circle. Starting from position 1, every k-th person
+is eliminated. Who is the last survivor? A circular linked list models this perfectly.</p>
+
+<pre><span class="cm">// Josephus Problem — N=6 people, every 3rd person eliminated</span>
+<span class="cm">// People: 1 2 3 4 5 6, k=3 → eliminated: 3,6,4,2,5 → survivor: 1</span>
+<span class="kw">static int</span> <span class="mt">Josephus</span>(<span class="kw">int</span> n, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> circle = <span class="kw">new</span> <span class="tp">CircularLinkedList</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++) circle.<span class="mt">AddLast</span>(i);
+
+    <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt;? current = circle.Head;
+    <span class="kw">while</span> (circle.Count &gt; <span class="nm">1</span>)
+    {
+        <span class="cm">// Move k-1 steps forward</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; k; i++) current = current!.Next;
+        <span class="tp">Console</span>.<span class="mt">Write</span>($<span class="st">"Eliminated: {current!.Data}  "</span>);
+        <span class="kw">var</span> next = current.Next;
+        circle.<span class="mt">RemoveNode</span>(current);
+        current = next;
+    }
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"\nSurvivor: {circle.Head!.Data}"</span>);
+    <span class="kw">return</span> circle.Head.Data;
+}
+
+<span class="mt">Josephus</span>(<span class="nm">6</span>, <span class="nm">3</span>);
+<span class="cm">// Eliminated: 3  6  4  2  5</span>
+<span class="cm">// Survivor: 1</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Comparison: All Three Variants</div>
+
+<table>
+    <thead>
+        <tr><th>Feature</th><th>Singly</th><th>Doubly</th><th>Circular</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Pointers per node</td><td>1 (Next)</td><td>2 (Prev + Next)</td><td>1 or 2 (wraps)</td></tr>
+        <tr><td>Memory per node</td><td class="g">Low</td><td class="o">Medium</td><td class="g">Low (singly)</td></tr>
+        <tr><td>Traverse forward</td><td class="g">✅</td><td class="g">✅</td><td class="g">✅</td></tr>
+        <tr><td>Traverse backward</td><td class="r">❌</td><td class="g">✅</td><td class="r">❌ (singly)</td></tr>
+        <tr><td>Delete tail</td><td class="r">O(n)</td><td class="g">O(1)</td><td class="r">O(n) (singly)</td></tr>
+        <tr><td>Delete any node (by ref)</td><td class="r">O(n)</td><td class="g">O(1)</td><td class="r">O(n) (singly)</td></tr>
+        <tr><td>Traverse past end</td><td>Stops at null</td><td>Stops at null</td><td class="o">Loops forever!</td></tr>
+        <tr><td>C# built-in</td><td>—</td><td class="g">LinkedList&lt;T&gt;</td><td>—</td></tr>
+    </tbody>
+</table>
+
+<div class="note">
+    <strong>📌 Quick Decision Guide:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Singly</strong> — Memory-critical, forward-only traversal, simple stack/queue backing</li>
+        <li><strong>Doubly</strong> (<code>LinkedList&lt;T&gt;</code>) — Most real-world use cases, LRU cache, browser history, text editor undo</li>
+        <li><strong>Circular</strong> — Scheduling algorithms, buffering (audio/video ring buffers), token ring networking</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 2B Complete!</strong><br><br>
+    You now understand: Doubly linked list mechanics, O(1) node deletion, C#'s <code>LinkedList&lt;T&gt;</code>,
+    LRU cache pattern, circular linked lists, and round-robin scheduling.<br><br>
+    🏠 <a href="../Index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m02a_singly_ll.html">Part A — Singly Linked List</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m02c_ll_practice.html">Part C — Practice: 12 Problems</a>
+</div>
+
+</body>
+</html>

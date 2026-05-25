@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3C — Priority Queue</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 3 — Part C</h1>
+    <div class="tagline">Priority Queue — Heaps, Min/Max, &amp; C# PriorityQueue&lt;T,P&gt;</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Always dequeue the most important element first — regardless of arrival order</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2–3 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part C of Module 3</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 3 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m03a_stacks.html">Stacks</a><br>
+    ✅ <strong>Part B</strong> — <a href="m03b_queues.html">Queues &amp; Deque</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Priority Queue<br>
+    ⬜ <strong>Part D</strong> — <a href="m03d_monotonic.html">Monotonic Stack &amp; Queue</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m03e_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part C</h2>
+    <ol>
+        <li>Section 1 — What is a Priority Queue? <span>— The concept, real-world motivation</span></li>
+        <li>Section 2 — The Binary Heap <span>— The structure that makes it fast</span></li>
+        <li>Section 3 — Heap Operations in Detail <span>— Insert, ExtractMin, Heapify</span></li>
+        <li>Section 4 — Min-Heap Implementation from Scratch <span>— Full C# code</span></li>
+        <li>Section 5 — Max-Heap &amp; Inversion Trick <span>— Max using min-heap</span></li>
+        <li>Section 6 — C# PriorityQueue&lt;TElement,TPriority&gt; <span>— .NET 6+ built-in</span></li>
+        <li>Section 7 — Application: K Largest / K Smallest Elements <span>— Classic interview problems</span></li>
+        <li>Section 8 — Application: Merge K Sorted Lists <span>— Heap-powered merge</span></li>
+        <li>Section 9 — Application: Task Scheduler / CPU Scheduling <span>— Real scheduling</span></li>
+        <li>Section 10 — Heap Sort <span>— Sort using a heap in O(n log n)</span></li>
+        <li>Section 11 — Complexity Summary <span>— When to use a priority queue</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is a Priority Queue?</div>
+
+<p>A <strong>Priority Queue</strong> is a queue where each element has a <strong>priority</strong>.
+When you dequeue, you always get the element with the <em>highest priority</em> — not the element
+that has been waiting the longest. Priority can mean "smallest number", "largest number", or any
+custom ordering.</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World Examples:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Emergency room:</strong> A patient with a heart attack jumps the queue over a patient with a minor cut — severity is the priority, not arrival time.</li>
+        <li><strong>CPU scheduling:</strong> The OS picks the highest-priority process to run next. A system process beats a background update.</li>
+        <li><strong>Dijkstra's shortest path:</strong> Always explore the unvisited city with the smallest known distance first — guaranteed to find optimal paths.</li>
+        <li><strong>Huffman compression:</strong> Always merge the two least-frequent characters first to build the optimal encoding tree.</li>
+    </ul>
+</div>
+
+<div class="note">
+    <strong>📌 Priority Queue vs Sorted Array:</strong>
+    <ul style="margin-top:8px;">
+        <li>Sorted array: Insert is O(n), Extract-Min is O(1). Bad for many insertions.</li>
+        <li>Priority Queue (heap): Insert is O(log n), Extract-Min is O(log n). Excellent balance.</li>
+        <li>Unsorted array: Insert O(1), Extract-Min O(n). Bad for many extractions.</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Binary Heap</div>
+
+<p>The data structure that efficiently implements a priority queue is the <strong>Binary Heap</strong>.
+A binary heap is a <strong>complete binary tree</strong> stored in an array, satisfying the
+<strong>heap property</strong>: in a <em>min-heap</em>, every parent is smaller than or equal to
+its children.</p>
+
+<div class="diagram">MIN-HEAP as a TREE                  STORED as an ARRAY
+
+         1                          Index: 0  1  2  3  4  5  6
+       /   \                        Value: [1, 3, 2, 7, 4, 5, 6]
+      3     2
+     / \   / \                      Parent of i = (i-1) / 2  (integer division)
+    7   4 5   6                     Left  child = 2*i + 1
+                                    Right child = 2*i + 2
+
+RULE: parent ≤ both children at ALL levels
+The MINIMUM is always at the ROOT (index 0)
+
+COMPLETE TREE: filled level by level, left to right.
+This guarantees height = O(log n), making all operations O(log n).</div>
+
+<div class="note">
+    <strong>📌 Array Index Math — The Key Insight:</strong> Because heaps are complete trees, we can
+    store them in a flat array without pointers. The parent-child relationships are computed with simple
+    arithmetic. This makes heaps cache-friendly and memory-efficient.
+    <ul style="margin-top:8px;">
+        <li>Node at index <code>i</code></li>
+        <li>Parent: <code>(i - 1) / 2</code></li>
+        <li>Left child: <code>2 * i + 1</code></li>
+        <li>Right child: <code>2 * i + 2</code></li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Heap Operations in Detail</div>
+
+<h3>Insert (Enqueue) — O(log n)</h3>
+<p>Add the new element at the end of the array (maintaining the "complete tree" shape).
+Then <strong>"bubble up"</strong> (sift up): compare with parent, swap if smaller, repeat until
+the heap property is restored.</p>
+
+<div class="diagram">INSERT 1 into heap [2, 3, 5, 7, 4, 6]:
+
+Step 1 — Add at end: [2, 3, 5, 7, 4, 6, 1]
+              2
+            /   \
+           3     5
+          / \   / \
+         7   4 6   1  ← new node at index 6
+
+Step 2 — Bubble Up: 1 vs parent at (6-1)/2=2 → parent is 5 → 1 < 5, SWAP
+         [2, 3, 1, 7, 4, 6, 5]
+              2
+            /   \
+           3     1
+          / \   / \
+         7   4 6   5
+
+Step 3 — Continue: 1 vs parent at (2-1)/2=0 → parent is 2 → 1 < 2, SWAP
+         [1, 3, 2, 7, 4, 6, 5]
+              1   ← NEW ROOT (minimum)
+            /   \
+           3     2
+          / \   / \
+         7   4 6   5
+Heap property restored! ✓</div>
+
+<h3>ExtractMin (Dequeue) — O(log n)</h3>
+<p>Remove the root (minimum). Replace it with the last element (maintains complete tree shape).
+Then <strong>"bubble down"</strong> (sift down): compare with children, swap with the smaller child
+if needed, repeat until heap property is restored.</p>
+
+<div class="diagram">EXTRACT MIN from [1, 3, 2, 7, 4, 6, 5]:
+
+Step 1 — Remove root (1). Move last element (5) to root:
+         [5, 3, 2, 7, 4, 6]
+              5
+            /   \
+           3     2
+          / \   /
+         7   4 6
+
+Step 2 — Bubble Down: 5 vs children 3 and 2. Smaller child=2. 5>2, SWAP:
+         [2, 3, 5, 7, 4, 6]
+              2
+            /   \
+           3     5
+          / \   /
+         7   4 6
+
+Step 3 — Continue: 5 vs children 6 (only one). 5<6, STOP.
+         Heap property restored! ✓
+Returns: 1 (the extracted minimum)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Min-Heap Implementation from Scratch</div>
+
+<pre><span class="kw">public class</span> <span class="tp">MinHeap</span>&lt;<span class="tp">T</span>&gt; <span class="kw">where</span> <span class="tp">T</span> : <span class="tp">IComparable</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; heap = <span class="kw">new</span>();
+
+    <span class="kw">public int</span> Count =&gt; heap.Count;
+    <span class="kw">public bool</span> IsEmpty =&gt; heap.Count == <span class="nm">0</span>;
+    <span class="kw">public</span> <span class="tp">T</span> Peek() =&gt; IsEmpty ? <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>() : heap[<span class="nm">0</span>];
+
+    <span class="cm">// Index helpers</span>
+    <span class="kw">private static int</span> <span class="mt">Parent</span>(<span class="kw">int</span> i) =&gt; (i - <span class="nm">1</span>) / <span class="nm">2</span>;
+    <span class="kw">private static int</span> <span class="mt">Left</span>  (<span class="kw">int</span> i) =&gt; <span class="nm">2</span> * i + <span class="nm">1</span>;
+    <span class="kw">private static int</span> <span class="mt">Right</span> (<span class="kw">int</span> i) =&gt; <span class="nm">2</span> * i + <span class="nm">2</span>;
+
+    <span class="kw">private void</span> <span class="mt">Swap</span>(<span class="kw">int</span> a, <span class="kw">int</span> b)
+        =&gt; (heap[a], heap[b]) = (heap[b], heap[a]);
+
+    <span class="cm">// Insert — O(log n)</span>
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="tp">T</span> value)
+    {
+        heap.<span class="mt">Add</span>(value);
+        <span class="mt">BubbleUp</span>(heap.Count - <span class="nm">1</span>);
+    }
+
+    <span class="kw">private void</span> <span class="mt">BubbleUp</span>(<span class="kw">int</span> i)
+    {
+        <span class="kw">while</span> (i &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> p = <span class="mt">Parent</span>(i);
+            <span class="kw">if</span> (heap[i].<span class="mt">CompareTo</span>(heap[p]) &lt; <span class="nm">0</span>)  <span class="cm">// child &lt; parent</span>
+            {
+                <span class="mt">Swap</span>(i, p);
+                i = p;
+            }
+            <span class="kw">else break</span>;
+        }
+    }
+
+    <span class="cm">// ExtractMin — O(log n)</span>
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">ExtractMin</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Heap is empty"</span>);
+        <span class="tp">T</span> min = heap[<span class="nm">0</span>];
+        <span class="kw">int</span> last = heap.Count - <span class="nm">1</span>;
+        heap[<span class="nm">0</span>] = heap[last];  <span class="cm">// Move last to root</span>
+        heap.<span class="mt">RemoveAt</span>(last);
+        <span class="kw">if</span> (!IsEmpty) <span class="mt">BubbleDown</span>(<span class="nm">0</span>);
+        <span class="kw">return</span> min;
+    }
+
+    <span class="kw">private void</span> <span class="mt">BubbleDown</span>(<span class="kw">int</span> i)
+    {
+        <span class="kw">int</span> n = heap.Count;
+        <span class="kw">while</span> (<span class="kw">true</span>)
+        {
+            <span class="kw">int</span> smallest = i;
+            <span class="kw">int</span> l = <span class="mt">Left</span>(i), r = <span class="mt">Right</span>(i);
+            <span class="kw">if</span> (l &lt; n &amp;&amp; heap[l].<span class="mt">CompareTo</span>(heap[smallest]) &lt; <span class="nm">0</span>) smallest = l;
+            <span class="kw">if</span> (r &lt; n &amp;&amp; heap[r].<span class="mt">CompareTo</span>(heap[smallest]) &lt; <span class="nm">0</span>) smallest = r;
+            <span class="kw">if</span> (smallest == i) <span class="kw">break</span>;
+            <span class="mt">Swap</span>(i, smallest);
+            i = smallest;
+        }
+    }
+
+    <span class="cm">// Build heap from array — O(n) using bottom-up heapify</span>
+    <span class="kw">public static</span> <span class="tp">MinHeap</span>&lt;<span class="tp">T</span>&gt; <span class="mt">FromArray</span>(<span class="tp">T</span>[] arr)
+    {
+        <span class="kw">var</span> h = <span class="kw">new</span> <span class="tp">MinHeap</span>&lt;<span class="tp">T</span>&gt;();
+        h.heap.<span class="mt">AddRange</span>(arr);
+        <span class="cm">// Start from last non-leaf node, sift down each</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = (arr.Length / <span class="nm">2</span>) - <span class="nm">1</span>; i &gt;= <span class="nm">0</span>; i--)
+            h.<span class="mt">BubbleDown</span>(i);
+        <span class="kw">return</span> h;
+    }
+}</pre>
+
+<div class="tip">
+    <strong>💡 Build Heap in O(n):</strong> The <code>FromArray</code> method builds a heap in O(n) — not
+    O(n log n). The trick is starting from the last non-leaf and sifting down. Most elements are near the
+    bottom of the tree and travel only a short distance, giving O(n) total work.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Max-Heap &amp; The Inversion Trick</div>
+
+<p>A <strong>max-heap</strong> always puts the largest element at the root. You can build one in two ways:</p>
+
+<h3>Option 1 — Negate the values</h3>
+<p>If using a min-heap, insert <code>-value</code>. When you extract, negate the result back.
+This is the classic interview trick for "K largest elements using a min-heap".</p>
+
+<h3>Option 2 — Reverse comparator</h3>
+<pre><span class="cm">// Using C# PriorityQueue with inverted priority for max-heap behavior</span>
+<span class="kw">var</span> maxHeap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(<span class="tp">Comparer</span>&lt;<span class="kw">int</span>&gt;.<span class="mt">Create</span>((a, b) =&gt; b - a));
+maxHeap.<span class="mt">Enqueue</span>(<span class="nm">5</span>, <span class="nm">5</span>);
+maxHeap.<span class="mt">Enqueue</span>(<span class="nm">1</span>, <span class="nm">1</span>);
+maxHeap.<span class="mt">Enqueue</span>(<span class="nm">8</span>, <span class="nm">8</span>);
+maxHeap.<span class="mt">Enqueue</span>(<span class="nm">3</span>, <span class="nm">3</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(maxHeap.<span class="mt">Dequeue</span>());  <span class="cm">// 8 (largest first)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(maxHeap.<span class="mt">Dequeue</span>());  <span class="cm">// 5</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — C# PriorityQueue&lt;TElement, TPriority&gt;</div>
+
+<p>Starting with <strong>.NET 6</strong>, C# provides a built-in
+<code>PriorityQueue&lt;TElement, TPriority&gt;</code>. It is a <strong>min-heap by default</strong> —
+the element with the smallest priority value is dequeued first. The element and its priority are
+<strong>separate</strong> — you can store any object and rank it by a separate priority value.</p>
+
+<pre><span class="cm">// Basic usage</span>
+<span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();  <span class="cm">// (task name, priority)</span>
+
+pq.<span class="mt">Enqueue</span>(<span class="st">"Low priority cleanup"</span>,   <span class="nm">10</span>);
+pq.<span class="mt">Enqueue</span>(<span class="st">"Medium: update cache"</span>,    <span class="nm">5</span>);
+pq.<span class="mt">Enqueue</span>(<span class="st">"HIGH: server is down!"</span>,   <span class="nm">1</span>);
+pq.<span class="mt">Enqueue</span>(<span class="st">"Medium: send email"</span>,      <span class="nm">5</span>);
+
+<span class="cm">// Dequeue — always gets lowest priority NUMBER (highest urgency)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(pq.<span class="mt">Dequeue</span>());  <span class="cm">// "HIGH: server is down!" (priority=1)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(pq.<span class="mt">Dequeue</span>());  <span class="cm">// one of the priority=5 items</span>
+
+<span class="cm">// Peek — view without removing</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(pq.<span class="mt">Peek</span>());     <span class="cm">// front item (doesn't remove)</span>
+
+<span class="cm">// TryDequeue / TryPeek — safe versions</span>
+<span class="kw">while</span> (pq.<span class="mt">TryDequeue</span>(<span class="kw">out string</span>? task, <span class="kw">out int</span> pri))
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"[P{pri}] {task}"</span>);
+
+<span class="cm">// ── Enqueue with custom object ─────────────────────────────</span>
+<span class="kw">record</span> <span class="tp">Patient</span>(<span class="kw">string</span> Name, <span class="kw">int</span> Severity);
+
+<span class="kw">var</span> er = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">Patient</span>, <span class="kw">int</span>&gt;();
+er.<span class="mt">Enqueue</span>(<span class="kw">new</span> <span class="tp">Patient</span>(<span class="st">"Alice"</span>, <span class="nm">3</span>), <span class="nm">3</span>);  <span class="cm">// moderate</span>
+er.<span class="mt">Enqueue</span>(<span class="kw">new</span> <span class="tp">Patient</span>(<span class="st">"Bob"</span>,   <span class="nm">1</span>), <span class="nm">1</span>);  <span class="cm">// critical</span>
+er.<span class="mt">Enqueue</span>(<span class="kw">new</span> <span class="tp">Patient</span>(<span class="st">"Carol"</span>, <span class="nm">5</span>), <span class="nm">5</span>);  <span class="cm">// mild</span>
+
+<span class="kw">while</span> (er.<span class="mt">TryDequeue</span>(<span class="kw">out var</span> p, <span class="kw">out</span> _))
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Treating: {p.Name} (severity {p.Severity})"</span>);
+<span class="cm">// Treating: Bob (severity 1)
+// Treating: Alice (severity 3)
+// Treating: Carol (severity 5)</span></pre>
+
+<div class="note">
+    <strong>📌 .NET 6+ Only:</strong> <code>PriorityQueue&lt;TElement, TPriority&gt;</code> was added in .NET 6.
+    If you're on an older framework, use a third-party library or implement your own heap. For interview
+    code that uses LeetCode's C# runner, it supports this class.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Application: K Largest / K Smallest Elements</div>
+
+<p>Finding the K largest or K smallest elements from an array of N elements is one of the most
+common interview problems. A heap gives us O(N log K) — far better than O(N log N) sorting when K is small.</p>
+
+<h3>K Smallest Elements — Use a Max-Heap of size K</h3>
+<p>Maintain a max-heap of size K. For each new element, if it's smaller than the heap's max, replace the max.
+At the end, the heap contains the K smallest elements.</p>
+
+<pre><span class="cm">// Find K smallest elements — O(N log K)</span>
+<span class="kw">public static int</span>[] <span class="mt">KSmallest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="cm">// Max-heap using inverted priority (negative values)</span>
+    <span class="kw">var</span> maxHeap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(
+        <span class="tp">Comparer</span>&lt;<span class="kw">int</span>&gt;.<span class="mt">Create</span>((a, b) =&gt; b.CompareTo(a)));  <span class="cm">// reversed</span>
+
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums)
+    {
+        maxHeap.<span class="mt">Enqueue</span>(n, n);
+        <span class="kw">if</span> (maxHeap.Count &gt; k)
+            maxHeap.<span class="mt">Dequeue</span>();  <span class="cm">// Evict the current maximum</span>
+    }
+
+    <span class="kw">return</span> [.. maxHeap.<span class="mt">UnorderedItems</span>().<span class="mt">Select</span>(x =&gt; x.Element)];
+}
+
+<span class="cm">// Find K largest elements — O(N log K)</span>
+<span class="kw">public static int</span>[] <span class="mt">KLargest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="cm">// Min-heap of size K; evict minimum when over K</span>
+    <span class="kw">var</span> minHeap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums)
+    {
+        minHeap.<span class="mt">Enqueue</span>(n, n);
+        <span class="kw">if</span> (minHeap.Count &gt; k)
+            minHeap.<span class="mt">Dequeue</span>();  <span class="cm">// Evict current minimum</span>
+    }
+
+    <span class="kw">return</span> [.. minHeap.<span class="mt">UnorderedItems</span>().<span class="mt">Select</span>(x =&gt; x.Element)];
+}
+
+<span class="cm">// Example
+// nums = [3,1,4,1,5,9,2,6,5,3], k=3
+// K Smallest: [1,1,2]   K Largest: [6,9,5]</span></pre>
+
+<div class="diagram">WHY MAX-HEAP FOR K SMALLEST?
+
+Array: [3, 1, 4, 1, 5, 9, 2, 6], k=3
+Strategy: keep a max-heap of size 3 (the 3 smallest seen so far)
+
+Process 3:  heap=[3]          size=1
+Process 1:  heap=[3,1]        size=2
+Process 4:  heap=[4,3,1]      size=3
+Process 1:  heap=[4,3,1,1]→evict max(4)=[3,1,1]
+Process 5:  heap=[5,3,1,1]→evict max(5)=[3,1,1]  ← 5 not in K smallest
+Process 9:  heap=[9,3,1,1]→evict max(9)=[3,1,1]  ← 9 not in K smallest
+Process 2:  heap=[3,2,1,1]→evict max(3)=[2,1,1]  ← 3 evicted, 2 is smaller
+Process 6:  heap=[6,2,1,1]→evict max(6)=[2,1,1]
+
+RESULT: [2,1,1] = 3 smallest ✓</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Application: Merge K Sorted Lists</div>
+
+<p>Given K sorted linked lists, merge them into one sorted list. The heap approach processes the
+"current minimum" across all K lists efficiently.</p>
+
+<pre><span class="kw">public class</span> <span class="tp">ListNode</span>
+{
+    <span class="kw">public int</span> Val; <span class="kw">public</span> <span class="tp">ListNode</span>? Next;
+    <span class="kw">public</span> <span class="mt">ListNode</span>(<span class="kw">int</span> v, <span class="tp">ListNode</span>? n = <span class="kw">null</span>) { Val = v; Next = n; }
+}
+
+<span class="kw">public static</span> <span class="tp">ListNode</span>? <span class="mt">MergeKLists</span>(<span class="tp">ListNode</span>?[] lists)
+{
+    <span class="cm">// Min-heap: stores (value, list-index) pairs, ordered by value</span>
+    <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">ListNode</span>, <span class="kw">int</span>&gt;();
+
+    <span class="cm">// Seed with the head of each list</span>
+    <span class="kw">foreach</span> (<span class="kw">var</span> node <span class="kw">in</span> lists)
+        <span class="kw">if</span> (node != <span class="kw">null</span>) pq.<span class="mt">Enqueue</span>(node, node.Val);
+
+    <span class="tp">ListNode</span> dummy = <span class="kw">new</span>(<span class="nm">0</span>);
+    <span class="tp">ListNode</span> curr = dummy;
+
+    <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> min = pq.<span class="mt">Dequeue</span>();       <span class="cm">// Get node with smallest value</span>
+        curr.Next = min;
+        curr = curr.Next;
+        <span class="kw">if</span> (min.Next != <span class="kw">null</span>)
+            pq.<span class="mt">Enqueue</span>(min.Next, min.Next.Val);  <span class="cm">// Add next node from same list</span>
+    }
+    <span class="kw">return</span> dummy.Next;
+}
+<span class="cm">// Time: O(N log K) — N total nodes, K lists in heap at most
+// Space: O(K) — heap holds at most one node per list</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Application: Task Scheduler</div>
+
+<p>Given tasks with frequencies, schedule them such that the same task must wait at least <code>n</code>
+cooling intervals between executions. Minimize total time (including idle slots).</p>
+
+<pre><span class="cm">// LeetCode 621 — Task Scheduler
+// tasks=['A','A','A','B','B','B'], n=2
+// Optimal: A B _ A B _ A B  = 8 intervals</span>
+
+<span class="kw">public static int</span> <span class="mt">LeastInterval</span>(<span class="kw">char</span>[] tasks, <span class="kw">int</span> n)
+{
+    <span class="kw">int</span>[] freq = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> t <span class="kw">in</span> tasks) freq[t - <span class="st">'A'</span>]++;
+
+    <span class="cm">// Max-heap by frequency</span>
+    <span class="kw">var</span> maxHeap = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(
+        <span class="tp">Comparer</span>&lt;<span class="kw">int</span>&gt;.<span class="mt">Create</span>((a, b) =&gt; b - a));
+
+    <span class="kw">foreach</span> (<span class="kw">int</span> f <span class="kw">in</span> freq)
+        <span class="kw">if</span> (f &gt; <span class="nm">0</span>) maxHeap.<span class="mt">Enqueue</span>(f, f);
+
+    <span class="cm">// Queue: (remaining frequency, time when it can run again)</span>
+    <span class="kw">var</span> cooldown = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span> count, <span class="kw">int</span> availAt)&gt;();
+    <span class="kw">int</span> time = <span class="nm">0</span>;
+
+    <span class="kw">while</span> (maxHeap.Count &gt; <span class="nm">0</span> || cooldown.Count &gt; <span class="nm">0</span>)
+    {
+        time++;
+
+        <span class="cm">// Release tasks that finished cooling</span>
+        <span class="kw">if</span> (cooldown.Count &gt; <span class="nm">0</span> &amp;&amp; cooldown.<span class="mt">Peek</span>().availAt == time)
+        {
+            <span class="kw">var</span> (cnt, _) = cooldown.<span class="mt">Dequeue</span>();
+            maxHeap.<span class="mt">Enqueue</span>(cnt, cnt);
+        }
+
+        <span class="kw">if</span> (maxHeap.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> remaining = maxHeap.<span class="mt">Dequeue</span>() - <span class="nm">1</span>;
+            <span class="kw">if</span> (remaining &gt; <span class="nm">0</span>)
+                cooldown.<span class="mt">Enqueue</span>((remaining, time + n + <span class="nm">1</span>));
+        }
+        <span class="cm">// else: IDLE slot (time still increments)</span>
+    }
+    <span class="kw">return</span> time;
+}
+<span class="cm">// tasks=['A','A','A','B','B','B'], n=2 → 8</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Heap Sort</div>
+
+<p><strong>Heap Sort</strong> uses a max-heap to sort an array <strong>in-place</strong> in
+O(n log n) time and O(1) extra space — better space than merge sort's O(n).</p>
+
+<div class="diagram">HEAP SORT — Two Phases
+
+Phase 1 — BUILD MAX-HEAP from array in O(n):
+  Input: [4, 10, 3, 5, 1]
+  After build: [10, 5, 3, 4, 1]  (max at root)
+
+Phase 2 — EXTRACT MAX n times, each O(log n):
+  Swap root (max) with last element, reduce heap size by 1, sift down.
+
+  Step 1: Swap arr[0]=10 with arr[4]=1 → [1,5,3,4,|10] → sift down → [5,4,3,1,|10]
+  Step 2: Swap arr[0]=5  with arr[3]=1 → [1,4,3,|5,10] → sift down → [4,1,3,|5,10]
+  Step 3: Swap arr[0]=4  with arr[2]=3 → [3,1,|4,5,10] → sift down → [3,1,|4,5,10]
+  Step 4: Swap arr[0]=3  with arr[1]=1 → [1,|3,4,5,10] → sift down → trivial
+  Result: [1, 3, 4, 5, 10]  SORTED ✓</div>
+
+<pre><span class="kw">public static void</span> <span class="mt">HeapSort</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">int</span> n = arr.Length;
+
+    <span class="cm">// Phase 1: Build max-heap in O(n)</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = n / <span class="nm">2</span> - <span class="nm">1</span>; i &gt;= <span class="nm">0</span>; i--)
+        <span class="mt">SiftDown</span>(arr, n, i);
+
+    <span class="cm">// Phase 2: Extract max one by one</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = n - <span class="nm">1</span>; i &gt; <span class="nm">0</span>; i--)
+    {
+        <span class="cm">// Swap current root (max) to sorted position</span>
+        (arr[<span class="nm">0</span>], arr[i]) = (arr[i], arr[<span class="nm">0</span>]);
+        <span class="cm">// Restore heap property on the reduced heap</span>
+        <span class="mt">SiftDown</span>(arr, i, <span class="nm">0</span>);
+    }
+}
+
+<span class="kw">private static void</span> <span class="mt">SiftDown</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> heapSize, <span class="kw">int</span> i)
+{
+    <span class="kw">while</span> (<span class="kw">true</span>)
+    {
+        <span class="kw">int</span> largest = i;
+        <span class="kw">int</span> l = <span class="nm">2</span> * i + <span class="nm">1</span>, r = <span class="nm">2</span> * i + <span class="nm">2</span>;
+        <span class="kw">if</span> (l &lt; heapSize &amp;&amp; arr[l] &gt; arr[largest]) largest = l;
+        <span class="kw">if</span> (r &lt; heapSize &amp;&amp; arr[r] &gt; arr[largest]) largest = r;
+        <span class="kw">if</span> (largest == i) <span class="kw">break</span>;
+        (arr[i], arr[largest]) = (arr[largest], arr[i]);
+        i = largest;
+    }
+}
+
+<span class="kw">int</span>[] arr = [<span class="nm">4</span>, <span class="nm">10</span>, <span class="nm">3</span>, <span class="nm">5</span>, <span class="nm">1</span>];
+<span class="mt">HeapSort</span>(arr);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));  <span class="cm">// 1, 3, 4, 5, 10</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 11 ═══════ -->
+<div class="section-heading">Section 11 — Complexity Summary</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Binary Heap</th><th>Sorted Array</th><th>Unsorted Array</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Insert</td><td class="g">O(log n)</td><td class="r">O(n)</td><td class="g">O(1)</td></tr>
+        <tr><td>Extract Min/Max</td><td class="g">O(log n)</td><td class="g">O(1)</td><td class="r">O(n)</td></tr>
+        <tr><td>Peek Min/Max</td><td class="g">O(1)</td><td class="g">O(1)</td><td class="r">O(n)</td></tr>
+        <tr><td>Build from array</td><td class="g">O(n)</td><td class="o">O(n log n)</td><td class="g">O(n)</td></tr>
+        <tr><td>Arbitrary search</td><td class="r">O(n)</td><td class="g">O(log n)</td><td class="r">O(n)</td></tr>
+        <tr><td>Space</td><td class="g">O(n)</td><td class="g">O(n)</td><td class="g">O(n)</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 When to Choose a Priority Queue:</strong>
+    <ul style="margin-top:8px;">
+        <li>You need to repeatedly access the <strong>minimum or maximum</strong> element</li>
+        <li>Elements have varying <strong>priorities</strong> and you process the most important next</li>
+        <li>Problems with the pattern: "<strong>K largest</strong>", "<strong>K smallest</strong>", "<strong>K closest</strong>", "<strong>K most frequent</strong>"</li>
+        <li>Graph algorithms: <strong>Dijkstra's</strong> shortest path, <strong>Prim's</strong> MST</li>
+        <li>Merge multiple <strong>sorted</strong> data sources</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 3C Complete!</strong><br><br>
+    You now understand: binary heap structure, min/max heap, heap operations (insert, extract, build),
+    C#'s <code>PriorityQueue&lt;TElement,TPriority&gt;</code>, K-largest/smallest, merge K sorted lists,
+    task scheduler, and heap sort.<br><br>
+    🏠 <a href="../Index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m03b_queues.html">Part B — Queues</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m03d_monotonic.html">Part D — Monotonic Stack &amp; Queue</a>
+</div>
+
+</body>
+</html>

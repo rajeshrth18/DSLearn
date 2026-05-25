@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6B — Trie (Prefix Tree)</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 6 — Part B</h1>
+    <div class="tagline">Trie (Prefix Tree) — The Ultimate String Data Structure</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Insert, search, autocomplete, word dictionary, and word search patterns</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2–3 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 Language: C#</span>
+        <span>🔤 String Mastery</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 4 — Heaps &amp; Tries:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m06a_heaps.html">Heaps &amp; Priority Queues</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Trie (Prefix Tree)<br>
+    ⬜ <strong>Part C</strong> — <a href="m06c_practice.html">Practice</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — What is a Trie? <span>— Motivation, structure, when to use</span></li>
+        <li>Section 2 — TrieNode &amp; Trie Class <span>— Full C# implementation</span></li>
+        <li>Section 3 — Insert &amp; Search <span>— Step-by-step with diagrams</span></li>
+        <li>Section 4 — StartsWith (Prefix Check) <span>— Autocomplete foundation</span></li>
+        <li>Section 5 — Delete from Trie <span>— Recursive cleanup</span></li>
+        <li>Section 6 — Count Words with Prefix <span>— Track word counts</span></li>
+        <li>Section 7 — Wildcard Search <span>— '.' matches any character (LeetCode 211)</span></li>
+        <li>Section 8 — Word Search II <span>— Trie + DFS board traversal</span></li>
+        <li>Section 9 — Complexity &amp; Comparison <span>— vs HashMap, vs Sorted structures</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is a Trie?</div>
+
+<p>A <strong>trie</strong> (pronounced "try", from re<em>trie</em>val) is a tree where each
+node represents one character. Words are formed by paths from root to a marked end node.
+The key property: all words sharing a common prefix share the same path.</p>
+
+<div class="diagram">Trie storing: "cat", "car", "card", "care", "dog"
+
+                   [root]
+                  /       \
+                [c]         [d]
+                 |            \
+                [a]           [o]
+               /   \            \
+             [t*]  [r*]          [g*]
+                   /   \
+                 [d*]   [e*]
+
+  * = isEndOfWord marker
+
+  Paths:
+  root → c → a → t*         = "cat" ✓
+  root → c → a → r*         = "car" ✓
+  root → c → a → r* → d*   = "card" ✓
+  root → c → a → r* → e*   = "care" ✓
+  root → d → o → g*         = "dog" ✓
+
+  Key observations:
+  1. "ca" prefix is shared by "cat", "car", "card", "care" — O(prefix_len) lookup
+  2. 14 nodes instead of storing 5 separate strings
+  3. Search for prefix "car" = O(3), not O(n_words)</div>
+
+<div class="realworld">
+    <strong>🌍 Real-World Use Cases:</strong><br>
+    • <strong>Autocomplete</strong> — suggest words as user types<br>
+    • <strong>Spell checker</strong> — is this a valid word?<br>
+    • <strong>IP routing</strong> — longest prefix match for routing tables<br>
+    • <strong>Browser history</strong> — address bar suggestions<br>
+    • <strong>Search engines</strong> — prefix indexing for fast lookup
+</div>
+
+<div class="note">
+    <strong>📝 Why not use a HashMap?</strong> A HashMap can check exact words in O(1), but
+    cannot efficiently answer "give me all words starting with 'pre'" without scanning all
+    keys. A trie answers prefix queries in O(prefix_length), regardless of how many words
+    are stored.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — TrieNode &amp; Trie Class</div>
+
+<pre><span class="cm">// TrieNode — represents one character in the trie</span>
+<span class="kw">public class</span> <span class="tp">TrieNode</span>
+{
+    <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="tp">TrieNode</span>&gt; Children = <span class="kw">new</span>();
+    <span class="kw">public bool</span> IsEnd = <span class="kw">false</span>;   <span class="cm">// marks end of a valid word</span>
+}
+<span class="cm">// Alternative: use array of size 26 for lowercase letters only
+// public TrieNode[] Children = new TrieNode[26];
+// Access: node.Children[c - 'a']
+// Array version: O(26) space per node (faster, uses more memory)
+// Dictionary version: O(distinct chars) space (slower lookup, less memory)</span>
+
+<span class="kw">public class</span> <span class="tp">Trie</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">TrieNode</span> _root = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> cur = _root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> word)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">ContainsKey</span>(c))
+                cur.Children[c] = <span class="kw">new</span> <span class="tp">TrieNode</span>();
+            cur = cur.Children[c];
+        }
+        cur.IsEnd = <span class="kw">true</span>;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">Search</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> node = <span class="mt">GetNode</span>(word);
+        <span class="kw">return</span> node != <span class="kw">null</span> &amp;&amp; node.IsEnd;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">StartsWith</span>(<span class="kw">string</span> prefix)
+    {
+        <span class="kw">return</span> <span class="mt">GetNode</span>(prefix) != <span class="kw">null</span>;
+    }
+
+    <span class="cm">// Helper: traverse to end of given string, return node (or null)</span>
+    <span class="kw">private</span> <span class="tp">TrieNode</span>? <span class="mt">GetNode</span>(<span class="kw">string</span> s)
+    {
+        <span class="kw">var</span> cur = _root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out</span> cur!)) <span class="kw">return null</span>;
+        }
+        <span class="kw">return</span> cur;
+    }
+}
+<span class="cm">// Time: O(m) for all operations where m = word/prefix length
+// Space: O(total_characters_inserted)</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Insert &amp; Search Step-by-Step</div>
+
+<div class="diagram">INSERT "apple" into empty trie:
+
+  Start at root [].
+
+  c='a': root has no 'a' child → create TrieNode 'a'
+         root → [a]
+
+  c='p': 'a' has no 'p' child → create TrieNode 'p'
+         root → [a] → [p]
+
+  c='p': 'p' has no 'p' child → create TrieNode 'p'
+         root → [a] → [p] → [p]
+
+  c='l': create TrieNode 'l'
+         root → [a] → [p] → [p] → [l]
+
+  c='e': create TrieNode 'e'
+         root → [a] → [p] → [p] → [l] → [e]
+
+  Mark last node: IsEnd = true
+         root → [a] → [p] → [p] → [l] → [e*]
+
+INSERT "app" into the same trie:
+
+  c='a': root has 'a' → follow it (no new node)
+  c='p': 'a' has 'p' → follow it
+  c='p': 'p' has 'p' → follow it
+
+  Mark current node [p] IsEnd = true
+         root → [a] → [p] → [p*] → [l] → [e*]
+
+  Now both "app" and "apple" are stored. They share root→a→p!
+
+SEARCH "app":
+  Traverse a→p→p → found node with IsEnd=true → FOUND
+
+SEARCH "ap":
+  Traverse a→p → found node with IsEnd=false → NOT FOUND (not a word)
+
+STARSWITH "app":
+  Traverse a→p→p → node exists → PREFIX EXISTS</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — StartsWith: Autocomplete</div>
+
+<p>With <code>StartsWith</code>, we can also retrieve all words with a given prefix —
+the foundation of autocomplete systems.</p>
+
+<pre><span class="cm">// Get all words in the trie starting with prefix</span>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">GetWordsWithPrefix</span>(<span class="kw">string</span> prefix)
+{
+    <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">var</span> node = <span class="mt">GetNode</span>(prefix);
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> results;
+    <span class="mt">DFS</span>(node, <span class="kw">new</span> <span class="tp">System.Text.StringBuilder</span>(prefix), results);
+    <span class="kw">return</span> results;
+}
+<span class="kw">private void</span> <span class="mt">DFS</span>(<span class="tp">TrieNode</span> node, <span class="tp">System.Text.StringBuilder</span> sb,
+                  <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; results)
+{
+    <span class="kw">if</span> (node.IsEnd) results.<span class="mt">Add</span>(sb.<span class="mt">ToString</span>());
+    <span class="kw">foreach</span> (<span class="kw">var</span> (c, child) <span class="kw">in</span> node.Children)
+    {
+        sb.<span class="mt">Append</span>(c);
+        <span class="mt">DFS</span>(child, sb, results);
+        sb.<span class="mt">Remove</span>(sb.Length - <span class="nm">1</span>, <span class="nm">1</span>); <span class="cm">// backtrack</span>
+    }
+}
+<span class="cm">// Example:
+// trie.Insert("apple"); trie.Insert("app"); trie.Insert("apply");
+// GetWordsWithPrefix("app") → ["app", "apple", "apply"]</span></pre>
+
+<div class="tip">
+    <strong>💡 Complexity:</strong> GetWordsWithPrefix is O(prefix_len + total output chars).
+    In the worst case (prefix is root = empty string), it traverses the entire trie O(total chars).
+    This is still optimal — you have to visit every returned word character anyway.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Delete from Trie</div>
+
+<p>Deletion is the trickiest trie operation. We must only remove nodes that are not
+shared by other words. Three cases:</p>
+
+<div class="diagram">CASES for deleting "care" from trie containing "cat","car","card","care":
+
+  Case 1: Word is a prefix of another word
+  Delete "car" → unmark IsEnd only. "card" still exists.
+           [c][a][r*] → [c][a][r] ← just clear IsEnd flag
+
+  Case 2: Word shares prefix with another word
+  Delete "care" → remove [e] node (leaf). "card" still intact.
+           [r*][d*] stays, just remove [e*] branch
+
+  Case 3: Word is unique (no shared prefix with others)
+  Delete "dog" → remove d→o→g nodes (all become garbage)
+
+  Algorithm: Post-order recursion
+  1. Reach end of word → unset IsEnd
+  2. On way back up: if node has no children AND is not end of another word → delete
+  This naturally handles shared prefix cases.</div>
+
+<pre><span class="kw">public bool</span> <span class="mt">Delete</span>(<span class="kw">string</span> word)
+    =&gt; <span class="mt">DeleteHelper</span>(_root, word, <span class="nm">0</span>);
+
+<span class="kw">private bool</span> <span class="mt">DeleteHelper</span>(<span class="tp">TrieNode</span> node, <span class="kw">string</span> word, <span class="kw">int</span> depth)
+{
+    <span class="kw">if</span> (depth == word.Length)
+    {
+        <span class="kw">if</span> (!node.IsEnd) <span class="kw">return false</span>; <span class="cm">// word doesn't exist</span>
+        node.IsEnd = <span class="kw">false</span>;
+        <span class="kw">return</span> node.Children.Count == <span class="nm">0</span>; <span class="cm">// can delete if leaf</span>
+    }
+    <span class="kw">char</span> c = word[depth];
+    <span class="kw">if</span> (!node.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out var</span> child)) <span class="kw">return false</span>;
+
+    <span class="kw">bool</span> shouldDelete = <span class="mt">DeleteHelper</span>(child, word, depth + <span class="nm">1</span>);
+    <span class="kw">if</span> (shouldDelete)
+    {
+        node.Children.<span class="mt">Remove</span>(c);
+        <span class="kw">return</span> !node.IsEnd &amp;&amp; node.Children.Count == <span class="nm">0</span>;
+    }
+    <span class="kw">return false</span>;
+}
+<span class="cm">// Returns true when a node should be deleted by its parent
+// A node is deletable only when: IsEnd=false AND no remaining children</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Count Words with Prefix</div>
+
+<pre><span class="cm">// Track word count at each node for O(1) prefix count queries</span>
+<span class="kw">public class</span> <span class="tp">TrieNodeWithCount</span>
+{
+    <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="tp">TrieNodeWithCount</span>&gt; Children = <span class="kw">new</span>();
+    <span class="kw">public bool</span> IsEnd = <span class="kw">false</span>;
+    <span class="kw">public int</span>  PassCount = <span class="nm">0</span>;  <span class="cm">// how many words pass through this node</span>
+    <span class="kw">public int</span>  EndCount  = <span class="nm">0</span>;  <span class="cm">// how many words end at this node</span>
+}
+<span class="kw">public class</span> <span class="tp">TrieWithCount</span>
+{
+    <span class="kw">private</span> <span class="tp">TrieNodeWithCount</span> _root = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> cur = _root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> word)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">ContainsKey</span>(c))
+                cur.Children[c] = <span class="kw">new</span> <span class="tp">TrieNodeWithCount</span>();
+            cur = cur.Children[c];
+            cur.PassCount++;    <span class="cm">// increment on every pass</span>
+        }
+        cur.IsEnd = <span class="kw">true</span>;
+        cur.EndCount++;
+    }
+
+    <span class="cm">// How many words start with this prefix? O(prefix_len)</span>
+    <span class="kw">public int</span> <span class="mt">CountPrefix</span>(<span class="kw">string</span> prefix)
+    {
+        <span class="kw">var</span> cur = _root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> prefix)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out</span> cur!)) <span class="kw">return</span> <span class="nm">0</span>;
+        }
+        <span class="kw">return</span> cur.PassCount;
+    }
+
+    <span class="cm">// How many times was this exact word inserted?</span>
+    <span class="kw">public int</span> <span class="mt">CountWord</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> cur = _root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> word)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out</span> cur!)) <span class="kw">return</span> <span class="nm">0</span>;
+        }
+        <span class="kw">return</span> cur.EndCount;
+    }
+}
+<span class="cm">// Insert "apple" 3 times:
+// CountWord("apple") → 3
+// CountPrefix("app")  → 3</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Wildcard Search (LeetCode 211)</div>
+
+<p>Design a data structure that supports adding words and searching with <code>.</code>
+as a wildcard that matches any single character.</p>
+
+<div class="diagram">WordDictionary — add and search with wildcards
+
+  Add "bad", "dad", "mad"
+
+  Trie:         [root]
+               /  |  \
+             [b] [d] [m]
+              |   |   |
+             [a] [a] [a]
+              |   |   |
+             [d*][d*][d*]
+
+  search("pad") → false (no 'p' child from root)
+  search(".ad") → '.' can be b, d, or m → check all branches → true
+  search("b..") → b → any char → any char → check all 2-deep paths from b → true</div>
+
+<pre><span class="kw">public class</span> <span class="tp">WordDictionary</span>
+{
+    <span class="kw">private</span> <span class="tp">TrieNode</span> _root = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">AddWord</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> cur = _root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> word)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">ContainsKey</span>(c))
+                cur.Children[c] = <span class="kw">new</span> <span class="tp">TrieNode</span>();
+            cur = cur.Children[c];
+        }
+        cur.IsEnd = <span class="kw">true</span>;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">Search</span>(<span class="kw">string</span> word)
+        =&gt; <span class="mt">SearchHelper</span>(_root, word, <span class="nm">0</span>);
+
+    <span class="kw">private bool</span> <span class="mt">SearchHelper</span>(<span class="tp">TrieNode</span> node, <span class="kw">string</span> word, <span class="kw">int</span> i)
+    {
+        <span class="kw">if</span> (i == word.Length) <span class="kw">return</span> node.IsEnd;
+        <span class="kw">char</span> c = word[i];
+        <span class="kw">if</span> (c != <span class="st">'.'</span>)
+        {
+            <span class="kw">return</span> node.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out var</span> next)
+                &amp;&amp; <span class="mt">SearchHelper</span>(next, word, i + <span class="nm">1</span>);
+        }
+        <span class="cm">// '.' matches any character — try all children</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> child <span class="kw">in</span> node.Children.Values)
+            <span class="kw">if</span> (<span class="mt">SearchHelper</span>(child, word, i + <span class="nm">1</span>)) <span class="kw">return true</span>;
+        <span class="kw">return false</span>;
+    }
+}
+<span class="cm">// Time: O(m) for exact search, O(26^dots × m) worst case with wildcards
+// In practice '.ad' only branches at depth 1 → O(26 × 2) = very fast</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Word Search II (Trie + Board DFS)</div>
+
+<p>Given a 2D board and a list of words, find all words that can be formed by adjacent cells
+(up/down/left/right, no cell reused in one path). Brute force: DFS from every cell for every
+word = O(words × 4^L). Optimal: build a trie of all words, do ONE DFS from each cell and
+prune using the trie.</p>
+
+<div class="diagram">WORD SEARCH II board example:
+
+  Board:          Words: ["oath", "pea", "eat", "rain"]
+  o  a  a  n
+  e  t  a  e
+  i  h  k  r
+  i  f  l  v
+
+  Strategy:
+  1. Build trie from word list: ["oath", "pea", "eat", "rain"]
+  2. Start DFS from EACH cell (i,j)
+  3. At each cell, follow the trie. If current path IS a word → record it.
+  4. If no trie child matches → prune (don't go deeper)
+  5. Optimization: after finding a word, remove it from trie (avoid duplicates)</div>
+
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">FindWords</span>(<span class="kw">char</span>[][] board, <span class="kw">string</span>[] words)
+{
+    <span class="kw">var</span> root = <span class="kw">new</span> <span class="tp">TrieNode</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> words)
+    {
+        <span class="kw">var</span> cur = root;
+        <span class="kw">foreach</span> (<span class="kw">var</span> c <span class="kw">in</span> w)
+        {
+            <span class="kw">if</span> (!cur.Children.<span class="mt">ContainsKey</span>(c)) cur.Children[c] = <span class="kw">new</span> <span class="tp">TrieNode</span>();
+            cur = cur.Children[c];
+        }
+        cur.Word = w;  <span class="cm">// store the complete word at end node</span>
+    }
+
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">int</span> rows = board.Length, cols = board[<span class="nm">0</span>].Length;
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; rows; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; cols; c++)
+            <span class="mt">DFS</span>(board, r, c, root, result);
+    <span class="kw">return</span> result;
+}
+<span class="kw">private static int</span>[][] _dirs = { <span class="kw">new</span>[]{<span class="nm">0</span>,<span class="nm">1</span>},<span class="kw">new</span>[]{<span class="nm">0</span>,-<span class="nm">1</span>},<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">0</span>},<span class="kw">new</span>[]{-<span class="nm">1</span>,<span class="nm">0</span>} };
+<span class="kw">private void</span> <span class="mt">DFS</span>(<span class="kw">char</span>[][] board, <span class="kw">int</span> r, <span class="kw">int</span> c, <span class="tp">TrieNode</span> node, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; res)
+{
+    <span class="kw">char</span> ch = board[r][c];
+    <span class="kw">if</span> (ch == <span class="st">'#'</span> || !node.Children.<span class="mt">ContainsKey</span>(ch)) <span class="kw">return</span>; <span class="cm">// visited or not in trie</span>
+    <span class="kw">var</span> next = node.Children[ch];
+    <span class="kw">if</span> (next.Word != <span class="kw">null</span>)
+    {
+        res.<span class="mt">Add</span>(next.Word);
+        next.Word = <span class="kw">null</span>;  <span class="cm">// avoid duplicates — remove word from trie</span>
+    }
+    board[r][c] = <span class="st">'#'</span>;  <span class="cm">// mark visited</span>
+    <span class="kw">foreach</span> (<span class="kw">var</span> d <span class="kw">in</span> _dirs)
+    {
+        <span class="kw">int</span> nr = r + d[<span class="nm">0</span>], nc = c + d[<span class="nm">1</span>];
+        <span class="kw">if</span> (nr &gt;= <span class="nm">0</span> &amp;&amp; nr &lt; board.Length &amp;&amp; nc &gt;= <span class="nm">0</span> &amp;&amp; nc &lt; board[<span class="nm">0</span>].Length)
+            <span class="mt">DFS</span>(board, nr, nc, next, res);
+    }
+    board[r][c] = ch;  <span class="cm">// restore</span>
+}
+<span class="cm">// Time: O(M × 4^L) where M = board cells, L = max word length
+// With trie pruning, drastically faster in practice</span></pre>
+
+<div class="note">
+    <strong>📝 Note on TrieNode.Word:</strong> For Word Search II, we add a <code>string? Word</code>
+    field to <code>TrieNode</code> to store the complete word at the end node. Setting it to
+    <code>null</code> after finding prevents adding duplicates when multiple DFS paths reach
+    the same word.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Complexity &amp; Comparison</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Trie</th><th>HashMap</th><th>Sorted Set</th><th>Array (sorted)</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Insert word</td><td>O(m)</td><td>O(m)</td><td>O(m log n)</td><td>O(n)</td></tr>
+        <tr><td>Search word</td><td>O(m)</td><td>O(m)</td><td>O(m log n)</td><td>O(m log n)</td></tr>
+        <tr><td>Prefix search</td><td><strong>O(m)</strong></td><td>O(n × m)</td><td>O(m log n)</td><td>O(m log n)</td></tr>
+        <tr><td>Get all by prefix</td><td><strong>O(m + k)</strong></td><td>O(n × m)</td><td>O(log n + k)</td><td>O(log n + k)</td></tr>
+        <tr><td>Space</td><td>O(total chars)</td><td>O(n × m)</td><td>O(n × m)</td><td>O(n × m)</td></tr>
+        <tr><td>Delete</td><td>O(m)</td><td>O(m)</td><td>O(m log n)</td><td>O(n)</td></tr>
+    </tbody>
+</table>
+
+<p>Where m = word/prefix length, n = number of words, k = number of results returned.</p>
+
+<table>
+    <thead>
+        <tr><th>Pattern</th><th>When to use Trie</th><th>Key Problems</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Exact word check</td><td>Use HashMap (simpler)</td><td>—</td></tr>
+        <tr><td>Prefix check</td><td>Use Trie</td><td>LC 208 — Implement Trie</td></tr>
+        <tr><td>Autocomplete</td><td>Use Trie + DFS</td><td>LC 648 — Replace Words</td></tr>
+        <tr><td>Wildcard search</td><td>Use Trie + DFS</td><td>LC 211 — Word Dictionary</td></tr>
+        <tr><td>Multi-word board search</td><td>Use Trie + backtracking</td><td>LC 212 — Word Search II</td></tr>
+        <tr><td>Longest common prefix</td><td>Use Trie</td><td>LC 14 — LCP</td></tr>
+        <tr><td>XOR-based problems</td><td>Use Binary Trie (bits)</td><td>LC 421 — Max XOR</td></tr>
+    </tbody>
+</table>
+
+<div class="nav-box">
+    <strong>✅ Module 6B Complete — Trie!</strong><br><br>
+    <strong>Key Takeaways:</strong><br>
+    • Trie = tree where each path root→leaf represents a string<br>
+    • All words sharing prefix share the same path nodes<br>
+    • Insert/Search/StartsWith: O(m) where m = word length<br>
+    • Use array[26] for lowercase-only (fast), Dictionary for Unicode (flexible)<br>
+    • Wildcard search: at '.' recurse all children<br>
+    • Word Search II: build trie from word list, prune DFS early<br><br>
+    ◀ <strong>Prev:</strong> <a href="m06a_heaps.html">Module 6A — Heaps</a><br>
+    ➡ <strong>Next:</strong> <a href="m06c_practice.html">Module 6C — Practice</a><br>
+    🏠 <a href="../Index.html">Course Index</a>
+</div>
+
+</body>
+</html>

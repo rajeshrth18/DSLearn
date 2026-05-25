@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 9B: Searching, Binary Search &amp; Two Pointers</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.2em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  h4 { font-size: 1em; color: #89dceb; margin: 16px 0 8px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+
+  .diagram { background: #0d1117; border: 1px solid #30363d; border-left: 4px solid #e74c3c; border-radius: 8px; padding: 20px; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85em; color: #58a6ff; overflow-x: auto; white-space: pre; line-height: 1.5; }
+
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+  .warning { background: #2d1e1e; border-left: 4px solid #f38ba8; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .warning strong { color: #f38ba8; }
+  .realworld { background: #1e2235; border-left: 4px solid #89b4fa; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .realworld strong { color: #89b4fa; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+  th { background: #313244; color: #cba6f7; padding: 10px 14px; text-align: left; border: 1px solid #45475a; }
+  td { padding: 9px 14px; border: 1px solid #313244; color: #cdd6f4; }
+  tr:nth-child(even) td { background: #1e1e2e; }
+  tr:nth-child(odd) td { background: #181825; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .box { background: #181825; border: 1px solid #313244; border-radius: 8px; padding: 16px; }
+  .box h4 { color: #89dceb; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 7</span> <span class="badge">Module 9B</span></div>
+    <h1>Searching, Binary Search &amp; Two Pointers</h1>
+    <div class="subtitle">Standard BS · Search on Answer · Rotated Array · Sliding Window</div>
+    <div class="tagline">Master the most versatile technique in algorithm interviews</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="m09a_sorting.html">&#8592; Module 9A: Sorting</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m09c_practice.html">Module 9C: Practice &#8594;</a>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>1. Binary Search — The Canonical Template</h2>
+  <p>Binary search finds a target in a <strong>sorted</strong> array in O(log n) by halving the search space each step. It's deceptively simple but has many subtle variants that trip up interviewers.</p>
+
+  <div class="diagram">
+  Array: [1, 3, 5, 7, 9, 11, 13, 15]  Target: 7
+  idx:    0  1  2  3  4   5   6   7
+
+  Round 1: lo=0, hi=7, mid=3. arr[3]=7 == target → FOUND at index 3!
+
+  If target = 6:
+  Round 1: lo=0, hi=7, mid=3. arr[3]=7 > 6 → search left: hi=2
+  Round 2: lo=0, hi=2, mid=1. arr[1]=3 < 6 → search right: lo=2
+  Round 3: lo=2, hi=2, mid=2. arr[2]=5 < 6 → lo=3 > hi → NOT FOUND
+
+  Key: mid = lo + (hi - lo) / 2  ← avoids integer overflow</div>
+
+  <h3>The Two Most Common Bugs</h3>
+  <div class="two-col">
+    <div class="box">
+      <h4>Bug 1: Infinite Loop</h4>
+      <p>Using <code>lo &lt;= hi</code> with <code>hi = mid</code> (instead of <code>hi = mid - 1</code>) can loop forever when lo == hi. Always check: what happens when lo == hi?</p>
+    </div>
+    <div class="box">
+      <h4>Bug 2: Integer Overflow</h4>
+      <p><code>mid = (lo + hi) / 2</code> can overflow for large indices. Always use: <code>mid = lo + (hi - lo) / 2</code></p>
+    </div>
+  </div>
+
+  <pre><span class="cm">// Standard binary search — exact match</span>
+<span class="kw">public int</span> <span class="mt">BinarySearch</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
+
+    <span class="kw">while</span> (lo &lt;= hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+
+        <span class="kw">if</span>      (nums[mid] == target) <span class="kw">return</span> mid;  <span class="cm">// Found</span>
+        <span class="kw">else if</span> (nums[mid] &lt;  target) lo = mid + <span class="nm">1</span>; <span class="cm">// Search right</span>
+        <span class="kw">else</span>                          hi = mid - <span class="nm">1</span>; <span class="cm">// Search left</span>
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>; <span class="cm">// Not found</span>
+}
+<span class="cm">// Time: O(log n), Space: O(1)</span>
+
+<span class="cm">// C# built-in: Array.BinarySearch(arr, target)</span>
+<span class="cm">// Returns index if found, ~insertionPoint if not (negative value)</span></pre>
+
+  <!-- SECTION 2 -->
+  <h2>2. Finding Boundaries — First and Last Occurrence</h2>
+  <p>When duplicates exist, you often need the <em>first</em> or <em>last</em> position of a target. Standard binary search stops at any occurrence.</p>
+
+  <div class="diagram">
+  Array: [1, 2, 2, 2, 3, 4, 5]
+  Find first '2': index 1
+  Find last  '2': index 3
+
+  For first '2':
+  lo=0,hi=6 → mid=3, arr[3]=2 (match! but keep searching LEFT) → hi=2
+  lo=0,hi=2 → mid=1, arr[1]=2 (match! keep searching LEFT) → hi=0
+  lo=0,hi=0 → mid=0, arr[0]=1 < 2 → lo=1
+  lo=1 > hi=0 → stop. Answer = 1 (last match position recorded)</div>
+
+  <pre><span class="cm">// Find FIRST occurrence of target (leftmost index)</span>
+<span class="kw">public int</span> <span class="mt">FindFirst</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>, result = -<span class="nm">1</span>;
+
+    <span class="kw">while</span> (lo &lt;= hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (nums[mid] == target)
+        {
+            result = mid;     <span class="cm">// Record this match</span>
+            hi = mid - <span class="nm">1</span>;  <span class="cm">// Keep searching LEFT for earlier occurrence</span>
+        }
+        <span class="kw">else if</span> (nums[mid] &lt; target) lo = mid + <span class="nm">1</span>;
+        <span class="kw">else</span>                          hi = mid - <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// Find LAST occurrence of target (rightmost index)</span>
+<span class="kw">public int</span> <span class="mt">FindLast</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>, result = -<span class="nm">1</span>;
+
+    <span class="kw">while</span> (lo &lt;= hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (nums[mid] == target)
+        {
+            result = mid;     <span class="cm">// Record this match</span>
+            lo = mid + <span class="nm">1</span>;  <span class="cm">// Keep searching RIGHT for later occurrence</span>
+        }
+        <span class="kw">else if</span> (nums[mid] &lt; target) lo = mid + <span class="nm">1</span>;
+        <span class="kw">else</span>                          hi = mid - <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// Find Range: [FindFirst, FindLast] — LeetCode 34</span></pre>
+
+  <h3>Lower Bound and Upper Bound</h3>
+  <p>The <strong>lower bound</strong> is the first position ≥ target. The <strong>upper bound</strong> is the first position &gt; target. These are STL-style and very useful in practice.</p>
+
+  <pre><span class="cm">// Lower bound: first index i where nums[i] >= target</span>
+<span class="cm">// If all elements < target, returns nums.Length</span>
+<span class="kw">public int</span> <span class="mt">LowerBound</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length; <span class="cm">// hi is EXCLUSIVE here</span>
+
+    <span class="kw">while</span> (lo &lt; hi)               <span class="cm">// Note: strict < (not <=)</span>
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (nums[mid] &lt; target) lo = mid + <span class="nm">1</span>;
+        <span class="kw">else</span>                    hi = mid;     <span class="cm">// Keep mid as candidate</span>
+    }
+    <span class="kw">return</span> lo; <span class="cm">// lo == hi when loop ends</span>
+}
+
+<span class="cm">// Upper bound: first index i where nums[i] > target</span>
+<span class="kw">public int</span> <span class="mt">UpperBound</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length;
+
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (nums[mid] &lt;= target) lo = mid + <span class="nm">1</span>; <span class="cm">// Note: <= (not <)</span>
+        <span class="kw">else</span>                     hi = mid;
+    }
+    <span class="kw">return</span> lo;
+}
+<span class="cm">// Count of target in sorted array = UpperBound - LowerBound</span></pre>
+
+  <!-- SECTION 3 -->
+  <h2>3. Binary Search on a Rotated Sorted Array</h2>
+  <p>A sorted array rotated at some pivot: <code>[4,5,6,7,0,1,2]</code>. Binary search still works — identify which half is sorted, then check if target is in that half.</p>
+
+  <div class="diagram">
+  Array: [4, 5, 6, 7, 0, 1, 2]  Target: 0
+
+  lo=0, hi=6, mid=3. arr[3]=7
+    Left half [4..7] is sorted (arr[lo]=4 ≤ arr[mid]=7).
+    Is 0 in [4,7]? No → search RIGHT: lo=4
+
+  lo=4, hi=6, mid=5. arr[5]=1
+    Left half [0..1] is sorted (arr[lo]=0 ≤ arr[mid]=1).
+    Is 0 in [0,1)? Yes (0 ≥ 0 and 0 < 1) → search LEFT: hi=4
+
+  lo=4, hi=4, mid=4. arr[4]=0 == target → FOUND at 4!</div>
+
+  <pre><span class="kw">public int</span> <span class="mt">SearchRotated</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
+
+    <span class="kw">while</span> (lo &lt;= hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (nums[mid] == target) <span class="kw">return</span> mid;
+
+        <span class="cm">// Left half is sorted</span>
+        <span class="kw">if</span> (nums[lo] &lt;= nums[mid])
+        {
+            <span class="cm">// Target within left sorted half?</span>
+            <span class="kw">if</span> (nums[lo] &lt;= target &amp;&amp; target &lt; nums[mid])
+                hi = mid - <span class="nm">1</span>;
+            <span class="kw">else</span>
+                lo = mid + <span class="nm">1</span>;
+        }
+        <span class="kw">else</span> <span class="cm">// Right half is sorted</span>
+        {
+            <span class="cm">// Target within right sorted half?</span>
+            <span class="kw">if</span> (nums[mid] &lt; target &amp;&amp; target &lt;= nums[hi])
+                lo = mid + <span class="nm">1</span>;
+            <span class="kw">else</span>
+                hi = mid - <span class="nm">1</span>;
+        }
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}
+<span class="cm">// Time: O(log n), Space: O(1) — LeetCode 33</span></pre>
+
+  <h3>Find Minimum in Rotated Sorted Array (LeetCode 153)</h3>
+  <pre><span class="kw">public int</span> <span class="mt">FindMinRotated</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
+
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="cm">// If mid > hi, minimum is in right half</span>
+        <span class="kw">if</span> (nums[mid] &gt; nums[hi])
+            lo = mid + <span class="nm">1</span>;
+        <span class="kw">else</span>
+            hi = mid; <span class="cm">// mid could be the minimum</span>
+    }
+    <span class="kw">return</span> nums[lo];
+}
+<span class="cm">// Time: O(log n). When loop ends, lo == hi == index of minimum</span></pre>
+
+  <!-- SECTION 4 -->
+  <h2>4. Binary Search in a 2D Matrix</h2>
+
+  <h3>Search a 2D Matrix (LeetCode 74)</h3>
+  <p>Matrix is sorted row-by-row, and first element of each row is greater than last of previous row. Treat it as a 1D sorted array.</p>
+
+  <pre><span class="kw">public bool</span> <span class="mt">SearchMatrix</span>(<span class="tp">int</span>[][] matrix, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> m = matrix.Length, n = matrix[<span class="nm">0</span>].Length;
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = m * n - <span class="nm">1</span>; <span class="cm">// Treat as 1D array of size m*n</span>
+
+    <span class="kw">while</span> (lo &lt;= hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="tp">int</span> val = matrix[mid / n][mid % n]; <span class="cm">// Convert 1D index to 2D</span>
+
+        <span class="kw">if</span>      (val == target) <span class="kw">return true</span>;
+        <span class="kw">else if</span> (val &lt;  target) lo = mid + <span class="nm">1</span>;
+        <span class="kw">else</span>                    hi = mid - <span class="nm">1</span>;
+    }
+    <span class="kw">return false</span>;
+}
+<span class="cm">// Time: O(log(m*n)) = O(log m + log n)</span></pre>
+
+  <h3>Search a 2D Matrix II (LeetCode 240)</h3>
+  <p>Each row and each column is sorted independently (first element of row is NOT necessarily greater than last of previous row). Use staircase search starting from top-right.</p>
+
+  <pre><span class="kw">public bool</span> <span class="mt">SearchMatrixII</span>(<span class="tp">int</span>[][] matrix, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> row = <span class="nm">0</span>, col = matrix[<span class="nm">0</span>].Length - <span class="nm">1</span>; <span class="cm">// Start at top-right</span>
+
+    <span class="kw">while</span> (row &lt; matrix.Length &amp;&amp; col &gt;= <span class="nm">0</span>)
+    {
+        <span class="kw">if</span>      (matrix[row][col] == target) <span class="kw">return true</span>;
+        <span class="kw">else if</span> (matrix[row][col] &gt;  target) col--; <span class="cm">// Too big: go left</span>
+        <span class="kw">else</span>                                 row++; <span class="cm">// Too small: go down</span>
+    }
+    <span class="kw">return false</span>;
+}
+<span class="cm">// Time: O(m + n) — at most m+n steps (eliminate row or column each step)</span></pre>
+
+  <!-- SECTION 5 -->
+  <h2>5. Binary Search on the Answer</h2>
+  <p>This is the most powerful binary search technique. Instead of searching for a value <em>in</em> an array, you binary search over the <em>answer space</em>. Use when you can efficiently check "is answer X feasible?"</p>
+
+  <div class="diagram">
+  Key insight: If a function f(x) is monotone (once feasible, always feasible),
+  binary search finds the minimum/maximum x where f(x) is true.
+
+  f(x) = feasible?   [F, F, F, T, T, T, T]
+                               ↑
+                      Find this boundary
+
+  Pattern:
+  lo = min_possible_answer
+  hi = max_possible_answer
+  while (lo < hi):
+      mid = (lo + hi) / 2
+      if feasible(mid):  hi = mid     (or lo = mid+1 for "last feasible")
+      else:              lo = mid + 1</div>
+
+  <h3>Example: Capacity to Ship Packages Within D Days (LeetCode 1011)</h3>
+  <p>Find minimum ship capacity so all packages can be shipped in ≤ D days.</p>
+
+  <pre><span class="kw">public int</span> <span class="mt">ShipWithinDays</span>(<span class="tp">int</span>[] weights, <span class="tp">int</span> days)
+{
+    <span class="cm">// Answer is between max single weight (minimum possible) and total sum</span>
+    <span class="tp">int</span> lo = weights.<span class="mt">Max</span>(), hi = weights.<span class="mt">Sum</span>();
+
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (<span class="mt">CanShip</span>(weights, days, mid))
+            hi = mid;       <span class="cm">// Feasible — try smaller capacity</span>
+        <span class="kw">else</span>
+            lo = mid + <span class="nm">1</span>; <span class="cm">// Not feasible — need more capacity</span>
+    }
+    <span class="kw">return</span> lo;
+}
+
+<span class="kw">private bool</span> <span class="mt">CanShip</span>(<span class="tp">int</span>[] weights, <span class="tp">int</span> days, <span class="tp">int</span> capacity)
+{
+    <span class="tp">int</span> daysNeeded = <span class="nm">1</span>, currentLoad = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="tp">int</span> w <span class="kw">in</span> weights)
+    {
+        <span class="kw">if</span> (currentLoad + w &gt; capacity)
+        {
+            daysNeeded++;       <span class="cm">// Start new day</span>
+            currentLoad = <span class="nm">0</span>;
+        }
+        currentLoad += w;
+    }
+    <span class="kw">return</span> daysNeeded &lt;= days;
+}
+<span class="cm">// Time: O(n log(sum)), Space: O(1)</span></pre>
+
+  <h3>Example: Koko Eating Bananas (LeetCode 875)</h3>
+  <pre><span class="kw">public int</span> <span class="mt">MinEatingSpeed</span>(<span class="tp">int</span>[] piles, <span class="tp">int</span> h)
+{
+    <span class="tp">int</span> lo = <span class="nm">1</span>, hi = piles.<span class="mt">Max</span>();
+
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="tp">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="tp">long</span> hoursNeeded = piles.<span class="mt">Sum</span>(p =&gt; (<span class="tp">long</span>)<span class="tp">Math</span>.<span class="mt">Ceiling</span>((<span class="tp">double</span>)p / mid));
+        <span class="kw">if</span> (hoursNeeded &lt;= h)
+            hi = mid;       <span class="cm">// Feasible — try eating slower</span>
+        <span class="kw">else</span>
+            lo = mid + <span class="nm">1</span>; <span class="cm">// Too slow — eat faster</span>
+    }
+    <span class="kw">return</span> lo;
+}
+<span class="cm">// Time: O(n log(max_pile)), Space: O(1)</span></pre>
+
+  <div class="tip">
+    <strong>Binary Search on Answer Template:</strong> The key is defining a <strong>monotone feasibility function</strong>. Ask yourself: "If capacity X works, does capacity X+1 also work?" If yes, binary search applies.
+  </div>
+
+  <!-- SECTION 6 -->
+  <h2>6. Two Pointers Technique</h2>
+  <p>Use two pointers to traverse a sorted array (or linked list) from both ends, or to maintain a window. Reduces O(n²) brute force to O(n).</p>
+
+  <h3>Two Sum in Sorted Array</h3>
+  <div class="diagram">
+  Array: [1, 2, 3, 4, 6]  Target: 6
+
+  lo→         ←hi
+  [1, 2, 3, 4, 6]
+   ↑           ↑
+  sum=1+6=7 > 6 → move hi left
+
+  [1, 2, 3, 4, 6]
+   ↑        ↑
+  sum=1+4=5 < 6 → move lo right
+
+  [1, 2, 3, 4, 6]
+      ↑     ↑
+  sum=2+4=6 == 6 → FOUND! (indices 1,3)</div>
+
+  <pre><span class="kw">public int</span>[] <span class="mt">TwoSumSorted</span>(<span class="tp">int</span>[] numbers, <span class="tp">int</span> target)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = numbers.Length - <span class="nm">1</span>;
+
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="tp">int</span> sum = numbers[lo] + numbers[hi];
+        <span class="kw">if</span>      (sum == target) <span class="kw">return new</span>[] { lo + <span class="nm">1</span>, hi + <span class="nm">1</span> }; <span class="cm">// 1-indexed</span>
+        <span class="kw">else if</span> (sum &lt;  target) lo++; <span class="cm">// Need larger sum</span>
+        <span class="kw">else</span>                    hi--; <span class="cm">// Need smaller sum</span>
+    }
+    <span class="kw">return</span> <span class="kw">new</span>[] { -<span class="nm">1</span>, -<span class="nm">1</span> };
+}
+<span class="cm">// Time: O(n), Space: O(1) — LeetCode 167</span></pre>
+
+  <h3>Three Sum (LeetCode 15)</h3>
+  <p>Find all unique triplets summing to zero. Sort first, then for each element, use two pointers for the remaining pair.</p>
+
+  <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">ThreeSum</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(nums);
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length - <span class="nm">2</span>; i++)
+    {
+        <span class="cm">// Skip duplicates for the first element</span>
+        <span class="kw">if</span> (i &gt; <span class="nm">0</span> &amp;&amp; nums[i] == nums[i - <span class="nm">1</span>]) <span class="kw">continue</span>;
+
+        <span class="tp">int</span> lo = i + <span class="nm">1</span>, hi = nums.Length - <span class="nm">1</span>;
+
+        <span class="kw">while</span> (lo &lt; hi)
+        {
+            <span class="tp">int</span> sum = nums[i] + nums[lo] + nums[hi];
+            <span class="kw">if</span> (sum == <span class="nm">0</span>)
+            {
+                result.<span class="mt">Add</span>(<span class="kw">new</span>[] { nums[i], nums[lo], nums[hi] });
+                <span class="cm">// Skip duplicates for lo and hi</span>
+                <span class="kw">while</span> (lo &lt; hi &amp;&amp; nums[lo] == nums[lo + <span class="nm">1</span>]) lo++;
+                <span class="kw">while</span> (lo &lt; hi &amp;&amp; nums[hi] == nums[hi - <span class="nm">1</span>]) hi--;
+                lo++; hi--;
+            }
+            <span class="kw">else if</span> (sum &lt; <span class="nm">0</span>) lo++;
+            <span class="kw">else</span>              hi--;
+        }
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// Time: O(n²), Space: O(1) excluding output</span></pre>
+
+  <h3>Container With Most Water (LeetCode 11)</h3>
+  <pre><span class="kw">public int</span> <span class="mt">MaxArea</span>(<span class="tp">int</span>[] height)
+{
+    <span class="tp">int</span> lo = <span class="nm">0</span>, hi = height.Length - <span class="nm">1</span>, maxWater = <span class="nm">0</span>;
+
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="tp">int</span> water = <span class="tp">Math</span>.<span class="mt">Min</span>(height[lo], height[hi]) * (hi - lo);
+        maxWater = <span class="tp">Math</span>.<span class="mt">Max</span>(maxWater, water);
+
+        <span class="cm">// Move the shorter wall (it's the limiting factor)</span>
+        <span class="kw">if</span> (height[lo] &lt; height[hi]) lo++;
+        <span class="kw">else</span>                          hi--;
+    }
+    <span class="kw">return</span> maxWater;
+}
+<span class="cm">// Greedy: moving taller wall can't increase water; move shorter to maybe find taller</span></pre>
+
+  <!-- SECTION 7 -->
+  <h2>7. Sliding Window Technique</h2>
+  <p>Use a window (subarray) defined by two pointers that slide forward. Expand right, shrink left when a constraint is violated. Achieves O(n) for many substring/subarray problems.</p>
+
+  <div class="diagram">
+  Two types:
+  ─────────────────────────────────────────────────────────
+  Fixed-size window: slide window of size k across array
+  Variable-size window: expand right, shrink left to maintain condition
+  ─────────────────────────────────────────────────────────
+
+  Variable window pattern:
+  left = 0
+  for right = 0 to n-1:
+      add nums[right] to window
+      while window is invalid:
+          remove nums[left] from window
+          left++
+      update answer with window [left..right]</div>
+
+  <h3>Longest Substring Without Repeating Characters (LeetCode 3)</h3>
+
+  <pre><span class="kw">public int</span> <span class="mt">LengthOfLongestSubstring</span>(<span class="tp">string</span> s)
+{
+    <span class="tp">var</span> charIndex = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">int</span>&gt;();
+    <span class="tp">int</span> maxLen = <span class="nm">0</span>, left = <span class="nm">0</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> right = <span class="nm">0</span>; right &lt; s.Length; right++)
+    {
+        <span class="cm">// If char is in window, shrink left past its previous position</span>
+        <span class="kw">if</span> (charIndex.<span class="mt">TryGetValue</span>(s[right], <span class="kw">out</span> <span class="tp">int</span> prevIdx) &amp;&amp; prevIdx &gt;= left)
+            left = prevIdx + <span class="nm">1</span>;
+
+        charIndex[s[right]] = right;
+        maxLen = <span class="tp">Math</span>.<span class="mt">Max</span>(maxLen, right - left + <span class="nm">1</span>);
+    }
+    <span class="kw">return</span> maxLen;
+}
+<span class="cm">// Time: O(n), Space: O(k) where k = charset size (≤128 for ASCII)</span></pre>
+
+  <h3>Minimum Window Substring (LeetCode 76)</h3>
+  <p>Find the smallest window in <code>s</code> containing all characters of <code>t</code>.</p>
+
+  <pre><span class="kw">public string</span> <span class="mt">MinWindow</span>(<span class="tp">string</span> s, <span class="tp">string</span> t)
+{
+    <span class="kw">if</span> (s.Length &lt; t.Length) <span class="kw">return</span> <span class="st">""</span>;
+
+    <span class="tp">var</span> need = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="tp">char</span> c <span class="kw">in</span> t) need[c] = need.<span class="mt">GetValueOrDefault</span>(c) + <span class="nm">1</span>;
+
+    <span class="tp">int</span> have = <span class="nm">0</span>, required = need.Count;
+    <span class="tp">int</span> left = <span class="nm">0</span>, minLen = <span class="tp">int</span>.MaxValue, minStart = <span class="nm">0</span>;
+    <span class="tp">var</span> window = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">int</span>&gt;();
+
+    <span class="kw">for</span> (<span class="tp">int</span> right = <span class="nm">0</span>; right &lt; s.Length; right++)
+    {
+        <span class="tp">char</span> c = s[right];
+        window[c] = window.<span class="mt">GetValueOrDefault</span>(c) + <span class="nm">1</span>;
+        <span class="kw">if</span> (need.<span class="mt">ContainsKey</span>(c) &amp;&amp; window[c] == need[c]) have++;
+
+        <span class="kw">while</span> (have == required) <span class="cm">// Window is valid — try to shrink</span>
+        {
+            <span class="kw">if</span> (right - left + <span class="nm">1</span> &lt; minLen)
+            { minLen = right - left + <span class="nm">1</span>; minStart = left; }
+
+            <span class="tp">char</span> lc = s[left++];
+            window[lc]--;
+            <span class="kw">if</span> (need.<span class="mt">ContainsKey</span>(lc) &amp;&amp; window[lc] &lt; need[lc]) have--;
+        }
+    }
+    <span class="kw">return</span> minLen == <span class="tp">int</span>.MaxValue ? <span class="st">""</span> : s.<span class="mt">Substring</span>(minStart, minLen);
+}
+<span class="cm">// Time: O(s + t), Space: O(s + t)</span></pre>
+
+  <h3>Maximum Sum Subarray of Size K (Fixed Window)</h3>
+  <pre><span class="kw">public int</span> <span class="mt">MaxSumSubarrayK</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> k)
+{
+    <span class="cm">// Initialize first window</span>
+    <span class="tp">int</span> windowSum = nums[..<span class="nm">k</span>].<span class="mt">Sum</span>();
+    <span class="tp">int</span> maxSum = windowSum;
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = k; i &lt; nums.Length; i++)
+    {
+        <span class="cm">// Slide: add new right element, remove leftmost element</span>
+        windowSum += nums[i] - nums[i - k];
+        maxSum = <span class="tp">Math</span>.<span class="mt">Max</span>(maxSum, windowSum);
+    }
+    <span class="kw">return</span> maxSum;
+}
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+
+  <!-- SECTION 8 -->
+  <h2>8. Fast and Slow Pointers (Floyd's Cycle Detection)</h2>
+  <p>Two pointers at different speeds. Used for cycle detection, finding middle of linked lists, and more.</p>
+
+  <h3>Find the Duplicate Number (LeetCode 287)</h3>
+  <p>Array of n+1 integers in [1,n]. One number appears twice. Find it without modifying the array and O(1) space. Treat array as linked list where <code>arr[i]</code> is next pointer.</p>
+
+  <pre><span class="kw">public int</span> <span class="mt">FindDuplicate</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="cm">// Phase 1: Detect cycle (Floyd's algorithm)</span>
+    <span class="tp">int</span> slow = nums[<span class="nm">0</span>], fast = nums[<span class="nm">0</span>];
+    <span class="kw">do</span>
+    {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    } <span class="kw">while</span> (slow != fast);
+
+    <span class="cm">// Phase 2: Find cycle entry (= duplicate number)</span>
+    slow = nums[<span class="nm">0</span>];
+    <span class="kw">while</span> (slow != fast)
+    {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    <span class="kw">return</span> slow;
+}
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+
+  <!-- SECTION 9 -->
+  <h2>9. Prefix Sum — O(1) Range Queries</h2>
+  <p>Precompute cumulative sums so any subarray sum query takes O(1). Essential for range sum problems.</p>
+
+  <div class="diagram">
+  Array: [3, 1, 4, 1, 5, 9, 2, 6]
+  prefix:[0, 3, 4, 8, 9,14,23,25,31]
+         ↑
+         prefix[0] = 0 (empty prefix)
+
+  Sum of arr[2..5] = prefix[6] - prefix[2] = 23 - 4 = 19
+  General: sum(i,j) = prefix[j+1] - prefix[i]</div>
+
+  <pre><span class="kw">public class</span> <span class="tp">PrefixSum</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">int</span>[] _prefix;
+
+    <span class="kw">public</span> <span class="tp">PrefixSum</span>(<span class="tp">int</span>[] nums)
+    {
+        _prefix = <span class="kw">new</span> <span class="tp">int</span>[nums.Length + <span class="nm">1</span>];
+        <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+            _prefix[i + <span class="nm">1</span>] = _prefix[i] + nums[i];
+    }
+
+    <span class="cm">// Sum of nums[left..right] inclusive — O(1)</span>
+    <span class="kw">public int</span> <span class="mt">RangeSum</span>(<span class="tp">int</span> left, <span class="tp">int</span> right)
+        =&gt; _prefix[right + <span class="nm">1</span>] - _prefix[left];
+}
+
+<span class="cm">// Subarray Sum Equals K (LeetCode 560): count subarrays summing to k</span>
+<span class="kw">public int</span> <span class="mt">SubarraySum</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> k)
+{
+    <span class="tp">var</span> prefixCount = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">int</span>, <span class="tp">int</span>&gt; { [<span class="nm">0</span>] = <span class="nm">1</span> };
+    <span class="tp">int</span> sum = <span class="nm">0</span>, count = <span class="nm">0</span>;
+
+    <span class="kw">foreach</span> (<span class="tp">int</span> num <span class="kw">in</span> nums)
+    {
+        sum += num;
+        <span class="cm">// If (sum - k) was seen before, those subarrays sum to k</span>
+        count += prefixCount.<span class="mt">GetValueOrDefault</span>(sum - k);
+        prefixCount[sum] = prefixCount.<span class="mt">GetValueOrDefault</span>(sum) + <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> count;
+}
+<span class="cm">// Time: O(n), Space: O(n)</span></pre>
+
+  <!-- SECTION 10 -->
+  <h2>10. Pattern Recognition Summary</h2>
+  <table>
+    <tr><th>Technique</th><th>Use When</th><th>Time</th><th>Key Patterns</th></tr>
+    <tr><td><strong>Binary Search (exact)</strong></td><td>Sorted array, find target</td><td>O(log n)</td><td>lo ≤ hi, mid = lo+(hi-lo)/2</td></tr>
+    <tr><td><strong>Binary Search (boundary)</strong></td><td>Find first/last of condition</td><td>O(log n)</td><td>Record result, keep searching one direction</td></tr>
+    <tr><td><strong>Binary Search on Answer</strong></td><td>Minimize/maximize, monotone feasibility</td><td>O(n log X)</td><td>Define feasible(x), search answer space</td></tr>
+    <tr><td><strong>Two Pointers (converging)</strong></td><td>Sorted array, pair/triplet sum</td><td>O(n)</td><td>lo←→hi, move based on sum vs target</td></tr>
+    <tr><td><strong>Two Pointers (same direction)</strong></td><td>Sliding window, remove duplicates</td><td>O(n)</td><td>fast/slow or read/write pointers</td></tr>
+    <tr><td><strong>Sliding Window (fixed)</strong></td><td>Subarray of fixed size k</td><td>O(n)</td><td>Add new, remove oldest, track running value</td></tr>
+    <tr><td><strong>Sliding Window (variable)</strong></td><td>Longest/shortest subarray with condition</td><td>O(n)</td><td>Expand right, shrink left when invalid</td></tr>
+    <tr><td><strong>Prefix Sum</strong></td><td>Range sum queries</td><td>O(1) query, O(n) build</td><td>prefix[j+1]-prefix[i] = sum(i..j)</td></tr>
+    <tr><td><strong>Fast/Slow Pointers</strong></td><td>Cycle detection, linked list middle</td><td>O(n)</td><td>slow moves 1, fast moves 2</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>Binary Search Decision Tree:</strong>
+    <ol>
+      <li>Is the search space sorted (or can the answer be checked monotonically)? → Binary search</li>
+      <li>Do you need exact value? → Standard template with <code>lo &lt;= hi</code></li>
+      <li>Do you need first/last occurrence? → Record result, bias search direction</li>
+      <li>Are you searching for the <em>minimum feasible answer</em>? → <code>lo &lt; hi</code> with <code>hi = mid</code> on feasible</li>
+      <li>Are you searching for the <em>maximum feasible answer</em>? → <code>lo &lt; hi</code> with <code>lo = mid+1</code> on not-feasible, careful mid rounding</li>
+    </ol>
+  </div>
+
+  <div class="warning">
+    <strong>Common Binary Search Mistakes:</strong>
+    <ul>
+      <li>Using <code>(lo + hi) / 2</code> instead of <code>lo + (hi - lo) / 2</code> (overflow)</li>
+      <li>Wrong loop condition: <code>lo &lt; hi</code> vs <code>lo &lt;= hi</code> (depends on variant)</li>
+      <li>Infinite loop: when <code>hi = mid</code>, ensure lo strictly increases</li>
+      <li>Off-by-one: forgetting +1 or -1 in boundary updates</li>
+      <li>Not handling empty input or single element</li>
+    </ul>
+  </div>
+
+  <div class="nav-bar">
+    <a href="m09a_sorting.html">&#8592; Module 9A: Sorting</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="m09c_practice.html">Module 9C: Practice &#8594;</a>
+  </div>
+
+</div>
+</body>
+</html>

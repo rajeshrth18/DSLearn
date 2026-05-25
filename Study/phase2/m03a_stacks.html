@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3A — Stacks</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 3 — Part A</h1>
+    <div class="tagline">Stacks — LIFO, Implementations &amp; Classic Applications</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The data structure that powers function calls, undo, and expression evaluation</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2–3 Hours</span>
+        <span>🎯 Beginner–Intermediate</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part A of Module 3</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 3 Navigation:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Stacks<br>
+    ⬜ <strong>Part B</strong> — <a href="m03b_queues.html">Queues &amp; Deque</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m03c_priority_queue.html">Priority Queue</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m03d_monotonic.html">Monotonic Stack &amp; Queue</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m03e_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part A</h2>
+    <ol>
+        <li>Section 1 — What is a Stack? LIFO Explained <span>— The core concept</span></li>
+        <li>Section 2 — Stack Operations <span>— Push, Pop, Peek, IsEmpty</span></li>
+        <li>Section 3 — Array-Based Stack Implementation <span>— Manual C# code</span></li>
+        <li>Section 4 — Linked-List Stack Implementation <span>— Dynamic size</span></li>
+        <li>Section 5 — C#'s Built-in Stack&lt;T&gt; <span>— Real-world usage</span></li>
+        <li>Section 6 — Application: Balanced Parentheses <span>— Classic problem</span></li>
+        <li>Section 7 — Application: Infix to Postfix (Shunting Yard) <span>— Expression parsing</span></li>
+        <li>Section 8 — Application: Postfix Evaluation <span>— Evaluate RPN expressions</span></li>
+        <li>Section 9 — Application: The Call Stack <span>— How functions work in memory</span></li>
+        <li>Section 10 — Complexity Summary <span>— All O(1) operations</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is a Stack? LIFO Explained</div>
+
+<p>A <strong>Stack</strong> is an ordered collection where items are added and removed from the
+<strong>same end</strong>, called the <strong>top</strong>. This gives it the property:
+<strong>Last In, First Out (LIFO)</strong> — the most recently added item is always the first to be removed.</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World Analogies:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Stack of plates:</strong> You always put a new plate on top and always take from the top. The first plate you put down is the last one you'll reach.</li>
+        <li><strong>Browser back button:</strong> Every page you visit gets pushed onto a history stack. Clicking Back pops the most recent page.</li>
+        <li><strong>Ctrl+Z (Undo):</strong> Every action you take is pushed onto an undo stack. Ctrl+Z pops and reverses the most recent action.</li>
+        <li><strong>Function call stack:</strong> When function A calls function B, B is pushed. When B returns, it's popped — control returns to A.</li>
+    </ul>
+</div>
+
+<div class="diagram">STACK — LIFO Structure (Last In, First Out)
+
+  PUSH 10:         PUSH 20:         PUSH 30:         POP:
+  ┌──────┐         ┌──────┐         ┌──────┐         ┌──────┐
+  │  10  │ ← TOP  │  20  │ ← TOP  │  30  │ ← TOP  │  20  │ ← TOP
+  └──────┘         ├──────┤         ├──────┤         ├──────┤
+                   │  10  │         │  20  │         │  10  │
+                   └──────┘         ├──────┤         └──────┘
+                                    │  10  │         Returns 30
+                                    └──────┘
+
+  Add to TOP (Push). Remove from TOP (Pop).
+  No access to the middle — LIFO only.</div>
+
+<div class="note">
+    <strong>📌 Key Property — Restricted Access:</strong> A stack <em>intentionally</em> limits your access.
+    You cannot access an arbitrary element — you can only see and touch the top. This constraint is what
+    makes stacks useful: it models scenarios where order matters and the most recent context is what you need.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Stack Operations</div>
+
+<p>A stack has exactly <strong>four core operations</strong>, all O(1):</p>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Description</th><th>Throws if…</th><th>Time</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>Push(item)</code></td><td>Add item to the top</td><td>Stack overflow (array-based)</td><td class="g">O(1)</td></tr>
+        <tr><td><code>Pop()</code></td><td>Remove &amp; return top item</td><td>Stack is empty</td><td class="g">O(1)</td></tr>
+        <tr><td><code>Peek()</code></td><td>Return top item without removing</td><td>Stack is empty</td><td class="g">O(1)</td></tr>
+        <tr><td><code>IsEmpty</code></td><td>Return true if size is 0</td><td>—</td><td class="g">O(1)</td></tr>
+        <tr><td><code>Count</code></td><td>Number of items</td><td>—</td><td class="g">O(1)</td></tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 TryPop / TryPeek:</strong> In production code, prefer <code>TryPop(out T value)</code> and
+    <code>TryPeek(out T value)</code> which return <code>false</code> instead of throwing on an empty stack.
+    C#'s built-in <code>Stack&lt;T&gt;</code> provides both patterns.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Array-Based Stack Implementation</div>
+
+<p>The simplest implementation uses an array. The "top" is tracked by an index.
+Push increments the index and stores the value; Pop retrieves the value and decrements the index.</p>
+
+<div class="diagram">ARRAY-BASED STACK — Internal Structure
+
+  backing array:  [ 10 | 20 | 30 |    |    ]
+  index:             0    1    2    3    4
+                              ↑ topIndex = 2
+
+  Push(40):  topIndex → 3,  arr[3] = 40
+  Pop():     returns arr[3]=40,  topIndex → 2
+  Peek():    returns arr[topIndex=2] = 30  (no index change)</div>
+
+<pre><span class="kw">public class</span> <span class="tp">ArrayStack</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">private</span> <span class="tp">T</span>[] items;
+    <span class="kw">private int</span> topIndex = -<span class="nm">1</span>;  <span class="cm">// -1 means empty</span>
+    <span class="kw">private int</span> capacity;
+
+    <span class="kw">public int</span> Count =&gt; topIndex + <span class="nm">1</span>;
+    <span class="kw">public bool</span> IsEmpty =&gt; topIndex == -<span class="nm">1</span>;
+    <span class="kw">public bool</span> IsFull  =&gt; topIndex == capacity - <span class="nm">1</span>;
+
+    <span class="kw">public</span> <span class="mt">ArrayStack</span>(<span class="kw">int</span> capacity = <span class="nm">16</span>)
+    {
+        <span class="kw">this</span>.capacity = capacity;
+        items = <span class="kw">new</span> <span class="tp">T</span>[capacity];
+    }
+
+    <span class="kw">public void</span> <span class="mt">Push</span>(<span class="tp">T</span> item)
+    {
+        <span class="kw">if</span> (IsFull) <span class="mt">Resize</span>();  <span class="cm">// Double capacity</span>
+        items[++topIndex] = item;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">Pop</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Stack underflow"</span>);
+        <span class="tp">T</span> value = items[topIndex];
+        items[topIndex--] = <span class="kw">default</span>!;  <span class="cm">// Clear reference for GC</span>
+        <span class="kw">return</span> value;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">Peek</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Stack is empty"</span>);
+        <span class="kw">return</span> items[topIndex];
+    }
+
+    <span class="kw">public bool</span> <span class="mt">TryPop</span>(<span class="kw">out</span> <span class="tp">T</span> value)
+    {
+        <span class="kw">if</span> (IsEmpty) { value = <span class="kw">default</span>!; <span class="kw">return false</span>; }
+        value = <span class="mt">Pop</span>(); <span class="kw">return true</span>;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">TryPeek</span>(<span class="kw">out</span> <span class="tp">T</span> value)
+    {
+        <span class="kw">if</span> (IsEmpty) { value = <span class="kw">default</span>!; <span class="kw">return false</span>; }
+        value = <span class="mt">Peek</span>(); <span class="kw">return true</span>;
+    }
+
+    <span class="kw">private void</span> <span class="mt">Resize</span>()
+    {
+        capacity *= <span class="nm">2</span>;
+        <span class="tp">T</span>[] newArr = <span class="kw">new</span> <span class="tp">T</span>[capacity];
+        <span class="tp">Array</span>.<span class="mt">Copy</span>(items, newArr, topIndex + <span class="nm">1</span>);
+        items = newArr;
+    }
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> stack = <span class="kw">new</span> <span class="tp">ArrayStack</span>&lt;<span class="kw">int</span>&gt;();
+stack.<span class="mt">Push</span>(<span class="nm">10</span>); stack.<span class="mt">Push</span>(<span class="nm">20</span>); stack.<span class="mt">Push</span>(<span class="nm">30</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.<span class="mt">Peek</span>());  <span class="cm">// 30</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.<span class="mt">Pop</span>());   <span class="cm">// 30</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.<span class="mt">Pop</span>());   <span class="cm">// 20</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.Count);   <span class="cm">// 1</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Linked-List Stack Implementation</div>
+
+<p>A stack can also be built on top of a singly linked list.
+The <strong>head node</strong> becomes the top of the stack — Push and Pop both operate on the head, giving O(1) operations with <strong>no capacity limit</strong>.</p>
+
+<pre><span class="kw">public class</span> <span class="tp">LinkedStack</span>&lt;<span class="tp">T</span>&gt;
+{
+    <span class="kw">private class</span> <span class="tp">Node</span>
+    {
+        <span class="kw">public</span> <span class="tp">T</span> Data;
+        <span class="kw">public</span> <span class="tp">Node</span>? Next;
+        <span class="kw">public</span> <span class="mt">Node</span>(<span class="tp">T</span> data) { Data = data; }
+    }
+
+    <span class="kw">private</span> <span class="tp">Node</span>? top;
+    <span class="kw">public int</span> Count { <span class="kw">get</span>; <span class="kw">private set</span>; }
+    <span class="kw">public bool</span> IsEmpty =&gt; Count == <span class="nm">0</span>;
+
+    <span class="kw">public void</span> <span class="mt">Push</span>(<span class="tp">T</span> item)
+    {
+        <span class="tp">Node</span> node = <span class="kw">new</span>(item) { Next = top };
+        top = node;
+        Count++;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">Pop</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Stack underflow"</span>);
+        <span class="tp">T</span> value = top!.Data;
+        top = top.Next;
+        Count--;
+        <span class="kw">return</span> value;
+    }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="mt">Peek</span>()
+    {
+        <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>();
+        <span class="kw">return</span> top!.Data;
+    }
+}
+<span class="cm">// The top of the stack IS the head of the linked list.
+// Push = AddFirst (O(1)), Pop = RemoveFirst (O(1)).</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — C#'s Built-in Stack&lt;T&gt;</div>
+
+<p>In production C# code, use <code>System.Collections.Generic.Stack&lt;T&gt;</code>. It is array-based,
+auto-resizing, and provides all the operations you need. There is no reason to implement your own stack
+unless it's for learning or a very specific constraint.</p>
+
+<pre><span class="kw">using</span> System.Collections.Generic;
+
+<span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+
+<span class="cm">// Push — add to top</span>
+stack.<span class="mt">Push</span>(<span class="nm">10</span>);
+stack.<span class="mt">Push</span>(<span class="nm">20</span>);
+stack.<span class="mt">Push</span>(<span class="nm">30</span>);
+
+<span class="cm">// Peek — view top without removing</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.<span class="mt">Peek</span>());   <span class="cm">// 30</span>
+
+<span class="cm">// Pop — remove and return top</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.<span class="mt">Pop</span>());    <span class="cm">// 30</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(stack.Count);    <span class="cm">// 2</span>
+
+<span class="cm">// TryPop / TryPeek — safe versions (no exception)</span>
+<span class="kw">if</span> (stack.<span class="mt">TryPop</span>(<span class="kw">out int</span> val))
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Popped: {val}"</span>);  <span class="cm">// Popped: 20</span>
+
+<span class="kw">if</span> (!stack.<span class="mt">TryPeek</span>(<span class="kw">out int</span> top))
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Stack is empty"</span>);
+
+<span class="cm">// Iteration (top-to-bottom order, does NOT remove items)</span>
+<span class="tp">Stack</span>&lt;<span class="kw">string</span>&gt; history = <span class="kw">new</span>([ <span class="st">"page1"</span>, <span class="st">"page2"</span>, <span class="st">"page3"</span> ]);
+<span class="kw">foreach</span> (<span class="kw">var</span> page <span class="kw">in</span> history)
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>(page);  <span class="cm">// page3, page2, page1 (top-first)</span>
+
+<span class="cm">// Contains — O(n) linear search</span>
+<span class="kw">bool</span> has = history.<span class="mt">Contains</span>(<span class="st">"page2"</span>);  <span class="cm">// true</span>
+
+<span class="cm">// ToArray — snapshot from top to bottom</span>
+<span class="kw">string</span>[] arr = history.<span class="mt">ToArray</span>();  <span class="cm">// ["page3","page2","page1"]</span>
+
+<span class="cm">// Clear</span>
+history.<span class="mt">Clear</span>();</pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Application: Balanced Parentheses</div>
+
+<p>One of the most classic stack problems: given a string of brackets, determine if every opening bracket
+has a matching closing bracket in the correct order.</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World:</strong> Every compiler and IDE uses this exact algorithm to check syntax.
+    When you type <code>if (x &gt; (a + b)</code> and the IDE tells you "missing closing parenthesis",
+    it used a stack to find the mismatch.
+</div>
+
+<div class="diagram">BALANCED PARENTHESES — Stack Trace
+
+Input: "({[]})"
+
+PUSH '(' → stack: ['(']
+PUSH '{' → stack: ['(', '{']
+PUSH '[' → stack: ['(', '{', '[']
+READ ']' → peek='[', matches! POP → stack: ['(', '{']
+READ '}' → peek='{', matches! POP → stack: ['(']
+READ ')' → peek='(', matches! POP → stack: []
+End of string, stack is empty → BALANCED ✓
+
+Input: "([)]"
+PUSH '(' → ['(']
+PUSH '[' → ['(', '[']
+READ ')' → peek='[', does NOT match ')' → INVALID ✗</div>
+
+<pre><span class="kw">public static bool</span> <span class="mt">IsBalanced</span>(<span class="kw">string</span> s)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">char</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+    {
+        <span class="kw">switch</span> (c)
+        {
+            <span class="kw">case</span> <span class="st">'('</span>: <span class="kw">case</span> <span class="st">'['</span>: <span class="kw">case</span> <span class="st">'{'</span>:
+                stack.<span class="mt">Push</span>(c);  <span class="cm">// Opening bracket — push</span>
+                <span class="kw">break</span>;
+
+            <span class="kw">case</span> <span class="st">')'</span>:
+                <span class="kw">if</span> (!stack.<span class="mt">TryPop</span>(<span class="kw">out char</span> open) || open != <span class="st">'('</span>) <span class="kw">return false</span>;
+                <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="st">']'</span>:
+                <span class="kw">if</span> (!stack.<span class="mt">TryPop</span>(<span class="kw">out</span> open) || open != <span class="st">'['</span>) <span class="kw">return false</span>;
+                <span class="kw">break</span>;
+            <span class="kw">case</span> <span class="st">'}'</span>:
+                <span class="kw">if</span> (!stack.<span class="mt">TryPop</span>(<span class="kw">out</span> open) || open != <span class="st">'{'</span>) <span class="kw">return false</span>;
+                <span class="kw">break</span>;
+        }
+    }
+    <span class="kw">return</span> stack.Count == <span class="nm">0</span>;  <span class="cm">// All opened must be closed</span>
+}
+
+<span class="cm">// Test cases:</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsBalanced</span>(<span class="st">"({[]})"</span>));   <span class="cm">// True</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsBalanced</span>(<span class="st">"([)]"</span>));     <span class="cm">// False</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsBalanced</span>(<span class="st">"((("</span>));       <span class="cm">// False (stack not empty)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsBalanced</span>(<span class="st">""</span>));          <span class="cm">// True (empty string)</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Application: Infix to Postfix (Shunting Yard)</div>
+
+<p>We normally write expressions in <strong>infix</strong> notation: <code>3 + 4 * 2</code>.
+Computers evaluate them more easily in <strong>postfix</strong> (Reverse Polish Notation):
+<code>3 4 2 * +</code>. The Shunting Yard algorithm by Edsger Dijkstra converts between them using a stack.</p>
+
+<div class="note">
+    <strong>📌 Postfix (RPN) Rules:</strong>
+    <ul style="margin-top:8px;">
+        <li>Operands appear in the same order as infix</li>
+        <li>Operators appear <em>after</em> their operands</li>
+        <li>No parentheses needed — precedence is implicit in position</li>
+        <li><code>3 + 4 * 2</code> = <code>3 4 2 * +</code> = 3 + 8 = 11</li>
+        <li><code>(3 + 4) * 2</code> = <code>3 4 + 2 *</code> = 7 * 2 = 14</li>
+    </ul>
+</div>
+
+<pre><span class="cm">// Shunting Yard Algorithm — Infix to Postfix</span>
+<span class="kw">public static string</span> <span class="mt">InfixToPostfix</span>(<span class="kw">string</span> infix)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">char</span>&gt; opStack = <span class="kw">new</span>();
+    <span class="tp">StringBuilder</span> output = <span class="kw">new</span>();
+
+    <span class="kw">static int</span> <span class="mt">Prec</span>(<span class="kw">char</span> op) =&gt; op <span class="kw">switch</span>
+    {
+        <span class="st">'+'</span> <span class="kw">or</span> <span class="st">'-'</span> =&gt; <span class="nm">1</span>,
+        <span class="st">'*'</span> <span class="kw">or</span> <span class="st">'/'</span> =&gt; <span class="nm">2</span>,
+        <span class="st">'^'</span>         =&gt; <span class="nm">3</span>,
+        _            =&gt; <span class="nm">0</span>
+    };
+
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> infix)
+    {
+        <span class="kw">if</span> (<span class="tp">char</span>.<span class="mt">IsDigit</span>(c) || <span class="tp">char</span>.<span class="mt">IsLetter</span>(c))
+        {
+            output.<span class="mt">Append</span>(c).<span class="mt">Append</span>(<span class="st">' '</span>);  <span class="cm">// Operand → output</span>
+        }
+        <span class="kw">else if</span> (c == <span class="st">'('</span>)
+        {
+            opStack.<span class="mt">Push</span>(c);
+        }
+        <span class="kw">else if</span> (c == <span class="st">')'</span>)
+        {
+            <span class="cm">// Pop until matching '('</span>
+            <span class="kw">while</span> (opStack.Count &gt; <span class="nm">0</span> &amp;&amp; opStack.<span class="mt">Peek</span>() != <span class="st">'('</span>)
+                output.<span class="mt">Append</span>(opStack.<span class="mt">Pop</span>()).<span class="mt">Append</span>(<span class="st">' '</span>);
+            opStack.<span class="mt">Pop</span>();  <span class="cm">// Discard '('</span>
+        }
+        <span class="kw">else</span>  <span class="cm">// Operator</span>
+        {
+            <span class="kw">while</span> (opStack.Count &gt; <span class="nm">0</span> &amp;&amp; <span class="mt">Prec</span>(opStack.<span class="mt">Peek</span>()) &gt;= <span class="mt">Prec</span>(c))
+                output.<span class="mt">Append</span>(opStack.<span class="mt">Pop</span>()).<span class="mt">Append</span>(<span class="st">' '</span>);
+            opStack.<span class="mt">Push</span>(c);
+        }
+    }
+
+    <span class="kw">while</span> (opStack.Count &gt; <span class="nm">0</span>)
+        output.<span class="mt">Append</span>(opStack.<span class="mt">Pop</span>()).<span class="mt">Append</span>(<span class="st">' '</span>);
+
+    <span class="kw">return</span> output.<span class="mt">ToString</span>().<span class="mt">Trim</span>();
+}
+
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">InfixToPostfix</span>(<span class="st">"3+4*2"</span>));       <span class="cm">// "3 4 2 * +"</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">InfixToPostfix</span>(<span class="st">"(3+4)*2"</span>));     <span class="cm">// "3 4 + 2 *"</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">InfixToPostfix</span>(<span class="st">"a+b*(c-d)/e"</span>)); <span class="cm">// "a b c d - * e / +"</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Application: Postfix Evaluation</div>
+
+<p>Once you have a postfix expression, evaluating it is clean: scan left to right — when you see a
+number, push it; when you see an operator, pop two numbers, apply the operator, push the result.</p>
+
+<div class="diagram">EVALUATE "3 4 2 * +"  (answer should be 11)
+
+Token "3" → PUSH 3     stack: [3]
+Token "4" → PUSH 4     stack: [3, 4]
+Token "2" → PUSH 2     stack: [3, 4, 2]
+Token "*" → POP 2, POP 4, compute 4*2=8, PUSH 8   stack: [3, 8]
+Token "+" → POP 8, POP 3, compute 3+8=11, PUSH 11  stack: [11]
+End: POP 11 → ANSWER = 11 ✓</div>
+
+<pre><span class="kw">public static double</span> <span class="mt">EvaluatePostfix</span>(<span class="kw">string</span> expr)
+{
+    <span class="tp">Stack</span>&lt;<span class="kw">double</span>&gt; stack = <span class="kw">new</span>();
+    <span class="kw">string</span>[] tokens = expr.<span class="mt">Split</span>(<span class="st">' '</span>, <span class="tp">StringSplitOptions</span>.RemoveEmptyEntries);
+
+    <span class="kw">foreach</span> (<span class="kw">string</span> token <span class="kw">in</span> tokens)
+    {
+        <span class="kw">if</span> (<span class="kw">double</span>.<span class="mt">TryParse</span>(token, <span class="kw">out double</span> num))
+        {
+            stack.<span class="mt">Push</span>(num);
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">double</span> b = stack.<span class="mt">Pop</span>();  <span class="cm">// Right operand (popped first)</span>
+            <span class="kw">double</span> a = stack.<span class="mt">Pop</span>();  <span class="cm">// Left operand</span>
+            <span class="kw">double</span> result = token <span class="kw">switch</span>
+            {
+                <span class="st">"+"</span> =&gt; a + b,
+                <span class="st">"-"</span> =&gt; a - b,
+                <span class="st">"*"</span> =&gt; a * b,
+                <span class="st">"/"</span> =&gt; a / b,
+                <span class="st">"^"</span> =&gt; <span class="tp">Math</span>.<span class="mt">Pow</span>(a, b),
+                _   =&gt; <span class="kw">throw new</span> <span class="tp">ArgumentException</span>($<span class="st">"Unknown op: {token}"</span>)
+            };
+            stack.<span class="mt">Push</span>(result);
+        }
+    }
+    <span class="kw">return</span> stack.<span class="mt">Pop</span>();  <span class="cm">// Final result</span>
+}
+
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">EvaluatePostfix</span>(<span class="st">"3 4 2 * +"</span>));   <span class="cm">// 11</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">EvaluatePostfix</span>(<span class="st">"3 4 + 2 *"</span>));   <span class="cm">// 14</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">EvaluatePostfix</span>(<span class="st">"5 1 2 + 4 * + 3 -"</span>)); <span class="cm">// 14</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Application: The Call Stack</div>
+
+<p>The most important stack you'll never directly touch: the <strong>call stack</strong>. Every time a
+function is called, the runtime creates a <strong>stack frame</strong> containing the function's local
+variables, parameters, and return address, and pushes it onto the call stack. When the function
+returns, its frame is popped.</p>
+
+<div class="diagram">THE CALL STACK — Function A() calls B() calls C()
+
+void A() {  →  void B() {  →  void C() {
+  B();             C();           // work
+}                }              }
+
+CALL STACK (grows downward):
+┌─────────────────────────┐
+│  A's frame              │  ← pushed first
+│  (local vars, ret addr) │
+├─────────────────────────┤
+│  B's frame              │  ← pushed when A calls B
+│  (local vars, ret addr) │
+├─────────────────────────┤
+│  C's frame              │  ← pushed when B calls C  (TOP = currently executing)
+└─────────────────────────┘
+
+C() returns → C's frame POPPED → execution returns to B
+B() returns → B's frame POPPED → execution returns to A
+A() returns → A's frame POPPED → program done</div>
+
+<div class="realworld">
+    <strong>🌍 StackOverflowException:</strong> When you write infinite recursion in C#, you see
+    <code>StackOverflowException</code>. This happens because each recursive call pushes a new frame —
+    and the call stack has a finite size (~1 MB by default). When it's full, the runtime throws the exception.
+    This is why iterative algorithms (using an explicit stack) are often preferred over deep recursion.
+</div>
+
+<pre><span class="cm">// Converting recursion to iteration using an explicit stack
+// Example: DFS traversal of a tree (avoids stack overflow on deep trees)</span>
+
+<span class="kw">public static void</span> <span class="mt">DFSIterative</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span>;
+
+    <span class="tp">Stack</span>&lt;<span class="tp">TreeNode</span>&gt; stack = <span class="kw">new</span>();
+    stack.<span class="mt">Push</span>(root);
+
+    <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="tp">TreeNode</span> node = stack.<span class="mt">Pop</span>();
+        <span class="tp">Console</span>.<span class="mt">Write</span>(node.Val + <span class="st">" "</span>);
+
+        <span class="cm">// Push right first so left is processed first (LIFO)</span>
+        <span class="kw">if</span> (node.Right != <span class="kw">null</span>) stack.<span class="mt">Push</span>(node.Right);
+        <span class="kw">if</span> (node.Left  != <span class="kw">null</span>) stack.<span class="mt">Push</span>(node.Left);
+    }
+}
+<span class="cm">// This exactly simulates the recursive call stack with an explicit one.</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Complexity Summary</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Array-Based</th><th>Linked-Based</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Push</td><td class="g">O(1) amortized*</td><td class="g">O(1)</td><td>*O(n) rarely when resizing</td></tr>
+        <tr><td>Pop</td><td class="g">O(1)</td><td class="g">O(1)</td><td></td></tr>
+        <tr><td>Peek</td><td class="g">O(1)</td><td class="g">O(1)</td><td></td></tr>
+        <tr><td>Contains</td><td class="o">O(n)</td><td class="o">O(n)</td><td>Linear scan</td></tr>
+        <tr><td>Space</td><td class="o">O(n) + waste</td><td class="o">O(n) + pointer overhead</td><td></td></tr>
+        <tr><td>Cache performance</td><td class="g">Excellent</td><td class="r">Poor</td><td>Array elements are adjacent</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Where Stacks Are Used in Real Software:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Compilers/Interpreters</strong> — Parsing expressions, tracking scope, evaluating code</li>
+        <li><strong>Browser history</strong> — Back/forward navigation</li>
+        <li><strong>Text editors</strong> — Undo/redo (two stacks: undo stack and redo stack)</li>
+        <li><strong>Runtime call stack</strong> — Every program execution, function calls</li>
+        <li><strong>DFS graph traversal</strong> — Explicit stack replaces recursion</li>
+        <li><strong>HTML/XML parsing</strong> — Matching opening and closing tags</li>
+        <li><strong>Git</strong> — Revert commits, stash changes (stack model)</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 3A Complete!</strong><br><br>
+    You now understand: LIFO principle, array-based and linked-based implementations,
+    C#'s <code>Stack&lt;T&gt;</code>, balanced parentheses, infix-to-postfix, postfix evaluation,
+    and the call stack.<br><br>
+    🏠 <a href="../Index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m03b_queues.html">Part B — Queues &amp; Deque</a>
+</div>
+
+</body>
+</html>

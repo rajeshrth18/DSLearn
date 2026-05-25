@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 10C: Practice — Backtracking, Bits &amp; Math</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  .cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 60px 40px; text-align: center; margin-bottom: 40px; border: 1px solid #313244; }
+  .cover h1 { font-size: 2.6em; font-weight: 700; color: #cba6f7; margin-bottom: 10px; }
+  .cover .subtitle { font-size: 1.2em; color: #89dceb; margin-bottom: 20px; }
+  .cover .tagline { font-size: 1em; color: #a6adc8; }
+  .badge { display: inline-block; background: #313244; border-radius: 20px; padding: 4px 14px; font-size: 0.85em; color: #cba6f7; margin: 4px; }
+
+  .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 12px 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+  .nav-bar a { color: #89b4fa; text-decoration: none; font-size: 0.9em; padding: 4px 10px; border-radius: 6px; border: 1px solid #313244; }
+  .nav-bar a:hover { background: #313244; }
+  .nav-bar .home { color: #a6e3a1; }
+
+  h2 { font-size: 1.5em; font-weight: 700; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 40px 0 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); }
+  h3 { font-size: 1.15em; color: #cba6f7; margin: 24px 0 12px; border-left: 3px solid #cba6f7; padding-left: 12px; }
+  p { margin-bottom: 14px; color: #cdd6f4; }
+  ul, ol { margin: 10px 0 14px 24px; }
+  li { margin-bottom: 6px; color: #cdd6f4; }
+  strong { color: #f9e2af; }
+
+  pre { background: #181825; border: 1px solid #313244; border-left: 4px solid #3498db; border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.88em; line-height: 1.6; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; background: #313244; padding: 2px 6px; border-radius: 4px; color: #cdd6f4; }
+  .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+
+  .note { background: #2d2b22; border-left: 4px solid #f9e2af; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .note strong { color: #f9e2af; }
+  .tip { background: #1e2d2b; border-left: 4px solid #a6e3a1; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .tip strong { color: #a6e3a1; }
+
+  /* ── Difficulty badges ── */
+  .easy   { display: inline-block; background: #1e3a2a; color: #a6e3a1; border: 1px solid #a6e3a1; border-radius: 12px; padding: 2px 12px; font-size: 0.8em; font-weight: 600; }
+  .medium { display: inline-block; background: #2d2b1e; color: #f9e2af; border: 1px solid #f9e2af; border-radius: 12px; padding: 2px 12px; font-size: 0.8em; font-weight: 600; }
+  .hard   { display: inline-block; background: #2d1e1e; color: #f38ba8; border: 1px solid #f38ba8; border-radius: 12px; padding: 2px 12px; font-size: 0.8em; font-weight: 600; }
+
+  /* ── Problem card ── */
+  .problem { background: #181825; border: 1px solid #313244; border-radius: 10px; padding: 24px; margin-bottom: 20px; }
+  .problem-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .problem-num { font-size: 1.1em; font-weight: 700; color: #89dceb; }
+  .problem-title { font-size: 1.1em; font-weight: 600; color: #cdd6f4; }
+
+  /* ── Spoiler toggle (pure CSS, no JavaScript) ── */
+  input[type="checkbox"].spoiler-toggle { display: none; }
+  .spoiler-label {
+    display: inline-block; cursor: pointer; background: #2c3e50; color: #89b4fa;
+    border: 1px solid #313244; border-radius: 6px; padding: 6px 14px;
+    font-size: 0.9em; margin-top: 10px; user-select: none;
+    transition: background 0.2s;
+  }
+  .spoiler-toggle:checked ~ .spoiler-label { background: #1e3a2f; color: #a6e3a1; border-color: #a6e3a1; }
+  .spoiler-content { display: none; margin-top: 14px; }
+  .spoiler-toggle:checked ~ .spoiler-label ~ .spoiler-content { display: block; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <div><span class="badge">Phase 8</span> <span class="badge">Module 10C</span> <span class="badge">Practice</span></div>
+    <h1>Practice — Backtracking, Bits &amp; Math</h1>
+    <div class="subtitle">15 problems • Easy → Hard • Full C# solutions with explanations</div>
+    <div class="tagline">Click "Show Solution" to reveal each answer. Try solving it first!</div>
+  </div>
+
+  <div class="nav-bar">
+    <a href="m10b_bit_math.html">&#8592; Module 10B: Bit Manipulation &amp; Math</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="../phase9/m11a_advanced_graphs.html">Phase 9: Advanced Graphs &#8594;</a>
+  </div>
+
+  <!-- ═══════════════════════════════ EASY ═══════════════════════════════ -->
+  <h2>Easy Problems (4)</h2>
+
+  <!-- P1 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#1</span>
+      <span class="problem-title">Single Number</span>
+      <span class="easy">Easy</span>
+    </div>
+    <p>Given a non-empty array of integers <code>nums</code>, every element appears twice except for one. Find that single one.</p>
+    <p><strong>Constraint:</strong> O(n) time, O(1) space — no hashmap allowed.</p>
+    <p><strong>Example:</strong> <code>[4,1,2,1,2]</code> → <code>4</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p1">
+    <label class="spoiler-label" for="p1">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Key Insight:</strong> XOR all elements. Pairs cancel to 0 (<code>x^x=0</code>), leaving only the unique number (<code>x^0=x</code>). One pass, no extra memory.</div>
+<pre><span class="kw">public int</span> <span class="mt">SingleNumber</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">int</span> xor = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="tp">int</span> n <span class="kw">in</span> nums) xor ^= n;
+    <span class="kw">return</span> xor;
+}
+<span class="cm">// 4^1^2^1^2 = 4^(1^1)^(2^2) = 4^0^0 = 4</span>
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- P2 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#2</span>
+      <span class="problem-title">Missing Number</span>
+      <span class="easy">Easy</span>
+    </div>
+    <p>Array <code>nums</code> contains n distinct numbers in range [0, n]. Find the missing number.</p>
+    <p><strong>Example:</strong> <code>[3,0,1]</code> → <code>2</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p2">
+    <label class="spoiler-label" for="p2">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Two Approaches:</strong> (1) Math: expected sum = n*(n+1)/2, subtract actual sum. (2) XOR all indices and all values — pairs cancel, leaving the missing index.</div>
+<pre><span class="kw">public int</span> <span class="mt">MissingNumber</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="cm">// Approach 1: Math (watch overflow for large n)</span>
+    <span class="tp">int</span> n = nums.Length;
+    <span class="tp">int</span> expected = n * (n + <span class="nm">1</span>) / <span class="nm">2</span>;
+    <span class="tp">int</span> actual   = nums.<span class="mt">Sum</span>();
+    <span class="kw">return</span> expected - actual;
+}
+
+<span class="kw">public int</span> <span class="mt">MissingNumberXor</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="cm">// Approach 2: XOR — start with n, XOR every index and value</span>
+    <span class="tp">int</span> xor = nums.Length;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+        xor ^= i ^ nums[i];
+    <span class="kw">return</span> xor;
+}
+<span class="cm">// Time: O(n), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- P3 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#3</span>
+      <span class="problem-title">Number of 1 Bits</span>
+      <span class="easy">Easy</span>
+    </div>
+    <p>Write a function that takes an unsigned integer and returns the number of '1' bits (Hamming weight).</p>
+    <p><strong>Example:</strong> <code>n = 11</code> (binary: <code>1011</code>) → <code>3</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p3">
+    <label class="spoiler-label" for="p3">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Brian Kernighan's Trick:</strong> <code>n &amp; (n-1)</code> removes the lowest set bit. Count how many times you can do this until n becomes 0.</div>
+<pre><span class="kw">public int</span> <span class="mt">HammingWeight</span>(<span class="tp">int</span> n)
+{
+    <span class="tp">int</span> count = <span class="nm">0</span>;
+    <span class="kw">while</span> (n != <span class="nm">0</span>)
+    {
+        n &amp;= n - <span class="nm">1</span>; <span class="cm">// Remove the lowest set bit</span>
+        count++;
+    }
+    <span class="kw">return</span> count;
+}
+<span class="cm">// 11 = 1011 → 1010 → 1000 → 0000 (3 steps = 3 ones)</span>
+
+<span class="cm">// C# built-in (more concise):</span>
+<span class="kw">public int</span> <span class="mt">HammingWeightBuiltin</span>(<span class="tp">int</span> n)
+    =&gt; <span class="tp">System</span>.<span class="tp">Numerics</span>.<span class="tp">BitOperations</span>.<span class="mt">PopCount</span>((<span class="tp">uint</span>)n);
+<span class="cm">// Time: O(number of set bits), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- P4 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#4</span>
+      <span class="problem-title">Power of Two</span>
+      <span class="easy">Easy</span>
+    </div>
+    <p>Given an integer <code>n</code>, return <code>true</code> if it is a power of two.</p>
+    <p><strong>Example:</strong> <code>16</code> → <code>true</code>, <code>3</code> → <code>false</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p4">
+    <label class="spoiler-label" for="p4">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Key Insight:</strong> Powers of 2 have exactly one '1' bit. So <code>n &amp; (n-1)</code> clears that bit → 0. Guard against n ≤ 0 since negative numbers and 0 are not powers of 2.</div>
+<pre><span class="kw">public bool</span> <span class="mt">IsPowerOfTwo</span>(<span class="tp">int</span> n)
+    =&gt; n &gt; <span class="nm">0</span> &amp;&amp; (n &amp; (n - <span class="nm">1</span>)) == <span class="nm">0</span>;
+
+<span class="cm">// Visualization:</span>
+<span class="cm">// 16 = 10000, 15 = 01111, 10000 & 01111 = 0 → true</span>
+<span class="cm">//  3 = 00011,  2 = 00010, 00011 & 00010 = 2 ≠ 0 → false</span>
+<span class="cm">// Time: O(1), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ MEDIUM ═══════════════════════════════ -->
+  <h2>Medium Problems (7)</h2>
+
+  <!-- P5 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#5</span>
+      <span class="problem-title">Subsets</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Given an integer array <code>nums</code> of unique elements, return all possible subsets (the power set).</p>
+    <p><strong>Example:</strong> <code>[1,2,3]</code> → <code>[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p5">
+    <label class="spoiler-label" for="p5">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Approach:</strong> Backtracking — at each index, decide whether to include the element or not. The key is to add the current path to results at every node (not just leaves).</div>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">Subsets</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(nums, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] nums, <span class="tp">int</span> start, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current,
+                        <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current)); <span class="cm">// Add snapshot at every step</span>
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; nums.Length; i++)
+    {
+        current.<span class="mt">Add</span>(nums[i]);                                    <span class="cm">// Choose</span>
+        <span class="mt">Backtrack</span>(nums, i + <span class="nm">1</span>, current, result);               <span class="cm">// Explore</span>
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);                   <span class="cm">// Undo</span>
+    }
+}
+<span class="cm">// Time: O(n * 2^n) — 2^n subsets, each up to length n</span>
+<span class="cm">// Space: O(n) recursion depth</span></pre>
+    </div>
+  </div>
+
+  <!-- P6 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#6</span>
+      <span class="problem-title">Permutations</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Given an array <code>nums</code> of distinct integers, return all possible permutations.</p>
+    <p><strong>Example:</strong> <code>[1,2,3]</code> → 6 permutations: <code>[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p6">
+    <label class="spoiler-label" for="p6">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Key Difference from Subsets:</strong> We don't use a start index (order matters). Instead track which elements are "used" with a boolean array.</div>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">Permute</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(nums, <span class="kw">new</span> <span class="tp">bool</span>[nums.Length], <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] nums, <span class="tp">bool</span>[] used, <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current,
+                        <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (current.Count == nums.Length)
+    {
+        result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current));
+        <span class="kw">return</span>;
+    }
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+    {
+        <span class="kw">if</span> (used[i]) <span class="kw">continue</span>;          <span class="cm">// Skip already-used elements</span>
+        used[i] = <span class="kw">true</span>;
+        current.<span class="mt">Add</span>(nums[i]);
+        <span class="mt">Backtrack</span>(nums, used, current, result);
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+        used[i] = <span class="kw">false</span>;
+    }
+}
+<span class="cm">// Time: O(n * n!) — n! permutations, each n long</span></pre>
+    </div>
+  </div>
+
+  <!-- P7 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#7</span>
+      <span class="problem-title">Combination Sum</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Given distinct candidates and a target, find all unique combinations that sum to target. Each number may be used unlimited times.</p>
+    <p><strong>Example:</strong> <code>candidates=[2,3,6,7], target=7</code> → <code>[[2,2,3],[7]]</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p7">
+    <label class="spoiler-label" for="p7">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Key Trick:</strong> Don't advance start index when recursing — allows reuse of the same element. Prune when <code>remaining &lt; 0</code>.</div>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; <span class="mt">CombinationSum</span>(<span class="tp">int</span>[] candidates, <span class="tp">int</span> target)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt;();
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(candidates); <span class="cm">// Sort for pruning</span>
+    <span class="mt">Backtrack</span>(candidates, <span class="nm">0</span>, target, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(), result);
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">private void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span>[] cands, <span class="tp">int</span> start, <span class="tp">int</span> remaining,
+                        <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; current, <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">int</span>&gt;&gt; result)
+{
+    <span class="kw">if</span> (remaining == <span class="nm">0</span>) { result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt;(current)); <span class="kw">return</span>; }
+
+    <span class="kw">for</span> (<span class="tp">int</span> i = start; i &lt; cands.Length; i++)
+    {
+        <span class="kw">if</span> (cands[i] &gt; remaining) <span class="kw">break</span>; <span class="cm">// Sorted: no point continuing</span>
+        current.<span class="mt">Add</span>(cands[i]);
+        <span class="mt">Backtrack</span>(cands, i, remaining - cands[i], current, result); <span class="cm">// i (not i+1) allows reuse</span>
+        current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+    }
+}</pre>
+    </div>
+  </div>
+
+  <!-- P8 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#8</span>
+      <span class="problem-title">Letter Combinations of a Phone Number</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Given a string of digits (2-9), return all possible letter combinations they could represent (T9 phone keyboard).</p>
+    <p><strong>Example:</strong> <code>"23"</code> → <code>["ad","ae","af","bd","be","bf","cd","ce","cf"]</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p8">
+    <label class="spoiler-label" for="p8">Show Solution</label>
+    <div class="spoiler-content">
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">string</span>&gt; <span class="mt">LetterCombinations</span>(<span class="tp">string</span> digits)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+    <span class="kw">if</span> (<span class="tp">string</span>.<span class="mt">IsNullOrEmpty</span>(digits)) <span class="kw">return</span> result;
+
+    <span class="tp">var</span> map = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">char</span>, <span class="tp">string</span>&gt;
+    {
+        [<span class="st">'2'</span>] = <span class="st">"abc"</span>, [<span class="st">'3'</span>] = <span class="st">"def"</span>, [<span class="st">'4'</span>] = <span class="st">"ghi"</span>,
+        [<span class="st">'5'</span>] = <span class="st">"jkl"</span>, [<span class="st">'6'</span>] = <span class="st">"mno"</span>, [<span class="st">'7'</span>] = <span class="st">"pqrs"</span>,
+        [<span class="st">'8'</span>] = <span class="st">"tuv"</span>, [<span class="st">'9'</span>] = <span class="st">"wxyz"</span>
+    };
+
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>, <span class="kw">new</span> <span class="tp">StringBuilder</span>());
+    <span class="kw">return</span> result;
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span> idx, <span class="tp">StringBuilder</span> sb)
+    {
+        <span class="kw">if</span> (idx == digits.Length) { result.<span class="mt">Add</span>(sb.<span class="mt">ToString</span>()); <span class="kw">return</span>; }
+
+        <span class="kw">foreach</span> (<span class="tp">char</span> ch <span class="kw">in</span> map[digits[idx]])
+        {
+            sb.<span class="mt">Append</span>(ch);
+            <span class="mt">Backtrack</span>(idx + <span class="nm">1</span>, sb);
+            sb.<span class="mt">Remove</span>(sb.Length - <span class="nm">1</span>, <span class="nm">1</span>);
+        }
+    }
+}
+<span class="cm">// Time: O(4^n * n) where n = digits.Length (at most 4 letters per digit)</span></pre>
+    </div>
+  </div>
+
+  <!-- P9 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#9</span>
+      <span class="problem-title">Palindrome Partitioning</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Given string <code>s</code>, partition it such that every substring is a palindrome. Return all possible partitioning.</p>
+    <p><strong>Example:</strong> <code>"aab"</code> → <code>[["a","a","b"],["aa","b"]]</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p9">
+    <label class="spoiler-label" for="p9">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Pattern:</strong> Try every prefix. If it's a palindrome, recurse on the remainder. A prefix <code>s[start..i]</code> is checked at each <code>i</code>.</div>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt; <span class="mt">Partition</span>(<span class="tp">string</span> s)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt;();
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;());
+    <span class="kw">return</span> result;
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span> start, <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; current)
+    {
+        <span class="kw">if</span> (start == s.Length)
+        {
+            result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;(current));
+            <span class="kw">return</span>;
+        }
+        <span class="kw">for</span> (<span class="tp">int</span> end = start; end &lt; s.Length; end++)
+        {
+            <span class="kw">if</span> (!<span class="mt">IsPalin</span>(s, start, end)) <span class="kw">continue</span>;
+            current.<span class="mt">Add</span>(s.<span class="mt">Substring</span>(start, end - start + <span class="nm">1</span>));
+            <span class="mt">Backtrack</span>(end + <span class="nm">1</span>, current);
+            current.<span class="mt">RemoveAt</span>(current.Count - <span class="nm">1</span>);
+        }
+    }
+}
+
+<span class="kw">private bool</span> <span class="mt">IsPalin</span>(<span class="tp">string</span> s, <span class="tp">int</span> lo, <span class="tp">int</span> hi)
+{
+    <span class="kw">while</span> (lo &lt; hi) { <span class="kw">if</span> (s[lo++] != s[hi--]) <span class="kw">return false</span>; }
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Optimize with DP palindrome precomputation for O(n^2) total palindrome checks</span></pre>
+    </div>
+  </div>
+
+  <!-- P10 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#10</span>
+      <span class="problem-title">Sum of Two Integers (Without + or -)</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Calculate the sum of two integers <code>a</code> and <code>b</code>, but you are NOT allowed to use the operator + or -.</p>
+    <p><strong>Example:</strong> <code>a=1, b=2</code> → <code>3</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p10">
+    <label class="spoiler-label" for="p10">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Insight:</strong> XOR gives sum WITHOUT carry. AND gives carry bits. Shift carry left by 1 and repeat until no carry remains. This is how binary adders work in hardware!</div>
+<pre><span class="kw">public int</span> <span class="mt">GetSum</span>(<span class="tp">int</span> a, <span class="tp">int</span> b)
+{
+    <span class="cm">// a ^ b = sum without carry</span>
+    <span class="cm">// (a &amp; b) &lt;&lt; 1 = carry bits shifted to correct position</span>
+    <span class="kw">while</span> (b != <span class="nm">0</span>)
+    {
+        <span class="tp">int</span> carry = (a &amp; b) &lt;&lt; <span class="nm">1</span>; <span class="cm">// Propagate carry left by 1</span>
+        a = a ^ b;                <span class="cm">// Sum without carry</span>
+        b = carry;                <span class="cm">// Process carry in next iteration</span>
+    }
+    <span class="kw">return</span> a;
+}
+<span class="cm">// Example: a=3(011), b=5(101)</span>
+<span class="cm">// Iter1: carry=(001)&lt;&lt;1=010, a=011^101=110, b=010</span>
+<span class="cm">// Iter2: carry=(010)&lt;&lt;1=100, a=110^010=100, b=100</span>
+<span class="cm">// Iter3: carry=(100)&lt;&lt;1=1000, a=100^100=000, b=1000... wait</span>
+<span class="cm">// Correct trace for 1+2: a=01, b=10</span>
+<span class="cm">// carry=(00)&lt;&lt;1=00, a=01^10=11, b=00 → return 3 ✓</span>
+<span class="cm">// Time: O(log(max(a,b))), Space: O(1)</span></pre>
+    </div>
+  </div>
+
+  <!-- P11 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#11</span>
+      <span class="problem-title">Count Primes</span>
+      <span class="medium">Medium</span>
+    </div>
+    <p>Count the number of prime numbers less than <code>n</code>.</p>
+    <p><strong>Example:</strong> <code>n=10</code> → <code>4</code> (primes: 2, 3, 5, 7)</p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p11">
+    <label class="spoiler-label" for="p11">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Use Sieve of Eratosthenes:</strong> Mark all multiples of each prime as composite. Start inner loop at p² since smaller multiples are already marked. O(n log log n) total.</div>
+<pre><span class="kw">public int</span> <span class="mt">CountPrimes</span>(<span class="tp">int</span> n)
+{
+    <span class="kw">if</span> (n &lt; <span class="nm">2</span>) <span class="kw">return</span> <span class="nm">0</span>;
+
+    <span class="tp">bool</span>[] isComposite = <span class="kw">new</span> <span class="tp">bool</span>[n]; <span class="cm">// false = prime</span>
+    isComposite[<span class="nm">0</span>] = isComposite[<span class="nm">1</span>] = <span class="kw">true</span>;
+
+    <span class="kw">for</span> (<span class="tp">int</span> p = <span class="nm">2</span>; (<span class="tp">long</span>)p * p &lt; n; p++)
+    {
+        <span class="kw">if</span> (isComposite[p]) <span class="kw">continue</span>;
+        <span class="kw">for</span> (<span class="tp">int</span> mul = p * p; mul &lt; n; mul += p)
+            isComposite[mul] = <span class="kw">true</span>;
+    }
+
+    <span class="tp">int</span> count = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="tp">bool</span> v <span class="kw">in</span> isComposite) <span class="kw">if</span> (!v) count++;
+    <span class="kw">return</span> count;
+}
+<span class="cm">// Time: O(n log log n), Space: O(n)</span>
+<span class="cm">// For n=10: marks 4,9 as composite in p=2 pass; marks nothing new in p=3 (9 &lt; 10=p²=9)</span>
+<span class="cm">// Primes: indices 2,3,5,7 → count = 4 ✓</span></pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ HARD ═══════════════════════════════ -->
+  <h2>Hard Problems (4)</h2>
+
+  <!-- P12 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#12</span>
+      <span class="problem-title">N-Queens</span>
+      <span class="hard">Hard</span>
+    </div>
+    <p>Place n queens on an n×n chessboard so that no two queens attack each other. Return all distinct solutions.</p>
+    <p><strong>Example:</strong> <code>n=4</code> → 2 solutions</p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p12">
+    <label class="spoiler-label" for="p12">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Strategy:</strong> Place one queen per row. Track which columns and diagonals are occupied. A cell (r, c) is on diagonals <code>r-c</code> (main) and <code>r+c</code> (anti). Use HashSets for O(1) conflict checks.</div>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt; <span class="mt">SolveNQueens</span>(<span class="tp">int</span> n)
+{
+    <span class="tp">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="tp">string</span>&gt;&gt;();
+    <span class="tp">var</span> cols   = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;();
+    <span class="tp">var</span> diag1  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;(); <span class="cm">// r - c</span>
+    <span class="tp">var</span> diag2  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;(); <span class="cm">// r + c</span>
+    <span class="tp">int</span>[] board = <span class="kw">new</span> <span class="tp">int</span>[n];      <span class="cm">// board[r] = column of queen in row r</span>
+
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>);
+    <span class="kw">return</span> result;
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="tp">int</span> row)
+    {
+        <span class="kw">if</span> (row == n)
+        {
+            result.<span class="mt">Add</span>(<span class="mt">BuildBoard</span>(board, n));
+            <span class="kw">return</span>;
+        }
+        <span class="kw">for</span> (<span class="tp">int</span> col = <span class="nm">0</span>; col &lt; n; col++)
+        {
+            <span class="kw">if</span> (cols.<span class="mt">Contains</span>(col) || diag1.<span class="mt">Contains</span>(row - col)
+                                   || diag2.<span class="mt">Contains</span>(row + col)) <span class="kw">continue</span>;
+            cols.<span class="mt">Add</span>(col); diag1.<span class="mt">Add</span>(row - col); diag2.<span class="mt">Add</span>(row + col);
+            board[row] = col;
+            <span class="mt">Backtrack</span>(row + <span class="nm">1</span>);
+            cols.<span class="mt">Remove</span>(col); diag1.<span class="mt">Remove</span>(row - col); diag2.<span class="mt">Remove</span>(row + col);
+        }
+    }
+}
+
+<span class="kw">private</span> <span class="tp">IList</span>&lt;<span class="tp">string</span>&gt; <span class="mt">BuildBoard</span>(<span class="tp">int</span>[] board, <span class="tp">int</span> n)
+{
+    <span class="tp">var</span> rows = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt;();
+    <span class="kw">foreach</span> (<span class="tp">int</span> col <span class="kw">in</span> board)
+    {
+        <span class="tp">char</span>[] row = <span class="kw">new string</span>(<span class="st">'.'</span>, n).<span class="mt">ToCharArray</span>();
+        row[col] = <span class="st">'Q'</span>;
+        rows.<span class="mt">Add</span>(<span class="kw">new string</span>(row));
+    }
+    <span class="kw">return</span> rows;
+}
+<span class="cm">// Time: O(n!), Space: O(n)</span></pre>
+    </div>
+  </div>
+
+  <!-- P13 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#13</span>
+      <span class="problem-title">Sudoku Solver</span>
+      <span class="hard">Hard</span>
+    </div>
+    <p>Write a program to solve a Sudoku puzzle by filling the empty cells ('.') in place.</p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p13">
+    <label class="spoiler-label" for="p13">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Strategy:</strong> Try digits 1–9 at each empty cell. Validate against row, column, and 3×3 box. Backtrack if no digit works. The box index for cell (r,c) = <code>(r/3)*3 + c/3</code>.</div>
+<pre><span class="kw">public void</span> <span class="mt">SolveSudoku</span>(<span class="tp">char</span>[][] board)
+{
+    <span class="mt">Solve</span>(board);
+}
+
+<span class="kw">private bool</span> <span class="mt">Solve</span>(<span class="tp">char</span>[][] board)
+{
+    <span class="kw">for</span> (<span class="tp">int</span> r = <span class="nm">0</span>; r &lt; <span class="nm">9</span>; r++)
+    <span class="kw">for</span> (<span class="tp">int</span> c = <span class="nm">0</span>; c &lt; <span class="nm">9</span>; c++)
+    {
+        <span class="kw">if</span> (board[r][c] != <span class="st">'.'</span>) <span class="kw">continue</span>; <span class="cm">// Skip filled cells</span>
+
+        <span class="kw">for</span> (<span class="tp">char</span> d = <span class="st">'1'</span>; d &lt;= <span class="st">'9'</span>; d++)
+        {
+            <span class="kw">if</span> (!<span class="mt">IsValid</span>(board, r, c, d)) <span class="kw">continue</span>;
+            board[r][c] = d;
+            <span class="kw">if</span> (<span class="mt">Solve</span>(board)) <span class="kw">return true</span>;
+            board[r][c] = <span class="st">'.'</span>; <span class="cm">// Undo</span>
+        }
+        <span class="kw">return false</span>; <span class="cm">// No digit worked → backtrack</span>
+    }
+    <span class="kw">return true</span>; <span class="cm">// All cells filled</span>
+}
+
+<span class="kw">private bool</span> <span class="mt">IsValid</span>(<span class="tp">char</span>[][] board, <span class="tp">int</span> row, <span class="tp">int</span> col, <span class="tp">char</span> d)
+{
+    <span class="tp">int</span> boxRow = (row / <span class="nm">3</span>) * <span class="nm">3</span>, boxCol = (col / <span class="nm">3</span>) * <span class="nm">3</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">9</span>; i++)
+    {
+        <span class="kw">if</span> (board[row][i] == d)                   <span class="kw">return false</span>; <span class="cm">// Row</span>
+        <span class="kw">if</span> (board[i][col] == d)                   <span class="kw">return false</span>; <span class="cm">// Col</span>
+        <span class="kw">if</span> (board[boxRow + i/<span class="nm">3</span>][boxCol + i%<span class="nm">3</span>] == d) <span class="kw">return false</span>; <span class="cm">// Box</span>
+    }
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Time: O(9^empty_cells), Space: O(1) (in-place)</span></pre>
+    </div>
+  </div>
+
+  <!-- P14 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#14</span>
+      <span class="problem-title">Word Search</span>
+      <span class="hard">Hard</span>
+    </div>
+    <p>Given an m×n grid of characters and a string <code>word</code>, return <code>true</code> if the word can be constructed from sequentially adjacent cells (no cell reused).</p>
+    <p><strong>Example:</strong> board with "ABCCED" present → <code>true</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p14">
+    <label class="spoiler-label" for="p14">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Optimization:</strong> Mark the current cell as visited in-place using a sentinel character ('#'). Restore it after the recursive call. This avoids a separate visited matrix.</div>
+<pre><span class="kw">public bool</span> <span class="mt">Exist</span>(<span class="tp">char</span>[][] board, <span class="tp">string</span> word)
+{
+    <span class="tp">int</span> m = board.Length, n = board[<span class="nm">0</span>].Length;
+
+    <span class="kw">for</span> (<span class="tp">int</span> r = <span class="nm">0</span>; r &lt; m; r++)
+    <span class="kw">for</span> (<span class="tp">int</span> c = <span class="nm">0</span>; c &lt; n; c++)
+        <span class="kw">if</span> (<span class="mt">Dfs</span>(board, r, c, <span class="nm">0</span>, word)) <span class="kw">return true</span>;
+
+    <span class="kw">return false</span>;
+}
+
+<span class="kw">private bool</span> <span class="mt">Dfs</span>(<span class="tp">char</span>[][] board, <span class="tp">int</span> r, <span class="tp">int</span> c, <span class="tp">int</span> idx, <span class="tp">string</span> word)
+{
+    <span class="kw">if</span> (idx == word.Length) <span class="kw">return true</span>;
+    <span class="kw">if</span> (r &lt; <span class="nm">0</span> || r &gt;= board.Length || c &lt; <span class="nm">0</span> || c &gt;= board[<span class="nm">0</span>].Length) <span class="kw">return false</span>;
+    <span class="kw">if</span> (board[r][c] != word[idx]) <span class="kw">return false</span>;
+
+    <span class="tp">char</span> temp = board[r][c];
+    board[r][c] = <span class="st">'#'</span>; <span class="cm">// Mark visited in-place</span>
+
+    <span class="tp">bool</span> found = <span class="mt">Dfs</span>(board, r+<span class="nm">1</span>, c,   idx+<span class="nm">1</span>, word)
+              || <span class="mt">Dfs</span>(board, r-<span class="nm">1</span>, c,   idx+<span class="nm">1</span>, word)
+              || <span class="mt">Dfs</span>(board, r,   c+<span class="nm">1</span>, idx+<span class="nm">1</span>, word)
+              || <span class="mt">Dfs</span>(board, r,   c-<span class="nm">1</span>, idx+<span class="nm">1</span>, word);
+
+    board[r][c] = temp; <span class="cm">// Restore (backtrack)</span>
+    <span class="kw">return</span> found;
+}
+<span class="cm">// Time: O(m * n * 4^L) where L = word.Length</span>
+<span class="cm">// Space: O(L) recursion depth</span></pre>
+    </div>
+  </div>
+
+  <!-- P15 -->
+  <div class="problem">
+    <div class="problem-header">
+      <span class="problem-num">#15</span>
+      <span class="problem-title">Single Number II (Every element appears 3 times)</span>
+      <span class="hard">Hard</span>
+    </div>
+    <p>Given an integer array where every element appears <strong>exactly three times</strong> except for one, which appears exactly once. Find the single element. Solve in O(n) time and O(1) space.</p>
+    <p><strong>Example:</strong> <code>[2,2,3,2]</code> → <code>3</code></p>
+
+    <input type="checkbox" class="spoiler-toggle" id="p15">
+    <label class="spoiler-label" for="p15">Show Solution</label>
+    <div class="spoiler-content">
+      <div class="note"><strong>Advanced Bit Trick:</strong> Track two states — bits that have appeared once (<code>ones</code>) and twice (<code>twos</code>). When a bit appears three times, it resets both. This is a 2-bit counter per bit position.</div>
+<pre><span class="kw">public int</span> <span class="mt">SingleNumberII</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="cm">// ones = bits seen exactly once so far</span>
+    <span class="cm">// twos = bits seen exactly twice so far</span>
+    <span class="cm">// When a bit reaches 3 appearances, it resets from ones/twos</span>
+    <span class="tp">int</span> ones = <span class="nm">0</span>, twos = <span class="nm">0</span>;
+
+    <span class="kw">foreach</span> (<span class="tp">int</span> n <span class="kw">in</span> nums)
+    {
+        ones ^= n &amp; ~twos; <span class="cm">// Add to ones if not already in twos</span>
+        twos ^= n &amp; ~ones; <span class="cm">// Add to twos if not already in ones</span>
+    }
+    <span class="kw">return</span> ones; <span class="cm">// What remains in ones = appeared once total</span>
+}
+
+<span class="cm">// Simpler mental model: count each bit mod 3</span>
+<span class="kw">public int</span> <span class="mt">SingleNumberII_BitCount</span>(<span class="tp">int</span>[] nums)
+{
+    <span class="tp">int</span> result = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="tp">int</span> bit = <span class="nm">0</span>; bit &lt; <span class="nm">32</span>; bit++)
+    {
+        <span class="tp">int</span> sum = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="tp">int</span> n <span class="kw">in</span> nums)
+            sum += (n &gt;&gt; bit) &amp; <span class="nm">1</span>; <span class="cm">// Count how many numbers have this bit set</span>
+        <span class="kw">if</span> (sum % <span class="nm">3</span> != <span class="nm">0</span>)              <span class="cm">// If not divisible by 3 → unique number has this bit</span>
+            result |= (<span class="nm">1</span> &lt;&lt; bit);
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// BitCount approach: Time O(32*n) = O(n), Space O(1). Easier to reason about.</span>
+<span class="cm">// ones/twos approach: Time O(n), Space O(1). Pure elegance — 2-bit state machine.</span></pre>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <h2>Pattern Summary</h2>
+  <table>
+    <tr><th>Problem Pattern</th><th>Key Technique</th><th>Complexity</th></tr>
+    <tr><td>Find unique in duplicated array</td><td>XOR all elements</td><td>O(n) time, O(1) space</td></tr>
+    <tr><td>Count 1-bits</td><td><code>n &amp; (n-1)</code> loop / PopCount</td><td>O(popcount)</td></tr>
+    <tr><td>Power of 2 check</td><td><code>n &gt; 0 &amp;&amp; (n &amp; (n-1)) == 0</code></td><td>O(1)</td></tr>
+    <tr><td>All subsets of size n</td><td>Backtracking + start index</td><td>O(n * 2^n)</td></tr>
+    <tr><td>All permutations</td><td>Backtracking + used[] array</td><td>O(n * n!)</td></tr>
+    <tr><td>Combinations summing to target</td><td>Backtracking + remaining budget</td><td>O(n^target)</td></tr>
+    <tr><td>Board placement (N-Queens)</td><td>Backtracking + HashSet constraints</td><td>O(n!)</td></tr>
+    <tr><td>Count primes up to n</td><td>Sieve of Eratosthenes</td><td>O(n log log n)</td></tr>
+    <tr><td>Fast power</td><td>Binary exponentiation</td><td>O(log exp)</td></tr>
+    <tr><td>Sum without arithmetic ops</td><td>XOR (sum) + AND shifted (carry)</td><td>O(log n)</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>Phase 8 Complete!</strong> You now have backtracking, bit manipulation, and math in your toolkit. Next up: Phase 9 covers advanced graph algorithms — Union-Find with path compression, Dijkstra on complex graphs, and more.
+  </div>
+
+  <div class="nav-bar">
+    <a href="m10b_bit_math.html">&#8592; Module 10B: Bit Manipulation &amp; Math</a>
+    <a href="../Index.html" class="home">&#8962; Course Home</a>
+    <a href="../phase9/m11a_advanced_graphs.html">Phase 9: Advanced Graphs &#8594;</a>
+  </div>
+
+</div>
+</body>
+</html>

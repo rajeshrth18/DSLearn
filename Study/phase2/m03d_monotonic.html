@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3D — Monotonic Stack &amp; Queue</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 3 — Part D</h1>
+    <div class="tagline">Monotonic Stack &amp; Monotonic Queue — Advanced Linear Patterns</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">One of the most powerful interview patterns — O(n) solutions to seemingly O(n²) problems</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2–3 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part D of Module 3</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 3 Navigation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m03a_stacks.html">Stacks</a><br>
+    ✅ <strong>Part B</strong> — <a href="m03b_queues.html">Queues &amp; Deque</a><br>
+    ✅ <strong>Part C</strong> — <a href="m03c_priority_queue.html">Priority Queue</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Monotonic Stack &amp; Queue<br>
+    ⬜ <strong>Part E</strong> — <a href="m03e_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part D</h2>
+    <ol>
+        <li>Section 1 — What is a Monotonic Stack? <span>— The concept and motivation</span></li>
+        <li>Section 2 — Monotonically Increasing vs Decreasing Stack <span>— Two variants</span></li>
+        <li>Section 3 — Pattern: Next Greater Element <span>— The foundational problem</span></li>
+        <li>Section 4 — Pattern: Previous Smaller Element <span>— Symmetric application</span></li>
+        <li>Section 5 — Pattern: Next Greater Element II (Circular Array) <span>— Double-pass trick</span></li>
+        <li>Section 6 — Application: Daily Temperatures <span>— Classic warm-up problem</span></li>
+        <li>Section 7 — Application: Largest Rectangle in Histogram <span>— Hard but elegant</span></li>
+        <li>Section 8 — Application: Trapping Rain Water <span>— Two-pass + stack approach</span></li>
+        <li>Section 9 — Monotonic Queue (Deque) <span>— Sliding window maximum</span></li>
+        <li>Section 10 — Pattern Summary &amp; Recognition Guide <span>— When to use it</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is a Monotonic Stack?</div>
+
+<p>A <strong>Monotonic Stack</strong> is a regular stack with one extra constraint: the elements inside
+it are always kept in <strong>monotonically increasing or decreasing order</strong>. Whenever a new
+element would violate this order, you <strong>pop elements until the order is restored</strong>.</p>
+
+<p>The power of this constraint: when an element gets popped because a new element is larger (or smaller),
+that new element is the <strong>answer</strong> for the popped element — the "next greater" or
+"previous smaller" value. This transforms O(n²) brute-force searches into O(n) single-pass scans.</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World Analogy — Stock Market:</strong> Imagine you're tracking stock prices day by day.
+    For each day, you want to know: "How many days from now until the price is higher than today's?"
+    A brute force approach checks every future day for every day — O(n²). The monotonic stack does it
+    in one pass — O(n). The same pattern appears in temperature forecasting, histogram analysis,
+    water storage calculations, and compiler expression parsing.
+</div>
+
+<div class="note">
+    <strong>📌 Key Insight:</strong> Every element enters the stack once and leaves the stack once.
+    Therefore all push and pop operations combined are O(n), giving us O(n) total time complexity
+    even though it looks like there's a loop inside a loop.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Monotonically Increasing vs Decreasing Stack</div>
+
+<div class="diagram">MONOTONICALLY INCREASING STACK
+  Maintains: bottom → top, elements go from SMALL to LARGE
+  Rule: when pushing x, pop all elements GREATER THAN x first
+
+  Input: [3, 1, 4, 1, 5, 9, 2, 6]
+
+  Push 3: [3]
+  Push 1: pop 3 (3>1), [1]
+  Push 4: [1, 4]
+  Push 1: pop 4 (4>1), pop 1 (1>? no, 1≥1 — depends on strict/non-strict), [1, 1] or [1]
+  Push 5: [1, 5]
+  Push 9: [1, 5, 9]
+  Push 2: pop 9 (9>2), pop 5 (5>2), [1, 2]
+  Push 6: [1, 2, 6]
+
+  USEFUL FOR: finding previous smaller element (the one left in stack
+              when current element is pushed)
+
+MONOTONICALLY DECREASING STACK
+  Maintains: bottom → top, elements go from LARGE to SMALL
+  Rule: when pushing x, pop all elements LESS THAN x first
+
+  Input: [3, 1, 4, 1, 5, 9, 2, 6]
+
+  Push 3: [3]
+  Push 1: [3, 1]   (1 &lt; 3, no popping needed)
+  Push 4: pop 1 (1&lt;4), pop 3 (3&lt;4), [4]
+  Push 1: [4, 1]
+  Push 5: pop 1, pop 4, [5]
+  Push 9: pop 5, [9]
+  Push 2: [9, 2]
+  Push 6: pop 2 (2&lt;6), [9, 6]
+
+  USEFUL FOR: finding next greater element (the element that triggered
+              the pop IS the "next greater" for all popped elements)</div>
+
+<table>
+    <thead>
+        <tr><th>Type</th><th>Stack Order</th><th>Pop When</th><th>Finds</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Monotonic Increasing</td><td>small → large (bottom→top)</td><td>new &lt; top (pop larger)</td><td>Previous Smaller Element</td></tr>
+        <tr><td>Monotonic Decreasing</td><td>large → small (bottom→top)</td><td>new &gt; top (pop smaller)</td><td>Next Greater Element</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Pattern: Next Greater Element</div>
+
+<p>For every element in an array, find the first element to the right that is larger than it.
+Return <code>-1</code> if none exists. This is the canonical monotonic stack problem.</p>
+
+<div class="diagram">NEXT GREATER ELEMENT — nums=[2, 1, 2, 4, 3]
+
+Use DECREASING monotonic stack (stores indices).
+When we pop index i because current element is larger, current = NGE for i.
+
+i=0, nums[0]=2: stack empty, push 0.  stack=[0]
+i=1, nums[1]=1: 1 &lt; nums[0]=2, just push.  stack=[0,1]
+i=2, nums[2]=2: 2 > nums[1]=1 → POP 1, result[1]=2.  2 = nums[0]=2 → stop.  push 2.  stack=[0,2]
+i=3, nums[3]=4: 4 > nums[2]=2 → POP 2, result[2]=4.  4 > nums[0]=2 → POP 0, result[0]=4.  push 3.  stack=[3]
+i=4, nums[4]=3: 3 &lt; nums[3]=4 → just push.  stack=[3,4]
+
+End: remaining in stack have no greater element → result = -1
+  result[3]=-1, result[4]=-1
+
+FINAL: result = [4, 2, 4, -1, -1]</div>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">NextGreaterElement</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n];
+    <span class="tp">Array</span>.<span class="mt">Fill</span>(result, -<span class="nm">1</span>);  <span class="cm">// Default: no greater element</span>
+
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();  <span class="cm">// Stores INDICES, not values</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="cm">// Pop all indices whose value is less than current</span>
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; nums[stack.<span class="mt">Peek</span>()] &lt; nums[i])
+        {
+            <span class="kw">int</span> idx = stack.<span class="mt">Pop</span>();
+            result[idx] = nums[i];  <span class="cm">// nums[i] is the NGE for idx</span>
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="cm">// Indices still in stack have result=-1 (already filled)</span>
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// [2,1,2,4,3] → [4,2,4,-1,-1]
+// [1,3,2,4]   → [3,4,4,-1]</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Pattern: Previous Smaller Element</div>
+
+<p>For every element, find the nearest element to the <strong>left</strong> that is smaller.
+Use a <strong>monotonically increasing</strong> stack — the top of the stack when you push
+element <code>i</code> is the previous smaller element for <code>i</code>.</p>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">PreviousSmallerElement</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n];
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();  <span class="cm">// stores indices, increasing values</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="cm">// Pop elements >= current (they can't be "previous smaller")</span>
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; nums[stack.<span class="mt">Peek</span>()] &gt;= nums[i])
+            stack.<span class="mt">Pop</span>();
+
+        <span class="cm">// Whatever's on top NOW is the previous smaller element</span>
+        result[i] = stack.Count == <span class="nm">0</span> ? -<span class="nm">1</span> : nums[stack.<span class="mt">Peek</span>()];
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// [2,1,2,4,3] → [-1,-1,1,2,2]
+// Meaning:
+//   PSE of index 0 (val=2): -1  (no smaller to the left)
+//   PSE of index 1 (val=1): -1  (no smaller to the left)
+//   PSE of index 2 (val=2):  1  (index 1, val=1)
+//   PSE of index 3 (val=4):  2  (index 2, val=2)
+//   PSE of index 4 (val=3):  2  (index 2, val=2)</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Next Greater Element II (Circular Array)</div>
+
+<p>Same as Next Greater Element, but the array wraps around — the next greater element of the last
+element might be in the beginning. The trick: <strong>process the array twice</strong> by looping
+from 0 to 2n-1 using modulo, but only record results in the first pass (indices 0..n-1).</p>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">NextGreaterElements</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n];
+    <span class="tp">Array</span>.<span class="mt">Fill</span>(result, -<span class="nm">1</span>);
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
+
+    <span class="cm">// Loop TWICE — simulates circular array</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">2</span> * n; i++)
+    {
+        <span class="kw">int</span> idx = i % n;  <span class="cm">// Wrap around</span>
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; nums[stack.<span class="mt">Peek</span>()] &lt; nums[idx])
+            result[stack.<span class="mt">Pop</span>()] = nums[idx];
+        <span class="kw">if</span> (i &lt; n) stack.<span class="mt">Push</span>(idx);  <span class="cm">// Only push in first pass</span>
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// [1,2,1] → [2,-1,2]
+//   Index 0 (val=1): next greater is 2 (index 1)
+//   Index 1 (val=2): no greater element in the whole array → -1
+//   Index 2 (val=1): wraps around, next greater is 2 (index 1)</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Application: Daily Temperatures</div>
+
+<p>Given daily temperatures, for each day find how many days until a warmer temperature.
+Return 0 if no warmer day exists. This is the "Next Greater Element" with distances.</p>
+
+<div class="diagram">DAILY TEMPERATURES — temps=[73,74,75,71,69,72,76,73]
+
+result[i] = distance to next warmer day (0 if none)
+
+Stack stores indices. When we find a warmer day, distance = i - popped_index.
+
+i=0 T=73: push 0.      stack=[0]
+i=1 T=74: 74>73 → pop0, result[0]=1-0=1. push 1.  stack=[1]
+i=2 T=75: 75>74 → pop1, result[1]=2-1=1. push 2.  stack=[2]
+i=3 T=71: 71&lt;75 → push.  stack=[2,3]
+i=4 T=69: 69&lt;71 → push.  stack=[2,3,4]
+i=5 T=72: 72>69→pop4,result[4]=5-4=1. 72>71→pop3,result[3]=5-3=2. 72&lt;75→push5. stack=[2,5]
+i=6 T=76: 76>72→pop5,result[5]=6-5=1. 76>75→pop2,result[2]=6-2=4. push6. stack=[6]
+i=7 T=73: 73&lt;76→push. stack=[6,7]
+
+End: stack=[6,7] → result[6]=0, result[7]=0
+
+RESULT: [1, 1, 4, 2, 1, 1, 0, 0]</div>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">DailyTemperatures</span>(<span class="kw">int</span>[] temps)
+{
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[temps.Length];
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();  <span class="cm">// Indices</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; temps.Length; i++)
+    {
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; temps[stack.<span class="mt">Peek</span>()] &lt; temps[i])
+        {
+            <span class="kw">int</span> j = stack.<span class="mt">Pop</span>();
+            result[j] = i - j;  <span class="cm">// Days until warmer</span>
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// [73,74,75,71,69,72,76,73] → [1,1,4,2,1,1,0,0]</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Application: Largest Rectangle in Histogram</div>
+
+<p>Given bar heights in a histogram, find the largest rectangle area. This is one of the hardest
+and most elegant monotonic stack problems — O(n).</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World:</strong> This pattern appears in: finding the largest contiguous region of
+    equal-height buildings, max area sub-matrix in an all-ones binary matrix, and signal processing
+    (largest amplitude window that fits under a threshold curve).
+</div>
+
+<div class="diagram">LARGEST RECTANGLE IN HISTOGRAM
+
+heights = [2, 1, 5, 6, 2, 3]
+
+The largest rectangle is the one spanning indices 2–3 (heights 5,6)
+with height limited to min(5,6)=5, width=2, area=10.
+
+STRATEGY: For each bar i, what's the widest rectangle where bar i is
+the SHORTEST bar? The width extends from (previous smaller left) to (next smaller right).
+
+Using monotonic stack to find boundaries in one pass:
+Stack stores indices. When we pop bar i because current bar is shorter,
+  current bar's index (right) and new top (left) give us the width.
+
+i=0 h=2: push 0.    [0]
+i=1 h=1: 1&lt;h[0]=2 → pop 0. Width=i-(-1)-1=1. Area=2*1=2.
+         stack empty, push 1.  [1]
+i=2 h=5: push.  [1,2]
+i=3 h=6: push.  [1,2,3]
+i=4 h=2: 2&lt;h[3]=6 → pop 3. Left=stack.top=2. Width=4-2-1=1. Area=6*1=6.
+         2&lt;h[2]=5 → pop 2. Left=stack.top=1. Width=4-1-1=2. Area=5*2=10. ← MAX
+         2&gt;h[1]=1 → stop. push 4.  [1,4]
+i=5 h=3: push.  [1,4,5]
+
+End: pop 5. Left=4. Width=6-4-1=1. Area=3*1=3.
+     pop 4. Left=1. Width=6-1-1=4. Area=2*4=8.
+     pop 1. Left=-1. Width=6-(-1)-1=6. Area=1*6=6.
+
+MAX AREA = 10</div>
+
+<pre><span class="kw">public static int</span> <span class="mt">LargestRectangleArea</span>(<span class="kw">int</span>[] heights)
+{
+    <span class="kw">int</span> n = heights.Length;
+    <span class="kw">int</span> maxArea = <span class="nm">0</span>;
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();  <span class="cm">// Increasing stack of indices</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt;= n; i++)
+    {
+        <span class="cm">// Use height=0 at i=n to flush remaining stack</span>
+        <span class="kw">int</span> h = i == n ? <span class="nm">0</span> : heights[i];
+
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; heights[stack.<span class="mt">Peek</span>()] &gt; h)
+        {
+            <span class="kw">int</span> height = heights[stack.<span class="mt">Pop</span>()];
+            <span class="cm">// Left boundary: new top of stack (or -1 if empty)</span>
+            <span class="kw">int</span> left = stack.Count == <span class="nm">0</span> ? -<span class="nm">1</span> : stack.<span class="mt">Peek</span>();
+            <span class="kw">int</span> width = i - left - <span class="nm">1</span>;
+            maxArea = <span class="tp">Math</span>.<span class="mt">Max</span>(maxArea, height * width);
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> maxArea;
+}
+
+<span class="cm">// [2,1,5,6,2,3] → 10
+// [2,4]         → 4
+// [1]           → 1</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Application: Trapping Rain Water</div>
+
+<p>Given an elevation map (bar heights), compute how much water is trapped after rain.
+The classic O(n) stack approach: water fills up between bars whenever a taller bar is found to the right.</p>
+
+<div class="diagram">TRAPPING RAIN WATER
+
+heights = [0,1,0,2,1,0,1,3,2,1,2,1]
+
+   3     |                    |
+   2   | |                | | | |
+   1 | | | | |   | |   | | | | | |
+     0 1 0 2 1 0 1 3 2 1 2 1
+
+Water trapped (shown as ~):
+   3     |                    |
+   2   | |             |~|~| |~| |
+   1 | |~|~| |~|~| |~| | | | | |~|
+   Total trapped water = 6
+
+APPROACH:
+  Stack stores indices in decreasing height order.
+  When current bar is taller than stack top:
+    - Pop bottom of pool
+    - New water height = min(current, new_top) - bottom
+    - Width = current_index - new_top_index - 1</div>
+
+<pre><span class="kw">public static int</span> <span class="mt">Trap</span>(<span class="kw">int</span>[] height)
+{
+    <span class="kw">int</span> water = <span class="nm">0</span>;
+    <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();  <span class="cm">// Decreasing heights</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; height.Length; i++)
+    {
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span> &amp;&amp; height[stack.<span class="mt">Peek</span>()] &lt; height[i])
+        {
+            <span class="kw">int</span> bottom = stack.<span class="mt">Pop</span>();
+            <span class="kw">if</span> (stack.Count == <span class="nm">0</span>) <span class="kw">break</span>;
+
+            <span class="kw">int</span> left = stack.<span class="mt">Peek</span>();
+            <span class="kw">int</span> boundedHeight = <span class="tp">Math</span>.<span class="mt">Min</span>(height[left], height[i]) - height[bottom];
+            <span class="kw">int</span> width = i - left - <span class="nm">1</span>;
+            water += boundedHeight * width;
+        }
+        stack.<span class="mt">Push</span>(i);
+    }
+    <span class="kw">return</span> water;
+}
+
+<span class="cm">// [0,1,0,2,1,0,1,3,2,1,2,1] → 6
+// [4,2,0,3,2,5]              → 9</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Monotonic Queue (Deque) — Sliding Window Maximum</div>
+
+<p>The <strong>Monotonic Queue</strong> (deque variant) keeps elements in decreasing order.
+It answers: "What is the maximum in the current window?" in O(1) per query — the front of the
+deque is always the current window's maximum. Total time: O(n).</p>
+
+<div class="diagram">SLIDING WINDOW MAXIMUM — nums=[1,3,-1,-3,5,3,6,7], k=3
+
+Deque stores INDICES. Maintains DECREASING values.
+
+i=0 v=1:  dq=[0]
+i=1 v=3:  3>1→remove 0. dq=[1]
+i=2 v=-1: -1&lt;3, just add. dq=[1,2]    Window[0..2]: max=nums[1]=3
+i=3 v=-3: -3&lt;-1, add. dq=[1,2,3]     Window[1..3]: max=nums[1]=3
+          (check front: 1 still in window [1..3] ✓)
+i=4 v=5:  5>-3→remove 3. 5>-1→remove 2. 5>3→remove 1. dq=[4]
+          Window[2..4]: max=nums[4]=5
+i=5 v=3:  3&lt;5, add. dq=[4,5]         Window[3..5]: max=nums[4]=5
+i=6 v=6:  6>3→remove 5. 6>5→remove 4. dq=[6]
+          Window[4..6]: max=nums[6]=6
+i=7 v=7:  7>6→remove 6. dq=[7]       Window[5..7]: max=nums[7]=7
+
+RESULT: [3, 3, 5, 5, 6, 7]</div>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">MaxSlidingWindow</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">if</span> (n == <span class="nm">0</span> || k == <span class="nm">0</span>) <span class="kw">return</span> [];
+
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[n - k + <span class="nm">1</span>];
+    <span class="tp">LinkedList</span>&lt;<span class="kw">int</span>&gt; dq = <span class="kw">new</span>();  <span class="cm">// Decreasing monotonic queue — stores indices</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="cm">// Remove indices that are outside the window</span>
+        <span class="kw">while</span> (dq.Count &gt; <span class="nm">0</span> &amp;&amp; dq.First!.Value &lt; i - k + <span class="nm">1</span>)
+            dq.<span class="mt">RemoveFirst</span>();
+
+        <span class="cm">// Maintain decreasing order: remove smaller elements from back</span>
+        <span class="kw">while</span> (dq.Count &gt; <span class="nm">0</span> &amp;&amp; nums[dq.Last!.Value] &lt; nums[i])
+            dq.<span class="mt">RemoveLast</span>();
+
+        dq.<span class="mt">AddLast</span>(i);
+
+        <span class="cm">// Record result once we have a full window</span>
+        <span class="kw">if</span> (i &gt;= k - <span class="nm">1</span>)
+            result[i - k + <span class="nm">1</span>] = nums[dq.First!.Value];
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// [1,3,-1,-3,5,3,6,7], k=3 → [3,3,5,5,6,7]
+// [1], k=1                  → [1]</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Pattern Summary &amp; Recognition Guide</div>
+
+<table>
+    <thead>
+        <tr><th>Problem Pattern</th><th>Stack Type</th><th>Stores</th><th>Key Examples</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Next Greater Element</td><td>Decreasing</td><td>Indices</td><td>Daily Temperatures, Stock Span</td></tr>
+        <tr><td>Next Smaller Element</td><td>Increasing</td><td>Indices</td><td>Largest Rectangle (right boundary)</td></tr>
+        <tr><td>Previous Greater Element</td><td>Decreasing (scan right→left)</td><td>Indices</td><td>Trapping Rain Water (left boundary)</td></tr>
+        <tr><td>Previous Smaller Element</td><td>Increasing</td><td>Indices</td><td>Largest Rectangle (left boundary)</td></tr>
+        <tr><td>Largest valid span/area</td><td>Increasing or decreasing</td><td>Indices</td><td>Histogram, Rain Water</td></tr>
+        <tr><td>Sliding window max/min</td><td>Monotonic deque</td><td>Indices</td><td>Sliding Window Maximum</td></tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 Recognition Pattern — When to Use Monotonic Stack:</strong>
+    <ul style="margin-top:8px;">
+        <li>Problem asks for "next/previous greater/smaller" relationships</li>
+        <li>Problem involves a histogram or bar-chart structure</li>
+        <li>Brute force is O(n²) and involves comparing each element to all others</li>
+        <li>The phrase "nearest", "closest", "immediately before/after" appears</li>
+        <li>Sliding window problems that need max/min efficiently</li>
+    </ul>
+</div>
+
+<div class="note">
+    <strong>📌 O(n) Why? — Amortized Analysis:</strong>
+    The nested while-loop looks like O(n²), but it's O(n) amortized. Each element is pushed <em>once</em>
+    and popped <em>at most once</em>. Therefore, the total number of push + pop operations across the
+    entire algorithm is bounded by 2n — giving O(n) overall.
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 3D Complete!</strong><br><br>
+    You now understand: monotonic increasing/decreasing stacks, next/previous greater/smaller element
+    patterns, daily temperatures, largest rectangle in histogram, trapping rain water, and the
+    monotonic deque for sliding window maximum.<br><br>
+    🏠 <a href="../Index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m03c_priority_queue.html">Part C — Priority Queue</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m03e_practice.html">Part E — Practice Problems</a>
+</div>
+
+</body>
+</html>

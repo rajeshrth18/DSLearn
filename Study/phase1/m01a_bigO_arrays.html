@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1A — Big O Notation &amp; Arrays</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
+        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
+        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
+        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
+        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
+        .toc ol { margin-left: 20px; }
+        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
+        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
+        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+        p { margin: 10px 0 14px 0; font-size: 1em; }
+        ul, ol { margin: 10px 0 14px 28px; }
+        li { margin: 7px 0; }
+        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
+        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
+        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
+        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .note strong { color: #e67e22; }
+        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .tip strong { color: #16a085; }
+        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .warning strong { color: #c0392b; }
+        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .realworld strong { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
+        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
+        .nav-box strong { color: #1a5276; }
+        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 1 — Part A</h1>
+    <div class="tagline">Big O Notation, Time &amp; Space Complexity, Arrays</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The absolute foundation — understand this before anything else</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3–4 Hours</span>
+        <span>🎯 Beginner Level</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part A of Module 1</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 1 Navigation:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Big O, Complexity, Arrays<br>
+    ⬜ <strong>Part B</strong> — <a href="m01b_strings.html">Strings &amp; StringBuilder</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m01c_listT.html">List&lt;T&gt; Dynamic Arrays</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m01d_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../Index.html">Back to Course Index</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Part A</h2>
+    <ol>
+        <li>Section 1 — What is Big O Notation? <span>— Why we measure efficiency</span></li>
+        <li>Section 2 — Time Complexity <span>— O(1), O(log n), O(n), O(n²), O(2ⁿ)</span></li>
+        <li>Section 2.8 — Big &Omega; &amp; Big &Theta; <span>— Lower bound, tight bound, complete picture</span></li>
+        <li>Section 3 — Space Complexity <span>— Measuring memory usage</span></li>
+        <li>Section 4 — Arrays: The Foundation <span>— How memory layout works</span></li>
+        <li>Section 5 — Array Operations &amp; Complexity <span>— Read, Search, Insert, Delete</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is Big O Notation?</div>
+
+<p>Before you write a single algorithm, you need to answer one question: <strong>"How does my code
+perform as the amount of data grows?"</strong> This is exactly what <strong>Big O Notation</strong>
+answers. It is the universal language that every software engineer uses to describe and compare
+how efficient an algorithm is.</p>
+
+<p>Big O gives you a way to describe the <strong>worst-case growth rate</strong> of an algorithm's
+time or memory usage, expressed in terms of the input size <strong>n</strong>.</p>
+
+<div class="realworld">
+    <strong>🌍 Real-World Analogy — The Library Problem:</strong><br>
+    You walk into a library and need to find a specific book.
+    <ul style="margin-top:8px;">
+        <li><strong>O(1) — Instant:</strong> A librarian hands you the book immediately — it's always on the front desk. Doesn't matter if the library has 10 or 10 million books.</li>
+        <li><strong>O(n) — Shelf Search:</strong> You check every book one by one from the first shelf. More books = more time, linearly.</li>
+        <li><strong>O(log n) — Catalogue System:</strong> You open the catalogue to the middle, decide which half the book is in, repeat. A library of 1 million books takes only ~20 lookups.</li>
+    </ul>
+</div>
+
+<div class="note">
+    <strong>📌 Key Rules of Big O:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Worst case:</strong> We always measure the worst possible scenario (e.g., item not found at all).</li>
+        <li><strong>Drop constants:</strong> O(2n) simplifies to O(n). We care about growth rate, not exact count.</li>
+        <li><strong>Drop lower terms:</strong> O(n² + n) simplifies to O(n²). Only the dominant term matters.</li>
+        <li><strong>n = input size:</strong> n is whatever drives the work — array length, number of nodes, string length.</li>
+    </ul>
+</div>
+
+<div class="diagram">BIG O GROWTH RATE — Visual Speed Chart
+
+  Operations
+  ▲
+  │                                                    O(2ⁿ) ← NEVER use (exponential)
+  │                                         O(n²) ← Avoid (quadratic)
+  │                               O(n log n) ← OK for sorting
+  │                    O(n) ← Good (linear)
+  │          O(log n) ← Great (logarithmic)
+  │  O(1) ← Perfect (constant)
+  │
+  └─────────────────────────────────────────────────────▶ Input Size (n)
+
+  The FLATTER the line, the BETTER the algorithm scales with large data.</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Time Complexity</div>
+
+<p>Time Complexity measures <strong>how many operations</strong> an algorithm performs relative
+to the input size n. It answers: "If I double the data, does the time double? Quadruple? Stay the same?"</p>
+
+<h3>2.1 — O(1): Constant Time — The Gold Standard</h3>
+<p>No matter how large the input, the operation <strong>always takes the same number of steps</strong>.
+This is the best possible complexity.</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> A sports scoreboard shows the current score. It doesn't matter if 10 or 100,000 people are in the stadium — reading the score is always one glance.
+</div>
+
+<pre><span class="cm">// O(1) — All of these take the same time regardless of array size</span>
+<span class="kw">int</span>[] scores = { <span class="nm">85</span>, <span class="nm">92</span>, <span class="nm">78</span>, <span class="nm">96</span>, <span class="nm">88</span> };
+
+<span class="kw">int</span> first = scores[<span class="nm">0</span>];              <span class="cm">// O(1) — index access</span>
+<span class="kw">int</span> last  = scores[scores.Length-<span class="nm">1</span>]; <span class="cm">// O(1) — index access</span>
+<span class="kw">int</span> len   = scores.Length;           <span class="cm">// O(1) — stored property</span>
+scores[<span class="nm">2</span>] = <span class="nm">100</span>;                    <span class="cm">// O(1) — index write</span>
+
+<span class="cm">// These are also O(1):</span>
+<span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+stack.<span class="mt">Push</span>(<span class="nm">5</span>);   <span class="cm">// O(1) — add to top</span>
+stack.<span class="mt">Pop</span>();     <span class="cm">// O(1) — remove from top</span>
+stack.<span class="mt">Peek</span>();    <span class="cm">// O(1) — look at top</span></pre>
+
+<hr>
+
+<h3>2.2 — O(log n): Logarithmic Time — Excellent</h3>
+<p>The algorithm <strong>halves the problem</strong> with each step.
+A key insight: log₂(1,000,000) ≈ 20. So even with a million items, you only need ~20 steps!</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> Guessing a number between 1 and 1024. Each guess, you say "higher or lower". With a perfect strategy (guess the middle each time), you always find it in at most 10 guesses — because 2¹⁰ = 1024.
+</div>
+
+<pre><span class="cm">// O(log n) — Binary Search (requires a SORTED array)</span>
+<span class="kw">public static int</span> <span class="mt">BinarySearch</span>(<span class="kw">int</span>[] sortedArr, <span class="kw">int</span> target)
+{
+    <span class="kw">int</span> left = <span class="nm">0</span>, right = sortedArr.Length - <span class="nm">1</span>;
+
+    <span class="kw">while</span> (left &lt;= right)
+    {
+        <span class="kw">int</span> mid = left + (right - left) / <span class="nm">2</span>; <span class="cm">// avoids integer overflow</span>
+
+        <span class="kw">if</span> (sortedArr[mid] == target) <span class="kw">return</span> mid;   <span class="cm">// Found!</span>
+        <span class="kw">if</span> (sortedArr[mid] &lt; target)  left = mid + <span class="nm">1</span>;  <span class="cm">// Discard left half</span>
+        <span class="kw">else</span>                          right = mid - <span class="nm">1</span>; <span class="cm">// Discard right half</span>
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>; <span class="cm">// Not found</span>
+}
+
+<span class="kw">int</span>[] sorted = { <span class="nm">5</span>, <span class="nm">12</span>, <span class="nm">23</span>, <span class="nm">35</span>, <span class="nm">47</span>, <span class="nm">58</span>, <span class="nm">69</span>, <span class="nm">74</span>, <span class="nm">81</span>, <span class="nm">99</span> };
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">BinarySearch</span>(sorted, <span class="nm">58</span>)); <span class="cm">// 5 (found at index 5)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">BinarySearch</span>(sorted, <span class="nm">40</span>)); <span class="cm">// -1 (not found)</span></pre>
+
+<div class="diagram">BINARY SEARCH TRACE — Finding 58 in [5,12,23,35,47,58,69,74,81,99]
+
+Initial:  left=0, right=9
+Step 1:   mid=4 → arr[4]=47.   58 > 47 → left = 5
+          [ 5 | 12 | 23 | 35 | 47 | 58 | 69 | 74 | 81 | 99 ]
+                                   ↑discard
+Step 2:   mid=7 → arr[7]=74.   58 < 74 → right = 6
+                                        [ 58 | 69 | 74 | 81 | 99 ]
+                                                   ↑discard
+Step 3:   mid=5 → arr[5]=58.   FOUND! Return 5 ✓
+
+Only 3 steps for 10 items. For 1,000,000 items → only ~20 steps!</div>
+
+<hr>
+
+<h3>2.3 — O(n): Linear Time — Acceptable</h3>
+<p>The algorithm visits <strong>each element once</strong>.
+If the input doubles, the time doubles. This is the most common complexity in everyday code.</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> Counting how many people in a queue are wearing hats. You must look at each person once. 50 people = 50 looks. 500 people = 500 looks.
+</div>
+
+<pre><span class="cm">// O(n) — Finding maximum value in an unsorted array</span>
+<span class="kw">public static int</span> <span class="mt">FindMax</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">int</span> max = arr[<span class="nm">0</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; arr.Length; i++) <span class="cm">// visits every element once</span>
+        <span class="kw">if</span> (arr[i] &gt; max) max = arr[i];
+    <span class="kw">return</span> max;
+}
+
+<span class="cm">// O(n) — Sum all elements</span>
+<span class="kw">public static int</span> <span class="mt">Sum</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">int</span> total = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> x <span class="kw">in</span> arr) total += x;
+    <span class="kw">return</span> total;
+}
+
+<span class="cm">// O(n) — Print all elements</span>
+<span class="kw">int</span>[] data = { <span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">9</span>, <span class="nm">2</span>, <span class="nm">6</span> };
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Max: {<span class="mt">FindMax</span>(data)}"</span>); <span class="cm">// 9</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Sum: {<span class="mt">Sum</span>(data)}"</span>);    <span class="cm">// 31</span></pre>
+
+<hr>
+
+<h3>2.4 — O(n log n): Linearithmic Time — Good for Sorting</h3>
+<p>This is the complexity of the most efficient general-purpose sorting algorithms.
+It's slightly worse than O(n) but dramatically better than O(n²).</p>
+
+<pre><span class="cm">// O(n log n) — Merge Sort (divides array, then merges in sorted order)</span>
+<span class="cm">// (Full implementation in Module 5B — Sorting Algorithms)</span>
+
+<span class="cm">// .NET built-in Array.Sort() is O(n log n) — always prefer it over manual sorts!</span>
+<span class="kw">int</span>[] nums = { <span class="nm">64</span>, <span class="nm">25</span>, <span class="nm">12</span>, <span class="nm">22</span>, <span class="nm">11</span> };
+<span class="tp">Array</span>.<span class="mt">Sort</span>(nums); <span class="cm">// O(n log n) — uses Introsort internally</span>
+
+<span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums)
+    <span class="tp">Console</span>.<span class="mt">Write</span>(n + <span class="st">" "</span>); <span class="cm">// 11 12 22 25 64</span></pre>
+
+<hr>
+
+<h3>2.5 — O(n²): Quadratic Time — Avoid in Production</h3>
+<p>Usually caused by a <strong>loop inside a loop</strong> where both iterate over the same data.
+At n=10,000 items: 100 million operations. At n=100,000: 10 billion operations. Catastrophically slow.</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> Every person in a room shakes hands with every other person. 5 people → 10 handshakes. 100 people → 4,950 handshakes. 1,000 people → 499,500 handshakes. The work explodes!
+</div>
+
+<pre><span class="cm">// O(n²) — Bubble Sort (educational only — never use in production)</span>
+<span class="kw">public static void</span> <span class="mt">BubbleSort</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length - <span class="nm">1</span>; i++)         <span class="cm">// outer loop: n passes</span>
+    {
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; arr.Length - i - <span class="nm">1</span>; j++) <span class="cm">// inner loop: n comparisons</span>
+        {
+            <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="nm">1</span>])
+            {
+                (<span class="nm">arr[j]</span>, <span class="nm">arr[j+1]</span>) = (<span class="nm">arr[j+1]</span>, <span class="nm">arr[j]</span>); <span class="cm">// swap</span>
+            }
+        }
+    }
+}
+<span class="cm">// n=10: ~45 comparisons. n=1000: ~500,000. n=10,000: ~50,000,000.</span></pre>
+
+<div class="warning">
+    <strong>🚨 Common O(n²) Pitfall — Nested Loops on the Same Data:</strong><br>
+    Any time you see a loop inside a loop where both are iterating over the same array, you likely have O(n²). Ask yourself: "Can I use a hash set or sort first to eliminate the inner loop?"
+</div>
+
+<hr>
+
+<h3>2.6 — O(2ⁿ): Exponential Time — Never in Production</h3>
+<p>Each new element <strong>doubles the work</strong>. With n=30, that's over a billion operations.
+With n=50, more operations than atoms in the universe.</p>
+
+<pre><span class="cm">// O(2ⁿ) — Naive Fibonacci — never use this version!</span>
+<span class="kw">public static int</span> <span class="mt">FibNaive</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">return</span> <span class="mt">FibNaive</span>(n - <span class="nm">1</span>) + <span class="mt">FibNaive</span>(n - <span class="nm">2</span>); <span class="cm">// 2 calls per call = 2ⁿ total</span>
+}
+<span class="cm">// FibNaive(30)  → ~1 billion operations</span>
+<span class="cm">// FibNaive(50)  → ~1 quadrillion operations (takes years!)</span>
+
+<span class="cm">// O(n) — Correct Fibonacci using memoization (Dynamic Programming)</span>
+<span class="kw">public static int</span> <span class="mt">FibFast</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">int</span> prev = <span class="nm">0</span>, curr = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i &lt;= n; i++)
+    {
+        <span class="kw">int</span> next = prev + curr;
+        prev = curr;
+        curr = next;
+    }
+    <span class="kw">return</span> curr;
+}
+<span class="cm">// FibFast(1000) → 1000 operations — instant!</span></pre>
+
+<hr>
+
+<h3>2.7 — Big O Quick Reference Table</h3>
+<table>
+    <thead>
+        <tr><th>Notation</th><th>Name</th><th>n=10</th><th>n=100</th><th>n=1,000</th><th>n=1,000,000</th><th>Rating</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>O(1)</code></td><td>Constant</td><td>1</td><td>1</td><td>1</td><td>1</td><td class="g">⭐ Perfect</td></tr>
+        <tr><td><code>O(log n)</code></td><td>Logarithmic</td><td>3</td><td>7</td><td>10</td><td>20</td><td class="g">✅ Excellent</td></tr>
+        <tr><td><code>O(n)</code></td><td>Linear</td><td>10</td><td>100</td><td>1,000</td><td>1,000,000</td><td class="o">👍 Good</td></tr>
+        <tr><td><code>O(n log n)</code></td><td>Linearithmic</td><td>33</td><td>664</td><td>10,000</td><td>20,000,000</td><td class="o">🆗 Acceptable</td></tr>
+        <tr><td><code>O(n²)</code></td><td>Quadratic</td><td>100</td><td>10,000</td><td>1,000,000</td><td>10¹²</td><td class="r">⚠️ Bad</td></tr>
+        <tr><td><code>O(2ⁿ)</code></td><td>Exponential</td><td>1,024</td><td>10³⁰</td><td>10³⁰¹</td><td>???</td><td class="r">❌ Never</td></tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 Quick Pattern Recognition:</strong>
+    <ul style="margin-top:8px;">
+        <li>One loop over input → <strong>O(n)</strong></li>
+        <li>Loop inside loop (same data) → <strong>O(n²)</strong></li>
+        <li>Two separate (non-nested) loops → <strong>O(n)</strong> (constants drop)</li>
+        <li>Halving the data each step → <strong>O(log n)</strong></li>
+        <li>No loop, just arithmetic/index → <strong>O(1)</strong></li>
+        <li>Sorting step involved → at least <strong>O(n log n)</strong></li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2.8 ═══════ -->
+<div class="section-heading">Section 2.8 — Big &Omega; (Omega) &amp; Big &Theta; (Theta) — The Full Picture</div>
+
+<p>Big O tells you the <strong>upper bound</strong> — the worst case. But it doesn't tell you how the algorithm
+behaves when you're lucky, or whether best and worst case are the same. That's where Big Ω and Big Θ
+complete the story. Together, all three notations give you a full mathematical description of any
+algorithm's growth behaviour.</p>
+
+<div class="note">
+    <strong>📌 The Three Asymptotic Notations — Each Answers a Different Question:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>O (Big O)</strong> — <em>Upper bound.</em> "Runs in AT MOST this much time." Worst-case ceiling.</li>
+        <li><strong>Ω (Big Omega)</strong> — <em>Lower bound.</em> "Runs in AT LEAST this much time." Best-case floor.</li>
+        <li><strong>Θ (Big Theta)</strong> — <em>Tight bound.</em> "Runs in EXACTLY this growth rate." Best = Worst = same class.</li>
+    </ul>
+</div>
+
+<div class="diagram">THE THREE BOUNDS — Linear Search on an array of n elements
+
+  BEST CASE  → target is at index 0 → 1 comparison → Ω(1)
+  WORST CASE → target absent / at last position → n comparisons → O(n)
+
+  Steps
+  ▲
+  │· · · · · · · · · · O(n) ← upper bound: worst case ceiling
+  │· · · · · · · ·
+  │· · · · · ·                 ← no Θ exists here: best ≠ worst
+  │· · · ·
+  │· Ω(1)             ← lower bound: best case floor
+  └──────────────────────▶  n
+
+  For Merge Sort (always does the same work):
+  Steps
+  ▲
+  │· · · · · O(n log n) ← upper bound
+  │· · · ·
+  │· · · Θ(n log n)    ← TIGHT bound: both lines meet!
+  │· ·
+  │· Ω(n log n)        ← lower bound
+  └──────────────────────▶  n
+
+  When O = Ω (same growth class) → Θ exists and equals both.</div>
+
+<h3>2.8a — Big &Omega; (Omega) — Lower Bound (Best Case)</h3>
+<p>Big Ω answers: <em>"In the most optimistic scenario — the luckiest possible input — how much work must
+this algorithm still do?"</em> It is a <strong>guaranteed minimum</strong>. Even magic cannot make the
+algorithm do less work than Ω.</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> A restaurant guarantees your food takes <em>at least</em> 2 minutes
+    (they still need to cook it!). Even if you're the only customer, you wait at minimum 2 minutes.
+    That's Big Ω — the unavoidable floor.
+</div>
+
+<pre><span class="cm">// Ω(1) — Linear Search best case: target is the very first element</span>
+<span class="kw">public static int</span> <span class="mt">LinearSearch</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length; i++)
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;  <span class="cm">// could hit on very first check → Ω(1)</span>
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}
+<span class="cm">// Best:  arr[0] == target → 1 check  → Ω(1)</span>
+<span class="cm">// Worst: not found        → n checks → O(n)</span>
+
+<span class="cm">// Ω(n log n) — Any comparison-based sort — proven mathematical minimum</span>
+<span class="cm">// No matter how clever, a sort-by-comparison MUST do ≥ n log n comparisons</span>
+<span class="cm">// This is a mathematical proof — you cannot build an O(n) comparison sort</span>
+
+<span class="cm">// Ω(n) — Printing all elements — you MUST visit each element at least once</span>
+<span class="kw">foreach</span> (<span class="kw">int</span> x <span class="kw">in</span> arr) <span class="tp">Console</span>.<span class="mt">Write</span>(x);  <span class="cm">// Ω(n) and O(n) → Θ(n)</span></pre>
+
+<div class="tip">
+    <strong>💡 The Sorting Lower Bound — Why Merge Sort Is Optimal:</strong><br>
+    It is mathematically proven that any comparison-based sorting algorithm requires at least
+    <strong>Ω(n log n)</strong> comparisons in the worst case. This means Merge Sort and Heap Sort
+    (both Θ(n log n)) are <em>asymptotically optimal</em> — no comparison-based algorithm can
+    ever do asymptotically better. Radix Sort achieves O(n·k) by avoiding comparisons entirely,
+    which is why it can "beat" the lower bound.
+</div>
+
+<h3>2.8b — Big &Theta; (Theta) — Tight Bound (Exact Growth Rate)</h3>
+<p>Big Θ is the strongest statement you can make about an algorithm. It says:
+<em>"Both the best and worst case grow at exactly this rate."</em>
+Θ(f(n)) exists if and only if <strong>O = Ω = the same growth class</strong>.
+When you have Θ, there's no luck involved — every input causes the same asymptotic work.</p>
+
+<div class="realworld">
+    <strong>🌍 Analogy:</strong> A factory production line processes exactly one item per second,
+    always. Whether you give it 5 items or 5 million, each item takes one second.
+    Best case = n seconds. Worst case = n seconds. No shortcuts. That's Θ(n) — the exact, tight bound.
+</div>
+
+<pre><span class="cm">// Θ(n) — Summing all elements — must visit EVERY element, always, no shortcuts</span>
+<span class="kw">public static long</span> <span class="mt">Sum</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">long</span> total = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> x <span class="kw">in</span> arr) total += x; <span class="cm">// exactly n additions, no early exit</span>
+    <span class="kw">return</span> total;
+}
+<span class="cm">// Best case:  n additions → Ω(n)</span>
+<span class="cm">// Worst case: n additions → O(n)</span>
+<span class="cm">// O = Ω → Θ(n) ✓  — tight bound confirmed</span>
+
+<span class="cm">// Θ(n log n) — Merge Sort — same work regardless of input order</span>
+<span class="cm">// Divide phase: always splits log n times</span>
+<span class="cm">// Merge phase:  always merges n elements at each level</span>
+<span class="cm">// Total: always exactly Θ(n log n) — sorted or reversed, doesn't matter</span>
+
+<span class="cm">// Θ(1) — Array index access — one arithmetic operation, always</span>
+<span class="kw">int</span> val = arr[<span class="nm">42</span>]; <span class="cm">// Θ(1) — same whether arr has 5 or 5 million elements</span></pre>
+
+<h3>2.8c — When Does &Theta; Exist?</h3>
+
+<div class="diagram">THETA EXISTS — When best-case and worst-case have the SAME growth class
+
+  Algorithm             Best Case    Worst Case   Θ Exists?
+  ──────────────────────────────────────────────────────────
+  Array index access    Ω(1)         O(1)         ✅ Θ(1)
+  Sum all elements      Ω(n)         O(n)         ✅ Θ(n)
+  Merge Sort            Ω(n log n)   O(n log n)   ✅ Θ(n log n)
+  Heap Sort             Ω(n log n)   O(n log n)   ✅ Θ(n log n)
+  Matrix multiply       Ω(n³)        O(n³)        ✅ Θ(n³)
+  ──────────────────────────────────────────────────────────
+  Linear Search         Ω(1)         O(n)         ❌ best ≠ worst class
+  Binary Search         Ω(1)         O(log n)     ❌ best ≠ worst class
+  Quick Sort            Ω(n log n)   O(n²)        ❌ best ≠ worst class
+  Bubble Sort           Ω(n)         O(n²)        ❌ best ≠ worst class
+  Hash Table lookup     Ω(1)         O(n)         ❌ depends on collisions
+  ──────────────────────────────────────────────────────────
+  Rule: Θ(f(n)) = O(f(n)) ∩ Ω(f(n)) — upper AND lower bounds are the same.</div>
+
+<h3>2.8d — All Three Notations Compared</h3>
+<table>
+    <thead>
+        <tr><th>Algorithm</th><th>O — Worst Case</th><th>&Omega; — Best Case</th><th>&Theta; — Tight</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Array index access</td><td class="g">O(1)</td><td class="g">&Omega;(1)</td><td class="g">&Theta;(1) ✓</td><td>Always 1 step</td></tr>
+        <tr><td>Sum / Print all</td><td class="o">O(n)</td><td class="o">&Omega;(n)</td><td class="g">&Theta;(n) ✓</td><td>Must visit every element</td></tr>
+        <tr><td>Linear Search</td><td class="o">O(n)</td><td class="g">&Omega;(1)</td><td>—</td><td>Lucky hit on first element</td></tr>
+        <tr><td>Binary Search</td><td class="g">O(log n)</td><td class="g">&Omega;(1)</td><td>—</td><td>Mid element could be target</td></tr>
+        <tr><td>Merge Sort</td><td class="o">O(n log n)</td><td class="o">&Omega;(n log n)</td><td class="g">&Theta;(n log n) ✓</td><td>Always same number of merges</td></tr>
+        <tr><td>Quick Sort</td><td class="r">O(n²)</td><td class="o">&Omega;(n log n)</td><td>—</td><td>Bad pivot choices → O(n²)</td></tr>
+        <tr><td>Bubble Sort (basic)</td><td class="r">O(n²)</td><td class="g">&Omega;(n)</td><td>—</td><td>Already sorted → 1 pass</td></tr>
+        <tr><td>Hash Table insert</td><td class="o">O(n)</td><td class="g">&Omega;(1)</td><td>—</td><td>Worst: all keys collide</td></tr>
+        <tr><td>Matrix multiply</td><td class="r">O(n³)</td><td class="r">&Omega;(n³)</td><td class="r">&Theta;(n³) ✓</td><td>Naive 3-loop always O(n³)</td></tr>
+    </tbody>
+</table>
+
+<div class="note">
+    <strong>📌 The Industry Convention — Why Everyone Says "Big O":</strong><br>
+    In day-to-day engineering and most interview settings, people say
+    <strong>"Big O"</strong> even when they technically mean Big Θ. When an engineer says
+    "Merge Sort is O(n log n)", they almost always mean it's <em>exactly</em> n log n growth
+    in all cases — i.e., Θ(n log n). This informal-but-universal convention exists because:
+    <ul style="margin-top:8px;">
+        <li>Big O is more conservative — it's never wrong to say O(n) even if Θ(n) is tighter</li>
+        <li>In practice, we care most about <em>worst-case</em> guarantees</li>
+        <li>Writing O is shorter than writing Θ every time</li>
+    </ul>
+    <strong>Know the difference for theoretical/academic contexts. Use Big O comfortably in engineering.</strong>
+</div>
+
+<pre><span class="cm">// Full annotation of the same function with all three notations:</span>
+<span class="kw">public static int</span>[] <span class="mt">MergeSort</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="cm">// Time:  O(n log n) — worst case upper bound</span>
+    <span class="cm">//        Ω(n log n) — best case lower bound</span>
+    <span class="cm">//        Θ(n log n) — tight bound: ALWAYS exactly n log n, any input</span>
+    <span class="cm">// Space: O(n)       — auxiliary merge buffer needed</span>
+    <span class="cm">// ...</span>
+    <span class="kw">return</span> arr; <span class="cm">// placeholder</span>
+}
+
+<span class="kw">public static int</span> <span class="mt">LinearSearch</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target)
+{
+    <span class="cm">// Time:  O(n) — worst case: target absent, check all n elements</span>
+    <span class="cm">//        Ω(1) — best case: target is arr[0], return immediately</span>
+    <span class="cm">//        No Θ — best and worst grow at DIFFERENT rates (1 vs n)</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length; i++)
+        <span class="kw">if</span> (arr[i] == target) <span class="kw">return</span> i;
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}
+
+<span class="cm">// Key rule: If you can prove O(f(n)) AND Ω(f(n)) for the same f(n),</span>
+<span class="cm">// you have proven Θ(f(n)) — the strongest possible complexity claim.</span></pre>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Space Complexity</div>
+
+<p>Space Complexity measures how much <strong>additional memory</strong> an algorithm uses as the
+input grows. Servers run thousands of requests simultaneously — memory matters just as much as speed.</p>
+
+<div class="note">
+    <strong>📌 Input Space vs Auxiliary Space:</strong><br>
+    We typically only count <em>extra</em> memory the algorithm allocates — not the input itself.
+    An algorithm that sorts an array in-place uses O(1) extra space even though the array is O(n).
+</div>
+
+<pre><span class="cm">// O(1) Space — uses the same fixed memory regardless of input size</span>
+<span class="kw">public static int</span> <span class="mt">MaxValue</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">int</span> max = arr[<span class="nm">0</span>]; <span class="cm">// ONE extra variable — always O(1)</span>
+    <span class="kw">foreach</span> (<span class="kw">int</span> x <span class="kw">in</span> arr)
+        <span class="kw">if</span> (x &gt; max) max = x;
+    <span class="kw">return</span> max;
+}
+
+<span class="cm">// O(n) Space — extra memory grows proportionally with input</span>
+<span class="kw">public static int</span>[] <span class="mt">DoubleAll</span>(<span class="kw">int</span>[] arr)
+{
+    <span class="kw">int</span>[] result = <span class="kw">new int</span>[arr.Length]; <span class="cm">// New array same size as input = O(n)</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length; i++)
+        result[i] = arr[i] * <span class="nm">2</span>;
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// O(n) Space — Recursive Fibonacci uses O(n) call stack space</span>
+<span class="cm">// Each recursive call sits on the call stack until it returns.</span>
+<span class="cm">// FibNaive(n) puts n frames on the stack simultaneously.</span></pre>
+
+<div class="diagram">TIME vs SPACE TRADEOFF — A Common Decision
+
+Problem: "Is this number in the array?" called 1000 times
+
+OPTION 1 — O(n) Time, O(1) Space:
+  Linear search every time.
+  1000 queries × n operations = 1000n total work.
+
+OPTION 2 — O(1) Time, O(n) Space:
+  Build a HashSet once (O(n) space, O(n) prep time).
+  Each query: O(1) lookup.
+  1000 queries × O(1) = 1000 operations total.
+
+→ Trade SPACE for SPEED: pay O(n) memory once, save O(n) per query.
+→ This pattern appears constantly: caching, indexing, lookup tables.</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Arrays: The Foundation of All Data Structures</div>
+
+<p>The array is the single most important data structure in computer science.
+<strong>Everything else is built on top of it.</strong> Linked lists, stacks, queues, hash tables,
+heaps — all of them use arrays internally or are inspired by the array's memory model.
+You must understand arrays at the memory level before moving forward.</p>
+
+<h3>4.1 — How Arrays Work in Memory</h3>
+<p>When you create an array, the operating system allocates a <strong>single, contiguous block of memory</strong>.
+All elements sit side by side in RAM with no gaps. This layout is what makes arrays so powerful.</p>
+
+<div class="diagram">ARRAY MEMORY LAYOUT — int[] temps = { 23, 31, 18, 27, 35 }
+
+  Memory Address: 1000    1004    1008    1012    1016
+                +------++------++------++------++------+
+  Stored Value: |  23  ||  31  ||  18  ||  27  ||  35  |
+                +------++------++------++------++------+
+  Array Index:    [0]     [1]     [2]     [3]     [4]
+                  ↑
+                  Base address (1000)
+
+  Each int = 4 bytes. Formula:
+  address(index) = baseAddress + (index × elementSize)
+  address(3) = 1000 + (3 × 4) = 1012  → value = 27  ✓
+
+  This formula is ONE arithmetic operation = O(1), always instant!</div>
+
+<div class="tip">
+    <strong>💡 Why Index Access is O(1):</strong><br>
+    The CPU computes <code>address = base + index × size</code> in a single instruction.
+    This formula works the same whether the array has 5 elements or 5 million.
+    That is why <code>arr[i]</code> is <em>always</em> O(1) — it's just arithmetic on memory addresses.
+</div>
+
+<h3>4.2 — Creating Arrays in C#</h3>
+
+<pre><span class="cm">// ── Method 1: Declare size only (all values default to 0/null/false) ──</span>
+<span class="kw">int</span>[]    ages    = <span class="kw">new int</span>[<span class="nm">5</span>];           <span class="cm">// [0, 0, 0, 0, 0]</span>
+<span class="kw">bool</span>[]   flags   = <span class="kw">new bool</span>[<span class="nm">3</span>];          <span class="cm">// [false, false, false]</span>
+<span class="kw">string</span>[] names   = <span class="kw">new string</span>[<span class="nm">4</span>];        <span class="cm">// [null, null, null, null]</span>
+
+ages[<span class="nm">0</span>] = <span class="nm">25</span>; ages[<span class="nm">1</span>] = <span class="nm">30</span>; ages[<span class="nm">2</span>] = <span class="nm">22</span>;
+
+<span class="cm">// ── Method 2: Declare and initialize inline (most common) ──</span>
+<span class="kw">int</span>[]    primes  = { <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">5</span>, <span class="nm">7</span>, <span class="nm">11</span>, <span class="nm">13</span> };
+<span class="kw">string</span>[] days    = { <span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>, <span class="st">"Fri"</span> };
+<span class="kw">double</span>[] prices  = { <span class="nm">9.99</span>, <span class="nm">14.50</span>, <span class="nm">3.75</span>, <span class="nm">22.00</span> };
+
+<span class="cm">// ── Method 3: Explicit new with values ──</span>
+<span class="kw">int</span>[] squares = <span class="kw">new int</span>[] { <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">9</span>, <span class="nm">16</span>, <span class="nm">25</span> };
+
+<span class="cm">// ── Iterating arrays ──</span>
+<span class="kw">foreach</span> (<span class="kw">int</span> p <span class="kw">in</span> primes)
+    <span class="tp">Console</span>.<span class="mt">Write</span>(p + <span class="st">" "</span>); <span class="cm">// 2 3 5 7 11 13</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>();
+
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; primes.Length; i++)
+    <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="st">$"[{i}]={primes[i]} "</span>); <span class="cm">// [0]=2 [1]=3 ...</span></pre>
+
+<h3>4.3 — Multi-Dimensional Arrays</h3>
+
+<pre><span class="cm">// ── 2D array (matrix / grid) ──</span>
+<span class="kw">int</span>[,] matrix = {
+    { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span> },
+    { <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span> },
+    { <span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span> }
+};
+
+<span class="kw">int</span> rows = matrix.<span class="mt">GetLength</span>(<span class="nm">0</span>);   <span class="cm">// 3 rows</span>
+<span class="kw">int</span> cols = matrix.<span class="mt">GetLength</span>(<span class="nm">1</span>);   <span class="cm">// 3 cols</span>
+
+<span class="cm">// Print the matrix:</span>
+<span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; rows; r++)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; cols; c++)
+        <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="st">$"{matrix[r, c],4}"</span>);
+    <span class="tp">Console</span>.<span class="mt">WriteLine</span>();
+}
+<span class="cm">// Output:
+//    1   2   3
+//    4   5   6
+//    7   8   9</span>
+
+<span class="cm">// ── Jagged array (array of arrays — each row can be different length) ──</span>
+<span class="kw">int</span>[][] jagged = <span class="kw">new int</span>[<span class="nm">3</span>][];
+jagged[<span class="nm">0</span>] = <span class="kw">new int</span>[] { <span class="nm">1</span>, <span class="nm">2</span> };
+jagged[<span class="nm">1</span>] = <span class="kw">new int</span>[] { <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span> };
+jagged[<span class="nm">2</span>] = <span class="kw">new int</span>[] { <span class="nm">6</span> };</pre>
+
+<div class="warning">
+    <strong>🚨 IndexOutOfRangeException — The Most Common Beginner Bug:</strong><br>
+    Arrays are <strong>zero-indexed</strong>. A 5-element array has valid indices 0, 1, 2, 3, 4.<br>
+    Accessing index 5 throws <code>IndexOutOfRangeException</code> at runtime.<br><br>
+    Safe pattern: always use <code>arr.Length - 1</code> for the last element, never hardcode the max index.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Array Operations &amp; Their Complexity</div>
+
+<h3>5.1 — Read (Access by Index) — O(1)</h3>
+<p>The superpower of arrays. Instant access to any element using the address formula.</p>
+
+<pre><span class="kw">string</span>[] capitals = { <span class="st">"London"</span>, <span class="st">"Paris"</span>, <span class="st">"Berlin"</span>, <span class="st">"Tokyo"</span>, <span class="st">"Sydney"</span> };
+
+<span class="kw">string</span> second = capitals[<span class="nm">1</span>];              <span class="cm">// "Paris"  — O(1)</span>
+<span class="kw">string</span> last   = capitals[capitals.Length-<span class="nm">1</span>]; <span class="cm">// "Sydney" — O(1)</span>
+
+<span class="cm">// Read is O(1) regardless of array size — the address formula never changes</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Second capital: {second}"</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Last capital: {last}"</span>);</pre>
+
+<hr>
+
+<h3>5.2 — Search — O(n) unsorted, O(log n) sorted</h3>
+<p>When you don't know the index, you must search. Your strategy depends on whether the data is sorted.</p>
+
+<div class="diagram">LINEAR SEARCH — Find "Tokyo" in unsorted ["London","Paris","Berlin","Tokyo","Sydney"]
+
+  Check [0]: "London"  ✗ continue
+  Check [1]: "Paris"   ✗ continue
+  Check [2]: "Berlin"  ✗ continue
+  Check [3]: "Tokyo"   ✓ FOUND at index 3
+
+  Worst case: item is last or absent → n checks → O(n)</div>
+
+<pre><span class="cm">// Linear Search — works on ANY array, sorted or not — O(n)</span>
+<span class="kw">public static int</span> <span class="mt">LinearSearch</span>&lt;<span class="tp">T</span>&gt;(<span class="tp">T</span>[] arr, <span class="tp">T</span> target)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length; i++)
+        <span class="kw">if</span> (arr[i].<span class="mt">Equals</span>(target)) <span class="kw">return</span> i;
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}
+
+<span class="cm">// Binary Search — requires SORTED array — O(log n)</span>
+<span class="cm">// (shown in Section 2.2, and also built in: Array.BinarySearch)</span>
+<span class="kw">int</span>[] sorted = { <span class="nm">11</span>, <span class="nm">22</span>, <span class="nm">33</span>, <span class="nm">44</span>, <span class="nm">55</span>, <span class="nm">66</span>, <span class="nm">77</span>, <span class="nm">88</span> };
+<span class="kw">int</span>   idx    = <span class="tp">Array</span>.<span class="mt">BinarySearch</span>(sorted, <span class="nm">55</span>); <span class="cm">// 4</span></pre>
+
+<hr>
+
+<h3>5.3 — Insert — O(n) worst case</h3>
+<p>Arrays have <strong>fixed size</strong> in C#. "Inserting" means creating a new larger array,
+copying elements, and placing the new value. The closer to the start you insert, the more shifting required.</p>
+
+<div class="diagram">INSERT 99 at index 2 into [10, 20, 30, 40, 50]
+
+Step 1: Allocate new array of size 6
+Step 2: Copy elements 0..1:   [ 10 | 20 |    |    |    |    ]
+Step 3: Place new value:      [ 10 | 20 | 99 |    |    |    ]
+Step 4: Copy rest shifted:    [ 10 | 20 | 99 | 30 | 40 | 50 ] ✓
+
+Elements shifted: 3 (indices 2,3,4)
+Worst case: insert at index 0 → shift ALL n elements → O(n)</div>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">InsertAt</span>(<span class="kw">int</span>[] orig, <span class="kw">int</span> index, <span class="kw">int</span> value)
+{
+    <span class="kw">int</span>[] newArr = <span class="kw">new int</span>[orig.Length + <span class="nm">1</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; index; i++)
+        newArr[i] = orig[i];        <span class="cm">// copy left portion</span>
+    newArr[index] = value;          <span class="cm">// insert new value</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = index; i &lt; orig.Length; i++)
+        newArr[i + <span class="nm">1</span>] = orig[i];   <span class="cm">// shift right portion</span>
+    <span class="kw">return</span> newArr;
+}
+<span class="kw">int</span>[] arr = { <span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span> };
+<span class="kw">int</span>[] res = <span class="mt">InsertAt</span>(arr, <span class="nm">2</span>, <span class="nm">99</span>); <span class="cm">// [10,20,99,30,40,50]</span>
+
+<span class="cm">// Append to end — O(1) since no shifting:</span>
+<span class="kw">int</span>[] extended = <span class="kw">new int</span>[arr.Length + <span class="nm">1</span>];
+<span class="tp">Array</span>.<span class="mt">Copy</span>(arr, extended, arr.Length);
+extended[arr.Length] = <span class="nm">999</span>; <span class="cm">// [10,20,30,40,50,999]</span></pre>
+
+<hr>
+
+<h3>5.4 — Delete — O(n) worst case</h3>
+<p>Deletion requires shifting all elements after the removed index left by one to close the gap.</p>
+
+<div class="diagram">DELETE index 1 from [10, 20, 30, 40, 50]
+
+Before:  [ 10 | 20 | 30 | 40 | 50 ]
+               ↑ remove index 1 (value 20)
+
+Shift left — all elements after index 1 move one position left:
+After:   [ 10 | 30 | 40 | 50 ]   ← new size = n-1
+
+Worst case: delete first element → shift ALL n-1 elements → O(n)</div>
+
+<pre><span class="kw">public static int</span>[] <span class="mt">DeleteAt</span>(<span class="kw">int</span>[] orig, <span class="kw">int</span> index)
+{
+    <span class="kw">int</span>[] newArr = <span class="kw">new int</span>[orig.Length - <span class="nm">1</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; index; i++)
+        newArr[i] = orig[i];            <span class="cm">// copy before</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = index + <span class="nm">1</span>; i &lt; orig.Length; i++)
+        newArr[i - <span class="nm">1</span>] = orig[i];       <span class="cm">// shift left</span>
+    <span class="kw">return</span> newArr;
+}
+<span class="kw">int</span>[] arr = { <span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span> };
+<span class="kw">int</span>[] res = <span class="mt">DeleteAt</span>(arr, <span class="nm">1</span>); <span class="cm">// [10,30,40,50]</span></pre>
+
+<hr>
+
+<h3>5.5 — Array Operations Summary Table</h3>
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Best Case</th><th>Worst Case</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Read by index</td><td class="g">O(1)</td><td class="g">O(1)</td><td>Address formula — always 1 step</td></tr>
+        <tr><td>Search (unsorted)</td><td class="g">O(1)</td><td class="r">O(n)</td><td>Best: first element. Worst: last/absent</td></tr>
+        <tr><td>Search (sorted, Binary)</td><td class="g">O(1)</td><td class="g">O(log n)</td><td>Halves the problem each step</td></tr>
+        <tr><td>Insert at end</td><td class="g">O(1)</td><td class="g">O(1)</td><td>No shifting needed</td></tr>
+        <tr><td>Insert at middle/start</td><td class="r">O(n)</td><td class="r">O(n)</td><td>Must shift all following elements right</td></tr>
+        <tr><td>Delete at end</td><td class="g">O(1)</td><td class="g">O(1)</td><td>No shifting needed</td></tr>
+        <tr><td>Delete at middle/start</td><td class="r">O(n)</td><td class="r">O(n)</td><td>Must shift all following elements left</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Arrays in Real Production Systems:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>CPU Caches:</strong> Arrays are cache-friendly because adjacent memory = cache hits. Linked lists cause cache misses.</li>
+        <li><strong>Image Processing:</strong> Every image is a 2D array of pixels (RGB values). Video frames are sequences of these arrays.</li>
+        <li><strong>Machine Learning:</strong> Neural network weights are stored in arrays (tensors). Matrix multiplication is O(n³) array operations.</li>
+        <li><strong>Game Development:</strong> Entity positions, tile maps, collision grids — all arrays for O(1) access performance.</li>
+    </ul>
+</div>
+
+<div class="nav-box">
+    <strong>✅ Module 1 Part A Complete!</strong><br><br>
+    <strong>Key Takeaways:</strong><br>
+    • Big O describes worst-case growth rate — drop constants and lower terms<br>
+    • Arrays use contiguous memory → O(1) index access via address formula<br>
+    • Arrays are fixed-size — insert/delete in middle costs O(n) due to shifting<br>
+    • Binary Search requires a sorted array but achieves O(log n)<br>
+    • Always prefer built-in <code>Array.Sort()</code> (O(n log n)) over manual sorts<br><br>
+    ➡ <strong>Next:</strong> <a href="m01b_strings.html">Part B — Strings &amp; StringBuilder</a><br>
+    🏠 <a href="../Index.html">Course Index</a>
+</div>
+
+</body>
+</html>
