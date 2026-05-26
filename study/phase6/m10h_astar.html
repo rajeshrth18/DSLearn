@@ -1,49 +1,50 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 10H — A* Search Algorithm | DSA Masterbook</title>
+    <title>Module 10H � A* Search Algorithm | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
-    <h1>Module 10 — Part H</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
+    <h1>Module 10 � Part H</h1>
     <div class="tagline">A* Search Algorithm</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Heuristic-guided shortest path — f(n) = g(n) + h(n) with admissible heuristics</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Heuristic-guided shortest path � f(n) = g(n) + h(n) with admissible heuristics</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Module 10 of Phase 6</span>
+        <span>? Estimated Time: 2 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Module 10 of Phase 6</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
-    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
-    ✅ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
-    ✅ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
-    ✅ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
-    ✅ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
-    ✅ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
-    ▶ <strong>Part H</strong> — <em>You are here</em> — A* Search Algorithm<br>
-    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 10 � Graph Algorithms:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ? <strong>Part B</strong> � <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ? <strong>Part C</strong> � <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ? <strong>Part D</strong> � <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ? <strong>Part E</strong> � <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ? <strong>Part F</strong> � <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ? <strong>Part G</strong> � <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ? <strong>Part H</strong> � <em>You are here</em> � A* Search Algorithm<br>
+    ? <strong>Part I</strong> � <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
     <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — Dijkstra vs. A*: Adding a Heuristic</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � Dijkstra vs. A*: Adding a Heuristic</div>
 
-<p>Dijkstra's algorithm explores nodes by expanding the one with the <em>smallest cost so far</em>, <strong>g(n)</strong>. This is correct but inefficient — it explores nodes in all directions like a ripple.</p>
-<p>A* adds a <strong>heuristic estimate h(n)</strong> — a guess of the remaining cost to the goal. By expanding the node with the smallest <strong>f(n) = g(n) + h(n)</strong>, A* is guided toward the goal and explores far fewer nodes.</p>
+<p>Dijkstra's algorithm explores nodes by expanding the one with the <em>smallest cost so far</em>, <strong>g(n)</strong>. This is correct but inefficient � it explores nodes in all directions like a ripple.</p>
+<p>A* adds a <strong>heuristic estimate h(n)</strong> � a guess of the remaining cost to the goal. By expanding the node with the smallest <strong>f(n) = g(n) + h(n)</strong>, A* is guided toward the goal and explores far fewer nodes.</p>
 
 <div class="diagram">Comparison on a grid (S=start, G=goal, X=wall):
 
@@ -57,11 +58,11 @@ Dijkstra explores:              A* with Manhattan heuristic explores:
   (nearly the whole grid)         (only a corridor toward goal)
 
 g(n) = actual cost from S to n
-h(n) = estimated cost from n to G  ← must NEVER overestimate (admissible!)
-f(n) = g(n) + h(n)                 ← priority queue key</div>
+h(n) = estimated cost from n to G  ? must NEVER overestimate (admissible!)
+f(n) = g(n) + h(n)                 ? priority queue key</div>
 
 <div class="realworld">
-    <strong>🌍 Real-World Applications:</strong>
+    <strong>?? Real-World Applications:</strong>
     <ul style="margin-top:8px;">
         <li><strong>Game AI:</strong> Pathfinding for game characters (used in virtually every RTS/RPG game)</li>
         <li><strong>GPS navigation:</strong> Find shortest driving route with geographic heuristics</li>
@@ -70,36 +71,36 @@ f(n) = g(n) + h(n)                 ← priority queue key</div>
     </ul>
 </div>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Admissible &amp; Consistent Heuristics</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Admissible &amp; Consistent Heuristics</div>
 
 <p>The heuristic function <code>h(n)</code> must be <strong>admissible</strong> to guarantee optimal results:</p>
 <ul>
-    <li><strong>Admissible:</strong> <code>h(n) ≤ actual cost to goal</code> — never overestimates</li>
-    <li><strong>Consistent (monotone):</strong> <code>h(n) ≤ cost(n→n') + h(n')</code> — satisfies triangle inequality</li>
+    <li><strong>Admissible:</strong> <code>h(n) = actual cost to goal</code> � never overestimates</li>
+    <li><strong>Consistent (monotone):</strong> <code>h(n) = cost(n?n') + h(n')</code> � satisfies triangle inequality</li>
 </ul>
 
 <table>
     <thead><tr><th>Heuristic</th><th>Use Case</th><th>Formula</th><th>Admissible?</th></tr></thead>
     <tbody>
         <tr><td>Manhattan Distance</td><td>Grid (4-directional)</td><td>|dx| + |dy|</td><td>Yes</td></tr>
-        <tr><td>Euclidean Distance</td><td>Grid (8-dir / free movement)</td><td>√(dx² + dy²)</td><td>Yes</td></tr>
+        <tr><td>Euclidean Distance</td><td>Grid (8-dir / free movement)</td><td>v(dx� + dy�)</td><td>Yes</td></tr>
         <tr><td>Chebyshev Distance</td><td>Grid (8-directional, equal diag)</td><td>max(|dx|, |dy|)</td><td>Yes</td></tr>
         <tr><td>h(n) = 0</td><td>Any (degenerates to Dijkstra)</td><td>0</td><td>Yes (trivially)</td></tr>
     </tbody>
 </table>
 
 <div class="warning">
-    <strong>⚠️ Non-Admissible Heuristic:</strong> If h(n) overestimates, A* may find a suboptimal path (but runs faster).
-    This is called "weighted A*" — a practical trade-off in games where a near-optimal path is good enough.
+    <strong>?? Non-Admissible Heuristic:</strong> If h(n) overestimates, A* may find a suboptimal path (but runs faster).
+    This is called "weighted A*" � a practical trade-off in games where a near-optimal path is good enough.
 </div>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — A* Implementation: Grid Pathfinding</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � A* Implementation: Grid Pathfinding</div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System.Collections.Generic;
 
 <span class="kw">public class</span> <span class="tp">AStar</span>
@@ -152,7 +153,7 @@ f(n) = g(n) + h(n)                 ← priority queue key</div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 
 <span class="kw">def</span> <span class="mt">astar</span>(grid: <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">int</span>]], start: <span class="tp">tuple</span>, goal: <span class="tp">tuple</span>) -&gt; <span class="tp">int</span>:
@@ -189,12 +190,12 @@ grid = [
 print(<span class="mt">astar</span>(grid, (<span class="nm">0</span>,<span class="nm">0</span>), (<span class="nm">2</span>,<span class="nm">3</span>)))  <span class="cm"># 5</span></pre>
 </div>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — A* on General Graphs &amp; Weighted Edges</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � A* on General Graphs &amp; Weighted Edges</div>
 
 <p>A* works on any graph where you can define an admissible heuristic. For weighted graphs, replace the uniform <code>ng = g + 1</code> cost with the actual edge weight.</p>
 
-<div class="lang-label lang-cs">C# — Weighted Graph A*</div>
+<div class="lang-label lang-cs">C# � Weighted Graph A*</div>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre>
@@ -223,11 +224,11 @@ print(<span class="mt">astar</span>(grid, (<span class="nm">0</span>,<span class
     [<span class="st">"A"</span>]=<span class="kw">new</span>(){(<span class="st">"B"</span>,<span class="nm">4</span>),(<span class="st">"C"</span>,<span class="nm">2</span>)}, [<span class="st">"B"</span>]=<span class="kw">new</span>(){(<span class="st">"D"</span>,<span class="nm">3</span>)},
     [<span class="st">"C"</span>]=<span class="kw">new</span>(){(<span class="st">"B"</span>,<span class="nm">1</span>),(<span class="st">"D"</span>,<span class="nm">5</span>)}, [<span class="st">"D"</span>]=<span class="kw">new</span>()};
 <span class="kw">var</span> h = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">double</span>&gt;{[<span class="st">"A"</span>]=<span class="nm">6</span>,[<span class="st">"B"</span>]=<span class="nm">2</span>,[<span class="st">"C"</span>]=<span class="nm">4</span>,[<span class="st">"D"</span>]=<span class="nm">0</span>};
-<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">AStarWeighted</span>(adj, h, <span class="st">"A"</span>, <span class="st">"D"</span>)); <span class="cm">// 6  (A→C→B→D)</span></pre>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">AStarWeighted</span>(adj, h, <span class="st">"A"</span>, <span class="st">"D"</span>)); <span class="cm">// 6  (A?C?B?D)</span></pre>
 </div>
-<div class="lang-label lang-py">Python — Weighted Graph A*</div>
+<div class="lang-label lang-py">Python � Weighted Graph A*</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">astar_weighted</span>(adj: <span class="tp">dict</span>, h: <span class="tp">dict</span>, start, goal) -&gt; <span class="tp">float</span>:
     <span class="cm">"""
     adj: {node: [(neighbor, weight), ...]}
@@ -250,25 +251,25 @@ print(<span class="mt">astar</span>(grid, (<span class="nm">0</span>,<span class
 <span class="cm"># City graph with straight-line distance heuristic</span>
 adj = {<span class="st">'A'</span>: [(<span class="st">'B'</span>,<span class="nm">4</span>),(<span class="st">'C'</span>,<span class="nm">2</span>)], <span class="st">'B'</span>: [(<span class="st">'D'</span>,<span class="nm">3</span>)], <span class="st">'C'</span>: [(<span class="st">'B'</span>,<span class="nm">1</span>),(<span class="st">'D'</span>,<span class="nm">5</span>)], <span class="st">'D'</span>: []}
 h    = {<span class="st">'A'</span>: <span class="nm">6</span>, <span class="st">'B'</span>: <span class="nm">2</span>, <span class="st">'C'</span>: <span class="nm">4</span>, <span class="st">'D'</span>: <span class="nm">0</span>}  <span class="cm"># D is goal</span>
-print(<span class="mt">astar_weighted</span>(adj, h, <span class="st">'A'</span>, <span class="st">'D'</span>))  <span class="cm"># 6  (A→C→B→D)</span></pre>
+print(<span class="mt">astar_weighted</span>(adj, h, <span class="st">'A'</span>, <span class="st">'D'</span>))  <span class="cm"># 6  (A?C?B?D)</span></pre>
 </div>
 
 <div class="note">
-    <strong>📌 A* vs Dijkstra Summary:</strong>
+    <strong>?? A* vs Dijkstra Summary:</strong>
     <table style="margin-top:10px;">
         <thead><tr><th>Property</th><th>Dijkstra</th><th>A*</th></tr></thead>
         <tbody>
-            <tr><td>Heuristic</td><td>None (h=0)</td><td>h(n) ≥ 0, admissible</td></tr>
+            <tr><td>Heuristic</td><td>None (h=0)</td><td>h(n) = 0, admissible</td></tr>
             <tr><td>Optimal?</td><td>Yes</td><td>Yes (if h admissible)</td></tr>
             <tr><td>Nodes explored</td><td>All reachable</td><td>Fewer (goal-directed)</td></tr>
             <tr><td>Best for</td><td>All-pairs or no heuristic info</td><td>Single-target with spatial info</td></tr>
-            <tr><td>Complexity</td><td>O((V+E) log V)</td><td>O(b^d) — depends on heuristic quality</td></tr>
+            <tr><td>Complexity</td><td>O((V+E) log V)</td><td>O(b^d) � depends on heuristic quality</td></tr>
         </tbody>
     </table>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10H Complete</button>
-<div class="toast" id="toast">✅ Module 10H complete! A* Search mastered!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 10H Complete</button>
+<div class="toast" id="toast">? Module 10H complete! A* Search mastered!</div>
     <script>var MODULE_ID = 'm10h';</script>
     <script src="../dsa.js"></script>
 </body>

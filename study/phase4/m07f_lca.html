@@ -1,36 +1,37 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 7F — LCA & Binary Lifting</title>
+    <title>Module 7F � LCA & Binary Lifting</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
-    <h1>Module 7 — Part F</h1>
-    <div class="tagline">LCA &amp; Binary Lifting — Finding Common Ancestors in O(log n)</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Naïve O(n), parent pointer O(h), and binary lifting O(log n) with O(n log n) preprocessing</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 4</div>
+    <h1>Module 7 � Part F</h1>
+    <div class="tagline">LCA &amp; Binary Lifting � Finding Common Ancestors in O(log n)</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Na�ve O(n), parent pointer O(h), and binary lifting O(log n) with O(n log n) preprocessing</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# + Python</span>
-        <span>📝 Part I of Module 6/7</span>
+        <span>? Estimated Time: 2 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# + Python</span>
+        <span>?? Part I of Module 6/7</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m07a_avl_trees.html">AVL Trees</a><br>
-    ✅ <strong>Part B</strong> — <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
-    ✅ <strong>Part C</strong> — <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
-    ✅ <strong>Part D</strong> — <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
-    ✅ <strong>Part E</strong> — <a href="m07e_btrees.html">B-Trees</a><br>
-    ▶ <strong>Part F</strong> — <em>You are here</em> — LCA &amp; Binary Lifting<br>
-    ⬜ <strong>Part G</strong> — <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 7 � Advanced Trees:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m07a_avl_trees.html">AVL Trees</a><br>
+    ? <strong>Part B</strong> � <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
+    ? <strong>Part C</strong> � <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
+    ? <strong>Part D</strong> � <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
+    ? <strong>Part E</strong> � <a href="m07e_btrees.html">B-Trees</a><br>
+    ? <strong>Part F</strong> � <em>You are here</em> � LCA &amp; Binary Lifting<br>
+    ? <strong>Part G</strong> � <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
@@ -38,48 +39,48 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Module 7F</h2>
+    <h2>?? Contents � Module 7F</h2>
     <ol>
-        <li>The Analogy — Family Tree Common Ancestor <span>— Lowest Common Ancestor defined</span></li>
-        <li>The Problem LCA Solves <span>— Distance, path queries on trees</span></li>
-        <li>Visual Walkthrough <span>— Naïve, depth-equalization, binary lifting</span></li>
-        <li>Formal Definitions <span>— LCA, depth, ancestor table up[][]</span></li>
-        <li>Complete C# Implementation <span>— All 3 approaches: naïve, parent+depth, binary lifting</span></li>
-        <li>Complete Python Implementation <span>— Same 3 approaches</span></li>
-        <li>Complexity Analysis <span>— O(n) naïve, O(h) parent pointer, O(log n) binary lifting</span></li>
-        <li>Real-World Usage <span>— Tree path queries, network routing, DNA phylogenetics</span></li>
-        <li>Common Mistakes <span>— Off-by-one in binary lifting, wrong depth initialization</span></li>
-        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+        <li>The Analogy � Family Tree Common Ancestor <span>� Lowest Common Ancestor defined</span></li>
+        <li>The Problem LCA Solves <span>� Distance, path queries on trees</span></li>
+        <li>Visual Walkthrough <span>� Na�ve, depth-equalization, binary lifting</span></li>
+        <li>Formal Definitions <span>� LCA, depth, ancestor table up[][]</span></li>
+        <li>Complete C# Implementation <span>� All 3 approaches: na�ve, parent+depth, binary lifting</span></li>
+        <li>Complete Python Implementation <span>� Same 3 approaches</span></li>
+        <li>Complexity Analysis <span>� O(n) na�ve, O(h) parent pointer, O(log n) binary lifting</span></li>
+        <li>Real-World Usage <span>� Tree path queries, network routing, DNA phylogenetics</span></li>
+        <li>Common Mistakes <span>� Off-by-one in binary lifting, wrong depth initialization</span></li>
+        <li>Check Your Understanding <span>� 5 quiz questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Analogy: Family Tree Common Ancestor</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Analogy: Family Tree Common Ancestor</div>
 
-<p>Given a family tree, the Lowest Common Ancestor (LCA) of two people is their most recent common ancestor — the closest ancestor that both share. "Lowest" means deepest in the tree (closest to the leaves), not lowest in value or position.</p>
+<p>Given a family tree, the Lowest Common Ancestor (LCA) of two people is their most recent common ancestor � the closest ancestor that both share. "Lowest" means deepest in the tree (closest to the leaves), not lowest in value or position.</p>
 
-<p>For example: Alice and Bob are cousins. Their grandparent is a common ancestor. Their great-grandparent is also a common ancestor. But the grandparent is the <em>lowest</em> (deepest) common ancestor — the most recent one in the family tree.</p>
+<p>For example: Alice and Bob are cousins. Their grandparent is a common ancestor. Their great-grandparent is also a common ancestor. But the grandparent is the <em>lowest</em> (deepest) common ancestor � the most recent one in the family tree.</p>
 
 <p>In a tree with n nodes, finding this efficiently matters when you have millions of queries: "What is the path between node u and node v?" or "What is the distance from u to v?" Both reduce to LCA queries.</p>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — The Problem LCA Solves</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � The Problem LCA Solves</div>
 
 <ul>
     <li><strong>LCA query:</strong> Given a rooted tree and two nodes u, v, find their lowest common ancestor.</li>
-    <li><strong>Distance query:</strong> dist(u, v) = depth(u) + depth(v) − 2 × depth(LCA(u,v))</li>
+    <li><strong>Distance query:</strong> dist(u, v) = depth(u) + depth(v) - 2 � depth(LCA(u,v))</li>
     <li><strong>Path sum query:</strong> Sum of weights on path from u to v: uses LCA as the split point</li>
-    <li><strong>Multiple queries:</strong> If you have Q queries on a tree with n nodes, naïve O(n) per query → O(nQ) total. Binary lifting: O(n log n) preprocessing + O(log n) per query → much better for Q >> 1.</li>
+    <li><strong>Multiple queries:</strong> If you have Q queries on a tree with n nodes, na�ve O(n) per query ? O(nQ) total. Binary lifting: O(n log n) preprocessing + O(log n) per query ? much better for Q >> 1.</li>
 </ul>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Visual Walkthrough</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Visual Walkthrough</div>
 
-<h3>3.1 — Example Tree</h3>
+<h3>3.1 � Example Tree</h3>
 <div class="diagram">Tree structure (node numbers, root = 1):
 
               1           depth 0
@@ -93,33 +94,33 @@
 Parent array: parent[2]=1, parent[3]=1, parent[4]=2, parent[5]=2,
               parent[6]=3, parent[7]=3, parent[8]=4</div>
 
-<h3>3.2 — Approach 1: Naïve Path Tracking O(n)</h3>
-<div class="diagram">LCA(5, 6) — Naïve approach:
-  Path from 5 to root: 5 → 2 → 1
-  Path from 6 to root: 6 → 3 → 1
-  First common: 1 → LCA(5,6) = 1
+<h3>3.2 � Approach 1: Na�ve Path Tracking O(n)</h3>
+<div class="diagram">LCA(5, 6) � Na�ve approach:
+  Path from 5 to root: 5 ? 2 ? 1
+  Path from 6 to root: 6 ? 3 ? 1
+  First common: 1 ? LCA(5,6) = 1
 
-LCA(4, 8) — Naïve approach:
-  Path from 4: 4 → 2 → 1
-  Path from 8: 8 → 4 → 2 → 1
-  First common: 4 → LCA(4,8) = 4
+LCA(4, 8) � Na�ve approach:
+  Path from 4: 4 ? 2 ? 1
+  Path from 8: 8 ? 4 ? 2 ? 1
+  First common: 4 ? LCA(4,8) = 4
 
 Problem: O(n) per query for a skewed tree (chain).</div>
 
-<h3>3.3 — Approach 2: Depth Equalization + Parent Walk O(h)</h3>
-<div class="diagram">LCA(8, 6) — using depth + parent walk:
+<h3>3.3 � Approach 2: Depth Equalization + Parent Walk O(h)</h3>
+<div class="diagram">LCA(8, 6) � using depth + parent walk:
   depth[8] = 3, depth[6] = 2
-  Step 1: Equalize depths — bring deeper node up
-    8 is at depth 3, 6 is at depth 2 → 8 needs to go up 1 step
-    8 → parent = 4 (now both at depth 2)
+  Step 1: Equalize depths � bring deeper node up
+    8 is at depth 3, 6 is at depth 2 ? 8 needs to go up 1 step
+    8 ? parent = 4 (now both at depth 2)
   Step 2: Walk both nodes up simultaneously until they meet
-    4 ≠ 6 → both go up: 4→2, 6→3
-    2 ≠ 3 → both go up: 2→1, 3→1
-    1 == 1 → FOUND: LCA(8,6) = 1
+    4 ? 6 ? both go up: 4?2, 6?3
+    2 ? 3 ? both go up: 2?1, 3?1
+    1 == 1 ? FOUND: LCA(8,6) = 1
 
 Better, but O(h) in worst case for skewed trees.</div>
 
-<h3>3.4 — Approach 3: Binary Lifting O(log n)</h3>
+<h3>3.4 � Approach 3: Binary Lifting O(log n)</h3>
 <div class="diagram">BINARY LIFTING PREPROCESSING:
   up[node][j] = 2^j-th ancestor of node
   up[node][0] = direct parent
@@ -132,40 +133,40 @@ For our tree (LOG = 4 levels):
 
 LCA(8, 7) using binary lifting:
   depth[8]=3, depth[7]=2
-  Step 1: Equalize — 8 needs to go up 1 (depth diff = 3-2=1)
-    1 = binary 1 = 2^0 → jump up[8][0] = 4
+  Step 1: Equalize � 8 needs to go up 1 (depth diff = 3-2=1)
+    1 = binary 1 = 2^0 ? jump up[8][0] = 4
     Now: node_u = 4 (depth 2), node_v = 7 (depth 2)
   Step 2: Binary search for LCA
     Check 2^j jumps from both, largest j where they DON'T meet:
-    j=1: up[4][1]=1, up[7][1]=1 → same (1==1) → don't jump (they'd overshoot)
-    j=0: up[4][0]=2, up[7][0]=3 → different → JUMP: 4→2, 7→3
-    Now: 2 ≠ 3, check their parents: parent[2]=1=parent[3]=1 → LCA = 1</div>
+    j=1: up[4][1]=1, up[7][1]=1 ? same (1==1) ? don't jump (they'd overshoot)
+    j=0: up[4][0]=2, up[7][0]=3 ? different ? JUMP: 4?2, 7?3
+    Now: 2 ? 3, check their parents: parent[2]=1=parent[3]=1 ? LCA = 1</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Formal Definitions</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Formal Definitions</div>
 
 <ul>
     <li><strong>LCA(u, v):</strong> The deepest node that is an ancestor of both u and v. A node is an ancestor of itself.</li>
     <li><strong>depth[v]:</strong> Number of edges from root to v. depth[root] = 0.</li>
     <li><strong>up[v][j]:</strong> The 2^j-th ancestor of v. up[v][0] = parent[v]. up[v][j] = up[up[v][j-1]][j-1].</li>
-    <li><strong>LOG:</strong> ⌈log₂(n)⌉ + 1. The maximum number of jumps needed. For n=10⁵: LOG=17.</li>
+    <li><strong>LOG:</strong> ?log2(n)? + 1. The maximum number of jumps needed. For n=105: LOG=17.</li>
     <li><strong>Binary lifting query:</strong> (1) Bring both nodes to the same depth using power-of-2 jumps. (2) Jump both nodes upward in powers of 2, largest first, while they differ. Their parent is the LCA.</li>
 </ul>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Complete C# Implementation</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Complete C# Implementation</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
-<span class="cm">// ── LCA with Binary Lifting ───────────────────────────────────────</span>
+<span class="cm">// -- LCA with Binary Lifting ---------------------------------------</span>
 <span class="kw">public class</span> <span class="tp">LCA</span>
 {
     <span class="kw">private readonly int</span>    N;
@@ -195,7 +196,7 @@ LCA(8, 7) using binary lifting:
         Adj[v].<span class="mt">Add</span>(u);
     }
 
-    <span class="cm">// ── PREPROCESS — DFS to fill depth[] and up[,] ───────────────</span>
+    <span class="cm">// -- PREPROCESS � DFS to fill depth[] and up[,] ---------------</span>
     <span class="kw">public void</span> <span class="mt">Build</span>(<span class="kw">int</span> root = <span class="nm">1</span>)
     {
         <span class="mt">DFS</span>(root, <span class="nm">0</span>, root);   <span class="cm">// parent of root = root (sentinel)</span>
@@ -215,7 +216,7 @@ LCA(8, 7) using binary lifting:
                 <span class="mt">DFS</span>(neighbor, depth + <span class="nm">1</span>, v);
     }
 
-    <span class="cm">// ── QUERY — find LCA of u and v ───────────────────────────────</span>
+    <span class="cm">// -- QUERY � find LCA of u and v -------------------------------</span>
     <span class="kw">public int</span> <span class="mt">QueryLCA</span>(<span class="kw">int</span> u, <span class="kw">int</span> v)
     {
         <span class="cm">// Step 1: Bring u and v to the same depth</span>
@@ -239,7 +240,7 @@ LCA(8, 7) using binary lifting:
         <span class="kw">return</span> Up[u, <span class="nm">0</span>];  <span class="cm">// Parent of u (= parent of v) = LCA</span>
     }
 
-    <span class="cm">// ── DISTANCE between two nodes ────────────────────────────────</span>
+    <span class="cm">// -- DISTANCE between two nodes --------------------------------</span>
     <span class="kw">public int</span> <span class="mt">Distance</span>(<span class="kw">int</span> u, <span class="kw">int</span> v)
     {
         <span class="kw">int</span> lca = <span class="mt">QueryLCA</span>(u, v);
@@ -268,7 +269,7 @@ LCA(8, 7) using binary lifting:
     }
 }
 
-<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+<span class="cm">/* -- Output ------------------------------------------------------
    LCA(5, 6)  = 1
    LCA(4, 8)  = 4
    LCA(8, 7)  = 1
@@ -276,17 +277,17 @@ LCA(8, 7) using binary lifting:
    Dist(5,6)  = 4
    Dist(8,7)  = 5
    Dist(4,8)  = 1
-   ──────────────────────────────────────────────────────────────── */</span></pre>
+   ---------------------------------------------------------------- */</span></pre>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Complete Python Implementation</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Complete Python Implementation</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">import</span> sys
 <span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">from</span> math <span class="kw">import</span> log2
@@ -367,15 +368,15 @@ sys.setrecursionlimit(<span class="nm">100000</span>)
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Complexity Analysis</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Complexity Analysis</div>
 
 <table>
     <thead>
         <tr><th>Approach</th><th>Preprocessing</th><th>Query</th><th>Space</th></tr>
     </thead>
     <tbody>
-        <tr><td>Naïve (path to root + common)</td><td class="g">O(n)</td><td class="r">O(n)</td><td>O(n)</td></tr>
+        <tr><td>Na�ve (path to root + common)</td><td class="g">O(n)</td><td class="r">O(n)</td><td>O(n)</td></tr>
         <tr><td>Parent pointer + depth equalization</td><td class="g">O(n)</td><td class="o">O(h)</td><td>O(n)</td></tr>
         <tr><td>Binary Lifting</td><td class="o">O(n log n)</td><td class="g">O(log n)</td><td class="o">O(n log n)</td></tr>
         <tr><td>Sparse Table (Euler Tour + RMQ)</td><td class="o">O(n log n)</td><td class="g">O(1)</td><td class="o">O(n log n)</td></tr>
@@ -383,117 +384,117 @@ sys.setrecursionlimit(<span class="nm">100000</span>)
 </table>
 
 <div class="tip">
-    <strong>💡 When to use Binary Lifting:</strong> When you have many queries (Q >> 1) and the tree is arbitrary (possibly skewed). For a balanced tree, the parent-pointer approach (O(log n) due to tree height) may be simpler to implement. For competitive programming with Q = 10⁵ queries on n = 10⁵ nodes, always use binary lifting.
+    <strong>?? When to use Binary Lifting:</strong> When you have many queries (Q >> 1) and the tree is arbitrary (possibly skewed). For a balanced tree, the parent-pointer approach (O(log n) due to tree height) may be simpler to implement. For competitive programming with Q = 105 queries on n = 105 nodes, always use binary lifting.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Real-World Usage</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Real-World Usage</div>
 
 <div class="realworld">
-    <strong>🌍 Network Routing — Finding Common Gateway</strong><br>
+    <strong>?? Network Routing � Finding Common Gateway</strong><br>
     In hierarchical network topologies (data center networks with spine-leaf architecture), finding the shortest path between two servers often reduces to finding their LCA in the topology tree: the closest common switch/router they share. LCA + depth gives the path length in O(1) after preprocessing.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Version Control — Git Merge-Base</strong><br>
-    The <code>git merge-base A B</code> command finds the most recent common commit ancestor of two branches — this is exactly an LCA query on the commit graph (which is a DAG, not a tree, but the tree LCA concept generalizes). Git uses this to determine what changed in each branch since their divergence.
+    <strong>?? Version Control � Git Merge-Base</strong><br>
+    The <code>git merge-base A B</code> command finds the most recent common commit ancestor of two branches � this is exactly an LCA query on the commit graph (which is a DAG, not a tree, but the tree LCA concept generalizes). Git uses this to determine what changed in each branch since their divergence.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Computational Biology — Phylogenetic Trees</strong><br>
+    <strong>?? Computational Biology � Phylogenetic Trees</strong><br>
     A phylogenetic tree represents evolutionary relationships between species. The LCA of two species is their most recent common ancestor. Questions like "When did humans and chimpanzees diverge?" are LCA queries on the phylogenetic tree, where edge weights represent evolutionary distance (time or mutation count).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 9 ═══════ -->
-<div class="section-heading">Section 9 — Common Mistakes</div>
+<!-- ------- SECTION 9 ------- -->
+<div class="section-heading">Section 9 � Common Mistakes</div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 1 — Off-by-one in depth equalization:</strong> When equalizing depths, you jump the DEEPER node up by (depth[u] - depth[v]) steps. Be careful: you're reading the diff bit-by-bit (diff >> j &amp; 1). After equalization, both nodes should be at the SAME depth, not one step apart. Verify: after the loop, depth[u] should equal depth[v].
+    <strong>?? Mistake 1 � Off-by-one in depth equalization:</strong> When equalizing depths, you jump the DEEPER node up by (depth[u] - depth[v]) steps. Be careful: you're reading the diff bit-by-bit (diff >> j &amp; 1). After equalization, both nodes should be at the SAME depth, not one step apart. Verify: after the loop, depth[u] should equal depth[v].
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 2 — Wrong ancestor for root's parent:</strong> The root has no parent. In binary lifting, up[root][j] = root for all j (root points to itself). This is the standard sentinel convention — jumping above the root stays at the root. Initialize this correctly or out-of-bounds access will occur.
+    <strong>?? Mistake 2 � Wrong ancestor for root's parent:</strong> The root has no parent. In binary lifting, up[root][j] = root for all j (root points to itself). This is the standard sentinel convention � jumping above the root stays at the root. Initialize this correctly or out-of-bounds access will occur.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 3 — Not handling u == v after depth equalization:</strong> If one node is an ancestor of the other, after equalization they'll be the same node. Return immediately — don't enter the second loop, which would incorrectly jump both nodes up one more time.
+    <strong>?? Mistake 3 � Not handling u == v after depth equalization:</strong> If one node is an ancestor of the other, after equalization they'll be the same node. Return immediately � don't enter the second loop, which would incorrectly jump both nodes up one more time.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 4 — Building the up table in wrong order:</strong> up[v][j] depends on up[up[v][j-1]][j-1]. This means you must compute up[v][j-1] BEFORE up[v][j] for all nodes. The DFS naturally ensures this — when processing a node, all its ancestors have already been processed (they were on the recursion stack before the current node).
+    <strong>?? Mistake 4 � Building the up table in wrong order:</strong> up[v][j] depends on up[up[v][j-1]][j-1]. This means you must compute up[v][j-1] BEFORE up[v][j] for all nodes. The DFS naturally ensures this � when processing a node, all its ancestors have already been processed (they were on the recursion stack before the current node).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 10 ═══════ -->
-<div class="section-heading">Section 10 — Check Your Understanding</div>
+<!-- ------- SECTION 10 ------- -->
+<div class="section-heading">Section 10 � Check Your Understanding</div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q1. For a tree with 100,000 nodes, what is LOG (the number of columns in the binary lifting table)? How much space does the full up[][] table use?</div>
-    <div class="quiz-meta">💡 LOG = ⌈log₂(100000)⌉ + 1. Space = n × LOG entries.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? LOG = ?log2(100000)? + 1. Space = n � LOG entries.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        log₂(100000) ≈ 16.6, so ⌈16.6⌉ = 17, LOG = 17 + 1 = 18 (with a safety buffer).<br>
-        Space: 100000 × 17 = 1,700,000 integers. At 4 bytes each ≈ 6.8 MB. This is well within typical competitive programming memory limits (256MB).
+        log2(100000) � 16.6, so ?16.6? = 17, LOG = 17 + 1 = 18 (with a safety buffer).<br>
+        Space: 100000 � 17 = 1,700,000 integers. At 4 bytes each � 6.8 MB. This is well within typical competitive programming memory limits (256MB).
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q2. How do you compute the distance between two nodes u and v using LCA?</div>
-    <div class="quiz-meta">💡 dist(u,v) = ? Think about the path u → LCA → v.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? dist(u,v) = ? Think about the path u ? LCA ? v.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>dist(u, v) = depth[u] + depth[v] − 2 × depth[LCA(u,v)]</strong><br>
-        The path from u to v goes: u → LCA → v. The length u→LCA = depth[u] - depth[LCA]. The length LCA→v = depth[v] - depth[LCA]. Total = depth[u] - depth[LCA] + depth[v] - depth[LCA] = depth[u] + depth[v] - 2×depth[LCA].
+        <strong>dist(u, v) = depth[u] + depth[v] - 2 � depth[LCA(u,v)]</strong><br>
+        The path from u to v goes: u ? LCA ? v. The length u?LCA = depth[u] - depth[LCA]. The length LCA?v = depth[v] - depth[LCA]. Total = depth[u] - depth[LCA] + depth[v] - depth[LCA] = depth[u] + depth[v] - 2�depth[LCA].
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q3. What is up[v][2] in binary lifting? Describe it in words.</div>
-    <div class="quiz-meta">💡 up[v][j] is the 2^j-th ancestor. What is 2^2?</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? up[v][j] is the 2^j-th ancestor. What is 2^2?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>up[v][2] is the 4th ancestor of v</strong> (2² = 4 levels up). It's computed as up[up[v][1]][1] — "the 2nd ancestor of my 2nd ancestor". In the DFS, up[v][0] = parent, up[v][1] = grandparent (2 levels), up[v][2] = great-great-grandparent (4 levels), up[v][3] = 8 levels up, and so on. This exponential doubling is what allows us to cover any distance in O(log n) jumps.
+        <strong>up[v][2] is the 4th ancestor of v</strong> (2� = 4 levels up). It's computed as up[up[v][1]][1] � "the 2nd ancestor of my 2nd ancestor". In the DFS, up[v][0] = parent, up[v][1] = grandparent (2 levels), up[v][2] = great-great-grandparent (4 levels), up[v][3] = 8 levels up, and so on. This exponential doubling is what allows us to cover any distance in O(log n) jumps.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q4. In the binary lifting LCA query, why do we iterate j from LOG-1 down to 0 (not 0 to LOG-1) in Step 2?</div>
-    <div class="quiz-meta">💡 Think about greedy bit-by-bit construction of the jump distance.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Think about greedy bit-by-bit construction of the jump distance.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        We want to jump both nodes as high as possible WITHOUT making them meet (because once they meet, their common ancestor has been overshot). By starting with the <strong>largest power</strong> (LOG-1 → 0), we use a greedy approach: try the biggest jump first, skip if it would cause both nodes to merge, then try the next smaller jump. This is the same as constructing the binary representation of the LCA's depth difference greedily from most-significant bit to least-significant bit.
+        We want to jump both nodes as high as possible WITHOUT making them meet (because once they meet, their common ancestor has been overshot). By starting with the <strong>largest power</strong> (LOG-1 ? 0), we use a greedy approach: try the biggest jump first, skip if it would cause both nodes to merge, then try the next smaller jump. This is the same as constructing the binary representation of the LCA's depth difference greedily from most-significant bit to least-significant bit.
     </div>
 </div>
 
 <div class="quiz-block">
-    <div class="quiz-q">Q5. You have 10⁵ nodes and 10⁵ LCA queries. Compare binary lifting O(n log n + Q log n) vs. naïve O(n + Qn). When does binary lifting win?</div>
-    <div class="quiz-meta">💡 Substitute n = Q = 10⁵, log n ≈ 17.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-q">Q5. You have 105 nodes and 105 LCA queries. Compare binary lifting O(n log n + Q log n) vs. na�ve O(n + Qn). When does binary lifting win?</div>
+    <div class="quiz-meta">?? Substitute n = Q = 105, log n � 17.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>Naïve:</strong> n + Q×n = 10⁵ + 10⁵×10⁵ = 10⁵ + 10¹⁰ ≈ 10 billion operations. Impossibly slow.<br>
-        <strong>Binary lifting:</strong> n log n + Q log n = 10⁵×17 + 10⁵×17 = 3.4 million operations. Fast.<br>
-        Binary lifting wins overwhelmingly when Q is large (even Q = 100 queries justifies the preprocessing for large n). The breakeven is roughly Q × n = Q × log n + n × log n → Q ≈ log n → Q ≥ 17 queries for n=10⁵. So for any non-trivial number of queries, binary lifting is better.
+        <strong>Na�ve:</strong> n + Q�n = 105 + 105�105 = 105 + 10�� � 10 billion operations. Impossibly slow.<br>
+        <strong>Binary lifting:</strong> n log n + Q log n = 105�17 + 105�17 = 3.4 million operations. Fast.<br>
+        Binary lifting wins overwhelmingly when Q is large (even Q = 100 queries justifies the preprocessing for large n). The breakeven is roughly Q � n = Q � log n + n � log n ? Q � log n ? Q = 17 queries for n=105. So for any non-trivial number of queries, binary lifting is better.
     </div>
 </div>
 
 <br>
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 7F Complete</button>
-<div class="toast" id="toast">✅ Module 7F marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 7F Complete</button>
+<div class="toast" id="toast">? Module 7F marked complete!</div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>✅ Module 7F Complete!</strong><br><br>
-    You now understand: LCA definition, 3 approaches (naïve/parent-pointer/binary lifting), the up[][] table,
-    depth equalization, O(log n) query, and dist(u,v) = depth[u] + depth[v] − 2×depth[LCA].<br><br>
-    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ◀ <strong>Prev:</strong> <a href="m07e_btrees.html">Module 7E — B-Trees</a> &nbsp;|&nbsp;
-    ▶ <strong>Next:</strong> <a href="m07g_practice.html">Module 7G — Practice: 15 Advanced Problems</a>
+    <strong>? Module 7F Complete!</strong><br><br>
+    You now understand: LCA definition, 3 approaches (na�ve/parent-pointer/binary lifting), the up[][] table,
+    depth equalization, O(log n) query, and dist(u,v) = depth[u] + depth[v] - 2�depth[LCA].<br><br>
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Prev:</strong> <a href="m07e_btrees.html">Module 7E � B-Trees</a> &nbsp;|&nbsp;
+    ? <strong>Next:</strong> <a href="m07g_practice.html">Module 7G � Practice: 15 Advanced Problems</a>
 </div>
     <script>var MODULE_ID = 'm07f';</script>
     <script src="../dsa.js"></script>

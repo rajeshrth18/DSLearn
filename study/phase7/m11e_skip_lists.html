@@ -1,35 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 11E — Skip Lists | DSA Masterbook</title>
+    <title>Module 11E � Skip Lists | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 7</div>
-    <h1>Module 11 — Part E</h1>
-    <div class="tagline">Skip Lists — Probabilistic Sorted Data Structure</div>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 7</div>
+    <h1>Module 11 � Part E</h1>
+    <div class="tagline">Skip Lists � Probabilistic Sorted Data Structure</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">O(log n) search, insert, and delete using randomized linked list levels</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1.5 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part E of Module 11</span>
+        <span>? Estimated Time: 1.5 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part E of Module 11</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 7 — Advanced Data Structures:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m11a_segment_trees.html">Segment Trees</a><br>
-    ✅ <strong>Part B</strong> — <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
-    ✅ <strong>Part C</strong> — <a href="m11c_union_find.html">Disjoint Set Union</a><br>
-    ✅ <strong>Part D</strong> — <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
-    ▶ <strong>Part E</strong> — <em>You are here</em> — Skip Lists<br>
-    ⬜ <strong>Part F</strong> — <a href="m11f_kdtrees.html">K-D Trees</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 7 � Advanced Data Structures:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m11a_segment_trees.html">Segment Trees</a><br>
+    ? <strong>Part B</strong> � <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
+    ? <strong>Part C</strong> � <a href="m11c_union_find.html">Disjoint Set Union</a><br>
+    ? <strong>Part D</strong> � <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
+    ? <strong>Part E</strong> � <em>You are here</em> � Skip Lists<br>
+    ? <strong>Part F</strong> � <a href="m11f_kdtrees.html">K-D Trees</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m10a_dijkstra.html">&larr; Module 10 &mdash; Advanced Graphs</a>
@@ -37,22 +38,22 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — Motivation: The Sorted List Problem <span>— O(n) insertion into a sorted linked list</span></li>
-        <li>Section 2 — Skip List Structure <span>— Layered linked lists with express lanes</span></li>
-        <li>Section 3 — Search: O(log n) Expected <span>— Walk down levels, then right</span></li>
-        <li>Section 4 — Insert: O(log n) Expected <span>— Random level generation</span></li>
-        <li>Section 5 — Delete: O(log n) Expected <span>— Update all levels</span></li>
-        <li>Section 6 — Probabilistic Analysis <span>— Why expected O(log n)?</span></li>
-        <li>Section 7 — Full C# &amp; Python Implementations <span>— Complete skip list</span></li>
-        <li>Section 8 — Skip List vs BST vs SortedSet <span>— Practical comparison</span></li>
-        <li>Section 9 — Q&amp;A Review <span>— 5 key questions</span></li>
+        <li>Section 1 � Motivation: The Sorted List Problem <span>� O(n) insertion into a sorted linked list</span></li>
+        <li>Section 2 � Skip List Structure <span>� Layered linked lists with express lanes</span></li>
+        <li>Section 3 � Search: O(log n) Expected <span>� Walk down levels, then right</span></li>
+        <li>Section 4 � Insert: O(log n) Expected <span>� Random level generation</span></li>
+        <li>Section 5 � Delete: O(log n) Expected <span>� Update all levels</span></li>
+        <li>Section 6 � Probabilistic Analysis <span>� Why expected O(log n)?</span></li>
+        <li>Section 7 � Full C# &amp; Python Implementations <span>� Complete skip list</span></li>
+        <li>Section 8 � Skip List vs BST vs SortedSet <span>� Practical comparison</span></li>
+        <li>Section 9 � Q&amp;A Review <span>� 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — Motivation: The Sorted List Problem</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � Motivation: The Sorted List Problem</div>
 
 <p>A <strong>sorted array</strong> supports O(log n) search (binary search) but O(n) insert/delete (shifting). 
 A <strong>sorted linked list</strong> supports O(1) insert/delete once you're at the position, but 
@@ -70,30 +71,30 @@ O(n) search (no random access). Can we get O(log n) for ALL three?</p>
 <p style="font-size:0.85em;color:#666;">* Requires a pointer to the predecessor node; finding it is O(n)</p>
 
 <div class="realworld">
-    <strong>🌍 Real-World Uses:</strong>
+    <strong>?? Real-World Uses:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Redis</strong> — Sorted sets (ZADD, ZRANK) are implemented with skip lists</li>
-        <li><strong>LevelDB / RocksDB</strong> — MemTable uses skip list for in-memory sorted storage</li>
-        <li><strong>Java ConcurrentSkipListMap</strong> — Lock-free sorted map in concurrent environments</li>
-        <li><strong>Database indices</strong> — Alternative to B-Trees for some workloads</li>
+        <li><strong>Redis</strong> � Sorted sets (ZADD, ZRANK) are implemented with skip lists</li>
+        <li><strong>LevelDB / RocksDB</strong> � MemTable uses skip list for in-memory sorted storage</li>
+        <li><strong>Java ConcurrentSkipListMap</strong> � Lock-free sorted map in concurrent environments</li>
+        <li><strong>Database indices</strong> � Alternative to B-Trees for some workloads</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Skip List Structure</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Skip List Structure</div>
 
 <p>A skip list is a hierarchy of sorted linked lists. The bottom level (L0) contains all elements. 
 Each higher level is a randomly chosen subset of the level below. Think of it as an express lane 
-system on a highway — some "express" nodes span large distances at higher levels.</p>
+system on a highway � some "express" nodes span large distances at higher levels.</p>
 
 <div class="diagram">SKIP LIST with elements {1, 3, 5, 7, 9, 11, 13}
 
-Level 3: HEAD ─────────────────────────────── 9 ──────── TAIL
-Level 2: HEAD ──────── 3 ──────── 7 ──────── 9 ──────── TAIL  
-Level 1: HEAD ──── 1 ── 3 ── 5 ── 7 ──────── 9 ── 11 ── TAIL
-Level 0: HEAD ── 1 ── 3 ── 5 ── 7 ── 9 ── 11 ── 13 ── TAIL
+Level 3: HEAD ------------------------------- 9 -------- TAIL
+Level 2: HEAD -------- 3 -------- 7 -------- 9 -------- TAIL  
+Level 1: HEAD ---- 1 -- 3 -- 5 -- 7 -------- 9 -- 11 -- TAIL
+Level 0: HEAD -- 1 -- 3 -- 5 -- 7 -- 9 -- 11 -- 13 -- TAIL
 
 Each node has forward[] array pointing to the next node at each level.
 Node 9: forward[0]=11, forward[1]=TAIL, forward[2]=TAIL, forward[3]=TAIL
@@ -101,24 +102,24 @@ Node 9: forward[0]=11, forward[1]=TAIL, forward[2]=TAIL, forward[3]=TAIL
 SEARCH for 7:
   Start at HEAD, level 3
   L3: HEAD.next=9 > 7, drop down to L2
-  L2: HEAD.next=3 ≤ 7, go right to 3
+  L2: HEAD.next=3 = 7, go right to 3
   L2: 3.next=7 = 7, go right to 7  FOUND!</div>
 
 <div class="note">
-    <strong>📐 Structure Details:</strong>
+    <strong>?? Structure Details:</strong>
     <ul style="margin-top:8px;">
-        <li>A <strong>sentinel HEAD</strong> node with value -∞ points to the first node at each level</li>
-        <li>A <strong>sentinel TAIL</strong> node with value +∞ marks the end at each level</li>
+        <li>A <strong>sentinel HEAD</strong> node with value -8 points to the first node at each level</li>
+        <li>A <strong>sentinel TAIL</strong> node with value +8 marks the end at each level</li>
         <li>Each node stores: value + <code>forward[]</code> array of pointers (one per level it exists at)</li>
-        <li>Maximum level: typically <code>ceil(log₂ n)</code> + some buffer (e.g., MAX_LEVEL = 32)</li>
+        <li>Maximum level: typically <code>ceil(log2 n)</code> + some buffer (e.g., MAX_LEVEL = 32)</li>
         <li>Probability p = 0.5: each node is promoted to the next level with probability 50%</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Search: O(log n) Expected</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Search: O(log n) Expected</div>
 
 <p>Start at the highest level, HEAD. At each step:</p>
 <ul>
@@ -130,22 +131,22 @@ SEARCH for 7:
 <div class="diagram">SEARCH for 11 in the skip list above
 
 Current=HEAD, level=3
-  HEAD.forward[3] = 9 ≤ 11 → move RIGHT to 9
-  9.forward[3] = TAIL > 11 → move DOWN to level 2
-  9.forward[2] = TAIL > 11 → move DOWN to level 1
-  9.forward[1] = 11 ≤ 11 → move RIGHT to 11
-  11.forward[1] = TAIL > 11 → move DOWN to level 0
-  11.forward[0] = 13 > 11 → can't move right
+  HEAD.forward[3] = 9 = 11 ? move RIGHT to 9
+  9.forward[3] = TAIL > 11 ? move DOWN to level 2
+  9.forward[2] = TAIL > 11 ? move DOWN to level 1
+  9.forward[1] = 11 = 11 ? move RIGHT to 11
+  11.forward[1] = TAIL > 11 ? move DOWN to level 0
+  11.forward[0] = 13 > 11 ? can't move right
   Level = 0 and can't go right: CHECK current.forward[0] = 13? No.
   
-  Wait — we're at 11 (we moved to it). forward[0] is checked.
-  We landed on 11 when we moved right. Check: value == target? YES → FOUND 11 ✓
+  Wait � we're at 11 (we moved to it). forward[0] is checked.
+  We landed on 11 when we moved right. Check: value == target? YES ? FOUND 11 ?
 
-Total steps: 5 (vs O(n)=7 linear, O(log n)≈3 ideal)</div>
+Total steps: 5 (vs O(n)=7 linear, O(log n)�3 ideal)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public bool</span> <span class="mt">Search</span>(<span class="kw">int</span> target)
 {
     <span class="kw">var</span> cur = head;
@@ -171,8 +172,8 @@ Total steps: 5 (vs O(n)=7 linear, O(log n)≈3 ideal)</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Insert: O(log n) Expected</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Insert: O(log n) Expected</div>
 
 <p>During search, track the <strong>update[]</strong> array: <code>update[level]</code> = the rightmost 
 node at <code>level</code> that is less than the target. These are the nodes whose 
@@ -180,27 +181,27 @@ node at <code>level</code> that is less than the target. These are the nodes who
 
 <div class="diagram">INSERT 6 into the skip list
 
-Search phase — track update[]:
-  Level 3: HEAD.f[3]=9 > 6 → update[3] = HEAD
-  Level 2: HEAD.f[2]=3 ≤ 6 → advance to 3; 3.f[2]=7 > 6 → update[2] = 3
-  Level 1: 3.f[1]=5 ≤ 6 → advance to 5; 5.f[1]=7 > 6 → update[1] = 5
-  Level 0: 5.f[0]=7 > 6 → update[0] = 5
+Search phase � track update[]:
+  Level 3: HEAD.f[3]=9 > 6 ? update[3] = HEAD
+  Level 2: HEAD.f[2]=3 = 6 ? advance to 3; 3.f[2]=7 > 6 ? update[2] = 3
+  Level 1: 3.f[1]=5 = 6 ? advance to 5; 5.f[1]=7 > 6 ? update[1] = 5
+  Level 0: 5.f[0]=7 > 6 ? update[0] = 5
 
-Generate random level for new node (e.g., coin flips: H,H,T → level 2)
+Generate random level for new node (e.g., coin flips: H,H,T ? level 2)
 
 Insert new node (val=6, height=2):
   Level 0: newNode.f[0] = update[0].f[0] = 7;  update[0].f[0] = newNode
   Level 1: newNode.f[1] = update[1].f[1] = 7;  update[1].f[1] = newNode
-  (Level 2 and 3 unchanged — new node doesn't reach those levels)
+  (Level 2 and 3 unchanged � new node doesn't reach those levels)
 
 Result:
-Level 2: HEAD ── 3 ── 7 ── 9 ── TAIL  (unchanged)
-Level 1: HEAD ── 1 ── 3 ── 5 ── 6 ── 7 ── 9 ── 11 ── TAIL  (6 inserted)
-Level 0: HEAD ── 1 ── 3 ── 5 ── 6 ── 7 ── 9 ── 11 ── 13 ── TAIL  (6 inserted)</div>
+Level 2: HEAD -- 3 -- 7 -- 9 -- TAIL  (unchanged)
+Level 1: HEAD -- 1 -- 3 -- 5 -- 6 -- 7 -- 9 -- 11 -- TAIL  (6 inserted)
+Level 0: HEAD -- 1 -- 3 -- 5 -- 6 -- 7 -- 9 -- 11 -- 13 -- TAIL  (6 inserted)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">private int</span> <span class="mt">RandomLevel</span>()
 {
     <span class="kw">int</span> level = <span class="nm">1</span>;
@@ -261,14 +262,14 @@ Level 0: HEAD ── 1 ── 3 ── 5 ── 6 ── 7 ── 9 ── 11 �
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Delete: O(log n) Expected</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Delete: O(log n) Expected</div>
 
 <p>Same as insert: find update[], then splice out the node at each level it exists.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public bool</span> <span class="mt">Delete</span>(<span class="kw">int</span> val)
 {
     <span class="kw">var</span> update = <span class="kw">new</span> <span class="tp">SkipNode</span>[MAX_LEVEL];
@@ -315,8 +316,8 @@ Level 0: HEAD ── 1 ── 3 ── 5 ── 6 ── 7 ── 9 ── 11 �
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Probabilistic Analysis</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Probabilistic Analysis</div>
 
 <div class="diagram">WHY O(log n) EXPECTED?
 
@@ -327,7 +328,7 @@ With p=0.5 promotion probability:
   ...
   Expected nodes at level k: n / 2^k
 
-Expected height of skip list: O(log n)  (when n/2^k ≈ 1 → k ≈ log₂ n)
+Expected height of skip list: O(log n)  (when n/2^k � 1 ? k � log2 n)
 
 SEARCH COST ANALYSIS (backward analysis):
   Consider the search path reversed: starting from the found node, walking backward.
@@ -338,20 +339,20 @@ SEARCH COST ANALYSIS (backward analysis):
   This is a classic geometric random walk. Expected number of steps to reach
   height h is O(h/p) = O(log n / 0.5) = O(2 log n) = O(log n).
 
-WORST CASE: O(n) — all random coin flips go tails (nodes stay at level 1).
-  But this has probability (1/2)^n ≈ 0 for large n.
-  For n=1000: probability of O(n) worst case ≈ 1/2^1000 ≈ 10^(-301) — astronomically rare.
+WORST CASE: O(n) � all random coin flips go tails (nodes stay at level 1).
+  But this has probability (1/2)^n � 0 for large n.
+  For n=1000: probability of O(n) worst case � 1/2^1000 � 10^(-301) � astronomically rare.
 
-SPACE: Expected O(n) — each node's expected height is O(1) (geometric series: 1 + 1/2 + 1/4 + ... = 2).</div>
+SPACE: Expected O(n) � each node's expected height is O(1) (geometric series: 1 + 1/2 + 1/4 + ... = 2).</div>
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Full C# &amp; Python Implementations</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Full C# &amp; Python Implementations</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">SkipList</span>
 {
     <span class="kw">private const int</span> MAX_LEVEL = <span class="nm">16</span>;
@@ -431,7 +432,7 @@ SPACE: Expected O(n) — each node's expected height is O(1) (geometric series: 
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> random
 
 <span class="kw">class</span> <span class="tp">SkipList</span>:
@@ -491,24 +492,24 @@ SPACE: Expected O(n) — each node's expected height is O(1) (geometric series: 
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Skip List vs BST vs SortedSet</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Skip List vs BST vs SortedSet</div>
 
 <table>
     <thead><tr><th>Feature</th><th>Skip List</th><th>Balanced BST (AVL/RB)</th><th>C# SortedSet / Java TreeSet</th></tr></thead>
     <tbody>
         <tr><td>Time complexity</td><td class="g">O(log n) expected</td><td class="g">O(log n) worst</td><td class="g">O(log n) worst</td></tr>
-        <tr><td>Implementation complexity</td><td class="g">Simple</td><td class="r">Complex rotations</td><td class="g">Library — no code</td></tr>
+        <tr><td>Implementation complexity</td><td class="g">Simple</td><td class="r">Complex rotations</td><td class="g">Library � no code</td></tr>
         <tr><td>Lock-free concurrent</td><td class="g">Yes (Java CSLM)</td><td class="r">Difficult</td><td class="r">Not lock-free</td></tr>
         <tr><td>Cache performance</td><td class="o">Medium (pointer chasing)</td><td class="o">Medium (tree traversal)</td><td class="o">Medium</td></tr>
         <tr><td>Space</td><td class="o">O(n) expected, ~2n ptrs</td><td class="g">O(n), 2 ptrs/node</td><td class="g">O(n)</td></tr>
         <tr><td>Deterministic</td><td class="r">No (randomized)</td><td class="g">Yes</td><td class="g">Yes</td></tr>
-        <tr><td>Ordered iteration</td><td class="g">O(n) — level 0 is sorted</td><td class="g">O(n) inorder</td><td class="g">O(n)</td></tr>
+        <tr><td>Ordered iteration</td><td class="g">O(n) � level 0 is sorted</td><td class="g">O(n) inorder</td><td class="g">O(n)</td></tr>
     </tbody>
 </table>
 
 <div class="tip">
-    <strong>💡 For interviews and competitive programming:</strong> C# <code>SortedSet&lt;T&gt;</code> / 
+    <strong>?? For interviews and competitive programming:</strong> C# <code>SortedSet&lt;T&gt;</code> / 
     Python <code>SortedList</code> (from sortedcontainers) are usually the right choice. 
     Skip lists are important to understand conceptually and appear as a direct LeetCode problem 
     (#1206 Design Skiplist). Redis uses skip lists for sorted sets because they're simpler to 
@@ -517,41 +518,41 @@ SPACE: Expected O(n) — each node's expected height is O(1) (geometric series: 
 
 <hr>
 
-<!-- ═══════ SECTION 9 ═══════ -->
-<div class="section-heading">Section 9 — Q&amp;A Review</div>
+<!-- ------- SECTION 9 ------- -->
+<div class="section-heading">Section 9 � Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: What is the purpose of the update[] array during skip list insert and delete?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer"><code>update[i]</code> stores the rightmost node at level i whose value is strictly less than the target. During the search phase, we fill update[] as we drop down through levels. When inserting a new node, for each level i up to the new node's height, we splice the new node between update[i] and update[i].forward[i]. Similarly for deletion: update[i].forward[i] = target.forward[i] removes the target at each level. Without update[], we'd need to traverse again for each level — O(n log n) total instead of O(log n).</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer"><code>update[i]</code> stores the rightmost node at level i whose value is strictly less than the target. During the search phase, we fill update[] as we drop down through levels. When inserting a new node, for each level i up to the new node's height, we splice the new node between update[i] and update[i].forward[i]. Similarly for deletion: update[i].forward[i] = target.forward[i] removes the target at each level. Without update[], we'd need to traverse again for each level � O(n log n) total instead of O(log n).</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: What does "expected O(log n)" mean versus "worst-case O(log n)"? When would skip list perform poorly?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">"Expected O(log n)" means the average over all random choices is O(log n), but individual operations CAN be slower. Worst case is O(n) if all coin flips produce heads and all nodes end up at level 1 (a plain linked list). However, this probability is (0.5)^n — negligible for any real n. "Worst-case O(log n)" (as in balanced BSTs) means EVERY operation is guaranteed O(log n) regardless. Skip lists are fine in practice; their "worst case" is so rare that they're considered equivalent to deterministic O(log n) structures for practical purposes.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">"Expected O(log n)" means the average over all random choices is O(log n), but individual operations CAN be slower. Worst case is O(n) if all coin flips produce heads and all nodes end up at level 1 (a plain linked list). However, this probability is (0.5)^n � negligible for any real n. "Worst-case O(log n)" (as in balanced BSTs) means EVERY operation is guaranteed O(log n) regardless. Skip lists are fine in practice; their "worst case" is so rare that they're considered equivalent to deterministic O(log n) structures for practical purposes.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: Why does Redis use skip lists for its sorted set (ZADD) implementation?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Redis chose skip lists over balanced BSTs for several reasons: (1) <strong>Simpler implementation</strong> — skip lists are much easier to code, debug, and maintain than AVL or red-black trees, which require complex rotation logic. (2) <strong>Range operations are natural</strong> — iterating in sorted order (ZRANGE) just follows the level-0 linked list, while BST range queries require inorder traversal. (3) <strong>Comparable performance</strong> — same asymptotic complexity, with similar cache performance in practice. (4) <strong>Ease of lock-free concurrent versions</strong> — skip lists are more amenable to lock-free concurrent implementations. The Redis source code comment literally says "Skip lists are implemented in a simpler way than balanced trees."</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Redis chose skip lists over balanced BSTs for several reasons: (1) <strong>Simpler implementation</strong> � skip lists are much easier to code, debug, and maintain than AVL or red-black trees, which require complex rotation logic. (2) <strong>Range operations are natural</strong> � iterating in sorted order (ZRANGE) just follows the level-0 linked list, while BST range queries require inorder traversal. (3) <strong>Comparable performance</strong> � same asymptotic complexity, with similar cache performance in practice. (4) <strong>Ease of lock-free concurrent versions</strong> � skip lists are more amenable to lock-free concurrent implementations. The Redis source code comment literally says "Skip lists are implemented in a simpler way than balanced trees."</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: How would you implement a "find Kth smallest element" operation on a skip list?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Two approaches: (1) <strong>Simple — O(n):</strong> Walk the bottom level (level 0) sequentially, counting k steps. O(k) time. (2) <strong>Augmented skip list — O(log n):</strong> Each pointer stores the "span" (how many level-0 nodes it skips over). During traversal, subtract span from k when moving right. When k=0, you've found the Kth element. This is the same idea used in order-statistic trees (which support rank and select). The span values are maintained during insert/delete in O(log n) per operation. This augmented structure is used in Redis's sorted set ZRANK command.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Two approaches: (1) <strong>Simple � O(n):</strong> Walk the bottom level (level 0) sequentially, counting k steps. O(k) time. (2) <strong>Augmented skip list � O(log n):</strong> Each pointer stores the "span" (how many level-0 nodes it skips over). During traversal, subtract span from k when moving right. When k=0, you've found the Kth element. This is the same idea used in order-statistic trees (which support rank and select). The span values are maintained during insert/delete in O(log n) per operation. This augmented structure is used in Redis's sorted set ZRANK command.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: What promotion probability p gives the best performance, and why?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The optimal probability is p = 1/e ≈ 0.368, but p = 1/2 = 0.5 is commonly used because it's simple. With p = 1/2: expected levels = log₂(n), space = 2n pointers on average. With p = 1/4: slightly lower expected search time (fewer levels scanned), space ≈ 1.33n pointers. With higher p (closer to 1): more levels, higher space, slower search. The tradeoff: lower p → fewer total pointers (less space) but MORE horizontal steps per level; higher p → more levels but fewer horizontal steps. The optimal p balances these. In practice, p=1/4 is used when memory is critical (like in some database implementations), while p=1/2 is used for simplicity.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The optimal probability is p = 1/e � 0.368, but p = 1/2 = 0.5 is commonly used because it's simple. With p = 1/2: expected levels = log2(n), space = 2n pointers on average. With p = 1/4: slightly lower expected search time (fewer levels scanned), space � 1.33n pointers. With higher p (closer to 1): more levels, higher space, slower search. The tradeoff: lower p ? fewer total pointers (less space) but MORE horizontal steps per level; higher p ? more levels but fewer horizontal steps. The optimal p balances these. In practice, p=1/4 is used when memory is critical (like in some database implementations), while p=1/2 is used for simplicity.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 11E Complete</button>
-<div class="toast" id="toast">✅ Module 11E marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 11E Complete</button>
+<div class="toast" id="toast">? Module 11E marked complete!</div>
     <script>var MODULE_ID = 'm11e';</script>
     <script src="../dsa.js"></script>
 </body>

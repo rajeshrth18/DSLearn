@@ -1,32 +1,33 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 18B — Intervals &amp; Top K Elements | DSA Masterbook</title>
+    <title>Module 18B � Intervals &amp; Top K Elements | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
-    <h1>Module 18 — Part B</h1>
-    <div class="tagline">Intervals &amp; Top K Elements — Merge, Sweep, Heap</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Merge Intervals · Sweep Line · Meeting Rooms · K-th Largest · Top K Freq</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 10</div>
+    <h1>Module 18 � Part B</h1>
+    <div class="tagline">Intervals &amp; Top K Elements � Merge, Sweep, Heap</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Merge Intervals � Sweep Line � Meeting Rooms � K-th Largest � Top K Freq</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1.5 Hours</span>
-        <span>🎯 Intermediate–Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part B of Module 18</span>
+        <span>? Estimated Time: 1.5 Hours</span>
+        <span>?? Intermediate�Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part B of Module 18</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 10 — Module 18 — Problem-Solving Patterns:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m18a_patterns1.html">Two Pointers &amp; Sliding Window</a><br>
-    ▶ <strong>Part B</strong> — <em>You are here</em> — Intervals &amp; Top K Elements<br>
-    ⬜ <strong>Part C</strong> — <a href="m18c_patterns3.html">Modified Binary Search &amp; Subsets</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 10 � Module 18 � Problem-Solving Patterns:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m18a_patterns1.html">Two Pointers &amp; Sliding Window</a><br>
+    ? <strong>Part B</strong> � <em>You are here</em> � Intervals &amp; Top K Elements<br>
+    ? <strong>Part C</strong> � <a href="m18c_patterns3.html">Modified Binary Search &amp; Subsets</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m17a_backtracking.html">&larr; Module 17 &mdash; Backtracking+</a>
@@ -34,20 +35,20 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — Interval Merging <span>— Sort + merge overlapping intervals</span></li>
-        <li>Section 2 — Insert &amp; Sweep Line <span>— Insert interval, meeting rooms</span></li>
-        <li>Section 3 — Non-Overlapping &amp; Min Removals <span>— Greedy interval scheduling</span></li>
-        <li>Section 4 — Top K Elements <span>— Min-heap for K largest, frequency</span></li>
-        <li>Section 5 — K-th Largest / Quickselect <span>— O(n) average selection</span></li>
-        <li>Section 6 — LeetCode Map</li>
-        <li>Section 7 — Q&amp;A Review</li>
+        <li>Section 1 � Interval Merging <span>� Sort + merge overlapping intervals</span></li>
+        <li>Section 2 � Insert &amp; Sweep Line <span>� Insert interval, meeting rooms</span></li>
+        <li>Section 3 � Non-Overlapping &amp; Min Removals <span>� Greedy interval scheduling</span></li>
+        <li>Section 4 � Top K Elements <span>� Min-heap for K largest, frequency</span></li>
+        <li>Section 5 � K-th Largest / Quickselect <span>� O(n) average selection</span></li>
+        <li>Section 6 � LeetCode Map</li>
+        <li>Section 7 � Q&amp;A Review</li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — Interval Merging</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � Interval Merging</div>
 
 <div class="diagram">MERGE INTERVALS PATTERN:
   Given a list of intervals, merge all overlapping ones.
@@ -55,8 +56,8 @@
   ALGORITHM:
     1. Sort intervals by start time.
     2. Maintain a "current" interval. Iterate:
-       - If current.end >= next.start → they overlap → extend current.end
-       - Otherwise → no overlap → push current to result, start fresh
+       - If current.end >= next.start ? they overlap ? extend current.end
+       - Otherwise ? no overlap ? push current to result, start fresh
 
   OVERLAP CHECK: two intervals [a,b] and [c,d] overlap iff a <= d AND c <= b
   
@@ -66,17 +67,17 @@
     Input:  [[1,3],[2,6],[8,10],[15,18]]
     Sorted: [[1,3],[2,6],[8,10],[15,18]]  (already sorted)
     
-    curr=[1,3], next=[2,6]: 2<=3 → merge → curr=[1,6]
-    curr=[1,6], next=[8,10]: 8>6 → push [1,6], curr=[8,10]
-    curr=[8,10], next=[15,18]: 15>10 → push [8,10], curr=[15,18]
+    curr=[1,3], next=[2,6]: 2<=3 ? merge ? curr=[1,6]
+    curr=[1,6], next=[8,10]: 8>6 ? push [1,6], curr=[8,10]
+    curr=[8,10], next=[15,18]: 15>10 ? push [8,10], curr=[15,18]
     Push [15,18].
     
     Output: [[1,6],[8,10],[15,18]]</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #56 Merge Intervals — O(n log n)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #56 Merge Intervals � O(n log n)</span>
 <span class="kw">public int</span>[][] <span class="mt">Merge</span>(<span class="kw">int</span>[][] intervals)
 {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(intervals, (a, b) =&gt; a[<span class="nm">0</span>] - b[<span class="nm">0</span>]);
@@ -97,7 +98,7 @@
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">merge</span>(intervals):
     intervals.<span class="mt">sort</span>()
     res = [intervals[<span class="nm">0</span>]]
@@ -109,8 +110,8 @@
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Insert Interval &amp; Meeting Rooms</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Insert Interval &amp; Meeting Rooms</div>
 
 <div class="diagram">INSERT INTERVAL (#57):
   Insert a new interval into a sorted non-overlapping list.
@@ -119,28 +120,28 @@
     2. Merge all intervals that overlap with newInterval
     3. Copy all remaining intervals (start after merged end)
 
-MEETING ROOMS II (#253 — Min conference rooms needed):
+MEETING ROOMS II (#253 � Min conference rooms needed):
   METHOD: Sweep Line with sorted events (or min-heap)
   
   HEAP APPROACH:
     Sort meetings by start time.
     Use a min-heap of end times.
     For each meeting:
-      - If heap.top <= meeting.start → reuse that room (pop heap)
+      - If heap.top <= meeting.start ? reuse that room (pop heap)
       - Always push meeting.end to heap
     Answer = heap.size (rooms in use simultaneously)
   
   VISUAL: [[0,30],[5,10],[15,20]]
     Sort by start: [[0,30],[5,10],[15,20]]
-    Process [0,30]:  heap=[] → push 30  → heap=[30]
-    Process [5,10]:  heap.top=30 > 5 → new room, push 10 → heap=[10,30]
-    Process [15,20]: heap.top=10 ≤ 15 → reuse, pop 10, push 20 → heap=[20,30]
+    Process [0,30]:  heap=[] ? push 30  ? heap=[30]
+    Process [5,10]:  heap.top=30 > 5 ? new room, push 10 ? heap=[10,30]
+    Process [15,20]: heap.top=10 = 15 ? reuse, pop 10, push 20 ? heap=[20,30]
     Answer = heap.size = 2</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #57 Insert Interval — O(n)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #57 Insert Interval � O(n)</span>
 <span class="kw">public int</span>[][] <span class="mt">Insert</span>(<span class="kw">int</span>[][] intervals, <span class="kw">int</span>[] newInterval)
 {
     <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>[]&gt;();
@@ -159,7 +160,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
     <span class="kw">return</span> res.<span class="mt">ToArray</span>();
 }
 
-<span class="cm">// #253 Meeting Rooms II — min heap approach — O(n log n)</span>
+<span class="cm">// #253 Meeting Rooms II � min heap approach � O(n log n)</span>
 <span class="kw">public int</span> <span class="mt">MinMeetingRooms</span>(<span class="kw">int</span>[][] intervals)
 {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(intervals, (a, b) =&gt; a[<span class="nm">0</span>] - b[<span class="nm">0</span>]);
@@ -174,7 +175,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 
 <span class="kw">def</span> <span class="mt">minMeetingRooms</span>(intervals):
@@ -188,19 +189,19 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Non-Overlapping Intervals (Greedy)</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Non-Overlapping Intervals (Greedy)</div>
 
 <div class="diagram">NON-OVERLAPPING INTERVALS (#435):
   Find minimum number of intervals to REMOVE so remainder is non-overlapping.
   
-  GREEDY — "Activity Selection" style:
+  GREEDY � "Activity Selection" style:
     Sort by END time (not start!).
     Keep a "last end" pointer. Greedily keep the interval that ends earliest,
     since it leaves the most room for future intervals.
     
-    If next interval overlaps with last kept (start < lastEnd) → remove it (count++).
-    Otherwise → keep it, update lastEnd.
+    If next interval overlaps with last kept (start < lastEnd) ? remove it (count++).
+    Otherwise ? keep it, update lastEnd.
   
   WHY SORT BY END?
     Sorting by end time and always keeping the earliest-ending interval is provably
@@ -208,20 +209,20 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
     without increasing the count).
     
   ALTERNATIVE FRAMING: Max non-overlapping = n - min_removals
-    → Max intervals you can KEEP without overlap.
+    ? Max intervals you can KEEP without overlap.
     Same greedy: count kept intervals.</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #435 Non-Overlapping Intervals — O(n log n)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #435 Non-Overlapping Intervals � O(n log n)</span>
 <span class="kw">public int</span> <span class="mt">EraseOverlapIntervals</span>(<span class="kw">int</span>[][] intervals)
 {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(intervals, (a, b) =&gt; a[<span class="nm">1</span>] - b[<span class="nm">1</span>]);  <span class="cm">// sort by end</span>
     <span class="kw">int</span> lastEnd = <span class="kw">int</span>.MinValue, remove = <span class="nm">0</span>;
     <span class="kw">foreach</span> (<span class="kw">var</span> iv <span class="kw">in</span> intervals) {
-        <span class="kw">if</span> (iv[<span class="nm">0</span>] &lt; lastEnd) remove++;  <span class="cm">// overlap → remove</span>
-        <span class="kw">else</span> lastEnd = iv[<span class="nm">1</span>];             <span class="cm">// keep → update lastEnd</span>
+        <span class="kw">if</span> (iv[<span class="nm">0</span>] &lt; lastEnd) remove++;  <span class="cm">// overlap ? remove</span>
+        <span class="kw">else</span> lastEnd = iv[<span class="nm">1</span>];             <span class="cm">// keep ? update lastEnd</span>
     }
     <span class="kw">return</span> remove;
 }</pre>
@@ -229,7 +230,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">eraseOverlapIntervals</span>(intervals):
     intervals.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])
     last_end = <span class="mt">float</span>(<span class="st">'-inf'</span>); remove = <span class="nm">0</span>
@@ -241,16 +242,16 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Top K Elements Pattern</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Top K Elements Pattern</div>
 
-<div class="diagram">TOP K ELEMENTS — Min-Heap Approach:
+<div class="diagram">TOP K ELEMENTS � Min-Heap Approach:
   
   GOAL: Find K largest elements from a stream/array.
   
   INSIGHT: Maintain a min-heap of exactly K elements.
-    - For each new element: if heap.size < K → push
-    - Else if element > heap.min → pop min, push new element
+    - For each new element: if heap.size < K ? push
+    - Else if element > heap.min ? pop min, push new element
     - At the end, heap contains exactly the K largest elements.
   
   WHY MIN-HEAP FOR K LARGEST? 
@@ -258,7 +259,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
     If a new element beats this minimum, it replaces it.
     Counter-intuitive but correct: to find K largest, use min-heap.
   
-  SIZE-K MIN-HEAP = O(n log K) total — better than O(n log n) sort when K << n.
+  SIZE-K MIN-HEAP = O(n log K) total � better than O(n log n) sort when K << n.
   
   TOP K FREQUENT ELEMENTS (#347):
     1. Count frequencies (O(n)).
@@ -266,12 +267,12 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
     OR use BUCKET SORT:
     3. Create buckets[freq] = [elements with that freq].
     4. Scan from highest bucket down, collect K elements.
-    → O(n) time (bucket sort approach).</div>
+    ? O(n) time (bucket sort approach).</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #215 Kth Largest Element in Array — O(n log k) using min-heap</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #215 Kth Largest Element in Array � O(n log k) using min-heap</span>
 <span class="kw">public int</span> <span class="mt">FindKthLargest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> minH = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
@@ -282,7 +283,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
     <span class="kw">return</span> minH.<span class="mt">Peek</span>();
 }
 
-<span class="cm">// #347 Top K Frequent Elements — O(n) bucket sort approach</span>
+<span class="cm">// #347 Top K Frequent Elements � O(n) bucket sort approach</span>
 <span class="kw">public int</span>[] <span class="mt">TopKFrequent</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
@@ -301,7 +302,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 <span class="kw">from</span> collections <span class="kw">import</span> Counter
 
@@ -322,10 +323,10 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Quickselect (K-th Largest in O(n) Average)</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Quickselect (K-th Largest in O(n) Average)</div>
 
-<div class="diagram">QUICKSELECT — Hoare's partition-based selection:
+<div class="diagram">QUICKSELECT � Hoare's partition-based selection:
   Based on QuickSort partitioning: after partitioning around pivot,
   pivot is in its final sorted position.
   
@@ -333,7 +334,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
   If pivot_index < k-1: recurse right partition.
   If pivot_index > k-1: recurse left partition.
   
-  Average: O(n).  Worst case: O(n²) with bad pivot.
+  Average: O(n).  Worst case: O(n�) with bad pivot.
   Use random pivot to prevent worst case.
   
   WHEN TO USE QUICKSELECT vs MIN-HEAP:
@@ -344,8 +345,8 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// Quickselect — K-th largest, O(n) average</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// Quickselect � K-th largest, O(n) average</span>
 <span class="kw">public int</span> <span class="mt">FindKthLargestQS</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> rng = <span class="kw">new</span> <span class="tp">Random</span>();
@@ -358,7 +359,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
     (a[pivIdx], a[hi]) = (a[hi], a[pivIdx]);
     <span class="kw">int</span> pivot = a[hi], store = lo;
     <span class="kw">for</span> (<span class="kw">int</span> i = lo; i &lt; hi; i++)
-        <span class="kw">if</span> (a[i] &lt;= pivot) (a[i], a[store]) = (a[store], a[i++]), store++;  <span class="cm">// wait — fix</span>
+        <span class="kw">if</span> (a[i] &lt;= pivot) (a[i], a[store]) = (a[store], a[i++]), store++;  <span class="cm">// wait � fix</span>
     (a[store], a[hi]) = (a[hi], a[store]);
     <span class="kw">if</span> (store == target) <span class="kw">return</span> a[store];
     <span class="kw">return</span> store &lt; target ? <span class="mt">QuickSelect</span>(a, store + <span class="nm">1</span>, hi, target, rng)
@@ -368,7 +369,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> random
 
 <span class="kw">def</span> <span class="mt">findKthLargestQS</span>(nums, k):
@@ -383,7 +384,7 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
             <span class="kw">elif</span> nums[mid] > pivot: nums[mid], nums[j] = nums[j], nums[mid]; j-=<span class="nm">1</span>
             <span class="kw">else</span>: mid+=<span class="nm">1</span>
         <span class="kw">if</span> i &lt;= target &lt;= j: <span class="kw">return</span> nums[target]
-        <span class="kw">elif</span> target &lt; i: <span class="kw">return</span> <span class="mt">qs</span>(i, j-<span class="nm">1</span>)  <span class="cm"># oops — use lo/j</span>
+        <span class="kw">elif</span> target &lt; i: <span class="kw">return</span> <span class="mt">qs</span>(i, j-<span class="nm">1</span>)  <span class="cm"># oops � use lo/j</span>
         <span class="kw">else</span>: <span class="kw">return</span> <span class="mt">qs</span>(j+<span class="nm">1</span>, hi)
     <span class="kw">return</span> <span class="mt">qs</span>(<span class="nm">0</span>, <span class="mt">len</span>(nums)-<span class="nm">1</span>)</pre>
 </div>
@@ -392,8 +393,8 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — LeetCode Map &amp; Q&amp;A</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � LeetCode Map &amp; Q&amp;A</div>
 
 <table>
     <thead><tr><th>Pattern</th><th>LeetCode #</th><th>Problem</th><th>Complexity</th></tr></thead>
@@ -411,36 +412,36 @@ MEETING ROOMS II (#253 — Min conference rooms needed):
 
 <div class="quiz-card">
     <div class="q">Q1: Why do we sort by end time (not start) for the non-overlapping intervals greedy?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Sorting by end time implements the "earliest deadline first" strategy — a classic greedy optimality proof. If we always keep the interval that ends earliest, we maximize the remaining time available for future intervals. Formal proof by exchange argument: suppose an optimal solution keeps interval A over interval B (where B ends earlier). We can swap A for B — since B ends no later than A, it cannot cause more conflicts with future intervals. So sorting by end time and greedily taking non-conflicting intervals yields the maximum independent set of intervals, which minimizes removals.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Sorting by end time implements the "earliest deadline first" strategy � a classic greedy optimality proof. If we always keep the interval that ends earliest, we maximize the remaining time available for future intervals. Formal proof by exchange argument: suppose an optimal solution keeps interval A over interval B (where B ends earlier). We can swap A for B � since B ends no later than A, it cannot cause more conflicts with future intervals. So sorting by end time and greedily taking non-conflicting intervals yields the maximum independent set of intervals, which minimizes removals.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: Why use a min-heap for "K largest" elements? Isn't a max-heap more natural?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">A max-heap would let you efficiently find the largest element, but it doesn't help maintain only K elements efficiently. With a min-heap of size K: the top is the smallest of the K largest elements found so far. When a new element arrives, compare it to this minimum. If it's larger, replace the minimum (pop + push). This is O(log K) per element. A max-heap of all elements would be O(n) to build then O(K log n) to extract K elements — O(n + K log n), worse than O(n log K) when K is small. Bottom line: min-heap acts as a "filter" that efficiently discards elements too small to be in the top K.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">A max-heap would let you efficiently find the largest element, but it doesn't help maintain only K elements efficiently. With a min-heap of size K: the top is the smallest of the K largest elements found so far. When a new element arrives, compare it to this minimum. If it's larger, replace the minimum (pop + push). This is O(log K) per element. A max-heap of all elements would be O(n) to build then O(K log n) to extract K elements � O(n + K log n), worse than O(n log K) when K is small. Bottom line: min-heap acts as a "filter" that efficiently discards elements too small to be in the top K.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: How does the merge interval algorithm handle [1,4],[2,3] (fully contained intervals)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">After sorting by start: [1,4],[2,3]. Current = [1,4]. Next = [2,3]: start(2) ≤ end(4) → overlap → extend current.end = max(4,3) = 4. So the inner interval is absorbed: result is [1,4]. The key is using <code>max(curr.end, next.end)</code> during merge — not just <code>next.end</code>. If you only used next.end, [2,3] would incorrectly shrink the merged interval to end at 3. Always take the maximum of the two ends when merging.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">After sorting by start: [1,4],[2,3]. Current = [1,4]. Next = [2,3]: start(2) = end(4) ? overlap ? extend current.end = max(4,3) = 4. So the inner interval is absorbed: result is [1,4]. The key is using <code>max(curr.end, next.end)</code> during merge � not just <code>next.end</code>. If you only used next.end, [2,3] would incorrectly shrink the merged interval to end at 3. Always take the maximum of the two ends when merging.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: What's the O(n) solution for Top K Frequent Elements and why doesn't everyone use it?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Bucket sort: create an array of n+1 buckets indexed by frequency (since max frequency ≤ n). Count element frequencies. Place each element in the bucket at its frequency index. Then scan from bucket[n] down to bucket[1] collecting K elements. This achieves O(n) time and O(n) space. Why isn't it universal? (1) It requires knowing the maximum possible frequency upfront (needs array size n). (2) It uses O(n) space even if K is tiny. (3) For top-K from a stream where n is unknown or huge, the O(n log K) heap approach is more practical. (4) Some follow-ups ask for sort-stable results (same frequency → alphabetical), which the heap handles naturally with custom comparators.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Bucket sort: create an array of n+1 buckets indexed by frequency (since max frequency = n). Count element frequencies. Place each element in the bucket at its frequency index. Then scan from bucket[n] down to bucket[1] collecting K elements. This achieves O(n) time and O(n) space. Why isn't it universal? (1) It requires knowing the maximum possible frequency upfront (needs array size n). (2) It uses O(n) space even if K is tiny. (3) For top-K from a stream where n is unknown or huge, the O(n log K) heap approach is more practical. (4) Some follow-ups ask for sort-stable results (same frequency ? alphabetical), which the heap handles naturally with custom comparators.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q5: Meeting Rooms II — why does the sweep-line approach also work and how does it relate to the heap approach?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Sweep line: create 2n events — +1 at each start, -1 at each end. Sort events (ties: process end before start so ending and starting at same time is counted as reuse, not new room). Scan events, track current rooms in use, record maximum. This is O(n log n). It's equivalent to the heap approach because both track the "watermark" of simultaneous meetings. The heap approach is slightly cleaner for coding interviews (no tie-breaking edge cases). The sweep line is more general and extends to problems like "maximum overlap of intervals" and "number of events happening at any time," making it a more powerful technique despite being the same asymptotic complexity.</div>
+    <div class="q">Q5: Meeting Rooms II � why does the sweep-line approach also work and how does it relate to the heap approach?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Sweep line: create 2n events � +1 at each start, -1 at each end. Sort events (ties: process end before start so ending and starting at same time is counted as reuse, not new room). Scan events, track current rooms in use, record maximum. This is O(n log n). It's equivalent to the heap approach because both track the "watermark" of simultaneous meetings. The heap approach is slightly cleaner for coding interviews (no tie-breaking edge cases). The sweep line is more general and extends to problems like "maximum overlap of intervals" and "number of events happening at any time," making it a more powerful technique despite being the same asymptotic complexity.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 18B Complete</button>
-<div class="toast" id="toast">✅ Module 18B complete! Intervals &amp; Top K mastered!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 18B Complete</button>
+<div class="toast" id="toast">? Module 18B complete! Intervals &amp; Top K mastered!</div>
     <script>var MODULE_ID = 'm18b';</script>
     <script src="../dsa.js"></script>
 </body>

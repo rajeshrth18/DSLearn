@@ -1,42 +1,43 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 16C — Randomized Algorithms | DSA Masterbook</title>
+    <title>Module 16C � Randomized Algorithms | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
-    <h1>Module 16 — Part C</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
+    <h1>Module 16 � Part C</h1>
     <div class="tagline">Randomized Algorithms</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">QuickSelect · Reservoir Sampling · Fisher-Yates Shuffle</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">QuickSelect � Reservoir Sampling � Fisher-Yates Shuffle</p>
     <div class="badges">
-        <span>⏱ Estimated: 1.5 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Module 16 of 17</span>
+        <span>? Estimated: 1.5 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Module 16 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 16 — Bit Manipulation:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m16a_bit_manipulation.html">Bit Operations &amp; Tricks</a><br>
-    ✅ <strong>Part B</strong> — <a href="m16b_bit_problems.html">Classic Bit Problems</a><br>
-    ▶ <strong>Part C</strong> — <em>You are here</em> — Randomized Algorithms<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 16 � Bit Manipulation:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m16a_bit_manipulation.html">Bit Operations &amp; Tricks</a><br>
+    ? <strong>Part B</strong> � <a href="m16b_bit_problems.html">Classic Bit Problems</a><br>
+    ? <strong>Part C</strong> � <em>You are here</em> � Randomized Algorithms<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
     <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — QuickSelect: Kth Largest Element (LC 215)</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � QuickSelect: Kth Largest Element (LC 215)</div>
 
-<p>QuickSelect finds the k-th smallest/largest in <strong>O(n) average</strong> time using partitioning — without full sorting (which is O(n log n)).</p>
+<p>QuickSelect finds the k-th smallest/largest in <strong>O(n) average</strong> time using partitioning � without full sorting (which is O(n log n)).</p>
 <p>It's the selection version of QuickSort: after each partition, only recurse into the side that contains the target index.</p>
 
 <div class="diagram">Find 2nd largest in [3, 2, 1, 5, 6, 4]:
@@ -44,13 +45,13 @@
 After 1 partition around pivot=4 (for example):
   [3, 2, 1, _4_, 5, 6]    pivot is at index 3
   We need index 4 (0-based for 2nd largest = n-k=4)
-  Recurse only on right side [5, 6] → answer is 5 ✓
+  Recurse only on right side [5, 6] ? answer is 5 ?
 
-Average: O(n). Worst case: O(n²) — use random pivot to avoid.</div>
+Average: O(n). Worst case: O(n�) � use random pivot to avoid.</div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 
 <span class="kw">public class</span> <span class="tp">KthLargest</span>
@@ -90,12 +91,12 @@ Average: O(n). Worst case: O(n²) — use random pivot to avoid.</div>
     <span class="kw">static void</span> <span class="mt">Swap</span>(<span class="kw">int</span>[] a, <span class="kw">int</span> i, <span class="kw">int</span> j) =&gt; (a[i], a[j]) = (a[j], a[i]);
 }
 
-<span class="cm">// KthLargest.FindKthLargest([3,2,1,5,6,4], 2) → 5</span></pre>
+<span class="cm">// KthLargest.FindKthLargest([3,2,1,5,6,4], 2) ? 5</span></pre>
 </div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> random
 
 <span class="kw">def</span> <span class="mt">find_kth_largest</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>], k: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
@@ -124,17 +125,17 @@ Average: O(n). Worst case: O(n²) — use random pivot to avoid.</div>
 print(<span class="mt">find_kth_largest</span>([<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">4</span>], <span class="nm">2</span>))  <span class="cm"># 5</span></pre>
 </div>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Reservoir Sampling (LC 382)</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Reservoir Sampling (LC 382)</div>
 
-<p>Randomly sample k items from a stream of unknown length n, ensuring each element has equal probability k/n — using O(k) space.</p>
+<p>Randomly sample k items from a stream of unknown length n, ensuring each element has equal probability k/n � using O(k) space.</p>
 
-<div class="diagram">Reservoir Sampling — k=1 (pick 1 random element):
+<div class="diagram">Reservoir Sampling � k=1 (pick 1 random element):
 
 i=0: reservoir = nums[0]
-i=1: with prob 1/2 → replace reservoir with nums[1]
-i=2: with prob 1/3 → replace reservoir with nums[2]
-i=3: with prob 1/4 → replace reservoir with nums[3]
+i=1: with prob 1/2 ? replace reservoir with nums[1]
+i=2: with prob 1/3 ? replace reservoir with nums[2]
+i=3: with prob 1/4 ? replace reservoir with nums[3]
 ...
 
 After n items, each element has prob 1/n of being selected.
@@ -143,8 +144,8 @@ probability (1/i+1) * (i+1/i+2) * ... * (n-1/n) = 1/n</div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="kw">public class</span> <span class="tp">Solution</span>  <span class="cm">// LC 382 — Linked List Random Node</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">Solution</span>  <span class="cm">// LC 382 � Linked List Random Node</span>
 {
     <span class="kw">private</span> <span class="tp">ListNode</span> _head;
     <span class="kw">private</span> <span class="tp">Random</span> _rng = <span class="kw">new</span> <span class="tp">Random</span>();
@@ -182,7 +183,7 @@ probability (1/i+1) * (i+1/i+2) * ... * (n-1/n) = 1/n</div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> random
 
 <span class="kw">def</span> <span class="mt">reservoir_sample</span>(stream, k: <span class="tp">int</span>) -&gt; <span class="tp">list</span>:
@@ -198,15 +199,15 @@ probability (1/i+1) * (i+1/i+2) * ... * (n-1/n) = 1/n</div>
     <span class="kw">return</span> reservoir</pre>
 </div>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Fisher-Yates Shuffle (LC 384)</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Fisher-Yates Shuffle (LC 384)</div>
 
 <p>Produce a uniformly random permutation in O(n) time and O(1) extra space.
 Each of the n! orderings is equally likely.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">ShuffleSolution</span>  <span class="cm">// LC 384</span>
 {
     <span class="kw">private</span> <span class="kw">int</span>[] _orig, _nums;
@@ -235,7 +236,7 @@ Each of the n! orderings is equally likely.</p>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> random
 
 <span class="kw">class</span> <span class="tp">Solution</span>:  <span class="cm"># LC 384</span>
@@ -258,12 +259,12 @@ Each of the n! orderings is equally likely.</p>
 </div>
 
 <div class="note">
-    <strong>📌 Why NOT just random.random() for index?</strong> A naive shuffle where each swap is fully random
+    <strong>?? Why NOT just random.random() for index?</strong> A naive shuffle where each swap is fully random
     produces 3^n outcomes (for 3 elements), not 3!=6. Fisher-Yates produces exactly n! outcomes with uniform probability.
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16C Complete — Module 16 Done!</button>
-<div class="toast" id="toast">✅ Module 16C complete! Randomized Algorithms mastered! Module 16 done!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 16C Complete � Module 16 Done!</button>
+<div class="toast" id="toast">? Module 16C complete! Randomized Algorithms mastered! Module 16 done!</div>
     <script>var MODULE_ID = 'm16c';</script>
     <script src="../dsa.js"></script>
 </body>

@@ -1,34 +1,35 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 13C — Greedy Practice: 10 Problems | DSA Masterbook</title>
+    <title>Module 13C � Greedy Practice: 10 Problems | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
-    <h1>Module 13 — Part C</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
+    <h1>Module 13 � Part C</h1>
     <div class="tagline">Greedy Practice: 10 Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">LeetCode problems from Easy to Hard — Greedy Algorithms</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">LeetCode problems from Easy to Hard � Greedy Algorithms</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2 Hours</span>
-        <span>🎯 Mixed Difficulty</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 10 Curated Problems</span>
+        <span>? Estimated Time: 2 Hours</span>
+        <span>?? Mixed Difficulty</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? 10 Curated Problems</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ✅ Module 12 — <a href="m12a_dp_intro.html">Dynamic Programming (Parts A–F)</a><br>
-    ✅ <strong>Module 13 Part A</strong> — <a href="m13a_greedy.html">Greedy Strategy</a><br>
-    ✅ <strong>Module 13 Part B</strong> — <a href="m13b_huffman.html">Huffman &amp; Interval Scheduling</a><br>
-    ▶ <strong>Module 13 Part C</strong> — <em>You are here</em> — Greedy Practice<br>
-    ⬜ Module 14 — <a href="m14a_divide_conquer.html">Divide &amp; Conquer</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ? Module 12 � <a href="m12a_dp_intro.html">Dynamic Programming (Parts A�F)</a><br>
+    ? <strong>Module 13 Part A</strong> � <a href="m13a_greedy.html">Greedy Strategy</a><br>
+    ? <strong>Module 13 Part B</strong> � <a href="m13b_huffman.html">Huffman &amp; Interval Scheduling</a><br>
+    ? <strong>Module 13 Part C</strong> � <em>You are here</em> � Greedy Practice<br>
+    ? Module 14 � <a href="m14a_divide_conquer.html">Divide &amp; Conquer</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m12a_dp_intro.html">&larr; Module 12 &mdash; Dynamic Programming</a>
@@ -36,32 +37,32 @@
 </div>
 
 <div class="tip">
-    <strong>💡 Practice Strategy:</strong> 
-    Attempt each problem for 15–20 minutes before revealing the hint. 
+    <strong>?? Practice Strategy:</strong> 
+    Attempt each problem for 15�20 minutes before revealing the hint. 
     For each problem, ask yourself: <em>"Can I make a locally optimal choice that doesn't need to be revised?"</em> 
     If yes, what is the greedy criterion? Prove it or find a counterexample.
 </div>
 
-<!-- ═══════ GROUP A ═══════ -->
-<div class="section-heading">Group A — Classic Greedy Patterns</div>
+<!-- ------- GROUP A ------- -->
+<div class="section-heading">Group A � Classic Greedy Patterns</div>
 
 <!-- P1 -->
 <div class="problem">
     <div class="problem-header">
         <div class="problem-num">1</div>
         <div>
-            <div class="problem-title">Assign Cookies — LeetCode #455 <span class="diff diff-easy">Easy</span></div>
-            <div class="problem-meta">Pattern: Sort + Two Pointer · O(n log n)</div>
+            <div class="problem-title">Assign Cookies � LeetCode #455 <span class="diff diff-easy">Easy</span></div>
+            <div class="problem-meta">Pattern: Sort + Two Pointer � O(n log n)</div>
         </div>
     </div>
     <p>Assign cookies to children: child <code>i</code> has greed factor <code>g[i]</code>; cookie <code>j</code> has size <code>s[j]</code>. 
     Assign each child at most one cookie <code>s[j] >= g[i]</code>. Maximize the number of content children.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Sort both arrays. Use two pointers: try to satisfy the least greedy child with the smallest available cookie.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">FindContentChildren</span>(<span class="kw">int</span>[] g, <span class="kw">int</span>[] s) {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(g); <span class="tp">Array</span>.<span class="mt">Sort</span>(s);
     <span class="kw">int</span> i = <span class="nm">0</span>, j = <span class="nm">0</span>;
@@ -72,7 +73,7 @@
     <span class="kw">return</span> i;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findContentChildren</span>(g, s):
     g.<span class="mt">sort</span>(); s.<span class="mt">sort</span>()
     i = j = <span class="nm">0</span>
@@ -88,17 +89,17 @@
     <div class="problem-header">
         <div class="problem-num">2</div>
         <div>
-            <div class="problem-title">Jump Game — LeetCode #55 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: Greedy max reach · O(n)</div>
+            <div class="problem-title">Jump Game � LeetCode #55 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: Greedy max reach � O(n)</div>
         </div>
     </div>
     <p>Given <code>nums[i]</code> = max jump length at position <code>i</code>, return <code>true</code> if you can reach the last index.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Track the farthest reachable index. If current index exceeds it, return false.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public bool</span> <span class="mt">CanJump</span>(<span class="kw">int</span>[] nums) {
     <span class="kw">int</span> reach = <span class="nm">0</span>;
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++) {
@@ -108,7 +109,7 @@
     <span class="kw">return true</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">canJump</span>(nums):
     reach = <span class="nm">0</span>
     <span class="kw">for</span> i, v <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
@@ -123,18 +124,18 @@
     <div class="problem-header">
         <div class="problem-num">3</div>
         <div>
-            <div class="problem-title">Gas Station — LeetCode #134 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: Greedy total + local sum · O(n)</div>
+            <div class="problem-title">Gas Station � LeetCode #134 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: Greedy total + local sum � O(n)</div>
         </div>
     </div>
     <p>There are <code>n</code> gas stations on a circuit. <code>gas[i]</code> is fuel available, <code>cost[i]</code> to travel to next. 
     Find starting index to complete the circuit, or -1 if impossible.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">If sum(gas) &lt; sum(cost), return -1. Otherwise, a solution always exists. Track cumulative net gas; whenever it drops below 0, reset start to i+1.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">CanCompleteCircuit</span>(<span class="kw">int</span>[] gas, <span class="kw">int</span>[] cost) {
     <span class="kw">int</span> total = <span class="nm">0</span>, tank = <span class="nm">0</span>, start = <span class="nm">0</span>;
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; gas.Length; i++) {
@@ -145,7 +146,7 @@
     <span class="kw">return</span> total >= <span class="nm">0</span> ? start : -<span class="nm">1</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">canCompleteCircuit</span>(gas, cost):
     total = tank = start = <span class="nm">0</span>
     <span class="kw">for</span> i, (g, c) <span class="kw">in</span> <span class="mt">enumerate</span>(<span class="mt">zip</span>(gas, cost)):
@@ -160,17 +161,17 @@
     <div class="problem-header">
         <div class="problem-num">4</div>
         <div>
-            <div class="problem-title">Candy — LeetCode #135 <span class="diff diff-hard">Hard</span></div>
-            <div class="problem-meta">Pattern: Two-pass greedy · O(n)</div>
+            <div class="problem-title">Candy � LeetCode #135 <span class="diff diff-hard">Hard</span></div>
+            <div class="problem-meta">Pattern: Two-pass greedy � O(n)</div>
         </div>
     </div>
     <p>Each child in a line has a rating. Give every child at least 1 candy; children with higher rating than their neighbor get more. Minimize total candies.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Two passes: (1) Left-to-right: if rating[i] > rating[i-1], candy[i] = candy[i-1]+1. (2) Right-to-left: if rating[i] > rating[i+1], candy[i] = max(candy[i], candy[i+1]+1).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">Candy</span>(<span class="kw">int</span>[] r) {
     <span class="kw">int</span> n = r.Length;
     <span class="kw">var</span> c = <span class="kw">new int</span>[n]; <span class="tp">Array</span>.<span class="mt">Fill</span>(c, <span class="nm">1</span>);
@@ -181,7 +182,7 @@
     <span class="kw">return</span> c.<span class="mt">Sum</span>();
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">candy</span>(ratings):
     n = <span class="mt">len</span>(ratings); c = [<span class="nm">1</span>] * n
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n):
@@ -193,25 +194,25 @@
 </div>
 
 <hr>
-<!-- ═══════ GROUP B ═══════ -->
-<div class="section-heading">Group B — Interval Greedy</div>
+<!-- ------- GROUP B ------- -->
+<div class="section-heading">Group B � Interval Greedy</div>
 
 <!-- P5 -->
 <div class="problem">
     <div class="problem-header">
         <div class="problem-num">5</div>
         <div>
-            <div class="problem-title">Minimum Number of Arrows to Burst Balloons — LeetCode #452 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: Sort by end, greedy grouping · O(n log n)</div>
+            <div class="problem-title">Minimum Number of Arrows to Burst Balloons � LeetCode #452 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: Sort by end, greedy grouping � O(n log n)</div>
         </div>
     </div>
-    <p>Balloons span <code>[xstart, xend]</code> on a wall. One arrow shot at position <code>x</code> bursts all balloons with <code>xstart ≤ x ≤ xend</code>. Minimum arrows to burst all balloons?</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <p>Balloons span <code>[xstart, xend]</code> on a wall. One arrow shot at position <code>x</code> bursts all balloons with <code>xstart = x = xend</code>. Minimum arrows to burst all balloons?</p>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Sort by end. Shoot arrow at the end of the first balloon. It bursts all overlapping balloons. When next balloon starts after this arrow position, shoot a new arrow.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">FindMinArrowShots</span>(<span class="kw">int</span>[][] pts) {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(pts, (a, b) => a[<span class="nm">1</span>].CompareTo(b[<span class="nm">1</span>]));
     <span class="kw">int</span> arrows = <span class="nm">1</span>; <span class="kw">long</span> pos = pts[<span class="nm">0</span>][<span class="nm">1</span>];
@@ -220,7 +221,7 @@
     <span class="kw">return</span> arrows;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findMinArrowShots</span>(points):
     points.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])
     arrows, pos = <span class="nm">1</span>, points[<span class="nm">0</span>][<span class="nm">1</span>]
@@ -235,17 +236,17 @@
     <div class="problem-header">
         <div class="problem-num">6</div>
         <div>
-            <div class="problem-title">Partition Labels — LeetCode #763 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: Last occurrence + greedy extend · O(n)</div>
+            <div class="problem-title">Partition Labels � LeetCode #763 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: Last occurrence + greedy extend � O(n)</div>
         </div>
     </div>
     <p>Partition string <code>s</code> into as many parts as possible so each letter appears in at most one part. Return list of partition sizes.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Record last occurrence of each character. Scan: extend current partition's end to max(end, last[s[i]]). When i == end, partition is complete.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">PartitionLabels</span>(<span class="kw">string</span> s) {
     <span class="kw">var</span> last = <span class="kw">new int</span>[<span class="nm">26</span>];
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; s.Length; i++) last[s[i]-<span class="st">'a'</span>] = i;
@@ -258,7 +259,7 @@
     <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">partitionLabels</span>(s):
     last = {c: i <span class="kw">for</span> i, c <span class="kw">in</span> <span class="mt">enumerate</span>(s)}
     res, start, end = [], <span class="nm">0</span>, <span class="nm">0</span>
@@ -270,25 +271,25 @@
 </div>
 
 <hr>
-<!-- ═══════ GROUP C ═══════ -->
-<div class="section-heading">Group C — Greedy on Arrays &amp; Strings</div>
+<!-- ------- GROUP C ------- -->
+<div class="section-heading">Group C � Greedy on Arrays &amp; Strings</div>
 
 <!-- P7 -->
 <div class="problem">
     <div class="problem-header">
         <div class="problem-num">7</div>
         <div>
-            <div class="problem-title">Best Time to Buy and Sell Stock II — LeetCode #122 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: Collect all positive differences · O(n)</div>
+            <div class="problem-title">Best Time to Buy and Sell Stock II � LeetCode #122 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: Collect all positive differences � O(n)</div>
         </div>
     </div>
     <p>You can buy/sell stock multiple times (no holding). Maximize profit.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Collect every positive day-to-day increase: profit += max(0, prices[i] - prices[i-1]). This simulates buying and selling on every upward step.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">MaxProfit</span>(<span class="kw">int</span>[] p) {
     <span class="kw">int</span> profit = <span class="nm">0</span>;
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; p.Length; i++)
@@ -296,7 +297,7 @@
     <span class="kw">return</span> profit;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maxProfit</span>(prices):
     <span class="kw">return</span> <span class="mt">sum</span>(<span class="mt">max</span>(<span class="nm">0</span>, prices[i]-prices[i-<span class="nm">1</span>]) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(prices)))</pre></div>
     </div>
@@ -307,17 +308,17 @@
     <div class="problem-header">
         <div class="problem-num">8</div>
         <div>
-            <div class="problem-title">Reorganize String — LeetCode #767 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: MaxHeap + greedy interleave · O(n log k)</div>
+            <div class="problem-title">Reorganize String � LeetCode #767 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: MaxHeap + greedy interleave � O(n log k)</div>
         </div>
     </div>
     <p>Rearrange characters of string <code>s</code> so no two adjacent characters are the same. Return rearranged string, or "" if impossible.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Impossible if max frequency > (n+1)/2. Otherwise, use a max-heap: at each step, pick the most frequent character not equal to last placed. Use count[-freq, char] trick.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public string</span> <span class="mt">ReorganizeString</span>(<span class="kw">string</span> s) {
     <span class="kw">var</span> freq = <span class="kw">new int</span>[<span class="nm">26</span>];
     <span class="kw">foreach</span> (<span class="kw">var</span> c <span class="kw">in</span> s) freq[c-<span class="st">'a'</span>]++;
@@ -335,7 +336,7 @@
     <span class="kw">return</span> sb.Length == s.Length ? sb.<span class="mt">ToString</span>() : <span class="st">""</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
 <span class="kw">import</span> heapq
 <span class="kw">def</span> <span class="mt">reorganizeString</span>(s):
@@ -359,17 +360,17 @@
     <div class="problem-header">
         <div class="problem-num">9</div>
         <div>
-            <div class="problem-title">Largest Number — LeetCode #179 <span class="diff diff-medium">Medium</span></div>
-            <div class="problem-meta">Pattern: Custom comparator sort · O(n log n)</div>
+            <div class="problem-title">Largest Number � LeetCode #179 <span class="diff diff-medium">Medium</span></div>
+            <div class="problem-meta">Pattern: Custom comparator sort � O(n log n)</div>
         </div>
     </div>
     <p>Given a list of non-negative integers, arrange them to form the largest number. Return as string.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Custom sort: compare strings a, b by whether a+b > b+a (as strings). Sort descending by this comparator. Handle the all-zeros edge case.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public string</span> <span class="mt">LargestNumber</span>(<span class="kw">int</span>[] nums) {
     <span class="kw">var</span> strs = nums.<span class="mt">Select</span>(n => n.<span class="mt">ToString</span>()).<span class="mt">ToArray</span>();
     <span class="tp">Array</span>.<span class="mt">Sort</span>(strs, (<span class="kw">string</span> a, <span class="kw">string</span> b) =>
@@ -378,7 +379,7 @@
     <span class="kw">return</span> <span class="kw">string</span>.<span class="mt">Concat</span>(strs);
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> functools <span class="kw">import</span> cmp_to_key
 <span class="kw">def</span> <span class="mt">largestNumber</span>(nums):
     strs = <span class="mt">list</span>(<span class="mt">map</span>(str, nums))
@@ -393,17 +394,17 @@
     <div class="problem-header">
         <div class="problem-num">10</div>
         <div>
-            <div class="problem-title">IPO — LeetCode #502 <span class="diff diff-hard">Hard</span></div>
-            <div class="problem-meta">Pattern: Dual-heap greedy · O(n log n)</div>
+            <div class="problem-title">IPO � LeetCode #502 <span class="diff diff-hard">Hard</span></div>
+            <div class="problem-meta">Pattern: Dual-heap greedy � O(n log n)</div>
         </div>
     </div>
-    <p>You start with capital <code>w</code>. At each of <code>k</code> steps, choose a project (profit[i], capital[i]) with capital[i] ≤ current_w to maximize final capital.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this, true)">👁 Solution</button>
+    <p>You start with capital <code>w</code>. At each of <code>k</code> steps, choose a project (profit[i], capital[i]) with capital[i] = current_w to maximize final capital.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this, true)">?? Solution</button>
     <div class="hint-box">Min-heap by capital: add all affordable projects to a max-heap by profit. Pick highest profit project. Repeat k times. When capital grows, more projects become affordable.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">FindMaximizedCapital</span>(<span class="kw">int</span> k, <span class="kw">int</span> w, <span class="kw">int</span>[] profits, <span class="kw">int</span>[] capital) {
     <span class="kw">var</span> capHeap = <span class="kw">new</span> <span class="tp">SortedSet</span>&lt;(<span class="kw">int</span> c, <span class="kw">int</span> p, <span class="kw">int</span> i)&gt;(
         <span class="tp">Comparer</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>,<span class="kw">int</span>)&gt;.<span class="mt">Create</span>((a,b) => a.c != b.c ? a.c-b.c : a.i-b.i));
@@ -420,7 +421,7 @@
     <span class="kw">return</span> w;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 <span class="kw">def</span> <span class="mt">findMaximizedCapital</span>(k, w, profits, capital):
     cap_heap = <span class="mt">sorted</span>(<span class="mt">zip</span>(capital, profits))
@@ -435,8 +436,8 @@
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 13C Complete</button>
-<div class="toast" id="toast">✅ Module 13C marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 13C Complete</button>
+<div class="toast" id="toast">? Module 13C marked complete!</div>
     <script>var MODULE_ID = 'm13c';</script>
     <script src="../dsa.js"></script>
 </body>

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 2D — Floyd's Cycle Detection</title>
+    <title>Module 2D � Floyd's Cycle Detection</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; background: #ffffff; }
@@ -75,25 +75,25 @@
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
-    <h1>Module 2 — Part D</h1>
-    <div class="tagline">Floyd's Cycle Detection — The Tortoise &amp; Hare Algorithm</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Detect cycles, find entry points, and solve hidden duplicate problems — all in O(n) time, O(1) space</p>
+    <div class="module-label">C# Data Structures &amp; Algorithms � Complete Course</div>
+    <h1>Module 2 � Part D</h1>
+    <div class="tagline">Floyd's Cycle Detection � The Tortoise &amp; Hare Algorithm</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Detect cycles, find entry points, and solve hidden duplicate problems � all in O(n) time, O(1) space</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1 Hour</span>
-        <span>🎯 Intermediate</span>
-        <span>💻 Language: C#</span>
-        <span>📝 Part D of Module 2</span>
+        <span>? Estimated Time: 1 Hour</span>
+        <span>?? Intermediate</span>
+        <span>?? Language: C#</span>
+        <span>?? Part D of Module 2</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 2 — Linked Lists:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m02a_singly_ll.html">Singly Linked List</a><br>
-    ✅ <strong>Part B</strong> — <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
-    ✅ <strong>Part C</strong> — <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
-    ▶ <strong>Part D</strong> — <em>You are here</em> — Floyd's Cycle Detection<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 2 � Linked Lists:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m02a_singly_ll.html">Singly Linked List</a><br>
+    ? <strong>Part B</strong> � <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
+    ? <strong>Part C</strong> � <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
+    ? <strong>Part D</strong> � <em>You are here</em> � Floyd's Cycle Detection<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase1/m01a_bigO_arrays.html">&larr; Module 1 &mdash; Big O &amp; Arrays</a>
@@ -101,39 +101,39 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Part D</h2>
+    <h2>?? Contents � Part D</h2>
     <ol>
-        <li>Section 1 — The Problem: Why Naive Detection Fails <span>— O(n) space trap</span></li>
-        <li>Section 2 — Floyd's Algorithm: Phase 1 — Detect the Cycle <span>— Tortoise &amp; Hare meet</span></li>
-        <li>Section 3 — Floyd's Algorithm: Phase 2 — Find the Entry Point <span>— The math explained</span></li>
-        <li>Section 4 — Find the Cycle Length <span>— Count the loop</span></li>
-        <li>Section 5 — The "Happy Number" Application <span>— Non-list use of Floyd's</span></li>
-        <li>Section 6 — Find the Duplicate Number <span>— Array as implicit linked list (LC 287)</span></li>
-        <li>Section 7 — Complexity Summary &amp; When to Use <span>— Decision guide</span></li>
-        <li>Section 8 — Practice Problems <span>— 5 problems</span></li>
+        <li>Section 1 � The Problem: Why Naive Detection Fails <span>� O(n) space trap</span></li>
+        <li>Section 2 � Floyd's Algorithm: Phase 1 � Detect the Cycle <span>� Tortoise &amp; Hare meet</span></li>
+        <li>Section 3 � Floyd's Algorithm: Phase 2 � Find the Entry Point <span>� The math explained</span></li>
+        <li>Section 4 � Find the Cycle Length <span>� Count the loop</span></li>
+        <li>Section 5 � The "Happy Number" Application <span>� Non-list use of Floyd's</span></li>
+        <li>Section 6 � Find the Duplicate Number <span>� Array as implicit linked list (LC 287)</span></li>
+        <li>Section 7 � Complexity Summary &amp; When to Use <span>� Decision guide</span></li>
+        <li>Section 8 � Practice Problems <span>� 5 problems</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Problem: Why Naive Detection Fails</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Problem: Why Naive Detection Fails</div>
 
 <p>A cycle in a linked list occurs when a node's <code>Next</code> pointer points back to a node
-already visited — the traversal loops forever and never reaches <code>null</code>.</p>
+already visited � the traversal loops forever and never reaches <code>null</code>.</p>
 
 <div class="diagram">LINKED LIST WITH A CYCLE
 
    head
-    │
-    ▼
-   [1] → [2] → [3] → [4] → [5]
-                ▲              │
-                └──────────────┘
+    �
+    ?
+   [1] ? [2] ? [3] ? [4] ? [5]
+                ?              �
+                +--------------+
                    cycle entry = node(3)
 
-   If you traverse: 1 → 2 → 3 → 4 → 5 → 3 → 4 → 5 → 3 → ... (infinite loop)</div>
+   If you traverse: 1 ? 2 ? 3 ? 4 ? 5 ? 3 ? 4 ? 5 ? 3 ? ... (infinite loop)</div>
 
-<h3>1.1 — Naive Approach: HashSet</h3>
-<p>The obvious solution: record every visited node in a <code>HashSet</code>. If you see a node again — cycle detected.</p>
+<h3>1.1 � Naive Approach: HashSet</h3>
+<p>The obvious solution: record every visited node in a <code>HashSet</code>. If you see a node again � cycle detected.</p>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -165,16 +165,16 @@ already visited — the traversal loops forever and never reaches <code>null</co
     <span class="kw">return</span> <span class="kw">False</span></pre>
 </div>
 
-<p><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space: O(n)</strong> — stores every node reference.</p>
+<p><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space: O(n)</strong> � stores every node reference.</p>
 
 <div class="warning">
-    <strong>⚠️ The O(n) Space Problem:</strong> For a list with 10 million nodes, that's 10 million
+    <strong>?? The O(n) Space Problem:</strong> For a list with 10 million nodes, that's 10 million
     object references in memory just to answer a yes/no question. Floyd's algorithm solves it
-    in <strong>O(1) space</strong> — just two pointer variables.
+    in <strong>O(1) space</strong> � just two pointer variables.
 </div>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Floyd's Algorithm: Phase 1 — Detect the Cycle</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Floyd's Algorithm: Phase 1 � Detect the Cycle</div>
 
 <p><strong>Robert W. Floyd</strong> discovered a brilliant insight: use two pointers moving at different
 speeds through the list. The <strong>slow pointer (tortoise)</strong> advances one step at a time.
@@ -182,28 +182,28 @@ The <strong>fast pointer (hare)</strong> advances two steps at a time.</p>
 
 <ul>
     <li>If there is <strong>no cycle</strong>: the fast pointer reaches <code>null</code> and exits.</li>
-    <li>If there is a <strong>cycle</strong>: the fast pointer laps the slow pointer — they <em>must</em> eventually meet inside the cycle.</li>
+    <li>If there is a <strong>cycle</strong>: the fast pointer laps the slow pointer � they <em>must</em> eventually meet inside the cycle.</li>
 </ul>
 
-<div class="diagram">PHASE 1 — TORTOISE & HARE MEET (cycle: 3→4→5→3)
+<div class="diagram">PHASE 1 � TORTOISE & HARE MEET (cycle: 3?4?5?3)
 
 Step 0:  slow=1,  fast=1
 Step 1:  slow=2,  fast=3   (fast moves 2 steps)
 Step 2:  slow=3,  fast=5
-Step 3:  slow=4,  fast=4   ← MEET! Cycle confirmed.
+Step 3:  slow=4,  fast=4   ? MEET! Cycle confirmed.
 
    head
-    │
-    ▼
-   [1] → [2] → [3] → [4] → [5]
-                ▲     ▲          
-                │     │          
+    �
+    ?
+   [1] ? [2] ? [3] ? [4] ? [5]
+                ?     ?          
+                �     �          
               slow   fast meet here (step 3)</div>
 
-<h3>2.1 — Why Do They Always Meet?</h3>
+<h3>2.1 � Why Do They Always Meet?</h3>
 <p>Once both pointers are inside the cycle, think of them as two runners on a circular track.
 The fast runner gains 1 step per iteration on the slow runner.
-If the cycle length is <strong>C</strong>, the gap closes by 1 each step — they meet within at most C steps.</p>
+If the cycle length is <strong>C</strong>, the gap closes by 1 each step � they meet within at most C steps.</p>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -216,7 +216,7 @@ If the cycle length is <strong>C</strong>, the gap closes by 1 each step — the
     <span class="kw">public</span> <span class="mt">ListNode</span>(<span class="kw">int</span> val) { Val = val; }
 }
 
-<span class="cm">// Phase 1: Detect if a cycle exists — O(n) time, O(1) space</span>
+<span class="cm">// Phase 1: Detect if a cycle exists � O(n) time, O(1) space</span>
 <span class="kw">public static bool</span> <span class="mt">HasCycle</span>(<span class="tp">ListNode</span>? head)
 {
     <span class="tp">ListNode</span>? slow = head;
@@ -227,12 +227,12 @@ If the cycle length is <strong>C</strong>, the gap closes by 1 each step — the
         slow = slow!.Next;          <span class="cm">// Tortoise: 1 step</span>
         fast = fast.Next.Next;      <span class="cm">// Hare: 2 steps</span>
 
-        <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;  <span class="cm">// They met — cycle exists!</span>
+        <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;  <span class="cm">// They met � cycle exists!</span>
     }
 
-    <span class="kw">return false</span>;  <span class="cm">// fast hit null — no cycle</span>
+    <span class="kw">return false</span>;  <span class="cm">// fast hit null � no cycle</span>
 }
-<span class="cm">// LeetCode 141 — Linked List Cycle</span></pre>
+<span class="cm">// LeetCode 141 � Linked List Cycle</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -251,18 +251,18 @@ If the cycle length is <strong>C</strong>, the gap closes by 1 each step — the
 </div>
 
 <div class="tip">
-    <strong>💡 Why check <code>fast.Next != null</code>?</strong> The hare moves two steps: <code>fast.Next.Next</code>.
+    <strong>?? Why check <code>fast.Next != null</code>?</strong> The hare moves two steps: <code>fast.Next.Next</code>.
     If the list has even length, <code>fast</code> lands on <code>null</code>. If odd, <code>fast.Next</code>
     is <code>null</code>. Both must be checked to avoid a NullReferenceException.
 </div>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Phase 2: Find the Cycle Entry Point</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Phase 2: Find the Cycle Entry Point</div>
 
 <p>Once slow and fast have met, we can find <em>exactly where the cycle begins</em> with a clever
-mathematical trick — no extra memory needed.</p>
+mathematical trick � no extra memory needed.</p>
 
-<h3>3.1 — The Math</h3>
+<h3>3.1 � The Math</h3>
 <p>Define these distances:</p>
 <ul>
     <li><strong>F</strong> = distance from head to cycle entry</li>
@@ -273,36 +273,36 @@ mathematical trick — no extra memory needed.</p>
 <p>When they meet:</p>
 <ul>
     <li>Slow has traveled: <strong>F + a</strong></li>
-    <li>Fast has traveled: <strong>F + a + k·C</strong> (lapped k times)</li>
-    <li>Fast traveled 2× slow: <code>2(F + a) = F + a + k·C</code></li>
-    <li>Simplify: <code>F = k·C − a</code> — meaning <strong>F ≡ C − a (mod C)</strong></li>
+    <li>Fast has traveled: <strong>F + a + k�C</strong> (lapped k times)</li>
+    <li>Fast traveled 2� slow: <code>2(F + a) = F + a + k�C</code></li>
+    <li>Simplify: <code>F = k�C - a</code> � meaning <strong>F = C - a (mod C)</strong></li>
 </ul>
 
 <div class="diagram">WHAT DOES F = C - a MEAN?
 
-   Distance from head → entry = F
-   Distance from meeting point → entry (going forward) = C - a
+   Distance from head ? entry = F
+   Distance from meeting point ? entry (going forward) = C - a
 
    So: if one pointer starts at head, another at the meeting point,
    and BOTH move 1 step at a time, they will meet exactly at the entry!
 
    head                    meeting point
-    │                           │
-    ▼           F               ▼
-   [1] → [2] → [3] → [4] → [5]
-                ▲     C-a        │
-       entry ──┘                 │
-                └────────────────┘
+    �                           �
+    ?           F               ?
+   [1] ? [2] ? [3] ? [4] ? [5]
+                ?     C-a        �
+       entry --+                 �
+                +----------------+
 
    ptr1 starts at head (travels F to reach entry)
    ptr2 starts at meeting point (travels C-a to reach entry)
-   F = C-a  →  they arrive at the SAME time!</div>
+   F = C-a  ?  they arrive at the SAME time!</div>
 
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
-<pre><span class="cm">// Phase 2: Find the START of the cycle — O(n) time, O(1) space</span>
+<pre><span class="cm">// Phase 2: Find the START of the cycle � O(n) time, O(1) space</span>
 <span class="kw">public static</span> <span class="tp">ListNode</span>? <span class="mt">DetectCycleEntry</span>(<span class="tp">ListNode</span>? head)
 {
     <span class="tp">ListNode</span>? slow = head;
@@ -330,7 +330,7 @@ mathematical trick — no extra memory needed.</p>
 
     <span class="kw">return</span> slow;  <span class="cm">// Both arrive at the cycle entry simultaneously</span>
 }
-<span class="cm">// LeetCode 142 — Linked List Cycle II</span></pre>
+<span class="cm">// LeetCode 142 � Linked List Cycle II</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -349,13 +349,13 @@ mathematical trick — no extra memory needed.</p>
 </div>
 
 <div class="note">
-    <strong>📝 Key Insight:</strong> The second phase doesn't need the fast pointer to be fast anymore.
+    <strong>?? Key Insight:</strong> The second phase doesn't need the fast pointer to be fast anymore.
     After the meeting point, reset one pointer to <code>head</code>. Move BOTH at speed 1.
     They'll converge at the cycle entry due to the <code>F = C - a</code> relationship.
 </div>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Find the Cycle Length</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Find the Cycle Length</div>
 
 <p>After detecting the meeting point in Phase 1, you can measure the cycle length by counting steps
 from the meeting point back to itself.</p>
@@ -368,7 +368,7 @@ from the meeting point back to itself.</p>
 {
     <span class="tp">ListNode</span>? slow = head, fast = head;
 
-    <span class="cm">// Phase 1 — find meeting point</span>
+    <span class="cm">// Phase 1 � find meeting point</span>
     <span class="kw">while</span> (fast != <span class="kw">null</span> &amp;&amp; fast.Next != <span class="kw">null</span>)
     {
         slow = slow!.Next;
@@ -390,7 +390,7 @@ from the meeting point back to itself.</p>
 }
 
 <span class="cm">// Example usage</span>
-<span class="cm">// List: 1→2→3→4→5→3 (cycle of length 3: 3→4→5→3)</span>
+<span class="cm">// List: 1?2?3?4?5?3 (cycle of length 3: 3?4?5?3)</span>
 <span class="cm">// CycleLength(...) = 3</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -409,22 +409,22 @@ from the meeting point back to itself.</p>
     <span class="kw">return</span> <span class="nm">0</span></pre>
 </div>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — The Happy Number Application</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � The Happy Number Application</div>
 
 <p>Floyd's algorithm works on <strong>any sequence that might loop</strong>, not just linked lists.
 The "Happy Number" problem (LeetCode 202) is a perfect example.</p>
 
-<p>A happy number: repeatedly sum the squares of digits. If the sequence reaches 1 — happy. If it
-enters a cycle that doesn't include 1 — not happy. Without Floyd's, you'd use a HashSet.</p>
+<p>A happy number: repeatedly sum the squares of digits. If the sequence reaches 1 � happy. If it
+enters a cycle that doesn't include 1 � not happy. Without Floyd's, you'd use a HashSet.</p>
 
-<div class="diagram">HAPPY NUMBER SEQUENCE — n = 19
+<div class="diagram">HAPPY NUMBER SEQUENCE � n = 19
 
-  19 → 1²+9² = 82 → 8²+2² = 68 → 6²+8² = 100 → 1²+0²+0² = 1 ✓  HAPPY!
+  19 ? 1�+9� = 82 ? 8�+2� = 68 ? 6�+8� = 100 ? 1�+0�+0� = 1 ?  HAPPY!
 
-UNHAPPY NUMBER SEQUENCE — n = 4
+UNHAPPY NUMBER SEQUENCE � n = 4
 
-  4 → 16 → 37 → 58 → 89 → 145 → 42 → 20 → 4 → 16 → ...  (CYCLE!)</div>
+  4 ? 16 ? 37 ? 58 ? 89 ? 145 ? 42 ? 20 ? 4 ? 16 ? ...  (CYCLE!)</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -485,30 +485,30 @@ UNHAPPY NUMBER SEQUENCE — n = 4
     <span class="kw">return</span> slow == <span class="nm">1</span></pre>
 </div>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Find the Duplicate Number (Array as Implicit Linked List)</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Find the Duplicate Number (Array as Implicit Linked List)</div>
 
 <p>LeetCode 287 is one of the most elegant applications of Floyd's algorithm. Given an array of
-n+1 integers where each value is in [1, n], find the duplicate — using O(1) extra space.</p>
+n+1 integers where each value is in [1, n], find the duplicate � using O(1) extra space.</p>
 
 <p>The key insight: <strong>treat each array value as a "next" pointer</strong>. Index <code>i</code>
 points to index <code>nums[i]</code>. Since one value is duplicated, two indices map to the same
-"next" — creating a cycle whose entry point is the duplicate value.</p>
+"next" � creating a cycle whose entry point is the duplicate value.</p>
 
-<div class="diagram">ARRAY AS IMPLICIT LINKED LIST — nums = [1,3,4,2,2]
+<div class="diagram">ARRAY AS IMPLICIT LINKED LIST � nums = [1,3,4,2,2]
 
   Index:  0  1  2  3  4
   Value:  1  3  4  2  2
 
   Traversal following nums[i]:
   start at index 0
-  0 → nums[0]=1 → nums[1]=3 → nums[3]=2 → nums[2]=4 → nums[4]=2 → nums[2]=4 → ...
+  0 ? nums[0]=1 ? nums[1]=3 ? nums[3]=2 ? nums[2]=4 ? nums[4]=2 ? nums[2]=4 ? ...
 
   Written as pointer chain:
-  0 → 1 → 3 → 2 → 4
-              ▲       │
-              └───────┘
-  Cycle entry = index 2, which means nums[2]=2 is visited twice → duplicate is 2!</div>
+  0 ? 1 ? 3 ? 2 ? 4
+              ?       �
+              +-------+
+  Cycle entry = index 2, which means nums[2]=2 is visited twice ? duplicate is 2!</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -536,8 +536,8 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
 
     <span class="kw">return</span> slow;                    <span class="cm">// The duplicate value</span>
 }
-<span class="cm">// LeetCode 287 — Find the Duplicate Number</span>
-<span class="cm">// O(n) time, O(1) space — no array modification!</span>
+<span class="cm">// LeetCode 287 � Find the Duplicate Number</span>
+<span class="cm">// O(n) time, O(1) space � no array modification!</span>
 
 <span class="kw">static void</span> <span class="mt">Main</span>()
 {
@@ -562,14 +562,14 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
 </div>
 
 <div class="realworld">
-    <strong>🌍 Real-World Context:</strong> This technique appears in memory-constrained embedded systems
+    <strong>?? Real-World Context:</strong> This technique appears in memory-constrained embedded systems
     where you need to detect pointer corruption or circular references without allocating tracking
     structures. The "array as implicit graph" mental model also appears in problems like
     "Next Permutation" and "Rearrange Array" problems.
 </div>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Complexity Summary &amp; When to Use</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Complexity Summary &amp; When to Use</div>
 
 <table>
     <thead>
@@ -585,23 +585,23 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
     </tbody>
 </table>
 
-<h3>7.1 — When to Reach for Floyd's</h3>
+<h3>7.1 � When to Reach for Floyd's</h3>
 <ul>
-    <li><strong>Constraint says O(1) extra space</strong> — Floyd's is almost always the answer</li>
+    <li><strong>Constraint says O(1) extra space</strong> � Floyd's is almost always the answer</li>
     <li><strong>Detect a loop</strong> in a linked list, sequence, or pointer chain</li>
-    <li><strong>Find where a loop starts</strong> — use Phase 2 after Phase 1</li>
-    <li><strong>Array values in [1..n]</strong> with n+1 elements — treat as implicit linked list</li>
-    <li><strong>Repeated sequence detection</strong> — Happy Number, function iteration cycles</li>
+    <li><strong>Find where a loop starts</strong> � use Phase 2 after Phase 1</li>
+    <li><strong>Array values in [1..n]</strong> with n+1 elements � treat as implicit linked list</li>
+    <li><strong>Repeated sequence detection</strong> � Happy Number, function iteration cycles</li>
 </ul>
 
 <div class="note">
-    <strong>📝 What Floyd's Cannot Do:</strong> It finds <em>a</em> duplicate but not all duplicates
+    <strong>?? What Floyd's Cannot Do:</strong> It finds <em>a</em> duplicate but not all duplicates
     (for that, use a counting array or sort). It also only works when the structure truly has a
-    rho (ρ) shape — a tail leading into a cycle. Random graphs with multiple cycles need different approaches.
+    rho (?) shape � a tail leading into a cycle. Random graphs with multiple cycles need different approaches.
 </div>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Practice Problems</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Practice Problems</div>
 
 <!-- P1 -->
 <div class="problem-card easy">
@@ -611,7 +611,7 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
         <span class="diff easy">Easy</span>
     </div>
     <p>Return <code>true</code> if a linked list has a cycle, <code>false</code> otherwise. Must use O(1) space.</p>
-    <div class="prob-meta">💡 Hint: Phase 1 only — does fast ever meet slow?</div>
+    <div class="prob-meta">?? Hint: Phase 1 only � does fast ever meet slow?</div>
     <input type="checkbox" class="spoiler-toggle" id="p1">
     <label class="spoiler-label" for="p1">Show Solution</label>
     <div class="spoiler-content">
@@ -654,7 +654,7 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
         <span class="diff medium">Medium</span>
     </div>
     <p>Return the node where the cycle begins. Return <code>null</code> if no cycle exists.</p>
-    <div class="prob-meta">💡 Hint: Phase 1 to detect, then reset one pointer to head for Phase 2.</div>
+    <div class="prob-meta">?? Hint: Phase 1 to detect, then reset one pointer to head for Phase 2.</div>
     <input type="checkbox" class="spoiler-toggle" id="p2">
     <label class="spoiler-label" for="p2">Show Solution</label>
     <div class="spoiler-content">
@@ -705,7 +705,7 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
     </div>
     <p>Write an algorithm to determine if a number <code>n</code> is happy. A happy number eventually reaches 1
     when replaced repeatedly by the sum of the square of each digit.</p>
-    <div class="prob-meta">💡 Hint: Model as a sequence; if it loops without hitting 1, it's not happy. Floyd detects the loop.</div>
+    <div class="prob-meta">?? Hint: Model as a sequence; if it loops without hitting 1, it's not happy. Floyd detects the loop.</div>
     <input type="checkbox" class="spoiler-toggle" id="p3">
     <label class="spoiler-label" for="p3">Show Solution</label>
     <div class="spoiler-content">
@@ -757,7 +757,7 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
     </div>
     <p>Given an array of n+1 integers where each value is in [1, n], find the one duplicate.
     Must not modify the array. Must use O(1) extra space.</p>
-    <div class="prob-meta">💡 Hint: Treat indices as a linked list where index i → index nums[i]. The duplicate creates a cycle.</div>
+    <div class="prob-meta">?? Hint: Treat indices as a linked list where index i ? index nums[i]. The duplicate creates a cycle.</div>
     <input type="checkbox" class="spoiler-toggle" id="p4">
     <label class="spoiler-label" for="p4">Show Solution</label>
     <div class="spoiler-content">
@@ -800,7 +800,7 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
     </div>
     <p>Return the middle node of a linked list. If two middle nodes exist, return the second one.
     Bonus: do it in a single pass without counting length first.</p>
-    <div class="prob-meta">💡 Hint: Same two-pointer mechanic — when fast reaches the end, slow is at the middle.</div>
+    <div class="prob-meta">?? Hint: Same two-pointer mechanic � when fast reaches the end, slow is at the middle.</div>
     <input type="checkbox" class="spoiler-toggle" id="p5">
     <label class="spoiler-label" for="p5">Show Solution</label>
     <div class="spoiler-content">
@@ -818,8 +818,8 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
     }
     <span class="kw">return</span> slow;  <span class="cm">// When fast is at end, slow is at middle</span>
 }
-<span class="cm">// 1→2→3→4→5 → returns node(3)</span>
-<span class="cm">// 1→2→3→4   → returns node(3) (second middle)</span>
+<span class="cm">// 1?2?3?4?5 ? returns node(3)</span>
+<span class="cm">// 1?2?3?4   ? returns node(3) (second middle)</span>
 <span class="cm">// Time: O(n) | Space: O(1)</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -837,16 +837,16 @@ points to index <code>nums[i]</code>. Since one value is duplicated, two indices
 
 <div class="complete-section">
     <p style="color:#555;font-size:0.95em;margin-bottom:16px">
-        You've mastered Floyd's Cycle Detection — one of the most elegant algorithms in computer science.
+        You've mastered Floyd's Cycle Detection � one of the most elegant algorithms in computer science.
         Two pointers, zero extra memory, infinite power.
     </p>
-    <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+    <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
     <div style="margin-top:16px">
-        <a href="m03a_stacks.html" style="color:#2980b9;font-weight:700;text-decoration:none">Next: Module 3 — Stacks →</a>
+        <a href="m03a_stacks.html" style="color:#2980b9;font-weight:700;text-decoration:none">Next: Module 3 � Stacks ?</a>
     </div>
 </div>
 
-<div class="toast" id="toast">✅ Module 2D complete! Floyd's Cycle Detection mastered!</div>
+<div class="toast" id="toast">? Module 2D complete! Floyd's Cycle Detection mastered!</div>
     <script>var MODULE_ID = 'm02d';</script>
     <script src="../dsa.js"></script>
 </body>

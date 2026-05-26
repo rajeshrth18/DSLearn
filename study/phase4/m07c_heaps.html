@@ -1,36 +1,37 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 7C — Heaps & PriorityQueue</title>
+    <title>Module 7C � Heaps & PriorityQueue</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
-    <h1>Module 7 — Part C</h1>
-    <div class="tagline">Heaps &amp; PriorityQueue&lt;T&gt; — Always-Accessible Minimum or Maximum</div>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 4</div>
+    <h1>Module 7 � Part C</h1>
+    <div class="tagline">Heaps &amp; PriorityQueue&lt;T&gt; � Always-Accessible Minimum or Maximum</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Heapify up, heapify down, heap sort, and C#'s built-in PriorityQueue&lt;TElement,TPriority&gt;</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2 Hours</span>
-        <span>🎯 Intermediate–Advanced</span>
-        <span>💻 C# + Python</span>
-        <span>📝 Part F of Module 6/7</span>
+        <span>? Estimated Time: 2 Hours</span>
+        <span>?? Intermediate�Advanced</span>
+        <span>?? C# + Python</span>
+        <span>?? Part F of Module 6/7</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m07a_avl_trees.html">AVL Trees</a><br>
-    ✅ <strong>Part B</strong> — <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
-    ▶ <strong>Part C</strong> — <em>You are here</em> — Heaps &amp; PriorityQueue&lt;T&gt;<br>
-    ⬜ <strong>Part D</strong> — <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
-    ⬜ <strong>Part E</strong> — <a href="m07e_btrees.html">B-Trees</a><br>
-    ⬜ <strong>Part F</strong> — <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
-    ⬜ <strong>Part G</strong> — <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 7 � Advanced Trees:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m07a_avl_trees.html">AVL Trees</a><br>
+    ? <strong>Part B</strong> � <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
+    ? <strong>Part C</strong> � <em>You are here</em> � Heaps &amp; PriorityQueue&lt;T&gt;<br>
+    ? <strong>Part D</strong> � <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
+    ? <strong>Part E</strong> � <a href="m07e_btrees.html">B-Trees</a><br>
+    ? <strong>Part F</strong> � <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
+    ? <strong>Part G</strong> � <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
@@ -38,32 +39,32 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Module 7C</h2>
+    <h2>?? Contents � Module 7C</h2>
     <ol>
-        <li>The Analogy — The VIP Queue <span>— Priority-based service</span></li>
-        <li>The Problem Heaps Solve <span>— O(1) peek + O(log n) insert/delete</span></li>
-        <li>Visual Walkthrough <span>— Array representation, heapify up/down</span></li>
-        <li>Formal Definitions <span>— Heap property, array indexing, complete tree</span></li>
-        <li>Complete C# Implementation <span>— Manual MinHeap + built-in PriorityQueue&lt;T,P&gt;</span></li>
-        <li>Complete Python Implementation <span>— Manual heap + heapq module</span></li>
-        <li>Complexity Analysis <span>— Insert, extract, build, heap sort</span></li>
-        <li>Real-World Usage <span>— Task schedulers, Dijkstra, k-way merge</span></li>
-        <li>Common Mistakes <span>— Max-heap in Python, 0-indexed vs 1-indexed</span></li>
-        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+        <li>The Analogy � The VIP Queue <span>� Priority-based service</span></li>
+        <li>The Problem Heaps Solve <span>� O(1) peek + O(log n) insert/delete</span></li>
+        <li>Visual Walkthrough <span>� Array representation, heapify up/down</span></li>
+        <li>Formal Definitions <span>� Heap property, array indexing, complete tree</span></li>
+        <li>Complete C# Implementation <span>� Manual MinHeap + built-in PriorityQueue&lt;T,P&gt;</span></li>
+        <li>Complete Python Implementation <span>� Manual heap + heapq module</span></li>
+        <li>Complexity Analysis <span>� Insert, extract, build, heap sort</span></li>
+        <li>Real-World Usage <span>� Task schedulers, Dijkstra, k-way merge</span></li>
+        <li>Common Mistakes <span>� Max-heap in Python, 0-indexed vs 1-indexed</span></li>
+        <li>Check Your Understanding <span>� 5 quiz questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Analogy: The VIP Queue</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Analogy: The VIP Queue</div>
 
-<p>Imagine a hospital emergency room. Patients don't wait in arrival order — they're treated by severity. The most critical patient is always seen first. When a new patient arrives, a nurse quickly determines their priority and slots them in. When the doctor is ready, the most critical patient steps forward instantly.</p>
+<p>Imagine a hospital emergency room. Patients don't wait in arrival order � they're treated by severity. The most critical patient is always seen first. When a new patient arrives, a nurse quickly determines their priority and slots them in. When the doctor is ready, the most critical patient steps forward instantly.</p>
 
-<p>This is a heap. A heap is a <em>partially ordered</em> data structure that only guarantees one thing: the minimum (or maximum) is always at the top. It doesn't maintain full sorted order — only the root-to-leaf "parent is always better than children" invariant. This relaxed requirement makes it extremely efficient: O(1) to peek at the best item, O(log n) to insert or remove.</p>
+<p>This is a heap. A heap is a <em>partially ordered</em> data structure that only guarantees one thing: the minimum (or maximum) is always at the top. It doesn't maintain full sorted order � only the root-to-leaf "parent is always better than children" invariant. This relaxed requirement makes it extremely efficient: O(1) to peek at the best item, O(log n) to insert or remove.</p>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — The Problem Heaps Solve</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � The Problem Heaps Solve</div>
 
 <p>You need to repeatedly:</p>
 <ul>
@@ -73,29 +74,29 @@
 <p>Sorted array: O(1) max but O(n) insert. Unsorted array: O(1) insert but O(n) find-max. Heap: <strong>O(log n) both</strong>. This makes heaps the backbone of priority queues, Dijkstra's algorithm, Prim's MST, heap sort, and the k-way merge.</p>
 
 <div class="note">
-    <strong>📌 Two Types of Heaps:</strong><br>
-    <strong>Min-Heap:</strong> Parent ≤ both children. Root = minimum element. Extract-min in O(log n).<br>
-    <strong>Max-Heap:</strong> Parent ≥ both children. Root = maximum element. Extract-max in O(log n).<br>
+    <strong>?? Two Types of Heaps:</strong><br>
+    <strong>Min-Heap:</strong> Parent = both children. Root = minimum element. Extract-min in O(log n).<br>
+    <strong>Max-Heap:</strong> Parent = both children. Root = maximum element. Extract-max in O(log n).<br>
     Python's <code>heapq</code> module is a min-heap. C#'s <code>PriorityQueue&lt;TElement,TPriority&gt;</code> is also a min-heap (lowest priority value is dequeued first).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Visual Walkthrough</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Visual Walkthrough</div>
 
-<h3>3.1 — Array Representation of a Complete Binary Tree</h3>
-<div class="diagram">A heap is stored as an ARRAY (no pointers needed — perfect for cache performance):
+<h3>3.1 � Array Representation of a Complete Binary Tree</h3>
+<div class="diagram">A heap is stored as an ARRAY (no pointers needed � perfect for cache performance):
 
 Array index (0-based):  [0]  [1]  [2]  [3]  [4]  [5]  [6]
 Values:                   1    3    2    7    4    5    6
 
 Tree visualization:
-                  1          ← index 0  (root)
+                  1          ? index 0  (root)
                 /   \
-               3     2       ← index 1, 2
+               3     2       ? index 1, 2
               / \   / \
-             7   4 5   6     ← index 3, 4, 5, 6
+             7   4 5   6     ? index 3, 4, 5, 6
 
 INDEX ARITHMETIC (0-based):
   Parent of i:          (i - 1) / 2   (integer division)
@@ -103,58 +104,58 @@ INDEX ARITHMETIC (0-based):
   Right child of i:      2 * i + 2
 
 Examples:
-  Parent of index 3 (7): (3-1)/2 = 1  → value 3  ✓ (7 > 3 in min-heap? NO → 3 < 7 ✓)
-  Left  child of 1 (3):  2*1+1 = 3    → value 7  ✓
-  Right child of 1 (3):  2*1+2 = 4    → value 4  ✓</div>
+  Parent of index 3 (7): (3-1)/2 = 1  ? value 3  ? (7 > 3 in min-heap? NO ? 3 < 7 ?)
+  Left  child of 1 (3):  2*1+1 = 3    ? value 7  ?
+  Right child of 1 (3):  2*1+2 = 4    ? value 4  ?</div>
 
-<h3>3.2 — Heapify Up (Insert)</h3>
+<h3>3.2 � Heapify Up (Insert)</h3>
 <div class="diagram">INSERT 0 into the min-heap [1, 3, 2, 7, 4, 5, 6]:
 
 Step 1: Append to end
-  [1, 3, 2, 7, 4, 5, 6, 0]   ← 0 is at index 7
+  [1, 3, 2, 7, 4, 5, 6, 0]   ? 0 is at index 7
 
-Step 2: Heapify Up — compare with parent, swap if smaller
+Step 2: Heapify Up � compare with parent, swap if smaller
   Index 7, parent = (7-1)/2 = 3, value 7
-  0 < 7 → SWAP
+  0 < 7 ? SWAP
   [1, 3, 2, 0, 4, 5, 6, 7]
 
   Index 3, parent = (3-1)/2 = 1, value 3
-  0 < 3 → SWAP
+  0 < 3 ? SWAP
   [1, 0, 2, 3, 4, 5, 6, 7]
 
   Index 1, parent = (1-1)/2 = 0, value 1
-  0 < 1 → SWAP
+  0 < 1 ? SWAP
   [0, 1, 2, 3, 4, 5, 6, 7]
 
-  Index 0 = root → STOP
-  Final heap: [0, 1, 2, 3, 4, 5, 6, 7]  ← 0 correctly at root!</div>
+  Index 0 = root ? STOP
+  Final heap: [0, 1, 2, 3, 4, 5, 6, 7]  ? 0 correctly at root!</div>
 
-<h3>3.3 — Heapify Down (Extract Min)</h3>
+<h3>3.3 � Heapify Down (Extract Min)</h3>
 <div class="diagram">EXTRACT MIN from [0, 1, 2, 3, 4, 5, 6, 7]:
 
 Step 1: Save root (0), move last element to root, shrink array
   Remove 0. Move 7 to root.
   [7, 1, 2, 3, 4, 5, 6]
 
-Step 2: Heapify Down — swap with smallest child if violation
+Step 2: Heapify Down � swap with smallest child if violation
   Index 0 (7): left=1 (val 1), right=2 (val 2). Smallest child: 1 (val 1)
-  7 > 1 → SWAP(0, 1)
+  7 > 1 ? SWAP(0, 1)
   [1, 7, 2, 3, 4, 5, 6]
 
   Index 1 (7): left=3 (val 3), right=4 (val 4). Smallest child: 3 (val 3)
-  7 > 3 → SWAP(1, 3)
+  7 > 3 ? SWAP(1, 3)
   [1, 3, 2, 7, 4, 5, 6]
 
-  Index 3 (7): left=7 → out of bounds. STOP.
-  Final: [1, 3, 2, 7, 4, 5, 6]   ← valid min-heap, 1 is new minimum</div>
+  Index 3 (7): left=7 ? out of bounds. STOP.
+  Final: [1, 3, 2, 7, 4, 5, 6]   ? valid min-heap, 1 is new minimum</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Formal Definitions</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Formal Definitions</div>
 
 <ul>
-    <li><strong>Heap property:</strong> In a min-heap, every node ≤ its children. In a max-heap, every node ≥ its children.</li>
+    <li><strong>Heap property:</strong> In a min-heap, every node = its children. In a max-heap, every node = its children.</li>
     <li><strong>Complete binary tree:</strong> All levels are completely filled except possibly the last, which is filled left to right. This ensures the array representation is compact (no gaps).</li>
     <li><strong>Heapify Up:</strong> After inserting at the end, bubble the new element up until the heap property is restored. O(log n).</li>
     <li><strong>Heapify Down (Sift Down):</strong> After removing the root (swap with last element, shrink), push the new root down until the heap property is restored. O(log n).</li>
@@ -162,21 +163,21 @@ Step 2: Heapify Down — swap with smallest child if violation
 </ul>
 
 <div class="tip">
-    <strong>💡 Why Build Heap is O(n) not O(n log n):</strong> The insight is that most nodes are near the bottom and have small subtrees to heapify. The total work is ∑(h × n/2^h) for h = 1 to log n, which converges to O(n). In contrast, inserting n elements one-by-one is O(n log n).
+    <strong>?? Why Build Heap is O(n) not O(n log n):</strong> The insight is that most nodes are near the bottom and have small subtrees to heapify. The total work is ?(h � n/2^h) for h = 1 to log n, which converges to O(n). In contrast, inserting n elements one-by-one is O(n log n).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Complete C# Implementation</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Complete C# Implementation</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
-<span class="cm">// ── Manual Min-Heap ───────────────────────────────────────────────</span>
+<span class="cm">// -- Manual Min-Heap -----------------------------------------------</span>
 <span class="kw">public class</span> <span class="tp">MinHeap</span>
 {
     <span class="kw">private readonly</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; _data = <span class="kw">new</span>();
@@ -184,7 +185,7 @@ Step 2: Heapify Down — swap with smallest child if violation
     <span class="kw">public int</span> Count  => _data.Count;
     <span class="kw">public int</span> Peek() => _data.Count &gt; <span class="nm">0</span> ? _data[<span class="nm">0</span>] : <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>();
 
-    <span class="cm">// ── INSERT (Heapify Up) ──────────────────────────────────────</span>
+    <span class="cm">// -- INSERT (Heapify Up) --------------------------------------</span>
     <span class="kw">public void</span> <span class="mt">Push</span>(<span class="kw">int</span> val)
     {
         _data.<span class="mt">Add</span>(val);              <span class="cm">// Step 1: Append at end</span>
@@ -205,7 +206,7 @@ Step 2: Heapify Down — swap with smallest child if violation
         }
     }
 
-    <span class="cm">// ── EXTRACT MIN (Heapify Down) ───────────────────────────────</span>
+    <span class="cm">// -- EXTRACT MIN (Heapify Down) -------------------------------</span>
     <span class="kw">public int</span> <span class="mt">Pop</span>()
     {
         <span class="kw">if</span> (_data.Count == <span class="nm">0</span>) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Heap is empty"</span>);
@@ -230,7 +231,7 @@ Step 2: Heapify Down — swap with smallest child if violation
             <span class="kw">if</span> (left  &lt; n &amp;&amp; _data[left]  &lt; _data[smallest]) smallest = left;
             <span class="kw">if</span> (right &lt; n &amp;&amp; _data[right] &lt; _data[smallest]) smallest = right;
 
-            <span class="kw">if</span> (smallest == i) <span class="kw">break</span>;   <span class="cm">// Already smallest — stop</span>
+            <span class="kw">if</span> (smallest == i) <span class="kw">break</span>;   <span class="cm">// Already smallest � stop</span>
             <span class="mt">Swap</span>(i, smallest);
             i = smallest;
         }
@@ -239,7 +240,7 @@ Step 2: Heapify Down — swap with smallest child if violation
     <span class="kw">private void</span> <span class="mt">Swap</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) =>
         (_data[a], _data[b]) = (_data[b], _data[a]);
 
-    <span class="cm">// ── HEAP SORT using this heap ─────────────────────────────────</span>
+    <span class="cm">// -- HEAP SORT using this heap ---------------------------------</span>
     <span class="kw">public static int</span>[] <span class="mt">HeapSort</span>(<span class="kw">int</span>[] arr)
     {
         <span class="kw">var</span> heap = <span class="kw">new</span> <span class="tp">MinHeap</span>();
@@ -250,12 +251,12 @@ Step 2: Heapify Down — swap with smallest child if violation
     }
 }
 
-<span class="cm">// ── C# Built-in PriorityQueue&lt;TElement, TPriority&gt; (.NET 6+) ────</span>
+<span class="cm">// -- C# Built-in PriorityQueue&lt;TElement, TPriority&gt; (.NET 6+) ----</span>
 <span class="kw">class</span> <span class="tp">Program</span>
 {
     <span class="kw">static void</span> <span class="mt">Main</span>()
     {
-        <span class="cm">// ── Manual MinHeap demo ──────────────────────────────────</span>
+        <span class="cm">// -- Manual MinHeap demo ----------------------------------</span>
         <span class="kw">var</span> heap = <span class="kw">new</span> <span class="tp">MinHeap</span>();
         <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> <span class="kw">new</span>[] { <span class="nm">5</span>, <span class="nm">3</span>, <span class="nm">7</span>, <span class="nm">1</span>, <span class="nm">9</span>, <span class="nm">2</span> })
             heap.<span class="mt">Push</span>(v);
@@ -265,12 +266,12 @@ Step 2: Heapify Down — swap with smallest child if violation
             <span class="tp">Console</span>.<span class="mt">Write</span>(heap.<span class="mt">Pop</span>() + <span class="st">" "</span>);  <span class="cm">// 1 2 3 5 7 9</span>
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>();
 
-        <span class="cm">// ── Heap sort ────────────────────────────────────────────</span>
+        <span class="cm">// -- Heap sort --------------------------------------------</span>
         <span class="kw">int</span>[] sorted = <span class="tp">MinHeap</span>.<span class="mt">HeapSort</span>(<span class="kw">new</span>[] { <span class="nm">64</span>, <span class="nm">25</span>, <span class="nm">12</span>, <span class="nm">22</span>, <span class="nm">11</span> });
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"HeapSort: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, sorted));
 
-        <span class="cm">// ── Built-in PriorityQueue&lt;TElement, TPriority&gt; (min-heap) ─</span>
-        <span class="cm">// Enqueue(element, priority) — dequeues element with LOWEST priority first</span>
+        <span class="cm">// -- Built-in PriorityQueue&lt;TElement, TPriority&gt; (min-heap) -</span>
+        <span class="cm">// Enqueue(element, priority) � dequeues element with LOWEST priority first</span>
         <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
         pq.<span class="mt">Enqueue</span>(<span class="st">"Low"</span>,      <span class="nm">10</span>);
         pq.<span class="mt">Enqueue</span>(<span class="st">"Critical"</span>, <span class="nm">1</span>);
@@ -285,7 +286,7 @@ Step 2: Heapify Down — swap with smallest child if violation
         <span class="cm">// MAX-heap simulation: negate the priority</span>
         <span class="kw">var</span> maxPQ = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
         <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> <span class="kw">new</span>[] { <span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span> })
-            maxPQ.<span class="mt">Enqueue</span>(v, -v);  <span class="cm">// Negate → lowest (-5) = highest priority</span>
+            maxPQ.<span class="mt">Enqueue</span>(v, -v);  <span class="cm">// Negate ? lowest (-5) = highest priority</span>
         <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="st">"Max-heap (negated): "</span>);
         <span class="kw">while</span> (maxPQ.Count &gt; <span class="nm">0</span>)
             <span class="tp">Console</span>.<span class="mt">Write</span>(maxPQ.<span class="mt">Dequeue</span>() + <span class="st">" "</span>);  <span class="cm">// 5 4 3 1 1</span>
@@ -293,26 +294,26 @@ Step 2: Heapify Down — swap with smallest child if violation
     }
 }
 
-<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+<span class="cm">/* -- Output ------------------------------------------------------
    Extract min order: 1 2 3 5 7 9
    HeapSort: 11, 12, 22, 25, 64
    PriorityQueue (by priority): Critical High Medium Low
    Max-heap (negated): 5 4 3 1 1
-   ──────────────────────────────────────────────────────────────── */</span></pre>
+   ---------------------------------------------------------------- */</span></pre>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Complete Python Implementation</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Complete Python Implementation</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">import</span> heapq
 <span class="kw">from</span> typing <span class="kw">import</span> List
 
-<span class="cm"># ── Manual MinHeap ────────────────────────────────────────────────</span>
+<span class="cm"># -- Manual MinHeap ------------------------------------------------</span>
 <span class="kw">class</span> <span class="tp">MinHeap</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self): self._data: List[<span class="kw">int</span>] = []
 
@@ -353,7 +354,7 @@ Step 2: Heapify Down — swap with smallest child if violation
             i = smallest
 
 
-<span class="cm"># ── Python heapq module (min-heap) ───────────────────────────────</span>
+<span class="cm"># -- Python heapq module (min-heap) -------------------------------</span>
 <span class="cm"># heapq always maintains a min-heap over a regular Python list</span>
 
 <span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
@@ -365,7 +366,7 @@ Step 2: Heapify Down — swap with smallest child if violation
     <span class="cm"># heapq min-heap</span>
     nums = [<span class="nm">5</span>, <span class="nm">3</span>, <span class="nm">7</span>, <span class="nm">1</span>, <span class="nm">9</span>, <span class="nm">2</span>]
     heapq.<span class="mt">heapify</span>(nums)             <span class="cm"># Build heap in-place: O(n)</span>
-    <span class="mt">print</span>(<span class="st">"heapq peep:"</span>, nums[<span class="nm">0</span>])   <span class="cm"># 1 — always min at index 0</span>
+    <span class="mt">print</span>(<span class="st">"heapq peep:"</span>, nums[<span class="nm">0</span>])   <span class="cm"># 1 � always min at index 0</span>
 
     sorted_vals = []
     <span class="kw">while</span> nums:
@@ -402,8 +403,8 @@ Step 2: Heapify Down — swap with smallest child if violation
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Complexity Analysis</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Complexity Analysis</div>
 
 <table>
     <thead>
@@ -416,123 +417,123 @@ Step 2: Heapify Down — swap with smallest child if violation
         <tr><td>Build heap (heapify)</td><td class="g">O(n)</td><td>Better than O(n log n) n-inserts!</td></tr>
         <tr><td>Heap sort</td><td class="g">O(n log n)</td><td>O(1) extra space (in-place)</td></tr>
         <tr><td>Search (arbitrary)</td><td class="r">O(n)</td><td>Heap doesn't support arbitrary search</td></tr>
-        <tr><td>Space</td><td class="g">O(n)</td><td>Stored as array — cache-friendly</td></tr>
+        <tr><td>Space</td><td class="g">O(n)</td><td>Stored as array � cache-friendly</td></tr>
     </tbody>
 </table>
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Real-World Usage</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Real-World Usage</div>
 
 <div class="realworld">
-    <strong>🌍 Dijkstra's Shortest Path Algorithm</strong><br>
-    Dijkstra maintains a min-heap of (distance, vertex) pairs. At each step, extract the vertex with the minimum distance, relax its edges, and push updated distances. Without a heap: O(V²). With a heap: O((V+E) log V). C#: use <code>PriorityQueue&lt;int, int&gt;</code>. Python: use <code>heapq</code> with <code>(dist, node)</code> tuples.
+    <strong>?? Dijkstra's Shortest Path Algorithm</strong><br>
+    Dijkstra maintains a min-heap of (distance, vertex) pairs. At each step, extract the vertex with the minimum distance, relax its edges, and push updated distances. Without a heap: O(V�). With a heap: O((V+E) log V). C#: use <code>PriorityQueue&lt;int, int&gt;</code>. Python: use <code>heapq</code> with <code>(dist, node)</code> tuples.
 </div>
 
 <div class="realworld">
-    <strong>🌍 OS Task Scheduling — Thread Priorities</strong><br>
+    <strong>?? OS Task Scheduling � Thread Priorities</strong><br>
     Operating system thread schedulers use priority queues backed by heaps. The thread with the highest priority (or smallest deadline in EDF scheduling) is always at the root and executes next. Linux's CFS uses an RB-tree for O(1) min, but many real-time OSes use min-heaps.
 </div>
 
 <div class="realworld">
-    <strong>🌍 K-way Merge — Merge K Sorted Lists</strong><br>
-    Merging k sorted arrays: initialize a min-heap with the first element from each array. Extract the minimum, add the next element from the same array. This processes n total elements in O(n log k) time — much better than O(nk) naive merge.
+    <strong>?? K-way Merge � Merge K Sorted Lists</strong><br>
+    Merging k sorted arrays: initialize a min-heap with the first element from each array. Extract the minimum, add the next element from the same array. This processes n total elements in O(n log k) time � much better than O(nk) naive merge.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 9 ═══════ -->
-<div class="section-heading">Section 9 — Common Mistakes</div>
+<!-- ------- SECTION 9 ------- -->
+<div class="section-heading">Section 9 � Common Mistakes</div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 1 — Max-heap in Python with heapq:</strong> Python's <code>heapq</code> is ALWAYS a min-heap. To simulate a max-heap, negate all values before pushing: <code>heapq.heappush(h, -val)</code> and negate when popping: <code>-heapq.heappop(h)</code>. Forgetting this negation gives you min-order when you expect max-order.
+    <strong>?? Mistake 1 � Max-heap in Python with heapq:</strong> Python's <code>heapq</code> is ALWAYS a min-heap. To simulate a max-heap, negate all values before pushing: <code>heapq.heappush(h, -val)</code> and negate when popping: <code>-heapq.heappop(h)</code>. Forgetting this negation gives you min-order when you expect max-order.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 2 — Using 1-indexed formulas with 0-indexed arrays:</strong> Some textbooks use 1-indexed arrays (root at index 1). Formulas: left = 2i, right = 2i+1, parent = i/2. If you use 0-indexed (root at 0), the formulas change: left = 2i+1, right = 2i+2, parent = (i-1)/2. Mixing the two causes incorrect heap operations.
+    <strong>?? Mistake 2 � Using 1-indexed formulas with 0-indexed arrays:</strong> Some textbooks use 1-indexed arrays (root at index 1). Formulas: left = 2i, right = 2i+1, parent = i/2. If you use 0-indexed (root at 0), the formulas change: left = 2i+1, right = 2i+2, parent = (i-1)/2. Mixing the two causes incorrect heap operations.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 3 — HeapifyDown comparing against wrong child:</strong> Always pick the SMALLER child to swap with in a min-heap (not just the left child). If you always go left, you may swap with a child that's larger than the right child, violating the heap property.
+    <strong>?? Mistake 3 � HeapifyDown comparing against wrong child:</strong> Always pick the SMALLER child to swap with in a min-heap (not just the left child). If you always go left, you may swap with a child that's larger than the right child, violating the heap property.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 4 — C# PriorityQueue priority semantics:</strong> C#'s <code>PriorityQueue&lt;TElement, TPriority&gt;</code> dequeues the element with the <strong>lowest</strong> priority value first (min-heap). Priority 1 comes before Priority 10. For a max-heap behavior, negate the priority (enqueue with priority -value).
+    <strong>?? Mistake 4 � C# PriorityQueue priority semantics:</strong> C#'s <code>PriorityQueue&lt;TElement, TPriority&gt;</code> dequeues the element with the <strong>lowest</strong> priority value first (min-heap). Priority 1 comes before Priority 10. For a max-heap behavior, negate the priority (enqueue with priority -value).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 10 ═══════ -->
-<div class="section-heading">Section 10 — Check Your Understanding</div>
+<!-- ------- SECTION 10 ------- -->
+<div class="section-heading">Section 10 � Check Your Understanding</div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q1. Given the array [4, 8, 6, 9, 7, 5], is this a valid min-heap? If not, which element violates the property?</div>
-    <div class="quiz-meta">💡 Check: parent at index i must be ≤ both children at 2i+1 and 2i+2.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Check: parent at index i must be = both children at 2i+1 and 2i+2.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
         <strong>Yes, it is a valid min-heap.</strong><br>
-        Index 0 (4): children = index 1 (8) and 2 (6). 4 ≤ 8 ✓, 4 ≤ 6 ✓<br>
-        Index 1 (8): children = index 3 (9) and 4 (7). 8 ≤ 9 ✓, 8 ≤ 7? NO — 8 &gt; 7 ✗!<br>
-        <strong>Correction: [4, 8, 6, 9, 7, 5] is NOT a valid min-heap.</strong> Index 1 (value 8) has a right child at index 4 (value 7), and 8 > 7 violates the min-heap property (parent must be ≤ both children).
+        Index 0 (4): children = index 1 (8) and 2 (6). 4 = 8 ?, 4 = 6 ?<br>
+        Index 1 (8): children = index 3 (9) and 4 (7). 8 = 9 ?, 8 = 7? NO � 8 &gt; 7 ?!<br>
+        <strong>Correction: [4, 8, 6, 9, 7, 5] is NOT a valid min-heap.</strong> Index 1 (value 8) has a right child at index 4 (value 7), and 8 > 7 violates the min-heap property (parent must be = both children).
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q2. You insert 5 elements into an empty heap one-by-one. What is the total number of comparisons in the worst case?</div>
-    <div class="quiz-meta">💡 Each insert does at most log₂(current_size) comparisons in heapify up.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Each insert does at most log2(current_size) comparisons in heapify up.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>At most ⌊log₂ 1⌋ + ⌊log₂ 2⌋ + ⌊log₂ 3⌋ + ⌊log₂ 4⌋ + ⌊log₂ 5⌋ = 0+1+1+2+2 = 6 comparisons.</strong><br>
-        Insert 1st element (size 0→1): 0 comparisons (no parent).<br>
-        Insert 2nd (size 1→2): up to 1 comparison.<br>
-        Insert 3rd (size 2→3): up to 1.<br>
-        Insert 4th (size 3→4): up to 2.<br>
-        Insert 5th (size 4→5): up to 2.<br>
+        <strong>At most ?log2 1? + ?log2 2? + ?log2 3? + ?log2 4? + ?log2 5? = 0+1+1+2+2 = 6 comparisons.</strong><br>
+        Insert 1st element (size 0?1): 0 comparisons (no parent).<br>
+        Insert 2nd (size 1?2): up to 1 comparison.<br>
+        Insert 3rd (size 2?3): up to 1.<br>
+        Insert 4th (size 3?4): up to 2.<br>
+        Insert 5th (size 4?5): up to 2.<br>
         Total worst case = 6 comparisons.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q3. Why is building a heap from an array in O(n) faster than inserting n elements one-by-one (O(n log n))?</div>
-    <div class="quiz-meta">💡 Think about which elements need more sifting down vs. which need less.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Think about which elements need more sifting down vs. which need less.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        When building a heap by calling heapify-down on all internal nodes (starting from the last internal node going to root), elements near the bottom of the tree have very small subtrees and need at most 1–2 swaps. Only the root needs up to log n swaps. The total work is bounded by the sum ∑(h × n/2^(h+1)) over all heights h, which converges to O(n). By contrast, when inserting elements one-by-one, the first half of inserts into a nearly-full heap all need ~log n swaps, giving O(n log n) total.
+        When building a heap by calling heapify-down on all internal nodes (starting from the last internal node going to root), elements near the bottom of the tree have very small subtrees and need at most 1�2 swaps. Only the root needs up to log n swaps. The total work is bounded by the sum ?(h � n/2^(h+1)) over all heights h, which converges to O(n). By contrast, when inserting elements one-by-one, the first half of inserts into a nearly-full heap all need ~log n swaps, giving O(n log n) total.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q4. In C#, how do you use PriorityQueue&lt;T,P&gt; as a max-heap (highest numeric priority dequeued first)?</div>
-    <div class="quiz-meta">💡 PriorityQueue dequeues the LOWEST priority value first by default.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? PriorityQueue dequeues the LOWEST priority value first by default.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>Negate the priority value:</strong> Instead of <code>pq.Enqueue(element, priority)</code>, use <code>pq.Enqueue(element, -priority)</code>. A priority of 100 becomes -100, which is now the "lowest" value and gets dequeued first. When reading back, you can ignore the negation since you're only using the element. Example: <code>pq.Enqueue("High", -100); pq.Enqueue("Low", -1);</code> — "High" dequeues first.
+        <strong>Negate the priority value:</strong> Instead of <code>pq.Enqueue(element, priority)</code>, use <code>pq.Enqueue(element, -priority)</code>. A priority of 100 becomes -100, which is now the "lowest" value and gets dequeued first. When reading back, you can ignore the negation since you're only using the element. Example: <code>pq.Enqueue("High", -100); pq.Enqueue("Low", -1);</code> � "High" dequeues first.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q5. You have a heap of 1000 elements. How many comparisons does extract-min take in the worst case?</div>
-    <div class="quiz-meta">💡 HeapifyDown starts at the root and goes down one level at a time.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? HeapifyDown starts at the root and goes down one level at a time.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>At most 2 × ⌊log₂ 1000⌋ = 2 × 9 = 18 comparisons.</strong> HeapifyDown: at each level, you compare the parent with both left and right children (2 comparisons per level), then move down at most ⌊log₂ n⌋ levels. For n=1000: ⌊log₂ 1000⌋ = 9 levels. So at most 9 × 2 = 18 comparisons (though in practice often fewer since the sink may stop early).
+        <strong>At most 2 � ?log2 1000? = 2 � 9 = 18 comparisons.</strong> HeapifyDown: at each level, you compare the parent with both left and right children (2 comparisons per level), then move down at most ?log2 n? levels. For n=1000: ?log2 1000? = 9 levels. So at most 9 � 2 = 18 comparisons (though in practice often fewer since the sink may stop early).
     </div>
 </div>
 
 <br>
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 7C Complete</button>
-<div class="toast" id="toast">✅ Module 7C marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 7C Complete</button>
+<div class="toast" id="toast">? Module 7C marked complete!</div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>✅ Module 7C Complete!</strong><br><br>
+    <strong>? Module 7C Complete!</strong><br><br>
     You now understand: heap property, array indexing, heapify up/down, O(n) build heap, heap sort,
     C#'s PriorityQueue&lt;TElement,TPriority&gt;, and Python's heapq module including max-heap simulation.<br><br>
-    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ◀ <strong>Prev:</strong> <a href="m07b_rb_trees.html">Module 7B — Red-Black Trees</a> &nbsp;|&nbsp;
-    ▶ <strong>Next:</strong> <a href="m07d_trie.html">Module 7D — Trie (Prefix Tree)</a>
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Prev:</strong> <a href="m07b_rb_trees.html">Module 7B � Red-Black Trees</a> &nbsp;|&nbsp;
+    ? <strong>Next:</strong> <a href="m07d_trie.html">Module 7D � Trie (Prefix Tree)</a>
 </div>
     <script>var MODULE_ID = 'm07c';</script>
     <script src="../dsa.js"></script>

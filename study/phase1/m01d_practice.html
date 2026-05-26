@@ -1,33 +1,34 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 1D — Practice Problems</title>
+    <title>Module 1D � Practice Problems</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
-    <h1>Module 1 — Part D</h1>
-    <div class="tagline">Practice Problems — Arrays, Strings &amp; Lists</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">15 problems · 5 Easy · 5 Medium · 5 Hard · CSS spoiler solutions</p>
+    <div class="module-label">C# Data Structures &amp; Algorithms � Complete Course</div>
+    <h1>Module 1 � Part D</h1>
+    <div class="tagline">Practice Problems � Arrays, Strings &amp; Lists</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">15 problems � 5 Easy � 5 Medium � 5 Hard � CSS spoiler solutions</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 3–5 Hours</span>
-        <span>🎯 All Levels</span>
-        <span>💻 Language: C#</span>
-        <span>✅ 15 Problems</span>
+        <span>? Estimated Time: 3�5 Hours</span>
+        <span>?? All Levels</span>
+        <span>?? Language: C#</span>
+        <span>? 15 Problems</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 1 — Foundations:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m01a_bigO_arrays.html">Big O, Complexity, Arrays</a><br>
-    ✅ <strong>Part B</strong> — <a href="m01b_strings.html">Strings &amp; StringBuilder</a><br>
-    ✅ <strong>Part C</strong> — <a href="m01c_listT.html">List&lt;T&gt; Dynamic Arrays</a><br>
-    ▶ <strong>Part D</strong> — <em>You are here</em> — Practice Problems<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 1 � Foundations:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m01a_bigO_arrays.html">Big O, Complexity, Arrays</a><br>
+    ? <strong>Part B</strong> � <a href="m01b_strings.html">Strings &amp; StringBuilder</a><br>
+    ? <strong>Part C</strong> � <a href="m01c_listT.html">List&lt;T&gt; Dynamic Arrays</a><br>
+    ? <strong>Part D</strong> � <em>You are here</em> � Practice Problems<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <span style="color:#888">&larr; (First Module)</span>
@@ -35,17 +36,17 @@
 </div>
 
 <div class="note">
-    <strong>📌 How to Use This File:</strong><br>
-    Read each problem carefully. Try to solve it yourself first — open a new C# project or use an online playground. Click <strong>"Show Solution"</strong> only after a genuine attempt. The <em>thinking process</em> matters more than the answer.
+    <strong>?? How to Use This File:</strong><br>
+    Read each problem carefully. Try to solve it yourself first � open a new C# project or use an online playground. Click <strong>"Show Solution"</strong> only after a genuine attempt. The <em>thinking process</em> matters more than the answer.
     <ul style="margin-top:8px;">
-        <li><span class="badge-easy">Easy</span> — Direct application of one concept. Under 15 min each.</li>
-        <li><span class="badge-medium">Medium</span> — Requires combining 2–3 ideas. 20–40 min each.</li>
-        <li><span class="badge-hard">Hard</span> — Non-obvious technique (sliding window, frequency map, etc.). 45+ min each.</li>
+        <li><span class="badge-easy">Easy</span> � Direct application of one concept. Under 15 min each.</li>
+        <li><span class="badge-medium">Medium</span> � Requires combining 2�3 ideas. 20�40 min each.</li>
+        <li><span class="badge-hard">Hard</span> � Non-obvious technique (sliding window, frequency map, etc.). 45+ min each.</li>
     </ul>
 </div>
 
 <div class="toc">
-    <h2>📚 Problem List</h2>
+    <h2>?? Problem List</h2>
     <ol>
         <li><span class="badge-easy">Easy</span> Reverse an Array In-Place</li>
         <li><span class="badge-easy">Easy</span> Find Maximum and Minimum</li>
@@ -53,7 +54,7 @@
         <li><span class="badge-easy">Easy</span> Check if a String is a Palindrome</li>
         <li><span class="badge-easy">Easy</span> Count Vowels in a String</li>
         <li><span class="badge-medium">Medium</span> Move All Zeros to End</li>
-        <li><span class="badge-medium">Medium</span> Two Sum — O(n) Solution</li>
+        <li><span class="badge-medium">Medium</span> Two Sum � O(n) Solution</li>
         <li><span class="badge-medium">Medium</span> Reverse Words in a String</li>
         <li><span class="badge-medium">Medium</span> First Non-Repeating Character</li>
         <li><span class="badge-medium">Medium</span> Rotate Array by K Positions</li>
@@ -65,8 +66,8 @@
     </ol>
 </div>
 
-<!-- ═══════ EASY ═══════ -->
-<div class="section-heading section-easy">Easy Problems (1–5)</div>
+<!-- ------- EASY ------- -->
+<div class="section-heading section-easy">Easy Problems (1�5)</div>
 
 <!-- Problem 1 -->
 <div class="problem">
@@ -79,16 +80,16 @@
         <p>Given an integer array, reverse it <strong>in-place</strong> without creating a new array. The solution must use O(1) extra space.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            Input:  [1, 2, 3, 4, 5]    → Output: [5, 4, 3, 2, 1]
-            Input:  [10, 20, 30]       → Output: [30, 20, 10]
-            Input:  [42]               → Output: [42]   (single element)
-            Input:  []                 → Output: []      (empty array)
+            Input:  [1, 2, 3, 4, 5]    ? Output: [5, 4, 3, 2, 1]
+            Input:  [10, 20, 30]       ? Output: [30, 20, 10]
+            Input:  [42]               ? Output: [42]   (single element)
+            Input:  []                 ? Output: []      (empty array)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Use two pointers — one at the start, one at the end. Swap and move them toward the center.
+            <strong>?? Hint:</strong> Use two pointers � one at the start, one at the end. Swap and move them toward the center.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <p><strong>Approach:</strong> Two-pointer technique. Place one pointer at index 0 (left) and one at index n-1 (right). Swap <code>arr[left]</code> and <code>arr[right]</code>, then move left forward and right backward. Stop when they meet in the middle.</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
@@ -130,8 +131,8 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
 <span class="mt">reverse_in_place</span>(nums)
 <span class="mt">print</span>(<span class="st">&quot;, &quot;</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, nums)))  <span class="cm"># 5, 4, 3, 2, 1</span></pre>
 </div>
-            <div class="note"><strong>📌 Why Two Pointers?</strong><br>
-            We only iterate through half the array (n/2 swaps). Moving inward means every element is swapped exactly once. The C# tuple swap <code>(a,b)=(b,a)</code> uses no temp variable — clean, readable.</div>
+            <div class="note"><strong>?? Why Two Pointers?</strong><br>
+            We only iterate through half the array (n/2 swaps). Moving inward means every element is swapped exactly once. The C# tuple swap <code>(a,b)=(b,a)</code> uses no temp variable � clean, readable.</div>
         </div>
     </div>
 </div>
@@ -147,15 +148,15 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
         <p>Find both the maximum and minimum value in an array in a <strong>single pass</strong> (one loop).</p>
         <div class="examples">
             <strong>Examples:</strong>
-            Input:  [3, 1, 4, 1, 5, 9, 2, 6]   → Max: 9, Min: 1
-            Input:  [-5, -1, -8, -3]            → Max: -1, Min: -8
-            Input:  [42]                         → Max: 42, Min: 42
+            Input:  [3, 1, 4, 1, 5, 9, 2, 6]   ? Max: 9, Min: 1
+            Input:  [-5, -1, -8, -3]            ? Max: -1, Min: -8
+            Input:  [42]                         ? Max: 42, Min: 42
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Initialize both max and min to <code>arr[0]</code>. Then loop from index 1 checking each element against both.
+            <strong>?? Hint:</strong> Initialize both max and min to <code>arr[0]</code>. Then loop from index 1 checking each element against both.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <p><strong>Approach:</strong> Initialize max and min to the first element. Iterate the rest, updating max if current &gt; max, or min if current &lt; min. Single pass = O(n).</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
@@ -214,15 +215,15 @@ max_val, min_val = <span class="mt">find_max_min</span>([<span class="nm">3</spa
         The first k elements of the array should hold the unique values in sorted order.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            Input:  [1, 1, 2, 3, 3, 3, 4]   → k=4, array starts with [1,2,3,4,...]
-            Input:  [0, 0, 1, 1, 2]          → k=3, array starts with [0,1,2,...]
-            Input:  [1, 2, 3]                → k=3 (no duplicates)
+            Input:  [1, 1, 2, 3, 3, 3, 4]   ? k=4, array starts with [1,2,3,4,...]
+            Input:  [0, 0, 1, 1, 2]          ? k=3, array starts with [0,1,2,...]
+            Input:  [1, 2, 3]                ? k=3 (no duplicates)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Because the array is sorted, all duplicates are adjacent. Use a slow pointer (write position) and a fast pointer (read position).
+            <strong>?? Hint:</strong> Because the array is sorted, all duplicates are adjacent. Use a slow pointer (write position) and a fast pointer (read position).
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <p><strong>Approach:</strong> Two pointers. <code>writePos</code> tracks where to write the next unique value. <code>readPos</code> scans ahead. When we find a value different from <code>arr[writePos]</code>, we place it at <code>arr[writePos+1]</code>.</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
@@ -244,7 +245,7 @@ max_val, min_val = <span class="mt">find_max_min</span>([<span class="nm">3</spa
             writePos++;
             arr[writePos] = arr[readPos]; <span class="cm">// place it at next write position</span>
         }
-        <span class="cm">// if arr[readPos] == arr[writePos]: skip — it's a duplicate</span>
+        <span class="cm">// if arr[readPos] == arr[writePos]: skip � it's a duplicate</span>
     }
     <span class="kw">return</span> writePos + <span class="nm">1</span>; <span class="cm">// count of unique elements</span>
 }
@@ -274,7 +275,7 @@ k = <span class="mt">remove_duplicates</span>(arr)
 <span class="mt">print</span>(f<span class="st">&quot;k={k}&quot;</span>)
 <span class="mt">print</span>(<span class="st">&quot;, &quot;</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, arr[:k])))  <span class="cm"># 1, 2, 3, 4</span></pre>
 </div>
-            <div class="note"><strong>📌 Why Does This Work?</strong><br>Because the array is sorted, duplicates are always adjacent. We never need to look back — if the current read value differs from our last written value, it must be new and unique.</div>
+            <div class="note"><strong>?? Why Does This Work?</strong><br>Because the array is sorted, duplicates are always adjacent. We never need to look back � if the current read value differs from our last written value, it must be new and unique.</div>
         </div>
     </div>
 </div>
@@ -290,16 +291,16 @@ k = <span class="mt">remove_duplicates</span>(arr)
         <p>A palindrome reads the same forwards and backwards. Check if the given string is a palindrome, <strong>ignoring case and non-alphanumeric characters</strong>.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            "racecar"              → true
-            "A man, a plan, a canal: Panama"  → true  (ignore spaces/punctuation)
-            "hello"                → false
-            "Was it a car or a cat I saw?"    → true
+            "racecar"              ? true
+            "A man, a plan, a canal: Panama"  ? true  (ignore spaces/punctuation)
+            "hello"                ? false
+            "Was it a car or a cat I saw?"    ? true
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Two pointers from both ends. Skip non-alphanumeric characters. Compare lowercase versions.
+            <strong>?? Hint:</strong> Two pointers from both ends. Skip non-alphanumeric characters. Compare lowercase versions.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <p><strong>Approach:</strong> Left pointer starts at 0, right at end. Skip any character that isn't a letter or digit using <code>char.IsLetterOrDigit()</code>. Compare <code>char.ToLower()</code> versions. If any mismatch, return false.</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
@@ -371,16 +372,16 @@ k = <span class="mt">remove_duplicates</span>(arr)
         <p>Count the number of vowels (a, e, i, o, u) in a string. Ignore case.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            "Hello World"    → 3  (e, o, o)
-            "aeiou"          → 5
-            "rhythm"         → 0
-            "The quick brown fox"  → 5
+            "Hello World"    ? 3  (e, o, o)
+            "aeiou"          ? 5
+            "rhythm"         ? 0
+            "The quick brown fox"  ? 5
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Use a <code>HashSet&lt;char&gt;</code> for O(1) vowel lookup. Iterate and check each char.
+            <strong>?? Hint:</strong> Use a <code>HashSet&lt;char&gt;</code> for O(1) vowel lookup. Iterate and check each char.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <span class="complexity-tag c-time">Time: O(n)</span>
             <span class="complexity-tag c-space">Space: O(1)</span>
@@ -431,8 +432,8 @@ k = <span class="mt">remove_duplicates</span>(arr)
 
 <hr>
 
-<!-- ═══════ MEDIUM ═══════ -->
-<div class="section-heading section-medium">Medium Problems (6–10)</div>
+<!-- ------- MEDIUM ------- -->
+<div class="section-heading section-medium">Medium Problems (6�10)</div>
 
 <!-- Problem 6 -->
 <div class="problem">
@@ -445,16 +446,16 @@ k = <span class="mt">remove_duplicates</span>(arr)
         <p>Move all zeros in an array to the end, <strong>maintaining the relative order of non-zero elements</strong>. Do it <strong>in-place</strong> with O(1) extra space.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            [0, 1, 0, 3, 12]   → [1, 3, 12, 0, 0]
-            [0, 0, 1]          → [1, 0, 0]
-            [1, 2, 3]          → [1, 2, 3]  (no change)
-            [0, 0, 0]          → [0, 0, 0]  (no change)
+            [0, 1, 0, 3, 12]   ? [1, 3, 12, 0, 0]
+            [0, 0, 1]          ? [1, 0, 0]
+            [1, 2, 3]          ? [1, 2, 3]  (no change)
+            [0, 0, 0]          ? [0, 0, 0]  (no change)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Use a "write pointer" that tracks where to place the next non-zero. After placing all non-zeros, fill the remainder with zeros.
+            <strong>?? Hint:</strong> Use a "write pointer" that tracks where to place the next non-zero. After placing all non-zeros, fill the remainder with zeros.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <p><strong>Approach:</strong> Two-pass (or single-pass) technique. First pass: compact all non-zero elements to the front using a write pointer. Second pass: fill the remaining positions with zeros.</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
@@ -503,7 +504,7 @@ arr = [<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0<
 <span class="mt">move_zeros_to_end</span>(arr)
 <span class="mt">print</span>(<span class="st">&quot;, &quot;</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, arr)))  <span class="cm"># 1, 3, 12, 0, 0</span></pre>
 </div>
-            <div class="note"><strong>📌 Why This Preserves Order:</strong><br>We always move non-zero elements into writePos in the order we encounter them — they always maintain their original left-to-right sequence. Zeros fall into whatever slots remain.</div>
+            <div class="note"><strong>?? Why This Preserves Order:</strong><br>We always move non-zero elements into writePos in the order we encounter them � they always maintain their original left-to-right sequence. Zeros fall into whatever slots remain.</div>
         </div>
     </div>
 </div>
@@ -512,24 +513,24 @@ arr = [<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0<
 <div class="problem">
     <div class="problem-header">
         <div class="problem-number">#7</div>
-        <div class="problem-title">Two Sum — Find Pair with Target Sum</div>
+        <div class="problem-title">Two Sum � Find Pair with Target Sum</div>
         <span class="badge-medium">Medium</span>
     </div>
     <div class="problem-body">
         <p>Given an array of integers and a target sum, return the <strong>indices</strong> of the two numbers that add up to the target. Assume exactly one solution exists. Solve in O(n) time.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            nums=[2, 7, 11, 15], target=9   → [0, 1]  (2+7=9)
-            nums=[3, 2, 4],      target=6   → [1, 2]  (2+4=6)
-            nums=[3, 3],         target=6   → [0, 1]  (3+3=6)
+            nums=[2, 7, 11, 15], target=9   ? [0, 1]  (2+7=9)
+            nums=[3, 2, 4],      target=6   ? [1, 2]  (2+4=6)
+            nums=[3, 3],         target=6   ? [0, 1]  (3+3=6)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> For each element x, you need to find (target - x) in the remaining array. A <code>Dictionary&lt;int,int&gt;</code> maps value → index for O(1) lookup.
+            <strong>?? Hint:</strong> For each element x, you need to find (target - x) in the remaining array. A <code>Dictionary&lt;int,int&gt;</code> maps value ? index for O(1) lookup.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
-            <p><strong>Approach:</strong> One-pass Hash Map. As we iterate, for each <code>nums[i]</code>, we compute the complement <code>target - nums[i]</code>. If the complement is in our map, we found the pair. Otherwise, store <code>nums[i] → i</code> in the map.</p>
+            <p><strong>Approach:</strong> One-pass Hash Map. As we iterate, for each <code>nums[i]</code>, we compute the complement <code>target - nums[i]</code>. If the complement is in our map, we found the pair. Otherwise, store <code>nums[i] ? i</code> in the map.</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
             <span class="complexity-tag c-space">Space: O(n)</span>
 
@@ -538,7 +539,7 @@ arr = [<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0<
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
 {
-    <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(); <span class="cm">// value → index</span>
+    <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;(); <span class="cm">// value ? index</span>
 
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
     {
@@ -573,7 +574,7 @@ arr = [<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0<
 result = <span class="mt">two_sum</span>([<span class="nm">2</span>, <span class="nm">7</span>, <span class="nm">11</span>, <span class="nm">15</span>], <span class="nm">9</span>)
 <span class="mt">print</span>(f<span class="st">&quot;[{result[0]}, {result[1]}]&quot;</span>)  <span class="cm"># [0, 1]</span></pre>
 </div>
-            <div class="note"><strong>📌 Key Insight:</strong><br>The naïve O(n²) solution checks every pair. The hash map trick says: "For each element, check if its partner has already been seen." This turns two nested loops into one pass.</div>
+            <div class="note"><strong>?? Key Insight:</strong><br>The na�ve O(n�) solution checks every pair. The hash map trick says: "For each element, check if its partner has already been seen." This turns two nested loops into one pass.</div>
         </div>
     </div>
 </div>
@@ -589,15 +590,15 @@ result = <span class="mt">two_sum</span>([<span class="nm">2</span>, <span class
         <p>Given a string of words separated by spaces, reverse the <strong>order of words</strong> (not characters). Remove leading/trailing spaces and reduce multiple spaces between words to a single space.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            "the sky is blue"     → "blue is sky the"
-            "  hello world  "     → "world hello"
-            "a good   example"    → "example good a"
+            "the sky is blue"     ? "blue is sky the"
+            "  hello world  "     ? "world hello"
+            "a good   example"    ? "example good a"
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Split by spaces (remove empty entries), then iterate the resulting array in reverse, joining with single spaces.
+            <strong>?? Hint:</strong> Split by spaces (remove empty entries), then iterate the resulting array in reverse, joining with single spaces.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <span class="complexity-tag c-time">Time: O(n)</span>
             <span class="complexity-tag c-space">Space: O(n)</span>
@@ -651,18 +652,18 @@ result = <span class="mt">two_sum</span>([<span class="nm">2</span>, <span class
         <p>Find the first character in a string that appears only once. Return its index, or -1 if no unique character exists.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            "leetcode"    → 0  ('l' at index 0)
-            "loveleetcode"→ 2  ('v' at index 2)
-            "aabb"        → -1 (all repeat)
+            "leetcode"    ? 0  ('l' at index 0)
+            "loveleetcode"? 2  ('v' at index 2)
+            "aabb"        ? -1 (all repeat)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Two passes. Pass 1: count frequency of each character. Pass 2: find first char with frequency 1.
+            <strong>?? Hint:</strong> Two passes. Pass 1: count frequency of each character. Pass 2: find first char with frequency 1.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <span class="complexity-tag c-time">Time: O(n)</span>
-            <span class="complexity-tag c-space">Space: O(1) — 26 chars fixed</span>
+            <span class="complexity-tag c-space">Space: O(1) � 26 chars fixed</span>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -722,17 +723,17 @@ result = <span class="mt">two_sum</span>([<span class="nm">2</span>, <span class
         <p>Rotate an array to the <strong>right by k steps</strong> in-place with O(1) extra space.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            [1,2,3,4,5,6,7], k=3  → [5,6,7,1,2,3,4]
-            [-1,-100,3,99], k=2   → [3,99,-1,-100]
-            [1,2], k=5            → [2,1]  (k > length: use k % n)
+            [1,2,3,4,5,6,7], k=3  ? [5,6,7,1,2,3,4]
+            [-1,-100,3,99], k=2   ? [3,99,-1,-100]
+            [1,2], k=5            ? [2,1]  (k > length: use k % n)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint — Triple Reverse trick:</strong> Reverse the whole array, then reverse the first k elements, then reverse the remaining n-k elements.
+            <strong>?? Hint � Triple Reverse trick:</strong> Reverse the whole array, then reverse the first k elements, then reverse the remaining n-k elements.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
-            <p><strong>Approach:</strong> Three reversal steps. This works because reversing the whole array "shifts" the suffix to the front, but in reversed order — then we un-reverse each part separately.</p>
+            <p><strong>Approach:</strong> Three reversal steps. This works because reversing the whole array "shifts" the suffix to the front, but in reversed order � then we un-reverse each part separately.</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
             <span class="complexity-tag c-space">Space: O(1)</span>
 
@@ -785,19 +786,19 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
 <span class="mt">rotate</span>(nums, <span class="nm">3</span>)
 <span class="mt">print</span>(<span class="st">&quot;, &quot;</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, nums)))  <span class="cm"># 5, 6, 7, 1, 2, 3, 4</span></pre>
 </div>
-            <div class="note"><strong>📌 Trace the Triple Reverse:</strong><br>
+            <div class="note"><strong>?? Trace the Triple Reverse:</strong><br>
             Original: [1,2,3,4,5,6,7], k=3<br>
             After rev all:  [7,6,5,4,3,2,1]<br>
             After rev [0..2]: [5,6,7,4,3,2,1]<br>
-            After rev [3..6]: [5,6,7,1,2,3,4] ✓</div>
+            After rev [3..6]: [5,6,7,1,2,3,4] ?</div>
         </div>
     </div>
 </div>
 
 <hr>
 
-<!-- ═══════ HARD ═══════ -->
-<div class="section-heading section-hard">Hard Problems (11–15)</div>
+<!-- ------- HARD ------- -->
+<div class="section-heading section-hard">Hard Problems (11�15)</div>
 
 <!-- Problem 11 -->
 <div class="problem">
@@ -810,27 +811,27 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
         <p>Find the length of the <strong>longest substring</strong> (contiguous characters) that contains no repeating characters.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            "abcabcbb"  → 3  ("abc")
-            "bbbbb"     → 1  ("b")
-            "pwwkew"    → 3  ("wke")
-            "dvdf"      → 3  ("vdf")
+            "abcabcbb"  ? 3  ("abc")
+            "bbbbb"     ? 1  ("b")
+            "pwwkew"    ? 3  ("wke")
+            "dvdf"      ? 3  ("vdf")
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Sliding Window technique. Maintain a window [left, right]. Expand right. When a repeat is found, shrink from left until the repeat is gone. Use a <code>HashSet</code> or <code>Dictionary</code> to track characters in the window.
+            <strong>?? Hint:</strong> Sliding Window technique. Maintain a window [left, right]. Expand right. When a repeat is found, shrink from left until the repeat is gone. Use a <code>HashSet</code> or <code>Dictionary</code> to track characters in the window.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
-            <p><strong>Approach — Sliding Window + Dictionary:</strong> Track the last seen index of each character. When we encounter a repeated character, jump <code>left</code> to (lastSeenIndex + 1) — skipping past the duplicate instantly. This achieves O(n) instead of O(n²).</p>
+            <p><strong>Approach � Sliding Window + Dictionary:</strong> Track the last seen index of each character. When we encounter a repeated character, jump <code>left</code> to (lastSeenIndex + 1) � skipping past the duplicate instantly. This achieves O(n) instead of O(n�).</p>
             <span class="complexity-tag c-time">Time: O(n)</span>
-            <span class="complexity-tag c-space">Space: O(min(n,m)) — m = alphabet size</span>
+            <span class="complexity-tag c-space">Space: O(min(n,m)) � m = alphabet size</span>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span> <span class="mt">LengthOfLongestSubstring</span>(<span class="kw">string</span> s)
 {
-    <span class="kw">var</span> lastSeen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;(); <span class="cm">// char → last index</span>
+    <span class="kw">var</span> lastSeen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;(); <span class="cm">// char ? last index</span>
     <span class="kw">int</span> maxLen = <span class="nm">0</span>, left = <span class="nm">0</span>;
 
     <span class="kw">for</span> (<span class="kw">int</span> right = <span class="nm">0</span>; right &lt; s.Length; right++)
@@ -873,8 +874,8 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
 <span class="mt">print</span>(<span class="mt">length_of_longest_substring</span>(<span class="st">&quot;pwwkew&quot;</span>))    <span class="cm"># 3</span>
 <span class="mt">print</span>(<span class="mt">length_of_longest_substring</span>(<span class="st">&quot;dvdf&quot;</span>))      <span class="cm"># 3</span></pre>
 </div>
-            <div class="note"><strong>📌 Sliding Window Pattern:</strong><br>
-            This is one of the most important patterns in DSA. The key insight: instead of restarting the window from scratch each time we find a repeat (O(n²)), we just <em>slide</em> the left boundary forward. Each character is processed at most twice total (once added, once removed) → O(n).</div>
+            <div class="note"><strong>?? Sliding Window Pattern:</strong><br>
+            This is one of the most important patterns in DSA. The key insight: instead of restarting the window from scratch each time we find a repeat (O(n�)), we just <em>slide</em> the left boundary forward. Each character is processed at most twice total (once added, once removed) ? O(n).</div>
         </div>
     </div>
 </div>
@@ -890,18 +891,18 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
         <p>Given a sorted array and a target sum, find <strong>all unique pairs</strong> whose sum equals the target. Return pairs as a list of tuples.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            arr=[1,2,3,4,5,6,7,8,9], target=10  → [(1,9),(2,8),(3,7),(4,6)]
-            arr=[1,1,2,4,4,5],       target=5   → [(1,4)]  (no duplicates)
-            arr=[-3,-1,0,2,4,5],     target=1   → [(-3,4),(-1,2)]
+            arr=[1,2,3,4,5,6,7,8,9], target=10  ? [(1,9),(2,8),(3,7),(4,6)]
+            arr=[1,1,2,4,4,5],       target=5   ? [(1,4)]  (no duplicates)
+            arr=[-3,-1,0,2,4,5],     target=1   ? [(-3,4),(-1,2)]
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Two pointers on a sorted array. Left at start, right at end. If sum == target, record pair, move both inward (skip duplicates). If sum &lt; target, move left right. If sum &gt; target, move right left.
+            <strong>?? Hint:</strong> Two pointers on a sorted array. Left at start, right at end. If sum == target, record pair, move both inward (skip duplicates). If sum &lt; target, move left right. If sum &gt; target, move right left.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <span class="complexity-tag c-time">Time: O(n)</span>
-            <span class="complexity-tag c-space">Space: O(k) — k = number of pairs</span>
+            <span class="complexity-tag c-space">Space: O(k) � k = number of pairs</span>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -975,20 +976,20 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
         <div class="examples">
             <strong>Examples:</strong>
             ["eat","tea","tan","ate","nat","bat"]
-            → [["eat","tea","ate"], ["tan","nat"], ["bat"]]
+            ? [["eat","tea","ate"], ["tan","nat"], ["bat"]]
 
-            ["",""]    → [["",""]]
-            ["a"]      → [["a"]]
+            ["",""]    ? [["",""]]
+            ["a"]      ? [["a"]]
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Anagrams have the same sorted characters. Use <code>string.Sort()</code> as a key in a Dictionary to group them.
+            <strong>?? Hint:</strong> Anagrams have the same sorted characters. Use <code>string.Sort()</code> as a key in a Dictionary to group them.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <p><strong>Approach:</strong> For each word, sort its characters to create a canonical key. All anagrams share the same sorted key. Use a <code>Dictionary&lt;string, List&lt;string&gt;&gt;</code> to group them.</p>
-            <span class="complexity-tag c-time">Time: O(n · k log k) — n words, k = avg length</span>
-            <span class="complexity-tag c-space">Space: O(n · k)</span>
+            <span class="complexity-tag c-time">Time: O(n � k log k) � n words, k = avg length</span>
+            <span class="complexity-tag c-space">Space: O(n � k)</span>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -1001,7 +1002,7 @@ nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3
     {
         <span class="kw">char</span>[] chars = word.<span class="mt">ToCharArray</span>();
         <span class="tp">Array</span>.<span class="mt">Sort</span>(chars);
-        <span class="kw">string</span> key = <span class="kw">new</span> <span class="kw">string</span>(chars); <span class="cm">// e.g., "eat"→"aet", "tea"→"aet"</span>
+        <span class="kw">string</span> key = <span class="kw">new</span> <span class="kw">string</span>(chars); <span class="cm">// e.g., "eat"?"aet", "tea"?"aet"</span>
 
         <span class="kw">if</span> (!map.<span class="mt">ContainsKey</span>(key))
             map[key] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
@@ -1055,10 +1056,10 @@ result = <span class="mt">group_anagrams</span>([<span class="st">&quot;eat&quot
             Console.WriteLine(sb.Length);      // 13
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Maintain a <code>char[]</code> buffer and an <code>int _count</code>. When appending would exceed buffer size, double the buffer (allocate new, copy, replace). <code>Prepend</code> and <code>Insert</code> require shifting.
+            <strong>?? Hint:</strong> Maintain a <code>char[]</code> buffer and an <code>int _count</code>. When appending would exceed buffer size, double the buffer (allocate new, copy, replace). <code>Prepend</code> and <code>Insert</code> require shifting.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
             <span class="complexity-tag c-time">Append: O(1) amortized</span>
             <span class="complexity-tag c-space">Space: O(capacity)</span>
@@ -1175,19 +1176,19 @@ sb.<span class="mt">append</span>(<span class="st">&quot;World&quot;</span>).<sp
         <p>Find the longest common prefix string among an array of strings. If there is no common prefix, return an empty string <code>""</code>.</p>
         <div class="examples">
             <strong>Examples:</strong>
-            ["flower","flow","flight"]  → "fl"
-            ["dog","racecar","car"]     → ""   (no common prefix)
-            ["interview","interact","interesting"] → "inter"
-            ["abc"]                     → "abc" (single string)
+            ["flower","flow","flight"]  ? "fl"
+            ["dog","racecar","car"]     ? ""   (no common prefix)
+            ["interview","interact","interesting"] ? "inter"
+            ["abc"]                     ? "abc" (single string)
         </div>
         <div class="tip" style="margin-top:12px;">
-            <strong>💡 Hint:</strong> Vertical scanning — check position 0 of all strings, then position 1, etc. Stop when any string runs out of characters or has a different character.
+            <strong>?? Hint:</strong> Vertical scanning � check position 0 of all strings, then position 1, etc. Stop when any string runs out of characters or has a different character.
         </div>
 
-        <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+        <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
         <div class="sol">
-            <p><strong>Approach:</strong> Vertical scanning — iterate character positions from left. At each position, check if ALL strings have the same character. If any mismatch (or end of string), return what we have so far.</p>
-            <span class="complexity-tag c-time">Time: O(S) — S = total characters across all strings</span>
+            <p><strong>Approach:</strong> Vertical scanning � iterate character positions from left. At each position, check if ALL strings have the same character. If any mismatch (or end of string), return what we have so far.</p>
+            <span class="complexity-tag c-time">Time: O(S) � S = total characters across all strings</span>
             <span class="complexity-tag c-space">Space: O(1)</span>
 
 <span class="lang-label lang-cs">C#</span>
@@ -1235,8 +1236,8 @@ sb.<span class="mt">append</span>(<span class="st">&quot;World&quot;</span>).<sp
 <span class="mt">print</span>(<span class="mt">longest_common_prefix</span>([<span class="st">&quot;dog&quot;</span>,<span class="st">&quot;racecar&quot;</span>,<span class="st">&quot;car&quot;</span>]))           <span class="cm"># &quot;&quot;</span>
 <span class="mt">print</span>(<span class="mt">longest_common_prefix</span>([<span class="st">&quot;interview&quot;</span>,<span class="st">&quot;interact&quot;</span>,<span class="st">&quot;interesting&quot;</span>]))  <span class="cm"># &quot;inter&quot;</span></pre>
 </div>
-            <div class="note"><strong>📌 Why Vertical Scanning is Efficient:</strong><br>
-            We stop at the FIRST mismatch — we don't need to look further. In the best case (no common prefix at all), we find out in O(n) checks at column 0. We never do more work than necessary.</div>
+            <div class="note"><strong>?? Why Vertical Scanning is Efficient:</strong><br>
+            We stop at the FIRST mismatch � we don't need to look further. In the best case (no common prefix at all), we find out in O(n) checks at column 0. We never do more work than necessary.</div>
         </div>
     </div>
 </div>
@@ -1244,12 +1245,12 @@ sb.<span class="mt">append</span>(<span class="st">&quot;World&quot;</span>).<sp
 <hr>
 
 <div class="nav-box">
-    <strong>🎉 Module 1 Complete!</strong><br><br>
+    <strong>?? Module 1 Complete!</strong><br><br>
     You've covered Big O analysis, Arrays, Strings, StringBuilder, List&lt;T&gt;, and 15 practice problems. This is the foundation everything else builds on.<br><br>
-    <strong>What's Next:</strong> Module 2 covers Linked Lists — you'll see why the array's weakness (O(n) insert/delete at middle) led to a completely different structure.<br><br>
-    ⬅ <strong>Previous:</strong> <a href="m01c_listT.html">Part C — List&lt;T&gt;</a><br>
-    ➡ <strong>Next Module:</strong> <a href="../index.html">Course Index → Module 2</a><br>
-    🏠 <a href="../index.html">Course Index</a>
+    <strong>What's Next:</strong> Module 2 covers Linked Lists � you'll see why the array's weakness (O(n) insert/delete at middle) led to a completely different structure.<br><br>
+    ? <strong>Previous:</strong> <a href="m01c_listT.html">Part C � List&lt;T&gt;</a><br>
+    ? <strong>Next Module:</strong> <a href="../index.html">Course Index ? Module 2</a><br>
+    ?? <a href="../index.html">Course Index</a>
 </div>
 
 <script>
@@ -1257,10 +1258,10 @@ function toggleSolution(btn) {
     var sol = btn.nextElementSibling;
     if (sol.style.display === "block") {
         sol.style.display = "none";
-        btn.textContent = "💡 Show Solution";
+        btn.textContent = "?? Show Solution";
     } else {
         sol.style.display = "block";
-        btn.textContent = "🙈 Hide Solution";
+        btn.textContent = "?? Hide Solution";
     }
 }
 </script>

@@ -1,32 +1,33 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 6A — Binary Trees &amp; Traversals</title>
+    <title>Module 6A � Binary Trees &amp; Traversals</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
-    <h1>Module 6 — Part A</h1>
-    <div class="tagline">Binary Trees &amp; Traversals — The Foundation of Hierarchical Data</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From family trees to file systems — mastering the branching structure that powers CS</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 4</div>
+    <h1>Module 6 � Part A</h1>
+    <div class="tagline">Binary Trees &amp; Traversals � The Foundation of Hierarchical Data</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From family trees to file systems � mastering the branching structure that powers CS</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2.5 Hours</span>
-        <span>🎯 Intermediate</span>
-        <span>💻 C# + Python</span>
-        <span>📝 Part A of Module 6</span>
+        <span>? Estimated Time: 2.5 Hours</span>
+        <span>?? Intermediate</span>
+        <span>?? C# + Python</span>
+        <span>?? Part A of Module 6</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 6 — Binary Trees:</strong><br><br>
-    ▶ <strong>Part A</strong> — <em>You are here</em> — Binary Trees &amp; Traversals<br>
-    ⬜ <strong>Part B</strong> — <a href="m06b_bst.html">Binary Search Trees</a><br>
-    ⬜ <strong>Part C</strong> — <a href="m06c_trees_practice.html">Practice: 15 Problems</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 6 � Binary Trees:</strong><br><br>
+    ? <strong>Part A</strong> � <em>You are here</em> � Binary Trees &amp; Traversals<br>
+    ? <strong>Part B</strong> � <a href="m06b_bst.html">Binary Search Trees</a><br>
+    ? <strong>Part C</strong> � <a href="m06c_trees_practice.html">Practice: 15 Problems</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase3/m05a_basic_sorts.html">&larr; Module 5 &mdash; Sorting</a>
@@ -34,48 +35,48 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Module 6A</h2>
+    <h2>?? Contents � Module 6A</h2>
     <ol>
-        <li>The Analogy — Why Trees? <span>— Hierarchical thinking</span></li>
-        <li>The Problem Trees Solve <span>— When linear won't do</span></li>
-        <li>Visual Walkthrough <span>— Nodes, edges, levels, height</span></li>
-        <li>Formal Definitions &amp; Terminology <span>— Root, leaf, depth, full, complete, perfect</span></li>
-        <li>Complete C# Implementation <span>— BinaryTree&lt;T&gt; with all traversals</span></li>
-        <li>Complete Python Implementation <span>— Same logic, Python idioms</span></li>
-        <li>Complexity Analysis <span>— Time &amp; space for every traversal</span></li>
-        <li>Real-World Usage <span>— File systems, HTML DOM, compilers</span></li>
-        <li>Common Mistakes <span>— null checks, recursion depth, BFS vs DFS</span></li>
-        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+        <li>The Analogy � Why Trees? <span>� Hierarchical thinking</span></li>
+        <li>The Problem Trees Solve <span>� When linear won't do</span></li>
+        <li>Visual Walkthrough <span>� Nodes, edges, levels, height</span></li>
+        <li>Formal Definitions &amp; Terminology <span>� Root, leaf, depth, full, complete, perfect</span></li>
+        <li>Complete C# Implementation <span>� BinaryTree&lt;T&gt; with all traversals</span></li>
+        <li>Complete Python Implementation <span>� Same logic, Python idioms</span></li>
+        <li>Complexity Analysis <span>� Time &amp; space for every traversal</span></li>
+        <li>Real-World Usage <span>� File systems, HTML DOM, compilers</span></li>
+        <li>Common Mistakes <span>� null checks, recursion depth, BFS vs DFS</span></li>
+        <li>Check Your Understanding <span>� 5 quiz questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Analogy: Why Trees?</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Analogy: Why Trees?</div>
 
 <p>Think of your <strong>family tree</strong>. You (the root) have parents, each parent has grandparents, and so on.
 Every person has exactly one biological parent (except you at the top), and the relationships branch outward.
-You can't have two parents who are also siblings — the structure is strictly hierarchical with no cycles.</p>
+You can't have two parents who are also siblings � the structure is strictly hierarchical with no cycles.</p>
 
 <p>Or think of a <strong>file system</strong>. Your <code>C:\</code> drive contains folders, each folder contains
 sub-folders and files, and sub-folders contain more sub-folders. Navigate "down" to go deeper, "up" to
 go toward the root. That's a tree.</p>
 
-<p>Or think of a <strong>decision tree</strong>: "Is the number &gt; 50? Yes → Is it &gt; 75? No → Is it &gt; 62?" — each
+<p>Or think of a <strong>decision tree</strong>: "Is the number &gt; 50? Yes ? Is it &gt; 75? No ? Is it &gt; 62?" � each
 yes/no branches into two choices, creating a binary tree that cuts the search space in half at every level.
 This is why binary search (and BSTs) are so powerful.</p>
 
 <div class="tip">
-    <strong>💡 The Core Insight:</strong> A tree is a <em>recursive</em> structure. Any node is the root of its
-    own subtree. This means tree algorithms are naturally expressed recursively — "do something at this node,
-    then recurse left and right" — and that's exactly how all traversals work.
+    <strong>?? The Core Insight:</strong> A tree is a <em>recursive</em> structure. Any node is the root of its
+    own subtree. This means tree algorithms are naturally expressed recursively � "do something at this node,
+    then recurse left and right" � and that's exactly how all traversals work.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — The Problem Trees Solve</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � The Problem Trees Solve</div>
 
-<p>Arrays and linked lists are <strong>linear</strong> — data is arranged in a single sequence. They struggle
+<p>Arrays and linked lists are <strong>linear</strong> � data is arranged in a single sequence. They struggle
 with <strong>hierarchical relationships</strong>:</p>
 
 <ul>
@@ -86,39 +87,39 @@ with <strong>hierarchical relationships</strong>:</p>
 </ul>
 
 <p>Trees solve all of these. The key property: <strong>at each node you make a binary decision</strong> (go left or right).
-With n items in a balanced tree of height h, h = log₂(n). So 1,000,000 items → height 20. You reach any node
+With n items in a balanced tree of height h, h = log2(n). So 1,000,000 items ? height 20. You reach any node
 in at most 20 steps. That's O(log n) search instead of O(n).</p>
 
 <div class="note">
-    <strong>📝 Binary Tree vs Binary Search Tree:</strong> A <em>binary tree</em> just means each node has
-    at most 2 children — no ordering constraint. A <em>Binary Search Tree (BST)</em> adds the rule
+    <strong>?? Binary Tree vs Binary Search Tree:</strong> A <em>binary tree</em> just means each node has
+    at most 2 children � no ordering constraint. A <em>Binary Search Tree (BST)</em> adds the rule
     "left &lt; root &lt; right". This module covers binary trees (structure + traversals).
     Module 6B covers BSTs (search, insert, delete).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Visual Walkthrough</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Visual Walkthrough</div>
 
-<h3>3.1 — Anatomy of a Binary Tree</h3>
+<h3>3.1 � Anatomy of a Binary Tree</h3>
 
 <div class="diagram">BINARY TREE ANATOMY
 
-                    ┌───┐
-                    │ A │  ← ROOT (level 0, depth 0)
-                    └─┬─┘
-           ┌──────────┴──────────┐
-         ┌─┴─┐               ┌─┴─┐
-         │ B │               │ C │  ← level 1
-         └─┬─┘               └─┬─┘
-       ┌───┴───┐           ┌───┘
-     ┌─┴─┐   ┌─┴─┐       ┌─┴─┐
-     │ D │   │ E │       │ F │  ← level 2
-     └───┘   └─┬─┘       └───┘
-             ┌─┴─┐
-             │ G │           ← level 3
-             └───┘
+                    +---+
+                    � A �  ? ROOT (level 0, depth 0)
+                    +---+
+           +---------------------+
+         +---+               +---+
+         � B �               � C �  ? level 1
+         +---+               +---+
+       +-------+           +---+
+     +---+   +---+       +---+
+     � D �   � E �       � F �  ? level 2
+     +---+   +---+       +---+
+             +---+
+             � G �           ? level 3
+             +---+
 
 Terminology:
   Root    = A (the top node, no parent)
@@ -126,85 +127,85 @@ Terminology:
   Parent  = B is parent of D and E
   Child   = D and E are children of B
   Sibling = B and C are siblings (same parent)
-  Height  = 3 (longest path from root to a leaf: A→B→E→G)
+  Height  = 3 (longest path from root to a leaf: A?B?E?G)
   Depth   = 0 for A, 1 for B/C, 2 for D/E/F, 3 for G
   
 Each node: at most 2 children (Left child + Right child)</div>
 
-<h3>3.2 — The Five Traversal Orders</h3>
+<h3>3.2 � The Five Traversal Orders</h3>
 <p>A traversal visits every node exactly once in a defined order. The "when you visit the current node"
 relative to its children defines the traversal type.</p>
 
-<div class="diagram">TRAVERSAL ORDERS — Tree: 1 at root, 2 left, 3 right (2 has children 4,5; 3 has child 6)
+<div class="diagram">TRAVERSAL ORDERS � Tree: 1 at root, 2 left, 3 right (2 has children 4,5; 3 has child 6)
 
-         ┌───┐
-         │ 1 │
-         └─┬─┘
-      ┌────┴────┐
-    ┌─┴─┐     ┌─┴─┐
-    │ 2 │     │ 3 │
-    └─┬─┘     └─┬─┘
-  ┌───┴───┐     └───┐
-┌─┴─┐   ┌─┴─┐     ┌─┴─┐
-│ 4 │   │ 5 │     │ 6 │
-└───┘   └───┘     └───┘
+         +---+
+         � 1 �
+         +---+
+      +---------+
+    +---+     +---+
+    � 2 �     � 3 �
+    +---+     +---+
+  +-------+     +---+
++---+   +---+     +---+
+� 4 �   � 5 �     � 6 �
++---+   +---+     +---+
 
-INORDER   (Left → Root → Right): 4, 2, 5, 1, 3, 6
-  → Visit left subtree, THEN current node, THEN right subtree
-  → In a BST: produces SORTED order ← this is why it's called "inorder"
+INORDER   (Left ? Root ? Right): 4, 2, 5, 1, 3, 6
+  ? Visit left subtree, THEN current node, THEN right subtree
+  ? In a BST: produces SORTED order ? this is why it's called "inorder"
 
-PREORDER  (Root → Left → Right): 1, 2, 4, 5, 3, 6
-  → Visit current node FIRST, then left, then right
-  → Used to: copy/serialize a tree, prefix expression evaluation
+PREORDER  (Root ? Left ? Right): 1, 2, 4, 5, 3, 6
+  ? Visit current node FIRST, then left, then right
+  ? Used to: copy/serialize a tree, prefix expression evaluation
 
-POSTORDER (Left → Right → Root): 4, 5, 2, 6, 3, 1
-  → Visit children FIRST, then current node
-  → Used to: delete a tree, evaluate postfix expressions, calculate sizes
+POSTORDER (Left ? Right ? Root): 4, 5, 2, 6, 3, 1
+  ? Visit children FIRST, then current node
+  ? Used to: delete a tree, evaluate postfix expressions, calculate sizes
 
 LEVEL-ORDER / BFS (level by level): 1, 2, 3, 4, 5, 6
-  → Visit level 0, then level 1, then level 2...
-  → Uses a QUEUE (not recursion)
-  → Used to: find shortest path, serialize by level
+  ? Visit level 0, then level 1, then level 2...
+  ? Uses a QUEUE (not recursion)
+  ? Used to: find shortest path, serialize by level
 
-REVERSE INORDER (Right → Root → Left): 6, 3, 1, 5, 2, 4
-  → In a BST: produces DESCENDING sorted order</div>
+REVERSE INORDER (Right ? Root ? Left): 6, 3, 1, 5, 2, 4
+  ? In a BST: produces DESCENDING sorted order</div>
 
-<h3>3.3 — Recursive Traversal Step-by-Step</h3>
-<div class="diagram">INORDER on the tree above — Call stack trace:
+<h3>3.3 � Recursive Traversal Step-by-Step</h3>
+<div class="diagram">INORDER on the tree above � Call stack trace:
 
 Call inorder(1):
-  → Call inorder(2)          [go left first]
-      → Call inorder(4)      [go left]
-          → inorder(null)    [4 has no left]
-          → VISIT 4          [print 4]
-          → inorder(null)    [4 has no right]
-      ← return
-      → VISIT 2              [print 2]
-      → Call inorder(5)      [go right]
-          → inorder(null)    [5 has no left]
-          → VISIT 5          [print 5]
-          → inorder(null)    [5 has no right]
-      ← return
-  ← return
-  → VISIT 1                  [print 1]
-  → Call inorder(3)          [go right]
-      → inorder(null)        [3 has no left]
-      → VISIT 3              [print 3]
-      → Call inorder(6)      [go right]
-          → inorder(null)
-          → VISIT 6
-          → inorder(null)
-      ← return
-  ← return
+  ? Call inorder(2)          [go left first]
+      ? Call inorder(4)      [go left]
+          ? inorder(null)    [4 has no left]
+          ? VISIT 4          [print 4]
+          ? inorder(null)    [4 has no right]
+      ? return
+      ? VISIT 2              [print 2]
+      ? Call inorder(5)      [go right]
+          ? inorder(null)    [5 has no left]
+          ? VISIT 5          [print 5]
+          ? inorder(null)    [5 has no right]
+      ? return
+  ? return
+  ? VISIT 1                  [print 1]
+  ? Call inorder(3)          [go right]
+      ? inorder(null)        [3 has no left]
+      ? VISIT 3              [print 3]
+      ? Call inorder(6)      [go right]
+          ? inorder(null)
+          ? VISIT 6
+          ? inorder(null)
+      ? return
+  ? return
 
-Output: 4 2 5 1 3 6  ✓</div>
+Output: 4 2 5 1 3 6  ?</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Formal Definitions &amp; Terminology</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Formal Definitions &amp; Terminology</div>
 
-<h3>4.1 — Tree Types</h3>
+<h3>4.1 � Tree Types</h3>
 <table>
     <thead>
         <tr><th>Type</th><th>Definition</th><th>Example</th></tr>
@@ -214,18 +215,18 @@ Output: 4 2 5 1 3 6  ✓</div>
         <tr><td><strong>Full Binary Tree</strong></td><td>Every node has 0 or 2 children (never 1)</td><td>Huffman trees</td></tr>
         <tr><td><strong>Complete Binary Tree</strong></td><td>All levels filled except possibly the last; last level filled left-to-right</td><td>Binary heaps</td></tr>
         <tr><td><strong>Perfect Binary Tree</strong></td><td>All internal nodes have 2 children AND all leaves are at the same level</td><td>Theoretical ideal</td></tr>
-        <tr><td><strong>Balanced Binary Tree</strong></td><td>Height difference between left and right subtrees ≤ 1 for every node</td><td>AVL trees, Red-Black</td></tr>
-        <tr><td><strong>Degenerate Tree</strong></td><td>Every node has only one child — essentially a linked list</td><td>Worst-case BST</td></tr>
+        <tr><td><strong>Balanced Binary Tree</strong></td><td>Height difference between left and right subtrees = 1 for every node</td><td>AVL trees, Red-Black</td></tr>
+        <tr><td><strong>Degenerate Tree</strong></td><td>Every node has only one child � essentially a linked list</td><td>Worst-case BST</td></tr>
     </tbody>
 </table>
 
-<h3>4.2 — Key Properties</h3>
+<h3>4.2 � Key Properties</h3>
 <ul>
     <li><strong>Height of tree</strong> = number of edges on the longest path from root to any leaf. A single node has height 0.</li>
     <li><strong>Depth of node</strong> = number of edges from root to that node. Root has depth 0.</li>
-    <li><strong>Level</strong> = depth + 1 (some texts define level starting at 1 instead of 0 — be aware).</li>
-    <li><strong>Perfect binary tree with height h</strong> has exactly 2<sup>h+1</sup> − 1 nodes.</li>
-    <li><strong>Complete binary tree</strong> with n nodes has height ⌊log₂ n⌋.</li>
+    <li><strong>Level</strong> = depth + 1 (some texts define level starting at 1 instead of 0 � be aware).</li>
+    <li><strong>Perfect binary tree with height h</strong> has exactly 2<sup>h+1</sup> - 1 nodes.</li>
+    <li><strong>Complete binary tree</strong> with n nodes has height ?log2 n?.</li>
 </ul>
 
 <div class="diagram">FULL vs COMPLETE vs PERFECT
@@ -236,7 +237,7 @@ FULL (every node has 0 or 2 children):
       2   3
      / \
     4   5
-    ✓ Full (2 and 3 have 0 or 2 children each)
+    ? Full (2 and 3 have 0 or 2 children each)
 
 COMPLETE (all levels full; last level left-to-right):
         1
@@ -244,7 +245,7 @@ COMPLETE (all levels full; last level left-to-right):
      2     3
     / \   /
    4   5 6
-   ✓ Complete — 6 is leftmost available position
+   ? Complete � 6 is leftmost available position
 
 PERFECT (all internals have 2 children, all leaves same level):
         1
@@ -252,20 +253,20 @@ PERFECT (all internals have 2 children, all leaves same level):
      2     3
     / \   / \
    4   5 6   7
-   ✓ Perfect — completely symmetric</div>
+   ? Perfect � completely symmetric</div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Complete C# Implementation</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Complete C# Implementation</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
-<span class="cm">// ── Node class ──────────────────────────────────────────────────</span>
+<span class="cm">// -- Node class --------------------------------------------------</span>
 <span class="kw">public class</span> <span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">public</span> <span class="tp">T</span> Value;
@@ -275,12 +276,12 @@ PERFECT (all internals have 2 children, all leaves same level):
     <span class="kw">public</span> <span class="mt">TreeNode</span>(<span class="tp">T</span> val) { Value = val; }
 }
 
-<span class="cm">// ── BinaryTree class with all five traversals ───────────────────</span>
+<span class="cm">// -- BinaryTree class with all five traversals -------------------</span>
 <span class="kw">public class</span> <span class="tp">BinaryTree</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">public</span> <span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;? Root;
 
-    <span class="cm">// ── INORDER: Left → Root → Right ──────────────────────────────</span>
+    <span class="cm">// -- INORDER: Left ? Root ? Right ------------------------------</span>
     <span class="cm">// In a BST, produces sorted ascending order</span>
     <span class="kw">public void</span> <span class="mt">Inorder</span>(<span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;? node, <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; result)
     {
@@ -290,7 +291,7 @@ PERFECT (all internals have 2 children, all leaves same level):
         <span class="mt">Inorder</span>(node.Right, result);          <span class="cm">// 3. Recurse right</span>
     }
 
-    <span class="cm">// ── PREORDER: Root → Left → Right ─────────────────────────────</span>
+    <span class="cm">// -- PREORDER: Root ? Left ? Right -----------------------------</span>
     <span class="cm">// Useful for serializing/copying a tree structure</span>
     <span class="kw">public void</span> <span class="mt">Preorder</span>(<span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;? node, <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; result)
     {
@@ -300,7 +301,7 @@ PERFECT (all internals have 2 children, all leaves same level):
         <span class="mt">Preorder</span>(node.Right, result);         <span class="cm">// 3. Recurse right</span>
     }
 
-    <span class="cm">// ── POSTORDER: Left → Right → Root ────────────────────────────</span>
+    <span class="cm">// -- POSTORDER: Left ? Right ? Root ----------------------------</span>
     <span class="cm">// Useful for deleting a tree or evaluating expression trees</span>
     <span class="kw">public void</span> <span class="mt">Postorder</span>(<span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;? node, <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; result)
     {
@@ -310,7 +311,7 @@ PERFECT (all internals have 2 children, all leaves same level):
         result.<span class="mt">Add</span>(node.Value);              <span class="cm">// 3. Visit LAST</span>
     }
 
-    <span class="cm">// ── LEVEL-ORDER (BFS): level by level using a Queue ───────────</span>
+    <span class="cm">// -- LEVEL-ORDER (BFS): level by level using a Queue -----------</span>
     <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="tp">T</span>&gt;&gt; <span class="mt">LevelOrder</span>()
     {
         <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="tp">T</span>&gt;&gt;();
@@ -337,7 +338,7 @@ PERFECT (all internals have 2 children, all leaves same level):
         <span class="kw">return</span> result;
     }
 
-    <span class="cm">// ── HEIGHT: longest path from root to any leaf ────────────────</span>
+    <span class="cm">// -- HEIGHT: longest path from root to any leaf ----------------</span>
     <span class="kw">public int</span> <span class="mt">Height</span>(<span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;? node)
     {
         <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> -<span class="nm">1</span>;          <span class="cm">// -1 for empty, 0 for leaf</span>
@@ -346,14 +347,14 @@ PERFECT (all internals have 2 children, all leaves same level):
         <span class="kw">return</span> <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(leftH, rightH);   <span class="cm">// 1 + taller subtree height</span>
     }
 
-    <span class="cm">// ── COUNT: total number of nodes ──────────────────────────────</span>
+    <span class="cm">// -- COUNT: total number of nodes ------------------------------</span>
     <span class="kw">public int</span> <span class="mt">Count</span>(<span class="tp">TreeNode</span>&lt;<span class="tp">T</span>&gt;? node)
     {
         <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
         <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">Count</span>(node.Left) + <span class="mt">Count</span>(node.Right);
     }
 
-    <span class="cm">// ── INORDER ITERATIVE: same as recursive but explicit stack ───</span>
+    <span class="cm">// -- INORDER ITERATIVE: same as recursive but explicit stack ---</span>
     <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; <span class="mt">InorderIterative</span>()
     {
         <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;();
@@ -377,7 +378,7 @@ PERFECT (all internals have 2 children, all leaves same level):
     }
 }
 
-<span class="cm">// ── Main: Build the sample tree and run all traversals ──────────</span>
+<span class="cm">// -- Main: Build the sample tree and run all traversals ----------</span>
 <span class="kw">class</span> <span class="tp">Program</span>
 {
     <span class="kw">static void</span> <span class="mt">Main</span>()
@@ -423,7 +424,7 @@ PERFECT (all internals have 2 children, all leaves same level):
     }
 }
 
-<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+<span class="cm">/* -- Output ------------------------------------------------------
    Inorder:    4, 2, 5, 1, 6, 3
    Preorder:   1, 2, 4, 5, 3, 6
    Postorder:  4, 5, 2, 6, 3, 1
@@ -431,54 +432,54 @@ PERFECT (all internals have 2 children, all leaves same level):
    Inorder(it):4, 2, 5, 1, 6, 3
    Height: 2
    Count:  6
-   ──────────────────────────────────────────────────────────────── */</span></pre>
+   ---------------------------------------------------------------- */</span></pre>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Complete Python Implementation</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Complete Python Implementation</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">from</span> typing <span class="kw">import</span> Optional, List
 
-<span class="cm"># ── Node class ──────────────────────────────────────────────────</span>
+<span class="cm"># -- Node class --------------------------------------------------</span>
 <span class="kw">class</span> <span class="tp">TreeNode</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self, val: <span class="kw">int</span>):
         self.val = val
         self.left: Optional[<span class="st">'TreeNode'</span>] = <span class="kw">None</span>   <span class="cm"># Left child</span>
         self.right: Optional[<span class="st">'TreeNode'</span>] = <span class="kw">None</span>  <span class="cm"># Right child</span>
 
-<span class="cm"># ── BinaryTree with all traversals ──────────────────────────────</span>
+<span class="cm"># -- BinaryTree with all traversals ------------------------------</span>
 <span class="kw">class</span> <span class="tp">BinaryTree</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self):
         self.root: Optional[<span class="tp">TreeNode</span>] = <span class="kw">None</span>
 
-    <span class="cm"># ── INORDER: Left → Root → Right ──────────────────────────────</span>
+    <span class="cm"># -- INORDER: Left ? Root ? Right ------------------------------</span>
     <span class="kw">def</span> <span class="mt">inorder</span>(self, node: Optional[<span class="tp">TreeNode</span>], result: List[<span class="kw">int</span>]) -> <span class="kw">None</span>:
         <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span>          <span class="cm"># Base case: empty node</span>
         self.<span class="mt">inorder</span>(node.left, result)    <span class="cm"># 1. Go left</span>
         result.<span class="mt">append</span>(node.val)           <span class="cm"># 2. Visit current</span>
         self.<span class="mt">inorder</span>(node.right, result)   <span class="cm"># 3. Go right</span>
 
-    <span class="cm"># ── PREORDER: Root → Left → Right ─────────────────────────────</span>
+    <span class="cm"># -- PREORDER: Root ? Left ? Right -----------------------------</span>
     <span class="kw">def</span> <span class="mt">preorder</span>(self, node: Optional[<span class="tp">TreeNode</span>], result: List[<span class="kw">int</span>]) -> <span class="kw">None</span>:
         <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span>
         result.<span class="mt">append</span>(node.val)           <span class="cm"># 1. Visit FIRST</span>
         self.<span class="mt">preorder</span>(node.left, result)
         self.<span class="mt">preorder</span>(node.right, result)
 
-    <span class="cm"># ── POSTORDER: Left → Right → Root ────────────────────────────</span>
+    <span class="cm"># -- POSTORDER: Left ? Right ? Root ----------------------------</span>
     <span class="kw">def</span> <span class="mt">postorder</span>(self, node: Optional[<span class="tp">TreeNode</span>], result: List[<span class="kw">int</span>]) -> <span class="kw">None</span>:
         <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span>
         self.<span class="mt">postorder</span>(node.left, result)
         self.<span class="mt">postorder</span>(node.right, result)
         result.<span class="mt">append</span>(node.val)           <span class="cm"># 3. Visit LAST</span>
 
-    <span class="cm"># ── LEVEL-ORDER (BFS): use deque as efficient queue ───────────</span>
+    <span class="cm"># -- LEVEL-ORDER (BFS): use deque as efficient queue -----------</span>
     <span class="kw">def</span> <span class="mt">level_order</span>(self) -> List[List[<span class="kw">int</span>]]:
         <span class="kw">if not</span> self.root: <span class="kw">return</span> []
         result: List[List[<span class="kw">int</span>]] = []
@@ -497,17 +498,17 @@ PERFECT (all internals have 2 children, all leaves same level):
             result.<span class="mt">append</span>(level)
         <span class="kw">return</span> result
 
-    <span class="cm"># ── HEIGHT ────────────────────────────────────────────────────</span>
+    <span class="cm"># -- HEIGHT ----------------------------------------------------</span>
     <span class="kw">def</span> <span class="mt">height</span>(self, node: Optional[<span class="tp">TreeNode</span>]) -> <span class="kw">int</span>:
         <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span> -<span class="nm">1</span>         <span class="cm"># -1 for empty, 0 for leaf</span>
         <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(self.<span class="mt">height</span>(node.left), self.<span class="mt">height</span>(node.right))
 
-    <span class="cm"># ── COUNT ─────────────────────────────────────────────────────</span>
+    <span class="cm"># -- COUNT -----------------------------------------------------</span>
     <span class="kw">def</span> <span class="mt">count</span>(self, node: Optional[<span class="tp">TreeNode</span>]) -> <span class="kw">int</span>:
         <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span> <span class="nm">0</span>
         <span class="kw">return</span> <span class="nm">1</span> + self.<span class="mt">count</span>(node.left) + self.<span class="mt">count</span>(node.right)
 
-    <span class="cm"># ── INORDER ITERATIVE: explicit stack replaces call stack ─────</span>
+    <span class="cm"># -- INORDER ITERATIVE: explicit stack replaces call stack -----</span>
     <span class="kw">def</span> <span class="mt">inorder_iterative</span>(self) -> List[<span class="kw">int</span>]:
         result, stack = [], []
         current = self.root
@@ -561,8 +562,8 @@ PERFECT (all internals have 2 children, all leaves same level):
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Complexity Analysis</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Complexity Analysis</div>
 
 <table>
     <thead>
@@ -578,38 +579,38 @@ PERFECT (all internals have 2 children, all leaves same level):
 </table>
 
 <div class="note">
-    <strong>📝 Balanced vs Degenerate Space Cost:</strong>
+    <strong>?? Balanced vs Degenerate Space Cost:</strong>
     <ul style="margin-top: 8px;">
-        <li><strong>Balanced tree</strong>: h = O(log n) → recursion depth = O(log n) → safe for n = 10⁶ (depth ≈ 20)</li>
-        <li><strong>Degenerate tree</strong> (linked-list shape): h = O(n) → recursion depth = O(n) → <strong>stack overflow for n &gt; 10,000</strong> on most runtimes</li>
-        <li>This is why iterative inorder matters in interviews — it avoids stack overflow</li>
+        <li><strong>Balanced tree</strong>: h = O(log n) ? recursion depth = O(log n) ? safe for n = 106 (depth � 20)</li>
+        <li><strong>Degenerate tree</strong> (linked-list shape): h = O(n) ? recursion depth = O(n) ? <strong>stack overflow for n &gt; 10,000</strong> on most runtimes</li>
+        <li>This is why iterative inorder matters in interviews � it avoids stack overflow</li>
         <li>BFS space = O(w) = O(n) for a perfect tree's last level (holds n/2 nodes)</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Real-World Usage</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Real-World Usage</div>
 
 <div class="realworld">
-    <strong>🌍 File System (Every OS) — Preorder for listing, Postorder for sizing</strong><br>
-    Every file system is a tree. <code>C:\Windows\System32\kernel32.dll</code> is a path from root → Windows →
-    System32 → kernel32.dll. When you run <code>du -sh *</code> to get folder sizes, the OS does a
-    <strong>postorder traversal</strong> — calculate children sizes first, then the parent's total.<br>
-    Windows Explorer's tree view is <strong>preorder</strong> — show the folder first, then recurse into its contents.
+    <strong>?? File System (Every OS) � Preorder for listing, Postorder for sizing</strong><br>
+    Every file system is a tree. <code>C:\Windows\System32\kernel32.dll</code> is a path from root ? Windows ?
+    System32 ? kernel32.dll. When you run <code>du -sh *</code> to get folder sizes, the OS does a
+    <strong>postorder traversal</strong> � calculate children sizes first, then the parent's total.<br>
+    Windows Explorer's tree view is <strong>preorder</strong> � show the folder first, then recurse into its contents.
 </div>
 
 <div class="realworld">
-    <strong>🌍 HTML DOM (Every Browser) — Level-order for layout, DFS for matching</strong><br>
-    A web page's HTML is a tree: <code>&lt;html&gt;</code> → <code>&lt;body&gt;</code> → <code>&lt;div&gt;</code> → etc.
-    Browsers use <strong>DFS (preorder)</strong> when applying CSS selectors — walk down the tree, check if this
+    <strong>?? HTML DOM (Every Browser) � Level-order for layout, DFS for matching</strong><br>
+    A web page's HTML is a tree: <code>&lt;html&gt;</code> ? <code>&lt;body&gt;</code> ? <code>&lt;div&gt;</code> ? etc.
+    Browsers use <strong>DFS (preorder)</strong> when applying CSS selectors � walk down the tree, check if this
     node matches <code>div.container &gt; p</code>. They use <strong>BFS (level-order)</strong> for
-    layout calculations — lay out parent dimensions before children.
+    layout calculations � lay out parent dimensions before children.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Compilers (Roslyn / GCC) — Postorder for code generation</strong><br>
+    <strong>?? Compilers (Roslyn / GCC) � Postorder for code generation</strong><br>
     The expression <code>(3 + 5) * (4 - 2)</code> is stored as an Abstract Syntax Tree (AST).
     The compiler uses <strong>postorder traversal</strong>: evaluate children first (3+5=8, 4-2=2),
     then apply the operator at the parent (8*2=16). Roslyn (C#'s compiler) stores every C#
@@ -618,60 +619,60 @@ PERFECT (all internals have 2 children, all leaves same level):
 
 <hr>
 
-<!-- ═══════ SECTION 9 ═══════ -->
-<div class="section-heading">Section 9 — Common Mistakes</div>
+<!-- ------- SECTION 9 ------- -->
+<div class="section-heading">Section 9 � Common Mistakes</div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 1 — Null check missing:</strong> Every recursive call must check
+    <strong>?? Mistake 1 � Null check missing:</strong> Every recursive call must check
     <code>if (node == null) return</code> first. Missing this causes a NullReferenceException on leaf nodes
     when you try to access <code>node.Left</code>. This is the #1 tree interview bug.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 2 — Confusing height and depth:</strong> Height is measured from a node DOWN
+    <strong>?? Mistake 2 � Confusing height and depth:</strong> Height is measured from a node DOWN
     to the deepest leaf. Depth is measured from the root DOWN to the node. A leaf node at depth 5
     has height 0. The tree's height equals the root's height.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 3 — Using list.sort() instead of inorder:</strong> On a BST, inorder traversal
-    already gives you sorted output in O(n). Collecting all values then sorting is O(n log n) — twice
+    <strong>?? Mistake 3 � Using list.sort() instead of inorder:</strong> On a BST, inorder traversal
+    already gives you sorted output in O(n). Collecting all values then sorting is O(n log n) � twice
     as slow and shows you don't understand the structure.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 4 — Stack overflow on deep trees:</strong> Recursive traversal uses the call stack.
-    A degenerate BST built from sorted input (1→2→3→...→n) has height n. Recursing into it with
+    <strong>?? Mistake 4 � Stack overflow on deep trees:</strong> Recursive traversal uses the call stack.
+    A degenerate BST built from sorted input (1?2?3?...?n) has height n. Recursing into it with
     n = 100,000 will crash with StackOverflowException. Use iterative traversal for production code
     on untrusted inputs.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Mistake 5 — Using <code>list</code> as queue in Python:</strong> <code>list.pop(0)</code>
+    <strong>?? Mistake 5 � Using <code>list</code> as queue in Python:</strong> <code>list.pop(0)</code>
     is O(n). Always use <code>collections.deque</code> with <code>popleft()</code> for O(1) BFS dequeues.
-    Using a list as a queue turns O(n) BFS into O(n²).
+    Using a list as a queue turns O(n) BFS into O(n�).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 10 ═══════ -->
-<div class="section-heading">Section 10 — Check Your Understanding</div>
+<!-- ------- SECTION 10 ------- -->
+<div class="section-heading">Section 10 � Check Your Understanding</div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q1. Given a binary tree with n nodes, what is the space complexity of a recursive inorder traversal on a <em>balanced</em> tree?</div>
-    <div class="quiz-meta">💡 Think about what the call stack holds at any point during recursion.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Think about what the call stack holds at any point during recursion.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>O(log n)</strong> — In a balanced tree, the height h = ⌊log₂ n⌋. At any point, the recursive call stack only holds nodes along the current path from root to the deepest active node — at most h frames. So space = O(h) = O(log n) for a balanced tree. For a degenerate tree (linked list), it becomes O(n).
+        <strong>O(log n)</strong> � In a balanced tree, the height h = ?log2 n?. At any point, the recursive call stack only holds nodes along the current path from root to the deepest active node � at most h frames. So space = O(h) = O(log n) for a balanced tree. For a degenerate tree (linked list), it becomes O(n).
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q2. You need to serialize a binary tree to a string, then reconstruct it exactly. Which traversal should you use?</div>
-    <div class="quiz-meta">💡 Which traversal tells you the structure before you know the children?</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Which traversal tells you the structure before you know the children?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>Preorder</strong> — Preorder visits the root <em>before</em> its children. When deserializing, you read the root value first (so you know what to reconstruct), then recursively rebuild left and right subtrees. Include null markers (e.g., "#") so you know where subtrees end. Inorder alone is <em>not sufficient</em> to uniquely reconstruct a tree.
+        <strong>Preorder</strong> � Preorder visits the root <em>before</em> its children. When deserializing, you read the root value first (so you know what to reconstruct), then recursively rebuild left and right subtrees. Include null markers (e.g., "#") so you know where subtrees end. Inorder alone is <em>not sufficient</em> to uniquely reconstruct a tree.
     </div>
 </div>
 
@@ -682,48 +683,48 @@ PERFECT (all internals have 2 children, all leaves same level):
   3   8
  / \   \
 1   4   9</code></div>
-    <div class="quiz-meta">💡 BFS visits one level at a time, left to right.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? BFS visits one level at a time, left to right.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
         <strong>[5], [3, 8], [1, 4, 9]</strong><br>
         Level 0: 5<br>
         Level 1: 3, 8 (left-to-right)<br>
         Level 2: 1, 4 (children of 3), 9 (right child of 8; 8 has no left child)<br>
-        The queue processes: Enqueue 5 → dequeue 5, enqueue 3,8 → dequeue 3, enqueue 1,4 → dequeue 8, enqueue 9 → ...
+        The queue processes: Enqueue 5 ? dequeue 5, enqueue 3,8 ? dequeue 3, enqueue 1,4 ? dequeue 8, enqueue 9 ? ...
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q4. A "perfect" binary tree has 4 levels (level 0 through 3). How many nodes does it have?</div>
-    <div class="quiz-meta">💡 Use the formula: 2^(h+1) - 1 where h is the height.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Use the formula: 2^(h+1) - 1 where h is the height.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>15 nodes</strong> — Height = 3 (levels 0–3). Formula: 2^(3+1) − 1 = 2⁴ − 1 = 16 − 1 = 15.<br>
+        <strong>15 nodes</strong> � Height = 3 (levels 0�3). Formula: 2^(3+1) - 1 = 24 - 1 = 16 - 1 = 15.<br>
         Alternatively: Level 0 = 1 node, Level 1 = 2, Level 2 = 4, Level 3 = 8. Sum = 1+2+4+8 = 15.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q5. Which traversal would you use to delete all nodes in a tree without causing memory leaks?</div>
-    <div class="quiz-meta">💡 Think about the order in which it's safe to free memory — you can't delete a parent before its children.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-meta">?? Think about the order in which it's safe to free memory � you can't delete a parent before its children.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
     <div class="quiz-a">
-        <strong>Postorder</strong> — You must delete children <em>before</em> their parent. If you deleted the root first, you'd lose your only references to the subtrees, causing memory leaks. Postorder visits left subtree → right subtree → current node, so children are always processed (and freed) before their parent. In garbage-collected languages (C#, Python) this matters less, but in C/C++ it's critical.
+        <strong>Postorder</strong> � You must delete children <em>before</em> their parent. If you deleted the root first, you'd lose your only references to the subtrees, causing memory leaks. Postorder visits left subtree ? right subtree ? current node, so children are always processed (and freed) before their parent. In garbage-collected languages (C#, Python) this matters less, but in C/C++ it's critical.
     </div>
 </div>
 
 <br>
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 6A Complete</button>
-<div class="toast" id="toast">✅ Module 6A marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 6A Complete</button>
+<div class="toast" id="toast">? Module 6A marked complete!</div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>✅ Module 6A Complete!</strong><br><br>
+    <strong>? Module 6A Complete!</strong><br><br>
     You now understand: binary tree structure, 5 traversal orders, iterative inorder, height/count calculations,
     and how trees power file systems, HTML DOM, and compilers.<br><br>
-    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ▶ <strong>Next:</strong> <a href="m06b_bst.html">Part B — Binary Search Trees</a>
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Next:</strong> <a href="m06b_bst.html">Part B � Binary Search Trees</a>
 </div>
     <script>var MODULE_ID = 'm06a';</script>
     <script src="../dsa.js"></script>

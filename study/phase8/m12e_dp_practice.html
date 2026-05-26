@@ -1,35 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 12E — DP Practice: 20 Problems | DSA Masterbook</title>
+    <title>Module 12E � DP Practice: 20 Problems | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
-    <h1>Module 12 — Part E</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
+    <h1>Module 12 � Part E</h1>
     <div class="tagline">DP Practice: 20 Problems</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Curated LeetCode problems with hints and annotated solutions</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 4 Hours</span>
-        <span>🎯 Practice Session</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part E of Module 12</span>
+        <span>? Estimated Time: 4 Hours</span>
+        <span>?? Practice Session</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part E of Module 12</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m12a_dp_intro.html">DP Introduction</a><br>
-    ✅ <strong>Part B</strong> — <a href="m12b_dp_1d.html">1D DP</a><br>
-    ✅ <strong>Part C</strong> — <a href="m12c_dp_2d.html">2D DP</a><br>
-    ✅ <strong>Part D</strong> — <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
-    ▶ <strong>Part E</strong> — <em>You are here</em> — DP Practice: 20 Problems<br>
-    ⬜ <strong>Part F</strong> — <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m12a_dp_intro.html">DP Introduction</a><br>
+    ? <strong>Part B</strong> � <a href="m12b_dp_1d.html">1D DP</a><br>
+    ? <strong>Part C</strong> � <a href="m12c_dp_2d.html">2D DP</a><br>
+    ? <strong>Part D</strong> � <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
+    ? <strong>Part E</strong> � <em>You are here</em> � DP Practice: 20 Problems<br>
+    ? <strong>Part F</strong> � <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase7/m11a_segment_trees.html">&larr; Module 11 &mdash; Segment Trees &amp; More</a>
@@ -37,24 +38,24 @@
 </div>
 
 <div class="tip">
-    <strong>💡 How to Use This Module:</strong>
+    <strong>?? How to Use This Module:</strong>
     First attempt each problem on your own for at least 15 minutes.
     Then click "Hint" for the key DP insight without full spoilers.
     Click "Solution" only after making a genuine attempt or if completely stuck.
     Problems are ordered by pattern group, not difficulty.
 </div>
 
-<div class="section-heading">Group A — 1D DP (Problems 1–6)</div>
+<div class="section-heading">Group A � 1D DP (Problems 1�6)</div>
 
 <!-- P1 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#1 · LeetCode 746 — Min Cost Climbing Stairs</div>
+        <div class="prob-title">#1 � LeetCode 746 � Min Cost Climbing Stairs</div>
         <div class="prob-meta"><span class="badge-e">Easy</span><br>Pattern: Linear DP</div>
     </div>
     <div class="prob-desc">Array cost[] where cost[i] is the cost of step i. You can climb 1 or 2 steps from each step. Find min cost to reach the top (one past the last step). You can start from index 0 or 1.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i] = min cost to reach step i. dp[i] = min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]). Answer is dp[n].</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -68,7 +69,7 @@
     <span class="kw">return</span> dp[n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">minCostClimbingStairs</span>(cost):
     n = <span class="mt">len</span>(cost)
     dp = [<span class="nm">0</span>] * (n + <span class="nm">1</span>)
@@ -81,12 +82,12 @@
 <!-- P2 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#2 · LeetCode 413 — Arithmetic Slices</div>
+        <div class="prob-title">#2 � LeetCode 413 � Arithmetic Slices</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Linear DP</div>
     </div>
-    <div class="prob-desc">Count the number of arithmetic subarrays (length ≥ 3) in array A.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <div class="prob-desc">Count the number of arithmetic subarrays (length = 3) in array A.</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i] = number of arithmetic slices ending at index i. If A[i]-A[i-1] == A[i-1]-A[i-2], then dp[i] = dp[i-1] + 1 (extend all previous slices plus a new 3-element one). Sum all dp[i].</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -101,7 +102,7 @@
     <span class="kw">return</span> ans;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">numberOfArithmeticSlices</span>(A):
     dp = ans = <span class="nm">0</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, <span class="mt">len</span>(A)):
@@ -115,12 +116,12 @@
 <!-- P3 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#3 · LeetCode 983 — Minimum Cost For Tickets</div>
+        <div class="prob-title">#3 � LeetCode 983 � Minimum Cost For Tickets</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Linear DP with lookback</div>
     </div>
     <div class="prob-desc">Travel days are given. 1-day pass costs[0], 7-day pass costs[1], 30-day pass costs[2]. Find minimum cost to cover all travel days.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i] = min cost to cover all travel days up to day i. If day i is not a travel day, dp[i] = dp[i-1]. Otherwise dp[i] = min(dp[i-1]+c1, dp[max(0,i-7)]+c7, dp[max(0,i-30)]+c30).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -139,7 +140,7 @@
     <span class="kw">return</span> dp[last];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">mincostTickets</span>(days, costs):
     travel = <span class="mt">set</span>(days)
     last = days[-<span class="nm">1</span>]
@@ -156,13 +157,13 @@
 <!-- P4 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#4 · LeetCode 309 — Best Time to Buy and Sell Stock with Cooldown</div>
+        <div class="prob-title">#4 � LeetCode 309 � Best Time to Buy and Sell Stock with Cooldown</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: State machine DP</div>
     </div>
     <div class="prob-desc">Prices array. Can buy/sell, but after selling must wait 1 day (cooldown). Maximize profit.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
-    <div class="hint-box">Three states: hold (holding stock), sold (just sold, in cooldown), rest (not holding, not in cooldown). Transitions: hold → hold or rest→hold; sold→rest; rest→rest or hold→sold.</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
+    <div class="hint-box">Three states: hold (holding stock), sold (just sold, in cooldown), rest (not holding, not in cooldown). Transitions: hold ? hold or rest?hold; sold?rest; rest?rest or hold?sold.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -174,7 +175,7 @@
     <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Max</span>(sold,rest);
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maxProfit</span>(prices):
     hold = -<span class="mt">float</span>(<span class="st">'inf'</span>); sold = <span class="nm">0</span>; rest = <span class="nm">0</span>
     <span class="kw">for</span> p <span class="kw">in</span> prices:
@@ -190,12 +191,12 @@
 <!-- P5 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#5 · LeetCode 674 — Longest Continuous Increasing Subsequence</div>
+        <div class="prob-title">#5 � LeetCode 674 � Longest Continuous Increasing Subsequence</div>
         <div class="prob-meta"><span class="badge-e">Easy</span><br>Pattern: Linear DP</div>
     </div>
     <div class="prob-desc">Find the length of the longest continuous strictly increasing subsequence.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i] = LCIS ending at i. If nums[i] > nums[i-1]: dp[i]=dp[i-1]+1; else dp[i]=1. Track max.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -210,7 +211,7 @@
     <span class="kw">return</span> best;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findLengthOfLCIS</span>(nums):
     best = cur = <span class="nm">1</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(nums)):
@@ -223,13 +224,13 @@
 <!-- P6 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#6 · LeetCode 152 — Maximum Product Subarray</div>
+        <div class="prob-title">#6 � LeetCode 152 � Maximum Product Subarray</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Dual-state DP</div>
     </div>
     <div class="prob-desc">Find the contiguous subarray with the largest product.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
-    <div class="hint-box">Track both max and min products ending at i (because a negative × negative = positive). max_dp[i] = max(nums[i], nums[i]*max_dp[i-1], nums[i]*min_dp[i-1]).</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
+    <div class="hint-box">Track both max and min products ending at i (because a negative � negative = positive). max_dp[i] = max(nums[i], nums[i]*max_dp[i-1], nums[i]*min_dp[i-1]).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -244,7 +245,7 @@
     <span class="kw">return</span> best;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maxProduct</span>(nums):
     best = mx = mn = nums[<span class="nm">0</span>]
     <span class="kw">for</span> n <span class="kw">in</span> nums[<span class="nm">1</span>:]:
@@ -254,17 +255,17 @@
     </div>
 </div>
 
-<div class="section-heading">Group B — 2D / Subsequence DP (Problems 7–12)</div>
+<div class="section-heading">Group B � 2D / Subsequence DP (Problems 7�12)</div>
 
 <!-- P7 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#7 · LeetCode 516 — Longest Palindromic Subsequence</div>
+        <div class="prob-title">#7 � LeetCode 516 � Longest Palindromic Subsequence</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Interval DP</div>
     </div>
     <div class="prob-desc">Find the length of the longest palindromic subsequence in string s.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i][j] = LPS of s[i..j]. If s[i]==s[j]: dp[i][j]=dp[i+1][j-1]+2; else dp[i][j]=max(dp[i+1][j], dp[i][j-1]). Fill diagonally (length 1 up to n).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -283,7 +284,7 @@
     <span class="kw">return</span> dp[<span class="nm">0</span>,n-<span class="nm">1</span>];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestPalindromeSubseq</span>(s):
     n = <span class="mt">len</span>(s)
     dp = [[<span class="nm">0</span>]*n <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
@@ -300,23 +301,23 @@
 <!-- P8 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#8 · LeetCode 1143 — Longest Common Subsequence</div>
+        <div class="prob-title">#8 � LeetCode 1143 � Longest Common Subsequence</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Classic 2D DP</div>
     </div>
     <div class="prob-desc">Find the LCS length of two strings text1 and text2. (See full walkthrough in Module 12C)</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <div class="hint-box">Covered in detail in Module 12C. Key: dp[i][j] = LCS(text1[0..i-1], text2[0..j-1]). Match → dp[i-1][j-1]+1; no match → max(dp[i-1][j], dp[i][j-1]).</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <div class="hint-box">Covered in detail in Module 12C. Key: dp[i][j] = LCS(text1[0..i-1], text2[0..j-1]). Match ? dp[i-1][j-1]+1; no match ? max(dp[i-1][j], dp[i][j-1]).</div>
 </div>
 
 <!-- P9 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#9 · LeetCode 494 — Target Sum</div>
+        <div class="prob-title">#9 � LeetCode 494 � Target Sum</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Knapsack / partition</div>
     </div>
     <div class="prob-desc">Assign +/- to each number in nums to reach target. Count ways.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">Let P = sum of positive items, N = sum of negative items. P + N = sum, P - N = target. So P = (sum+target)/2. Count subsets with sum P. dp[i] += dp[i-num] for each num.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -332,7 +333,7 @@
     <span class="kw">return</span> dp[s];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findTargetSumWays</span>(nums, target):
     total = <span class="mt">sum</span>(nums)
     <span class="kw">if</span> (total + target) % <span class="nm">2</span> != <span class="nm">0</span> <span class="kw">or</span> <span class="mt">abs</span>(target) > total: <span class="kw">return</span> <span class="nm">0</span>
@@ -347,12 +348,12 @@
 <!-- P10 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#10 · LeetCode 115 — Distinct Subsequences</div>
+        <div class="prob-title">#10 � LeetCode 115 � Distinct Subsequences</div>
         <div class="prob-meta"><span class="badge-h">Hard</span><br>Pattern: 2D DP</div>
     </div>
     <div class="prob-desc">Count distinct subsequences of string s that equal string t.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i][j] = ways to match t[0..j-1] using s[0..i-1]. If s[i-1]==t[j-1]: dp[i][j]=dp[i-1][j-1]+dp[i-1][j] (use or skip this match). Else dp[i][j]=dp[i-1][j].</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -370,7 +371,7 @@
     <span class="kw">return</span> (<span class="kw">int</span>)dp[m,n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">numDistinct</span>(s, t):
     m, n = <span class="mt">len</span>(s), <span class="mt">len</span>(t)
     dp = [[<span class="nm">0</span>]*(n+<span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m+<span class="nm">1</span>)]
@@ -386,12 +387,12 @@
 <!-- P11 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#11 · LeetCode 97 — Interleaving String</div>
+        <div class="prob-title">#11 � LeetCode 97 � Interleaving String</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: 2D DP</div>
     </div>
     <div class="prob-desc">Given s1, s2, s3, determine if s3 is an interleaving of s1 and s2.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i][j] = can s3[0..i+j-1] be formed from s1[0..i-1] and s2[0..j-1]. dp[i][j] = (dp[i-1][j] and s1[i-1]==s3[i+j-1]) OR (dp[i][j-1] and s2[j-1]==s3[i+j-1]).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -409,7 +410,7 @@
     <span class="kw">return</span> dp[m,n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isInterleave</span>(s1, s2, s3):
     m, n = <span class="mt">len</span>(s1), <span class="mt">len</span>(s2)
     <span class="kw">if</span> m + n != <span class="mt">len</span>(s3): <span class="kw">return False</span>
@@ -428,12 +429,12 @@
 <!-- P12 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#12 · LeetCode 312 — Burst Balloons</div>
+        <div class="prob-title">#12 � LeetCode 312 � Burst Balloons</div>
         <div class="prob-meta"><span class="badge-h">Hard</span><br>Pattern: Interval DP</div>
     </div>
     <div class="prob-desc">Given n balloons with nums[i] values, burst them all to maximize coins. Bursting i gives nums[left]*nums[i]*nums[right].</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">Think "last balloon to burst" in interval [l,r]. dp[l][r] = max coins from interval (l,r). Try each k as last burst: dp[l][r] = max(dp[l][k]+dp[k][r]+nums[l]*nums[k]*nums[r]).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -453,7 +454,7 @@
     <span class="kw">return</span> dp[<span class="nm">0</span>,n-<span class="nm">1</span>];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maxCoins</span>(nums):
     nums = [<span class="nm">1</span>] + nums + [<span class="nm">1</span>]  <span class="cm"># sentinel boundaries</span>
     n = <span class="mt">len</span>(nums)
@@ -468,28 +469,28 @@
     </div>
 </div>
 
-<div class="section-heading">Group C — Tree &amp; Graph DP (Problems 13–16)</div>
+<div class="section-heading">Group C � Tree &amp; Graph DP (Problems 13�16)</div>
 
 <!-- P13 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#13 · LeetCode 337 — House Robber III</div>
+        <div class="prob-title">#13 � LeetCode 337 � House Robber III</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Tree DP</div>
     </div>
-    <div class="prob-desc">Covered in detail in Module 12D. Rob houses arranged in a binary tree — no two adjacent nodes.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <div class="prob-desc">Covered in detail in Module 12D. Rob houses arranged in a binary tree � no two adjacent nodes.</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
     <div class="hint-box">Return (no_rob, rob) pair from each DFS. no_rob = max(children); rob = node.val + sum(children's no_rob).</div>
 </div>
 
 <!-- P14 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#14 · LeetCode 1245 — Tree Diameter</div>
+        <div class="prob-title">#14 � LeetCode 1245 � Tree Diameter</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Tree DP</div>
     </div>
     <div class="prob-desc">Given a tree as edge list (not binary), find the diameter (longest path in edges).</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">DFS returns max depth from current node. At each node, sort children depths and use top 2 for diameter candidate. Answer = max over all nodes of (top1 + top2) depths.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -514,7 +515,7 @@
     <span class="kw">return</span> ans;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 <span class="kw">def</span> <span class="mt">treeDiameter</span>(edges):
     adj = defaultdict(<span class="mt">list</span>)
@@ -533,24 +534,24 @@
 <!-- P15 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#15 · LeetCode 787 — Cheapest Flights Within K Stops</div>
+        <div class="prob-title">#15 � LeetCode 787 � Cheapest Flights Within K Stops</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Bellman-Ford DP</div>
     </div>
     <div class="prob-desc">Covered in Module 12D. Find minimum cost from src to dst with at most k stops.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
     <div class="hint-box">dp[i] = min cost with at most i stops. Snapshot before each iteration to prevent same-iteration edge chaining.</div>
 </div>
 
 <!-- P16 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#16 · LeetCode 329 — Longest Increasing Path in Matrix</div>
+        <div class="prob-title">#16 � LeetCode 329 � Longest Increasing Path in Matrix</div>
         <div class="prob-meta"><span class="badge-h">Hard</span><br>Pattern: DAG DP + memoization</div>
     </div>
-    <div class="prob-desc">Find the longest strictly increasing path in an m×n matrix (move 4 directions).</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
-    <div class="hint-box">The implicit DAG has edges from smaller to larger values — no cycles. Use memoized DFS: dp[r][c] = longest path starting at (r,c). For each neighbor with larger value, dp[r][c] = 1 + max(dp[neighbor]).</div>
+    <div class="prob-desc">Find the longest strictly increasing path in an m�n matrix (move 4 directions).</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
+    <div class="hint-box">The implicit DAG has edges from smaller to larger values � no cycles. Use memoized DFS: dp[r][c] = longest path starting at (r,c). For each neighbor with larger value, dp[r][c] = 1 + max(dp[neighbor]).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -573,7 +574,7 @@
         .<span class="mt">SelectMany</span>(r=&gt;<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,n).<span class="mt">Select</span>(c=&gt;<span class="mt">Dfs</span>(r,c))).<span class="mt">Max</span>();
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> functools <span class="kw">import</span> lru_cache
 <span class="kw">def</span> <span class="mt">longestIncreasingPath</span>(matrix):
     m, n = <span class="mt">len</span>(matrix), <span class="mt">len</span>(matrix[<span class="nm">0</span>])
@@ -589,29 +590,29 @@
     </div>
 </div>
 
-<div class="section-heading">Group D — DP on Strings (Problems 17–20)</div>
+<div class="section-heading">Group D � DP on Strings (Problems 17�20)</div>
 
 <!-- P17 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#17 · LeetCode 72 — Edit Distance</div>
+        <div class="prob-title">#17 � LeetCode 72 � Edit Distance</div>
         <div class="prob-meta"><span class="badge-h">Hard</span><br>Pattern: Classic 2D DP</div>
     </div>
     <div class="prob-desc">Covered in detail in Module 12C. Minimum operations to convert word1 to word2.</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <div class="hint-box">dp[i][j]: chars match → dp[i-1][j-1]; else 1+min(delete=dp[i-1][j], insert=dp[i][j-1], replace=dp[i-1][j-1]).</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <div class="hint-box">dp[i][j]: chars match ? dp[i-1][j-1]; else 1+min(delete=dp[i-1][j], insert=dp[i][j-1], replace=dp[i-1][j-1]).</div>
 </div>
 
 <!-- P18 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#18 · LeetCode 647 — Palindromic Substrings</div>
+        <div class="prob-title">#18 � LeetCode 647 � Palindromic Substrings</div>
         <div class="prob-meta"><span class="badge-m">Medium</span><br>Pattern: Interval DP / expand-around-center</div>
     </div>
     <div class="prob-desc">Count the number of palindromic substrings (contiguous, not subsequences).</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
-    <div class="hint-box">Expand around each center (n odd centers + n-1 even centers). Count all expansions. O(n²). Alternatively: dp[i][j]=True if s[i..j] is palindrome; s[i]==s[j] and dp[i+1][j-1] is True.</div>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
+    <div class="hint-box">Expand around each center (n odd centers + n-1 even centers). Count all expansions. O(n�). Alternatively: dp[i][j]=True if s[i..j] is palindrome; s[i]==s[j] and dp[i+1][j-1] is True.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -626,7 +627,7 @@
     <span class="kw">return</span> count;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">countSubstrings</span>(s):
     count = <span class="nm">0</span>
     <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(s)):
@@ -640,12 +641,12 @@
 <!-- P19 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#19 · LeetCode 10 — Regular Expression Matching</div>
+        <div class="prob-title">#19 � LeetCode 10 � Regular Expression Matching</div>
         <div class="prob-meta"><span class="badge-h">Hard</span><br>Pattern: 2D DP</div>
     </div>
     <div class="prob-desc">Implement regex matching with '.' (any char) and '*' (zero or more of preceding element).</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">dp[i][j] = does s[0..i-1] match p[0..j-1]. If p[j-1]!='*': dp[i][j] = dp[i-1][j-1] and match(s[i-1],p[j-1]). If p[j-1]=='*': dp[i][j] = dp[i][j-2] (zero uses) OR (dp[i-1][j] and match(s[i-1],p[j-2])) (one+ uses).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -663,7 +664,7 @@
     <span class="kw">return</span> dp[m,n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isMatch</span>(s, p):
     m, n = <span class="mt">len</span>(s), <span class="mt">len</span>(p)
     dp = [[<span class="kw">False</span>]*(n+<span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m+<span class="nm">1</span>)]
@@ -684,12 +685,12 @@
 <!-- P20 -->
 <div class="prob-card">
     <div class="prob-header">
-        <div class="prob-title">#20 · LeetCode 44 — Wildcard Matching</div>
+        <div class="prob-title">#20 � LeetCode 44 � Wildcard Matching</div>
         <div class="prob-meta"><span class="badge-h">Hard</span><br>Pattern: 2D DP</div>
     </div>
     <div class="prob-desc">Wildcard matching with '?' (any single char) and '*' (any sequence including empty).</div>
-    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">👁 Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">?? Solution</button>
     <div class="hint-box">Simpler than regex: dp[i][j] = does s[0..i-1] match p[0..j-1]. If p[j-1]=='*': dp[i][j] = dp[i][j-1] (skip *) OR dp[i-1][j] (use * for one more char). If '?' or match: dp[i][j]=dp[i-1][j-1].</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -707,7 +708,7 @@
     <span class="kw">return</span> dp[m,n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isMatchWild</span>(s, p):
     m, n = <span class="mt">len</span>(s), <span class="mt">len</span>(p)
     dp = [[<span class="kw">False</span>]*(n+<span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m+<span class="nm">1</span>)]
@@ -724,8 +725,8 @@
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 12E Complete</button>
-<div class="toast" id="toast">✅ Module 12E marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 12E Complete</button>
+<div class="toast" id="toast">? Module 12E marked complete!</div>
     <script>var MODULE_ID = 'm12e';</script>
     <script src="../dsa.js"></script>
 </body>

@@ -1,34 +1,35 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 14A — Divide & Conquer | DSA Masterbook</title>
+    <title>Module 14A � Divide & Conquer | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
-    <h1>Module 14 — Part A</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
+    <h1>Module 14 � Part A</h1>
     <div class="tagline">Divide &amp; Conquer</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Master Theorem · Merge Sort · Quick Select · Binary Search Variants</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Master Theorem � Merge Sort � Quick Select � Binary Search Variants</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2 Hours</span>
-        <span>🎯 Intermediate</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part A of Module 14</span>
+        <span>? Estimated Time: 2 Hours</span>
+        <span>?? Intermediate</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part A of Module 14</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ✅ Module 12 — <a href="m12a_dp_intro.html">Dynamic Programming (Parts A–F)</a><br>
-    ✅ Module 13 — <a href="m13a_greedy.html">Greedy Algorithms (Parts A–C)</a><br>
-    ▶ <strong>Module 14 Part A</strong> — <em>You are here</em> — Divide &amp; Conquer<br>
-    ⬜ <strong>Module 14 Part B</strong> — <a href="m14b_advanced_dc.html">Closest Pair &amp; Master Theorem</a><br>
-    ⬜ <strong>Module 14 Part C</strong> — <a href="m14c_number_theory.html">Number Theory</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ? Module 12 � <a href="m12a_dp_intro.html">Dynamic Programming (Parts A�F)</a><br>
+    ? Module 13 � <a href="m13a_greedy.html">Greedy Algorithms (Parts A�C)</a><br>
+    ? <strong>Module 14 Part A</strong> � <em>You are here</em> � Divide &amp; Conquer<br>
+    ? <strong>Module 14 Part B</strong> � <a href="m14b_advanced_dc.html">Closest Pair &amp; Master Theorem</a><br>
+    ? <strong>Module 14 Part C</strong> � <a href="m14c_number_theory.html">Number Theory</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m13a_greedy.html">&larr; Module 13 &mdash; Greedy Algorithms</a>
@@ -36,19 +37,19 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — Divide &amp; Conquer Framework <span>— Divide, Conquer, Combine</span></li>
-        <li>Section 2 — Merge Sort <span>— Classic D&amp;C with inversion counting</span></li>
-        <li>Section 3 — Quick Select <span>— O(n) average kth element</span></li>
-        <li>Section 4 — Binary Search Deep Dive <span>— Template + variants</span></li>
-        <li>Section 5 — D&amp;C on LeetCode <span>— #215, #240, #4 Binary Search problems</span></li>
-        <li>Section 6 — Q&amp;A Review <span>— 5 key questions</span></li>
+        <li>Section 1 � Divide &amp; Conquer Framework <span>� Divide, Conquer, Combine</span></li>
+        <li>Section 2 � Merge Sort <span>� Classic D&amp;C with inversion counting</span></li>
+        <li>Section 3 � Quick Select <span>� O(n) average kth element</span></li>
+        <li>Section 4 � Binary Search Deep Dive <span>� Template + variants</span></li>
+        <li>Section 5 � D&amp;C on LeetCode <span>� #215, #240, #4 Binary Search problems</span></li>
+        <li>Section 6 � Q&amp;A Review <span>� 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Divide &amp; Conquer Framework</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Divide &amp; Conquer Framework</div>
 
 <p>Divide &amp; Conquer (D&amp;C) works by recursively breaking a problem into smaller subproblems, 
 solving each independently, then combining results. The key is that subproblems are <strong>independent</strong> 
@@ -70,19 +71,19 @@ RECURRENCE FORM: T(n) = aT(n/b) + f(n)
 MASTER THEOREM (simplified):
   Compare f(n) vs n^(log_b(a)):
   
-  Case 1: f(n) = O(n^(log_b(a) - ε))  →  T(n) = Θ(n^log_b(a))
-  Case 2: f(n) = Θ(n^log_b(a))        →  T(n) = Θ(n^log_b(a) · log n)
-  Case 3: f(n) = Ω(n^(log_b(a) + ε))  →  T(n) = Θ(f(n))
+  Case 1: f(n) = O(n^(log_b(a) - e))  ?  T(n) = T(n^log_b(a))
+  Case 2: f(n) = T(n^log_b(a))        ?  T(n) = T(n^log_b(a) � log n)
+  Case 3: f(n) = O(n^(log_b(a) + e))  ?  T(n) = T(f(n))
 
 EXAMPLES:
-  Merge Sort:  T(n) = 2T(n/2) + O(n)  → Case 2 → O(n log n) ✓
-  Binary Search: T(n) = T(n/2) + O(1) → Case 2 (log_2(1)=0) → O(log n) ✓
-  Strassen: T(n) = 7T(n/2) + O(n²)    → Case 1 (log_2(7)≈2.81>2) → O(n^2.81) ✓</div>
+  Merge Sort:  T(n) = 2T(n/2) + O(n)  ? Case 2 ? O(n log n) ?
+  Binary Search: T(n) = T(n/2) + O(1) ? Case 2 (log_2(1)=0) ? O(log n) ?
+  Strassen: T(n) = 7T(n/2) + O(n�)    ? Case 1 (log_2(7)�2.81>2) ? O(n^2.81) ?</div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Merge Sort &amp; Counting Inversions</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Merge Sort &amp; Counting Inversions</div>
 
 <p>Merge Sort is the quintessential D&amp;C algorithm. It also solves the <strong>Count Inversions</strong> 
 problem (LeetCode #315 / similar) with no extra complexity.</p>
@@ -98,16 +99,16 @@ INVERSION COUNTING: An inversion is a pair (i,j) where i&lt;j but arr[i]>arr[j].
   inversions += mid - left_ptr + 1  (for each right element taken out of order)
 
 EXAMPLE: [3, 1, 2]
-  Inversions: (3,1), (3,2) → 2 inversions
+  Inversions: (3,1), (3,2) ? 2 inversions
   
   Merge [3] and [1,2]:
   Compare 3 vs 1: take 1 from right. inversions += 1 (only 3 remains left).
   Compare 3 vs 2: take 2 from right. inversions += 1.
-  Take 3. Total = 2 ✓</div>
+  Take 3. Total = 2 ?</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="cm">// Merge Sort + Count Inversions</span>
 <span class="kw">public int</span> <span class="mt">MergeSortCount</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
 {
@@ -130,7 +131,7 @@ EXAMPLE: [3, 1, 2]
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">merge_sort_count</span>(arr):
     <span class="kw">if</span> <span class="mt">len</span>(arr) &lt;= <span class="nm">1</span>: <span class="kw">return</span> arr, <span class="nm">0</span>
     mid = <span class="mt">len</span>(arr) // <span class="nm">2</span>
@@ -146,11 +147,11 @@ EXAMPLE: [3, 1, 2]
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Quick Select: Kth Largest Element</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Quick Select: Kth Largest Element</div>
 
-<p>Quick Select finds the kth element in O(n) average time, O(n²) worst case. 
-It's the backbone of <strong>LeetCode #215 — Kth Largest Element in an Array</strong>.</p>
+<p>Quick Select finds the kth element in O(n) average time, O(n�) worst case. 
+It's the backbone of <strong>LeetCode #215 � Kth Largest Element in an Array</strong>.</p>
 
 <div class="diagram">QUICK SELECT:
   Like quicksort, but only recurse into ONE side after partitioning.
@@ -160,25 +161,25 @@ It's the backbone of <strong>LeetCode #215 — Kth Largest Element in an Array</
     - Elements &gt; p go right
     - Pivot ends at index q
   
-  If q == target_index → found!
-  If q &lt; target_index  → recurse right
-  If q &gt; target_index  → recurse left
+  If q == target_index ? found!
+  If q &lt; target_index  ? recurse right
+  If q &gt; target_index  ? recurse left
 
 COMPLEXITY:
-  Average: O(n) — each recursion reduces size by ~half
-  Worst:   O(n²) — always pick smallest/largest as pivot
-  → Use random pivot or median-of-3 to avoid worst case
+  Average: O(n) � each recursion reduces size by ~half
+  Worst:   O(n�) � always pick smallest/largest as pivot
+  ? Use random pivot or median-of-3 to avoid worst case
 
 EXAMPLE: [3,2,1,5,6,4], k=2 (2nd largest = index 4 from left in 0-indexed sorted)
   Target index = n - k = 4
   Partition [3,2,1,5,6,4]: pivot=4, result = [3,2,1,4,5,6]? No.
   Actually pivot=arr[right], partition puts it at correct position.
-  → O(n) average per call, total O(n) amortized.</div>
+  ? O(n) average per call, total O(n) amortized.</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// LeetCode #215 — Kth Largest Element</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// LeetCode #215 � Kth Largest Element</span>
 <span class="kw">public int</span> <span class="mt">FindKthLargest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">int</span> target = nums.Length - k;
@@ -204,12 +205,12 @@ EXAMPLE: [3,2,1,5,6,4], k=2 (2nd largest = index 4 from left in 0-indexed sorted
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> random
 <span class="kw">def</span> <span class="mt">findKthLargest</span>(nums, k):
     target = <span class="mt">len</span>(nums) - k
     <span class="kw">def</span> <span class="mt">quick_select</span>(lo, hi):
-        <span class="cm"># Random pivot to avoid O(n²) worst case</span>
+        <span class="cm"># Random pivot to avoid O(n�) worst case</span>
         rand = random.<span class="mt">randint</span>(lo, hi)
         nums[rand], nums[hi] = nums[hi], nums[rand]
         pivot, i = nums[hi], lo
@@ -224,68 +225,68 @@ EXAMPLE: [3,2,1,5,6,4], k=2 (2nd largest = index 4 from left in 0-indexed sorted
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Binary Search Deep Dive</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Binary Search Deep Dive</div>
 
 <p>Binary search is D&amp;C with one subproblem (one-sided). The key challenge is getting 
 the boundaries right. There are two templates that cover all variants.</p>
 
 <div class="diagram">BINARY SEARCH TEMPLATES:
 
-Template 1 — Exact match (or simple condition):
+Template 1 � Exact match (or simple condition):
   lo, hi = 0, n-1
   while lo &lt;= hi:
-      mid = lo + (hi-lo)//2    ← prevents integer overflow
+      mid = lo + (hi-lo)//2    ? prevents integer overflow
       if arr[mid] == target: return mid
       elif arr[mid] &lt; target:  lo = mid + 1
       else:                     hi = mid - 1
   return -1
 
-Template 2 — "Find leftmost/rightmost index satisfying condition":
-  lo, hi = 0, n   ← hi = n (open right bound) or n-1 (closed)
-  while lo &lt; hi:  ← strict &lt;
+Template 2 � "Find leftmost/rightmost index satisfying condition":
+  lo, hi = 0, n   ? hi = n (open right bound) or n-1 (closed)
+  while lo &lt; hi:  ? strict &lt;
       mid = lo + (hi-lo)//2
-      if condition(mid): hi = mid   ← for leftmost true
+      if condition(mid): hi = mid   ? for leftmost true
       else:              lo = mid+1
-  return lo        ← lo == hi, the answer
+  return lo        ? lo == hi, the answer
 
 CHOOSING TEMPLATE:
-  - "Is target in array?" → Template 1
-  - "First/last position of value" → Template 2 (leftmost/rightmost)
-  - "First index where f(x) = true" → Template 2 (binary search on answer)
-  - "Minimum value satisfying condition" → Template 2 on answer space
+  - "Is target in array?" ? Template 1
+  - "First/last position of value" ? Template 2 (leftmost/rightmost)
+  - "First index where f(x) = true" ? Template 2 (binary search on answer)
+  - "Minimum value satisfying condition" ? Template 2 on answer space
 
 CLASSIC PATTERNS:
-  • Lower bound = first index where arr[i] >= target
-  • Upper bound = first index where arr[i] > target  
-  • Rotated sorted array → check which half is sorted, narrow accordingly
-  • 2D matrix search → treat as 1D array (row = mid/cols, col = mid%cols)</div>
+  � Lower bound = first index where arr[i] >= target
+  � Upper bound = first index where arr[i] > target  
+  � Rotated sorted array ? check which half is sorted, narrow accordingly
+  � 2D matrix search ? treat as 1D array (row = mid/cols, col = mid%cols)</div>
 
-<h3>Binary Search on Answer — Template 2</h3>
+<h3>Binary Search on Answer � Template 2</h3>
 
-<p>Many problems require finding the minimum value of <code>x</code> such that <code>f(x)</code> is true — 
+<p>Many problems require finding the minimum value of <code>x</code> such that <code>f(x)</code> is true � 
 the answer space itself is searched with binary search.</p>
 
 <div class="diagram">BINARY SEARCH ON ANSWER pattern:
   
   If "is f(x) satisfiable with threshold x?" can be checked in O(check_time),
   and the answer is monotone (f(x) true implies f(x+1) true for minimization),
-  then binary search on x in O(log(answer_range) × check_time).
+  then binary search on x in O(log(answer_range) � check_time).
 
-EXAMPLE: LeetCode #875 — Koko Eating Bananas
+EXAMPLE: LeetCode #875 � Koko Eating Bananas
   "Can Koko eat all piles within h hours at speed k?"
-  → greedy check: sum(ceil(pile/k)) &lt;= h → O(n)
-  Binary search k in [1, max(piles)] → O(n log(max))
+  ? greedy check: sum(ceil(pile/k)) &lt;= h ? O(n)
+  Binary search k in [1, max(piles)] ? O(n log(max))
 
-EXAMPLE: LeetCode #1011 — Ship Packages Within D Days
+EXAMPLE: LeetCode #1011 � Ship Packages Within D Days
   "Can we ship all packages within d days at capacity cap?"
-  → greedy check: greedily pack days, each up to cap → O(n)
-  Binary search cap in [max(weights), sum(weights)] → O(n log(sum))</div>
+  ? greedy check: greedily pack days, each up to cap ? O(n)
+  Binary search cap in [max(weights), sum(weights)] ? O(n log(sum))</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// LeetCode #875 — Koko Eating Bananas (Binary search on answer)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// LeetCode #875 � Koko Eating Bananas (Binary search on answer)</span>
 <span class="kw">public int</span> <span class="mt">MinEatingSpeed</span>(<span class="kw">int</span>[] piles, <span class="kw">int</span> h)
 {
     <span class="kw">int</span> lo = <span class="nm">1</span>, hi = piles.<span class="mt">Max</span>();
@@ -300,7 +301,7 @@ EXAMPLE: LeetCode #1011 — Ship Packages Within D Days
 <span class="kw">private bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span>[] piles, <span class="kw">int</span> k, <span class="kw">int</span> h)
     => piles.<span class="mt">Sum</span>(p => (p + k - <span class="nm">1</span>) / k) &lt;= h;
 
-<span class="cm">// LeetCode #33 — Search in Rotated Sorted Array</span>
+<span class="cm">// LeetCode #33 � Search in Rotated Sorted Array</span>
 <span class="kw">public int</span> <span class="mt">Search</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target) {
     <span class="kw">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
     <span class="kw">while</span> (lo &lt;= hi) {
@@ -320,7 +321,7 @@ EXAMPLE: LeetCode #1011 — Ship Packages Within D Days
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> math
 <span class="kw">def</span> <span class="mt">minEatingSpeed</span>(piles, h):
     lo, hi = <span class="nm">1</span>, <span class="mt">max</span>(piles)
@@ -346,15 +347,15 @@ EXAMPLE: LeetCode #1011 — Ship Packages Within D Days
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Key LeetCode Problems Summary</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Key LeetCode Problems Summary</div>
 
 <table>
     <thead>
         <tr><th>Problem</th><th>Technique</th><th>Complexity</th></tr>
     </thead>
     <tbody>
-        <tr><td>#215 Kth Largest</td><td>Quick Select (random pivot)</td><td class="g">O(n) avg, O(n²) worst</td></tr>
+        <tr><td>#215 Kth Largest</td><td>Quick Select (random pivot)</td><td class="g">O(n) avg, O(n�) worst</td></tr>
         <tr><td>#912 Sort an Array</td><td>Merge Sort</td><td class="g">O(n log n)</td></tr>
         <tr><td>#315 Count Smaller After Self</td><td>Merge Sort + inversions</td><td class="g">O(n log n)</td></tr>
         <tr><td>#33 Search Rotated</td><td>Binary Search (check sorted half)</td><td class="g">O(log n)</td></tr>
@@ -366,52 +367,52 @@ EXAMPLE: LeetCode #1011 — Ship Packages Within D Days
 </table>
 
 <div class="realworld">
-    <strong>🌍 D&amp;C in the Real World:</strong>
+    <strong>?? D&amp;C in the Real World:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Merge Sort</strong> — foundation of TimSort (Python's/Java's default sort)</li>
-        <li><strong>Binary Search</strong> — database index lookups, git bisect for bug hunting</li>
-        <li><strong>FFT (Fast Fourier Transform)</strong> — D&amp;C for polynomial multiplication O(n log n), used in signal processing, image compression, cryptography</li>
-        <li><strong>Quicksort / QuickSelect</strong> — used in C++ std::nth_element, database ORDER BY LIMIT queries</li>
+        <li><strong>Merge Sort</strong> � foundation of TimSort (Python's/Java's default sort)</li>
+        <li><strong>Binary Search</strong> � database index lookups, git bisect for bug hunting</li>
+        <li><strong>FFT (Fast Fourier Transform)</strong> � D&amp;C for polynomial multiplication O(n log n), used in signal processing, image compression, cryptography</li>
+        <li><strong>Quicksort / QuickSelect</strong> � used in C++ std::nth_element, database ORDER BY LIMIT queries</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Q&amp;A Review</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: What is the key difference between D&C and Dynamic Programming?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Both divide problems into subproblems. The key difference: D&C subproblems are INDEPENDENT — solving one doesn't help solve another. DP subproblems OVERLAP — the same subproblem recurs, so caching (memoization/tabulation) saves work. Merge sort's subproblems are completely independent (left half and right half never share elements). Fibonacci subproblems overlap: fib(5) needs fib(4) AND fib(3), and fib(4) also needs fib(3). If you applied memoization to merge sort, you'd get no benefit; if you didn't apply it to Fibonacci, you'd get exponential time.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Both divide problems into subproblems. The key difference: D&C subproblems are INDEPENDENT � solving one doesn't help solve another. DP subproblems OVERLAP � the same subproblem recurs, so caching (memoization/tabulation) saves work. Merge sort's subproblems are completely independent (left half and right half never share elements). Fibonacci subproblems overlap: fib(5) needs fib(4) AND fib(3), and fib(4) also needs fib(3). If you applied memoization to merge sort, you'd get no benefit; if you didn't apply it to Fibonacci, you'd get exponential time.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: Why use mid = lo + (hi - lo) / 2 instead of (lo + hi) / 2 in binary search?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Integer overflow prevention. If lo and hi are both large (e.g., near INT_MAX), lo + hi overflows 32-bit integer, producing a negative number. lo + (hi - lo)/2 computes the midpoint without overflow because hi - lo ≤ hi which doesn't overflow when lo ≥ 0. In Python, integers have arbitrary precision so overflow can't happen, but in C#/Java/C++ with int, this is a critical bug. The formula is equivalent: lo + (hi-lo)/2 = (2lo + hi - lo)/2 = (lo + hi)/2.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Integer overflow prevention. If lo and hi are both large (e.g., near INT_MAX), lo + hi overflows 32-bit integer, producing a negative number. lo + (hi - lo)/2 computes the midpoint without overflow because hi - lo = hi which doesn't overflow when lo = 0. In Python, integers have arbitrary precision so overflow can't happen, but in C#/Java/C++ with int, this is a critical bug. The formula is equivalent: lo + (hi-lo)/2 = (2lo + hi - lo)/2 = (lo + hi)/2.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q3: Quick Select is O(n) average but O(n²) worst case. How do you prevent the worst case?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="q">Q3: Quick Select is O(n) average but O(n�) worst case. How do you prevent the worst case?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
     <div class="answer">Worst case occurs when the pivot is always the smallest or largest element (e.g., sorted array with last element as pivot). Solutions: (1) Random pivot: randomly select pivot before partitioning. This makes worst case occur with probability 1/n^k for k partitions, essentially impossible in practice. (2) Median-of-3: take median of first, middle, last elements as pivot. Reduces worst case for nearly-sorted inputs. (3) Introselect: hybrid algorithm that switches to deterministic O(n) "median-of-medians" algorithm after too many recursions. C++ std::nth_element typically uses introselect internally.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: How do you apply the Master Theorem to T(n) = 2T(n/2) + O(n log n)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Here a=2, b=2, so n^(log_b(a)) = n^(log_2(2)) = n^1 = n. The f(n) = n log n. Compare f(n) = n log n vs n^1 = n: n log n is slightly larger than n, but NOT by a polynomial factor. This falls OUTSIDE the standard Master Theorem (none of the three cases apply cleanly). This is the "Case 2 extension": when f(n) = n^(log_b a) · log^k(n), T(n) = Θ(n^(log_b a) · log^(k+1) n). Here k=1, so T(n) = Θ(n log² n). This applies to things like merge sort on linked lists where merging costs O(n log n).</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Here a=2, b=2, so n^(log_b(a)) = n^(log_2(2)) = n^1 = n. The f(n) = n log n. Compare f(n) = n log n vs n^1 = n: n log n is slightly larger than n, but NOT by a polynomial factor. This falls OUTSIDE the standard Master Theorem (none of the three cases apply cleanly). This is the "Case 2 extension": when f(n) = n^(log_b a) � log^k(n), T(n) = T(n^(log_b a) � log^(k+1) n). Here k=1, so T(n) = T(n log� n). This applies to things like merge sort on linked lists where merging costs O(n log n).</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: Describe the binary search approach to find the median of two sorted arrays in O(log(min(m,n))).</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Binary search on a partition index in the smaller array. We want to find i (in array A) and j = (m+n+1)/2 - i (in array B) such that: (1) i elements from A and j from B are on the "left" side of the partition, and (2) A[i-1] ≤ B[j] and B[j-1] ≤ A[i] (the partition is correct). Binary search i in [0, m] (m = len(A), m ≤ n). If A[i-1] > B[j]: i is too large, move left. If B[j-1] > A[i]: i is too small, move right. When partition is correct: for odd total, median = max(A[i-1], B[j-1]); for even total, median = (max(A[i-1],B[j-1]) + min(A[i],B[j])) / 2. This is LeetCode #4, difficulty Hard.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Binary search on a partition index in the smaller array. We want to find i (in array A) and j = (m+n+1)/2 - i (in array B) such that: (1) i elements from A and j from B are on the "left" side of the partition, and (2) A[i-1] = B[j] and B[j-1] = A[i] (the partition is correct). Binary search i in [0, m] (m = len(A), m = n). If A[i-1] > B[j]: i is too large, move left. If B[j-1] > A[i]: i is too small, move right. When partition is correct: for odd total, median = max(A[i-1], B[j-1]); for even total, median = (max(A[i-1],B[j-1]) + min(A[i],B[j])) / 2. This is LeetCode #4, difficulty Hard.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 14A Complete</button>
-<div class="toast" id="toast">✅ Module 14A marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 14A Complete</button>
+<div class="toast" id="toast">? Module 14A marked complete!</div>
     <script>var MODULE_ID = 'm14a';</script>
     <script src="../dsa.js"></script>
 </body>

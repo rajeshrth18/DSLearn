@@ -1,9 +1,9 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 4C â€” Recursion Practice | DSA Masterbook</title>
+<title>Module 4C — Recursion Practice | DSA Masterbook</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
@@ -58,23 +58,23 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
 </head>
 <body>
 
-<div class="breadcrumb"><a href="../index.html">ğŸ  Home</a> â€” Phase 3 â€” Module 4 â€” Part C</div>
+<div class="breadcrumb"><a href="../index.html">?? Home</a> — Phase 3 — Module 4 — Part C</div>
 
 <div class="cover">
-  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms â€” Complete Course</div>
-  <h1>Module 4 â€” Part C</h1>
-  <div class="tagline">Recursion Practice â€” 12 Problems from Beginner to Advanced</div>
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 4 — Part C</h1>
+  <div class="tagline">Recursion Practice — 12 Problems from Beginner to Advanced</div>
   <div class="badges">
-    <span>â± Estimated: 2 Hours</span><span>ğŸ¯ Mixed Difficulty</span><span>ğŸ’» C# &amp; Python</span><span>ğŸ“ Phase 3 â€” Module 4C</span>
+    <span>? Estimated: 2 Hours</span><span>?? Mixed Difficulty</span><span>?? C# &amp; Python</span><span>?? Phase 3 — Module 4C</span>
   </div>
 </div>
 
 <div class="nav-box">
-  <strong>ğŸ“‚ Module 4 â€” Recursion:</strong><br>
-  âœ… <strong>Part A</strong> â€” <a href="m04a_recursion.html">Recursion Fundamentals</a><br>
-  âœ… <strong>Part B</strong> â€” <a href="m04b_backtrack_intro.html">Backtracking Preview</a><br>
-  â–¶ <strong>Part C</strong> â€” <em>You are here</em> â€” Practice: 12 Problems<br>
-  ğŸ  <a href="../index.html">Back to Course Index</a>
+  <strong>?? Module 4 — Recursion:</strong><br>
+  ? <strong>Part A</strong> — <a href="m04a_recursion.html">Recursion Fundamentals</a><br>
+  ? <strong>Part B</strong> — <a href="m04b_backtrack_intro.html">Backtracking Preview</a><br>
+  ? <strong>Part C</strong> — <em>You are here</em> — Practice: 12 Problems<br>
+  ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase2/m03a_stacks.html">&larr; Module 3 &mdash; Stacks &amp; Queues</a>
@@ -87,20 +87,20 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
   <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
 </div>
 
-<div class="note"><strong>ğŸ“Œ How to Use This Practice Module</strong>Try each problem yourself before revealing the answer. The problems increase in difficulty. Each answer includes a fully runnable program with explanations. Focus on identifying base case ? recursive case before writing any code.</div>
+<div class="note"><strong>?? How to Use This Practice Module</strong>Try each problem yourself before revealing the answer. The problems increase in difficulty. Each answer includes a fully runnable program with explanations. Focus on identifying base case ? recursive case before writing any code.</div>
 
-<h2 class="sec">Easy Problems (1â€”4) â€” Warm Up</h2>
+<h2 class="sec">Easy Problems (1—4) — Warm Up</h2>
 
-<h3>Problem 1 â€” Sum of Natural Numbers</h3>
+<h3>Problem 1 — Sum of Natural Numbers</h3>
 <div class="quiz diff-easy">
   <div class="quiz-meta"><span class="badge b-easy">Easy</span> Sum 1+2+3+...+n recursively</div>
   <div class="quiz-q">Write a recursive function <code>SumN(n)</code> that returns 1+2+3+...+n. SumN(5)=15.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Each call reduces n by 1: SumN(n) = n + SumN(n-1). The call stack builds n frames (each holding a pending addition), then unwinds summing them on the way back up. Base case: n &lt;= 0 returns 0.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) â€” n recursive calls &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack depth of n frames</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — n recursive calls &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth of n frames</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P1</span> {
     <span class="kw">static int</span> <span class="mt">SumN</span>(<span class="kw">int</span> n) {
@@ -114,7 +114,7 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">def</span> <span class="mt">sum_n</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
     <span class="kw">if</span> n &lt;= <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
     <span class="kw">return</span> n + sum_n(n - <span class="nm">1</span>)
@@ -125,16 +125,16 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
   </div>
 </div>
 
-<h3>Problem 2 â€” Reverse a String</h3>
+<h3>Problem 2 — Reverse a String</h3>
 <div class="quiz diff-easy">
   <div class="quiz-meta"><span class="badge b-easy">Easy</span> Reverse string recursively</div>
   <div class="quiz-q">Write recursive <code>Reverse(s)</code>. Reverse("hello")="olleh".</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Extract the last character and concatenate it with the reverse of the remaining string. Each call peels off one character from the end. Base case: empty or single-character string returns itself unchanged.</div>
-    <div class="complexity"><strong>Time:</strong> O(n&sup2;) â€” n calls, each doing O(n) string concatenation &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack depth</div>
+    <div class="complexity"><strong>Time:</strong> O(n&sup2;) — n calls, each doing O(n) string concatenation &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P2</span> {
     <span class="kw">static string</span> <span class="mt">Reverse</span>(<span class="kw">string</span> s) {
@@ -149,7 +149,7 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">def</span> <span class="mt">reverse</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
     <span class="kw">if</span> <span class="mt">len</span>(s) &lt;= <span class="nm">1</span>: <span class="kw">return</span> s
     <span class="kw">return</span> s[-<span class="nm">1</span>] + reverse(s[:-<span class="nm">1</span>])  <span class="cm"># last char + reverse of rest</span>
@@ -160,16 +160,16 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
   </div>
 </div>
 
-<h3>Problem 3 â€” Count Occurrences</h3>
+<h3>Problem 3 — Count Occurrences</h3>
 <div class="quiz diff-easy">
   <div class="quiz-meta"><span class="badge b-easy">Easy</span> Count how many times a value appears in array</div>
   <div class="quiz-q">Write recursive <code>CountOccurrence(arr, target, index)</code> counting how many times target appears in arr.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> At index idx, check if arr[idx] matches target (contributing 1 or 0), then add the count from remaining elements by recursing with idx+1. Like iterating an array, but the call stack drives the loop. Base case: idx past the end returns 0.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) â€” visits every element exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack grows to array length</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — visits every element exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack grows to array length</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P3</span> {
     <span class="kw">static int</span> <span class="mt">CountOccurrence</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target, <span class="kw">int</span> idx = <span class="nm">0</span>) {
@@ -185,7 +185,7 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">count_occurrence</span>(arr: List[<span class="tp">int</span>], target: <span class="tp">int</span>, idx: <span class="tp">int</span> = <span class="nm">0</span>) -&gt; <span class="tp">int</span>:
     <span class="kw">if</span> idx >= <span class="mt">len</span>(arr): <span class="kw">return</span> <span class="nm">0</span>
@@ -198,16 +198,16 @@ arr = [<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">4</s
   </div>
 </div>
 
-<h3>Problem 4 â€” Array Maximum</h3>
+<h3>Problem 4 — Array Maximum</h3>
 <div class="quiz diff-easy">
   <div class="quiz-meta"><span class="badge b-easy">Easy</span> Find maximum element recursively</div>
   <div class="quiz-q">Write recursive <code>FindMax(arr, n)</code> returning the maximum in array.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> The maximum of n elements = max(arr[n-1], max of first n-1 elements). Each call shrinks the problem by one element. Base case: a single element is trivially the max. On the way back up, each frame returns the larger of the two values it compares.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) â€” n recursive calls, each O(1) work &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack depth</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — n recursive calls, each O(1) work &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P4</span> {
     <span class="kw">static int</span> <span class="mt">FindMax</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> n) {
@@ -221,7 +221,7 @@ arr = [<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">4</s
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">find_max</span>(arr: List[<span class="tp">int</span>], n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
     <span class="kw">if</span> n == <span class="nm">1</span>: <span class="kw">return</span> arr[<span class="nm">0</span>]
@@ -233,18 +233,18 @@ arr = [<span class="nm">3</span>,<span class="nm">7</span>,<span class="nm">1</s
   </div>
 </div>
 
-<h2 class="sec">Medium Problems (5â€”8) â€” Build Confidence</h2>
+<h2 class="sec">Medium Problems (5—8) — Build Confidence</h2>
 
-<h3>Problem 5 â€” Flatten Nested List</h3>
+<h3>Problem 5 — Flatten Nested List</h3>
 <div class="quiz diff-med">
   <div class="quiz-meta"><span class="badge b-med">Medium</span> Flatten a deeply nested list</div>
   <div class="quiz-q">Given a nested list like [1,[2,[3,4]],5], write recursive <code>Flatten</code> returning [1,2,3,4,5].</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Iterate over each item. If it is a number, add directly to results. If it is a nested list, recursively flatten it and extend results. The recursion mirrors the nesting structure â€” the call stack handles any depth automatically without explicit depth tracking.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) â€” n = total integers across all nesting levels &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(d) â€” d = maximum nesting depth (call stack)</div>
+    <div class="approach"><strong>Approach:</strong> Iterate over each item. If it is a number, add directly to results. If it is a nested list, recursively flatten it and extend results. The recursion mirrors the nesting structure — the call stack handles any depth automatically without explicit depth tracking.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — n = total integers across all nesting levels &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(d) — d = maximum nesting depth (call stack)</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">class</span> <span class="tp">P5</span> {
@@ -270,7 +270,7 @@ arr = [<span class="nm">3</span>,<span class="nm">7</span>,<span class="nm">1</s
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> Any, List
 <span class="kw">def</span> <span class="mt">flatten</span>(nested: List[Any]) -&gt; List[<span class="tp">int</span>]:
     result = []
@@ -286,16 +286,16 @@ arr = [<span class="nm">3</span>,<span class="nm">7</span>,<span class="nm">1</s
   </div>
 </div>
 
-<h3>Problem 6 â€” Binary Search (Recursive)</h3>
+<h3>Problem 6 — Binary Search (Recursive)</h3>
 <div class="quiz diff-med">
   <div class="quiz-meta"><span class="badge b-med">Medium</span> Classic divide and conquer</div>
   <div class="quiz-q">Write recursive <code>BinarySearch(arr, target, low, high)</code> returning the index of target or -1.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Compare target to the middle element of [low, high]. If equal, return mid. If target is greater, recurse on [mid+1, high]. If smaller, recurse on [low, mid-1]. Each call eliminates half the remaining candidates. Base case: low &gt; high means target is absent.</div>
-    <div class="complexity"><strong>Time:</strong> O(log n) â€” search space halves each call &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(log n) â€” call stack depth equals number of halvings</div>
+    <div class="complexity"><strong>Time:</strong> O(log n) — search space halves each call &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(log n) — call stack depth equals number of halvings</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P6</span> {
     <span class="kw">static int</span> <span class="mt">BinarySearch</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target, <span class="kw">int</span> low, <span class="kw">int</span> high) {
@@ -314,7 +314,7 @@ arr = [<span class="nm">3</span>,<span class="nm">7</span>,<span class="nm">1</s
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">binary_search</span>(arr: List[<span class="tp">int</span>], target: <span class="tp">int</span>, low: <span class="tp">int</span>, high: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
     <span class="kw">if</span> low > high: <span class="kw">return</span> -<span class="nm">1</span>
@@ -329,16 +329,16 @@ arr = [<span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">5</s
   </div>
 </div>
 
-<h3>Problem 7 â€” Tower of Hanoi</h3>
+<h3>Problem 7 — Tower of Hanoi</h3>
 <div class="quiz diff-med">
   <div class="quiz-meta"><span class="badge b-med">Medium</span> Classic recursive puzzle</div>
   <div class="quiz-q">The Tower of Hanoi: Move n disks from peg A to peg C using peg B as helper. A disk can never be placed on a smaller disk. Print each move.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Three steps: (1) Move top n-1 disks from source to via-peg (using dest as helper). (2) Move the single largest disk directly from source to dest. (3) Move the n-1 disks from via-peg to dest (using source as helper). This is the only valid solution â€” total moves = 2^n - 1, proven minimum.</div>
-    <div class="complexity"><strong>Time:</strong> O(2^n) â€” exactly 2^n - 1 disk moves required &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack depth equals number of disks</div>
+    <div class="approach"><strong>Approach:</strong> Three steps: (1) Move top n-1 disks from source to via-peg (using dest as helper). (2) Move the single largest disk directly from source to dest. (3) Move the n-1 disks from via-peg to dest (using source as helper). This is the only valid solution — total moves = 2^n - 1, proven minimum.</div>
+    <div class="complexity"><strong>Time:</strong> O(2^n) — exactly 2^n - 1 disk moves required &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth equals number of disks</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P7</span> {
     <span class="kw">static int</span> moveCount = <span class="nm">0</span>;
@@ -368,7 +368,7 @@ arr = [<span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">5</s
    Move disk 1 from A ? C
    Total moves: 7 */</span></pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre>move_count = <span class="nm">0</span>
 <span class="kw">def</span> <span class="mt">hanoi</span>(n: <span class="tp">int</span>, from_peg: <span class="tp">str</span>, to_peg: <span class="tp">str</span>, via_peg: <span class="tp">str</span>):
     <span class="kw">global</span> move_count
@@ -385,16 +385,16 @@ hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'
   </div>
 </div>
 
-<h3>Problem 8 â€” Merge Sort</h3>
+<h3>Problem 8 — Merge Sort</h3>
 <div class="quiz diff-med">
   <div class="quiz-meta"><span class="badge b-med">Medium</span> Divide, sort, merge</div>
   <div class="quiz-q">Implement merge sort recursively. It sorts by splitting array in half, sorting each half, then merging.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Recursively split the array in half until each sub-array has 0 or 1 element (trivially sorted). Then merge sorted pairs: compare front elements of both halves, place the smaller into results, advance that pointer. When one half is exhausted, append the rest. Each merge level does O(n) total work across all merges.</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) â€” log n recursion levels times O(n) merge work per level &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” temporary arrays during merge</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — log n recursion levels times O(n) merge work per level &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — temporary arrays during merge</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P8</span> {
     <span class="kw">static void</span> <span class="mt">MergeSort</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> right) {
@@ -421,7 +421,7 @@ hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">merge_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
     <span class="kw">if</span> <span class="mt">len</span>(arr) &lt;= <span class="nm">1</span>: <span class="kw">return</span> arr          <span class="cm"># base case</span>
@@ -442,18 +442,18 @@ hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'
   </div>
 </div>
 
-<h2 class="sec">Hard Problems (9â€”12) â€” Challenge Yourself</h2>
+<h2 class="sec">Hard Problems (9—12) — Challenge Yourself</h2>
 
-<h3>Problem 9 â€” Generate Balanced Parentheses</h3>
+<h3>Problem 9 — Generate Balanced Parentheses</h3>
 <div class="quiz diff-hard">
   <div class="quiz-meta"><span class="badge b-hard">Hard</span> Generate all valid combinations</div>
   <div class="quiz-q">Given n pairs, generate all valid parentheses combinations. E.g. n=3: ((())) (()()) (()) ()()() ...</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Build the string character by character with two rules: (1) Add an open bracket if open count &lt; n. (2) Add a close bracket only if close count &lt; open count. These constraints guarantee only valid strings are built. When the string reaches length 2n, it is a complete valid combination â€” add to results.</div>
-    <div class="complexity"><strong>Time:</strong> O(4^n / sqrt(n)) â€” the n-th Catalan number of valid combinations &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack depth (n open + n close)</div>
+    <div class="approach"><strong>Approach:</strong> Build the string character by character with two rules: (1) Add an open bracket if open count &lt; n. (2) Add a close bracket only if close count &lt; open count. These constraints guarantee only valid strings are built. When the string reaches length 2n, it is a complete valid combination — add to results.</div>
+    <div class="complexity"><strong>Time:</strong> O(4^n / sqrt(n)) — the n-th Catalan number of valid combinations &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth (n open + n close)</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">class</span> <span class="tp">P9</span> {
@@ -473,7 +473,7 @@ hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">generate_parens</span>(n: <span class="tp">int</span>) -&gt; List[<span class="tp">str</span>]:
     result = []
@@ -488,16 +488,16 @@ hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'
   </div>
 </div>
 
-<h3>Problem 10 â€” Word Search in Grid</h3>
+<h3>Problem 10 — Word Search in Grid</h3>
 <div class="quiz diff-hard">
   <div class="quiz-meta"><span class="badge b-hard">Hard</span> DFS/backtracking on 2D grid</div>
   <div class="quiz-q">Given a 2D character grid and a word, check if the word can be formed by adjacent (horizontal/vertical) cells, each used only once.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Try starting DFS from every cell. At each step: check bounds and character match, mark cell as # (visited so it cannot be reused in this path), recursively explore all 4 neighbors for the next character, then restore the original character (backtrack). This ensures each cell is used at most once per path without a separate visited set.</div>
-    <div class="complexity"><strong>Time:</strong> O(m*n * 3^L) â€” m*n start cells, 3 unvisited neighbors per step, L = word length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(L) â€” call stack depth equals word length</div>
+    <div class="complexity"><strong>Time:</strong> O(m*n * 3^L) — m*n start cells, 3 unvisited neighbors per step, L = word length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(L) — call stack depth equals word length</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">class</span> <span class="tp">P10</span> {
     <span class="kw">static bool</span> <span class="mt">Exist</span>(<span class="kw">char</span>[,] board, <span class="kw">string</span> word) {
@@ -525,7 +525,7 @@ hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">exist</span>(board: List[List[<span class="tp">str</span>]], word: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
     rows, cols = <span class="mt">len</span>(board), <span class="mt">len</span>(board[<span class="nm">0</span>])
@@ -544,16 +544,16 @@ board = [[<span class="st">'A'</span>,<span class="st">'B'</span>,<span class="s
   </div>
 </div>
 
-<h3>Problem 11 â€” Phone Number Letter Combinations</h3>
+<h3>Problem 11 — Phone Number Letter Combinations</h3>
 <div class="quiz diff-hard">
   <div class="quiz-meta"><span class="badge b-hard">Hard</span> Classic backtracking</div>
   <div class="quiz-q">Given digits "23", return all letter combinations a phone dial could represent. 2?"abc", 3?"def". Combinations: "ad","ae","af","bd","be","bf","cd","ce","cf".</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Map each digit to its possible letters (phone keypad: 2-&gt;abc, 3-&gt;def, etc). For the current digit at index idx, try each of its letters â€” append to the current string and recurse for the next digit. When all digits are processed, add the complete combination to results. Systematically generates all combinations without duplicates.</div>
-    <div class="complexity"><strong>Time:</strong> O(4^n * n) â€” up to 4 letters per digit, building n-length strings &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” call stack depth equals number of digits</div>
+    <div class="approach"><strong>Approach:</strong> Map each digit to its possible letters (phone keypad: 2-&gt;abc, 3-&gt;def, etc). For the current digit at index idx, try each of its letters — append to the current string and recurse for the next digit. When all digits are processed, add the complete combination to results. Systematically generates all combinations without duplicates.</div>
+    <div class="complexity"><strong>Time:</strong> O(4^n * n) — up to 4 letters per digit, building n-length strings &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth equals number of digits</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">class</span> <span class="tp">P11</span> {
@@ -574,7 +574,7 @@ board = [[<span class="st">'A'</span>,<span class="st">'B'</span>,<span class="s
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 PHONE = {<span class="st">'2'</span>:<span class="st">'abc'</span>,<span class="st">'3'</span>:<span class="st">'def'</span>,<span class="st">'4'</span>:<span class="st">'ghi'</span>,<span class="st">'5'</span>:<span class="st">'jkl'</span>,
          <span class="st">'6'</span>:<span class="st">'mno'</span>,<span class="st">'7'</span>:<span class="st">'pqrs'</span>,<span class="st">'8'</span>:<span class="st">'tuv'</span>,<span class="st">'9'</span>:<span class="st">'wxyz'</span>}
@@ -591,16 +591,16 @@ PHONE = {<span class="st">'2'</span>:<span class="st">'abc'</span>,<span class="
   </div>
 </div>
 
-<h3>Problem 12 â€” Combination Sum</h3>
+<h3>Problem 12 — Combination Sum</h3>
 <div class="quiz diff-hard">
   <div class="quiz-meta"><span class="badge b-hard">Hard</span> Find all combinations summing to target</div>
   <div class="quiz-q">Given candidates=[2,3,6,7] and target=7, find all combinations that sum to target. Numbers can be reused.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
+  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Sort candidates first (enables pruning). For each candidate from index i onward, add it to the current combination and recurse with the same index i (allows reuse) and a reduced target. When target = 0, record the combination. Since candidates are sorted, stop as soon as a candidate exceeds the remaining target â€” all further candidates will also exceed it.</div>
-    <div class="complexity"><strong>Time:</strong> O(N^(T/M)) â€” N=candidates, T=target, M=smallest candidate &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(T/M) â€” max recursion depth equals target divided by smallest candidate</div>
+    <div class="approach"><strong>Approach:</strong> Sort candidates first (enables pruning). For each candidate from index i onward, add it to the current combination and recurse with the same index i (allows reuse) and a reduced target. When target = 0, record the combination. Since candidates are sorted, stop as soon as a candidate exceeds the remaining target — all further candidates will also exceed it.</div>
+    <div class="complexity"><strong>Time:</strong> O(N^(T/M)) — N=candidates, T=target, M=smallest candidate &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(T/M) — max recursion depth equals target divided by smallest candidate</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">class</span> <span class="tp">P12</span> {
@@ -623,7 +623,7 @@ PHONE = {<span class="st">'2'</span>:<span class="st">'abc'</span>,<span class="
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 <span class="kw">def</span> <span class="mt">combo_sum</span>(candidates: List[<span class="tp">int</span>], target: <span class="tp">int</span>) -&gt; List[List[<span class="tp">int</span>]]:
     candidates.<span class="mt">sort</span>()
@@ -642,13 +642,13 @@ PHONE = {<span class="st">'2'</span>:<span class="st">'abc'</span>,<span class="
   </div>
 </div>
 
-<div class="tip"><strong>ğŸ’¡ Key Takeaway from these 12 Problems</strong>Every recursive problem has the same DNA: identify the base case first, then figure out how to reduce the problem. For backtracking, add the Choose?Explore?Unchoose structure. The rest is pattern matching.</div>
+<div class="tip"><strong>?? Key Takeaway from these 12 Problems</strong>Every recursive problem has the same DNA: identify the base case first, then figure out how to reduce the problem. For backtracking, add the Choose?Explore?Unchoose structure. The rest is pattern matching.</div>
 
 <div class="complete-section">
-  <p style="color:#888;font-size:.9em;margin-bottom:16px">Excellent work! You've completed 12 recursion and backtracking problems â€” from basic sum to word search in grids. Move on to Module 5 for Sorting Algorithms!</p>
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">Excellent work! You've completed 12 recursion and backtracking problems — from basic sum to word search in grids. Move on to Module 5 for Sorting Algorithms!</p>
   <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
   <div style="margin-top:16px">
-    <a href="m05a_basic_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Module 5A â€” O(nâ€”) Sorting Algorithms ?</a>
+    <a href="m05a_basic_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Module 5A — O(n—) Sorting Algorithms ?</a>
   </div>
 </div>
 
@@ -662,8 +662,8 @@ function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=d
 function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
 function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
 applyLang();
-function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='âœ… Copied!';setTimeout(()=>btn.textContent='ğŸ“‹ Copy',2000);}).catch(()=>{btn.textContent='âŒ Failed';setTimeout(()=>btn.textContent='ğŸ“‹ Copy',2000);});}
-function toggleSolution(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'ğŸ™ˆ Hide Solution':'ğŸ’¡ Show Solution';}
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='? Copied!';setTimeout(()=>btn.textContent='?? Copy',2000);}).catch(()=>{btn.textContent='? Failed';setTimeout(()=>btn.textContent='?? Copy',2000);});}
+function toggleSolution(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'?? Hide Solution':'?? Show Solution';}
 let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 </body>

@@ -1,57 +1,58 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 17D — Phase 9 Mixed Practice | DSA Masterbook</title>
+    <title>Module 17D � Phase 9 Mixed Practice | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
-    <h1>Module 17 — Part D</h1>
-    <div class="tagline">Phase 9 Mixed Practice — 10 Curated LeetCode Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Bit Manipulation · Math · Geometry · Strings · Advanced Graphs</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
+    <h1>Module 17 � Part D</h1>
+    <div class="tagline">Phase 9 Mixed Practice � 10 Curated LeetCode Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Bit Manipulation � Math � Geometry � Strings � Advanced Graphs</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 3–4 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 10 Problems</span>
+        <span>? Estimated Time: 3�4 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? 10 Problems</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 9 — Supplement (complete):</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m17b_advanced_math.html">Advanced Math</a><br>
-    ✅ <strong>Part B</strong> — <a href="m17c_geometry.html">Computational Geometry</a><br>
-    ▶ <strong>Part C</strong> — <em>You are here</em> — Mixed Practice (10 Problems)<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 9 � Supplement (complete):</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m17b_advanced_math.html">Advanced Math</a><br>
+    ? <strong>Part B</strong> � <a href="m17c_geometry.html">Computational Geometry</a><br>
+    ? <strong>Part C</strong> � <em>You are here</em> � Mixed Practice (10 Problems)<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
     <a href="../phase10/m18a_patterns1.html">Module 18 &mdash; Patterns I &rarr;</a>
 </div>
 
-<!-- ═══════ GROUP A: Bit Manipulation ═══════ -->
-<div class="section-heading">Group A — Bit Manipulation (3 Problems)</div>
+<!-- ------- GROUP A: Bit Manipulation ------- -->
+<div class="section-heading">Group A � Bit Manipulation (3 Problems)</div>
 
 <div class="group-label">Problem 1 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#137 — Single Number II</span>
+        <span class="prob-num">#137 � Single Number II</span>
         <span class="diff diff-m">Medium</span>
     </div>
     <p>Every element appears <strong>3 times</strong> except one element which appears exactly once. Find the single element in O(n) time and O(1) space.</p>
-    <p><code>nums = [2,2,3,2]</code> → <code>3</code></p>
+    <p><code>nums = [2,2,3,2]</code> ? <code>3</code></p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h137')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's137')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h137')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's137')">?? Solution</button>
     </div>
     <div class="hint-box" id="h137">Track bits that have appeared once (<code>ones</code>) and twice (<code>twos</code>). Update both with each new number so that thrice-seen bits vanish.</div>
     <div class="sol-box" id="s137">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">SingleNumber</span>(<span class="kw">int</span>[] nums) {
     <span class="kw">int</span> ones = <span class="nm">0</span>, twos = <span class="nm">0</span>;
     <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums) {
@@ -61,7 +62,7 @@
     <span class="kw">return</span> ones; <span class="cm">// bits seen exactly once</span>
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">singleNumber</span>(nums):
     ones = twos = <span class="nm">0</span>
     <span class="kw">for</span> n <span class="kw">in</span> nums:
@@ -74,25 +75,25 @@
 <div class="group-label">Problem 2 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#338 — Counting Bits</span>
+        <span class="prob-num">#338 � Counting Bits</span>
         <span class="diff diff-m">Easy</span>
     </div>
     <p>Return an array <code>ans</code> of length <code>n+1</code> where <code>ans[i]</code> = number of 1s in binary representation of <code>i</code>. O(n) time and space, no built-in popcount per element.</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h338')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's338')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h338')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's338')">?? Solution</button>
     </div>
     <div class="hint-box" id="h338"><code>i >> 1</code> has the same bits as <code>i</code> except the last bit. So <code>dp[i] = dp[i >> 1] + (i & 1)</code>.</div>
     <div class="sol-box" id="s338">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span>[] <span class="mt">CountBits</span>(<span class="kw">int</span> n) {
     <span class="kw">var</span> dp = <span class="kw">new int</span>[n + <span class="nm">1</span>];
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++) dp[i] = dp[i >> <span class="nm">1</span>] + (i &amp; <span class="nm">1</span>);
     <span class="kw">return</span> dp;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">countBits</span>(n):
     dp = [<span class="nm">0</span>] * (n+<span class="nm">1</span>)
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>): dp[i] = dp[i>><span class="nm">1</span>] + (i&<span class="nm">1</span>)
@@ -103,24 +104,24 @@
 <div class="group-label">Problem 3 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#371 — Sum of Two Integers</span>
+        <span class="prob-num">#371 � Sum of Two Integers</span>
         <span class="diff diff-m">Medium</span>
     </div>
     <p>Calculate <code>a + b</code> without using <code>+</code> or <code>-</code> operators.</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h371')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's371')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h371')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's371')">?? Solution</button>
     </div>
     <div class="hint-box" id="h371">XOR = sum without carry. AND shifted left = carry. Repeat until carry = 0. In Python, mask to 32 bits to handle two's complement negatives.</div>
     <div class="sol-box" id="s371">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">GetSum</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
     <span class="kw">while</span> (b != <span class="nm">0</span>) { <span class="kw">int</span> c = (a &amp; b) &lt;&lt; <span class="nm">1</span>; a ^= b; b = c; }
     <span class="kw">return</span> a;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">getSum</span>(a, b):
     MASK = <span class="nm">0xFFFFFFFF</span>; MAX = <span class="nm">0x7FFFFFFF</span>
     <span class="kw">while</span> b & MASK:
@@ -130,24 +131,24 @@
     </div>
 </div>
 
-<!-- ═══════ GROUP B: Advanced Math ═══════ -->
-<div class="section-heading">Group B — Advanced Math (3 Problems)</div>
+<!-- ------- GROUP B: Advanced Math ------- -->
+<div class="section-heading">Group B � Advanced Math (3 Problems)</div>
 
 <div class="group-label">Problem 4 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#96 — Unique Binary Search Trees</span>
+        <span class="prob-num">#96 � Unique Binary Search Trees</span>
         <span class="diff diff-m">Medium</span>
     </div>
     <p>Given <code>n</code>, return the number of structurally unique BSTs which have exactly <code>n</code> nodes. (Answer = Catalan number C<sub>n</sub>.)</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h96')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's96')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h96')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's96')">?? Solution</button>
     </div>
-    <div class="hint-box" id="h96">For each root r in [1..n], left subtree uses r-1 nodes, right uses n-r. <code>dp[n] = Σ dp[i] * dp[n-1-i]</code> for i in 0..n-1.</div>
+    <div class="hint-box" id="h96">For each root r in [1..n], left subtree uses r-1 nodes, right uses n-r. <code>dp[n] = S dp[i] * dp[n-1-i]</code> for i in 0..n-1.</div>
     <div class="sol-box" id="s96">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">NumTrees</span>(<span class="kw">int</span> n) {
     <span class="kw">var</span> dp = <span class="kw">new long</span>[n + <span class="nm">1</span>]; dp[<span class="nm">0</span>] = dp[<span class="nm">1</span>] = <span class="nm">1</span>;
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i &lt;= n; i++)
@@ -155,7 +156,7 @@
     <span class="kw">return</span> (<span class="kw">int</span>)dp[n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">numTrees</span>(n):
     dp = [<span class="nm">0</span>] * (n+<span class="nm">1</span>); dp[<span class="nm">0</span>] = dp[<span class="nm">1</span>] = <span class="nm">1</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, n+<span class="nm">1</span>):
@@ -167,18 +168,18 @@
 <div class="group-label">Problem 5 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#50 — Pow(x, n)</span>
+        <span class="prob-num">#50 � Pow(x, n)</span>
         <span class="diff diff-m">Medium</span>
     </div>
     <p>Implement <code>pow(x, n)</code> where <code>n</code> can be negative. Must be O(log n).</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h50')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's50')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h50')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's50')">?? Solution</button>
     </div>
     <div class="hint-box" id="h50">Binary exponentiation: if n is even, <code>pow(x,n) = pow(x*x, n/2)</code>. If odd, <code>x * pow(x, n-1)</code>. Handle n&lt;0: <code>pow(1/x, -n)</code>.</div>
     <div class="sol-box" id="s50">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public double</span> <span class="mt">MyPow</span>(<span class="kw">double</span> x, <span class="kw">int</span> n) {
     <span class="kw">long</span> N = n;
     <span class="kw">if</span> (N &lt; <span class="nm">0</span>) { x = <span class="nm">1</span> / x; N = -N; }
@@ -190,7 +191,7 @@
     <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">myPow</span>(x, n):
     <span class="kw">if</span> n &lt; <span class="nm">0</span>: x, n = <span class="nm">1</span>/x, -n
     res = <span class="nm">1</span>
@@ -204,15 +205,15 @@
 <div class="group-label">Problem 6 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#1201 — Ugly Number III</span>
+        <span class="prob-num">#1201 � Ugly Number III</span>
         <span class="diff diff-h">Hard</span>
     </div>
-    <p>Given integers <code>a, b, c</code>, find the <code>n</code>-th positive integer divisible by <code>a</code>, <code>b</code>, or <code>c</code>. (Constraints: a,b,c ≤ 10^9, n ≤ 10^9)</p>
+    <p>Given integers <code>a, b, c</code>, find the <code>n</code>-th positive integer divisible by <code>a</code>, <code>b</code>, or <code>c</code>. (Constraints: a,b,c = 10^9, n = 10^9)</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h1201')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's1201')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h1201')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's1201')">?? Solution</button>
     </div>
-    <div class="hint-box" id="h1201">Binary search on X. Count ugly numbers ≤ X using inclusion-exclusion: X/a + X/b + X/c - X/lcm(a,b) - X/lcm(b,c) - X/lcm(a,c) + X/lcm(a,b,c). lcm(a,b) = a/gcd(a,b)*b.</div>
+    <div class="hint-box" id="h1201">Binary search on X. Count ugly numbers = X using inclusion-exclusion: X/a + X/b + X/c - X/lcm(a,b) - X/lcm(b,c) - X/lcm(a,c) + X/lcm(a,b,c). lcm(a,b) = a/gcd(a,b)*b.</div>
     <div class="sol-box" id="s1201">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -227,7 +228,7 @@
     <span class="kw">return</span> (<span class="kw">int</span>)lo;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> math <span class="kw">import</span> gcd
 
 <span class="kw">def</span> <span class="mt">nthUglyNumber</span>(n, a, b, c):
@@ -245,19 +246,19 @@
     </div>
 </div>
 
-<!-- ═══════ GROUP C: Geometry ═══════ -->
-<div class="section-heading">Group C — Geometry (2 Problems)</div>
+<!-- ------- GROUP C: Geometry ------- -->
+<div class="section-heading">Group C � Geometry (2 Problems)</div>
 
 <div class="group-label">Problem 7 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#587 — Erect the Fence</span>
+        <span class="prob-num">#587 � Erect the Fence</span>
         <span class="diff diff-h">Hard</span>
     </div>
     <p>Given coordinates of trees, find all trees on the convex hull perimeter (including collinear points on edges). Return the convex hull tree indices.</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h587')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's587')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h587')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's587')">?? Solution</button>
     </div>
     <div class="hint-box" id="h587">Monotone chain convex hull. Include collinear points on hull edges: when building, pop only when cross product is strictly NEGATIVE (not &lt;= 0 as usual). Use a set to track all hull points.</div>
     <div class="sol-box" id="s587">
@@ -276,7 +277,7 @@
     <span class="kw">return</span> h.<span class="mt">DistinctBy</span>(p =&gt; (p[<span class="nm">0</span>],p[<span class="nm">1</span>])).<span class="mt">ToArray</span>();
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">outerTrees</span>(trees):
     pts = <span class="mt">sorted</span>(<span class="mt">map</span>(<span class="mt">tuple</span>, trees))
     <span class="kw">def</span> <span class="mt">cross</span>(O, A, B):
@@ -293,15 +294,15 @@
 <div class="group-label">Problem 8 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#149 — Max Points on a Line</span>
+        <span class="prob-num">#149 � Max Points on a Line</span>
         <span class="diff diff-h">Hard</span>
     </div>
     <p>Given <code>n</code> points, find the maximum number of points that lie on the same straight line. Return the count.</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h149')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's149')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h149')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's149')">?? Solution</button>
     </div>
-    <div class="hint-box" id="h149">For each anchor point P[i], hash slopes as reduced fractions (dy/gcd, dx/gcd) to group collinear points. Handle vertical lines, duplicates separately. O(n²) total.</div>
+    <div class="hint-box" id="h149">For each anchor point P[i], hash slopes as reduced fractions (dy/gcd, dx/gcd) to group collinear points. Handle vertical lines, duplicates separately. O(n�) total.</div>
     <div class="sol-box" id="s149">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -323,7 +324,7 @@
     <span class="kw">return</span> ans;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> math <span class="kw">import</span> gcd
 <span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
@@ -349,19 +350,19 @@
     </div>
 </div>
 
-<!-- ═══════ GROUP D: Advanced Graphs + Strings ═══════ -->
-<div class="section-heading">Group D — Advanced Graphs &amp; Strings (2 Problems)</div>
+<!-- ------- GROUP D: Advanced Graphs + Strings ------- -->
+<div class="section-heading">Group D � Advanced Graphs &amp; Strings (2 Problems)</div>
 
 <div class="group-label">Problem 9 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#847 — Shortest Path Visiting All Nodes</span>
+        <span class="prob-num">#847 � Shortest Path Visiting All Nodes</span>
         <span class="diff diff-h">Hard</span>
     </div>
     <p>An undirected connected graph of <code>n</code> nodes. Return the length of the shortest path that visits every node. You may start and stop at any node, revisit nodes and reuse edges.</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h847')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's847')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h847')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's847')">?? Solution</button>
     </div>
     <div class="hint-box" id="h847">BFS with state = (currentNode, visitedMask). Start BFS from ALL nodes simultaneously (all nodes with their single-node mask). The first time a state with full mask is reached, that's the answer.</div>
     <div class="sol-box" id="s847">
@@ -384,7 +385,7 @@
     <span class="kw">return</span> -<span class="nm">1</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">shortestPathLength</span>(graph):
@@ -409,13 +410,13 @@
 <div class="group-label">Problem 10 of 10</div>
 <div class="problem-card">
     <div class="prob-header">
-        <span class="prob-num">#1044 — Longest Duplicate Substring</span>
+        <span class="prob-num">#1044 � Longest Duplicate Substring</span>
         <span class="diff diff-h">Hard</span>
     </div>
     <p>Given a string <code>s</code>, return the longest substring that occurs at least twice. If no such substring exists, return empty string.</p>
     <div class="toggle-row">
-        <button class="hint-btn" onclick="toggleBox(this, 'h1044')">💡 Hint</button>
-        <button class="sol-btn" onclick="toggleBox(this, 's1044')">📋 Solution</button>
+        <button class="hint-btn" onclick="toggleBox(this, 'h1044')">?? Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's1044')">?? Solution</button>
     </div>
     <div class="hint-box" id="h1044">Binary search on length L. For each L, check if any substring of length L appears twice using rolling hash (Rabin-Karp). If a duplicate exists, try longer; else shorter.</div>
     <div class="sol-box" id="s1044">
@@ -443,7 +444,7 @@
     <span class="kw">return</span> ans;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestDupSubstring</span>(s):
     n = <span class="mt">len</span>(s); A = [<span class="mt">ord</span>(c) - <span class="mt">ord</span>(<span class="st">'a'</span>) <span class="kw">for</span> c <span class="kw">in</span> s]
     MOD, BASE = (<span class="nm">1</span>&lt;&lt;<span class="nm">61</span>)-<span class="nm">1</span>, <span class="nm">31</span>
@@ -473,15 +474,15 @@
 </div>
 
 <hr>
-<h3>Phase 9 Complete! — What You've Mastered</h3>
+<h3>Phase 9 Complete! � What You've Mastered</h3>
 <ul>
-    <li><strong>Module 15</strong> — Advanced Graphs: Tarjan bridges, SCC (Kosaraju/Tarjan), Euler paths, Dijkstra/Bellman-Ford</li>
-    <li><strong>Module 16</strong> — String Algorithms: KMP, Z-Function, Rabin-Karp, Aho-Corasick, Suffix Arrays</li>
-    <li><strong>Module 17</strong> — Bit Manipulation, Advanced Math (CRT, Catalan, modular inverse), Computational Geometry</li>
+    <li><strong>Module 15</strong> � Advanced Graphs: Tarjan bridges, SCC (Kosaraju/Tarjan), Euler paths, Dijkstra/Bellman-Ford</li>
+    <li><strong>Module 16</strong> � String Algorithms: KMP, Z-Function, Rabin-Karp, Aho-Corasick, Suffix Arrays</li>
+    <li><strong>Module 17</strong> � Bit Manipulation, Advanced Math (CRT, Catalan, modular inverse), Computational Geometry</li>
 </ul>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17D Complete — Phase 9 Done!</button>
-<div class="toast" id="toast">🎉 Phase 9 complete! On to Phase 10!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 17D Complete � Phase 9 Done!</button>
+<div class="toast" id="toast">?? Phase 9 complete! On to Phase 10!</div>
     <script>var MODULE_ID = 'm17d';</script>
     <script src="../dsa.js"></script>
 </body>

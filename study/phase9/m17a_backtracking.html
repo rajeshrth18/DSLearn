@@ -1,40 +1,41 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 17A — N-Queens &amp; Sudoku | DSA Masterbook</title>
+    <title>Module 17A � N-Queens &amp; Sudoku | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
-    <h1>Module 17 — Part A</h1>
-    <div class="tagline">Backtracking — N-Queens &amp; Sudoku Solver</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Constraint satisfaction · Pruning · The backtracking template</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
+    <h1>Module 17 � Part A</h1>
+    <div class="tagline">Backtracking � N-Queens &amp; Sudoku Solver</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Constraint satisfaction � Pruning � The backtracking template</p>
     <div class="badges">
-        <span>⏱ Estimated: 2 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Module 17 of 17</span>
+        <span>? Estimated: 2 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Module 17 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 17 — Backtracking:</strong><br><br>
-    ▶ <strong>Part A</strong> — <em>You are here</em> — N-Queens &amp; Sudoku Solver<br>
-    ⬜ <strong>Part B</strong> — <a href="m17b_backtracking2.html">Permutations &amp; Combinations</a><br>
-    ⬜ <strong>Part C</strong> — <a href="m17c_practice.html">Practice Problems</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 17 � Backtracking:</strong><br><br>
+    ? <strong>Part A</strong> � <em>You are here</em> � N-Queens &amp; Sudoku Solver<br>
+    ? <strong>Part B</strong> � <a href="m17b_backtracking2.html">Permutations &amp; Combinations</a><br>
+    ? <strong>Part C</strong> � <a href="m17c_practice.html">Practice Problems</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
     <a href="../phase10/m18a_patterns1.html">Module 18 &mdash; Patterns I &rarr;</a>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Backtracking Template</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Backtracking Template</div>
 
 <p>Backtracking is a systematic approach to explore all possible configurations of a solution by building
 candidates incrementally and <strong>abandoning (pruning) candidates that cannot lead to a valid solution</strong>.</p>
@@ -48,29 +49,29 @@ candidates incrementally and <strong>abandoning (pruning) candidates that cannot
 
     for each choice in candidates(state):
       if isValid(state, choice):
-        apply(state, choice)      ← make move
-        solve(state)               ← recurse
-        undo(state, choice)        ← BACKTRACK (undo move)
+        apply(state, choice)      ? make move
+        solve(state)               ? recurse
+        undo(state, choice)        ? BACKTRACK (undo move)
 
-Key insight: "Undo" restores state — backtracking explores a tree
+Key insight: "Undo" restores state � backtracking explores a tree
 of partial solutions, pruning entire subtrees early.</div>
 
 <div class="tip">
-    <strong>💡 Pruning is the key to performance.</strong> Without pruning, backtracking is brute-force O(n!).
+    <strong>?? Pruning is the key to performance.</strong> Without pruning, backtracking is brute-force O(n!).
     Good constraint checking prunes orders of magnitude of the search space.
 </div>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — N-Queens (LC 51, 52)</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � N-Queens (LC 51, 52)</div>
 
-<p>Place N queens on an N×N chessboard so no two queens attack each other (no shared row, column, or diagonal).</p>
+<p>Place N queens on an N�N chessboard so no two queens attack each other (no shared row, column, or diagonal).</p>
 <p><strong>Strategy:</strong> Place one queen per row. Track used columns and diagonals with sets for O(1) constraint checks.</p>
 
 <div class="diagram">4-Queens partial solution trace:
 
-Row 0: try col 0 → blocked, col 1 → ok → place Q
-  Row 1: try col 0,1,2 → all attacked by diagonals → backtrack
-Row 0: try col 1 → blocked, col 2 → ok → place Q
+Row 0: try col 0 ? blocked, col 1 ? ok ? place Q
+  Row 1: try col 0,1,2 ? all attacked by diagonals ? backtrack
+Row 0: try col 1 ? blocked, col 2 ? ok ? place Q
   ...
 
 Two solutions exist for N=4:
@@ -81,7 +82,7 @@ Two solutions exist for N=4:
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">SolveNQueens</span>(<span class="kw">int</span> n)
 {
     <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt;();
@@ -108,12 +109,12 @@ Two solutions exist for N=4:
     <span class="kw">return</span> results;
 }
 
-<span class="cm">// LC 52: just count solutions — same code but increment a counter</span></pre>
+<span class="cm">// LC 52: just count solutions � same code but increment a counter</span></pre>
 </div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">solve_n_queens</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">str</span>]]:
     results = []
     cols = <span class="mt">set</span>()
@@ -144,15 +145,15 @@ Two solutions exist for N=4:
 print(<span class="mt">len</span>(<span class="mt">solve_n_queens</span>(<span class="nm">4</span>)))  <span class="cm"># 2 solutions</span></pre>
 </div>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Sudoku Solver (LC 37)</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Sudoku Solver (LC 37)</div>
 
-<p>Fill a 9×9 Sudoku grid so each row, column, and 3×3 box contains 1–9 exactly once.</p>
-<p><strong>Strategy:</strong> Find empty cells one by one. Try digits 1–9; check row/col/box constraints. If valid, recurse. If recursion fails, backtrack.</p>
+<p>Fill a 9�9 Sudoku grid so each row, column, and 3�3 box contains 1�9 exactly once.</p>
+<p><strong>Strategy:</strong> Find empty cells one by one. Try digits 1�9; check row/col/box constraints. If valid, recurse. If recursion fails, backtrack.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public void</span> <span class="mt">SolveSudoku</span>(<span class="kw">char</span>[][] board)
 {
     <span class="mt">Solve</span>(board);
@@ -171,7 +172,7 @@ print(<span class="mt">len</span>(<span class="mt">solve_n_queens</span>(<span c
             <span class="kw">if</span> (<span class="mt">Solve</span>(board)) <span class="kw">return true</span>;
             board[r][c] = <span class="st">'.'</span>;   <span class="cm">// backtrack</span>
         }
-        <span class="kw">return false</span>;  <span class="cm">// no digit worked → dead end</span>
+        <span class="kw">return false</span>;  <span class="cm">// no digit worked ? dead end</span>
     }
     <span class="kw">return true</span>;  <span class="cm">// all cells filled</span>
 }
@@ -191,7 +192,7 @@ print(<span class="mt">len</span>(<span class="mt">solve_n_queens</span>(<span c
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">solve_sudoku</span>(board: <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">str</span>]]) -&gt; <span class="tp">None</span>:
 
     <span class="kw">def</span> <span class="mt">is_valid</span>(r: <span class="tp">int</span>, c: <span class="tp">int</span>, d: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
@@ -218,13 +219,13 @@ print(<span class="mt">len</span>(<span class="mt">solve_n_queens</span>(<span c
 </div>
 
 <div class="note">
-    <strong>📌 Optimization:</strong> Instead of scanning the board linearly, collect all empty cells upfront.
-    Further optimizations include constraint propagation (AC-3) and "minimum remaining values" heuristic —
+    <strong>?? Optimization:</strong> Instead of scanning the board linearly, collect all empty cells upfront.
+    Further optimizations include constraint propagation (AC-3) and "minimum remaining values" heuristic �
     fill the cell with fewest valid digits first. For interviews, the simple recursive version is sufficient.
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17A Complete</button>
-<div class="toast" id="toast">✅ Module 17A complete! N-Queens &amp; Sudoku mastered!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 17A Complete</button>
+<div class="toast" id="toast">? Module 17A complete! N-Queens &amp; Sudoku mastered!</div>
     <script>var MODULE_ID = 'm17a';</script>
     <script src="../dsa.js"></script>
 </body>

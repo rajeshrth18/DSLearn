@@ -1,35 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 11D — Sparse Tables | DSA Masterbook</title>
+    <title>Module 11D � Sparse Tables | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 7</div>
-    <h1>Module 11 — Part D</h1>
-    <div class="tagline">Sparse Tables — Range Minimum Query in O(1)</div>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 7</div>
+    <h1>Module 11 � Part D</h1>
+    <div class="tagline">Sparse Tables � Range Minimum Query in O(1)</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Precompute intervals of power-of-2 lengths for instant range queries</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1 Hour</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part D of Module 11</span>
+        <span>? Estimated Time: 1 Hour</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part D of Module 11</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 7 — Advanced Data Structures:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m11a_segment_trees.html">Segment Trees</a><br>
-    ✅ <strong>Part B</strong> — <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
-    ✅ <strong>Part C</strong> — <a href="m11c_union_find.html">Disjoint Set Union</a><br>
-    ▶ <strong>Part D</strong> — <em>You are here</em> — Sparse Tables<br>
-    ⬜ <strong>Part E</strong> — <a href="m11e_skip_lists.html">Skip Lists</a><br>
-    ⬜ <strong>Part F</strong> — <a href="m11f_kdtrees.html">K-D Trees</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 7 � Advanced Data Structures:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m11a_segment_trees.html">Segment Trees</a><br>
+    ? <strong>Part B</strong> � <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
+    ? <strong>Part C</strong> � <a href="m11c_union_find.html">Disjoint Set Union</a><br>
+    ? <strong>Part D</strong> � <em>You are here</em> � Sparse Tables<br>
+    ? <strong>Part E</strong> � <a href="m11e_skip_lists.html">Skip Lists</a><br>
+    ? <strong>Part F</strong> � <a href="m11f_kdtrees.html">K-D Trees</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m10a_dijkstra.html">&larr; Module 10 &mdash; Advanced Graphs</a>
@@ -37,21 +38,21 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — The RMQ Problem <span>— Range Minimum Query and why O(1) matters</span></li>
-        <li>Section 2 — The Sparse Table Idea <span>— Overlapping power-of-2 intervals</span></li>
-        <li>Section 3 — Build: O(n log n) <span>— Filling the table with DP</span></li>
-        <li>Section 4 — Query: O(1) <span>— Two overlapping intervals cover any range</span></li>
-        <li>Section 5 — Full C# &amp; Python Implementations <span>— Min and Max variants</span></li>
-        <li>Section 6 — Applications: LCA &amp; Cartesian Trees <span>— Euler tour + sparse table</span></li>
-        <li>Section 7 — LeetCode Walkthroughs <span>— #239, #2104, #1793</span></li>
-        <li>Section 8 — Q&amp;A Review <span>— 5 key questions</span></li>
+        <li>Section 1 � The RMQ Problem <span>� Range Minimum Query and why O(1) matters</span></li>
+        <li>Section 2 � The Sparse Table Idea <span>� Overlapping power-of-2 intervals</span></li>
+        <li>Section 3 � Build: O(n log n) <span>� Filling the table with DP</span></li>
+        <li>Section 4 � Query: O(1) <span>� Two overlapping intervals cover any range</span></li>
+        <li>Section 5 � Full C# &amp; Python Implementations <span>� Min and Max variants</span></li>
+        <li>Section 6 � Applications: LCA &amp; Cartesian Trees <span>� Euler tour + sparse table</span></li>
+        <li>Section 7 � LeetCode Walkthroughs <span>� #239, #2104, #1793</span></li>
+        <li>Section 8 � Q&amp;A Review <span>� 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The RMQ Problem</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The RMQ Problem</div>
 
 <p>The <strong>Range Minimum Query (RMQ)</strong> problem: given an array <code>arr</code> of n elements and 
 Q queries, each asking for the minimum (or maximum) in a range [L, R].</p>
@@ -62,27 +63,27 @@ Q queries, each asking for the minimum (or maximum) in a range [L, R].</p>
         <tr><td>Brute force (iterate)</td><td class="g">O(1)</td><td class="r">O(n)</td><td class="g">O(1)</td><td class="g">Yes</td></tr>
         <tr><td>Segment Tree</td><td class="g">O(n)</td><td class="g">O(log n)</td><td class="g">O(n)</td><td class="g">Yes</td></tr>
         <tr><td><strong>Sparse Table</strong></td><td class="o"><strong>O(n log n)</strong></td><td class="g"><strong>O(1)</strong></td><td class="o"><strong>O(n log n)</strong></td><td class="r"><strong>No</strong></td></tr>
-        <tr><td>Fischer-Heun (<± 1 arrays)</td><td class="g">O(n)</td><td class="g">O(1)</td><td class="g">O(n)</td><td class="r">No</td></tr>
+        <tr><td>Fischer-Heun (<� 1 arrays)</td><td class="g">O(n)</td><td class="g">O(1)</td><td class="g">O(n)</td><td class="r">No</td></tr>
     </tbody>
 </table>
 
 <div class="tip">
-    <strong>💡 When to use Sparse Table:</strong> The array is <strong>static</strong> (no updates) and you 
+    <strong>?? When to use Sparse Table:</strong> The array is <strong>static</strong> (no updates) and you 
     need many O(1) range minimum/maximum queries. Common in problems with heavy query load and 
-    no modifications — e.g., finding the minimum in a sliding window, LCA in trees, or 
+    no modifications � e.g., finding the minimum in a sliding window, LCA in trees, or 
     answering millions of RMQ queries on a fixed array.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — The Sparse Table Idea</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � The Sparse Table Idea</div>
 
 <p>The key insight: <strong>any range [L, R] can be covered by two overlapping intervals of a 
-power-of-2 length</strong> — and for minimum/maximum queries, overlapping is fine 
+power-of-2 length</strong> � and for minimum/maximum queries, overlapping is fine 
 (an element counted twice in a min-query doesn't change the answer).</p>
 
-<div class="diagram">SPARSE TABLE — Array [3, 1, 4, 1, 5, 9, 2, 6]  (0-indexed)
+<div class="diagram">SPARSE TABLE � Array [3, 1, 4, 1, 5, 9, 2, 6]  (0-indexed)
 
 st[k][i] = minimum of arr[i .. i + 2^k - 1]  (interval of length 2^k starting at i)
 
@@ -113,8 +114,8 @@ k=3 (intervals of length 8):
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Build: O(n log n)</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Build: O(n log n)</div>
 
 <p>Fill the table bottom-up: <code>st[k][i] = combine(st[k-1][i], st[k-1][i + 2^(k-1)])</code></p>
 
@@ -131,7 +132,7 @@ Total cells: n * K = O(n log n)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="cm">// Precompute log2 table for O(1) log lookup during queries</span>
 <span class="kw">int</span>[] log2 = <span class="kw">new int</span>[n + <span class="nm">1</span>];
 log2[<span class="nm">1</span>] = <span class="nm">0</span>;
@@ -175,37 +176,37 @@ st = [[<span class="nm">0</span>] * n <span class="kw">for</span> _ <span class=
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Query: O(1)</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Query: O(1)</div>
 
-<p>For range [L, R]: find the largest k such that 2^k ≤ (R - L + 1). Then:</p>
-<p style="text-align:center; font-size:1.1em;"><strong>RMQ(L, R) = min(st[k][L], st[k][R − 2^k + 1])</strong></p>
+<p>For range [L, R]: find the largest k such that 2^k = (R - L + 1). Then:</p>
+<p style="text-align:center; font-size:1.1em;"><strong>RMQ(L, R) = min(st[k][L], st[k][R - 2^k + 1])</strong></p>
 <p>Two intervals both of length 2^k: one from L, one ending at R. They overlap, but that's OK for min/max!</p>
 
 <div class="diagram">QUERY min of [2, 6]  (length = 5)
 
-k = floor(log2(5)) = 2  (2^2 = 4 ≤ 5)
+k = floor(log2(5)) = 2  (2^2 = 4 = 5)
 
-Interval 1: [2, 2+4-1] = [2, 5]  →  st[2][2] = 1
-Interval 2: [6-4+1, 6] = [3, 6]  →  st[2][3] = 1
+Interval 1: [2, 2+4-1] = [2, 5]  ?  st[2][2] = 1
+Interval 2: [6-4+1, 6] = [3, 6]  ?  st[2][3] = 1
 
-Answer = min(1, 1) = 1  ✓  (arr[3]=1 and arr[2-6]={4,1,5,9,2}, min=1)
+Answer = min(1, 1) = 1  ?  (arr[3]=1 and arr[2-6]={4,1,5,9,2}, min=1)
 
-Verification: arr[2..6] = [4, 1, 5, 9, 2], min = 1  ✓
+Verification: arr[2..6] = [4, 1, 5, 9, 2], min = 1  ?
 
 The overlap ([3,5] is counted in both) doesn't matter for min/max queries
 because min(x, x) = x (idempotent property).</div>
 
 <div class="warning">
-    <strong>⚠️ Idempotent operations only!</strong> The overlap trick only works for operations 
+    <strong>?? Idempotent operations only!</strong> The overlap trick only works for operations 
     where f(x, x) = x. This includes min, max, GCD, AND, OR. It does NOT work for sum 
-    (since sum(x, x) = 2x ≠ x). For sum queries with O(1), use a prefix sum array instead.
+    (since sum(x, x) = 2x ? x). For sum queries with O(1), use a prefix sum array instead.
 </div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// Query minimum of arr[l..r] — O(1)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// Query minimum of arr[l..r] � O(1)</span>
 <span class="kw">int</span> <span class="mt">RangeMin</span>(<span class="kw">int</span> l, <span class="kw">int</span> r)
 {
     <span class="kw">int</span> k = log2[r - l + <span class="nm">1</span>];
@@ -216,7 +217,7 @@ because min(x, x) = x (idempotent property).</div>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre class="python">
-<span class="cm"># Query minimum of arr[l..r] — O(1)</span>
+<span class="cm"># Query minimum of arr[l..r] � O(1)</span>
 <span class="kw">def</span> <span class="mt">range_min</span>(l, r):
     k = lg[r - l + <span class="nm">1</span>]
     <span class="kw">return</span> <span class="mt">min</span>(st[k][l], st[k][r - (<span class="nm">1</span> &lt;&lt; k) + <span class="nm">1</span>])</pre>
@@ -224,12 +225,12 @@ because min(x, x) = x (idempotent property).</div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Full C# &amp; Python Implementations</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Full C# &amp; Python Implementations</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">SparseTable</span>
 {
     <span class="kw">private readonly int</span>[,] st;
@@ -256,7 +257,7 @@ because min(x, x) = x (idempotent property).</div>
                 st[k, i] = <span class="tp">Math</span>.<span class="mt">Min</span>(st[k-<span class="nm">1</span>, i], st[k-<span class="nm">1</span>, i + (<span class="nm">1</span> &lt;&lt; (k-<span class="nm">1</span>))]);
     }
 
-    <span class="cm">/// Range minimum of arr[l..r] — O(1)</span>
+    <span class="cm">/// Range minimum of arr[l..r] � O(1)</span>
     <span class="kw">public int</span> <span class="mt">RangeMin</span>(<span class="kw">int</span> l, <span class="kw">int</span> r)
     {
         <span class="kw">int</span> k = log2[r - l + <span class="nm">1</span>];
@@ -273,7 +274,7 @@ because min(x, x) = x (idempotent property).</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> math
 
 <span class="kw">class</span> <span class="tp">SparseTable</span>:
@@ -296,10 +297,10 @@ because min(x, x) = x (idempotent property).</div>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Applications: LCA &amp; Cartesian Trees</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Applications: LCA &amp; Cartesian Trees</div>
 
-<h3>6.1 — Lowest Common Ancestor (LCA) via Sparse Table</h3>
+<h3>6.1 � Lowest Common Ancestor (LCA) via Sparse Table</h3>
 <p>The LCA of two nodes in a tree can be reduced to RMQ in O(n) preprocessing + O(n) space, 
 then answered in O(1):</p>
 <ol>
@@ -322,17 +323,17 @@ EULER TOUR (record node at each DFS step):
 
 Euler tour:  [1, 2, 4, 2, 5, 2, 1, 3, 1]
 Depths:      [0, 1, 2, 1, 2, 1, 0, 1, 0]
-First occ:   node1→0, node2→1, node3→7, node4→2, node5→4
+First occ:   node1?0, node2?1, node3?7, node4?2, node5?4
 
 LCA(4, 5):  first_occ[4]=2, first_occ[5]=4
   RMQ on depths[2..4] = min(2,1,2) = 1 at index 3
-  euler_tour[3] = 2  →  LCA = 2  ✓
+  euler_tour[3] = 2  ?  LCA = 2  ?
 
 LCA(4, 3):  first_occ[4]=2, first_occ[3]=7
   RMQ on depths[2..7] = min(2,1,2,1,0,1) = 0 at index 6
-  euler_tour[6] = 1  →  LCA = 1  ✓</div>
+  euler_tour[6] = 1  ?  LCA = 1  ?</div>
 
-<h3>6.2 — Cartesian Trees</h3>
+<h3>6.2 � Cartesian Trees</h3>
 <p>A Cartesian Tree is a binary tree built from an array such that:</p>
 <ul>
     <li>The <strong>root</strong> is the minimum (or maximum) element</li>
@@ -344,13 +345,13 @@ RMQ structure of the array. They're the basis of treaps (tree + heap).</p>
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — LeetCode Walkthroughs</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � LeetCode Walkthroughs</div>
 
-<h3>LeetCode #239 — Sliding Window Maximum (Hard)</h3>
+<h3>LeetCode #239 � Sliding Window Maximum (Hard)</h3>
 <p><em>Given an array and window size k, find the maximum in each sliding window of size k.</em></p>
 <div class="note">
-    <strong>📝 Two approaches:</strong>
+    <strong>?? Two approaches:</strong>
     <br><br>
     <strong>Monotonic Deque (O(n)):</strong> Maintain a deque of indices in decreasing order of values. 
     For each new element, pop from back while it's smaller. Pop from front if outside window. 
@@ -362,7 +363,7 @@ RMQ structure of the array. They're the basis of treaps (tree + heap).</p>
 </div>
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="cm">// Sparse Table approach for sliding window maximum</span>
 <span class="kw">public int</span>[] <span class="mt">MaxSlidingWindow</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
@@ -416,53 +417,53 @@ RMQ structure of the array. They're the basis of treaps (tree + heap).</p>
     <span class="kw">return</span> res</pre>
 </div>
 
-<h3>LeetCode #2104 — Sum of Subarray Ranges (Medium)</h3>
+<h3>LeetCode #2104 � Sum of Subarray Ranges (Medium)</h3>
 <p><em>For every subarray, sum up (max - min). Return the total.</em></p>
 <div class="note">
-    <strong>📝 Approaches:</strong> O(n²) brute force or O(n) using monotonic stacks to count the 
+    <strong>?? Approaches:</strong> O(n�) brute force or O(n) using monotonic stacks to count the 
     contribution of each element as a range maximum or minimum. The sparse table approach 
-    (O(n² log n)) is not optimal here, but understanding which tools fit which problem is key: 
+    (O(n� log n)) is not optimal here, but understanding which tools fit which problem is key: 
     sparse table excels when you have many independent range queries, not when you need to 
     aggregate over ALL subarrays (which benefits more from monotonic stack techniques).
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Q&amp;A Review</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: Why can't a Sparse Table answer range sum queries with O(1) like it does for range min/max?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The O(1) query trick uses two overlapping intervals. For min/max, overlapping is fine because min(x, x) = x — the same element counted twice doesn't change the answer (idempotent property). But for sum, counting an element twice DOUBLES its contribution: sum(x, x) = 2x ≠ x. The two-interval approach would overcount elements in the overlap region. For O(1) range sum queries on static arrays, use a prefix sum array instead: rangeSum(L,R) = prefix[R] - prefix[L-1].</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The O(1) query trick uses two overlapping intervals. For min/max, overlapping is fine because min(x, x) = x � the same element counted twice doesn't change the answer (idempotent property). But for sum, counting an element twice DOUBLES its contribution: sum(x, x) = 2x ? x. The two-interval approach would overcount elements in the overlap region. For O(1) range sum queries on static arrays, use a prefix sum array instead: rangeSum(L,R) = prefix[R] - prefix[L-1].</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: The sparse table build is O(n log n) time and space. For n=10^5, is this a problem?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">For n=10^5: log₂(n) ≈ 17, so the table is 10^5 × 17 = 1.7 million integers ≈ 6.8 MB. This is acceptable. For n=10^6: ~20 million entries ≈ 80 MB — near the typical 256 MB memory limit. For n=10^7+: memory becomes a concern. In practice, for most competitive programming problems (n ≤ 10^5 or 10^6), sparse table is fine. The build time O(n log n) is also usually acceptable since it's a one-time cost, and O(1) queries make it worthwhile when Q (number of queries) is large.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">For n=10^5: log2(n) � 17, so the table is 10^5 � 17 = 1.7 million integers � 6.8 MB. This is acceptable. For n=10^6: ~20 million entries � 80 MB � near the typical 256 MB memory limit. For n=10^7+: memory becomes a concern. In practice, for most competitive programming problems (n = 10^5 or 10^6), sparse table is fine. The build time O(n log n) is also usually acceptable since it's a one-time cost, and O(1) queries make it worthwhile when Q (number of queries) is large.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: How does the Euler Tour + Sparse Table achieve O(1) LCA queries after O(n) preprocessing?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
     <div class="answer">The Euler Tour of a tree visits each edge twice (once down, once up), giving 2n-1 visits total. LCA(u,v) = the shallowest (minimum depth) node visited between u and v in the tour. This reduces LCA to range minimum query on the depth array. Build sparse table on the 2n-1 depth values: O(n log n) time/space. Then LCA in O(1): find first occurrence of u (index fu) and first occurrence of v (fv), swap if fu > fv, then answer = euler_tour[RMQ(fu, fv)]. The classic reference is the Bender-Farach-Colton algorithm which uses blocks to achieve O(n) preprocessing.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: What operations besides min and max work with the sparse table O(1) trick?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Any <strong>idempotent</strong> binary operation f(x,y) where f(x,x)=x works: <strong>min</strong> (min(x,x)=x ✓), <strong>max</strong> (max(x,x)=x ✓), <strong>GCD</strong> (gcd(x,x)=x ✓), <strong>bitwise AND</strong> (x AND x = x ✓), <strong>bitwise OR</strong> (x OR x = x ✓). Does NOT work: sum (x+x=2x), product (x*x=x² ≠ x for most x), XOR (x XOR x = 0 ≠ x), subtraction. For non-idempotent operations with O(1) queries, you need more complex structures like sqrt decomposition or offline algorithms.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Any <strong>idempotent</strong> binary operation f(x,y) where f(x,x)=x works: <strong>min</strong> (min(x,x)=x ?), <strong>max</strong> (max(x,x)=x ?), <strong>GCD</strong> (gcd(x,x)=x ?), <strong>bitwise AND</strong> (x AND x = x ?), <strong>bitwise OR</strong> (x OR x = x ?). Does NOT work: sum (x+x=2x), product (x*x=x� ? x for most x), XOR (x XOR x = 0 ? x), subtraction. For non-idempotent operations with O(1) queries, you need more complex structures like sqrt decomposition or offline algorithms.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: Compare sparse table to segment tree for a read-heavy, no-update scenario with 10^6 queries on an array of size 10^5.</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Segment tree: O(n) build, O(log n) per query = O(n + Q log n) ≈ 10^5 + 10^6 × 17 = ~17 million operations. Sparse table: O(n log n) build, O(1) per query = O(n log n + Q) ≈ 1.7M + 1M = ~2.7M operations. Sparse table is ~6× faster for this workload. Additionally, sparse table queries have excellent cache behavior (two direct array accesses), while segment tree queries involve O(log n) pointer-chasing through the tree. Conclusion: for static arrays with heavy query loads, sparse table clearly wins. The main downside is the 6.8 MB vs 400 KB memory usage.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Segment tree: O(n) build, O(log n) per query = O(n + Q log n) � 10^5 + 10^6 � 17 = ~17 million operations. Sparse table: O(n log n) build, O(1) per query = O(n log n + Q) � 1.7M + 1M = ~2.7M operations. Sparse table is ~6� faster for this workload. Additionally, sparse table queries have excellent cache behavior (two direct array accesses), while segment tree queries involve O(log n) pointer-chasing through the tree. Conclusion: for static arrays with heavy query loads, sparse table clearly wins. The main downside is the 6.8 MB vs 400 KB memory usage.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 11D Complete</button>
-<div class="toast" id="toast">✅ Module 11D marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 11D Complete</button>
+<div class="toast" id="toast">? Module 11D marked complete!</div>
     <script>var MODULE_ID = 'm11d';</script>
     <script src="../dsa.js"></script>
 </body>

@@ -1,33 +1,34 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 9C — Depth-First Search (DFS) | DSA Masterbook</title>
+    <title>Module 9C � Depth-First Search (DFS) | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
-    <h1>Module 9 — Part C</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
+    <h1>Module 9 � Part C</h1>
     <div class="tagline">Depth-First Search (DFS)</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Go deep before going wide — cycle detection, topological order, connected components, path finding</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Go deep before going wide � cycle detection, topological order, connected components, path finding</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1.5 Hours</span>
-        <span>🎯 Intermediate</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Phase 6 · Module 9C</span>
+        <span>? Estimated Time: 1.5 Hours</span>
+        <span>?? Intermediate</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Phase 6 � Module 9C</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 9 — Graph Fundamentals:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m09a_graph_theory.html">Graph Theory &amp; Representations</a><br>
-    ✅ <strong>Part B</strong> — <a href="m09b_bfs.html">Breadth-First Search (BFS)</a><br>
-    ▶ <strong>Part C</strong> — <em>You are here</em> — Depth-First Search (DFS)<br>
-    ⬜ <strong>Part D</strong> — <a href="m09d_graph_practice.html">Practice: 12 Problems</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 9 � Graph Fundamentals:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m09a_graph_theory.html">Graph Theory &amp; Representations</a><br>
+    ? <strong>Part B</strong> � <a href="m09b_bfs.html">Breadth-First Search (BFS)</a><br>
+    ? <strong>Part C</strong> � <em>You are here</em> � Depth-First Search (DFS)<br>
+    ? <strong>Part D</strong> � <a href="m09d_graph_practice.html">Practice: 12 Problems</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase5/m08a_hashing.html">&larr; Module 8 &mdash; Hashing</a>
@@ -35,48 +36,48 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Module 9C</h2>
+    <h2>?? Contents � Module 9C</h2>
     <ol>
-        <li>What Is DFS? <span>— The maze explorer analogy</span></li>
-        <li>DFS Step-by-Step Walkthrough <span>— Recursive call stack trace</span></li>
-        <li>DFS Variants — Recursive vs Iterative <span>— Stack-based iterative DFS</span></li>
-        <li>DFS Timestamps — Pre/Post Order <span>— Discovery and finish times</span></li>
-        <li>Cycle Detection with DFS <span>— Undirected and directed graphs</span></li>
-        <li>Topological Sort using DFS <span>— Post-order reversal trick</span></li>
-        <li>DFS for Connected/Strongly Connected Components <span>— Graph analysis</span></li>
-        <li>DFS on Grids — Flood Fill &amp; Islands <span>— Classic matrix problems</span></li>
-        <li>C# Full Implementation <span>— All 5 DFS applications</span></li>
-        <li>Python Full Implementation <span>— Pythonic recursive + iterative</span></li>
-        <li>BFS vs DFS Comparison Table <span>— When to use which</span></li>
-        <li>Real-World Usage <span>— Git, compilers, networking</span></li>
-        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+        <li>What Is DFS? <span>� The maze explorer analogy</span></li>
+        <li>DFS Step-by-Step Walkthrough <span>� Recursive call stack trace</span></li>
+        <li>DFS Variants � Recursive vs Iterative <span>� Stack-based iterative DFS</span></li>
+        <li>DFS Timestamps � Pre/Post Order <span>� Discovery and finish times</span></li>
+        <li>Cycle Detection with DFS <span>� Undirected and directed graphs</span></li>
+        <li>Topological Sort using DFS <span>� Post-order reversal trick</span></li>
+        <li>DFS for Connected/Strongly Connected Components <span>� Graph analysis</span></li>
+        <li>DFS on Grids � Flood Fill &amp; Islands <span>� Classic matrix problems</span></li>
+        <li>C# Full Implementation <span>� All 5 DFS applications</span></li>
+        <li>Python Full Implementation <span>� Pythonic recursive + iterative</span></li>
+        <li>BFS vs DFS Comparison Table <span>� When to use which</span></li>
+        <li>Real-World Usage <span>� Git, compilers, networking</span></li>
+        <li>Check Your Understanding <span>� 5 quiz questions</span></li>
     </ol>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 1 — What Is DFS?</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 1 � What Is DFS?</div>
 
 <p>Imagine exploring a maze by always taking the <strong>first unexplored path</strong> you see, going as
 deep as possible. When you hit a dead end, you backtrack to the last junction and try the
 next path. You fully explore one branch before touching another. That is <strong>Depth-First
 Search</strong>.</p>
 
-<p>DFS uses a <strong>stack</strong> — either the call stack (recursive) or an explicit stack (iterative).
+<p>DFS uses a <strong>stack</strong> � either the call stack (recursive) or an explicit stack (iterative).
 It ventures as far as possible from the start vertex along a single chain of edges, only
 backtracking when it can go no further.</p>
 
 <div class="tip">
-    <strong>💡 BFS vs DFS at a glance:</strong><br>
-    <strong>BFS</strong> — Queue (FIFO) — Level by level — <em>Shortest path in unweighted graphs</em><br>
-    <strong>DFS</strong> — Stack (LIFO) — Go deep first — <em>Cycle detection, topological sort, SCC</em>
+    <strong>?? BFS vs DFS at a glance:</strong><br>
+    <strong>BFS</strong> � Queue (FIFO) � Level by level � <em>Shortest path in unweighted graphs</em><br>
+    <strong>DFS</strong> � Stack (LIFO) � Go deep first � <em>Cycle detection, topological sort, SCC</em>
 </div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 2 — DFS Step-by-Step Walkthrough</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 2 � DFS Step-by-Step Walkthrough</div>
 
-<div class="diagram">DFS TRAVERSAL — Recursive call stack trace
+<div class="diagram">DFS TRAVERSAL � Recursive call stack trace
 
    Graph (undirected, start at A):
           A
@@ -87,58 +88,58 @@ backtracking when it can go no further.</p>
 
    DFS from A (neighbors: B, C):
 
-   DFS(A)                            ← push call
-     mark A visited  → output: [A]
+   DFS(A)                            ? push call
+     mark A visited  ? output: [A]
      explore neighbor B:
-       DFS(B)                        ← push call
-         mark B visited  → output: [A, B]
-         explore neighbor A: already visited — skip
+       DFS(B)                        ? push call
+         mark B visited  ? output: [A, B]
+         explore neighbor A: already visited � skip
          explore neighbor D:
-           DFS(D)                    ← push call
-             mark D visited  → output: [A, B, D]
-             explore neighbor B: visited — skip
-             return                  ← pop call (D done)
+           DFS(D)                    ? push call
+             mark D visited  ? output: [A, B, D]
+             explore neighbor B: visited � skip
+             return                  ? pop call (D done)
          explore neighbor E:
-           DFS(E)                    ← push call
-             mark E visited  → output: [A, B, D, E]
-             explore neighbor B: visited — skip
-             return                  ← pop call (E done)
-         return                      ← pop call (B done)
+           DFS(E)                    ? push call
+             mark E visited  ? output: [A, B, D, E]
+             explore neighbor B: visited � skip
+             return                  ? pop call (E done)
+         return                      ? pop call (B done)
      explore neighbor C:
-       DFS(C)                        ← push call
-         mark C visited  → output: [A, B, D, E, C]
-         explore neighbor A: visited — skip
+       DFS(C)                        ? push call
+         mark C visited  ? output: [A, B, D, E, C]
+         explore neighbor A: visited � skip
          explore neighbor F:
-           DFS(F)                    ← push call
-             mark F visited  → output: [A, B, D, E, C, F]
-             return                  ← pop call (F done)
-         return                      ← pop call (C done)
-     return                          ← pop call (A done)
+           DFS(F)                    ? push call
+             mark F visited  ? output: [A, B, D, E, C, F]
+             return                  ? pop call (F done)
+         return                      ? pop call (C done)
+     return                          ? pop call (A done)
 
-   DFS ORDER: A → B → D → E → C → F
-   BFS ORDER: A → B → C → D → E → F  (for comparison)
+   DFS ORDER: A ? B ? D ? E ? C ? F
+   BFS ORDER: A ? B ? C ? D ? E ? F  (for comparison)
 
    KEY INSIGHT: DFS goes DEEP into B's subtree (D, E) before
    visiting C. BFS visits C (same level as B) before D and E.</div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 3 — DFS Variants</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 3 � DFS Variants</div>
 
-<h3>3.1 — Recursive DFS (uses call stack)</h3>
+<h3>3.1 � Recursive DFS (uses call stack)</h3>
 <p>The natural, elegant form. The system's call stack acts as the DFS stack. Simple to write,
 but risks <strong>stack overflow</strong> for very deep graphs (depth &gt; ~5,000 in Python, ~millions in C#).</p>
 
-<h3>3.2 — Iterative DFS (explicit stack)</h3>
+<h3>3.2 � Iterative DFS (explicit stack)</h3>
 <p>Uses a <code>Stack&lt;T&gt;</code> / Python <code>list</code> explicitly. Avoids recursion limits.
 <strong>Note:</strong> iterative DFS with a stack does <em>not</em> always visit nodes in the same order
 as recursive DFS because the stack reverses neighbor order. For DFS applications that
 depend on pre/post order (like topological sort), use recursive DFS or handle carefully.</p>
 
-<div class="diagram">RECURSIVE vs ITERATIVE DFS — Order difference
+<div class="diagram">RECURSIVE vs ITERATIVE DFS � Order difference
 
-   Graph: A → [B, C], B → [D, E], C → [F]
+   Graph: A ? [B, C], B ? [D, E], C ? [F]
 
    Recursive DFS from A:
      Visit A, then first neighbor B (go deep), then D, E, then C, F
@@ -152,24 +153,24 @@ depend on pre/post order (like topological sort), use recursive DFS or handle ca
    Note: If neighbors are pushed in REVERSE order, iterative DFS
    gives same order as recursive. If pushed forward, order is reversed.
 
-   IMPORTANT: Neither DFS order is "correct" — DFS just needs to
+   IMPORTANT: Neither DFS order is "correct" � DFS just needs to
    go deep. The specific order depends on neighbor ordering in the graph.</div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 4 — DFS Timestamps (Pre/Post Order)</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 4 � DFS Timestamps (Pre/Post Order)</div>
 
 <p>During DFS, we can assign each vertex two timestamps:</p>
 <ul>
-    <li><strong>pre[v] (discovery time)</strong> — clock value when v is first visited</li>
-    <li><strong>post[v] (finish time)</strong> — clock value when DFS returns from v (all descendants done)</li>
+    <li><strong>pre[v] (discovery time)</strong> � clock value when v is first visited</li>
+    <li><strong>post[v] (finish time)</strong> � clock value when DFS returns from v (all descendants done)</li>
 </ul>
 <p>These timestamps reveal the DFS tree structure and are essential for topological sort and SCC algorithms.</p>
 
 <div class="diagram">DFS TIMESTAMPS
 
-   Graph: A → B → D, A → C → D, B → C
+   Graph: A ? B ? D, A ? C ? D, B ? C
    (directed graph)
 
    DFS from A, clock starts at 0:
@@ -196,44 +197,44 @@ depend on pre/post order (like topological sort), use recursive DFS or handle ca
          then v is a DESCENDANT of u in the DFS tree.
 
    TOPOLOGICAL SORT: vertices in DECREASING post order = valid topological order
-   For above: A(8), B(7), C(6), D(4) → Topo order: A B C D ✓
+   For above: A(8), B(7), C(6), D(4) ? Topo order: A B C D ?
    (A must come before B and C; B before C and D; C before D)</div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 5 — Cycle Detection with DFS</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 5 � Cycle Detection with DFS</div>
 
-<h3>5.1 — Undirected Graph: Back Edge = Cycle</h3>
+<h3>5.1 � Undirected Graph: Back Edge = Cycle</h3>
 <p>During DFS on an undirected graph, if we find an edge to a vertex that is already visited
-AND is not our direct parent, it's a <strong>back edge</strong> → cycle detected.</p>
+AND is not our direct parent, it's a <strong>back edge</strong> ? cycle detected.</p>
 
-<div class="diagram">CYCLE DETECTION — UNDIRECTED GRAPH
+<div class="diagram">CYCLE DETECTION � UNDIRECTED GRAPH
 
-   Graph: A–B–C–A (triangle — has cycle)
+   Graph: A�B�C�A (triangle � has cycle)
 
    DFS from A:
    Visit A, go to B (parent=A)
    Visit B, go to C (parent=B)
-   Visit C, check neighbors: A is visited, A ≠ parent(B) → CYCLE DETECTED!
+   Visit C, check neighbors: A is visited, A ? parent(B) ? CYCLE DETECTED!
 
-   Graph: A–B–C (path — no cycle)
+   Graph: A�B�C (path � no cycle)
    Visit A, go to B, go to C
-   C's only neighbor B = parent → not a cycle → no cycle found</div>
+   C's only neighbor B = parent ? not a cycle ? no cycle found</div>
 
-<h3>5.2 — Directed Graph: Three-Color DFS</h3>
-<p>For directed graphs, an undirected "already visited" check is not enough — we need to
+<h3>5.2 � Directed Graph: Three-Color DFS</h3>
+<p>For directed graphs, an undirected "already visited" check is not enough � we need to
 distinguish between <em>back edges</em> (cycle) and <em>cross/forward edges</em> (no cycle).</p>
 <ul>
-    <li><strong>WHITE</strong> — not yet visited</li>
-    <li><strong>GRAY</strong> — currently in the DFS recursion stack (being processed)</li>
-    <li><strong>BLACK</strong> — fully processed (all descendants done)</li>
+    <li><strong>WHITE</strong> � not yet visited</li>
+    <li><strong>GRAY</strong> � currently in the DFS recursion stack (being processed)</li>
+    <li><strong>BLACK</strong> � fully processed (all descendants done)</li>
 </ul>
-<p>A back edge goes from a GRAY vertex to another GRAY vertex → <strong>cycle detected</strong>.</p>
+<p>A back edge goes from a GRAY vertex to another GRAY vertex ? <strong>cycle detected</strong>.</p>
 
-<div class="diagram">THREE-COLOR DFS — DIRECTED CYCLE DETECTION
+<div class="diagram">THREE-COLOR DFS � DIRECTED CYCLE DETECTION
 
-   Directed Graph: A → B → C → A  (cycle!)
+   Directed Graph: A ? B ? C ? A  (cycle!)
 
    DFS from A:
    Color A = GRAY (in stack)
@@ -241,28 +242,28 @@ distinguish between <em>back edges</em> (cycle) and <em>cross/forward edges</em>
      Color B = GRAY (in stack)
        DFS on C:
        Color C = GRAY (in stack)
-         C's neighbor A: A is GRAY → BACK EDGE → CYCLE DETECTED!
+         C's neighbor A: A is GRAY ? BACK EDGE ? CYCLE DETECTED!
        Color C = BLACK
      Color B = BLACK
    Color A = BLACK
 
-   Directed Graph: A → B → C (DAG — no cycle)
-   DFS from A: A=GRAY, B=GRAY, C=GRAY→BLACK, B→BLACK, A→BLACK
-   No edge ever goes to a GRAY vertex → no cycle</div>
+   Directed Graph: A ? B ? C (DAG � no cycle)
+   DFS from A: A=GRAY, B=GRAY, C=GRAY?BLACK, B?BLACK, A?BLACK
+   No edge ever goes to a GRAY vertex ? no cycle</div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 6 — Topological Sort using DFS</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 6 � Topological Sort using DFS</div>
 
 <p>A <strong>topological sort</strong> of a Directed Acyclic Graph (DAG) is a linear ordering of vertices
-such that for every directed edge u→v, u appears before v. This represents dependency ordering —
+such that for every directed edge u?v, u appears before v. This represents dependency ordering �
 compile order, task scheduling, prerequisite chains.</p>
 
 <p><strong>DFS-based algorithm:</strong> Run DFS. When a vertex is fully processed (post-order), add it
 to the front of the result list. The resulting list is a valid topological order.</p>
 
-<div class="diagram">TOPOLOGICAL SORT — DFS POST-ORDER
+<div class="diagram">TOPOLOGICAL SORT � DFS POST-ORDER
 
    DAG: Courses with prerequisites
    A = Intro CS
@@ -271,7 +272,7 @@ to the front of the result list. The resulting list is a valid topological order
    D = Systems (requires A)
    E = Compilers (requires C, D)
 
-   Directed edges: A→B, A→D, B→C, C→E, D→E
+   Directed edges: A?B, A?D, B?C, C?E, D?E
 
    DFS from A:
    Enter A
@@ -279,26 +280,26 @@ to the front of the result list. The resulting list is a valid topological order
        Enter C
          Enter E
            (no unvisited outgoing edges)
-         Exit E → prepend E: [E]
-       Exit C → prepend C: [C, E]
-     Exit B → prepend B: [B, C, E]
+         Exit E ? prepend E: [E]
+       Exit C ? prepend C: [C, E]
+     Exit B ? prepend B: [B, C, E]
      Enter D
-       E already visited — skip
-     Exit D → prepend D: [D, B, C, E]
-   Exit A → prepend A: [A, D, B, C, E]
+       E already visited � skip
+     Exit D ? prepend D: [D, B, C, E]
+   Exit A ? prepend A: [A, D, B, C, E]
 
-   Topological order: A → D → B → C → E
-   (Check: A before B ✓, A before D ✓, B before C ✓, C before E ✓, D before E ✓)</div>
+   Topological order: A ? D ? B ? C ? E
+   (Check: A before B ?, A before D ?, B before C ?, C before E ?, D before E ?)</div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 7 — DFS on Grids: Flood Fill &amp; Islands</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 7 � DFS on Grids: Flood Fill &amp; Islands</div>
 
 <p>DFS on a 2D grid explores all connected cells from a starting cell. This is the "flood fill"
 algorithm (used in paint buckets) and powers the classic "number of islands" problem.</p>
 
-<div class="diagram">FLOOD FILL / NUMBER OF ISLANDS — DFS on Grid
+<div class="diagram">FLOOD FILL / NUMBER OF ISLANDS � DFS on Grid
 
    Grid: 1=land, 0=water
    1 1 0 0 0
@@ -310,14 +311,14 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
    all connected land as visited. Count = # times DFS starts.
 
    Scan (0,0)=1: DFS! Mark connected land:
-     (0,0)(0,1)(1,0)(1,1) → all marked visited
+     (0,0)(0,1)(1,0)(1,1) ? all marked visited
      Islands found so far: 1
 
    Continue scan... (0,2)=0, (0,3)=0, (0,4)=0...
-   (2,2)=1: DFS! Mark (2,2) → visited
+   (2,2)=1: DFS! Mark (2,2) ? visited
      Islands found so far: 2
 
-   (3,3)=1: DFS! Mark (3,3)(3,4) → visited
+   (3,3)=1: DFS! Mark (3,3)(3,4) ? visited
      Islands found so far: 3
 
    Total islands = 3
@@ -327,22 +328,22 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 8 — C# Full DFS Implementation</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 8 � C# Full DFS Implementation</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
-<span class="cm">// ═══════════════════════════════════════════════════════════════
-// DFS — Traversal, Cycle Detection, Topological Sort, Islands
-// ═══════════════════════════════════════════════════════════════</span>
+<span class="cm">// ---------------------------------------------------------------
+// DFS � Traversal, Cycle Detection, Topological Sort, Islands
+// ---------------------------------------------------------------</span>
 
 <span class="kw">public static class</span> <span class="tp">DFS</span>
 {
-    <span class="cm">// ── 1. Recursive DFS traversal ──────────────────────────────</span>
+    <span class="cm">// -- 1. Recursive DFS traversal ------------------------------</span>
     <span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; <span class="mt">Traverse</span>(
         <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; graph, <span class="kw">string</span> start)
     {
@@ -364,7 +365,7 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
                 <span class="mt">DfsHelper</span>(graph, neighbor, visited, result);
     }
 
-    <span class="cm">// ── 2. Cycle detection — undirected graph ───────────────────</span>
+    <span class="cm">// -- 2. Cycle detection � undirected graph -------------------</span>
     <span class="kw">public static bool</span> <span class="mt">HasCycleUndirected</span>(
         <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; graph)
     {
@@ -384,18 +385,18 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
         <span class="kw">if</span> (!graph.<span class="mt">ContainsKey</span>(v)) <span class="kw">return false</span>;
         <span class="kw">foreach</span> (<span class="kw">var</span> neighbor <span class="kw">in</span> graph[v])
         {
-            <span class="kw">if</span> (!visited.<span class="mt">Contains</span>(neighbor))  <span class="cm">// unvisited — recurse</span>
+            <span class="kw">if</span> (!visited.<span class="mt">Contains</span>(neighbor))  <span class="cm">// unvisited � recurse</span>
             {
                 <span class="kw">if</span> (<span class="mt">CycleUndirectedDFS</span>(graph, neighbor, v, visited))
                     <span class="kw">return true</span>;
             }
-            <span class="kw">else if</span> (neighbor != parent)        <span class="cm">// visited + not parent → back edge → CYCLE</span>
+            <span class="kw">else if</span> (neighbor != parent)        <span class="cm">// visited + not parent ? back edge ? CYCLE</span>
                 <span class="kw">return true</span>;
         }
         <span class="kw">return false</span>;
     }
 
-    <span class="cm">// ── 3. Cycle detection — directed graph (three-color) ───────</span>
+    <span class="cm">// -- 3. Cycle detection � directed graph (three-color) -------</span>
     <span class="kw">public static bool</span> <span class="mt">HasCycleDirected</span>(
         <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; graph)
     {
@@ -429,7 +430,7 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
         <span class="kw">return false</span>;
     }
 
-    <span class="cm">// ── 4. Topological Sort — DFS post-order ────────────────────</span>
+    <span class="cm">// -- 4. Topological Sort � DFS post-order --------------------</span>
     <span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; <span class="mt">TopologicalSort</span>(
         <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; graph)
     {
@@ -453,7 +454,7 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
         result.<span class="mt">AddFirst</span>(v);  <span class="cm">// POST-ORDER: add to front after all descendants</span>
     }
 
-    <span class="cm">// ── 5. Number of Islands — DFS flood fill on grid ───────────</span>
+    <span class="cm">// -- 5. Number of Islands � DFS flood fill on grid -----------</span>
     <span class="kw">public static int</span> <span class="mt">NumIslands</span>(<span class="kw">char</span>[][] grid)
     {
         <span class="kw">int</span> islands = <span class="nm">0</span>;
@@ -499,8 +500,8 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
         };
 
         <span class="kw">var</span> order = <span class="tp">DFS</span>.<span class="mt">Traverse</span>(undirected, <span class="st">"A"</span>);
-        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"DFS order: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, order));
-        <span class="cm">// DFS order: A → B → D → E → C → F</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"DFS order: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" ? "</span>, order));
+        <span class="cm">// DFS order: A ? B ? D ? E ? C ? F</span>
 
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Has cycle (undirected): "</span> + <span class="tp">DFS</span>.<span class="mt">HasCycleUndirected</span>(undirected));
         <span class="cm">// Has cycle (undirected): False</span>
@@ -510,7 +511,7 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Has cycle after adding D-A: "</span> + <span class="tp">DFS</span>.<span class="mt">HasCycleUndirected</span>(undirected));
         <span class="cm">// Has cycle after adding D-A: True</span>
 
-        <span class="cm">// Directed DAG: A→B→C, A→D→C, C→E</span>
+        <span class="cm">// Directed DAG: A?B?C, A?D?C, C?E</span>
         <span class="kw">var</span> dag = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;
         {
             [<span class="st">"A"</span>] = <span class="kw">new</span>() { <span class="st">"B"</span>, <span class="st">"D"</span> },
@@ -521,8 +522,8 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
         };
 
         <span class="kw">var</span> topo = <span class="tp">DFS</span>.<span class="mt">TopologicalSort</span>(dag);
-        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Topo sort: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, topo));
-        <span class="cm">// Topo sort: A → D → B → C → E  (one valid ordering)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Topo sort: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" ? "</span>, topo));
+        <span class="cm">// Topo sort: A ? D ? B ? C ? E  (one valid ordering)</span>
 
         <span class="cm">// Islands</span>
         <span class="kw">char</span>[][] grid = {
@@ -538,14 +539,14 @@ algorithm (used in paint buckets) and powers the classic "number of islands" pro
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">import</span> sys
 <span class="kw">from</span> typing <span class="kw">import</span> Dict, List, Optional, Set
 sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increase limit for deep graphs</span>
 
-<span class="cm"># ═══════════════════════════════════════════════════════════════
-# DFS — Full Python Implementation
-# ═══════════════════════════════════════════════════════════════</span>
+<span class="cm"># ---------------------------------------------------------------
+# DFS � Full Python Implementation
+# ---------------------------------------------------------------</span>
 
 <span class="tp">Graph</span> = Dict[str, List[str]]
 
@@ -574,7 +575,7 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
             <span class="kw">if</span> nb <span class="kw">not in</span> visited:
                 <span class="kw">if</span> <span class="mt">dfs</span>(nb, v):
                     <span class="kw">return True</span>
-            <span class="kw">elif</span> nb != parent:  <span class="cm"># visited AND not direct parent → back edge → cycle</span>
+            <span class="kw">elif</span> nb != parent:  <span class="cm"># visited AND not direct parent ? back edge ? cycle</span>
                 <span class="kw">return True</span>
         <span class="kw">return False</span>
 
@@ -586,7 +587,7 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
 
 
 <span class="kw">def</span> <span class="mt">has_cycle_directed</span>(graph: <span class="tp">Graph</span>) -> bool:
-    <span class="st">"""Cycle detection in directed graph — three-color DFS."""</span>
+    <span class="st">"""Cycle detection in directed graph � three-color DFS."""</span>
     WHITE, GRAY, BLACK = <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">2</span>
     color = {v: WHITE <span class="kw">for</span> v <span class="kw">in</span> graph}
 
@@ -655,8 +656,8 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
         <span class="st">"A"</span>: [<span class="st">"B"</span>, <span class="st">"C"</span>], <span class="st">"B"</span>: [<span class="st">"A"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>],
         <span class="st">"C"</span>: [<span class="st">"A"</span>, <span class="st">"F"</span>], <span class="st">"D"</span>: [<span class="st">"B"</span>], <span class="st">"E"</span>: [<span class="st">"B"</span>], <span class="st">"F"</span>: [<span class="st">"C"</span>]
     }
-    <span class="mt">print</span>(<span class="st">"DFS order:"</span>, <span class="st">" → "</span>.<span class="mt">join</span>(<span class="mt">dfs_traverse</span>(graph, <span class="st">"A"</span>)))
-    <span class="cm"># DFS order: A → B → D → E → C → F</span>
+    <span class="mt">print</span>(<span class="st">"DFS order:"</span>, <span class="st">" ? "</span>.<span class="mt">join</span>(<span class="mt">dfs_traverse</span>(graph, <span class="st">"A"</span>)))
+    <span class="cm"># DFS order: A ? B ? D ? E ? C ? F</span>
 
     <span class="mt">print</span>(<span class="st">"Has cycle:"</span>, <span class="mt">has_cycle_undirected</span>(graph))
     <span class="cm"># Has cycle: False</span>
@@ -665,8 +666,8 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
         <span class="st">"A"</span>: [<span class="st">"B"</span>, <span class="st">"D"</span>], <span class="st">"B"</span>: [<span class="st">"C"</span>],
         <span class="st">"C"</span>: [<span class="st">"E"</span>], <span class="st">"D"</span>: [<span class="st">"C"</span>], <span class="st">"E"</span>: []
     }
-    <span class="mt">print</span>(<span class="st">"Topo sort:"</span>, <span class="st">" → "</span>.<span class="mt">join</span>(<span class="mt">topological_sort</span>(dag)))
-    <span class="cm"># Topo sort: A → D → B → C → E  (one valid ordering)</span>
+    <span class="mt">print</span>(<span class="st">"Topo sort:"</span>, <span class="st">" ? "</span>.<span class="mt">join</span>(<span class="mt">topological_sort</span>(dag)))
+    <span class="cm"># Topo sort: A ? D ? B ? C ? E  (one valid ordering)</span>
 
     grid = [[<span class="st">'1'</span>,<span class="st">'1'</span>,<span class="st">'0'</span>],[<span class="st">'0'</span>,<span class="st">'0'</span>,<span class="st">'1'</span>],[<span class="st">'1'</span>,<span class="st">'0'</span>,<span class="st">'1'</span>]]
     <span class="mt">print</span>(<span class="st">"Islands:"</span>, <span class="mt">num_islands</span>(grid))
@@ -675,8 +676,8 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 9 — Complexity Analysis</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 9 � Complexity Analysis</div>
 
 <table>
     <thead>
@@ -710,7 +711,7 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
         </tr>
         <tr>
             <td><strong>Number of Islands</strong></td>
-            <td class="g">O(rows × cols)</td>
+            <td class="g">O(rows � cols)</td>
             <td>Each cell visited at most once across all flood fill calls.</td>
         </tr>
     </tbody>
@@ -718,8 +719,8 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 10 — BFS vs DFS Comparison</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 10 � BFS vs DFS Comparison</div>
 
 <table>
     <thead>
@@ -738,23 +739,23 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
         </tr>
         <tr>
             <td><strong>Shortest path (unweighted)</strong></td>
-            <td class="g">✓ Guarantees shortest</td>
-            <td class="r">✗ Not guaranteed</td>
+            <td class="g">? Guarantees shortest</td>
+            <td class="r">? Not guaranteed</td>
         </tr>
         <tr>
             <td><strong>Cycle detection</strong></td>
             <td class="o">Possible but indirect</td>
-            <td class="g">✓ Natural via back edges</td>
+            <td class="g">? Natural via back edges</td>
         </tr>
         <tr>
             <td><strong>Topological sort</strong></td>
             <td class="o">Kahn's algorithm needed</td>
-            <td class="g">✓ Natural post-order</td>
+            <td class="g">? Natural post-order</td>
         </tr>
         <tr>
             <td><strong>Connected components</strong></td>
-            <td class="g">✓ Works</td>
-            <td class="g">✓ Works</td>
+            <td class="g">? Works</td>
+            <td class="g">? Works</td>
         </tr>
         <tr>
             <td><strong>Memory (wide graphs)</strong></td>
@@ -786,107 +787,107 @@ sys.setrecursionlimit(<span class="nm">10000</span>)  <span class="cm"># increas
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 11 — Real-World Usage</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 11 � Real-World Usage</div>
 
 <div class="realworld">
-    <strong>🌍 Git — DAG &amp; Topological Sort</strong><br>
+    <strong>?? Git � DAG &amp; Topological Sort</strong><br>
     Git's commit history is a Directed Acyclic Graph. Each commit points to its parent(s).
     DFS topological sort is used to: determine merge order, find common ancestors (for
     <code>git merge</code>), compute reachable commits (for <code>git log</code>), and detect cycles
     (there should never be one in a valid repo). Git's <code>git log --graph</code> output uses
     DFS traversal to render the commit tree.
     <br><br>
-    <strong>🌍 Compilers — Dependency Resolution</strong><br>
+    <strong>?? Compilers � Dependency Resolution</strong><br>
     When compiling C++/C# solutions with many header files, the compiler builds a dependency
     DAG (file A depends on B depends on C). DFS topological sort gives the correct compilation
     order. Cycle detection catches circular imports (<code>#include</code> cycles), which are
     compilation errors. Same pattern used in npm/pip/Maven for package resolution.
     <br><br>
-    <strong>🌍 Maze Generation Algorithms</strong><br>
+    <strong>?? Maze Generation Algorithms</strong><br>
     Many maze generators (Depth-First Maze, Recursive Backtracker) use DFS. Starting from a
     cell, randomly pick an unvisited neighbor, carve a path, repeat. When stuck, backtrack.
     The result is a perfect maze (exactly one path between any two cells). Used in game
     development (Dungeons, Rogue-likes) and procedural content generation.
     <br><br>
-    <strong>🌍 Network Routing — STP (Spanning Tree Protocol)</strong><br>
+    <strong>?? Network Routing � STP (Spanning Tree Protocol)</strong><br>
     Network switches use STP to prevent loops in Ethernet networks. The algorithm builds a
-    spanning tree of the network topology using a process conceptually similar to DFS —
+    spanning tree of the network topology using a process conceptually similar to DFS �
     marking edges as "tree edges" or "blocking edges". DFS-based SCC (Tarjan's algorithm)
     detects independent subnetworks.
 </div>
 
 <hr>
 
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<div class="section-heading">Section 12 — Check Your Understanding</div>
+<!-- ------------------------------------------------------------------ -->
+<div class="section-heading">Section 12 � Check Your Understanding</div>
 
 <!-- Q1 -->
 <div class="quiz-block">
-    <p>Q1 — You run recursive DFS on a graph with 10,000 vertices arranged in a straight line (v1→v2→v3→...→v10000). What happens in Python?</p>
-    <div class="quiz-meta">💡 Python has a default recursion limit. What is it?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <p>Q1 � You run recursive DFS on a graph with 10,000 vertices arranged in a straight line (v1?v2?v3?...?v10000). What happens in Python?</p>
+    <div class="quiz-meta">?? Python has a default recursion limit. What is it?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer:</strong> Python's default recursion limit is 1,000 (set by <code>sys.getrecursionlimit()</code>). A linear chain of 10,000 vertices requires recursion depth 10,000 — DFS will hit a <code>RecursionError: maximum recursion depth exceeded</code> at around vertex 1,000. Solutions: (1) <code>sys.setrecursionlimit(20000)</code> — increases the limit, risky as it can cause a C-level stack overflow; (2) Convert to iterative DFS using an explicit stack — eliminates recursion limit entirely; (3) BFS — uses a queue, no recursion depth issue. For competitive programming or production code on deep graphs, always use iterative DFS or set the recursion limit explicitly.</div>
+        <div class="approach"><strong>Answer:</strong> Python's default recursion limit is 1,000 (set by <code>sys.getrecursionlimit()</code>). A linear chain of 10,000 vertices requires recursion depth 10,000 � DFS will hit a <code>RecursionError: maximum recursion depth exceeded</code> at around vertex 1,000. Solutions: (1) <code>sys.setrecursionlimit(20000)</code> � increases the limit, risky as it can cause a C-level stack overflow; (2) Convert to iterative DFS using an explicit stack � eliminates recursion limit entirely; (3) BFS � uses a queue, no recursion depth issue. For competitive programming or production code on deep graphs, always use iterative DFS or set the recursion limit explicitly.</div>
         <div class="complexity"><strong>Rule:</strong> For graphs deeper than ~500 nodes in Python, prefer iterative DFS or increase the limit with <code>sys.setrecursionlimit()</code>. C# has a much larger call stack (~1 million frames) so recursion is safer there.</div>
     </div>
 </div>
 
 <!-- Q2 -->
 <div class="quiz-block">
-    <p>Q2 — Explain why DFS post-order gives a valid topological sort. Why must we add vertices to the result AFTER visiting all descendants?</p>
-    <div class="quiz-meta">💡 Think about the dependency relationship and what "post-order" means.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <p>Q2 � Explain why DFS post-order gives a valid topological sort. Why must we add vertices to the result AFTER visiting all descendants?</p>
+    <div class="quiz-meta">?? Think about the dependency relationship and what "post-order" means.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer:</strong> If edge u→v exists, v must appear AFTER u in topological order. DFS post-order adds v to the result before u (because DFS finishes v before backtracking to u). When we reverse the post-order list, u comes before v — which is exactly what we need. More precisely: if u→v is an edge, then DFS must fully finish v (enter and exit v's subtree) before it can finish u, so post[v] &lt; post[u]. In reversed post-order, u comes before v. This holds transitively for all edges, giving a valid topological order for DAGs. If the graph has a cycle (u→v→...→u), this breaks because post[u] would need to be both less than and greater than itself — hence topological sort only works on DAGs.</div>
+        <div class="approach"><strong>Answer:</strong> If edge u?v exists, v must appear AFTER u in topological order. DFS post-order adds v to the result before u (because DFS finishes v before backtracking to u). When we reverse the post-order list, u comes before v � which is exactly what we need. More precisely: if u?v is an edge, then DFS must fully finish v (enter and exit v's subtree) before it can finish u, so post[v] &lt; post[u]. In reversed post-order, u comes before v. This holds transitively for all edges, giving a valid topological order for DAGs. If the graph has a cycle (u?v?...?u), this breaks because post[u] would need to be both less than and greater than itself � hence topological sort only works on DAGs.</div>
         <div class="complexity"><strong>Mnemonic:</strong> "Post-order reversed = topological order". Add to result on the way OUT of DFS (after all neighbors processed), then reverse the list.</div>
     </div>
 </div>
 
 <!-- Q3 -->
 <div class="quiz-block">
-    <p>Q3 — Why is the "visited AND not parent" check necessary for cycle detection in undirected graphs? What goes wrong without it?</p>
-    <div class="quiz-meta">💡 Consider the edge from B back to A in an undirected graph: A–B.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <p>Q3 � Why is the "visited AND not parent" check necessary for cycle detection in undirected graphs? What goes wrong without it?</p>
+    <div class="quiz-meta">?? Consider the edge from B back to A in an undirected graph: A�B.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer:</strong> In an undirected graph, every edge A–B is represented as two directed edges: A→B and B→A. During DFS from A: we visit A, then visit B (parent=A). Now from B we check neighbors — A is visited. Without the parent check, we'd say "A is visited and we didn't come from there... wait, we DID come from A!" — so we'd incorrectly report a cycle. The parent check prevents this false positive: if the visited neighbor IS our parent, that's just the undirected edge we traversed to get here (not a back edge). Only flag a cycle if the visited neighbor is NOT our parent — meaning there's another path back to it (a true cycle).</div>
-        <div class="complexity"><strong>Edge case:</strong> In graphs with multi-edges (parallel edges between same pair of vertices), parent check alone isn't sufficient — need parent edge tracking. For simple graphs (single edge between any pair), parent vertex check is correct.</div>
+        <div class="approach"><strong>Answer:</strong> In an undirected graph, every edge A�B is represented as two directed edges: A?B and B?A. During DFS from A: we visit A, then visit B (parent=A). Now from B we check neighbors � A is visited. Without the parent check, we'd say "A is visited and we didn't come from there... wait, we DID come from A!" � so we'd incorrectly report a cycle. The parent check prevents this false positive: if the visited neighbor IS our parent, that's just the undirected edge we traversed to get here (not a back edge). Only flag a cycle if the visited neighbor is NOT our parent � meaning there's another path back to it (a true cycle).</div>
+        <div class="complexity"><strong>Edge case:</strong> In graphs with multi-edges (parallel edges between same pair of vertices), parent check alone isn't sufficient � need parent edge tracking. For simple graphs (single edge between any pair), parent vertex check is correct.</div>
     </div>
 </div>
 
 <!-- Q4 -->
 <div class="quiz-block">
-    <p>Q4 — Count the islands in this grid: [[1,1,0,1],[0,1,0,1],[0,0,0,0],[1,0,1,1]]. Trace DFS flood fill manually.</p>
-    <div class="quiz-meta">💡 Land = 1, Water = 0. 4-directional connectivity only (no diagonals).</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <p>Q4 � Count the islands in this grid: [[1,1,0,1],[0,1,0,1],[0,0,0,0],[1,0,1,1]]. Trace DFS flood fill manually.</p>
+    <div class="quiz-meta">?? Land = 1, Water = 0. 4-directional connectivity only (no diagonals).</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Answer: 5 islands.</strong> Scan row by row, left to right:
-        (0,0)=1 → DFS flood fills (0,0),(0,1),(1,1) → Island 1.
-        (0,3)=1 → DFS flood fills (0,3),(1,3) → Island 2.
-        (3,0)=1 → DFS: only (3,0) — no 4-direction neighbors are land → Island 3.
-        (3,2)=1 → DFS flood fills (3,2),(3,3) → Island 4.
-        Wait — let me recount. (0,0)→(0,1)→(1,1) [down from (0,1) is (1,1)=1, down from (1,1) is (2,1)=0; right from (1,1) is (1,2)=0; left is (1,0)=0] → Island 1 = {(0,0),(0,1),(1,1)}.
-        (0,3)→(1,3) [down is (1,3)=1; (1,3)'s down is (2,3)=0; (1,3)'s left is (1,2)=0] → Island 2 = {(0,3),(1,3)}.
-        (3,0) → Island 3 = {(3,0)}.
-        (3,2)→(3,3) → Island 4 = {(3,2),(3,3)}.
+        (0,0)=1 ? DFS flood fills (0,0),(0,1),(1,1) ? Island 1.
+        (0,3)=1 ? DFS flood fills (0,3),(1,3) ? Island 2.
+        (3,0)=1 ? DFS: only (3,0) � no 4-direction neighbors are land ? Island 3.
+        (3,2)=1 ? DFS flood fills (3,2),(3,3) ? Island 4.
+        Wait � let me recount. (0,0)?(0,1)?(1,1) [down from (0,1) is (1,1)=1, down from (1,1) is (2,1)=0; right from (1,1) is (1,2)=0; left is (1,0)=0] ? Island 1 = {(0,0),(0,1),(1,1)}.
+        (0,3)?(1,3) [down is (1,3)=1; (1,3)'s down is (2,3)=0; (1,3)'s left is (1,2)=0] ? Island 2 = {(0,3),(1,3)}.
+        (3,0) ? Island 3 = {(3,0)}.
+        (3,2)?(3,3) ? Island 4 = {(3,2),(3,3)}.
         Total = 4 islands.</div>
-        <div class="complexity"><strong>Time:</strong> O(rows × cols) — each cell visited at most once. <strong>Space:</strong> O(rows × cols) for recursion stack in worst case (entire grid is land, linear DFS path).</div>
+        <div class="complexity"><strong>Time:</strong> O(rows � cols) � each cell visited at most once. <strong>Space:</strong> O(rows � cols) for recursion stack in worst case (entire grid is land, linear DFS path).</div>
     </div>
 </div>
 
 <!-- Q5 -->
 <div class="quiz-block">
-    <p>Q5 — In the three-color DFS cycle detection for directed graphs, why is BLACK (fully processed) different from GRAY (in stack)? Can a BLACK neighbor indicate a cycle?</p>
-    <div class="quiz-meta">💡 Think about what "BLACK" means — all descendants have been explored.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <p>Q5 � In the three-color DFS cycle detection for directed graphs, why is BLACK (fully processed) different from GRAY (in stack)? Can a BLACK neighbor indicate a cycle?</p>
+    <div class="quiz-meta">?? Think about what "BLACK" means � all descendants have been explored.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer:</strong> A BLACK vertex means all its descendants have been fully explored — there is no path from any BLACK vertex back to any vertex currently in the DFS stack (that would have been detected already). If we reach a BLACK vertex v from the current DFS path, it means: "we've explored v's entire subtree already, and found no cycles there." This is a cross-edge or forward-edge — NOT a cycle indicator. Only a GRAY vertex (currently on the recursion stack) as a neighbor indicates a back edge and therefore a cycle — because GRAY means "we're in the middle of exploring this vertex's path right now, and we found a way back to it." Gray → Gray = cycle. Any → Black = safe (already fully explored, no cycles found in that direction).</div>
-        <div class="complexity"><strong>Analogy:</strong> GRAY = "currently walking this road." BLACK = "road fully explored, nothing bad found." Seeing a BLACK neighbor is like finding a road you've fully mapped — no new discoveries. Seeing a GRAY neighbor is like finding a road you're currently on — that's a loop!</div>
+        <div class="approach"><strong>Answer:</strong> A BLACK vertex means all its descendants have been fully explored � there is no path from any BLACK vertex back to any vertex currently in the DFS stack (that would have been detected already). If we reach a BLACK vertex v from the current DFS path, it means: "we've explored v's entire subtree already, and found no cycles there." This is a cross-edge or forward-edge � NOT a cycle indicator. Only a GRAY vertex (currently on the recursion stack) as a neighbor indicates a back edge and therefore a cycle � because GRAY means "we're in the middle of exploring this vertex's path right now, and we found a way back to it." Gray ? Gray = cycle. Any ? Black = safe (already fully explored, no cycles found in that direction).</div>
+        <div class="complexity"><strong>Analogy:</strong> GRAY = "currently walking this road." BLACK = "road fully explored, nothing bad found." Seeing a BLACK neighbor is like finding a road you've fully mapped � no new discoveries. Seeing a GRAY neighbor is like finding a road you're currently on � that's a loop!</div>
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 9C Complete</button>
-<div class="toast" id="toast">✅ Module 9C marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 9C Complete</button>
+<div class="toast" id="toast">? Module 9C marked complete!</div>
     <script>var MODULE_ID = 'm09c';</script>
     <script src="../dsa.js"></script>
 </body>

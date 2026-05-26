@@ -1,33 +1,34 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 2A — Singly Linked List</title>
+    <title>Module 2A � Singly Linked List</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
-    <h1>Module 2 — Part A</h1>
-    <div class="tagline">Singly Linked List — Nodes, Pointers &amp; Dynamic Chains</div>
+    <div class="module-label">C# Data Structures &amp; Algorithms � Complete Course</div>
+    <h1>Module 2 � Part A</h1>
+    <div class="tagline">Singly Linked List � Nodes, Pointers &amp; Dynamic Chains</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Master the foundation of all pointer-based data structures</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 3–4 Hours</span>
-        <span>🎯 Beginner–Intermediate</span>
-        <span>💻 Language: C#</span>
-        <span>📝 Part A of Module 2</span>
+        <span>? Estimated Time: 3�4 Hours</span>
+        <span>?? Beginner�Intermediate</span>
+        <span>?? Language: C#</span>
+        <span>?? Part A of Module 2</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 2 — Linked Lists:</strong><br><br>
-    ▶ <strong>Part A</strong> — <em>You are here</em> — Singly Linked List<br>
-    ⬜ <strong>Part B</strong> — <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
-    ⬜ <strong>Part C</strong> — <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
-    ⬜ <strong>Part D</strong> — <a href="m02d_floyd.html">Floyd's Cycle Detection</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 2 � Linked Lists:</strong><br><br>
+    ? <strong>Part A</strong> � <em>You are here</em> � Singly Linked List<br>
+    ? <strong>Part B</strong> � <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
+    ? <strong>Part C</strong> � <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
+    ? <strong>Part D</strong> � <a href="m02d_floyd.html">Floyd's Cycle Detection</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase1/m01a_bigO_arrays.html">&larr; Module 1 &mdash; Big O &amp; Arrays</a>
@@ -35,26 +36,26 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Part A</h2>
+    <h2>?? Contents � Part A</h2>
     <ol>
-        <li>Section 1 — Why Linked Lists? Arrays vs Linked Lists <span>— Trade-offs explained</span></li>
-        <li>Section 2 — The Node: Building Block <span>— Data + pointer in C#</span></li>
-        <li>Section 3 — Singly Linked List Structure <span>— Head, tail, size</span></li>
-        <li>Section 4 — Traversal <span>— Walking the chain step by step</span></li>
-        <li>Section 5 — Insertion Operations <span>— At head, tail, and middle</span></li>
-        <li>Section 6 — Deletion Operations <span>— Remove head, tail, by value</span></li>
-        <li>Section 7 — Search <span>— Find by value or index</span></li>
-        <li>Section 8 — Cycle Detection <span>— Floyd's fast &amp; slow pointer algorithm</span></li>
-        <li>Section 9 — Full SinglyLinkedList&lt;T&gt; Class <span>— Complete implementation</span></li>
-        <li>Section 10 — Complexity Summary <span>— When to use a linked list</span></li>
+        <li>Section 1 � Why Linked Lists? Arrays vs Linked Lists <span>� Trade-offs explained</span></li>
+        <li>Section 2 � The Node: Building Block <span>� Data + pointer in C#</span></li>
+        <li>Section 3 � Singly Linked List Structure <span>� Head, tail, size</span></li>
+        <li>Section 4 � Traversal <span>� Walking the chain step by step</span></li>
+        <li>Section 5 � Insertion Operations <span>� At head, tail, and middle</span></li>
+        <li>Section 6 � Deletion Operations <span>� Remove head, tail, by value</span></li>
+        <li>Section 7 � Search <span>� Find by value or index</span></li>
+        <li>Section 8 � Cycle Detection <span>� Floyd's fast &amp; slow pointer algorithm</span></li>
+        <li>Section 9 � Full SinglyLinkedList&lt;T&gt; Class <span>� Complete implementation</span></li>
+        <li>Section 10 � Complexity Summary <span>� When to use a linked list</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — Why Linked Lists? Arrays vs Linked Lists</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � Why Linked Lists? Arrays vs Linked Lists</div>
 
-<p>You already know arrays — a block of contiguous memory. Arrays are <strong>great for random access</strong>
-(jump to index 5 instantly — O(1)) but <strong>terrible at insertion and deletion in the middle</strong> because
+<p>You already know arrays � a block of contiguous memory. Arrays are <strong>great for random access</strong>
+(jump to index 5 instantly � O(1)) but <strong>terrible at insertion and deletion in the middle</strong> because
 every element after the insertion point must shift.</p>
 
 <p>A <strong>Linked List</strong> solves exactly that. Instead of one big memory block, a linked list is
@@ -62,31 +63,31 @@ a <strong>chain of nodes scattered anywhere in memory</strong>, each holding a p
 <em>pointer</em> (a reference in C#) to the next node. Insert and delete at the front: O(1). No shifting needed.</p>
 
 <div class="realworld">
-    <strong>🌍 Real-World Analogy — A Train:</strong><br>
+    <strong>?? Real-World Analogy � A Train:</strong><br>
     Think of each train car as a node. Each car is coupled to the next one via a hook (the pointer).
-    To add a new car at the front, you just attach it and point it to the old first car — O(1).
-    To add it in the middle, you unhook two cars and re-hook with the new one — O(1) once you're there,
-    but you had to walk from the front to find the spot — O(n).
+    To add a new car at the front, you just attach it and point it to the old first car � O(1).
+    To add it in the middle, you unhook two cars and re-hook with the new one � O(1) once you're there,
+    but you had to walk from the front to find the spot � O(n).
 </div>
 
-<div class="diagram">ARRAY vs LINKED LIST — Memory Layout
+<div class="diagram">ARRAY vs LINKED LIST � Memory Layout
 
 ARRAY: Contiguous memory block
-┌─────┬─────┬─────┬─────┬─────┐
-│  10 │  20 │  30 │  40 │  50 │   ← All adjacent in RAM
-└─────┴─────┴─────┴─────┴─────┘
++-----------------------------+
+�  10 �  20 �  30 �  40 �  50 �   ? All adjacent in RAM
++-----------------------------+
   [0]   [1]   [2]   [3]   [4]
-  Instant access: arr[3] = 40  ← O(1)
-  Insert at [2]: must shift [2],[3],[4] right  ← O(n)
+  Instant access: arr[3] = 40  ? O(1)
+  Insert at [2]: must shift [2],[3],[4] right  ? O(n)
 
 SINGLY LINKED LIST: Nodes scattered in memory
-  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-  │ data: 10 │───▶│ data: 20 │───▶│ data: 30 │───▶│ data: 40 │───▶ null
-  │ next: ●──┘    │ next: ●──┘    │ next: ●──┘    │ next: ●──┘
-  └──────────┘    └──────────┘    └──────────┘    └──────────┘
+  +----------+    +----------+    +----------+    +----------+
+  � data: 10 �---?� data: 20 �---?� data: 30 �---?� data: 40 �---? null
+  � next: ?--+    � next: ?--+    � next: ?--+    � next: ?--+
+  +----------+    +----------+    +----------+    +----------+
       HEAD                                             TAIL
-  Access index 3: must walk 0→1→2→3  ← O(n)
-  Insert at head: just point new node at HEAD  ← O(1)</div>
+  Access index 3: must walk 0?1?2?3  ? O(n)
+  Insert at head: just point new node at HEAD  ? O(1)</div>
 
 <table>
     <thead>
@@ -94,11 +95,11 @@ SINGLY LINKED LIST: Nodes scattered in memory
     </thead>
     <tbody>
         <tr><td>Access by index</td><td class="g">O(1)</td><td class="r">O(n)</td></tr>
-        <tr><td>Insert at front</td><td class="r">O(n) — shift all</td><td class="g">O(1)</td></tr>
+        <tr><td>Insert at front</td><td class="r">O(n) � shift all</td><td class="g">O(1)</td></tr>
         <tr><td>Insert at back</td><td class="g">O(1) amortized</td><td class="g">O(1) with tail ref</td></tr>
-        <tr><td>Insert at middle</td><td class="r">O(n) — shift</td><td class="o">O(n) — traverse first</td></tr>
-        <tr><td>Delete at front</td><td class="r">O(n) — shift all</td><td class="g">O(1)</td></tr>
-        <tr><td>Delete at back</td><td class="g">O(1)</td><td class="r">O(n) — find prev</td></tr>
+        <tr><td>Insert at middle</td><td class="r">O(n) � shift</td><td class="o">O(n) � traverse first</td></tr>
+        <tr><td>Delete at front</td><td class="r">O(n) � shift all</td><td class="g">O(1)</td></tr>
+        <tr><td>Delete at back</td><td class="g">O(1)</td><td class="r">O(n) � find prev</td></tr>
         <tr><td>Delete by value</td><td class="r">O(n)</td><td class="r">O(n)</td></tr>
         <tr><td>Search</td><td class="r">O(n) unsorted</td><td class="r">O(n)</td></tr>
         <tr><td>Memory overhead</td><td class="g">None (pure data)</td><td class="r">+1 pointer per node</td></tr>
@@ -107,7 +108,7 @@ SINGLY LINKED LIST: Nodes scattered in memory
 </table>
 
 <div class="tip">
-    <strong>💡 When to choose Linked List over Array:</strong>
+    <strong>?? When to choose Linked List over Array:</strong>
     <ul style="margin-top:8px;">
         <li>You insert/delete <strong>frequently at the front</strong> (e.g., implementing a stack or queue)</li>
         <li>You don't know the size in advance and don't want array resizing overhead</li>
@@ -118,14 +119,14 @@ SINGLY LINKED LIST: Nodes scattered in memory
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — The Node: Building Block</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � The Node: Building Block</div>
 
 <p>Everything in a linked list is built from a single concept: the <strong>Node</strong>. A node is a tiny
 object that holds <strong>two things</strong>:</p>
 <ol>
-    <li><strong>Data</strong> — the value you want to store (an int, a string, an object — anything)</li>
-    <li><strong>Next</strong> — a reference (pointer) to the <em>next node</em> in the chain, or <code>null</code> if there is no next node</li>
+    <li><strong>Data</strong> � the value you want to store (an int, a string, an object � anything)</li>
+    <li><strong>Next</strong> � a reference (pointer) to the <em>next node</em> in the chain, or <code>null</code> if there is no next node</li>
 </ol>
 
 
@@ -145,7 +146,7 @@ object that holds <strong>two things</strong>:</p>
     }
 }
 
-<span class="cm">// Generic version (preferred — works with any type)</span>
+<span class="cm">// Generic version (preferred � works with any type)</span>
 <span class="kw">public class</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">public</span> <span class="tp">T</span> Data;
@@ -179,14 +180,14 @@ T = TypeVar(<span class="st">'T'</span>)
 
 <div class="diagram">A SINGLE NODE in Memory
 
-┌─────────────────────────────┐
-│         Node Object         │
-│  ┌──────────────────────┐   │
-│  │  Data:  42           │   │  ← The actual value
-│  ├──────────────────────┤   │
-│  │  Next:  ──────────────────────▶ (points to another Node, or null)
-│  └──────────────────────┘   │
-└─────────────────────────────┘
++-----------------------------+
+�         Node Object         �
+�  +----------------------+   �
+�  �  Data:  42           �   �  ? The actual value
+�  +----------------------�   �
+�  �  Next:  ----------------------? (points to another Node, or null)
+�  +----------------------+   �
++-----------------------------+
 
 When Next = null, this node is the LAST node in the list (the TAIL).</div>
 
@@ -199,7 +200,7 @@ When Next = null, this node is the LAST node in the list (the TAIL).</div>
 <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt; node2 = <span class="kw">new</span> <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt;(<span class="nm">20</span>);
 <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt; node3 = <span class="kw">new</span> <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt;(<span class="nm">30</span>);
 
-<span class="cm">// Link them together: 10 → 20 → 30 → null</span>
+<span class="cm">// Link them together: 10 ? 20 ? 30 ? null</span>
 node1.Next = node2;
 node2.Next = node3;
 <span class="cm">// node3.Next is already null</span>
@@ -208,10 +209,10 @@ node2.Next = node3;
 <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt;? current = node1;
 <span class="kw">while</span> (current != <span class="kw">null</span>)
 {
-    <span class="tp">Console</span>.<span class="mt">Write</span>(current.Data + <span class="st">" → "</span>);
+    <span class="tp">Console</span>.<span class="mt">Write</span>(current.Data + <span class="st">" ? "</span>);
     current = current.Next;
 }
-<span class="cm">// Output: 10 → 20 → 30 → </span></pre>
+<span class="cm">// Output: 10 ? 20 ? 30 ? </span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -232,44 +233,44 @@ current = node1
 </div>
 
 <div class="note">
-    <strong>📌 C# References are Pointers:</strong> In C#, when you write <code>Node? Next</code>, the variable
-    <code>Next</code> does not contain another Node object — it contains a <strong>memory address</strong>
+    <strong>?? C# References are Pointers:</strong> In C#, when you write <code>Node? Next</code>, the variable
+    <code>Next</code> does not contain another Node object � it contains a <strong>memory address</strong>
     (reference) telling the runtime where to find the next Node. This is exactly what a pointer is in other languages.
     When you set <code>node1.Next = node2</code>, you're storing the address of node2 inside node1.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Singly Linked List Structure</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Singly Linked List Structure</div>
 
 <p>A <strong>Singly Linked List</strong> is a collection that manages a chain of nodes using:</p>
 <ul>
-    <li><strong>Head</strong> — a reference to the <em>first</em> node. This is your entry point to the entire list. If Head is null, the list is empty.</li>
-    <li><strong>Tail</strong> — a reference to the <em>last</em> node. Keeping a tail reference makes adding to the end O(1) instead of O(n).</li>
-    <li><strong>Count</strong> — the number of nodes (cached for O(1) size lookup).</li>
+    <li><strong>Head</strong> � a reference to the <em>first</em> node. This is your entry point to the entire list. If Head is null, the list is empty.</li>
+    <li><strong>Tail</strong> � a reference to the <em>last</em> node. Keeping a tail reference makes adding to the end O(1) instead of O(n).</li>
+    <li><strong>Count</strong> � the number of nodes (cached for O(1) size lookup).</li>
 </ul>
 
-<div class="diagram">SINGLY LINKED LIST — Full Structure
+<div class="diagram">SINGLY LINKED LIST � Full Structure
 
   SinglyLinkedList object
-  ┌──────────────────────────────────────────────┐
-  │  Head ──────▶ ┌────┬───┐    ┌────┬───┐      │
-  │               │ 10 │ ──┼───▶│ 20 │ ──┼──▶   │
-  │               └────┴───┘    └────┴───┘      │
-  │  Tail ───────────────────────────────▶┌────┬───┐
-  │                                       │ 30 │ X │  ← null
-  │  Count = 3                            └────┴───┘
-  └──────────────────────────────────────────────┘
+  +----------------------------------------------+
+  �  Head ------? +--------+    +--------+      �
+  �               � 10 � --+---?� 20 � --+--?   �
+  �               +--------+    +--------+      �
+  �  Tail -------------------------------?+--------+
+  �                                       � 30 � X �  ? null
+  �  Count = 3                            +--------+
+  +----------------------------------------------+
 
-  X = null (no next node — this is the tail)
+  X = null (no next node � this is the tail)
 
   EMPTY LIST:
-  ┌──────────────────────────────────────────────┐
-  │  Head = null                                  │
-  │  Tail = null                                  │
-  │  Count = 0                                    │
-  └──────────────────────────────────────────────┘</div>
+  +----------------------------------------------+
+  �  Head = null                                  �
+  �  Tail = null                                  �
+  �  Count = 0                                    �
+  +----------------------------------------------+</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -302,14 +303,14 @@ current = node1
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Traversal</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Traversal</div>
 
 <p>Traversal means <strong>visiting every node</strong> from head to tail. Since there is no index to jump to,
 you always start at <code>head</code> and follow the <code>Next</code> pointer until you reach <code>null</code>.</p>
 
 <div class="warning">
-    <strong>⚠️ The Golden Rule of Traversal:</strong> NEVER modify <code>head</code> while traversing. Always create
+    <strong>?? The Golden Rule of Traversal:</strong> NEVER modify <code>head</code> while traversing. Always create
     a <strong>separate variable</strong> (conventionally called <code>current</code>) to walk the list. Losing
     <code>head</code> means losing access to the entire list!
 </div>
@@ -318,13 +319,13 @@ you always start at <code>head</code> and follow the <code>Next</code> pointer u
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
-<pre><span class="cm">// Print all nodes: O(n) — must visit every node</span>
+<pre><span class="cm">// Print all nodes: O(n) � must visit every node</span>
 <span class="kw">public void</span> <span class="mt">Print</span>()
 {
     <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? current = head;  <span class="cm">// DO NOT touch 'head' itself!</span>
     <span class="kw">while</span> (current != <span class="kw">null</span>)
     {
-        <span class="tp">Console</span>.<span class="mt">Write</span>(current.Data + <span class="st">" → "</span>);
+        <span class="tp">Console</span>.<span class="mt">Write</span>(current.Data + <span class="st">" ? "</span>);
         current = current.Next;  <span class="cm">// Move to next node</span>
     }
     <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"null"</span>);
@@ -363,48 +364,48 @@ you always start at <code>head</code> and follow the <code>Next</code> pointer u
     <span class="kw">return</span> current.data</pre>
 </div>
 
-<div class="diagram">TRAVERSAL TRACE — List: 10 → 20 → 30 → null
+<div class="diagram">TRAVERSAL TRACE � List: 10 ? 20 ? 30 ? null
 
 Step 1: current = head (points to node 10)
-        current != null → print "10 → "
+        current != null ? print "10 ? "
         current = current.Next (now points to node 20)
 
 Step 2: current = node 20
-        current != null → print "20 → "
+        current != null ? print "20 ? "
         current = current.Next (now points to node 30)
 
 Step 3: current = node 30
-        current != null → print "30 → "
+        current != null ? print "30 ? "
         current = current.Next (now null)
 
 Step 4: current = null
-        Loop exits → print "null"
+        Loop exits ? print "null"
 
-OUTPUT: 10 → 20 → 30 → null</div>
+OUTPUT: 10 ? 20 ? 30 ? null</div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Insertion Operations</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Insertion Operations</div>
 
-<h3>5.1 — Insert at Head — O(1)</h3>
-<p>Adding a node to the <strong>front</strong> of the list. This is the fastest insertion — no traversal needed.
-Steps: create new node → set its Next to the current head → update head to be the new node.</p>
+<h3>5.1 � Insert at Head � O(1)</h3>
+<p>Adding a node to the <strong>front</strong> of the list. This is the fastest insertion � no traversal needed.
+Steps: create new node ? set its Next to the current head ? update head to be the new node.</p>
 
-<div class="diagram">INSERT AT HEAD — Adding node (5) to list: 10 → 20 → 30 → null
+<div class="diagram">INSERT AT HEAD � Adding node (5) to list: 10 ? 20 ? 30 ? null
 
-BEFORE:  head ──▶ [10|──▶] [20|──▶] [30|null]
+BEFORE:  head --? [10|--?] [20|--?] [30|null]
 
 Step 1: Create newNode(5).  newNode.Next = null
-Step 2: newNode.Next = head   →   newNode.Next = ──▶ [10|──▶]
+Step 2: newNode.Next = head   ?   newNode.Next = --? [10|--?]
 Step 3: head = newNode
 
-AFTER:   head ──▶ [5|──▶] [10|──▶] [20|──▶] [30|null]
+AFTER:   head --? [5|--?] [10|--?] [20|--?] [30|null]
 
 Edge case (empty list): head = null, tail = null
-  → newNode.Next = null (already null)
-  → head = newNode
-  → tail = newNode  (the only node is both head AND tail)</div>
+  ? newNode.Next = null (already null)
+  ? head = newNode
+  ? tail = newNode  (the only node is both head AND tail)</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -417,7 +418,7 @@ Edge case (empty list): head = null, tail = null
     <span class="kw">if</span> (IsEmpty)
     {
         head = newNode;
-        tail = newNode;      <span class="cm">// Only node — both head and tail</span>
+        tail = newNode;      <span class="cm">// Only node � both head and tail</span>
     }
     <span class="kw">else</span>
     {
@@ -441,19 +442,19 @@ Edge case (empty list): head = null, tail = null
     <span class="kw">self</span>.count += <span class="nm">1</span></pre>
 </div>
 
-<h3>5.2 — Insert at Tail — O(1)</h3>
-<p>Adding a node to the <strong>end</strong> of the list. With a <code>tail</code> reference, this is O(1) —
+<h3>5.2 � Insert at Tail � O(1)</h3>
+<p>Adding a node to the <strong>end</strong> of the list. With a <code>tail</code> reference, this is O(1) �
 no traversal needed. Without tail, you'd have to walk the entire list.</p>
 
-<div class="diagram">INSERT AT TAIL — Adding node (99) to list: 10 → 20 → 30 → null
+<div class="diagram">INSERT AT TAIL � Adding node (99) to list: 10 ? 20 ? 30 ? null
 
-BEFORE:  head ──▶ [10|──▶] [20|──▶] [30|null] ◀── tail
+BEFORE:  head --? [10|--?] [20|--?] [30|null] ?-- tail
 
 Step 1: Create newNode(99).  newNode.Next = null
-Step 2: tail.Next = newNode   →   [30|──▶] → [99|null]
+Step 2: tail.Next = newNode   ?   [30|--?] ? [99|null]
 Step 3: tail = newNode
 
-AFTER:   head ──▶ [10|──▶] [20|──▶] [30|──▶] [99|null] ◀── tail</div>
+AFTER:   head --? [10|--?] [20|--?] [30|--?] [99|null] ?-- tail</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -490,28 +491,28 @@ AFTER:   head ──▶ [10|──▶] [20|──▶] [30|──▶] [99|null] �
     <span class="kw">self</span>.count += <span class="nm">1</span></pre>
 </div>
 
-<h3>5.3 — Insert at Index — O(n)</h3>
+<h3>5.3 � Insert at Index � O(n)</h3>
 <p>Adding a node at a <strong>specific position</strong> requires traversal to the node <em>before</em> the
 target position, then relinking pointers. The key insight: you need the node <strong>before</strong>
 the insertion point, not the node at the insertion point.</p>
 
-<div class="diagram">INSERT AT INDEX 2 — Adding node (99) to: 10 → 20 → 30 → 40 → null
+<div class="diagram">INSERT AT INDEX 2 � Adding node (99) to: 10 ? 20 ? 30 ? 40 ? null
 
-BEFORE:  [10|▶] [20|▶] [30|▶] [40|null]
+BEFORE:  [10|?] [20|?] [30|?] [40|null]
           idx0   idx1   idx2   idx3
 
-We want:  10 → 20 → 99 → 30 → 40 → null
+We want:  10 ? 20 ? 99 ? 30 ? 40 ? null
 
 Step 1: Traverse to node BEFORE index 2 = node at index 1 (value=20)
         prev = node(20)
 
 Step 2: newNode(99).Next = prev.Next
-        newNode.Next ──▶ [30|▶]
+        newNode.Next --? [30|?]
 
 Step 3: prev.Next = newNode
-        [20|──▶] now points to [99]
+        [20|--?] now points to [99]
 
-AFTER:  [10|▶] [20|▶] [99|▶] [30|▶] [40|null]
+AFTER:  [10|?] [20|?] [99|?] [30|?] [40|null]
          idx0   idx1   idx2   idx3   idx4
 
 KEY: You always wire the NEW node to point FORWARD first (step 2),
@@ -538,8 +539,8 @@ KEY: You always wire the NEW node to point FORWARD first (step 2),
         prev = prev!.Next;
 
     <span class="cm">// Wire new node forward FIRST, then update prev</span>
-    newNode.Next = prev!.Next;   <span class="cm">// Step 2: new → old next</span>
-    prev.Next = newNode;          <span class="cm">// Step 3: prev → new</span>
+    newNode.Next = prev!.Next;   <span class="cm">// Step 2: new ? old next</span>
+    prev.Next = newNode;          <span class="cm">// Step 3: prev ? new</span>
     Count++;
 }</pre>
 </div>
@@ -562,33 +563,33 @@ KEY: You always wire the NEW node to point FORWARD first (step 2),
 </div>
 
 <div class="tip">
-    <strong>💡 The Two-Step Rule for Middle Insertion:</strong> Always:<br>
+    <strong>?? The Two-Step Rule for Middle Insertion:</strong> Always:<br>
     1. Set <code>newNode.Next = prev.Next</code> (connect new node to the rest of the list)<br>
     2. Set <code>prev.Next = newNode</code> (connect previous node to new node)<br>
-    Never do step 2 first — you'd lose your reference to the rest of the list!
+    Never do step 2 first � you'd lose your reference to the rest of the list!
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Deletion Operations</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Deletion Operations</div>
 
-<h3>6.1 — Delete First Node — O(1)</h3>
+<h3>6.1 � Delete First Node � O(1)</h3>
 <p>Simply move <code>head</code> forward to the second node. The old head node becomes unreachable and
 is garbage collected by C#'s runtime automatically.</p>
 
-<div class="diagram">DELETE FIRST — List: 10 → 20 → 30 → null
+<div class="diagram">DELETE FIRST � List: 10 ? 20 ? 30 ? null
 
-BEFORE:  head ──▶ [10|──▶] [20|──▶] [30|null]
+BEFORE:  head --? [10|--?] [20|--?] [30|null]
 
-Step 1: head = head.Next   →   head now points to node(20)
-Step 2: The old node(10) has no more references → GC collects it
+Step 1: head = head.Next   ?   head now points to node(20)
+Step 2: The old node(10) has no more references ? GC collects it
 
-AFTER:   head ──▶ [20|──▶] [30|null]
+AFTER:   head --? [20|--?] [30|null]
 
 Edge: One-element list (head == tail):
   head = head.Next (= null)
-  tail = null  ← must also clear tail!</div>
+  tail = null  ? must also clear tail!</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -602,7 +603,7 @@ Edge: One-element list (head == tail):
     head = head.Next;
     Count--;
 
-    <span class="kw">if</span> (Count == <span class="nm">0</span>) tail = <span class="kw">null</span>;  <span class="cm">// Was one node — clear tail too</span>
+    <span class="kw">if</span> (Count == <span class="nm">0</span>) tail = <span class="kw">null</span>;  <span class="cm">// Was one node � clear tail too</span>
     <span class="kw">return</span> value;
 }</pre>
 </div>
@@ -619,24 +620,24 @@ Edge: One-element list (head == tail):
     <span class="kw">return</span> value</pre>
 </div>
 
-<h3>6.2 — Delete Last Node — O(n)</h3>
+<h3>6.2 � Delete Last Node � O(n)</h3>
 <p>Even with a <code>tail</code> reference, deleting the last node requires O(n) traversal. Why? You need
 to find the <strong>second-to-last node</strong> to update its <code>Next</code> to null and reassign
 <code>tail</code>. Since the singly linked list has no backward pointer, you must walk from head.</p>
-<p>This is one of the key limitations of singly linked lists — it's why doubly linked lists (Part B) are often preferred.</p>
+<p>This is one of the key limitations of singly linked lists � it's why doubly linked lists (Part B) are often preferred.</p>
 
-<div class="diagram">DELETE LAST — List: 10 → 20 → 30 → null
+<div class="diagram">DELETE LAST � List: 10 ? 20 ? 30 ? null
 
-BEFORE:  head ──▶ [10|──▶] [20|──▶] [30|null] ◀── tail
+BEFORE:  head --? [10|--?] [20|--?] [30|null] ?-- tail
 
 Step 1: Traverse to the node BEFORE tail
         prev = node(20)
 
-Step 2: prev.Next = null    →    [20|null]
-Step 3: tail = prev          →    tail now points to node(20)
-        node(30) has no references → GC collects it
+Step 2: prev.Next = null    ?    [20|null]
+Step 3: tail = prev          ?    tail now points to node(20)
+        node(30) has no references ? GC collects it
 
-AFTER:   head ──▶ [10|──▶] [20|null] ◀── tail</div>
+AFTER:   head --? [10|--?] [20|null] ?-- tail</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -686,9 +687,9 @@ AFTER:   head ──▶ [10|──▶] [20|null] ◀── tail</div>
     <span class="kw">return</span> value</pre>
 </div>
 
-<h3>6.3 — Delete by Value — O(n)</h3>
+<h3>6.3 � Delete by Value � O(n)</h3>
 <p>Find the <strong>first occurrence</strong> of a value and remove it. The pattern: use two pointers
-(<code>prev</code> and <code>current</code>) — when you find the node, rewire <code>prev.Next</code>
+(<code>prev</code> and <code>current</code>) � when you find the node, rewire <code>prev.Next</code>
 to skip over <code>current</code>.</p>
 
 
@@ -744,30 +745,30 @@ to skip over <code>current</code>.</p>
     <span class="kw">return</span> <span class="kw">False</span></pre>
 </div>
 
-<div class="diagram">DELETE BY VALUE — Remove node(20) from: 10 → 20 → 30 → null
+<div class="diagram">DELETE BY VALUE � Remove node(20) from: 10 ? 20 ? 30 ? null
 
 Start: prev=node(10), current=node(20)
 
 Does current.Data == 20?  YES!
-→ prev.Next = current.Next
-→ node(10).Next = node(30)
+? prev.Next = current.Next
+? node(10).Next = node(30)
 
-AFTER:  head ──▶ [10|──▶] [30|null]
-        node(20) is unreferenced → GC collects it</div>
+AFTER:  head --? [10|--?] [30|null]
+        node(20) is unreferenced ? GC collects it</div>
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Search</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Search</div>
 
-<p>Since a linked list is <strong>not indexed</strong>, searching requires traversal — O(n) in all cases
+<p>Since a linked list is <strong>not indexed</strong>, searching requires traversal � O(n) in all cases
 (we cannot do binary search because we can't jump to a middle position).</p>
 
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
-<pre><span class="cm">// Returns true if value exists in list — O(n)</span>
+<pre><span class="cm">// Returns true if value exists in list � O(n)</span>
 <span class="kw">public bool</span> <span class="mt">Contains</span>(<span class="tp">T</span> value)
 {
     <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? current = head;
@@ -779,7 +780,7 @@ AFTER:  head ──▶ [10|──▶] [30|null]
     <span class="kw">return false</span>;
 }
 
-<span class="cm">// Returns the zero-based index of value, or -1 if not found — O(n)</span>
+<span class="cm">// Returns the zero-based index of value, or -1 if not found � O(n)</span>
 <span class="kw">public int</span> <span class="mt">IndexOf</span>(<span class="tp">T</span> value)
 {
     <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? current = head;
@@ -815,46 +816,46 @@ AFTER:  head ──▶ [10|──▶] [30|null]
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Cycle Detection: Floyd's Algorithm</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Cycle Detection: Floyd's Algorithm</div>
 
 <p>A <strong>cycle</strong> (or loop) occurs when a node's <code>Next</code> pointer points back to a
-previous node in the list, forming an infinite loop. This is a classic bug — your traversal code
+previous node in the list, forming an infinite loop. This is a classic bug � your traversal code
 would loop forever. <strong>Floyd's Cycle Detection Algorithm</strong> (also called the
 "fast and slow pointer" or "tortoise and hare" algorithm) detects this in O(n) time and O(1) space.</p>
 
 <div class="realworld">
-    <strong>🌍 Real-World Analogy — The Race Track:</strong><br>
+    <strong>?? Real-World Analogy � The Race Track:</strong><br>
     Imagine two runners on a circular track. One runs at 1x speed, the other at 2x speed.
     If the track is circular (cycle exists), the fast runner will <em>eventually lap</em> the slow runner
-    — they will be at the same position. If the track is a straight line (no cycle), the fast runner
+    � they will be at the same position. If the track is a straight line (no cycle), the fast runner
     simply reaches the end.
 </div>
 
-<div class="diagram">FLOYD'S ALGORITHM — Two Pointer Technique
+<div class="diagram">FLOYD'S ALGORITHM � Two Pointer Technique
 
-List WITH a cycle: 1 → 2 → 3 → 4 → 5
-                             ↑           ↓
-                             └─── 6 ←───┘
+List WITH a cycle: 1 ? 2 ? 3 ? 4 ? 5
+                             ?           ?
+                             +--- 6 ?---+
                          (node 6's Next points back to node 3)
 
 slow pointer: moves 1 step at a time: 1, 2, 3, 4, 5, 6, 3, 4, 5, 6...
 fast pointer: moves 2 steps at time: 1, 3, 5, 3, 5, 3, 5, 3...
 
-Both in the cycle — they WILL meet!
+Both in the cycle � they WILL meet!
 
 Steps:
 Start: slow=1, fast=1
 Step 1: slow=2, fast=3
 Step 2: slow=3, fast=5
 Step 3: slow=4, fast=3  (fast wrapped in cycle)
-Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
+Step 4: slow=5, fast=5  ? THEY MET! Cycle detected!</div>
 
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
-<pre><span class="cm">// Floyd's Cycle Detection — O(n) time, O(1) space</span>
+<pre><span class="cm">// Floyd's Cycle Detection � O(n) time, O(1) space</span>
 <span class="kw">public bool</span> <span class="mt">HasCycle</span>()
 {
     <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? slow = head;  <span class="cm">// moves 1 step</span>
@@ -865,9 +866,9 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
         slow = slow!.Next;          <span class="cm">// 1 step</span>
         fast = fast.Next.Next;     <span class="cm">// 2 steps</span>
 
-        <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;  <span class="cm">// They met — CYCLE!</span>
+        <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;  <span class="cm">// They met � CYCLE!</span>
     }
-    <span class="kw">return false</span>;  <span class="cm">// fast reached null — no cycle</span>
+    <span class="kw">return false</span>;  <span class="cm">// fast reached null � no cycle</span>
 }
 
 <span class="cm">// Find the START of the cycle (where the loop begins)</span>
@@ -887,7 +888,7 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
     <span class="kw">if</span> (fast == <span class="kw">null</span> || fast.Next == <span class="kw">null</span>) <span class="kw">return null</span>;  <span class="cm">// No cycle</span>
 
     <span class="cm">// Phase 2: Reset slow to head, keep fast at meeting point.
-    // Advance both 1 step at a time — they meet at cycle start.</span>
+    // Advance both 1 step at a time � they meet at cycle start.</span>
     slow = head;
     <span class="kw">while</span> (slow != fast)
     {
@@ -923,18 +924,18 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
 </div>
 
 <div class="note">
-    <strong>📌 Why Does Phase 2 Work?</strong> This is a beautiful math proof:
+    <strong>?? Why Does Phase 2 Work?</strong> This is a beautiful math proof:
     Let F = distance from head to cycle start, C = cycle length, K = distance from cycle start to meeting point.
-    When slow and fast meet: slow has traveled F+K steps. Fast has traveled F+K+n×C steps (for some n).
-    Since fast travels 2× slow: 2(F+K) = F+K+n×C → F = n×C - K.
+    When slow and fast meet: slow has traveled F+K steps. Fast has traveled F+K+n�C steps (for some n).
+    Since fast travels 2� slow: 2(F+K) = F+K+n�C ? F = n�C - K.
     This means: if you put one pointer at head and keep the other at the meeting point,
     advancing both by 1 step each time, they meet exactly at the cycle start after F steps!
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 9 ═══════ -->
-<div class="section-heading">Section 9 — Full SinglyLinkedList&lt;T&gt; Class</div>
+<!-- ------- SECTION 9 ------- -->
+<div class="section-heading">Section 9 � Full SinglyLinkedList&lt;T&gt; Class</div>
 
 <p>Here is the complete, production-quality implementation putting everything together:</p>
 
@@ -956,7 +957,7 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
     <span class="kw">public int</span> Count { <span class="kw">get</span>; <span class="kw">private set</span>; }
     <span class="kw">public bool</span> IsEmpty =&gt; Count == <span class="nm">0</span>;
 
-    <span class="cm">// ── Add Operations ──────────────────────────────────</span>
+    <span class="cm">// -- Add Operations ----------------------------------</span>
     <span class="kw">public void</span> <span class="mt">AddFirst</span>(<span class="tp">T</span> value)
     {
         <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt; n = <span class="kw">new</span>(value);
@@ -986,7 +987,7 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
         Count++;
     }
 
-    <span class="cm">// ── Remove Operations ───────────────────────────────</span>
+    <span class="cm">// -- Remove Operations -------------------------------</span>
     <span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveFirst</span>()
     {
         <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"List is empty"</span>);
@@ -1029,7 +1030,7 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
         <span class="kw">return false</span>;
     }
 
-    <span class="cm">// ── Search &amp; Access ─────────────────────────────────</span>
+    <span class="cm">// -- Search &amp; Access ---------------------------------</span>
     <span class="kw">public bool</span>  <span class="mt">Contains</span>(<span class="tp">T</span> value) =&gt; <span class="mt">IndexOf</span>(value) != -<span class="nm">1</span>;
     <span class="kw">public int</span>   <span class="mt">IndexOf</span>(<span class="tp">T</span> value)
     {
@@ -1047,11 +1048,11 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
     <span class="kw">public</span> <span class="tp">T</span> PeekFirst() { <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(); <span class="kw">return</span> head!.Data; }
     <span class="kw">public</span> <span class="tp">T</span> PeekLast()  { <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(); <span class="kw">return</span> tail!.Data; }
 
-    <span class="cm">// ── Utilities ───────────────────────────────────────</span>
+    <span class="cm">// -- Utilities ---------------------------------------</span>
     <span class="kw">public void</span> <span class="mt">Print</span>()
     {
         <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? c = head;
-        <span class="kw">while</span> (c != <span class="kw">null</span>) { <span class="tp">Console</span>.<span class="mt">Write</span>(c.Data + <span class="st">" → "</span>); c = c.Next; }
+        <span class="kw">while</span> (c != <span class="kw">null</span>) { <span class="tp">Console</span>.<span class="mt">Write</span>(c.Data + <span class="st">" ? "</span>); c = c.Next; }
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"null"</span>);
     }
 
@@ -1081,18 +1082,18 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
     }
 }
 
-<span class="cm">// ── Usage Example ────────────────────────────────────────</span>
+<span class="cm">// -- Usage Example ----------------------------------------</span>
 <span class="kw">var</span> list = <span class="kw">new</span> <span class="tp">SinglyLinkedList</span>&lt;<span class="kw">int</span>&gt;();
 list.<span class="mt">AddLast</span>(<span class="nm">10</span>);
 list.<span class="mt">AddLast</span>(<span class="nm">20</span>);
 list.<span class="mt">AddLast</span>(<span class="nm">30</span>);
 list.<span class="mt">AddFirst</span>(<span class="nm">5</span>);
 list.<span class="mt">AddAt</span>(<span class="nm">2</span>, <span class="nm">15</span>);
-list.<span class="mt">Print</span>();          <span class="cm">// 5 → 10 → 15 → 20 → 30 → null</span>
+list.<span class="mt">Print</span>();          <span class="cm">// 5 ? 10 ? 15 ? 20 ? 30 ? null</span>
 list.<span class="mt">Remove</span>(<span class="nm">15</span>);
-list.<span class="mt">Print</span>();          <span class="cm">// 5 → 10 → 20 → 30 → null</span>
+list.<span class="mt">Print</span>();          <span class="cm">// 5 ? 10 ? 20 ? 30 ? null</span>
 list.<span class="mt">Reverse</span>();
-list.<span class="mt">Print</span>();          <span class="cm">// 30 → 20 → 10 → 5 → null</span></pre>
+list.<span class="mt">Print</span>();          <span class="cm">// 30 ? 20 ? 10 ? 5 ? null</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -1118,27 +1119,27 @@ ll.<span class="mt">print_all</span>()              <span class="cm"># 1 2 4</sp
     <span class="kw">self</span>.head = prev</pre>
 </div>
 
-<h3>9.1 — List Reversal — O(n)</h3>
+<h3>9.1 � List Reversal � O(n)</h3>
 <p>Reversing a singly linked list in-place using three pointers is one of the most common interview questions. The key insight: you process one node at a time, always pointing it backward.</p>
 
-<div class="diagram">REVERSE LIST: 1 → 2 → 3 → 4 → null  becomes  4 → 3 → 2 → 1 → null
+<div class="diagram">REVERSE LIST: 1 ? 2 ? 3 ? 4 ? null  becomes  4 ? 3 ? 2 ? 1 ? null
 
 Use three pointers: prev, current, next
 
-Initial: prev=null, current=node(1), head→[1→2→3→4→null]
+Initial: prev=null, current=node(1), head?[1?2?3?4?null]
 
 Iteration 1:
   next = current.Next  = node(2)      [save next before overwriting]
   current.Next = prev  = null         [1 now points backward to null]
   prev = current       = node(1)      [advance prev]
   current = next       = node(2)      [advance current]
-  State: null ←[1]  [2→3→4→null]
+  State: null ?[1]  [2?3?4?null]
 
 Iteration 2:
   next = node(3)
   current.Next = prev = node(1)       [2 now points backward to 1]
   prev = node(2), current = node(3)
-  State: null ←[1]←[2]  [3→4→null]
+  State: null ?[1]?[2]  [3?4?null]
 
 Iteration 3:
   next = node(4)
@@ -1153,12 +1154,12 @@ Iteration 4:
 Loop ends (current == null)
 head = prev = node(4)
 
-RESULT: [4→3→2→1→null]  ✓</div>
+RESULT: [4?3?2?1?null]  ?</div>
 
 <hr>
 
-<!-- ═══════ SECTION 10 ═══════ -->
-<div class="section-heading">Section 10 — Complexity Summary</div>
+<!-- ------- SECTION 10 ------- -->
+<div class="section-heading">Section 10 � Complexity Summary</div>
 
 <table>
     <thead>
@@ -1175,29 +1176,29 @@ RESULT: [4→3→2→1→null]  ✓</div>
         <tr><td>Contains</td><td class="o">O(n)</td><td class="g">O(1)</td><td>Linear scan</td></tr>
         <tr><td>HasCycle</td><td class="o">O(n)</td><td class="g">O(1)</td><td>Floyd's two-pointer</td></tr>
         <tr><td>Reverse</td><td class="o">O(n)</td><td class="g">O(1)</td><td>Three pointers</td></tr>
-        <tr><td>Space (n nodes)</td><td>—</td><td class="o">O(n)</td><td>n nodes × (data + 1 pointer)</td></tr>
+        <tr><td>Space (n nodes)</td><td>�</td><td class="o">O(n)</td><td>n nodes � (data + 1 pointer)</td></tr>
     </tbody>
 </table>
 
 <div class="realworld">
-    <strong>🌍 Where Singly Linked Lists Are Used in Real Software:</strong>
+    <strong>?? Where Singly Linked Lists Are Used in Real Software:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Undo stacks</strong> — Text editors (VS Code, Word) store edit history as a linked list. Undo = RemoveFirst.</li>
-        <li><strong>Hash table chaining</strong> — Each bucket in a HashMap stores a linked list of key-value pairs with the same hash.</li>
-        <li><strong>Memory allocators</strong> — Free memory blocks are often managed as a linked list of available chunks.</li>
-        <li><strong>Adjacency lists</strong> — Graph representations in algorithms (BFS, DFS) use lists of neighbor nodes.</li>
-        <li><strong>Music playlists</strong> — A playlist where each song knows the "next song" to play.</li>
+        <li><strong>Undo stacks</strong> � Text editors (VS Code, Word) store edit history as a linked list. Undo = RemoveFirst.</li>
+        <li><strong>Hash table chaining</strong> � Each bucket in a HashMap stores a linked list of key-value pairs with the same hash.</li>
+        <li><strong>Memory allocators</strong> � Free memory blocks are often managed as a linked list of available chunks.</li>
+        <li><strong>Adjacency lists</strong> � Graph representations in algorithms (BFS, DFS) use lists of neighbor nodes.</li>
+        <li><strong>Music playlists</strong> � A playlist where each song knows the "next song" to play.</li>
     </ul>
 </div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>✅ Module 2A Complete!</strong><br><br>
+    <strong>? Module 2A Complete!</strong><br><br>
     You now understand: Node structure, head/tail management, all insertions &amp; deletions, traversal,
     search, cycle detection (Floyd's), and list reversal.<br><br>
-    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ▶ <strong>Next:</strong> <a href="m02b_doubly_circular.html">Part B — Doubly &amp; Circular Linked Lists</a>
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Next:</strong> <a href="m02b_doubly_circular.html">Part B � Doubly &amp; Circular Linked Lists</a>
 </div>
 
     <script src="../dsa.js"></script>

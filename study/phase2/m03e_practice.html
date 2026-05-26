@@ -1,35 +1,36 @@
-Ôªø<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 3E ‚Äî Practice: Stacks &amp; Queues</title>
+    <title>Module 3E ó Practice: Stacks &amp; Queues</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms ‚Äî Complete Course</div>
-    <h1>Module 3 ‚Äî Part E</h1>
-    <div class="tagline">Practice ‚Äî 15 Stacks &amp; Queues Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From balanced parentheses to sliding window maximum ‚Äî test your mastery</p>
+    <div class="module-label">C# Data Structures &amp; Algorithms ó Complete Course</div>
+    <h1>Module 3 ó Part E</h1>
+    <div class="tagline">Practice ó 15 Stacks &amp; Queues Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From balanced parentheses to sliding window maximum ó test your mastery</p>
     <div class="badges">
-        <span>üìã 15 Problems</span>
-        <span>üü¢ Easy ‚Äî 5</span>
-        <span>üü° Medium ‚Äî 7</span>
-        <span>üî¥ Hard ‚Äî 3</span>
-        <span>üíª Language: C#</span>
+        <span>?? 15 Problems</span>
+        <span>?? Easy ó 5</span>
+        <span>?? Medium ó 7</span>
+        <span>?? Hard ó 3</span>
+        <span>?? Language: C#</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>üìÇ Module 3 ‚Äî Stacks &amp; Queues:</strong><br><br>
-    ‚úÖ <strong>Part A</strong> ‚Äî <a href="m03a_stacks.html">Stacks</a><br>
-    ‚úÖ <strong>Part B</strong> ‚Äî <a href="m03b_queues.html">Queues &amp; Deque</a><br>
-    ‚úÖ <strong>Part C</strong> ‚Äî <a href="m03c_priority_queue.html">Priority Queue</a><br>
-    ‚úÖ <strong>Part D</strong> ‚Äî <a href="m03d_monotonic.html">Monotonic Stack &amp; Queue</a><br>
-    ‚ñ∂ <strong>Part E</strong> ‚Äî <em>You are here</em> ‚Äî Practice<br>
-    üè† <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 3 ó Stacks &amp; Queues:</strong><br><br>
+    ? <strong>Part A</strong> ó <a href="m03a_stacks.html">Stacks</a><br>
+    ? <strong>Part B</strong> ó <a href="m03b_queues.html">Queues &amp; Deque</a><br>
+    ? <strong>Part C</strong> ó <a href="m03c_priority_queue.html">Priority Queue</a><br>
+    ? <strong>Part D</strong> ó <a href="m03d_monotonic.html">Monotonic Stack &amp; Queue</a><br>
+    ? <strong>Part E</strong> ó <em>You are here</em> ó Practice<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase2/m02a_singly_ll.html">&larr; Module 2 &mdash; Linked Lists</a>
@@ -37,13 +38,13 @@
 </div>
 
 <div class="tip">
-    <strong>üìå How to Use This Page:</strong> Try each problem on your own first. When you're ready,
+    <strong>?? How to Use This Page:</strong> Try each problem on your own first. When you're ready,
     click "Show Solution" to reveal the full C# solution with explanations. Solutions are hidden by
-    default ‚Äî no JavaScript required.
+    default ó no JavaScript required.
 </div>
 
 <!-- ------- EASY SECTION ------- -->
-<div class="section-heading">Easy Problems (1‚Äî5)</div>
+<div class="section-heading">Easy Problems (1ó5)</div>
 
 <!-- Problem 1 -->
 <div class="problem-card">
@@ -60,16 +61,16 @@
     A string is valid if every open bracket is closed by the same type of bracket in the correct order.</p>
     <strong>Examples:</strong>
     <ul>
-        <li><code>"()"</code> ‚Üí <code>true</code></li>
-        <li><code>"()[]{}"</code> ‚Üí <code>true</code></li>
-        <li><code>"(]"</code> ‚Üí <code>false</code></li>
-        <li><code>"([)]"</code> ‚Üí <code>false</code></li>
+        <li><code>"()"</code> ? <code>true</code></li>
+        <li><code>"()[]{}"</code> ? <code>true</code></li>
+        <li><code>"(]"</code> ? <code>false</code></li>
+        <li><code>"([)]"</code> ? <code>false</code></li>
     </ul>
     <strong>Constraints:</strong> 1 = s.length = 104. Time: O(n). Space: O(n).
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="note"><strong>Approach:</strong> Use a stack. Push opening brackets. When a closing bracket appears, pop and check if it matches. Stack must be empty at the end.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî one pass through string &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî stack stores up to n/2 open brackets</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó one pass through string &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó stack stores up to n/2 open brackets</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -134,10 +135,10 @@ minStack.GetMin(); // returns -3
 minStack.Pop();
 minStack.Top();    // returns 0
 minStack.GetMin(); // returns -2</pre>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="note"><strong>Approach:</strong> Maintain two stacks: the main stack and a "min stack". The min stack's top always holds the current minimum. Only push to min stack when the new value is = current minimum; only pop from min stack when the popped value equals the current minimum.</div>
-        <div class="complexity"><strong>Time:</strong> O(1) ‚Äî all operations (Push, Pop, Top, GetMin) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî two stacks</div>
+        <div class="complexity"><strong>Time:</strong> O(1) ó all operations (Push, Pop, Top, GetMin) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó two stacks</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -202,13 +203,13 @@ minStack.GetMin(); // returns -2</pre>
     Each operand or operator is a separate token.</p>
     <strong>Examples:</strong>
     <ul>
-        <li><code>["2","1","+","3","*"]</code> ‚Üí <code>9</code> ‚Äî ((2+1)*3)</li>
-        <li><code>["4","13","5","/","+"]</code> ‚Üí <code>6</code> ‚Äî (4+(13/5))</li>
+        <li><code>["2","1","+","3","*"]</code> ? <code>9</code> ó ((2+1)*3)</li>
+        <li><code>["4","13","5","/","+"]</code> ? <code>6</code> ó (4+(13/5))</li>
     </ul>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="note"><strong>Approach:</strong> Scan tokens left to right. Push numbers. When an operator appears, pop two numbers (b = right operand, a = left), compute result, push back.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî one pass through tokens &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî stack holds at most n/2 numbers</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó one pass through tokens &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó stack holds at most n/2 numbers</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -272,10 +273,10 @@ minStack.GetMin(); // returns -2</pre>
     <p>Implement a first-in first-out (FIFO) queue using only two stacks. The queue should support
     <code>Push</code> (adds to back), <code>Pop</code> (removes from front), <code>Peek</code> (views front),
     and <code>Empty</code>. All operations should be amortized O(1).</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî "Lazy Transfer":</strong> Use an "in" stack for pushes and an "out" stack for pops/peeks. When the out stack is empty, transfer everything from in to out (this reverses order, giving FIFO). Each element is transferred at most once ‚Äî amortized O(1).</div>
-        <div class="complexity"><strong>Time:</strong> O(1) amortized ‚Äî each element transferred at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî two stacks total</div>
+        <div class="note"><strong>Approach ó "Lazy Transfer":</strong> Use an "in" stack for pushes and an "out" stack for pops/peeks. When the out stack is empty, transfer everything from in to out (this reverses order, giving FIFO). Each element is transferred at most once ó amortized O(1).</div>
+        <div class="complexity"><strong>Time:</strong> O(1) amortized ó each element transferred at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó two stacks total</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -349,11 +350,11 @@ minStack.GetMin(); // returns -2</pre>
     </div>
     <p>Given an array <code>temperatures</code>, for each day return how many days you have to wait
     until a warmer temperature. If there is no future warmer day, return 0 for that day.</p>
-    <strong>Example:</strong> <code>[73,74,75,71,69,72,76,73]</code> ‚Üí <code>[1,1,4,2,1,1,0,0]</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> <code>[73,74,75,71,69,72,76,73]</code> ? <code>[1,1,4,2,1,1,0,0]</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Monotonic Decreasing Stack:</strong> Maintain a stack of indices with decreasing temperatures. When a warmer day is found, pop all cooler indices and record the distance.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî each index pushed and popped at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî stack stores indices</div>
+        <div class="note"><strong>Approach ó Monotonic Decreasing Stack:</strong> Maintain a stack of indices with decreasing temperatures. When a warmer day is found, pop all cooler indices and record the distance.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó each index pushed and popped at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó stack stores indices</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -393,7 +394,7 @@ minStack.GetMin(); // returns -2</pre>
 </div>
 
 <!-- ------- MEDIUM SECTION ------- -->
-<div class="section-heading">Medium Problems (6‚Äî12)</div>
+<div class="section-heading">Medium Problems (6ó12)</div>
 
 <!-- Problem 6 -->
 <div class="problem-card">
@@ -408,11 +409,11 @@ minStack.GetMin(); // returns -2</pre>
     <p>Given a circular integer array <code>nums</code>, return the next greater number for every element.
     The next greater number is the first greater number to the right (wrapping around).
     Return -1 if none exists.</p>
-    <strong>Example:</strong> <code>[1,2,1]</code> ‚Üí <code>[2,-1,2]</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> <code>[1,2,1]</code> ? <code>[2,-1,2]</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Double Pass:</strong> Loop from 0 to 2n-1 using index % n. Only push indices in the first pass (i &lt; n). When popping, the current element is the next greater for the popped index.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî double pass, each element processed at most twice &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî stack stores indices</div>
+        <div class="note"><strong>Approach ó Double Pass:</strong> Loop from 0 to 2n-1 using index % n. Only push indices in the first pass (i &lt; n). When popping, the current element is the next greater for the popped index.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó double pass, each element processed at most twice &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó stack stores indices</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -462,11 +463,11 @@ minStack.GetMin(); // returns -2</pre>
     <p>There are <code>n</code> people standing in a queue and their heights are given by array <code>heights</code>.
     For each person <code>i</code>, count how many people to the right they can see. Person i can see person j
     (j &gt; i) if all people between them have heights strictly less than min(heights[i], heights[j]).</p>
-    <strong>Example:</strong> <code>[10,6,8,5,11,9]</code> ‚Üí <code>[3,1,2,1,1,0]</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> <code>[10,6,8,5,11,9]</code> ? <code>[3,1,2,1,1,0]</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Scan Right to Left:</strong> Process from right to left. Maintain a decreasing stack. For each person, count how many they can see (those popped because current is taller) + possibly 1 more (the one that stopped the popping).</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî right-to-left scan, each height pushed and popped once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî decreasing stack</div>
+        <div class="note"><strong>Approach ó Scan Right to Left:</strong> Process from right to left. Maintain a decreasing stack. For each person, count how many they can see (those popped because current is taller) + possibly 1 more (the one that stopped the popping).</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó right-to-left scan, each height pushed and popped once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó decreasing stack</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -522,17 +523,17 @@ minStack.GetMin(); // returns -2</pre>
         </div>
     </div>
     <p>Given an encoded string, return its decoded string. The encoding rule is <code>k[encoded_string]</code>
-    ‚Äî the encoded_string inside brackets is repeated exactly k times.</p>
+    ó the encoded_string inside brackets is repeated exactly k times.</p>
     <strong>Examples:</strong>
     <ul>
-        <li><code>"3[a]2[bc]"</code> ‚Üí <code>"aaabcbc"</code></li>
-        <li><code>"3[a2[c]]"</code> ‚Üí <code>"accaccacc"</code></li>
-        <li><code>"2[abc]3[cd]ef"</code> ‚Üí <code>"abcabccdcdcdef"</code></li>
+        <li><code>"3[a]2[bc]"</code> ? <code>"aaabcbc"</code></li>
+        <li><code>"3[a2[c]]"</code> ? <code>"accaccacc"</code></li>
+        <li><code>"2[abc]3[cd]ef"</code> ? <code>"abcabccdcdcdef"</code></li>
     </ul>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Two Stacks:</strong> One stack for repeat counts, one for string contexts. When '[' is found, push current state and start fresh. When ']' is found, pop the count and context, and build the repeated string.</div>
-        <div class="complexity"><strong>Time:</strong> O(n √ó k) ‚Äî k = max repeat count, string built character by character &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî two stacks</div>
+        <div class="note"><strong>Approach ó Two Stacks:</strong> One stack for repeat counts, one for string contexts. When '[' is found, push current state and start fresh. When ']' is found, pop the count and context, and build the repeated string.</div>
+        <div class="complexity"><strong>Time:</strong> O(n ◊ k) ó k = max repeat count, string built character by character &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó two stacks</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -612,14 +613,14 @@ minStack.GetMin(); // returns -2</pre>
     never collide. Return the state after all collisions.</p>
     <strong>Examples:</strong>
     <ul>
-        <li><code>[5,10,-5]</code> ‚Üí <code>[5,10]</code> ‚Äî -5 collides with 10 and explodes</li>
-        <li><code>[8,-8]</code> ‚Üí <code>[]</code> ‚Äî both explode</li>
-        <li><code>[10,2,-5]</code> ‚Üí <code>[10]</code> ‚Äî -5 destroys 2, then 10 destroys -5</li>
+        <li><code>[5,10,-5]</code> ? <code>[5,10]</code> ó -5 collides with 10 and explodes</li>
+        <li><code>[8,-8]</code> ? <code>[]</code> ó both explode</li>
+        <li><code>[10,2,-5]</code> ? <code>[10]</code> ó -5 destroys 2, then 10 destroys -5</li>
     </ul>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach:</strong> Stack holds surviving asteroids. Only a collision occurs when stack top is positive AND current asteroid is negative. Handle: current destroyed (top larger), both destroyed (equal), or top destroyed (current larger ‚Äî keep processing).</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî each asteroid pushed and popped at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî stack for surviving asteroids</div>
+        <div class="note"><strong>Approach:</strong> Stack holds surviving asteroids. Only a collision occurs when stack top is positive AND current asteroid is negative. Handle: current destroyed (top larger), both destroyed (equal), or top destroyed (current larger ó keep processing).</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó each asteroid pushed and popped at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó stack for surviving asteroids</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -678,11 +679,11 @@ minStack.GetMin(); // returns -2</pre>
     </div>
     <p>Given the root of a binary tree, return its level-order traversal as a list of lists of values
     (from left to right, level by level).</p>
-    <strong>Example:</strong> Tree <code>[3,9,20,null,null,15,7]</code> ‚Üí <code>[[3],[9,20],[15,7]]</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> Tree <code>[3,9,20,null,null,15,7]</code> ? <code>[[3],[9,20],[15,7]]</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî BFS with Queue:</strong> Enqueue root. Each iteration, process exactly <code>queue.Count</code> nodes (the whole current level), then enqueue their children. This naturally groups nodes by level.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî visits every node exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(w) ‚Äî w = max width of tree (queue holds one full level)</div>
+        <div class="note"><strong>Approach ó BFS with Queue:</strong> Enqueue root. Each iteration, process exactly <code>queue.Count</code> nodes (the whole current level), then enqueue their children. This naturally groups nodes by level.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó visits every node exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(w) ó w = max width of tree (queue holds one full level)</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -747,11 +748,11 @@ minStack.GetMin(); // returns -2</pre>
     <p>You have a grid of cells: 0 = empty, 1 = fresh orange, 2 = rotten orange. Every minute, any
     fresh orange adjacent (4-directionally) to a rotten orange also becomes rotten. Return the minimum
     number of minutes until no fresh orange remains. Return -1 if impossible.</p>
-    <strong>Example:</strong> <code>[[2,1,1],[1,1,0],[0,1,1]]</code> ‚Üí <code>4</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> <code>[[2,1,1],[1,1,0],[0,1,1]]</code> ? <code>4</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Multi-Source BFS:</strong> Seed the BFS queue with ALL initially rotten oranges. Each BFS "level" represents one minute of rotting. After BFS completes, check if any fresh oranges remain.</div>
-        <div class="complexity"><strong>Time:</strong> O(m√ón) ‚Äî BFS visits each cell at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(m√ón) ‚Äî queue can hold entire grid</div>
+        <div class="note"><strong>Approach ó Multi-Source BFS:</strong> Seed the BFS queue with ALL initially rotten oranges. Each BFS "level" represents one minute of rotting. After BFS completes, check if any fresh oranges remain.</div>
+        <div class="complexity"><strong>Time:</strong> O(m◊n) ó BFS visits each cell at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(m◊n) ó queue can hold entire grid</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -835,12 +836,12 @@ minStack.GetMin(); // returns -2</pre>
     </div>
     <p>Given tasks with a cooldown interval <code>n</code>, schedule them to minimize total execution
     time. Identical tasks must be at least <code>n</code> intervals apart. Return total intervals needed.</p>
-    <strong>Example:</strong> <code>tasks=["A","A","A","B","B","B"], n=2</code> ‚Üí <code>8</code>
+    <strong>Example:</strong> <code>tasks=["A","A","A","B","B","B"], n=2</code> ? <code>8</code>
     (A B _ A B _ A B)
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Greedy + Max-Heap + Queue:</strong> Always schedule the most frequent available task (max-heap). After scheduling, the task enters a cooldown queue until it becomes available again. Each tick either runs a task or idles.</div>
-        <div class="complexity"><strong>Time:</strong> O(n log k) ‚Äî n tasks, heap ops on k unique task types &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) ‚Äî heap and cooldown queue</div>
+        <div class="note"><strong>Approach ó Greedy + Max-Heap + Queue:</strong> Always schedule the most frequent available task (max-heap). After scheduling, the task enters a cooldown queue until it becomes available again. Each tick either runs a task or idles.</div>
+        <div class="complexity"><strong>Time:</strong> O(n log k) ó n tasks, heap ops on k unique task types &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) ó heap and cooldown queue</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -899,7 +900,7 @@ minStack.GetMin(); // returns -2</pre>
 </div>
 
 <!-- ------- HARD SECTION ------- -->
-<div class="section-heading">Hard Problems (13‚Äî15)</div>
+<div class="section-heading">Hard Problems (13ó15)</div>
 
 <!-- Problem 13 -->
 <div class="problem-card">
@@ -913,12 +914,12 @@ minStack.GetMin(); // returns -2</pre>
     </div>
     <p>Given an array of integers <code>heights</code> representing histogram bar heights (each of width 1),
     return the area of the largest rectangle in the histogram.</p>
-    <strong>Example:</strong> <code>[2,1,5,6,2,3]</code> ‚Üí <code>10</code> (bars at index 2 and 3,
+    <strong>Example:</strong> <code>[2,1,5,6,2,3]</code> ? <code>10</code> (bars at index 2 and 3,
     height=5 spanning width=2)
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Monotonic Increasing Stack:</strong> For each bar, when we find a shorter bar, we pop ‚Äî the popped bar defines the maximum height for a rectangle. The width is from the new top to the current index. A virtual bar of height 0 at the end flushes all remaining bars.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî each bar pushed and popped at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ‚Äî stack stores indices</div>
+        <div class="note"><strong>Approach ó Monotonic Increasing Stack:</strong> For each bar, when we find a shorter bar, we pop ó the popped bar defines the maximum height for a rectangle. The width is from the new top to the current index. A virtual bar of height 0 at the end flushes all remaining bars.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó each bar pushed and popped at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) ó stack stores indices</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -975,21 +976,21 @@ minStack.GetMin(); // returns -2</pre>
     </div>
     <p>Given <code>n</code> non-negative integers representing an elevation map where each bar has width 1,
     compute how much water can be trapped after raining.</p>
-    <strong>Example:</strong> <code>[0,1,0,2,1,0,1,3,2,1,2,1]</code> ‚Üí <code>6</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> <code>[0,1,0,2,1,0,1,3,2,1,2,1]</code> ? <code>6</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="note">
             <strong>Two Approaches shown:</strong>
             <ul>
-                <li><strong>Stack approach</strong> ‚Äî O(n) time, O(n) space. Natural extension of histogram pattern.</li>
-                <li><strong>Two-pointer approach</strong> ‚Äî O(n) time, O(1) space. More optimal for space.</li>
+                <li><strong>Stack approach</strong> ó O(n) time, O(n) space. Natural extension of histogram pattern.</li>
+                <li><strong>Two-pointer approach</strong> ó O(n) time, O(1) space. More optimal for space.</li>
             </ul>
         </div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
-<pre><span class="cm">// Approach 1: Monotonic Stack ‚Äî O(n) time, O(n) space</span>
+<pre><span class="cm">// Approach 1: Monotonic Stack ó O(n) time, O(n) space</span>
 <span class="kw">public int</span> <span class="mt">TrapStack</span>(<span class="kw">int</span>[] height)
 {
     <span class="kw">int</span> water = <span class="nm">0</span>;
@@ -1010,7 +1011,7 @@ minStack.GetMin(); // returns -2</pre>
     <span class="kw">return</span> water;
 }
 
-<span class="cm">// Approach 2: Two Pointers ‚Äî O(n) time, O(1) space</span>
+<span class="cm">// Approach 2: Two Pointers ó O(n) time, O(1) space</span>
 <span class="kw">public int</span> <span class="mt">TrapTwoPointers</span>(<span class="kw">int</span>[] height)
 {
     <span class="kw">int</span> l = <span class="nm">0</span>, r = height.Length - <span class="nm">1</span>;
@@ -1066,11 +1067,11 @@ minStack.GetMin(); // returns -2</pre>
     </div>
     <p>Given an integer array <code>nums</code> and an integer <code>k</code>, find the maximum value
     in every contiguous subarray of size k. Return an array of these maxima.</p>
-    <strong>Example:</strong> <code>[1,3,-1,-3,5,3,6,7], k=3</code> ‚Üí <code>[3,3,5,5,6,7]</code>
-    <button class="sol-btn" onclick="toggleSolution(this)">üí° Show Solution</button>
+    <strong>Example:</strong> <code>[1,3,-1,-3,5,3,6,7], k=3</code> ? <code>[3,3,5,5,6,7]</code>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="note"><strong>Approach ‚Äî Monotonic Deque (Decreasing):</strong> The deque stores indices. Its front is always the index of the maximum in the current window. When adding a new element, remove from back all indices with smaller values (they can never be max while current element is in the window). Remove from front indices that fall outside the window.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) ‚Äî each element added and removed from deque at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) ‚Äî deque holds at most k indices</div>
+        <div class="note"><strong>Approach ó Monotonic Deque (Decreasing):</strong> The deque stores indices. Its front is always the index of the maximum in the current window. When adding a new element, remove from back all indices with smaller values (they can never be max while current element is in the window). Remove from front indices that fall outside the window.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) ó each element added and removed from deque at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) ó deque holds at most k indices</div>
         
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
@@ -1122,7 +1123,7 @@ minStack.GetMin(); // returns -2</pre>
 </div>
 
 <!-- ------- Quick Reference ------- -->
-<div class="section-heading">Quick Reference ‚Äî Stack &amp; Queue Patterns</div>
+<div class="section-heading">Quick Reference ó Stack &amp; Queue Patterns</div>
 
 <table>
     <thead>
@@ -1133,11 +1134,11 @@ minStack.GetMin(); // returns -2</pre>
         <tr><td>Running Minimum/Maximum</td><td>Auxiliary Stack</td><td>Need min/max in O(1) alongside regular ops</td><td>#2 Min Stack</td></tr>
         <tr><td>Expression Evaluation</td><td>Stack(s)</td><td>RPN, infix, decode with nesting</td><td>#3, #8</td></tr>
         <tr><td>Queue from Two Stacks</td><td>Two Stacks</td><td>FIFO needed, only Stack API available</td><td>#4</td></tr>
-        <tr><td>Next/Previous Greater/Smaller</td><td>Monotonic Stack</td><td>O(n‚Äî) brute-force comparisons visible</td><td>#5,#6,#7,#13</td></tr>
+        <tr><td>Next/Previous Greater/Smaller</td><td>Monotonic Stack</td><td>O(nó) brute-force comparisons visible</td><td>#5,#6,#7,#13</td></tr>
         <tr><td>Level-Order / BFS</td><td>Queue</td><td>Process node neighbors before deeper nodes</td><td>#10, #11</td></tr>
         <tr><td>Multi-Source BFS</td><td>Queue (pre-seeded)</td><td>All starting points active simultaneously</td><td>#11</td></tr>
         <tr><td>Priority Scheduling</td><td>Max-Heap + Queue</td><td>Process highest-priority item with cooldown</td><td>#12</td></tr>
-        <tr><td>Horizontal Water/Area</td><td>Monotonic Stack</td><td>Width ‚Äî height bounded area calculations</td><td>#13, #14</td></tr>
+        <tr><td>Horizontal Water/Area</td><td>Monotonic Stack</td><td>Width ó height bounded area calculations</td><td>#13, #14</td></tr>
         <tr><td>Sliding Window Max/Min</td><td>Monotonic Deque</td><td>Max/min in every window of fixed size</td><td>#15</td></tr>
     </tbody>
 </table>
@@ -1145,11 +1146,11 @@ minStack.GetMin(); // returns -2</pre>
 <hr>
 
 <div class="nav-box">
-    <strong>üìÇ Module 3 Complete!</strong><br><br>
+    <strong>?? Module 3 Complete!</strong><br><br>
     You have finished all 5 parts of Module 3: Stacks, Queues, Priority Queue, Monotonic Stack/Queue,
     and 15 practice problems. These are among the most frequently tested topics in software engineering interviews.<br><br>
-    üè† <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ? <strong>Prev:</strong> <a href="m03d_monotonic.html">Part D ‚Äî Monotonic</a>
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Prev:</strong> <a href="m03d_monotonic.html">Part D ó Monotonic</a>
 </div>
 
 <script>
@@ -1157,10 +1158,10 @@ function toggleSolution(btn) {
     var sol = btn.nextElementSibling;
     if (sol.style.display === "block") {
         sol.style.display = "none";
-        btn.textContent = "üí° Show Solution";
+        btn.textContent = "?? Show Solution";
     } else {
         sol.style.display = "block";
-        btn.textContent = "üôà Hide Solution";
+        btn.textContent = "?? Hide Solution";
     }
 }
 </script>

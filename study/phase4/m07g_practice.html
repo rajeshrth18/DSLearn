@@ -1,36 +1,37 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 7G — Practice: 15 Advanced Tree Problems</title>
+    <title>Module 7G � Practice: 15 Advanced Tree Problems</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
-    <h1>Module 7 — Part G</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 4</div>
+    <h1>Module 7 � Part G</h1>
     <div class="tagline">Practice: 15 Advanced Tree Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Heaps, Tries, B-Trees, AVL/Red-Black, LCA — 5 Easy ? 5 Medium ? 5 Hard</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Heaps, Tries, B-Trees, AVL/Red-Black, LCA � 5 Easy ? 5 Medium ? 5 Hard</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 3—4 Hours</span>
-        <span>🎯 Mixed Difficulty</span>
-        <span>💻 C# + Python</span>
-        <span>📝 Final Part of Module 6/7</span>
+        <span>? Estimated Time: 3�4 Hours</span>
+        <span>?? Mixed Difficulty</span>
+        <span>?? C# + Python</span>
+        <span>?? Final Part of Module 6/7</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m07a_avl_trees.html">AVL Trees</a><br>
-    ✅ <strong>Part B</strong> — <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
-    ✅ <strong>Part C</strong> — <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
-    ✅ <strong>Part D</strong> — <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
-    ✅ <strong>Part E</strong> — <a href="m07e_btrees.html">B-Trees</a><br>
-    ✅ <strong>Part F</strong> — <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
-    ▶ <strong>Part G</strong> — <em>You are here</em> — Practice: 15 Advanced Problems<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 7 � Advanced Trees:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m07a_avl_trees.html">AVL Trees</a><br>
+    ? <strong>Part B</strong> � <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
+    ? <strong>Part C</strong> � <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
+    ? <strong>Part D</strong> � <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
+    ? <strong>Part E</strong> � <a href="m07e_btrees.html">B-Trees</a><br>
+    ? <strong>Part F</strong> � <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
+    ? <strong>Part G</strong> � <em>You are here</em> � Practice: 15 Advanced Problems<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
@@ -38,7 +39,7 @@
 </div>
 
 <!-- ------- EASY ------- -->
-<div class="section-heading">Easy Problems (1—5)</div>
+<div class="section-heading">Easy Problems (1�5)</div>
 
 <!-- P1 -->
 <div class="problem-card">
@@ -52,13 +53,13 @@
         <span class="tag tag-topic">Min-Heap</span>
     </div>
     <p>Design a class to find the k-th largest element in a stream. The class is initialized with an integer k and an initial array of numbers. The <code>Add(val)</code> method adds a new value and returns the k-th largest element.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Maintain a min-heap of size k. The root (minimum) of this heap is always the k-th largest element overall. When adding a new value: if heap size &lt; k, push directly. If new value &gt; heap root, pop root and push new value. Return heap root as the answer.</div>
-        <div class="complexity"><strong>Time:</strong> O(log k) per add — heap has at most k elements &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) — min-heap stores k largest elements</div>
+        <div class="complexity"><strong>Time:</strong> O(log k) per add � heap has at most k elements &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) � min-heap stores k largest elements</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public class</span> <span class="tp">KthLargest</span>
 {
     <span class="kw">private readonly</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; _heap = <span class="kw">new</span>();
@@ -80,7 +81,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 
 <span class="kw">class</span> <span class="tp">KthLargest</span>:
@@ -107,13 +108,13 @@
         <span class="tag tag-topic">Trie</span>
     </div>
     <p>Implement the <code>Trie</code> class with <code>Insert(word)</code>, <code>Search(word)</code>, and <code>StartsWith(prefix)</code>. LeetCode #208.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Each TrieNode has a dictionary mapping chars to children and an IsEnd flag. Insert: walk the string creating nodes as needed, set IsEnd=true at the end. Search: walk the string, return true if all chars found AND last node IsEnd=true. StartsWith: walk the string, return true if all chars found (don't check IsEnd).</div>
-        <div class="complexity"><strong>Time:</strong> O(L) per operation — L = word or prefix length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(N&times;L) — N words, each L characters stored in Trie nodes</div>
+        <div class="complexity"><strong>Time:</strong> O(L) per operation � L = word or prefix length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(N&times;L) � N words, each L characters stored in Trie nodes</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public class</span> <span class="tp">Trie</span>
 {
     <span class="kw">private class</span> <span class="tp">Node</span> { <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="tp">Node</span>&gt; C=<span class="kw">new</span>(); <span class="kw">public bool</span> E; }
@@ -131,7 +132,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">class</span> <span class="tp">Trie</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self): self.root = {}
     <span class="kw">def</span> <span class="mt">insert</span>(self, w):
@@ -162,13 +163,13 @@
         <span class="tag tag-topic">Max-Heap</span>
     </div>
     <p>You have an array of stone weights. Repeatedly smash the two heaviest stones: if equal, both destroyed; if different, the smaller is destroyed and the larger loses weight equal to the smaller. Return the weight of the last stone (0 if none remain). LeetCode #1046.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Use a max-heap. Repeatedly extract top 2, compute difference, push back if non-zero. Stop when = 1 stone remains.</div>
-        <div class="complexity"><strong>Time:</strong> O(n log n) — n stones, each enqueue/dequeue is O(log n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — heap holds all stones</div>
+        <div class="complexity"><strong>Time:</strong> O(n log n) � n stones, each enqueue/dequeue is O(log n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � heap holds all stones</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">LastStoneWeight</span>(<span class="kw">int</span>[] stones) {
     <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;();
     <span class="kw">foreach</span>(<span class="kw">int</span> s <span class="kw">in</span> stones) pq.<span class="mt">Enqueue</span>(s,-s);  <span class="cm">// Max-heap: negate priority</span>
@@ -181,7 +182,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 <span class="kw">def</span> <span class="mt">lastStoneWeight</span>(stones):
     h = [-s <span class="kw">for</span> s <span class="kw">in</span> stones]
@@ -207,13 +208,13 @@
         <span class="tag tag-topic">Backtracking</span>
     </div>
     <p>Given a 2D board and a list of words, find all words that exist in the board (adjacent cells, no reuse). LeetCode #212.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Build a Trie from all words. DFS from every cell: at each step, check if current char is in the Trie child. If IsEnd reached, add word to results. Mark visited during DFS (restore on backtrack). This avoids re-searching for each word independently.</div>
-        <div class="complexity"><strong>Time:</strong> O(W&times;L + m&times;n&times;3^L) — build Trie + DFS from each cell; W=words, L=avg length, m&times;n=board &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(W&times;L) — Trie storage</div>
+        <div class="complexity"><strong>Time:</strong> O(W&times;L + m&times;n&times;3^L) � build Trie + DFS from each cell; W=words, L=avg length, m&times;n=board &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(W&times;L) � Trie storage</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">FindWords</span>(<span class="kw">char</span>[][] board, <span class="kw">string</span>[] words) {
     <span class="cm">// Build Trie</span>
     <span class="kw">var</span> root = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="kw">object</span>&gt;();
@@ -238,7 +239,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">def</span> <span class="mt">findWords</span>(board, words):
     root = {}
     <span class="kw">for</span> w <span class="kw">in</span> words:
@@ -272,13 +273,13 @@
         <span class="tag tag-topic">Max-Heap + Min-Heap</span>
     </div>
     <p>Design a data structure supporting <code>AddNum(int num)</code> and <code>FindMedian()</code>. LeetCode #295.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach (Two Heaps):</strong> Maintain a max-heap (lower half) and a min-heap (upper half). After each insert, rebalance so |lower.size - upper.size| = 1. Median: if equal sizes, average of both tops; if unequal, top of the larger heap.</div>
-        <div class="complexity"><strong>Time:</strong> O(log n) per add, O(1) find median — heap operations &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — two heaps storing all n elements</div>
+        <div class="complexity"><strong>Time:</strong> O(log n) per add, O(1) find median � heap operations &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � two heaps storing all n elements</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public class</span> <span class="tp">MedianFinder</span>
 {
     <span class="cm">// lo = max-heap (lower half, negated for PQ), hi = min-heap (upper half)</span>
@@ -299,7 +300,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 
 <span class="kw">class</span> <span class="tp">MedianFinder</span>:
@@ -316,7 +317,7 @@
 </div>
 
 <!-- ------- MEDIUM ------- -->
-<div class="section-heading">Medium Problems (6—10)</div>
+<div class="section-heading">Medium Problems (6�10)</div>
 
 <!-- P6 -->
 <div class="problem-card">
@@ -330,13 +331,13 @@
         <span class="tag tag-topic">K-Way Merge</span>
     </div>
     <p>Given k sorted linked lists, merge them into one sorted linked list. LeetCode #23.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Use a min-heap of size k. Push the head of each list. At each step: pop min node, append to result, push that node's next (if exists). O(n log k) where n = total nodes.</div>
-        <div class="complexity"><strong>Time:</strong> O(n log k) — n total nodes, each heap operation is O(log k) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) — min-heap holds one node per list</div>
+        <div class="complexity"><strong>Time:</strong> O(n log k) � n total nodes, each heap operation is O(log k) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) � min-heap holds one node per list</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public</span> <span class="tp">ListNode</span>? <span class="mt">MergeKLists</span>(<span class="tp">ListNode</span>?[] lists) {
     <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="tp">ListNode</span>,<span class="kw">int</span>&gt;();
     <span class="kw">foreach</span>(<span class="kw">var</span> n <span class="kw">in</span> lists) <span class="kw">if</span>(n!=<span class="kw">null</span>) pq.<span class="mt">Enqueue</span>(n, n.val);
@@ -350,7 +351,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 
 <span class="kw">def</span> <span class="mt">mergeKLists</span>(lists):
@@ -379,13 +380,13 @@
         <span class="tag tag-topic">String</span>
     </div>
     <p>Given a dictionary of roots and a sentence, replace each word in the sentence with its shortest matching root. If a word has multiple roots, use the shortest one. LeetCode #648.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>Approach:</strong> Build a Trie from the dictionary. For each word in the sentence, walk the Trie until an IsEnd node is reached — that's the shortest root. If no root found, keep the original word.</div>
-        <div class="complexity"><strong>Time:</strong> O(N&times;L + S&times;L) — build Trie from N roots + scan S sentence words &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(N&times;L) — Trie for N dictionary roots</div>
+            <div class="approach"><strong>Approach:</strong> Build a Trie from the dictionary. For each word in the sentence, walk the Trie until an IsEnd node is reached � that's the shortest root. If no root found, keep the original word.</div>
+        <div class="complexity"><strong>Time:</strong> O(N&times;L + S&times;L) � build Trie from N roots + scan S sentence words &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(N&times;L) � Trie for N dictionary roots</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public string</span> <span class="mt">ReplaceWords</span>(<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; dict, <span class="kw">string</span> sentence) {
     <span class="kw">var</span> root = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="kw">object</span>&gt;();
     <span class="kw">foreach</span>(<span class="kw">var</span> w <span class="kw">in</span> dict) {
@@ -407,7 +408,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">def</span> <span class="mt">replaceWords</span>(dictionary, sentence):
     root = {}
     <span class="kw">for</span> w <span class="kw">in</span> dictionary:
@@ -438,13 +439,13 @@
         <span class="tag tag-topic">Max-Heap of Size K</span>
     </div>
     <p>Given a list of points, find the k closest to the origin. LeetCode #973.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Maintain a max-heap of size k. For each point, if distance &lt; heap top, remove top and add current. Alternatively, push all and extract k times. Using a max-heap of size k avoids sorting all n points.</div>
-        <div class="complexity"><strong>Time:</strong> O(n log k) — n points, heap ops on size-k heap &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) — max-heap stores k closest points</div>
+        <div class="complexity"><strong>Time:</strong> O(n log k) � n points, heap ops on size-k heap &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) � max-heap stores k closest points</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span>[][] <span class="mt">KClosest</span>(<span class="kw">int</span>[][] points, <span class="kw">int</span> k) {
     <span class="cm">// Max-heap of size k: priority = distance (negate for max-heap behavior)</span>
     <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>[], <span class="kw">int</span>&gt;();
@@ -458,7 +459,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 <span class="kw">def</span> <span class="mt">kClosest</span>(points, k):
     h = []
@@ -483,13 +484,13 @@
         <span class="tag tag-topic">BFS + Index Tricks</span>
     </div>
     <p>Find the maximum width of a binary tree (max number of nodes between the leftmost and rightmost non-null nodes at each level, inclusive). LeetCode #662.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> BFS level-order, assign index to each node (root=1, left child=2i, right child=2i+1). At each level, width = last_index - first_index + 1. Normalize indices per level to avoid integer overflow.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) — BFS visits every node exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(w) — w = maximum width (nodes in widest level), queue holds one level at a time</div>
+        <div class="complexity"><strong>Time:</strong> O(n) � BFS visits every node exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(w) � w = maximum width (nodes in widest level), queue holds one level at a time</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">WidthOfBinaryTree</span>(<span class="tp">TreeNode</span>? root) {
     <span class="kw">if</span>(root==<span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
     <span class="kw">int</span> ans=<span class="nm">0</span>;
@@ -510,7 +511,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">def</span> <span class="mt">widthOfBinaryTree</span>(root):
     <span class="kw">if not</span> root: <span class="kw">return</span> <span class="nm">0</span>
@@ -541,13 +542,13 @@
         <span class="tag tag-topic">String</span>
     </div>
     <p>Given a list of words, find the longest word that can be built one character at a time. Each intermediate prefix must also be in the dictionary. LeetCode #720.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Build a Trie. BFS/DFS on the Trie: only follow edges where the current node has IsEnd=true (meaning the prefix is itself a valid word). Track the longest word found.</div>
-        <div class="complexity"><strong>Time:</strong> O(n log n + n&times;L) — sort + HashSet lookups per word &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n&times;L) — HashSet stores all valid words</div>
+        <div class="complexity"><strong>Time:</strong> O(n log n + n&times;L) � sort + HashSet lookups per word &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n&times;L) � HashSet stores all valid words</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public string</span> <span class="mt">LongestWord</span>(<span class="kw">string</span>[] words) {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(words);  <span class="cm">// Alphabetical sort ensures shorter words processed first</span>
     <span class="kw">var</span> built = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt; { <span class="st">""</span> };
@@ -560,11 +561,11 @@
     }
     <span class="kw">return</span> best;
 }
-<span class="cm">// O(n * L) using sort + HashSet — equivalent to Trie approach</span></pre>
+<span class="cm">// O(n * L) using sort + HashSet � equivalent to Trie approach</span></pre>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">def</span> <span class="mt">longestWord</span>(words):
     words.<span class="mt">sort</span>()
     built, best = {<span class="st">""</span>}, <span class="st">""</span>
@@ -578,7 +579,7 @@
 </div>
 
 <!-- ------- HARD ------- -->
-<div class="section-heading">Hard Problems (11—15)</div>
+<div class="section-heading">Hard Problems (11�15)</div>
 
 <!-- P11 -->
 <div class="problem-card">
@@ -592,13 +593,13 @@
         <span class="tag tag-topic">K-Way Merge Variant</span>
     </div>
     <p>Given k sorted lists, find the smallest range [a, b] that includes at least one number from each list. LeetCode #632.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Use a min-heap initialized with the first element of each list. Track the current maximum. At each step: range = [heap_min, current_max]. When popping, advance that list's pointer and update max. Stop when any list is exhausted.</div>
-        <div class="complexity"><strong>Time:</strong> O(n log k) — n = total elements across all lists, k lists in heap &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) — heap holds one element per list</div>
+        <div class="complexity"><strong>Time:</strong> O(n log k) � n = total elements across all lists, k lists in heap &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(k) � heap holds one element per list</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span>[] <span class="mt">SmallestRange</span>(<span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; nums) {
     <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;(<span class="kw">int</span> val,<span class="kw">int</span> row,<span class="kw">int</span> col),<span class="kw">int</span>&gt;();
     <span class="kw">int</span> curMax = <span class="kw">int</span>.MinValue;
@@ -620,7 +621,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 <span class="kw">def</span> <span class="mt">smallestRange</span>(nums):
     h = [(lst[<span class="nm">0</span>], i, <span class="nm">0</span>) <span class="kw">for</span> i, lst <span class="kw">in</span> <span class="mt">enumerate</span>(nums)]
@@ -652,10 +653,10 @@
         <span class="tag tag-topic">Min-Heap</span>
     </div>
     <p>Design an autocomplete system. Initialize with a list of sentences and their frequencies. <code>Input(c)</code> adds character c to current query and returns the top 3 matching sentences by frequency (ties broken alphabetically). LeetCode #642.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Build a Trie where each node stores a dict of {sentence: frequency}. For each character typed, walk the Trie and collect all sentences at the prefix node. Use a min-heap of size 3 to find top-3. On '#', save the current query with its frequency.</div>
-        <div class="complexity"><strong>Time:</strong> O(L) per input — walk Trie + heap of size 3 &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> <span class="lang-label lang-cs">C#</span>
+        <div class="complexity"><strong>Time:</strong> O(L) per input � walk Trie + heap of size 3 &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre>
@@ -696,7 +697,7 @@
 </div>
 <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> heapq
 <span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
@@ -753,13 +754,13 @@
         <span class="tag tag-topic">Binary Search</span>
     </div>
     <p>Given a BST and queries [q_i], for each query return [max value = q_i, min value = q_i] (or -1 if none exists). LeetCode #2476.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> Inorder traversal gives sorted array. For each query, binary search for lower bound (= q) and upper bound (= q) in the sorted array. O(n + Q log n).</div>
-        <div class="complexity"><strong>Time:</strong> O(n + Q log n) — O(n) inorder + O(log n) binary search per query Q &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — sorted array from inorder traversal</div>
+        <div class="complexity"><strong>Time:</strong> O(n + Q log n) � O(n) inorder + O(log n) binary search per query Q &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � sorted array from inorder traversal</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">ClosestNodes</span>(<span class="tp">TreeNode</span> root, <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; queries) {
     <span class="kw">var</span> sorted = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
     <span class="kw">void</span> <span class="mt">Inorder</span>(<span class="tp">TreeNode</span>? n) { <span class="kw">if</span>(n==<span class="kw">null</span>)<span class="kw">return</span>; <span class="mt">Inorder</span>(n.left); sorted.<span class="mt">Add</span>(n.val); <span class="mt">Inorder</span>(n.right); }
@@ -778,7 +779,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">import</span> bisect
 
 <span class="kw">def</span> <span class="mt">closestNodes</span>(root, queries):
@@ -812,13 +813,13 @@
         <span class="tag tag-topic">DFS</span>
     </div>
     <p>Count paths in a binary tree that sum to a target. Paths can start/end anywhere (not necessarily root-to-leaf), but must go downward. LeetCode #437.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach:</strong> DFS with a prefix sum HashMap. At each node, cumulative sum = running total. Count how many previous prefix sums = (cumSum - target). This gives the number of paths ending at the current node that sum to target. Add/remove from HashMap during DFS (backtrack).</div>
-        <div class="complexity"><strong>Time:</strong> O(n) — single DFS, O(1) HashMap lookup per node &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — recursion depth + prefix sum HashMap</div>
+        <div class="complexity"><strong>Time:</strong> O(n) � single DFS, O(1) HashMap lookup per node &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � recursion depth + prefix sum HashMap</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">PathSum</span>(<span class="tp">TreeNode</span> root, <span class="kw">int</span> targetSum) {
     <span class="kw">var</span> prefixCount = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">long</span>,<span class="kw">int</span>&gt; {{ <span class="nm">0L</span>, <span class="nm">1</span> }};
     <span class="kw">int</span> <span class="mt">DFS</span>(<span class="tp">TreeNode</span>? n, <span class="kw">long</span> curr) {
@@ -835,7 +836,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 <span class="kw">def</span> <span class="mt">pathSum</span>(root, targetSum):
     prefix = defaultdict(<span class="kw">int</span>); prefix[<span class="nm">0</span>] = <span class="nm">1</span>
@@ -864,17 +865,17 @@
         <span class="tag tag-topic">Tree Diameter</span>
         <span class="tag tag-topic">DFS</span>
     </div>
-    <p>Given a binary tree, find the maximum distance between any two nodes (the tree diameter). LeetCode #543. Relate this to the LCA concept — the longest path must pass through some LCA.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <p>Given a binary tree, find the maximum distance between any two nodes (the tree diameter). LeetCode #543. Relate this to the LCA concept � the longest path must pass through some LCA.</p>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
             <div class="approach"><strong>Approach (Diameter via Postorder):</strong> For each node as LCA, the longest path through it = left_height + right_height. Track global max. This is equivalent to: for every potential LCA node, compute the longest path that has this node as its LCA.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) — single postorder DFS visits each node once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(h) — h = tree height (call stack depth)</div>
+        <div class="complexity"><strong>Time:</strong> O(n) � single postorder DFS visits each node once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(h) � h = tree height (call stack depth)</div>
         <div class="note">
-            <strong>💡 LCA Connection:</strong> The diameter of a binary tree is the longest path between any two leaf nodes. This path must pass through some node — the LCA of the two endpoint leaves. So finding the diameter = for every node, compute (left subtree height + right subtree height), take the max. The node achieving this max is the LCA of the two farthest leaves.
+            <strong>?? LCA Connection:</strong> The diameter of a binary tree is the longest path between any two leaf nodes. This path must pass through some node � the LCA of the two endpoint leaves. So finding the diameter = for every node, compute (left subtree height + right subtree height), take the max. The node achieving this max is the LCA of the two farthest leaves.
         </div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">DiameterOfBinaryTree</span>(<span class="tp">TreeNode</span> root) {
     <span class="kw">int</span> diameter = <span class="nm">0</span>;
     <span class="kw">int</span> <span class="mt">Height</span>(<span class="tp">TreeNode</span>? n) {
@@ -891,7 +892,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">def</span> <span class="mt">diameterOfBinaryTree</span>(root):
     ans = [<span class="nm">0</span>]
     <span class="kw">def</span> <span class="mt">height</span>(node):
@@ -912,11 +913,11 @@
 <hr>
 
 <div class="nav-box">
-    <strong>🎉 Phase 4 — Module 7 Complete!</strong><br><br>
+    <strong>?? Phase 4 � Module 7 Complete!</strong><br><br>
     You've mastered: AVL Trees, Red-Black Trees, Heaps &amp; PriorityQueue, Tries, B-Trees, LCA &amp; Binary Lifting,
     and 15 practice problems covering all these advanced tree structures.<br><br>
-    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ? <strong>Prev:</strong> <a href="m07f_lca.html">Module 7F — LCA &amp; Binary Lifting</a> &nbsp;|&nbsp;
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Prev:</strong> <a href="m07f_lca.html">Module 7F � LCA &amp; Binary Lifting</a> &nbsp;|&nbsp;
     ? <strong>Next Phase:</strong> Continue to Phase 5 from the Course Index
 </div>
     <script>var MODULE_ID = 'm07g';</script>

@@ -1,108 +1,109 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 10C — Minimum Spanning Trees | DSA Masterbook</title>
+    <title>Module 10C � Minimum Spanning Trees | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
-    <h1>Module 10 — Part C</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
+    <h1>Module 10 � Part C</h1>
     <div class="tagline">Minimum Spanning Trees: Prim's &amp; Kruskal's</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Connect all vertices with minimum total edge weight — Prim's (vertex-grow) vs Kruskal's (edge-merge)</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Connect all vertices with minimum total edge weight � Prim's (vertex-grow) vs Kruskal's (edge-merge)</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2.5 Hours</span>
-        <span>🎯 Intermediate–Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Module 10 of Phase 6</span>
+        <span>? Estimated Time: 2.5 Hours</span>
+        <span>?? Intermediate�Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Module 10 of Phase 6</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
-    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
-    ▶ <strong>Part C</strong> — <em>You are here</em> — MST: Prim's &amp; Kruskal's<br>
-    ⬜ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
-    ⬜ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
-    ⬜ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
-    ⬜ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
-    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
-    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 10 � Graph Algorithms:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ? <strong>Part B</strong> � <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ? <strong>Part C</strong> � <em>You are here</em> � MST: Prim's &amp; Kruskal's<br>
+    ? <strong>Part D</strong> � <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ? <strong>Part E</strong> � <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ? <strong>Part F</strong> � <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ? <strong>Part G</strong> � <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ? <strong>Part H</strong> � <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ? <strong>Part I</strong> � <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
     <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 1 -->
-<div class="section-heading">Section 1 — What is a Minimum Spanning Tree?</div>
+<!-- ------------------------------------------------------- SECTION 1 -->
+<div class="section-heading">Section 1 � What is a Minimum Spanning Tree?</div>
 
-<p>A <strong>Spanning Tree</strong> of a connected undirected graph is a subgraph that includes all V vertices and exactly V-1 edges — just enough edges to keep everything connected without any cycles. A <strong>Minimum Spanning Tree (MST)</strong> is the spanning tree with the <em>minimum total edge weight</em>.</p>
+<p>A <strong>Spanning Tree</strong> of a connected undirected graph is a subgraph that includes all V vertices and exactly V-1 edges � just enough edges to keep everything connected without any cycles. A <strong>Minimum Spanning Tree (MST)</strong> is the spanning tree with the <em>minimum total edge weight</em>.</p>
 
 <div class="diagram">SPANNING TREE vs MINIMUM SPANNING TREE
 
 Graph (undirected, weighted):
         2
-    A ─────── B
-    │  \   /  │
-   5│   4X4   │3
-    │  /   \  │
-    C ─────── D
+    A ------- B
+    �  \   /  �
+   5�   4X4   �3
+    �  /   \  �
+    C ------- D
         6
 
 Three possible spanning trees (each has 4 vertices, 3 edges):
-  Tree 1: A-B(2), B-D(3), A-C(5)  → total weight = 10
-  Tree 2: A-B(2), B-D(3), C-D(6)  → total weight = 11
-  Tree 3: A-B(2), A-D(4), A-C(5)  → total weight = 11
-  Tree 4: A-B(2), B-D(3), A-D(4)  ← NOT valid (cycle A-B-D-A)
+  Tree 1: A-B(2), B-D(3), A-C(5)  ? total weight = 10
+  Tree 2: A-B(2), B-D(3), C-D(6)  ? total weight = 11
+  Tree 3: A-B(2), A-D(4), A-C(5)  ? total weight = 11
+  Tree 4: A-B(2), B-D(3), A-D(4)  ? NOT valid (cycle A-B-D-A)
 
 Minimum Spanning Tree = Tree 1: edges A-B(2), B-D(3), A-C(5), total = 10
 
 Key properties:
-  • Always has exactly V-1 edges
-  • Connects all V vertices
-  • No cycles
-  • MST is not unique if there are equal-weight edges</div>
+  � Always has exactly V-1 edges
+  � Connects all V vertices
+  � No cycles
+  � MST is not unique if there are equal-weight edges</div>
 
 <div class="tip">
-    <strong>💡 MST vs Shortest Path:</strong> MST minimizes the <em>total weight of the tree</em>, not the distance between specific vertices. The path from A to D in the MST might not be the shortest path in the original graph. These are fundamentally different problems — MST connects everything cheaply, shortest path finds the fastest route between two points.
+    <strong>?? MST vs Shortest Path:</strong> MST minimizes the <em>total weight of the tree</em>, not the distance between specific vertices. The path from A to D in the MST might not be the shortest path in the original graph. These are fundamentally different problems � MST connects everything cheaply, shortest path finds the fastest route between two points.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Real-World: Network Infrastructure</strong><br>
+    <strong>?? Real-World: Network Infrastructure</strong><br>
     MST is the foundation of many real-world problems: laying fiber-optic cables to connect cities with minimum cable length; designing electrical grids; setting up computer network infrastructure where the goal is to connect all machines with minimum wiring cost. MST is also used in cluster analysis, image segmentation, and approximation algorithms for NP-hard problems like TSP (Travelling Salesman).
 </div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 2 -->
-<div class="section-heading">Section 2 — Prim's Algorithm</div>
+<!-- ------------------------------------------------------- SECTION 2 -->
+<div class="section-heading">Section 2 � Prim's Algorithm</div>
 
-<p>Prim's algorithm (Robert Prim, 1957) builds the MST by <strong>growing a single tree from a starting vertex</strong>. It always adds the minimum-weight edge that connects the current tree to a vertex not yet in the tree. This is a greedy algorithm — always pick the cheapest available connection.</p>
+<p>Prim's algorithm (Robert Prim, 1957) builds the MST by <strong>growing a single tree from a starting vertex</strong>. It always adds the minimum-weight edge that connects the current tree to a vertex not yet in the tree. This is a greedy algorithm � always pick the cheapest available connection.</p>
 
 <div class="tip">
-    <strong>💡 Prim's = Dijkstra's cousin:</strong> Prim's structure is nearly identical to Dijkstra's. Both use a min-heap priority queue. The difference: Dijkstra tracks dist[v] = shortest path cost from source; Prim tracks key[v] = weight of the cheapest edge connecting v to the current tree. Dijkstra accumulates costs; Prim only cares about the edge cost to add the next vertex.
+    <strong>?? Prim's = Dijkstra's cousin:</strong> Prim's structure is nearly identical to Dijkstra's. Both use a min-heap priority queue. The difference: Dijkstra tracks dist[v] = shortest path cost from source; Prim tracks key[v] = weight of the cheapest edge connecting v to the current tree. Dijkstra accumulates costs; Prim only cares about the edge cost to add the next vertex.
 </div>
 
-<h3>2.1 — Step-by-Step Walkthrough</h3>
+<h3>2.1 � Step-by-Step Walkthrough</h3>
 
-<div class="diagram">PRIM'S ALGORITHM — Starting from vertex 0
+<div class="diagram">PRIM'S ALGORITHM � Starting from vertex 0
 
 Graph (undirected):
-  0──(4)──1──(8)──7──(7)──6
-  │       │       │       │
+  0--(4)--1--(8)--7--(7)--6
+  �       �       �       �
  (8)     (11)    (2)     (6)
-  │       │       │       │
-  8──(7)──2──(4)──5──(10)─4
-         │       │
+  �       �       �       �
+  8--(7)--2--(4)--5--(10)-4
+         �       �
         (2)     (14)
-         │       │
-         3──(9)──3  ← same vertex (ignore, single 3)
+         �       �
+         3--(9)--3  ? same vertex (ignore, single 3)
          
 Simplified 5-vertex example:
   Vertices: 0,1,2,3,4
@@ -113,41 +114,41 @@ Simplified 5-vertex example:
 
 =======================================================
 INITIAL:
-  key:  [0, ∞, ∞, ∞, ∞]   (key = min edge to reach vertex)
+  key:  [0, 8, 8, 8, 8]   (key = min edge to reach vertex)
   MST:  []
-  inMST: [false×5]
+  inMST: [false�5]
   pq: [(0,0)]
 
-STEP 1 — Dequeue (0, vertex=0):
+STEP 1 � Dequeue (0, vertex=0):
   Mark 0 as in MST.
   Examine 0's neighbors:
-    0→1 weight 2: key[1] = min(∞,2) = 2, parent[1]=0, enqueue (2,1)
-    0→3 weight 6: key[3] = min(∞,6) = 6, parent[3]=0, enqueue (6,3)
+    0?1 weight 2: key[1] = min(8,2) = 2, parent[1]=0, enqueue (2,1)
+    0?3 weight 6: key[3] = min(8,6) = 6, parent[3]=0, enqueue (6,3)
   MST edges added: none yet (0 is just the root)
   pq: [(2,1), (6,3)]
 
-STEP 2 — Dequeue (2, vertex=1):  ← cheapest!
-  Mark 1 as in MST. Add edge 0─1 (weight 2).
+STEP 2 � Dequeue (2, vertex=1):  ? cheapest!
+  Mark 1 as in MST. Add edge 0-1 (weight 2).
   Examine 1's neighbors:
-    1→0: 0 already in MST, skip
-    1→2 weight 3: key[2] = min(∞,3) = 3, parent[2]=1, enqueue (3,2)
-    1→3 weight 8: key[3] = min(6,8) = 6 (no improvement)
-    1→4 weight 5: key[4] = min(∞,5) = 5, parent[4]=1, enqueue (5,4)
+    1?0: 0 already in MST, skip
+    1?2 weight 3: key[2] = min(8,3) = 3, parent[2]=1, enqueue (3,2)
+    1?3 weight 8: key[3] = min(6,8) = 6 (no improvement)
+    1?4 weight 5: key[4] = min(8,5) = 5, parent[4]=1, enqueue (5,4)
   pq: [(3,2), (5,4), (6,3)]
 
-STEP 3 — Dequeue (3, vertex=2):
-  Mark 2. Add edge 1─2 (weight 3).
-  2→4 weight 7: key[4] = min(5,7) = 5 (no improvement)
+STEP 3 � Dequeue (3, vertex=2):
+  Mark 2. Add edge 1-2 (weight 3).
+  2?4 weight 7: key[4] = min(5,7) = 5 (no improvement)
   pq: [(5,4), (6,3)]
 
-STEP 4 — Dequeue (5, vertex=4):
-  Mark 4. Add edge 1─4 (weight 5).
-  4→2 weight 7: 2 already in MST, skip
-  4→3 weight 9: key[3] = min(6,9) = 6 (no improvement)
+STEP 4 � Dequeue (5, vertex=4):
+  Mark 4. Add edge 1-4 (weight 5).
+  4?2 weight 7: 2 already in MST, skip
+  4?3 weight 9: key[3] = min(6,9) = 6 (no improvement)
   pq: [(6,3)]
 
-STEP 5 — Dequeue (6, vertex=3):
-  Mark 3. Add edge 0─3 (weight 6).
+STEP 5 � Dequeue (6, vertex=3):
+  Mark 3. Add edge 0-3 (weight 6).
 
 =======================================================
 MST EDGES: 0-1(2), 1-2(3), 1-4(5), 0-3(6)
@@ -155,12 +156,12 @@ TOTAL WEIGHT: 2+3+5+6 = 16</div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 3 -->
-<div class="section-heading">Section 3 — Prim's C# &amp; Python</div>
+<!-- ------------------------------------------------------- SECTION 3 -->
+<div class="section-heading">Section 3 � Prim's C# &amp; Python</div>
 
-<span class="lang-label lang-cs">C# — Prim's Algorithm</span>
+<span class="lang-label lang-cs">C# � Prim's Algorithm</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
@@ -235,15 +236,15 @@ TOTAL WEIGHT: 2+3+5+6 = 16</div>
         <span class="kw">var</span> (weight, edges) = g.<span class="mt">ComputeMST</span>();
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"MST Total Weight: {weight}"</span>);  <span class="cm">// 16</span>
         <span class="kw">foreach</span> (<span class="kw">var</span> (u, v, w) <span class="kw">in</span> edges)
-            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  {u}─{v} ({w})"</span>);
-        <span class="cm">// 0─1 (2), 1─2 (3), 1─4 (5), 0─3 (6)</span>
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  {u}-{v} ({w})"</span>);
+        <span class="cm">// 0-1 (2), 1-2 (3), 1-4 (5), 0-3 (6)</span>
     }
 }</pre>
 </div>
 
-<span class="lang-label lang-py">Python — Prim's Algorithm</span>
+<span class="lang-label lang-py">Python � Prim's Algorithm</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 <span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
@@ -286,22 +287,22 @@ TOTAL WEIGHT: 2+3+5+6 = 16</div>
     weight, edges = g.<span class="mt">compute_mst</span>()
     <span class="mt">print</span>(<span class="st">f"Total: {weight}"</span>)   <span class="cm"># 16</span>
     <span class="kw">for</span> u, v, w <span class="kw">in</span> edges:
-        <span class="mt">print</span>(<span class="st">f"  {u}─{v} ({w})"</span>)
-    <span class="cm"># 0─1 (2), 1─2 (3), 1─4 (5), 0─3 (6)</span></pre>
+        <span class="mt">print</span>(<span class="st">f"  {u}-{v} ({w})"</span>)
+    <span class="cm"># 0-1 (2), 1-2 (3), 1-4 (5), 0-3 (6)</span></pre>
 </div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 4 -->
-<div class="section-heading">Section 4 — Kruskal's Algorithm &amp; Union-Find</div>
+<!-- ------------------------------------------------------- SECTION 4 -->
+<div class="section-heading">Section 4 � Kruskal's Algorithm &amp; Union-Find</div>
 
-<p>Kruskal's algorithm (Joseph Kruskal, 1956) takes a completely different approach: <strong>sort all edges by weight and add them one by one</strong>, skipping any edge that would create a cycle. The key challenge is detecting cycles efficiently — this is solved by the <strong>Union-Find (Disjoint Set Union) data structure</strong>.</p>
+<p>Kruskal's algorithm (Joseph Kruskal, 1956) takes a completely different approach: <strong>sort all edges by weight and add them one by one</strong>, skipping any edge that would create a cycle. The key challenge is detecting cycles efficiently � this is solved by the <strong>Union-Find (Disjoint Set Union) data structure</strong>.</p>
 
 <div class="tip">
-    <strong>💡 Kruskal's = Sort + Union-Find:</strong> Sort all edges ascending. For each edge (u, v, w), use Union-Find to check if u and v are already connected (same component). If they are, adding this edge creates a cycle — skip it. If they're in different components, add the edge to the MST and union the two components. After V-1 edges are added, the MST is complete.
+    <strong>?? Kruskal's = Sort + Union-Find:</strong> Sort all edges ascending. For each edge (u, v, w), use Union-Find to check if u and v are already connected (same component). If they are, adding this edge creates a cycle � skip it. If they're in different components, add the edge to the MST and union the two components. After V-1 edges are added, the MST is complete.
 </div>
 
-<h3>4.1 — Union-Find Data Structure</h3>
+<h3>4.1 � Union-Find Data Structure</h3>
 <p>Union-Find maintains a collection of disjoint sets. Two operations are needed:</p>
 <ul>
     <li><strong>Find(x):</strong> Returns the representative (root) of x's set. If two vertices have the same root, they're in the same component.</li>
@@ -309,61 +310,61 @@ TOTAL WEIGHT: 2+3+5+6 = 16</div>
 </ul>
 <p>Two optimizations make Union-Find nearly O(1) amortized: <strong>Path Compression</strong> (flatten the tree on Find) and <strong>Union by Rank</strong> (always attach the smaller tree under the larger).</p>
 
-<div class="diagram">UNION-FIND — Path Compression + Union by Rank
+<div class="diagram">UNION-FIND � Path Compression + Union by Rank
 
 Initially: each vertex is its own set
   parent: [0, 1, 2, 3, 4]  (each is own root)
   rank:   [0, 0, 0, 0, 0]
 
-Union(0, 1): Find(0)=0, Find(1)=1, different → merge
+Union(0, 1): Find(0)=0, Find(1)=1, different ? merge
   rank[0]==rank[1], attach 1 under 0, rank[0]++
   parent: [0, 0, 2, 3, 4]  rank: [1, 0, 0, 0, 0]
 
-Union(0, 2): Find(0)=0, Find(2)=2 → merge
-  rank[0]=1 > rank[2]=0 → attach 2 under 0
+Union(0, 2): Find(0)=0, Find(2)=2 ? merge
+  rank[0]=1 > rank[2]=0 ? attach 2 under 0
   parent: [0, 0, 0, 3, 4]
 
 Union(3, 4): similarly
   parent: [0, 0, 0, 3, 3]
 
-Union(0, 3): Find(0)=0, Find(3)=3 → merge
-  parent: [0, 0, 0, 0, 3]  (3→0)
+Union(0, 3): Find(0)=0, Find(3)=3 ? merge
+  parent: [0, 0, 0, 0, 3]  (3?0)
 
-Find(4): 4→3→0  (2 hops)
+Find(4): 4?3?0  (2 hops)
   Path compression: set parent[4]=0 directly
   Now: parent[4]=0  (1 hop next time)</div>
 
-<h3>4.2 — Kruskal's Walkthrough</h3>
+<h3>4.2 � Kruskal's Walkthrough</h3>
 <div class="diagram">KRUSKAL'S on same 5-vertex graph:
   All edges sorted by weight:
   0-1(2), 1-2(3), 1-4(5), 0-3(6), 2-4(7), 1-3(8), 3-4(9)
 
 Process in order:
-  0-1(2): Find(0)=0, Find(1)=1 → DIFFERENT → ADD to MST, Union(0,1)
-  1-2(3): Find(1)=0, Find(2)=2 → DIFFERENT → ADD to MST, Union(0,2)
-  1-4(5): Find(1)=0, Find(4)=4 → DIFFERENT → ADD to MST, Union(0,4)
-  0-3(6): Find(0)=0, Find(3)=3 → DIFFERENT → ADD to MST, Union(0,3)
-  ← 4 edges added = V-1 = DONE! ←
+  0-1(2): Find(0)=0, Find(1)=1 ? DIFFERENT ? ADD to MST, Union(0,1)
+  1-2(3): Find(1)=0, Find(2)=2 ? DIFFERENT ? ADD to MST, Union(0,2)
+  1-4(5): Find(1)=0, Find(4)=4 ? DIFFERENT ? ADD to MST, Union(0,4)
+  0-3(6): Find(0)=0, Find(3)=3 ? DIFFERENT ? ADD to MST, Union(0,3)
+  ? 4 edges added = V-1 = DONE! ?
 
   Skipped (would create cycles):
-  2-4(7): Find(2)=0, Find(4)=0 → SAME (both in component 0) → SKIP
-  1-3(8): SAME component → SKIP
-  3-4(9): SAME component → SKIP
+  2-4(7): Find(2)=0, Find(4)=0 ? SAME (both in component 0) ? SKIP
+  1-3(8): SAME component ? SKIP
+  3-4(9): SAME component ? SKIP
 
-MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
+MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) � total = 16 ? (same as Prim's)</div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 5 -->
-<div class="section-heading">Section 5 — Kruskal's C# &amp; Python</div>
+<!-- ------------------------------------------------------- SECTION 5 -->
+<div class="section-heading">Section 5 � Kruskal's C# &amp; Python</div>
 
-<span class="lang-label lang-cs">C# — Kruskal's with Union-Find</span>
+<span class="lang-label lang-cs">C# � Kruskal's with Union-Find</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
-<span class="cm">// ─── Union-Find (Disjoint Set Union) ─────────────────────────────</span>
+<span class="cm">// --- Union-Find (Disjoint Set Union) -----------------------------</span>
 <span class="kw">public class</span> <span class="tp">UnionFind</span>
 {
     <span class="kw">private int</span>[] parent, rank;
@@ -383,11 +384,11 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
         <span class="kw">return</span> parent[x];
     }
 
-    <span class="cm">// Union by rank — returns false if already in same set (cycle!)</span>
+    <span class="cm">// Union by rank � returns false if already in same set (cycle!)</span>
     <span class="kw">public bool</span> <span class="mt">Union</span>(<span class="kw">int</span> x, <span class="kw">int</span> y)
     {
         <span class="kw">int</span> rx = <span class="mt">Find</span>(x), ry = <span class="mt">Find</span>(y);
-        <span class="kw">if</span> (rx == ry) <span class="kw">return false</span>;  <span class="cm">// same component — adding would make cycle</span>
+        <span class="kw">if</span> (rx == ry) <span class="kw">return false</span>;  <span class="cm">// same component � adding would make cycle</span>
 
         <span class="cm">// Union by rank: attach smaller tree under larger</span>
         <span class="kw">if</span>      (rank[rx] &lt; rank[ry]) parent[rx] = ry;
@@ -399,7 +400,7 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
     <span class="kw">public bool</span> <span class="mt">Connected</span>(<span class="kw">int</span> x, <span class="kw">int</span> y) =&gt; <span class="mt">Find</span>(x) == <span class="mt">Find</span>(y);
 }
 
-<span class="cm">// ─── Kruskal's MST ────────────────────────────────────────────────</span>
+<span class="cm">// --- Kruskal's MST ------------------------------------------------</span>
 <span class="kw">public class</span> <span class="tp">Kruskals</span>
 {
     <span class="kw">private readonly</span> <span class="tp">List</span>&lt;(<span class="kw">int</span> w, <span class="kw">int</span> u, <span class="kw">int</span> v)&gt; edges = <span class="kw">new</span>();
@@ -425,7 +426,7 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
             {
                 mstEdges.<span class="mt">Add</span>((u, v, w));
                 total += w;
-                <span class="kw">if</span> (mstEdges.Count == n - <span class="nm">1</span>) <span class="kw">break</span>;  <span class="cm">// MST complete — V-1 edges</span>
+                <span class="kw">if</span> (mstEdges.Count == n - <span class="nm">1</span>) <span class="kw">break</span>;  <span class="cm">// MST complete � V-1 edges</span>
             }
         }
         <span class="kw">return</span> (total, mstEdges);
@@ -441,15 +442,15 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
         <span class="kw">var</span> (weight, edges) = g.<span class="mt">ComputeMST</span>();
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"MST Weight: {weight}"</span>);  <span class="cm">// 16</span>
         <span class="kw">foreach</span> (<span class="kw">var</span> (u, v, w) <span class="kw">in</span> edges)
-            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  {u}─{v} ({w})"</span>);
-        <span class="cm">// 0─1 (2), 1─2 (3), 1─4 (5), 0─3 (6)</span>
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  {u}-{v} ({w})"</span>);
+        <span class="cm">// 0-1 (2), 1-2 (3), 1-4 (5), 0-3 (6)</span>
     }
 }</pre>
 </div>
 
-<span class="lang-label lang-py">Python — Kruskal's with Union-Find</span>
+<span class="lang-label lang-py">Python � Kruskal's with Union-Find</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">class</span> <span class="tp">UnionFind</span>:
     <span class="kw">def</span> __init__(<span class="tp">self</span>, n):
         <span class="tp">self</span>.parent = <span class="mt">list</span>(<span class="mt">range</span>(n))
@@ -488,13 +489,13 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
     total, mst = <span class="mt">kruskals</span>(<span class="nm">5</span>, edges)
     <span class="mt">print</span>(<span class="st">f"Total: {total}"</span>)   <span class="cm"># 16</span>
     <span class="kw">for</span> u, v, w <span class="kw">in</span> mst:
-        <span class="mt">print</span>(<span class="st">f"  {u}─{v} ({w})"</span>)</pre>
+        <span class="mt">print</span>(<span class="st">f"  {u}-{v} ({w})"</span>)</pre>
 </div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 6 -->
-<div class="section-heading">Section 6 — Complexity &amp; Comparison</div>
+<!-- ------------------------------------------------------- SECTION 6 -->
+<div class="section-heading">Section 6 � Complexity &amp; Comparison</div>
 
 <table>
     <thead>
@@ -502,22 +503,22 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
     </thead>
     <tbody>
         <tr><td>Prim's (binary heap)</td><td class="g">O((V+E) log V)</td><td>O(V + E)</td><td>Dense graphs (many edges)</td></tr>
-        <tr><td>Prim's (Fibonacci heap)</td><td class="g">O(E + V log V)</td><td>O(V + E)</td><td>Theory — rarely implemented</td></tr>
+        <tr><td>Prim's (Fibonacci heap)</td><td class="g">O(E + V log V)</td><td>O(V + E)</td><td>Theory � rarely implemented</td></tr>
         <tr><td>Kruskal's</td><td class="g">O(E log E)</td><td>O(V + E)</td><td>Sparse graphs (few edges); parallel-friendly</td></tr>
         <tr><td>Both algorithms</td><td colspan="3">Produce the same MST weight (may differ in structure for equal-weight edges)</td></tr>
     </tbody>
 </table>
 
-<h3>6.1 — Prim's vs Kruskal's — When to Use Which</h3>
+<h3>6.1 � Prim's vs Kruskal's � When to Use Which</h3>
 <table>
     <thead>
         <tr><th>Factor</th><th>Prim's</th><th>Kruskal's</th></tr>
     </thead>
     <tbody>
-        <tr><td>Dense graph (E ≈ V²)</td><td class="g">Better — fewer heap operations</td><td class="o">Slower — sorting many edges</td></tr>
-        <tr><td>Sparse graph (E ≈ V)</td><td class="o">Similar</td><td class="g">Often faster in practice</td></tr>
+        <tr><td>Dense graph (E � V�)</td><td class="g">Better � fewer heap operations</td><td class="o">Slower � sorting many edges</td></tr>
+        <tr><td>Sparse graph (E � V)</td><td class="o">Similar</td><td class="g">Often faster in practice</td></tr>
         <tr><td>Implementation</td><td class="o">Requires adjacency list + heap</td><td class="g">Simple: sort + Union-Find</td></tr>
-        <tr><td>Edges given upfront</td><td>Fine</td><td class="g">Natural — just sort them</td></tr>
+        <tr><td>Edges given upfront</td><td>Fine</td><td class="g">Natural � just sort them</td></tr>
         <tr><td>Streaming edges (online)</td><td class="g">Can grow MST incrementally</td><td class="r">Must sort all first</td></tr>
         <tr><td>Parallel processing</td><td class="r">Sequential by nature</td><td class="g">Can sort edges in parallel</td></tr>
         <tr><td>Memory</td><td>Adjacency list = O(V+E)</td><td>Edge list = O(E)</td></tr>
@@ -526,102 +527,102 @@ MST: 0-1(2), 1-2(3), 1-4(5), 0-3(6) — total = 16 ✓ (same as Prim's)</div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 7 -->
-<div class="section-heading">Section 7 — Real-World Applications</div>
+<!-- ------------------------------------------------------- SECTION 7 -->
+<div class="section-heading">Section 7 � Real-World Applications</div>
 
 <div class="realworld">
-    <strong>🌍 Network Design — Laying Cables / Pipes</strong><br>
+    <strong>?? Network Design � Laying Cables / Pipes</strong><br>
     Telecommunications companies use MST to plan fiber optic cable routes connecting cities, minimizing total cable length. The same problem applies to water/gas pipeline networks, electrical grid design, and highway planning. Real-world variants add constraints (avoid certain areas, capacity limits) making them NP-hard, but MST serves as the starting approximation.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Cluster Analysis — Machine Learning</strong><br>
+    <strong>?? Cluster Analysis � Machine Learning</strong><br>
     Single-linkage hierarchical clustering uses MST: compute the MST of a point cloud (where edge weight = distance between points), then cut the heaviest k-1 edges to get k clusters. This is used in bioinformatics (gene clustering), image segmentation, and anomaly detection. The "cut the max edge" step in MST-based clustering directly gives natural cluster boundaries.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Approximation Algorithms — TSP</strong><br>
-    The Travelling Salesman Problem (TSP) — find the shortest tour visiting all cities — is NP-hard. A 2-approximation algorithm uses MST: compute MST, do a DFS to get an Eulerian circuit, then shortcut repeated vertices. This gives a tour of cost ≤ 2 × optimal. This is the foundation of many practical TSP solvers used in logistics (UPS route optimization, delivery services).
+    <strong>?? Approximation Algorithms � TSP</strong><br>
+    The Travelling Salesman Problem (TSP) � find the shortest tour visiting all cities � is NP-hard. A 2-approximation algorithm uses MST: compute MST, do a DFS to get an Eulerian circuit, then shortcut repeated vertices. This gives a tour of cost = 2 � optimal. This is the foundation of many practical TSP solvers used in logistics (UPS route optimization, delivery services).
 </div>
 
 <div class="realworld">
-    <strong>🌍 Union-Find Beyond MST — Dynamic Connectivity</strong><br>
+    <strong>?? Union-Find Beyond MST � Dynamic Connectivity</strong><br>
     Union-Find (used in Kruskal's) is a standalone data structure used in many other contexts: detecting connected components in social networks as friendships form; Kruskal's for network reliability analysis; checking if a graph becomes connected after adding edges (used in network monitoring at companies like Cloudflare); percolation problems in physics simulations.
 </div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 8 -->
-<div class="section-heading">Section 8 — Common Mistakes</div>
+<!-- ------------------------------------------------------- SECTION 8 -->
+<div class="section-heading">Section 8 � Common Mistakes</div>
 
 <div class="warning">
-    <strong>⚠️ Using MST for a directed graph:</strong> MST is only defined for undirected graphs. For directed graphs, the analogous problem is the Minimum Spanning Arborescence, solved by Edmonds' algorithm (more complex). Always verify the graph is undirected before applying Prim's or Kruskal's.
+    <strong>?? Using MST for a directed graph:</strong> MST is only defined for undirected graphs. For directed graphs, the analogous problem is the Minimum Spanning Arborescence, solved by Edmonds' algorithm (more complex). Always verify the graph is undirected before applying Prim's or Kruskal's.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Union-Find: Forgetting path compression or union by rank:</strong> Without both optimizations, Union-Find degrades to O(log n) per operation in average, and O(n) worst case. With both, it achieves nearly O(1) amortized (inverse Ackermann function — effectively O(1) for any practical input size). Always implement both.
+    <strong>?? Union-Find: Forgetting path compression or union by rank:</strong> Without both optimizations, Union-Find degrades to O(log n) per operation in average, and O(n) worst case. With both, it achieves nearly O(1) amortized (inverse Ackermann function � effectively O(1) for any practical input size). Always implement both.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Prim's: Applying to disconnected graphs:</strong> Prim's starting from one vertex only builds the MST for the connected component containing that vertex. If the graph has multiple components, no spanning tree exists (you need a minimum spanning forest). Always verify connectivity first, or loop to start Prim's on each unvisited vertex.
+    <strong>?? Prim's: Applying to disconnected graphs:</strong> Prim's starting from one vertex only builds the MST for the connected component containing that vertex. If the graph has multiple components, no spanning tree exists (you need a minimum spanning forest). Always verify connectivity first, or loop to start Prim's on each unvisited vertex.
 </div>
 
 <div class="warning">
-    <strong>⚠️ Confusing MST with shortest path:</strong> MST minimizes total edge weight of the spanning tree. Shortest path minimizes the distance between two specific vertices. The path from A to B in the MST is NOT necessarily the shortest path in the original graph. These are completely different problems with different algorithms.
+    <strong>?? Confusing MST with shortest path:</strong> MST minimizes total edge weight of the spanning tree. Shortest path minimizes the distance between two specific vertices. The path from A to B in the MST is NOT necessarily the shortest path in the original graph. These are completely different problems with different algorithms.
 </div>
 
 <hr>
 
-<!-- ═══════════════════════════════════════════════════════ SECTION 9 -->
-<div class="section-heading">Section 9 — Check Your Understanding</div>
+<!-- ------------------------------------------------------- SECTION 9 -->
+<div class="section-heading">Section 9 � Check Your Understanding</div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q1 — A connected graph with V vertices has how many edges in its MST?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="quiz-q">Q1 � A connected graph with V vertices has how many edges in its MST?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer: V-1 edges.</strong> A spanning tree of V vertices is a connected acyclic graph — it has exactly V-1 edges. Fewer edges and the graph becomes disconnected; more edges and you have a cycle. Both Kruskal's and Prim's stop after adding exactly V-1 edges. If you're solving an MST problem and your answer has a different number of edges, something is wrong.</div>
+        <div class="approach"><strong>Answer: V-1 edges.</strong> A spanning tree of V vertices is a connected acyclic graph � it has exactly V-1 edges. Fewer edges and the graph becomes disconnected; more edges and you have a cycle. Both Kruskal's and Prim's stop after adding exactly V-1 edges. If you're solving an MST problem and your answer has a different number of edges, something is wrong.</div>
         <div class="complexity"><strong>Key invariant:</strong> tree with V vertices = connected + acyclic + exactly V-1 edges. Any two of these three properties imply the third.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q2 — You run Union-Find on 5 elements. After Union(0,1), Union(1,2), and Union(3,4), what does Find(2) return? After Union(2,3), what does Find(4) return?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="quiz-q">Q2 � You run Union-Find on 5 elements. After Union(0,1), Union(1,2), and Union(3,4), what does Find(2) return? After Union(2,3), what does Find(4) return?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>After Union(0,1), Union(1,2), Union(3,4):</strong> Find(2) returns 0 (0 is the root of the {0,1,2} component). <strong>After Union(2,3):</strong> This merges {0,1,2} (root=0, rank=1) with {3,4} (root=3, rank=1). Equal rank → attach 3 under 0, rank[0]++. Now Find(4): 4→3→0, so Find(4) returns 0. Path compression then sets parent[4]=0 directly.</div>
-        <div class="complexity"><strong>Components after all unions:</strong> {0,1,2,3,4} — all in one component with root 0.</div>
+        <div class="approach"><strong>After Union(0,1), Union(1,2), Union(3,4):</strong> Find(2) returns 0 (0 is the root of the {0,1,2} component). <strong>After Union(2,3):</strong> This merges {0,1,2} (root=0, rank=1) with {3,4} (root=3, rank=1). Equal rank ? attach 3 under 0, rank[0]++. Now Find(4): 4?3?0, so Find(4) returns 0. Path compression then sets parent[4]=0 directly.</div>
+        <div class="complexity"><strong>Components after all unions:</strong> {0,1,2,3,4} � all in one component with root 0.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q3 — Kruskal's says: sort edges, add if no cycle. Why is it guaranteed to produce an MST and not just any spanning tree?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="quiz-q">Q3 � Kruskal's says: sort edges, add if no cycle. Why is it guaranteed to produce an MST and not just any spanning tree?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>The Cut Property (MST Theorem):</strong> For any cut (partition) of the graph's vertices into two sets S and V-S, the minimum-weight edge crossing the cut is always part of some MST. Kruskal's works because each time it considers an edge (u,v,w) that connects two different components, that edge is the minimum-weight crossing edge for the cut separating those components (all lighter edges were processed first and are already in the MST, or they also connected the same components and were skipped). This "Cut Property" proof guarantees every edge Kruskal's adds is a valid MST edge.</div>
-        <div class="complexity"><strong>Also: Cycle Property:</strong> The maximum-weight edge in any cycle is never in any MST. Kruskal's skips edges that form cycles — exactly these "cycle maximum" edges.</div>
+        <div class="complexity"><strong>Also: Cycle Property:</strong> The maximum-weight edge in any cycle is never in any MST. Kruskal's skips edges that form cycles � exactly these "cycle maximum" edges.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q4 — If a graph has all unique edge weights, is the MST unique?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="quiz-q">Q4 � If a graph has all unique edge weights, is the MST unique?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Yes — if all edge weights are distinct, the MST is unique.</strong> Proof by contradiction: suppose two different MSTs T1 and T2 exist. T1 has some edge e1 not in T2. Adding e1 to T2 creates exactly one cycle C. C must contain some edge e2 in T2 but not T1 (since T1 has no cycle). If w(e1) ≠ w(e2), we can swap to get a lighter spanning tree — contradicting one of them being the MST. With all distinct weights, this contradiction always holds, so only one MST exists. <br><strong>When multiple edges have the same weight,</strong> there can be multiple valid MSTs with the same total weight but different edge sets.</div>
+        <div class="approach"><strong>Yes � if all edge weights are distinct, the MST is unique.</strong> Proof by contradiction: suppose two different MSTs T1 and T2 exist. T1 has some edge e1 not in T2. Adding e1 to T2 creates exactly one cycle C. C must contain some edge e2 in T2 but not T1 (since T1 has no cycle). If w(e1) ? w(e2), we can swap to get a lighter spanning tree � contradicting one of them being the MST. With all distinct weights, this contradiction always holds, so only one MST exists. <br><strong>When multiple edges have the same weight,</strong> there can be multiple valid MSTs with the same total weight but different edge sets.</div>
         <div class="complexity"><strong>Interview tip:</strong> "Is the MST unique?" is a common question. Answer: Yes if all edge weights are distinct; No (but all have the same total weight) if some edges have equal weights.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q5 — How would you modify Kruskal's to find a MAXIMUM Spanning Tree (connect all vertices with maximum total weight)?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="quiz-q">Q5 � How would you modify Kruskal's to find a MAXIMUM Spanning Tree (connect all vertices with maximum total weight)?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>One change only: sort edges in descending order instead of ascending.</strong> The rest of the algorithm — same Union-Find cycle detection, same V-1 edge stopping condition — stays identical. By processing the heaviest edges first, you greedily include the largest-weight edges that don't form a cycle. Alternatively, negate all edge weights and run standard minimum spanning tree (MST of negated weights = maximum spanning tree of original). Maximum spanning trees are used in maximum bandwidth path problems, maximum bottleneck path, and clustering to find the most-connected spanning structure.</div>
-        <div class="complexity"><strong>Same complexity:</strong> O(E log E) — the sort direction is the only difference.</div>
+        <div class="approach"><strong>One change only: sort edges in descending order instead of ascending.</strong> The rest of the algorithm � same Union-Find cycle detection, same V-1 edge stopping condition � stays identical. By processing the heaviest edges first, you greedily include the largest-weight edges that don't form a cycle. Alternatively, negate all edge weights and run standard minimum spanning tree (MST of negated weights = maximum spanning tree of original). Maximum spanning trees are used in maximum bandwidth path problems, maximum bottleneck path, and clustering to find the most-connected spanning structure.</div>
+        <div class="complexity"><strong>Same complexity:</strong> O(E log E) � the sort direction is the only difference.</div>
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10C Complete</button>
-<div class="toast" id="toast">✅ Module 10C marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 10C Complete</button>
+<div class="toast" id="toast">? Module 10C marked complete!</div>
     <script>var MODULE_ID = 'm10c';</script>
     <script src="../dsa.js"></script>
 </body>

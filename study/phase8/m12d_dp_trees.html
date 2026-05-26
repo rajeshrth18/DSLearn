@@ -1,35 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 12D — DP on Trees & Graphs | DSA Masterbook</title>
+    <title>Module 12D � DP on Trees & Graphs | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
-    <h1>Module 12 — Part D</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
+    <h1>Module 12 � Part D</h1>
     <div class="tagline">DP on Trees &amp; Graphs</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Tree Diameter · Max Independent Set · DAG Shortest Path · Bellman-Ford DP</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Tree Diameter � Max Independent Set � DAG Shortest Path � Bellman-Ford DP</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part D of Module 12</span>
+        <span>? Estimated Time: 2 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part D of Module 12</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m12a_dp_intro.html">DP Introduction</a><br>
-    ✅ <strong>Part B</strong> — <a href="m12b_dp_1d.html">1D DP</a><br>
-    ✅ <strong>Part C</strong> — <a href="m12c_dp_2d.html">2D DP</a><br>
-    ▶ <strong>Part D</strong> — <em>You are here</em> — DP on Trees &amp; Graphs<br>
-    ⬜ <strong>Part E</strong> — <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
-    ⬜ <strong>Part F</strong> — <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m12a_dp_intro.html">DP Introduction</a><br>
+    ? <strong>Part B</strong> � <a href="m12b_dp_1d.html">1D DP</a><br>
+    ? <strong>Part C</strong> � <a href="m12c_dp_2d.html">2D DP</a><br>
+    ? <strong>Part D</strong> � <em>You are here</em> � DP on Trees &amp; Graphs<br>
+    ? <strong>Part E</strong> � <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
+    ? <strong>Part F</strong> � <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase7/m11a_segment_trees.html">&larr; Module 11 &mdash; Segment Trees &amp; More</a>
@@ -37,20 +38,20 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — DP on Trees: The Postorder Pattern <span>— Children before parent</span></li>
-        <li>Section 2 — Binary Tree Maximum Path Sum <span>— LeetCode #124</span></li>
-        <li>Section 3 — Maximum Independent Set on Tree <span>— Include/exclude states</span></li>
-        <li>Section 4 — Diameter of Binary Tree <span>— LeetCode #543</span></li>
-        <li>Section 5 — DP on DAGs: Topological Order <span>— Longest/shortest path</span></li>
-        <li>Section 6 — Bellman-Ford as DP <span>— k-edge shortest path</span></li>
-        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+        <li>Section 1 � DP on Trees: The Postorder Pattern <span>� Children before parent</span></li>
+        <li>Section 2 � Binary Tree Maximum Path Sum <span>� LeetCode #124</span></li>
+        <li>Section 3 � Maximum Independent Set on Tree <span>� Include/exclude states</span></li>
+        <li>Section 4 � Diameter of Binary Tree <span>� LeetCode #543</span></li>
+        <li>Section 5 � DP on DAGs: Topological Order <span>� Longest/shortest path</span></li>
+        <li>Section 6 � Bellman-Ford as DP <span>� k-edge shortest path</span></li>
+        <li>Section 7 � Q&amp;A Review <span>� 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — DP on Trees: The Postorder Pattern</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � DP on Trees: The Postorder Pattern</div>
 
 <p>In tree DP, the state is defined per node. The recurrence combines results from children. 
 Since children must be computed before the parent, tree DP uses <strong>postorder DFS</strong> 
@@ -82,11 +83,11 @@ This distinction is crucial for problems like Tree Diameter and Max Path Sum.</d
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Binary Tree Maximum Path Sum (LeetCode #124)</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Binary Tree Maximum Path Sum (LeetCode #124)</div>
 
 <p><em>Find the maximum path sum in a binary tree. A path is any sequence of nodes 
-from one node to another — it doesn't have to go through the root. Can go down and up.</em></p>
+from one node to another � it doesn't have to go through the root. Can go down and up.</em></p>
 
 <div class="diagram">TREE:
          -10
@@ -98,22 +99,22 @@ from one node to another — it doesn't have to go through the root. Can go down
 INSIGHT: At each node, we can either:
   1. Extend one child's path upward (return max(0, left, right) + node.val)
   2. "Use" this node as the TOP of a path spanning both subtrees (not returnable)
-     → left + node.val + right (stays local, updates global answer)
+     ? left + node.val + right (stays local, updates global answer)
 
 dfs(-10): 
-  left=dfs(9): leaf → gain=9, return 9
+  left=dfs(9): leaf ? gain=9, return 9
   right=dfs(20):
-    left=dfs(15): leaf → gain=15, return 15
-    right=dfs(7): leaf → gain=7, return 7
-    → global: 15+20+7=42; return 20+max(15,7)=35
-  → global: max(42, 9+(-10)+35=34, ...): stays 42
+    left=dfs(15): leaf ? gain=15, return 15
+    right=dfs(7): leaf ? gain=7, return 7
+    ? global: 15+20+7=42; return 20+max(15,7)=35
+  ? global: max(42, 9+(-10)+35=34, ...): stays 42
   return: -10 + max(9, 35) = 25
 
-Answer: global_max = 42 ✓</div>
+Answer: global_max = 42 ?</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">MaxPathSum</span>(<span class="tp">TreeNode</span> root)
 {
     <span class="kw">int</span> ans = <span class="kw">int</span>.MinValue;
@@ -133,7 +134,7 @@ Answer: global_max = 42 ✓</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maxPathSum</span>(root):
     ans = [<span class="mt">float</span>(<span class="st">'-inf'</span>)]
     <span class="kw">def</span> <span class="mt">dfs</span>(node):
@@ -148,8 +149,8 @@ Answer: global_max = 42 ✓</div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Maximum Independent Set on Tree</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Maximum Independent Set on Tree</div>
 
 <p><em>In an unweighted tree, find the maximum set of nodes with no two nodes adjacent (connected by an edge). 
 This is equivalent to LeetCode #337 House Robber III.</em></p>
@@ -160,9 +161,9 @@ This is equivalent to LeetCode #337 House Robber III.</em></p>
 
 RECURRENCE:
   dp[node][0] = sum over children c: max(dp[c][0], dp[c][1])
-    (don't take node → children can be taken or not)
+    (don't take node ? children can be taken or not)
   dp[node][1] = 1 + sum over children c: dp[c][0]
-    (take node → children CANNOT be taken)
+    (take node ? children CANNOT be taken)
 
 ANSWER: max(dp[root][0], dp[root][1])
 
@@ -180,12 +181,12 @@ dp[2][1] = 1 + 0 + 0 = 1             (take 2, can't take children)
 dp[3] = (0, 1)  (leaf)
 dp[1][0] = max(2,1) + max(0,1) = 2+1 = 3   (take 4,5,3)
 dp[1][1] = 1 + dp[2][0] + dp[3][0] = 1+2+0 = 3  (take 1,4,5)
-Answer: max(3,3) = 3 ✓  ({4,5,3} or {1,4,5})</div>
+Answer: max(3,3) = 3 ?  ({4,5,3} or {1,4,5})</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// LeetCode #337 — House Robber III</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// LeetCode #337 � House Robber III</span>
 <span class="kw">public int</span> <span class="mt">Rob</span>(<span class="tp">TreeNode</span> root)
 {
     <span class="kw">var</span> (noRob, rob) = <span class="mt">DFS</span>(root);
@@ -205,7 +206,7 @@ Answer: max(3,3) = 3 ✓  ({4,5,3} or {1,4,5})</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">rob337</span>(root):
     <span class="kw">def</span> <span class="mt">dfs</span>(node):
         <span class="kw">if not</span> node: <span class="kw">return</span> (<span class="nm">0</span>, <span class="nm">0</span>)  <span class="cm"># (no_rob, rob)</span>
@@ -219,8 +220,8 @@ Answer: max(3,3) = 3 ✓  ({4,5,3} or {1,4,5})</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Diameter of Binary Tree (LeetCode #543)</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Diameter of Binary Tree (LeetCode #543)</div>
 
 <p><em>The diameter is the length (in edges) of the longest path between any two nodes.</em></p>
 
@@ -242,22 +243,22 @@ EXAMPLE:
 dfs(4) = 0, dfs(5) = 0
 dfs(2): ans=max(0,0+0)=0; return 1+max(0,0)=1
 dfs(3) = 0
-dfs(1): ans=max(0, 1+0)=1  ← path 4-2-1 or 5-2-1 (length 2)
+dfs(1): ans=max(0, 1+0)=1  ? path 4-2-1 or 5-2-1 (length 2)
 Wait: left_depth=1, right_depth=0; 1+0=1? That's only through node 1.
   Actually: left=dfs(2)=1, right=dfs(3)=0
   At node 1: left+right=1+0=1 edge? No: 1+0 edges = path 2-1-3 only 2 edges
   But the answer includes 4-2 (1 edge) + 2's edge = 4-2-1...
   
 CORRECT: at node 2, left=dfs(4)=0, right=dfs(5)=0
-  ans = max(0, 0+0)=0, return 1+max(0,0)=1  ← depth from 2 is 1
+  ans = max(0, 0+0)=0, return 1+max(0,0)=1  ? depth from 2 is 1
 At node 1: left=1 (from 2), right=0 (from 3)
   ans = max(0, 1+0)=1... but correct answer is 3!
   
-Hmm, let me recount: 4→2→5 has 2 edges. 4→2→1→3 has 3 edges.
-At node 2: left=0(4), right=0(5) → local path=0+0=0 edges? No...
+Hmm, let me recount: 4?2?5 has 2 edges. 4?2?1?3 has 3 edges.
+At node 2: left=0(4), right=0(5) ? local path=0+0=0 edges? No...
   Actually depth(4)=0 means 0 edges from leaf 4 to leaf 4.
   path through 2 = depth(left)+depth(right) = 0+0 = 0 edges? That's wrong.
-  The path 4→2→5 has 2 edges = depth(4)+1 + depth(5)+1 in terms of edges...
+  The path 4?2?5 has 2 edges = depth(4)+1 + depth(5)+1 in terms of edges...
 
 CORRECT FORMULA: path through node = (left_depth+1) + (right_depth+1)?
 No. Let's define depth correctly:
@@ -269,13 +270,13 @@ Simpler: dfs returns number of NODES in path (not edges):
   dfs(node) = 1 + max(dfs(left), dfs(right))  [max depth in nodes]
   path through node (in edges) = dfs(left) + dfs(right)
   
-At node 2: L=dfs(4)=1, R=dfs(5)=1 → path edges = L+R = 2 (4→2→5) ✓
-At node 1: L=dfs(2)=2, R=dfs(3)=1 → path edges = L+R = 3 (4→2→1→3) ✓
-Answer: 3 ✓</div>
+At node 2: L=dfs(4)=1, R=dfs(5)=1 ? path edges = L+R = 2 (4?2?5) ?
+At node 1: L=dfs(2)=2, R=dfs(3)=1 ? path edges = L+R = 3 (4?2?1?3) ?
+Answer: 3 ?</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">DiameterOfBinaryTree</span>(<span class="tp">TreeNode</span> root)
 {
     <span class="kw">int</span> ans = <span class="nm">0</span>;
@@ -294,7 +295,7 @@ Answer: 3 ✓</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">diameterOfBinaryTree</span>(root):
     ans = [<span class="nm">0</span>]
     <span class="kw">def</span> <span class="mt">depth</span>(node):
@@ -308,8 +309,8 @@ Answer: 3 ✓</div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — DP on DAGs: Topological Order</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � DP on DAGs: Topological Order</div>
 
 <p>On a directed acyclic graph (DAG), DP follows topological order. Common problems: 
 longest path, shortest path, number of paths.</p>
@@ -319,10 +320,10 @@ longest path, shortest path, number of paths.</p>
 dp[u] = longest path starting at node u
 
 Process nodes in REVERSE topological order (sinks first):
-  dp[u] = max(dp[v] + weight(u→v)) for all (u,v) edges
+  dp[u] = max(dp[v] + weight(u?v)) for all (u,v) edges
 
 EXAMPLE DAG:
-  0→1 (w=5), 0→2 (w=3), 1→3 (w=2), 2→3 (w=1), 3→4 (w=7)
+  0?1 (w=5), 0?2 (w=3), 1?3 (w=2), 2?3 (w=1), 3?4 (w=7)
   Topo order: [0, 1, 2, 3, 4]
 
 dp[4] = 0  (sink)
@@ -331,14 +332,14 @@ dp[1] = max(dp[3]+2) = 9
 dp[2] = max(dp[3]+1) = 8
 dp[0] = max(dp[1]+5, dp[2]+3) = max(14, 11) = 14
 
-Answer: max(dp) = 14 ✓ (path 0→1→3→4 with weight 5+2+7=14)
+Answer: max(dp) = 14 ? (path 0?1?3?4 with weight 5+2+7=14)
 
 KEY INSIGHT: On DAGs, both shortest and longest paths can be solved with DP in O(V+E).
 On graphs with cycles, Bellman-Ford is needed (and longest path is NP-hard!).</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="cm">// Longest path in DAG using topological sort (Kahn's algorithm)</span>
 <span class="kw">public int</span> <span class="mt">LongestPathDAG</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] edges)
 {
@@ -386,19 +387,19 @@ On graphs with cycles, Bellman-Ford is needed (and longest path is NP-hard!).</d
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Bellman-Ford as DP</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Bellman-Ford as DP</div>
 
 <p>Bellman-Ford computes shortest paths with negative edge weights. It's fundamentally a DP:
 <strong>dp[k][v] = shortest path to v using at most k edges</strong>.</p>
 
 <div class="diagram">BELLMAN-FORD DP FORMULATION:
 
-dp[k][v] = min dist to v using exactly ≤ k edges
-dp[0][source] = 0, dp[0][v≠source] = ∞
+dp[k][v] = min dist to v using exactly = k edges
+dp[0][source] = 0, dp[0][v?source] = 8
 
 RECURRENCE:
-  dp[k][v] = min(dp[k-1][v], min over edges (u→v): dp[k-1][u] + w(u,v))
+  dp[k][v] = min(dp[k-1][v], min over edges (u?v): dp[k-1][u] + w(u,v))
 
 ANSWER: dp[n-1][dest] after n-1 iterations (max edges in shortest path = n-1)
 
@@ -406,9 +407,9 @@ NEGATIVE CYCLE DETECTION:
   Run one more iteration (k=n). If dp[n][v] < dp[n-1][v] for any v,
   there's a negative cycle on the path to v.
 
-LeetCode #787 — Cheapest Flights with at most K Stops:
+LeetCode #787 � Cheapest Flights with at most K Stops:
   dp[k][v] = min cost to reach v using at most k+1 flights
-  Initialize dp[0][src]=0, rest=∞
+  Initialize dp[0][src]=0, rest=8
   For each of K stops:
     For each edge (u,v,price):
       dp[k+1][v] = min(dp[k+1][v], dp[k][u] + price)
@@ -416,8 +417,8 @@ LeetCode #787 — Cheapest Flights with at most K Stops:
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// LeetCode #787 — Cheapest Flights Within K Stops</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// LeetCode #787 � Cheapest Flights Within K Stops</span>
 <span class="kw">public int</span> <span class="mt">FindCheapestPrice</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] flights, <span class="kw">int</span> src, <span class="kw">int</span> dst, <span class="kw">int</span> k)
 {
     <span class="kw">int</span>[] dp = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="kw">int</span>.MaxValue/<span class="nm">2</span>, n).<span class="mt">ToArray</span>();
@@ -436,7 +437,7 @@ LeetCode #787 — Cheapest Flights with at most K Stops:
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findCheapestPrice</span>(n, flights, src, dst, k):
     INF = <span class="mt">float</span>(<span class="st">'inf'</span>)
     dp = [INF] * n
@@ -452,41 +453,41 @@ LeetCode #787 — Cheapest Flights with at most K Stops:
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Q&amp;A Review</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: Why is the "return value" in tree DP different from the "global answer" in problems like Max Path Sum?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The DFS return value represents the best result that can be "extended upward" through the current node — it's constrained to form a valid path that continues to the parent. In Max Path Sum, a node can extend either its left OR right subtree to the parent (not both), so the return is node.val + max(L, R). The global answer, however, can be any path in the tree — including ones that "arch" through a node using both left and right children. Such a path cannot be extended further (it uses the node as a turning point), so it updates global_ans but is NOT returned. This "local computation vs global update" pattern appears in Diameter, Max Path Sum, Longest Univalue Path, and many others.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The DFS return value represents the best result that can be "extended upward" through the current node � it's constrained to form a valid path that continues to the parent. In Max Path Sum, a node can extend either its left OR right subtree to the parent (not both), so the return is node.val + max(L, R). The global answer, however, can be any path in the tree � including ones that "arch" through a node using both left and right children. Such a path cannot be extended further (it uses the node as a turning point), so it updates global_ans but is NOT returned. This "local computation vs global update" pattern appears in Diameter, Max Path Sum, Longest Univalue Path, and many others.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: In the House Robber III (Max Independent Set on Tree), why is it correct to return a pair (noRob, rob) from each DFS call?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
     <div class="answer">We need to track two states per node because the parent's decision depends on whether the current node is robbed. If parent is robbed, it needs dp[child][noRob]. If parent is not robbed, it needs max(dp[child][noRob], dp[child][rob]). By returning both values, the parent has full information to make its decision. If we only returned the "best" answer from each subtree (collapsing the two states), we'd lose the information about whether the root of that subtree was included or not. Returning a pair avoids the need for memoization or additional traversals.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: Why can't we use DP to find the longest path in a general graph (with cycles)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">DP requires a well-defined computation order (topological order). On a general graph with cycles (e.g., A→B→C→A), there's no valid topological order — the subproblems are mutually dependent. dp[A] depends on dp[B], dp[B] depends on dp[C], dp[C] depends on dp[A]. This circular dependency breaks DP. Furthermore, on graphs with positive cycles, the "longest path" is infinite (just cycle forever). Longest path on general graphs is NP-hard (it generalizes the Hamiltonian Path problem). On DAGs, no cycles means valid topological ordering exists, and DP runs in O(V+E). This is why Dijkstra (shortest path, non-negative weights) and Bellman-Ford (handles negative edges but not cycles in shortest path) are needed for general graphs.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">DP requires a well-defined computation order (topological order). On a general graph with cycles (e.g., A?B?C?A), there's no valid topological order � the subproblems are mutually dependent. dp[A] depends on dp[B], dp[B] depends on dp[C], dp[C] depends on dp[A]. This circular dependency breaks DP. Furthermore, on graphs with positive cycles, the "longest path" is infinite (just cycle forever). Longest path on general graphs is NP-hard (it generalizes the Hamiltonian Path problem). On DAGs, no cycles means valid topological ordering exists, and DP runs in O(V+E). This is why Dijkstra (shortest path, non-negative weights) and Bellman-Ford (handles negative edges but not cycles in shortest path) are needed for general graphs.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: In Bellman-Ford / Cheapest Flights (#787), why must we "snapshot" the dp array before updating?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The DP state is dp[k][v] = min cost using at most k edges. When computing iteration k+1, we must use values from EXACTLY iteration k (at most k edges). If we update in-place and then use the updated values, we might compute a path that uses k+2 or more edges within a single iteration. For example: if we process edge (A→B) and update dp[B], then process edge (B→C) and use the newly updated dp[B], we've implicitly used k+2 edges in "one iteration" of the loop. The snapshot ensures each iteration strictly extends paths by exactly one more edge. This is the same reason as right-to-left traversal in 0/1 knapsack — prevent using "current iteration" values prematurely.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The DP state is dp[k][v] = min cost using at most k edges. When computing iteration k+1, we must use values from EXACTLY iteration k (at most k edges). If we update in-place and then use the updated values, we might compute a path that uses k+2 or more edges within a single iteration. For example: if we process edge (A?B) and update dp[B], then process edge (B?C) and use the newly updated dp[B], we've implicitly used k+2 edges in "one iteration" of the loop. The snapshot ensures each iteration strictly extends paths by exactly one more edge. This is the same reason as right-to-left traversal in 0/1 knapsack � prevent using "current iteration" values prematurely.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q5: What is the time complexity of tree DP, and why is it O(n) and not O(n²)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Tree DP is O(n) where n is the number of nodes. Each node is visited exactly once in the postorder DFS. The key: unlike array DP where dp[i] might depend on all previous values dp[j] for j &lt; i (leading to O(n²)), tree DP has each node depend only on its direct children. The DFS visits each node once and processes each edge once (when returning from child to parent). Total work = O(nodes + edges) = O(n + n-1) = O(n) for a tree. There's no nested loop over all pairs of nodes. Each DFS call does O(1) work (constants per child). This is a key advantage of tree DP over general 2D DP.</div>
+    <div class="q">Q5: What is the time complexity of tree DP, and why is it O(n) and not O(n�)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Tree DP is O(n) where n is the number of nodes. Each node is visited exactly once in the postorder DFS. The key: unlike array DP where dp[i] might depend on all previous values dp[j] for j &lt; i (leading to O(n�)), tree DP has each node depend only on its direct children. The DFS visits each node once and processes each edge once (when returning from child to parent). Total work = O(nodes + edges) = O(n + n-1) = O(n) for a tree. There's no nested loop over all pairs of nodes. Each DFS call does O(1) work (constants per child). This is a key advantage of tree DP over general 2D DP.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 12D Complete</button>
-<div class="toast" id="toast">✅ Module 12D marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 12D Complete</button>
+<div class="toast" id="toast">? Module 12D marked complete!</div>
     <script>var MODULE_ID = 'm12d';</script>
     <script src="../dsa.js"></script>
 </body>

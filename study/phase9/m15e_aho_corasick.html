@@ -1,48 +1,49 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 15E — Aho-Corasick | DSA Masterbook</title>
+    <title>Module 15E � Aho-Corasick | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
-    <h1>Module 15 — Part E</h1>
-    <div class="tagline">Aho-Corasick — Multi-Pattern Search Automaton</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Search all patterns simultaneously · Trie + Failure Links · O(n + m + k)</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
+    <h1>Module 15 � Part E</h1>
+    <div class="tagline">Aho-Corasick � Multi-Pattern Search Automaton</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Search all patterns simultaneously � Trie + Failure Links � O(n + m + k)</p>
     <div class="badges">
-        <span>⏱ Estimated: 2 Hours</span>
-        <span>🎯 Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Module 15 of 17</span>
+        <span>? Estimated: 2 Hours</span>
+        <span>?? Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Module 15 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
-    ✅ <strong>Part B</strong> — <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
-    ✅ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
-    ✅ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
-    ▶ <strong>Part E</strong> — <em>You are here</em> — Aho-Corasick (Multi-Pattern)<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 15 � String Algorithms:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ? <strong>Part B</strong> � <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
+    ? <strong>Part C</strong> � <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ? <strong>Part D</strong> � <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ? <strong>Part E</strong> � <em>You are here</em> � Aho-Corasick (Multi-Pattern)<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
     <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — The Multi-Pattern Problem</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � The Multi-Pattern Problem</div>
 
 <p>Given a text of length <em>n</em> and <em>k</em> patterns of total length <em>m</em>,
 find all occurrences of all patterns in the text.</p>
 
-<p>Running KMP separately for each pattern takes O(n·k + m). <strong>Aho-Corasick</strong> does it
-in <strong>O(n + m + z)</strong> where z is the total number of matches — regardless of k.
+<p>Running KMP separately for each pattern takes O(n�k + m). <strong>Aho-Corasick</strong> does it
+in <strong>O(n + m + z)</strong> where z is the total number of matches � regardless of k.
 It's KMP generalized to a trie.</p>
 
 <div class="diagram">Patterns: {"he", "she", "his", "hers"}
@@ -62,18 +63,18 @@ Build Trie:
 Key insight: KMP's failure function = Aho-Corasick's failure links on a single-path trie.
 Aho-Corasick extends this to a trie of all patterns.</div>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Build: Trie + Failure Links</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Build: Trie + Failure Links</div>
 
-<h3>2.1 — Step 1: Insert All Patterns into a Trie</h3>
-<h3>2.2 — Step 2: Build Failure Links via BFS</h3>
+<h3>2.1 � Step 1: Insert All Patterns into a Trie</h3>
+<h3>2.2 � Step 2: Build Failure Links via BFS</h3>
 <p>Failure links are the trie equivalent of KMP's failure function. For each node <code>u</code>,
 <code>fail[u]</code> = the longest proper suffix of the string represented by <code>u</code> that
 is also a prefix of some pattern in the trie.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">AhoCorasick</span>
 {
     <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;&gt; _goto = <span class="kw">new</span>();
@@ -146,7 +147,7 @@ ac.<span class="mt">Build</span>();
 </div>
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque, defaultdict
 
 <span class="kw">class</span> <span class="tp">AhoCorasick</span>:
@@ -217,18 +218,18 @@ print(ac.<span class="mt">search</span>(<span class="st">"ushers"</span>))
 </div>
 
 <div class="note">
-    <strong>📌 Key Takeaways:</strong>
+    <strong>?? Key Takeaways:</strong>
     <ul style="margin-top:8px;">
         <li>Aho-Corasick = KMP failure function extended to a trie of multiple patterns</li>
         <li>Build: O(total pattern length m); Search: O(n + z) where z = total matches</li>
-        <li>Failure links built via BFS from root — children of root always have fail = root</li>
+        <li>Failure links built via BFS from root � children of root always have fail = root</li>
         <li>Output links (dictionary links) propagate outputs through the fail chain</li>
         <li>Used in antivirus engines, DNA search, network intrusion detection</li>
     </ul>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15E Complete</button>
-<div class="toast" id="toast">✅ Module 15E complete! Aho-Corasick mastered! Module 15 done! 🎉</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 15E Complete</button>
+<div class="toast" id="toast">? Module 15E complete! Aho-Corasick mastered! Module 15 done! ??</div>
     <script>var MODULE_ID = 'm15e';</script>
     <script src="../dsa.js"></script>
 </body>

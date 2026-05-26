@@ -1,34 +1,35 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 13A — Greedy Strategy & Proofs | DSA Masterbook</title>
+    <title>Module 13A � Greedy Strategy & Proofs | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
-    <h1>Module 13 — Part A</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
+    <h1>Module 13 � Part A</h1>
     <div class="tagline">Greedy Strategy &amp; Proofs</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Exchange Argument · Activity Selection · Jump Game · Task Scheduling</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Exchange Argument � Activity Selection � Jump Game � Task Scheduling</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1.5 Hours</span>
-        <span>🎯 Intermediate</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part A of Module 13</span>
+        <span>? Estimated Time: 1.5 Hours</span>
+        <span>?? Intermediate</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part A of Module 13</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ✅ Module 12 — <a href="m12a_dp_intro.html">Dynamic Programming (Parts A–F)</a><br>
-    ▶ <strong>Module 13 Part A</strong> — <em>You are here</em> — Greedy Strategy<br>
-    ⬜ <strong>Module 13 Part B</strong> — <a href="m13b_huffman.html">Huffman &amp; Interval Scheduling</a><br>
-    ⬜ <strong>Module 13 Part C</strong> — <a href="m13c_greedy_practice.html">Greedy Practice: 10 Problems</a><br>
-    ⬜ Module 14 — <a href="m14a_divide_conquer.html">Divide &amp; Conquer</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ? Module 12 � <a href="m12a_dp_intro.html">Dynamic Programming (Parts A�F)</a><br>
+    ? <strong>Module 13 Part A</strong> � <em>You are here</em> � Greedy Strategy<br>
+    ? <strong>Module 13 Part B</strong> � <a href="m13b_huffman.html">Huffman &amp; Interval Scheduling</a><br>
+    ? <strong>Module 13 Part C</strong> � <a href="m13c_greedy_practice.html">Greedy Practice: 10 Problems</a><br>
+    ? Module 14 � <a href="m14a_divide_conquer.html">Divide &amp; Conquer</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m12a_dp_intro.html">&larr; Module 12 &mdash; Dynamic Programming</a>
@@ -36,26 +37,26 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — What Makes a Greedy Algorithm Correct? <span>— Greedy choice + optimal substructure</span></li>
-        <li>Section 2 — The Exchange Argument <span>— Standard proof technique</span></li>
-        <li>Section 3 — Activity Selection Problem <span>— Sort by end time</span></li>
-        <li>Section 4 — Jump Game II (LeetCode #45) <span>— Greedy range expansion</span></li>
-        <li>Section 5 — Task Scheduler (LeetCode #621) <span>— Frequency-based greedy</span></li>
-        <li>Section 6 — Greedy vs DP — When Greedy Fails <span>— Counterexamples</span></li>
-        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+        <li>Section 1 � What Makes a Greedy Algorithm Correct? <span>� Greedy choice + optimal substructure</span></li>
+        <li>Section 2 � The Exchange Argument <span>� Standard proof technique</span></li>
+        <li>Section 3 � Activity Selection Problem <span>� Sort by end time</span></li>
+        <li>Section 4 � Jump Game II (LeetCode #45) <span>� Greedy range expansion</span></li>
+        <li>Section 5 � Task Scheduler (LeetCode #621) <span>� Frequency-based greedy</span></li>
+        <li>Section 6 � Greedy vs DP � When Greedy Fails <span>� Counterexamples</span></li>
+        <li>Section 7 � Q&amp;A Review <span>� 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — What Makes a Greedy Algorithm Correct?</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � What Makes a Greedy Algorithm Correct?</div>
 
 <p>A greedy algorithm makes the <strong>locally optimal choice at each step</strong>, 
 hoping to reach the global optimum without backtracking. It works when the problem has:</p>
 
 <ul>
-    <li><strong>Greedy Choice Property:</strong> A globally optimal solution can be obtained by making a locally greedy choice at each step — we never need to "undo" a greedy decision.</li>
+    <li><strong>Greedy Choice Property:</strong> A globally optimal solution can be obtained by making a locally greedy choice at each step � we never need to "undo" a greedy decision.</li>
     <li><strong>Optimal Substructure:</strong> An optimal solution to the problem contains optimal solutions to subproblems (same as DP).</li>
 </ul>
 
@@ -69,22 +70,22 @@ The greedy choice property is what makes greedy simpler than DP.
 It says: "I can always take the locally best option without regretting it later."
 
 Examples where greedy WORKS:
-  ✅ Fractional Knapsack (sort by value/weight ratio)
-  ✅ Activity Selection (sort by end time)
-  ✅ Dijkstra's shortest path (always expand closest unvisited node)
-  ✅ Prim's / Kruskal's MST
-  ✅ Huffman coding (always merge two smallest frequency nodes)
+  ? Fractional Knapsack (sort by value/weight ratio)
+  ? Activity Selection (sort by end time)
+  ? Dijkstra's shortest path (always expand closest unvisited node)
+  ? Prim's / Kruskal's MST
+  ? Huffman coding (always merge two smallest frequency nodes)
 
 Examples where greedy FAILS (DP needed):
-  ❌ 0/1 Knapsack (can't take fractions → greedy ratio fails)
-  ❌ Coin Change (e.g., coins=[1,3,4], target=6: greedy takes 4+1+1=3 coins vs DP 3+3=2)
-  ❌ Longest Common Subsequence
-  ❌ Edit Distance</div>
+  ? 0/1 Knapsack (can't take fractions ? greedy ratio fails)
+  ? Coin Change (e.g., coins=[1,3,4], target=6: greedy takes 4+1+1=3 coins vs DP 3+3=2)
+  ? Longest Common Subsequence
+  ? Edit Distance</div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — The Exchange Argument</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � The Exchange Argument</div>
 
 <p>The standard technique to <em>prove</em> a greedy algorithm is correct. You assume an optimal solution 
 differs from the greedy solution, then show you can "exchange" elements to transform it into 
@@ -102,21 +103,21 @@ the greedy solution without getting worse.</p>
 
 4. This gives OPT' that agrees with G one step further.
 
-5. Repeat until OPT is transformed into G — proving cost(G) ≤ cost(OPT).
-   Since OPT is optimal, cost(G) ≥ cost(OPT), so cost(G) = cost(OPT). ✓
+5. Repeat until OPT is transformed into G � proving cost(G) = cost(OPT).
+   Since OPT is optimal, cost(G) = cost(OPT), so cost(G) = cost(OPT). ?
 
 ACTIVITY SELECTION PROOF (Sort by end time):
   Claim: Among all activities that start after the last selected, pick the one ending first.
   
-  Suppose OPT chose activity B instead of A, where end(A) ≤ end(B).
-  Swap B for A in OPT → still valid (A ends no later than B, doesn't conflict).
+  Suppose OPT chose activity B instead of A, where end(A) = end(B).
+  Swap B for A in OPT ? still valid (A ends no later than B, doesn't conflict).
   The number of activities selected is the same.
-  Now OPT' agrees with greedy at this step. ✓</div>
+  Now OPT' agrees with greedy at this step. ?</div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Activity Selection Problem</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Activity Selection Problem</div>
 
 <p><em>Given n activities with start[i] and end[i], select the maximum number of non-overlapping activities.</em></p>
 
@@ -129,21 +130,21 @@ EXAMPLE: Activities (start, end):
 Sort by end: A(1,4), B(3,5), C(0,6), D(5,7), E(3,9), F(5,9), G(6,10), H(8,11)
 
 Select A (end=4). last_end=4.
-B(3,5): start=3 < last_end=4 → SKIP (conflicts)
-C(0,6): start=0 < last_end=4 → SKIP
-D(5,7): start=5 >= last_end=4 → SELECT. last_end=7
-E(3,9): start=3 < 7 → SKIP
-F(5,9): start=5 < 7 → SKIP
-G(6,10): start=6 < 7 → SKIP
-H(8,11): start=8 >= 7 → SELECT. last_end=11
+B(3,5): start=3 < last_end=4 ? SKIP (conflicts)
+C(0,6): start=0 < last_end=4 ? SKIP
+D(5,7): start=5 >= last_end=4 ? SELECT. last_end=7
+E(3,9): start=3 < 7 ? SKIP
+F(5,9): start=5 < 7 ? SKIP
+G(6,10): start=6 < 7 ? SKIP
+H(8,11): start=8 >= 7 ? SELECT. last_end=11
 
-Result: {A, D, H} — 3 activities ✓ (maximum)
+Result: {A, D, H} � 3 activities ? (maximum)
 
 WHY end time sort works: Finishing early "frees up" the most future time.</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">MaxActivities</span>(<span class="kw">int</span>[] start, <span class="kw">int</span>[] end)
 {
     <span class="kw">int</span> n = start.Length;
@@ -161,7 +162,7 @@ WHY end time sort works: Finishing early "frees up" the most future time.</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">max_activities</span>(activities):
     <span class="cm"># activities = [(start, end), ...]</span>
     activities.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])
@@ -174,8 +175,8 @@ WHY end time sort works: Finishing early "frees up" the most future time.</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Jump Game II (LeetCode #45)</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Jump Game II (LeetCode #45)</div>
 
 <p><em>Given jump lengths at each position, find the minimum jumps to reach the last index.</em></p>
 
@@ -183,25 +184,25 @@ WHY end time sort works: Finishing early "frees up" the most future time.</div>
 When you reach the END of the current jump range, you MUST jump.
 At each mandatory jump, advance to the farthest reachable.
 
-KEY INSIGHT: We don't care WHERE in the current range we jump from —
+KEY INSIGHT: We don't care WHERE in the current range we jump from �
 only the farthest we can reach in one more jump.
 
 EXAMPLE: nums = [2, 3, 1, 1, 4]
 
-i=0: range=[0,0], farthest=0+2=2, end=0 → reach end, jumps=1, end=2
+i=0: range=[0,0], farthest=0+2=2, end=0 ? reach end, jumps=1, end=2
 i=1: farthest=max(2,1+3)=4
 i=2: farthest=max(4,2+1)=4
-     reach end (i=2=end=2) → jumps=2, end=4
+     reach end (i=2=end=2) ? jumps=2, end=4
 i=3: (beyond last index, stop)
 
-Answer: 2 jumps ✓ (0→1→4)
+Answer: 2 jumps ? (0?1?4)
 
 COMPLEXITY: O(n) time, O(1) space</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// LeetCode #45 — Jump Game II</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// LeetCode #45 � Jump Game II</span>
 <span class="kw">public int</span> <span class="mt">Jump</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> jumps = <span class="nm">0</span>, curEnd = <span class="nm">0</span>, farthest = <span class="nm">0</span>;
@@ -216,7 +217,7 @@ COMPLEXITY: O(n) time, O(1) space</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">jump</span>(nums):
     jumps = cur_end = farthest = <span class="nm">0</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums) - <span class="nm">1</span>):
@@ -228,8 +229,8 @@ COMPLEXITY: O(n) time, O(1) space</div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Task Scheduler (LeetCode #621)</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Task Scheduler (LeetCode #621)</div>
 
 <p><em>Given tasks and cooldown n, find the minimum time to execute all tasks 
 where the same task must wait n intervals before repeating.</em></p>
@@ -256,12 +257,12 @@ where the same task must wait n intervals before repeating.</em></p>
 
   Another example: tasks=[A,A,B,B,C,C], n=2
   f=2, k=3 (A,B,C all freq=2)
-  (f-1)*(n+1)+k = 1*3+3 = 6 = len(tasks) → max=6, no idle needed</div>
+  (f-1)*(n+1)+k = 1*3+3 = 6 = len(tasks) ? max=6, no idle needed</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// LeetCode #621 — Task Scheduler</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// LeetCode #621 � Task Scheduler</span>
 <span class="kw">public int</span> <span class="mt">LeastInterval</span>(<span class="kw">char</span>[] tasks, <span class="kw">int</span> n)
 {
     <span class="kw">var</span> freq = <span class="kw">new int</span>[<span class="nm">26</span>];
@@ -274,7 +275,7 @@ where the same task must wait n intervals before repeating.</em></p>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
 <span class="kw">def</span> <span class="mt">leastInterval</span>(tasks, n):
     freq = Counter(tasks)
@@ -285,8 +286,8 @@ where the same task must wait n intervals before repeating.</em></p>
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Greedy vs DP: When Greedy Fails</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Greedy vs DP: When Greedy Fails</div>
 
 <table>
     <thead>
@@ -295,96 +296,96 @@ where the same task must wait n intervals before repeating.</em></p>
     <tbody>
         <tr>
             <td>Coin Change<br><code>coins=[1,3,4], target=6</code></td>
-            <td>Take largest coin ≤ remaining</td>
-            <td class="r">❌ 4+1+1=3 coins</td>
-            <td>DP → 3+3=2 coins</td>
+            <td>Take largest coin = remaining</td>
+            <td class="r">? 4+1+1=3 coins</td>
+            <td>DP ? 3+3=2 coins</td>
         </tr>
         <tr>
             <td>0/1 Knapsack</td>
             <td>Sort by value/weight ratio</td>
-            <td class="r">❌ Can't take fractions</td>
+            <td class="r">? Can't take fractions</td>
             <td>DP O(nW)</td>
         </tr>
         <tr>
             <td>Fractional Knapsack</td>
             <td>Sort by value/weight ratio</td>
-            <td class="g">✅ Optimal</td>
+            <td class="g">? Optimal</td>
             <td>Greedy O(n log n)</td>
         </tr>
         <tr>
             <td>Shortest Path (no neg)</td>
             <td>Always expand closest (Dijkstra)</td>
-            <td class="g">✅ Optimal</td>
+            <td class="g">? Optimal</td>
             <td>Greedy (Dijkstra)</td>
         </tr>
         <tr>
             <td>Activity Selection (max count)</td>
             <td>Sort by end time</td>
-            <td class="g">✅ Optimal</td>
+            <td class="g">? Optimal</td>
             <td>Greedy O(n log n)</td>
         </tr>
         <tr>
             <td>Activity Selection (max value)</td>
             <td>Sort by end time, pick greedy</td>
-            <td class="r">❌ Ignores values</td>
+            <td class="r">? Ignores values</td>
             <td>DP (Weighted Job Scheduling)</td>
         </tr>
     </tbody>
 </table>
 
 <div class="warning">
-    <strong>⚠️ The Coin Change Trap:</strong> The greedy algorithm works for "canonical" coin systems 
+    <strong>?? The Coin Change Trap:</strong> The greedy algorithm works for "canonical" coin systems 
     (like US coins: 1,5,10,25) due to their mathematical properties, but fails for arbitrary coin sets. 
     ALWAYS use DP for coin change unless explicitly told the coin system is canonical.
 </div>
 
 <div class="realworld">
-    <strong>🌍 Greedy in the Real World:</strong>
+    <strong>?? Greedy in the Real World:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>CPU Scheduling</strong> — Shortest Job First (SJF) minimizes average wait time</li>
-        <li><strong>Bandwidth allocation</strong> — Earliest Deadline First (EDF) for real-time tasks</li>
-        <li><strong>Compression</strong> — Huffman coding is a greedy algorithm for optimal prefix codes</li>
-        <li><strong>Network routing</strong> — Dijkstra and Prim's are both greedy algorithms</li>
+        <li><strong>CPU Scheduling</strong> � Shortest Job First (SJF) minimizes average wait time</li>
+        <li><strong>Bandwidth allocation</strong> � Earliest Deadline First (EDF) for real-time tasks</li>
+        <li><strong>Compression</strong> � Huffman coding is a greedy algorithm for optimal prefix codes</li>
+        <li><strong>Network routing</strong> � Dijkstra and Prim's are both greedy algorithms</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Q&amp;A Review</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: Why does sorting by end time work for Activity Selection, but sorting by start time or duration does NOT?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Sort by start time counterexample: One long activity starting at time 0 would be selected first, blocking many short activities. Sort by duration: A short activity with early start might conflict with many others; one long activity might end early enough to allow many more. Sort by end time is correct because selecting the activity that finishes earliest is always optimal — it leaves the most "remaining time" for subsequent activities. Exchange argument proof: If optimal solution chose activity B instead of greedy's A, and end(A) ≤ end(B), then swapping B for A in the optimal solution doesn't reduce the count and doesn't introduce conflicts (A ends no later than B). The solution remains valid, now agreeing with greedy's choice at this step.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Sort by start time counterexample: One long activity starting at time 0 would be selected first, blocking many short activities. Sort by duration: A short activity with early start might conflict with many others; one long activity might end early enough to allow many more. Sort by end time is correct because selecting the activity that finishes earliest is always optimal � it leaves the most "remaining time" for subsequent activities. Exchange argument proof: If optimal solution chose activity B instead of greedy's A, and end(A) = end(B), then swapping B for A in the optimal solution doesn't reduce the count and doesn't introduce conflicts (A ends no later than B). The solution remains valid, now agreeing with greedy's choice at this step.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: What is the greedy choice property, and how is it different from optimal substructure?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Optimal substructure: after making any decision (greedy or DP), the remaining subproblem has an optimal solution that is independent and can be solved optimally. Both DP and greedy need this. Greedy choice property: there exists an optimal solution that starts with the greedy choice. This means we never need to "undo" our first choice — we can commit to the locally best option and the remaining subproblem is still well-defined. DP doesn't have this: DP must consider ALL choices at each step (filling the whole table), because the optimal choice at step i depends on what's available at step i+1. Greedy saves work by committing to one choice per step.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Optimal substructure: after making any decision (greedy or DP), the remaining subproblem has an optimal solution that is independent and can be solved optimally. Both DP and greedy need this. Greedy choice property: there exists an optimal solution that starts with the greedy choice. This means we never need to "undo" our first choice � we can commit to the locally best option and the remaining subproblem is still well-defined. DP doesn't have this: DP must consider ALL choices at each step (filling the whole table), because the optimal choice at step i depends on what's available at step i+1. Greedy saves work by committing to one choice per step.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q3: In Jump Game II, why does the greedy approach work — why can't a "sub-optimal" early jump lead to a better outcome?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The greedy maximizes the farthest reachable position with each mandatory jump. Key insight: within the current reachable range, we WILL eventually visit every position anyway (before the next mandatory jump), so we might as well consider ALL positions in the range for reaching the farthest point. The greedy doesn't choose WHERE in the current range to jump — it considers all positions simultaneously and picks the maximum reach. It only "makes a jump" when it HAS to (when i reaches curEnd). This is similar to breadth-first search: the greedy processes all positions at the same "jump distance" before advancing. No early jump strategy can reach farther than the maximum reachable from all positions in the current range.</div>
+    <div class="q">Q3: In Jump Game II, why does the greedy approach work � why can't a "sub-optimal" early jump lead to a better outcome?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The greedy maximizes the farthest reachable position with each mandatory jump. Key insight: within the current reachable range, we WILL eventually visit every position anyway (before the next mandatory jump), so we might as well consider ALL positions in the range for reaching the farthest point. The greedy doesn't choose WHERE in the current range to jump � it considers all positions simultaneously and picks the maximum reach. It only "makes a jump" when it HAS to (when i reaches curEnd). This is similar to breadth-first search: the greedy processes all positions at the same "jump distance" before advancing. No early jump strategy can reach farther than the maximum reachable from all positions in the current range.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: Why does the Task Scheduler formula max(len(tasks), (f-1)*(n+1)+k) work?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">(f-1)*(n+1)+k represents: we arrange the f copies of the most frequent task in a frame structure. Between each pair of consecutive executions of the most frequent task, we need n idle or other-task slots. So each "frame" has (n+1) slots. We have (f-1) complete frames (the last copy doesn't need a trailing cooldown). At the end of the last frame, we append k (the number of tasks with maximum frequency, all of which fit at the end). If other tasks are abundant enough to fill all slots, the total time is just len(tasks) — no idle time needed. The max of the two handles both cases: more tasks than frames (no idle), or fewer tasks than frames (some idle needed).</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">(f-1)*(n+1)+k represents: we arrange the f copies of the most frequent task in a frame structure. Between each pair of consecutive executions of the most frequent task, we need n idle or other-task slots. So each "frame" has (n+1) slots. We have (f-1) complete frames (the last copy doesn't need a trailing cooldown). At the end of the last frame, we append k (the number of tasks with maximum frequency, all of which fit at the end). If other tasks are abundant enough to fill all slots, the total time is just len(tasks) � no idle time needed. The max of the two handles both cases: more tasks than frames (no idle), or fewer tasks than frames (some idle needed).</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: Give a brief outline of how to prove a new greedy algorithm correct using the exchange argument.</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">1. Define the greedy choice precisely (what "locally optimal" means). 2. Assume an optimal solution OPT exists. 3. If OPT = greedy, done. Otherwise, find the first step where OPT differs from greedy. 4. Consider what OPT chose at that step (call it B) vs greedy's choice (call it A). 5. Show that swapping B for A in OPT produces OPT' that: (a) is still a valid/feasible solution, and (b) has cost no worse than OPT (equal or better for minimization; equal or better for maximization). 6. OPT' now agrees with greedy one step further. 7. Repeat steps 3–6 until OPT is fully transformed into greedy's solution. 8. Conclude greedy solution has cost = OPT, proving optimality. The key creative step is step 5: showing the swap doesn't hurt.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">1. Define the greedy choice precisely (what "locally optimal" means). 2. Assume an optimal solution OPT exists. 3. If OPT = greedy, done. Otherwise, find the first step where OPT differs from greedy. 4. Consider what OPT chose at that step (call it B) vs greedy's choice (call it A). 5. Show that swapping B for A in OPT produces OPT' that: (a) is still a valid/feasible solution, and (b) has cost no worse than OPT (equal or better for minimization; equal or better for maximization). 6. OPT' now agrees with greedy one step further. 7. Repeat steps 3�6 until OPT is fully transformed into greedy's solution. 8. Conclude greedy solution has cost = OPT, proving optimality. The key creative step is step 5: showing the swap doesn't hurt.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 13A Complete</button>
-<div class="toast" id="toast">✅ Module 13A marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 13A Complete</button>
+<div class="toast" id="toast">? Module 13A marked complete!</div>
     <script>var MODULE_ID = 'm13a';</script>
     <script src="../dsa.js"></script>
 </body>

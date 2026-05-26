@@ -1,35 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 12B — 1D DP: Coin Change, LIS, Fibonacci | DSA Masterbook</title>
+    <title>Module 12B � 1D DP: Coin Change, LIS, Fibonacci | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
-    <h1>Module 12 — Part B</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
+    <h1>Module 12 � Part B</h1>
     <div class="tagline">1D Dynamic Programming</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Coin Change · Longest Increasing Subsequence · Word Break · Jump Game II</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Coin Change � Longest Increasing Subsequence � Word Break � Jump Game II</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 3 Hours</span>
-        <span>🎯 Intermediate</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part B of Module 12</span>
+        <span>? Estimated Time: 3 Hours</span>
+        <span>?? Intermediate</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part B of Module 12</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m12a_dp_intro.html">DP Introduction</a><br>
-    ▶ <strong>Part B</strong> — <em>You are here</em> — 1D DP<br>
-    ⬜ <strong>Part C</strong> — <a href="m12c_dp_2d.html">2D DP: Knapsack, LCS, Edit Distance</a><br>
-    ⬜ <strong>Part D</strong> — <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
-    ⬜ <strong>Part E</strong> — <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
-    ⬜ <strong>Part F</strong> — <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m12a_dp_intro.html">DP Introduction</a><br>
+    ? <strong>Part B</strong> � <em>You are here</em> � 1D DP<br>
+    ? <strong>Part C</strong> � <a href="m12c_dp_2d.html">2D DP: Knapsack, LCS, Edit Distance</a><br>
+    ? <strong>Part D</strong> � <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
+    ? <strong>Part E</strong> � <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
+    ? <strong>Part F</strong> � <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase7/m11a_segment_trees.html">&larr; Module 11 &mdash; Segment Trees &amp; More</a>
@@ -37,20 +38,20 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — Coin Change <span>— Minimum coins to make amount (LeetCode #322)</span></li>
-        <li>Section 2 — Coin Change II <span>— Count ways to make amount (LeetCode #518)</span></li>
-        <li>Section 3 — Longest Increasing Subsequence <span>— O(n²) and O(n log n) (LeetCode #300)</span></li>
-        <li>Section 4 — Word Break <span>— Dictionary segment check (LeetCode #139)</span></li>
-        <li>Section 5 — Jump Game II <span>— Minimum jumps (LeetCode #45)</span></li>
-        <li>Section 6 — Decode Ways <span>— Count valid decodings (LeetCode #91)</span></li>
-        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+        <li>Section 1 � Coin Change <span>� Minimum coins to make amount (LeetCode #322)</span></li>
+        <li>Section 2 � Coin Change II <span>� Count ways to make amount (LeetCode #518)</span></li>
+        <li>Section 3 � Longest Increasing Subsequence <span>� O(n�) and O(n log n) (LeetCode #300)</span></li>
+        <li>Section 4 � Word Break <span>� Dictionary segment check (LeetCode #139)</span></li>
+        <li>Section 5 � Jump Game II <span>� Minimum jumps (LeetCode #45)</span></li>
+        <li>Section 6 � Decode Ways <span>� Count valid decodings (LeetCode #91)</span></li>
+        <li>Section 7 � Q&amp;A Review <span>� 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — Coin Change (LeetCode #322)</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � Coin Change (LeetCode #322)</div>
 
 <p><em>Given coins of certain denominations and an amount, find the minimum number of coins to make that amount. Return -1 if impossible.</em></p>
 
@@ -65,7 +66,7 @@ RECURRENCE:
 
 BASE:
   dp[0] = 0    (0 coins needed for amount 0)
-  dp[i] = ∞    for i > 0 initially (impossible by default)
+  dp[i] = 8    for i > 0 initially (impossible by default)
 
 EXAMPLE: coins=[1,5,6,9], amount=11
 dp[0] = 0
@@ -76,11 +77,11 @@ dp[6] = min(5, dp[1]+1, dp[0]+1) = 1  [use 6]
 dp[9] = 1                            [use 9]
 dp[10]= min(dp[9]+1, dp[5]+1, dp[4]+1) = 2  [use 9+1 or 5+5]
 dp[11]= min(dp[10]+1, dp[6]+1, dp[5]+1, dp[2]+1) = 2  [use 6+5]
-Answer: 2 ✓</div>
+Answer: 2 ?</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">CoinChange</span>(<span class="kw">int</span>[] coins, <span class="kw">int</span> amount)
 {
     <span class="kw">int</span>[] dp = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="kw">int</span>.MaxValue, amount + <span class="nm">1</span>).<span class="mt">ToArray</span>();
@@ -95,7 +96,7 @@ Answer: 2 ✓</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">coinChange</span>(coins, amount):
     dp = [<span class="mt">float</span>(<span class="st">'inf'</span>)] * (amount + <span class="nm">1</span>)
     dp[<span class="nm">0</span>] = <span class="nm">0</span>
@@ -107,54 +108,54 @@ Answer: 2 ✓</div>
 </div>
 
 <div class="tip">
-    <strong>💡 Complexity:</strong> O(amount × |coins|) time, O(amount) space.
-    Coin Change is the canonical "unbounded knapsack" — each coin can be used unlimited times.
+    <strong>?? Complexity:</strong> O(amount � |coins|) time, O(amount) space.
+    Coin Change is the canonical "unbounded knapsack" � each coin can be used unlimited times.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Coin Change II (LeetCode #518)</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Coin Change II (LeetCode #518)</div>
 
 <p><em>Count the number of combinations (not permutations) of coins that sum to the amount.</em></p>
 
 <div class="diagram">KEY DIFFERENCE FROM #322:
   - #322: minimum coins (order doesn't matter, minimize count)
-  - #518: count combinations (combinations, NOT permutations — [1,2] same as [2,1])
+  - #518: count combinations (combinations, NOT permutations � [1,2] same as [2,1])
 
-NAIVE (wrong) approach — count permutations:
+NAIVE (wrong) approach � count permutations:
   dp[i] += dp[i - c] for each coin c
   This counts [1,2] and [2,1] separately!
 
-CORRECT — enumerate coins in outer loop:
-  For each coin c (outer loop → locks in order):
+CORRECT � enumerate coins in outer loop:
+  For each coin c (outer loop ? locks in order):
     For each amount i from c to amount:
       dp[i] += dp[i - c]
 
   By iterating coins as the outer loop, we enforce that coin[0] always
-  comes before coin[1] in any combination → avoids duplicates!
+  comes before coin[1] in any combination ? avoids duplicates!
 
 EXAMPLE: coins=[1,2,5], amount=5
 Start: dp = [1,0,0,0,0,0]
 
 Process coin=1:
-  dp[1] += dp[0] → dp[1]=1  (one way: [1])
-  dp[2] += dp[1] → dp[2]=1  ([1,1])
+  dp[1] += dp[0] ? dp[1]=1  (one way: [1])
+  dp[2] += dp[1] ? dp[2]=1  ([1,1])
   ... dp[5]=1  ([1,1,1,1,1])
 
 Process coin=2:
-  dp[2] += dp[0] → dp[2]=2  ([1,1] or [2])
-  dp[3] += dp[1] → dp[3]=2  ([1,1,1] or [2,1])
-  dp[4] += dp[2] → dp[4]=3  ([1,1,1,1],[2,1,1],[2,2])
-  dp[5] += dp[3] → dp[5]=4
+  dp[2] += dp[0] ? dp[2]=2  ([1,1] or [2])
+  dp[3] += dp[1] ? dp[3]=2  ([1,1,1] or [2,1])
+  dp[4] += dp[2] ? dp[4]=3  ([1,1,1,1],[2,1,1],[2,2])
+  dp[5] += dp[3] ? dp[5]=4
 
 Process coin=5:
-  dp[5] += dp[0] → dp[5]=5  ([5])
-Answer: dp[5] = 4  ✓ ([1,1,1,1,1],[1,1,1,2],[1,2,2],[5])</div>
+  dp[5] += dp[0] ? dp[5]=5  ([5])
+Answer: dp[5] = 4  ? ([1,1,1,1,1],[1,1,1,2],[1,2,2],[5])</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">Change</span>(<span class="kw">int</span> amount, <span class="kw">int</span>[] coins)
 {
     <span class="kw">int</span>[] dp = <span class="kw">new int</span>[amount + <span class="nm">1</span>];
@@ -168,7 +169,7 @@ Answer: dp[5] = 4  ✓ ([1,1,1,1,1],[1,1,1,2],[1,2,2],[5])</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">change</span>(amount, coins):
     dp = [<span class="nm">0</span>] * (amount + <span class="nm">1</span>)
     dp[<span class="nm">0</span>] = <span class="nm">1</span>
@@ -180,12 +181,12 @@ Answer: dp[5] = 4  ✓ ([1,1,1,1,1],[1,1,1,2],[1,2,2],[5])</div>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Longest Increasing Subsequence (LeetCode #300)</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Longest Increasing Subsequence (LeetCode #300)</div>
 
 <p><em>Find the length of the longest strictly increasing subsequence in an array.</em></p>
 
-<h3>O(n²) DP Approach</h3>
+<h3>O(n�) DP Approach</h3>
 
 <div class="diagram">STATE: dp[i] = length of LIS ending at index i
 
@@ -197,18 +198,18 @@ ANSWER: max(dp[i]) for all i
 
 EXAMPLE: nums = [10, 9, 2, 5, 3, 7, 101, 18]
   dp[0]=1  (10)
-  dp[1]=1  (9)  — no j < 1 with nums[j] < 9
-  dp[2]=1  (2)  — no j < 2 with nums[j] < 2
-  dp[3]=2  (2,5) — j=2: nums[2]=2 < 5, dp[2]+1=2
-  dp[4]=2  (2,3) — j=2: nums[2]=2 < 3, dp[2]+1=2
-  dp[5]=3  (2,5,7 or 2,3,7) — j=3: dp[3]+1=3; j=4: dp[4]+1=3
-  dp[6]=4  (2,5,7,101) — j=5: dp[5]+1=4
-  dp[7]=4  (2,5,7,18) — j=5: dp[5]+1=4
-Answer: max(dp) = 4 ✓</div>
+  dp[1]=1  (9)  � no j < 1 with nums[j] < 9
+  dp[2]=1  (2)  � no j < 2 with nums[j] < 2
+  dp[3]=2  (2,5) � j=2: nums[2]=2 < 5, dp[2]+1=2
+  dp[4]=2  (2,3) � j=2: nums[2]=2 < 3, dp[2]+1=2
+  dp[5]=3  (2,5,7 or 2,3,7) � j=3: dp[3]+1=3; j=4: dp[4]+1=3
+  dp[6]=4  (2,5,7,101) � j=5: dp[5]+1=4
+  dp[7]=4  (2,5,7,18) � j=5: dp[5]+1=4
+Answer: max(dp) = 4 ?</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">LengthOfLIS_N2</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> n = nums.Length;
@@ -234,9 +235,9 @@ Answer: max(dp) = 4 ✓</div>
     <span class="kw">return</span> <span class="mt">max</span>(dp)</pre>
 </div>
 
-<h3>O(n log n) Binary Search Approach — Patience Sorting</h3>
+<h3>O(n log n) Binary Search Approach � Patience Sorting</h3>
 
-<div class="diagram">PATIENCE SORTING — Build "piles" (tails array):
+<div class="diagram">PATIENCE SORTING � Build "piles" (tails array):
 
 tails[i] = smallest tail element of all increasing subsequences of length i+1
 
@@ -247,22 +248,22 @@ Process each number x:
 
 nums = [10, 9, 2, 5, 3, 7, 101, 18]
 
-x=10: tails=[]     → append → tails=[10]
-x=9:  bs([10],9)=0 → replace → tails=[9]
-x=2:  bs([9],2)=0  → replace → tails=[2]
-x=5:  bs([2],5)=1  → append  → tails=[2,5]
-x=3:  bs([2,5],3)=1→ replace → tails=[2,3]
-x=7:  bs([2,3],7)=2→ append  → tails=[2,3,7]
-x=101:bs([2,3,7],101)=3→append→tails=[2,3,7,101]
-x=18: bs([2,3,7,101],18)=3→replace→tails=[2,3,7,18]
+x=10: tails=[]     ? append ? tails=[10]
+x=9:  bs([10],9)=0 ? replace ? tails=[9]
+x=2:  bs([9],2)=0  ? replace ? tails=[2]
+x=5:  bs([2],5)=1  ? append  ? tails=[2,5]
+x=3:  bs([2,5],3)=1? replace ? tails=[2,3]
+x=7:  bs([2,3],7)=2? append  ? tails=[2,3,7]
+x=101:bs([2,3,7],101)=3?append?tails=[2,3,7,101]
+x=18: bs([2,3,7,101],18)=3?replace?tails=[2,3,7,18]
 
-Length = len(tails) = 4 ✓
+Length = len(tails) = 4 ?
 
 Note: tails is NOT the actual LIS! It's just used to track the length.</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">LengthOfLIS</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">var</span> tails = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
@@ -284,7 +285,7 @@ Note: tails is NOT the actual LIS! It's just used to track the length.</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> bisect
 
 <span class="kw">def</span> <span class="mt">lengthOfLIS</span>(nums):
@@ -298,8 +299,8 @@ Note: tails is NOT the actual LIS! It's just used to track the length.</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Word Break (LeetCode #139)</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Word Break (LeetCode #139)</div>
 
 <p><em>Given a string s and a dictionary wordDict, determine if s can be segmented into dictionary words.</em></p>
 
@@ -308,7 +309,7 @@ Note: tails is NOT the actual LIS! It's just used to track the length.</div>
 RECURRENCE:
   dp[i] = any(dp[j] and s[j..i-1] in wordDict) for all j < i
 
-BASE: dp[0] = True  (empty string — zero words)
+BASE: dp[0] = True  (empty string � zero words)
 
 EXAMPLE: s = "leetcode", wordDict = ["leet", "code"]
 
@@ -316,16 +317,16 @@ dp[0] = True
 dp[1]: j=0: dp[0] and s[0..0]="l" in dict? No
 dp[2]: j=0: "le"? No; j=1: dp[1]=F
 ...
-dp[4]: j=0: dp[0] and s[0..3]="leet" in dict? YES → dp[4]=True
+dp[4]: j=0: dp[0] and s[0..3]="leet" in dict? YES ? dp[4]=True
 dp[5]: j=0: "leetc"? No; j=4: dp[4] and s[4..4]="c"? No
 ...
-dp[8]: j=4: dp[4] and s[4..7]="code" in dict? YES → dp[8]=True
+dp[8]: j=4: dp[4] and s[4..7]="code" in dict? YES ? dp[8]=True
 
-Answer: dp[8] = True ✓</div>
+Answer: dp[8] = True ?</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public bool</span> <span class="mt">WordBreak</span>(<span class="tp">string</span> s, <span class="tp">IList</span>&lt;<span class="tp">string</span>&gt; wordDict)
 {
     <span class="kw">var</span> dict = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">string</span>&gt;(wordDict);
@@ -342,7 +343,7 @@ Answer: dp[8] = True ✓</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">wordBreak</span>(s, wordDict):
     words = <span class="mt">set</span>(wordDict)
     n = <span class="mt">len</span>(s)
@@ -357,17 +358,17 @@ Answer: dp[8] = True ✓</div>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Jump Game II (LeetCode #45)</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Jump Game II (LeetCode #45)</div>
 
 <p><em>Find the minimum number of jumps to reach the last index. nums[i] = max jump length from i.</em></p>
 
-<div class="diagram">DP APPROACH — O(n²):
+<div class="diagram">DP APPROACH � O(n�):
   dp[i] = min jumps to reach index i
   dp[0] = 0
   dp[i] = min(dp[j] + 1) for all j < i where j + nums[j] >= i
 
-GREEDY APPROACH — O(n): (much better!)
+GREEDY APPROACH � O(n): (much better!)
   Track: jumps, current_end (farthest we can reach with current jumps), farthest
 
   At each step i:
@@ -377,15 +378,15 @@ GREEDY APPROACH — O(n): (much better!)
       current_end = farthest
 
 EXAMPLE: nums = [2, 3, 1, 1, 4]
-  i=0: farthest=max(0,2)=2; end=0 → reached end: jumps=1, end=2
+  i=0: farthest=max(0,2)=2; end=0 ? reached end: jumps=1, end=2
   i=1: farthest=max(2,4)=4
-  i=2: farthest=max(4,3)=4; end=2 → reached end: jumps=2, end=4
-  Reached last index! Answer: 2 ✓  (0→1→4)</div>
+  i=2: farthest=max(4,3)=4; end=2 ? reached end: jumps=2, end=4
+  Reached last index! Answer: 2 ?  (0?1?4)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// Greedy O(n) — optimal</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// Greedy O(n) � optimal</span>
 <span class="kw">public int</span> <span class="mt">Jump</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> jumps = <span class="nm">0</span>, curEnd = <span class="nm">0</span>, farthest = <span class="nm">0</span>;
@@ -404,7 +405,7 @@ EXAMPLE: nums = [2, 3, 1, 1, 4]
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">jump</span>(nums):
     jumps = cur_end = farthest = <span class="nm">0</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums) - <span class="nm">1</span>):
@@ -417,10 +418,10 @@ EXAMPLE: nums = [2, 3, 1, 1, 4]
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Decode Ways (LeetCode #91)</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Decode Ways (LeetCode #91)</div>
 
-<p><em>'A'→1, 'B'→2, ..., 'Z'→26. Count the number of ways to decode a string of digits.</em></p>
+<p><em>'A'?1, 'B'?2, ..., 'Z'?26. Count the number of ways to decode a string of digits.</em></p>
 
 <div class="diagram">STATE: dp[i] = number of ways to decode s[0..i-1]
 
@@ -434,14 +435,14 @@ EXAMPLE: s = "226"
   dp[0] = 1
   dp[1] = 1  (s[0]='2' != '0')
   dp[2]: one-digit s[1]='2': dp[2] += dp[1] = 1
-          two-digit s[0..1]="22" in [10,26]: dp[2] += dp[0] = 1 → dp[2]=2
+          two-digit s[0..1]="22" in [10,26]: dp[2] += dp[0] = 1 ? dp[2]=2
   dp[3]: one-digit s[2]='6': dp[3] += dp[2] = 2
-          two-digit s[1..2]="26" in [10,26]: dp[3] += dp[1] = 1 → dp[3]=3
-Answer: 3 ✓  (2-2-6, 22-6, 2-26)</div>
+          two-digit s[1..2]="26" in [10,26]: dp[3] += dp[1] = 1 ? dp[3]=3
+Answer: 3 ?  (2-2-6, 22-6, 2-26)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">NumDecodings</span>(<span class="tp">string</span> s)
 {
     <span class="kw">int</span> n = s.Length;
@@ -460,7 +461,7 @@ Answer: 3 ✓  (2-2-6, 22-6, 2-26)</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">numDecodings</span>(s):
     n = <span class="mt">len</span>(s)
     dp = [<span class="nm">0</span>] * (n + <span class="nm">1</span>)
@@ -475,41 +476,41 @@ Answer: 3 ✓  (2-2-6, 22-6, 2-26)</div>
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Q&amp;A Review</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Q&amp;A Review</div>
 
 <div class="quiz-card">
-    <div class="q">Q1: Coin Change vs Coin Change II — what's the key structural difference that forces the loop-order swap?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Coin Change (#322) asks for MINIMUM COINS — order of enumeration doesn't matter for correctness (we're taking the minimum of independent choices). Coin Change II (#518) asks for COMBINATIONS (not permutations) — we must avoid counting [1,2] and [2,1] as different. The trick: iterate coins in the outer loop and amounts in the inner loop. By fixing the coin order (processing coin c before looking at larger amounts), we guarantee that any combination is counted exactly once with coins in non-decreasing order. If you swap loops (amount outer, coin inner), you count permutations — e.g., for amount=3, coins=[1,2], you'd count [1,2] and [2,1] separately.</div>
+    <div class="q">Q1: Coin Change vs Coin Change II � what's the key structural difference that forces the loop-order swap?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Coin Change (#322) asks for MINIMUM COINS � order of enumeration doesn't matter for correctness (we're taking the minimum of independent choices). Coin Change II (#518) asks for COMBINATIONS (not permutations) � we must avoid counting [1,2] and [2,1] as different. The trick: iterate coins in the outer loop and amounts in the inner loop. By fixing the coin order (processing coin c before looking at larger amounts), we guarantee that any combination is counted exactly once with coins in non-decreasing order. If you swap loops (amount outer, coin inner), you count permutations � e.g., for amount=3, coins=[1,2], you'd count [1,2] and [2,1] separately.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: Why does the O(n log n) LIS algorithm (patience sorting / tails array) work? Is tails the actual LIS?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The tails array maintains the invariant: tails[i] = the smallest tail element among all increasing subsequences of length i+1 seen so far. The length of tails equals the LIS length. Why it works: we want to keep tails as small as possible at each position, to allow more numbers to extend later. When we encounter x and replace tails[j] with x (where tails[j] was the first element ≥ x), we maintain this invariant. No: tails is NOT the actual LIS — its contents may be inconsistent (e.g., tails=[2,3,7,18] for the example, but the actual LIS might be [2,5,7,101] or [2,3,7,18]). To reconstruct the actual LIS, you need to maintain a parent array alongside.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The tails array maintains the invariant: tails[i] = the smallest tail element among all increasing subsequences of length i+1 seen so far. The length of tails equals the LIS length. Why it works: we want to keep tails as small as possible at each position, to allow more numbers to extend later. When we encounter x and replace tails[j] with x (where tails[j] was the first element = x), we maintain this invariant. No: tails is NOT the actual LIS � its contents may be inconsistent (e.g., tails=[2,3,7,18] for the example, but the actual LIS might be [2,5,7,101] or [2,3,7,18]). To reconstruct the actual LIS, you need to maintain a parent array alongside.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q3: In Word Break, what's the time complexity of the naive O(n²) substring approach, and how can it be improved?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The naive approach: for each i (n iterations), for each j &lt; i (n iterations), check if s[j..i] is in the dictionary (O(word_len) for hashing, or O(word_len²) for comparison). Total: O(n² * L) where L = max word length. Improvement 1: Limit j to i - maxWordLen (skip substrings longer than any dict word). This gives O(n * maxWordLen). Improvement 2: Use a Trie built from wordDict — traverse backwards from position i, checking Trie for matches in O(maxWordLen) per position. Overall O(n * maxWordLen) with Trie. The O(n²) formulation is typically accepted in interviews for n ≤ 300.</div>
+    <div class="q">Q3: In Word Break, what's the time complexity of the naive O(n�) substring approach, and how can it be improved?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The naive approach: for each i (n iterations), for each j &lt; i (n iterations), check if s[j..i] is in the dictionary (O(word_len) for hashing, or O(word_len�) for comparison). Total: O(n� * L) where L = max word length. Improvement 1: Limit j to i - maxWordLen (skip substrings longer than any dict word). This gives O(n * maxWordLen). Improvement 2: Use a Trie built from wordDict � traverse backwards from position i, checking Trie for matches in O(maxWordLen) per position. Overall O(n * maxWordLen) with Trie. The O(n�) formulation is typically accepted in interviews for n = 300.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q4: Jump Game II — why does the greedy approach work? Why doesn't it miss the optimal solution?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The greedy invariant: at each jump, we always extend to the farthest reachable position. Proof by exchange argument: suppose the greedy makes jumps at positions p1, p2, p3, ... and an optimal solution uses jumps at q1, q2, q3, .... The greedy's first jump covers at least as far as any optimal first jump (it takes the maximum). So after one jump, the greedy is at least as far as optimal. By induction, after k jumps, greedy is at least as far as optimal. Therefore greedy uses at most as many jumps as optimal — it's optimal. The key insight: there's never a reason to jump to a shorter position — it can only hurt you by giving you a worse starting point for the next jump.</div>
+    <div class="q">Q4: Jump Game II � why does the greedy approach work? Why doesn't it miss the optimal solution?</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The greedy invariant: at each jump, we always extend to the farthest reachable position. Proof by exchange argument: suppose the greedy makes jumps at positions p1, p2, p3, ... and an optimal solution uses jumps at q1, q2, q3, .... The greedy's first jump covers at least as far as any optimal first jump (it takes the maximum). So after one jump, the greedy is at least as far as optimal. By induction, after k jumps, greedy is at least as far as optimal. Therefore greedy uses at most as many jumps as optimal � it's optimal. The key insight: there's never a reason to jump to a shorter position � it can only hurt you by giving you a worse starting point for the next jump.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: In Decode Ways, how do you handle leading zeros and the edge case of "30"?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
     <div class="answer">Leading zeros are invalid: '0' by itself can't be decoded (there's no letter 'A' = 0). One-digit rule: if s[i-1] == '0', don't add dp[i-1] to dp[i] (cannot decode '0' alone). Two-digit rule: only add dp[i-2] if the two-digit number is in [10, 26]. For "30": two = 30, which is NOT in [10, 26], so we can't use two-digit decode. One-digit: s[1] = '0', so we can't decode '0' alone. Result: dp[2] = 0 (impossible). For "06": dp[1] = 0 (s[0]='0'), dp[2] = 0 + 0 = 0 (06=6 is NOT in [10,26], and single '6' can't extend dp[1]=0). Answer: 0. Always initialize dp[0] = 1 (empty string) and carefully handle '0' characters.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 12B Complete</button>
-<div class="toast" id="toast">✅ Module 12B marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 12B Complete</button>
+<div class="toast" id="toast">? Module 12B marked complete!</div>
     <script>var MODULE_ID = 'm12b';</script>
     <script src="../dsa.js"></script>
 </body>

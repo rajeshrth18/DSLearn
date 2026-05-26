@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 5C — Linear Sorting Algorithms | DSA Masterbook</title>
+<title>Module 5C � Linear Sorting Algorithms | DSA Masterbook</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
@@ -58,25 +58,25 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </head>
 <body>
 
-<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 5 › Part C</div>
+<div class="breadcrumb"><a href="../index.html">?? Home</a> � Phase 3 � Module 5 � Part C</div>
 
 <div class="cover">
-  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
-  <h1>Module 5 — Part C</h1>
-  <div class="tagline">Linear Sorting — Counting Sort, Radix Sort &amp; Bucket Sort</div>
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms � Complete Course</div>
+  <h1>Module 5 � Part C</h1>
+  <div class="tagline">Linear Sorting � Counting Sort, Radix Sort &amp; Bucket Sort</div>
   <div class="badges">
-    <span>⏱ Estimated: 2 Hours</span><span>🎯 Intermediate</span><span>💻 C# &amp; Python</span><span>📐 Phase 3 · Module 5C</span>
+    <span>? Estimated: 2 Hours</span><span>?? Intermediate</span><span>?? C# &amp; Python</span><span>?? Phase 3 � Module 5C</span>
   </div>
 </div>
 
 <div class="nav-box">
-  <strong>📂 Module 5 — Sorting Algorithms:</strong><br>
-  ✅ <strong>Part A</strong> — <a href="m05a_basic_sorts.html">O(n²) Sorts</a><br>
-  ✅ <strong>Part B</strong> — <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
-  ▶ <strong>Part C</strong> — <em>You are here</em> — Linear Sorts<br>
-  ⬜ <strong>Part D</strong> — <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
-  ⬜ <strong>Part E</strong> — <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
-  🏠 <a href="../index.html">Back to Course Index</a>
+  <strong>?? Module 5 � Sorting Algorithms:</strong><br>
+  ? <strong>Part A</strong> � <a href="m05a_basic_sorts.html">O(n�) Sorts</a><br>
+  ? <strong>Part B</strong> � <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
+  ? <strong>Part C</strong> � <em>You are here</em> � Linear Sorts<br>
+  ? <strong>Part D</strong> � <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
+  ? <strong>Part E</strong> � <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
+  ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
@@ -90,64 +90,64 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="toc">
-  <h2>📚 Contents — Module 5C</h2>
+  <h2>?? Contents � Module 5C</h2>
   <ol>
-    <li>Breaking the O(n log n) Barrier <span>— The lower bound argument</span></li>
-    <li>Counting Sort <span>— Count occurrences, cumulate, reconstruct</span></li>
-    <li>Radix Sort <span>— Sort digit by digit</span></li>
-    <li>Bucket Sort <span>— Distribute into buckets, sort each</span></li>
+    <li>Breaking the O(n log n) Barrier <span>� The lower bound argument</span></li>
+    <li>Counting Sort <span>� Count occurrences, cumulate, reconstruct</span></li>
+    <li>Radix Sort <span>� Sort digit by digit</span></li>
+    <li>Bucket Sort <span>� Distribute into buckets, sort each</span></li>
     <li>Complexity Summary &amp; When to Use Each</li>
     <li>Practice Questions</li>
   </ol>
 </div>
 
-<h2 class="sec">Section 1 — Breaking the O(n log n) Barrier</h2>
+<h2 class="sec">Section 1 � Breaking the O(n log n) Barrier</h2>
 
 <h3>1.1 Why Comparison-Based Sorts Have a Lower Bound</h3>
-<p>Merge sort, quick sort — all comparison-based sorts — have a proven lower bound of <strong>Ω(n log n)</strong>. The proof: any comparison-based sort can be modeled as a decision tree. The tree must have n! leaves (all permutations). A binary tree with n! leaves needs at least log₂(n!) ≈ n log n height. So we need at least n log n comparisons.</p>
+<p>Merge sort, quick sort � all comparison-based sorts � have a proven lower bound of <strong>O(n log n)</strong>. The proof: any comparison-based sort can be modeled as a decision tree. The tree must have n! leaves (all permutations). A binary tree with n! leaves needs at least log2(n!) � n log n height. So we need at least n log n comparisons.</p>
 
-<div class="note"><strong>📝 Can We Do Better?</strong>Yes! But only if we use information beyond comparisons. Linear sorts exploit the structure of the data (e.g., values are integers in a range). They can run in O(n+k) where k is the value range. They do NOT compare elements — they use counting or positional placement.</div>
+<div class="note"><strong>?? Can We Do Better?</strong>Yes! But only if we use information beyond comparisons. Linear sorts exploit the structure of the data (e.g., values are integers in a range). They can run in O(n+k) where k is the value range. They do NOT compare elements � they use counting or positional placement.</div>
 
 <h3>1.2 The Trade-off</h3>
 <p>Linear sorts trade generality for speed. They work on specific data types (integers, strings with bounded alphabet), require extra memory, and need a known value range. Use them when these conditions are met and performance matters.</p>
 
-<h2 class="sec">Section 2 — Counting Sort</h2>
+<h2 class="sec">Section 2 � Counting Sort</h2>
 
-<h3>2.1 The Analogy — Counting Votes</h3>
-<p>Imagine you're counting votes for 5 candidates (0–4). Instead of sorting the ballot papers, you just count how many votes each candidate got. Then you reconstruct the sorted order: candidate 0 gets their count of papers, then candidate 1, etc. That's counting sort.</p>
+<h3>2.1 The Analogy � Counting Votes</h3>
+<p>Imagine you're counting votes for 5 candidates (0�4). Instead of sorting the ballot papers, you just count how many votes each candidate got. Then you reconstruct the sorted order: candidate 0 gets their count of papers, then candidate 1, etc. That's counting sort.</p>
 
-<h3>2.2 How It Works — Three Phases</h3>
+<h3>2.2 How It Works � Three Phases</h3>
 <div class="diagram">
   Input: [4, 2, 2, 8, 3, 3, 1]   Range: 0-8 (k=9)
 
-  PHASE 1 — Count occurrences:
+  PHASE 1 � Count occurrences:
   count[] = [0, 1, 2, 2, 1, 0, 0, 0, 1]
-             ↑     ↑  ↑  ↑           ↑
+             ?     ?  ?  ?           ?
          idx=0  idx=2 3  4           8
 
-  PHASE 2 — Cumulative sum (position of each element in output):
+  PHASE 2 � Cumulative sum (position of each element in output):
   count[] = [0, 1, 3, 5, 6, 6, 6, 6, 7]
             (each count[i] = where value i ENDS in output)
 
-  PHASE 3 — Build output (scan input right to left for stability):
+  PHASE 3 � Build output (scan input right to left for stability):
   Scan [4,2,2,8,3,3,1] backwards:
-  1 → output[count[1]-1=0] = 1, count[1]--
-  3 → output[count[3]-1=4] = 3, count[3]--
-  3 → output[count[3]-1=3] = 3, count[3]--
-  8 → output[count[8]-1=6] = 8, count[8]--
-  2 → output[count[2]-1=2] = 2, count[2]--
-  2 → output[count[2]-1=1] = 2, count[2]--
-  4 → output[count[4]-1=5] = 4, count[4]--
+  1 ? output[count[1]-1=0] = 1, count[1]--
+  3 ? output[count[3]-1=4] = 3, count[3]--
+  3 ? output[count[3]-1=3] = 3, count[3]--
+  8 ? output[count[8]-1=6] = 8, count[8]--
+  2 ? output[count[2]-1=2] = 2, count[2]--
+  2 ? output[count[2]-1=1] = 2, count[2]--
+  4 ? output[count[4]-1=5] = 4, count[4]--
   
-  Output: [1, 2, 2, 3, 3, 4, 8]  ✓ sorted!</div>
+  Output: [1, 2, 2, 3, 3, 4, 8]  ? sorted!</div>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// ─── Counting Sort — Complete Implementation ──────────────────────────────────
+<span class="cm">// --- Counting Sort � Complete Implementation ----------------------------------
 // Time:  O(n + k) where k = range of values (max - min + 1)
-// Space: O(n + k) — count array + output array
+// Space: O(n + k) � count array + output array
 // Stable: Yes (scanning right to left in phase 3)
 // Constraint: integer values only, k must be reasonably small</span>
 
@@ -203,7 +203,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">counting_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
@@ -242,38 +242,38 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
     <span class="mt">print</span>(<span class="st">""</span>.<span class="mt">join</span>(<span class="mt">chr</span>(c) <span class="kw">for</span> c <span class="kw">in</span> counting_sort(chars)))  <span class="cm"># aaabnn</span></pre>
 </div>
 
-<div class="warning"><strong>⚠️ When NOT to Use Counting Sort</strong>If k (the value range) is much larger than n (the input size), counting sort wastes huge amounts of memory. Example: n=10 items but values range from 0 to 1,000,000 → creates 1M count array entries. Rule of thumb: only use when k is O(n).</div>
+<div class="warning"><strong>?? When NOT to Use Counting Sort</strong>If k (the value range) is much larger than n (the input size), counting sort wastes huge amounts of memory. Example: n=10 items but values range from 0 to 1,000,000 ? creates 1M count array entries. Rule of thumb: only use when k is O(n).</div>
 
-<h2 class="sec">Section 3 — Radix Sort</h2>
+<h2 class="sec">Section 3 � Radix Sort</h2>
 
-<h3>3.1 The Analogy — Sorting Punched Cards</h3>
-<p>Old IBM computers sorted punched cards by running them through a machine that sorted by one column at a time, starting from the rightmost column. After sorting all columns, the cards were in order. That's radix sort — sort by least significant digit first, then next, and so on.</p>
+<h3>3.1 The Analogy � Sorting Punched Cards</h3>
+<p>Old IBM computers sorted punched cards by running them through a machine that sorted by one column at a time, starting from the rightmost column. After sorting all columns, the cards were in order. That's radix sort � sort by least significant digit first, then next, and so on.</p>
 
 <h3>3.2 How It Works</h3>
-<p>Sort the numbers digit by digit from least significant to most significant, using a stable sort (counting sort) at each digit position. "Stable" is crucial — it preserves the order established by previous digits.</p>
+<p>Sort the numbers digit by digit from least significant to most significant, using a stable sort (counting sort) at each digit position. "Stable" is crucial � it preserves the order established by previous digits.</p>
 
 <div class="diagram">
   Input: [170, 45, 75, 90, 802, 24, 2, 66]
 
   Pass 1: Sort by ones digit (LSD):
-  Groups: 0→[170,90], 2→[802,2], 4→[24], 5→[45,75], 6→[66]
+  Groups: 0?[170,90], 2?[802,2], 4?[24], 5?[45,75], 6?[66]
   Result: [170, 90, 802, 2, 24, 45, 75, 66]
 
   Pass 2: Sort by tens digit:
-  Groups: 0→[802,2], 2→[24], 4→[45], 6→[66], 7→[170,75], 9→[90]
+  Groups: 0?[802,2], 2?[24], 4?[45], 6?[66], 7?[170,75], 9?[90]
   Result: [802, 2, 24, 45, 66, 170, 75, 90]
 
   Pass 3: Sort by hundreds digit:
-  Groups: 0→[2,24,45,66,75,90], 1→[170], 8→[802]
-  Result: [2, 24, 45, 66, 75, 90, 170, 802]  ✓ Sorted!</div>
+  Groups: 0?[2,24,45,66,75,90], 1?[170], 8?[802]
+  Result: [2, 24, 45, 66, 75, 90, 170, 802]  ? Sorted!</div>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// ─── Radix Sort — Complete Implementation ─────────────────────────────────────
+<span class="cm">// --- Radix Sort � Complete Implementation -------------------------------------
 // Time:  O(d * (n + b)) where d=digit count, b=base (usually 10)
-//        ≈ O(n) when d is constant (most integers have ≤10 digits)
+//        � O(n) when d is constant (most integers have =10 digits)
 // Space: O(n + b)
 // Stable: Yes (uses stable counting sort on each digit)</span>
 
@@ -303,7 +303,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
         <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) arr[i] = output[i];
     }
 
-    <span class="cm">/// Main radix sort — processes each digit from LSD to MSD</span>
+    <span class="cm">/// Main radix sort � processes each digit from LSD to MSD</span>
     <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr)
     {
         <span class="kw">int</span> max = arr[<span class="nm">0</span>];
@@ -332,7 +332,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">counting_sort_by_digit</span>(arr: List[<span class="tp">int</span>], exp: <span class="tp">int</span>) -&gt; <span class="kw">None</span>:
@@ -354,7 +354,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 
 <span class="kw">def</span> <span class="mt">radix_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
     <span class="st">"""LSD radix sort for non-negative integers.
-    Time: O(d*(n+10)) ≈ O(n) | Space: O(n)
+    Time: O(d*(n+10)) � O(n) | Space: O(n)
     """</span>
     <span class="kw">if not</span> arr: <span class="kw">return</span> arr
     max_val = <span class="mt">max</span>(arr)
@@ -370,10 +370,10 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
     <span class="mt">print</span>(radix_sort(arr))  <span class="cm"># [2, 24, 45, 66, 75, 90, 170, 802]</span></pre>
 </div>
 
-<h2 class="sec">Section 4 — Bucket Sort</h2>
+<h2 class="sec">Section 4 � Bucket Sort</h2>
 
-<h3>4.1 The Analogy — Sorting Names into Letter Bins</h3>
-<p>Imagine sorting 100 names alphabetically. You place each name into a bin based on its first letter (A bin, B bin, ... Z bin). Then sort each small bin individually. This is bucket sort — distribute items into buckets, sort each bucket, concatenate.</p>
+<h3>4.1 The Analogy � Sorting Names into Letter Bins</h3>
+<p>Imagine sorting 100 names alphabetically. You place each name into a bin based on its first letter (A bin, B bin, ... Z bin). Then sort each small bin individually. This is bucket sort � distribute items into buckets, sort each bucket, concatenate.</p>
 
 <h3>4.2 How It Works</h3>
 <p>Bucket sort works best when the input is <strong>uniformly distributed</strong> over a range. Create n buckets covering the range, scatter elements into buckets based on value, sort each bucket, then concatenate.</p>
@@ -390,19 +390,19 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
   Bucket 6 [0.75, 0.875): [0.78, 0.72]
   Bucket 7 [0.875, 1.0): [0.94]
   
-  Sort each bucket (insertion sort — small buckets):
+  Sort each bucket (insertion sort � small buckets):
   Bucket 1: [0.17, 0.21]
   Bucket 6: [0.72, 0.78]
   
-  Concatenate: [0.12, 0.17, 0.21, 0.26, 0.39, 0.72, 0.78, 0.94]  ✓</div>
+  Concatenate: [0.12, 0.17, 0.21, 0.26, 0.39, 0.72, 0.78, 0.94]  ?</div>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
-<span class="cm">// ─── Bucket Sort — Complete Implementation ────────────────────────────────────
-// Time:  O(n + k) average with uniform distribution, O(n²) worst case
+<span class="cm">// --- Bucket Sort � Complete Implementation ------------------------------------
+// Time:  O(n + k) average with uniform distribution, O(n�) worst case
 // Space: O(n + k)
 // Best for: floating-point numbers uniformly distributed in [0,1)</span>
 
@@ -468,7 +468,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">bucket_sort</span>(arr: List[<span class="tp">float</span>]) -&gt; List[<span class="tp">float</span>]:
@@ -504,16 +504,16 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
     <span class="cm"># [0.12, 0.17, 0.21, 0.26, 0.39, 0.72, 0.78, 0.94]</span></pre>
 </div>
 
-<h2 class="sec">Section 5 — Complexity Summary &amp; When to Use</h2>
+<h2 class="sec">Section 5 � Complexity Summary &amp; When to Use</h2>
 
 <table class="cmplx">
   <thead><tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Stable</th><th>Data type requirement</th></tr></thead>
   <tbody>
-    <tr><td>Counting Sort</td><td class="qg">O(n + k)</td><td class="qo">O(n + k)</td><td>✅ Yes</td><td>Integers, small range k</td></tr>
-    <tr><td>Radix Sort</td><td class="qg">O(d·(n+b))</td><td class="qo">O(n + b)</td><td>✅ Yes</td><td>Integers/strings, fixed digit count d</td></tr>
-    <tr><td>Bucket Sort</td><td class="qg">O(n) avg</td><td class="qo">O(n+k)</td><td>✅ Yes (if stable inner sort)</td><td>Uniformly distributed floats/integers</td></tr>
-    <tr><td>Merge Sort</td><td class="qo">O(n log n)</td><td class="qr">O(n)</td><td>✅ Yes</td><td>Any comparable type</td></tr>
-    <tr><td>Quick Sort</td><td class="qo">O(n log n) avg</td><td class="qg">O(log n)</td><td>❌ No</td><td>Any comparable type</td></tr>
+    <tr><td>Counting Sort</td><td class="qg">O(n + k)</td><td class="qo">O(n + k)</td><td>? Yes</td><td>Integers, small range k</td></tr>
+    <tr><td>Radix Sort</td><td class="qg">O(d�(n+b))</td><td class="qo">O(n + b)</td><td>? Yes</td><td>Integers/strings, fixed digit count d</td></tr>
+    <tr><td>Bucket Sort</td><td class="qg">O(n) avg</td><td class="qo">O(n+k)</td><td>? Yes (if stable inner sort)</td><td>Uniformly distributed floats/integers</td></tr>
+    <tr><td>Merge Sort</td><td class="qo">O(n log n)</td><td class="qr">O(n)</td><td>? Yes</td><td>Any comparable type</td></tr>
+    <tr><td>Quick Sort</td><td class="qo">O(n log n) avg</td><td class="qg">O(log n)</td><td>? No</td><td>Any comparable type</td></tr>
   </tbody>
 </table>
 
@@ -521,7 +521,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 <table class="cmplx">
   <thead><tr><th>Your data looks like...</th><th>Use this sort</th></tr></thead>
   <tbody>
-    <tr><td>Integers in small range [0..k] where k ≈ n</td><td><strong>Counting Sort</strong></td></tr>
+    <tr><td>Integers in small range [0..k] where k � n</td><td><strong>Counting Sort</strong></td></tr>
     <tr><td>Large integers (phone numbers, zip codes, IDs)</td><td><strong>Radix Sort</strong></td></tr>
     <tr><td>Floats uniformly in [0,1) or any range</td><td><strong>Bucket Sort</strong></td></tr>
     <tr><td>Arbitrary objects, need stable sort</td><td><strong>Merge Sort</strong></td></tr>
@@ -531,44 +531,44 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </table>
 
 <div class="realworld">
-<strong>🌍 Real-World Applications</strong>
+<strong>?? Real-World Applications</strong>
 Counting sort: Sorting exam scores (0-100), histogram computation in image processing. Radix sort: IP address sorting in network routers, sorting phone numbers in databases, suffix array construction. Bucket sort: External sorting when data is known to be uniformly distributed, sorting floating-point sensor readings.
 </div>
 
-<h2 class="sec">Section 6 — Practice Questions</h2>
+<h2 class="sec">Section 6 � Practice Questions</h2>
 
 <div class="quiz">
-  <div class="quiz-q">❓ Q1: Can counting sort handle negative numbers? If so, how?</div>
-  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-q">? Q1: Can counting sort handle negative numbers? If so, how?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
   <div class="quiz-a">
-    <div class="ans-label">✅ Yes — use an offset of min value</div>
-    <p>Shift all values by subtracting the minimum. If values range from -5 to 10, subtract -5 (add 5) to shift range to [0..15]. After sorting, the positions are correct — you never need to shift back since we're reconstructing the original values.</p>
+    <div class="ans-label">? Yes � use an offset of min value</div>
+    <p>Shift all values by subtracting the minimum. If values range from -5 to 10, subtract -5 (add 5) to shift range to [0..15]. After sorting, the positions are correct � you never need to shift back since we're reconstructing the original values.</p>
   </div>
 </div>
 
 <div class="quiz">
-  <div class="quiz-q">❓ Q2: Why must the inner sort in radix sort be STABLE?</div>
-  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-q">? Q2: Why must the inner sort in radix sort be STABLE?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
   <div class="quiz-a">
-    <div class="ans-label">✅ Stability preserves previous digit orderings</div>
-    <p>Example: After sorting by ones digit, we have [20, 50, 30] (all end in 0, in their original relative order). When we sort by tens digit, 20, 50, and 30 all have different tens digits, so they sort correctly. But if two numbers have the SAME tens digit (e.g., 23 and 43 → both have 3 in ones digit), a stable sort ensures the one sorted correctly by the ones digit comes first. Using an unstable sort would scramble the work done by previous passes.</p>
+    <div class="ans-label">? Stability preserves previous digit orderings</div>
+    <p>Example: After sorting by ones digit, we have [20, 50, 30] (all end in 0, in their original relative order). When we sort by tens digit, 20, 50, and 30 all have different tens digits, so they sort correctly. But if two numbers have the SAME tens digit (e.g., 23 and 43 ? both have 3 in ones digit), a stable sort ensures the one sorted correctly by the ones digit comes first. Using an unstable sort would scramble the work done by previous passes.</p>
   </div>
 </div>
 
 <div class="quiz">
-  <div class="quiz-q">❓ Q3: What happens to bucket sort's performance when all elements fall into the same bucket?</div>
-  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-q">? Q3: What happens to bucket sort's performance when all elements fall into the same bucket?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
   <div class="quiz-a">
-    <div class="ans-label">✅ Degrades to O(n²) — the worst case</div>
-    <p>If all elements are equal or cluster tightly, they all go into one bucket. The inner sort (often insertion sort) then runs on all n elements → O(n²). This is why bucket sort works best only with uniformly distributed data. For skewed distributions, use a different algorithm.</p>
+    <div class="ans-label">? Degrades to O(n�) � the worst case</div>
+    <p>If all elements are equal or cluster tightly, they all go into one bucket. The inner sort (often insertion sort) then runs on all n elements ? O(n�). This is why bucket sort works best only with uniformly distributed data. For skewed distributions, use a different algorithm.</p>
   </div>
 </div>
 
 <div class="complete-section">
   <p style="color:#888;font-size:.9em;margin-bottom:16px">Excellent! You now know algorithms that beat the O(n log n) comparison barrier. Understanding when to apply the right sort is a key senior engineer skill.</p>
-  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
   <div style="margin-top:16px">
-    <a href="m05d_dotnet_sorting.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part D — .NET &amp; Python Sorting APIs →</a>
+    <a href="m05d_dotnet_sorting.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part D � .NET &amp; Python Sorting APIs ?</a>
   </div>
 </div>
 
@@ -577,13 +577,13 @@ Counting sort: Sorting exam scores (0-100), histogram computation in image proce
 <script>
 const MODULE_ID = 'm05c';
 (function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
-function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='✅ Completed!';b.disabled=true;showToast('✅ Module 5C marked as complete!');}
-(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='✅ Completed!';b.disabled=true;}}})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='? Completed!';b.disabled=true;showToast('? Module 5C marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='? Completed!';b.disabled=true;}}})();
 function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
 function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
 applyLang();
-function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='⚠️ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
-function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Answer':'💡 Show Answer';}
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='? Copied!';setTimeout(()=>btn.textContent='?? Copy',2000);}).catch(()=>{btn.textContent='?? Failed';setTimeout(()=>btn.textContent='?? Copy',2000);});}
+function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'?? Hide Answer':'?? Show Answer';}
 let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 </body>

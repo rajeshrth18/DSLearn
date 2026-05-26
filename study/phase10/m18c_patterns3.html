@@ -1,32 +1,33 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 18C — Modified Binary Search &amp; Subsets | DSA Masterbook</title>
+    <title>Module 18C � Modified Binary Search &amp; Subsets | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
-    <h1>Module 18 — Part C</h1>
-    <div class="tagline">Modified Binary Search &amp; Subsets — Beyond Standard Search</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Rotated Arrays · Search on Answer · Matrix Search · Subsets · Permutations</p>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 10</div>
+    <h1>Module 18 � Part C</h1>
+    <div class="tagline">Modified Binary Search &amp; Subsets � Beyond Standard Search</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Rotated Arrays � Search on Answer � Matrix Search � Subsets � Permutations</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 1.5 Hours</span>
-        <span>🎯 Intermediate–Advanced</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 Part C of Module 18</span>
+        <span>? Estimated Time: 1.5 Hours</span>
+        <span>?? Intermediate�Advanced</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? Part C of Module 18</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Phase 10 — Module 18 — Problem-Solving Patterns:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m18a_patterns1.html">Two Pointers &amp; Sliding Window</a><br>
-    ✅ <strong>Part B</strong> — <a href="m18b_patterns2.html">Intervals &amp; Top K Elements</a><br>
-    ▶ <strong>Part C</strong> — <em>You are here</em> — Modified Binary Search &amp; Subsets<br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Phase 10 � Module 18 � Problem-Solving Patterns:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m18a_patterns1.html">Two Pointers &amp; Sliding Window</a><br>
+    ? <strong>Part B</strong> � <a href="m18b_patterns2.html">Intervals &amp; Top K Elements</a><br>
+    ? <strong>Part C</strong> � <em>You are here</em> � Modified Binary Search &amp; Subsets<br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m17a_backtracking.html">&larr; Module 17 &mdash; Backtracking+</a>
@@ -34,19 +35,19 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents</h2>
+    <h2>?? Contents</h2>
     <ol>
-        <li>Section 1 — Rotated Sorted Array <span>— Find pivot, binary search in two halves</span></li>
-        <li>Section 2 — Binary Search on Answer <span>— "Feasible" predicate, minimize/maximize</span></li>
-        <li>Section 3 — Matrix Binary Search <span>— Search in sorted matrix</span></li>
-        <li>Section 4 — Generating All Subsets <span>— Iterative bit mask, backtracking</span></li>
-        <li>Section 5 — Permutations &amp; Combinations <span>— Backtracking with used[] / index</span></li>
-        <li>Section 6 — LeetCode Map &amp; Q&amp;A</li>
+        <li>Section 1 � Rotated Sorted Array <span>� Find pivot, binary search in two halves</span></li>
+        <li>Section 2 � Binary Search on Answer <span>� "Feasible" predicate, minimize/maximize</span></li>
+        <li>Section 3 � Matrix Binary Search <span>� Search in sorted matrix</span></li>
+        <li>Section 4 � Generating All Subsets <span>� Iterative bit mask, backtracking</span></li>
+        <li>Section 5 � Permutations &amp; Combinations <span>� Backtracking with used[] / index</span></li>
+        <li>Section 6 � LeetCode Map &amp; Q&amp;A</li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — Rotated Sorted Array</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � Rotated Sorted Array</div>
 
 <div class="diagram">ROTATED SORTED ARRAY:
   Original: [1,2,3,4,5,6,7]
@@ -56,25 +57,25 @@
   Check which half is sorted: compare arr[lo] to arr[mid].
   
   FIND MINIMUM (#153):
-    The minimum is at the "inflection point" — where the array drops.
-    Binary search: if arr[mid] > arr[hi] → min is in right half.
-    Else → min is in left half (including mid).
+    The minimum is at the "inflection point" � where the array drops.
+    Binary search: if arr[mid] > arr[hi] ? min is in right half.
+    Else ? min is in left half (including mid).
   
   SEARCH TARGET (#33):
     Determine which half is sorted.
-    If target is in the sorted half → search there.
-    Else → search the other (rotated) half.
+    If target is in the sorted half ? search there.
+    Else ? search the other (rotated) half.
   
   INVARIANT: Keep the half that COULD contain the target.
 
-  EDGE CASE (#81 — with duplicates):
-    If arr[lo] == arr[mid] == arr[hi] → can't determine which half is sorted.
+  EDGE CASE (#81 � with duplicates):
+    If arr[lo] == arr[mid] == arr[hi] ? can't determine which half is sorted.
     Shrink both ends: lo++, hi--.  Worst case O(n).</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #153 Find Minimum in Rotated Sorted Array — O(log n)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #153 Find Minimum in Rotated Sorted Array � O(log n)</span>
 <span class="kw">public int</span> <span class="mt">FindMin</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
@@ -86,7 +87,7 @@
     <span class="kw">return</span> nums[lo];
 }
 
-<span class="cm">// #33 Search in Rotated Sorted Array — O(log n)</span>
+<span class="cm">// #33 Search in Rotated Sorted Array � O(log n)</span>
 <span class="kw">public int</span> <span class="mt">Search</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
 {
     <span class="kw">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
@@ -107,7 +108,7 @@
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findMin</span>(nums):
     lo, hi = <span class="nm">0</span>, <span class="mt">len</span>(nums)-<span class="nm">1</span>
     <span class="kw">while</span> lo &lt; hi:
@@ -132,25 +133,25 @@
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Binary Search on Answer</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Binary Search on Answer</div>
 
-<div class="diagram">BINARY SEARCH ON ANSWER — Most powerful binary search variant:
+<div class="diagram">BINARY SEARCH ON ANSWER � Most powerful binary search variant:
   
   Instead of searching for a VALUE in an array, search for the ANSWER
   in the answer space.
   
   TEMPLATE:
-    Define: feasible(x) → True if answer x is achievable
+    Define: feasible(x) ? True if answer x is achievable
     The feasible function is MONOTONE: once True, always True (or vice versa).
     Binary search on the answer space [lo, hi].
     
     lo, hi = answer_space_bounds
     while lo < hi:
         mid = (lo + hi) // 2
-        if feasible(mid): hi = mid          ← find minimum feasible
+        if feasible(mid): hi = mid          ? find minimum feasible
         else:             lo = mid + 1
-    return lo                               ← minimum x where feasible(x) is True
+    return lo                               ? minimum x where feasible(x) is True
   
   EXAMPLES:
     - Koko Eating Bananas (#875): find minimum speed k such that Koko can eat all piles in H hours.
@@ -161,21 +162,21 @@
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #875 Koko Eating Bananas — Binary search on speed</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #875 Koko Eating Bananas � Binary search on speed</span>
 <span class="kw">public int</span> <span class="mt">MinEatingSpeed</span>(<span class="kw">int</span>[] piles, <span class="kw">int</span> h)
 {
     <span class="kw">int</span> lo = <span class="nm">1</span>, hi = piles.<span class="mt">Max</span>();
     <span class="kw">while</span> (lo &lt; hi) {
         <span class="kw">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
         <span class="kw">long</span> hours = piles.<span class="mt">Sum</span>(p =&gt; (p + mid - <span class="nm">1</span>) / mid);  <span class="cm">// ceil(p/mid)</span>
-        <span class="kw">if</span> (hours &lt;= h) hi = mid;   <span class="cm">// feasible → try smaller</span>
-        <span class="kw">else</span> lo = mid + <span class="nm">1</span>;          <span class="cm">// too slow → need faster</span>
+        <span class="kw">if</span> (hours &lt;= h) hi = mid;   <span class="cm">// feasible ? try smaller</span>
+        <span class="kw">else</span> lo = mid + <span class="nm">1</span>;          <span class="cm">// too slow ? need faster</span>
     }
     <span class="kw">return</span> lo;
 }
 
-<span class="cm">// #1011 Capacity to Ship Packages — Binary search on capacity</span>
+<span class="cm">// #1011 Capacity to Ship Packages � Binary search on capacity</span>
 <span class="kw">public int</span> <span class="mt">ShipWithinDays</span>(<span class="kw">int</span>[] weights, <span class="kw">int</span> days)
 {
     <span class="kw">int</span> lo = weights.<span class="mt">Max</span>(), hi = weights.<span class="mt">Sum</span>();
@@ -193,7 +194,7 @@
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">import</span> math
 
 <span class="kw">def</span> <span class="mt">minEatingSpeed</span>(piles, h):
@@ -207,35 +208,35 @@
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Matrix Binary Search</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Matrix Binary Search</div>
 
 <div class="diagram">TWO TYPES OF SORTED MATRIX:
 
-TYPE 1 — Fully sorted (#74):
+TYPE 1 � Fully sorted (#74):
   Each row left-to-right, last of row < first of next row.
-  Treat as 1D array: index i → row=i//cols, col=i%cols
+  Treat as 1D array: index i ? row=i//cols, col=i%cols
   Standard binary search on virtual index 0..m*n-1.
 
-TYPE 2 — Row & column sorted (#240):
+TYPE 2 � Row & column sorted (#240):
   Each row sorted, each column sorted.
   BUT last of row NOT necessarily < first of next row.
-  Cannot flatten to 1D — different approach needed.
+  Cannot flatten to 1D � different approach needed.
   
-  STAIRCASE SEARCH for Type 2 — O(m+n):
+  STAIRCASE SEARCH for Type 2 � O(m+n):
     Start at TOP-RIGHT corner: row=0, col=n-1
-    if arr[r][c] == target → found
-    if arr[r][c] > target → col-- (eliminate current column)
-    if arr[r][c] < target → row++ (eliminate current row)
+    if arr[r][c] == target ? found
+    if arr[r][c] > target ? col-- (eliminate current column)
+    if arr[r][c] < target ? row++ (eliminate current row)
     
     WHY? Top-right has a "searchable" property:
     everything to its left is smaller, everything below is larger.
-    Each step eliminates an entire row or column → O(m+n).</div>
+    Each step eliminates an entire row or column ? O(m+n).</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #74 Search a 2D Matrix (fully sorted) — O(log(m*n))</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #74 Search a 2D Matrix (fully sorted) � O(log(m*n))</span>
 <span class="kw">public bool</span> <span class="mt">SearchMatrix</span>(<span class="kw">int</span>[][] matrix, <span class="kw">int</span> target)
 {
     <span class="kw">int</span> m = matrix.Length, n = matrix[<span class="nm">0</span>].Length, lo = <span class="nm">0</span>, hi = m * n - <span class="nm">1</span>;
@@ -248,7 +249,7 @@ TYPE 2 — Row & column sorted (#240):
     <span class="kw">return false</span>;
 }
 
-<span class="cm">// #240 Search a 2D Matrix II (row+col sorted) — O(m+n) staircase</span>
+<span class="cm">// #240 Search a 2D Matrix II (row+col sorted) � O(m+n) staircase</span>
 <span class="kw">public bool</span> <span class="mt">SearchMatrixII</span>(<span class="kw">int</span>[][] matrix, <span class="kw">int</span> target)
 {
     <span class="kw">int</span> r = <span class="nm">0</span>, c = matrix[<span class="nm">0</span>].Length - <span class="nm">1</span>;
@@ -264,7 +265,7 @@ TYPE 2 — Row & column sorted (#240):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">searchMatrix</span>(matrix, target):
     m, n = <span class="mt">len</span>(matrix), <span class="mt">len</span>(matrix[<span class="nm">0</span>])
     lo, hi = <span class="nm">0</span>, m*n-<span class="nm">1</span>
@@ -288,38 +289,38 @@ TYPE 2 — Row & column sorted (#240):
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Generating All Subsets</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Generating All Subsets</div>
 
-<div class="diagram">SUBSETS (#78) — 2^n total subsets for n elements:
+<div class="diagram">SUBSETS (#78) � 2^n total subsets for n elements:
   
-  BITMASK APPROACH — Iterative, clean:
+  BITMASK APPROACH � Iterative, clean:
     For each number i from 0 to 2^n - 1:
-      If bit j of i is set → include nums[j] in this subset.
+      If bit j of i is set ? include nums[j] in this subset.
     O(n * 2^n) time and space.
   
-  BACKTRACKING APPROACH — Recursive:
+  BACKTRACKING APPROACH � Recursive:
     At each index, make two choices: INCLUDE or SKIP.
     Collect result when recursion finishes (or at every node = include partial sets).
   
   VISUAL for nums=[1,2,3]:
-    000 → []
-    001 → [1]
-    010 → [2]
-    011 → [1,2]
-    100 → [3]
-    101 → [1,3]
-    110 → [2,3]
-    111 → [1,2,3]
+    000 ? []
+    001 ? [1]
+    010 ? [2]
+    011 ? [1,2]
+    100 ? [3]
+    101 ? [1,3]
+    110 ? [2,3]
+    111 ? [1,2,3]
   
   SUBSETS WITH DUPLICATES (#90):
     Sort first. Skip duplicate elements at the same level.
-    In backtracking: if i > start AND nums[i] == nums[i-1] → skip.</div>
+    In backtracking: if i > start AND nums[i] == nums[i-1] ? skip.</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #78 Subsets — backtracking O(n·2^n)</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #78 Subsets � backtracking O(n�2^n)</span>
 <span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">Subsets</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
@@ -336,7 +337,7 @@ TYPE 2 — Row & column sorted (#240):
     <span class="kw">return</span> res;
 }
 
-<span class="cm">// #90 Subsets II — with duplicates</span>
+<span class="cm">// #90 Subsets II � with duplicates</span>
 <span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">SubsetsWithDup</span>(<span class="kw">int</span>[] nums)
 {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(nums);
@@ -358,7 +359,7 @@ TYPE 2 — Row & column sorted (#240):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">subsets</span>(nums):
     res = []; curr = []
     <span class="kw">def</span> <span class="mt">bt</span>(start):
@@ -370,13 +371,13 @@ TYPE 2 — Row & column sorted (#240):
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Permutations &amp; Combinations</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Permutations &amp; Combinations</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm">// #46 Permutations — O(n!) — swap-based backtracking</span>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<pre><span class="cm">// #46 Permutations � O(n!) � swap-based backtracking</span>
 <span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">Permute</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
@@ -392,7 +393,7 @@ TYPE 2 — Row & column sorted (#240):
     <span class="kw">return</span> res;
 }
 
-<span class="cm">// #77 Combinations — choose k from n — O(k * C(n,k))</span>
+<span class="cm">// #77 Combinations � choose k from n � O(k * C(n,k))</span>
 <span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">Combine</span>(<span class="kw">int</span> n, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
@@ -411,7 +412,7 @@ TYPE 2 — Row & column sorted (#240):
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">permute</span>(nums):
     res = []
     <span class="kw">def</span> <span class="mt">bt</span>(start):
@@ -425,8 +426,8 @@ TYPE 2 — Row & column sorted (#240):
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — LeetCode Map &amp; Q&amp;A</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � LeetCode Map &amp; Q&amp;A</div>
 
 <table>
     <thead><tr><th>Pattern</th><th>LeetCode #</th><th>Problem</th><th>Complexity</th></tr></thead>
@@ -437,43 +438,43 @@ TYPE 2 — Row & column sorted (#240):
         <tr><td><strong>Search on Answer</strong></td><td>#1011</td><td>Capacity to Ship Packages</td><td class="g">O(n log S)</td></tr>
         <tr><td><strong>Matrix Search</strong></td><td>#74</td><td>Search 2D Matrix (Type 1)</td><td class="g">O(log mn)</td></tr>
         <tr><td><strong>Matrix Search</strong></td><td>#240</td><td>Search 2D Matrix II (Type 2)</td><td class="g">O(m+n)</td></tr>
-        <tr><td><strong>Subsets</strong></td><td>#78</td><td>Subsets</td><td class="r">O(n·2^n)</td></tr>
+        <tr><td><strong>Subsets</strong></td><td>#78</td><td>Subsets</td><td class="r">O(n�2^n)</td></tr>
         <tr><td><strong>Permutations</strong></td><td>#46</td><td>Permutations</td><td class="r">O(n!)</td></tr>
     </tbody>
 </table>
 
 <div class="quiz-card">
     <div class="q">Q1: What invariant must hold for binary search on answer to work?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">The feasibility predicate must be <strong>monotone</strong>: if feasible(x) is True for some x, then feasible(x') is True for all x' ≥ x (for "find minimum feasible") or all x' ≤ x (for "find maximum feasible"). This monotonicity creates the binary search property — we can eliminate half the search space at each step. Examples: in Koko, "can eat all bananas at speed k in H hours" — once True for speed k, it's True for all speeds ≥ k. The answer space must also be bounded. If neither condition holds (predicate is non-monotone), binary search on answer doesn't apply.</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">The feasibility predicate must be <strong>monotone</strong>: if feasible(x) is True for some x, then feasible(x') is True for all x' = x (for "find minimum feasible") or all x' = x (for "find maximum feasible"). This monotonicity creates the binary search property � we can eliminate half the search space at each step. Examples: in Koko, "can eat all bananas at speed k in H hours" � once True for speed k, it's True for all speeds = k. The answer space must also be bounded. If neither condition holds (predicate is non-monotone), binary search on answer doesn't apply.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: How do you handle the case where the rotated array has duplicate elements?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
     <div class="answer">When arr[lo] == arr[mid] == arr[hi], we can't determine which half is sorted. We can't tell if [lo..mid] is monotonically increasing (sorted) or if there's a rotation point there. Solution: shrink both ends by 1 (lo++, hi--) and continue. This degrades worst-case to O(n) when all elements are identical, but maintains O(log n) average. For purely finding the minimum with duplicates, this shrinkage approach still works. For searching a target with duplicates (#81), the same trick applies. The key insight: when you can't eliminate half the search space, you can only safely eliminate one element at a time from each end.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: Why does the staircase search work for a row-and-column sorted matrix?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Starting at the top-right corner: all elements in the same row to the left are smaller (row sorted), all elements below in the same column are larger (column sorted). This gives us a "decision tree": if current > target, we know target must be in a column to the left (current's entire column downward is too large) → move left. If current < target, we know target must be in a row below (current's entire row to the left is too small) → move down. Each step eliminates an entire row or column, so worst case is O(m+n) steps. Starting at bottom-left also works by the symmetric argument. Top-left and bottom-right don't work (both neighbors are larger or both smaller, so you can't decide direction).</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Starting at the top-right corner: all elements in the same row to the left are smaller (row sorted), all elements below in the same column are larger (column sorted). This gives us a "decision tree": if current > target, we know target must be in a column to the left (current's entire column downward is too large) ? move left. If current < target, we know target must be in a row below (current's entire row to the left is too small) ? move down. Each step eliminates an entire row or column, so worst case is O(m+n) steps. Starting at bottom-left also works by the symmetric argument. Top-left and bottom-right don't work (both neighbors are larger or both smaller, so you can't decide direction).</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: What's the time complexity of generating all subsets and why?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">O(n · 2^n). There are exactly 2^n subsets (each element is either in or out). For each subset, we spend O(n) time copying it to the result. So total is O(n · 2^n). In terms of the recursion tree: there are 2^n leaf nodes, and the depth is n, but the total nodes in the tree is 2^(n+1) - 1 = O(2^n). The backtracking approach visits each node once and does O(size_of_subset) work at leaf nodes. Average subset size is n/2, so average work per leaf is n/2. Total: 2^n · n/2 = O(n · 2^n).</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">O(n � 2^n). There are exactly 2^n subsets (each element is either in or out). For each subset, we spend O(n) time copying it to the result. So total is O(n � 2^n). In terms of the recursion tree: there are 2^n leaf nodes, and the depth is n, but the total nodes in the tree is 2^(n+1) - 1 = O(2^n). The backtracking approach visits each node once and does O(size_of_subset) work at leaf nodes. Average subset size is n/2, so average work per leaf is n/2. Total: 2^n � n/2 = O(n � 2^n).</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: How do you avoid duplicate subsets when there are duplicate elements in the input?</div>
-    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
-    <div class="answer">Sort the array first. In the backtracking loop, skip element at index i if i > start AND nums[i] == nums[i-1]. The condition <code>i > start</code> is critical — it means we're skipping duplicates at the SAME recursion level, not across levels. Why? If we're at the same level and nums[i] == nums[i-1], including nums[i] would produce the same subtree as including nums[i-1] (since they're equal). But at different levels (i == start), we must still process the first occurrence. Without the <code>i > start</code> guard, we'd skip too aggressively and miss valid subsets. The same trick applies to permutations with duplicates (#47) — sort, use used[], skip if nums[i]==nums[i-1] and !used[i-1].</div>
+    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <div class="answer">Sort the array first. In the backtracking loop, skip element at index i if i > start AND nums[i] == nums[i-1]. The condition <code>i > start</code> is critical � it means we're skipping duplicates at the SAME recursion level, not across levels. Why? If we're at the same level and nums[i] == nums[i-1], including nums[i] would produce the same subtree as including nums[i-1] (since they're equal). But at different levels (i == start), we must still process the first occurrence. Without the <code>i > start</code> guard, we'd skip too aggressively and miss valid subsets. The same trick applies to permutations with duplicates (#47) � sort, use used[], skip if nums[i]==nums[i-1] and !used[i-1].</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 18C Complete</button>
-<div class="toast" id="toast">✅ Module 18C complete! Modified Binary Search &amp; Subsets mastered!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 18C Complete</button>
+<div class="toast" id="toast">? Module 18C complete! Modified Binary Search &amp; Subsets mastered!</div>
     <script>var MODULE_ID = 'm18c';</script>
     <script src="../dsa.js"></script>
 </body>

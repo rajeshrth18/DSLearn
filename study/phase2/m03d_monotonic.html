@@ -1,34 +1,35 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 3D — Monotonic Stack &amp; Queue</title>
+    <title>Module 3D � Monotonic Stack &amp; Queue</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
-    <h1>Module 3 — Part D</h1>
-    <div class="tagline">Monotonic Stack &amp; Monotonic Queue — Advanced Linear Patterns</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">One of the most powerful interview patterns — O(n) solutions to seemingly O(n²) problems</p>
+    <div class="module-label">C# Data Structures &amp; Algorithms � Complete Course</div>
+    <h1>Module 3 � Part D</h1>
+    <div class="tagline">Monotonic Stack &amp; Monotonic Queue � Advanced Linear Patterns</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">One of the most powerful interview patterns � O(n) solutions to seemingly O(n�) problems</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 2–3 Hours</span>
-        <span>🎯 Intermediate–Advanced</span>
-        <span>💻 Language: C#</span>
-        <span>📝 Part D of Module 3</span>
+        <span>? Estimated Time: 2�3 Hours</span>
+        <span>?? Intermediate�Advanced</span>
+        <span>?? Language: C#</span>
+        <span>?? Part D of Module 3</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 3 — Stacks &amp; Queues:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m03a_stacks.html">Stacks</a><br>
-    ✅ <strong>Part B</strong> — <a href="m03b_queues.html">Queues &amp; Deque</a><br>
-    ✅ <strong>Part C</strong> — <a href="m03c_priority_queue.html">Priority Queue</a><br>
-    ▶ <strong>Part D</strong> — <em>You are here</em> — Monotonic Stack &amp; Queue<br>
-    ⬜ <strong>Part E</strong> — <a href="m03e_practice.html">Practice: 15 Problems</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 3 � Stacks &amp; Queues:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m03a_stacks.html">Stacks</a><br>
+    ? <strong>Part B</strong> � <a href="m03b_queues.html">Queues &amp; Deque</a><br>
+    ? <strong>Part C</strong> � <a href="m03c_priority_queue.html">Priority Queue</a><br>
+    ? <strong>Part D</strong> � <em>You are here</em> � Monotonic Stack &amp; Queue<br>
+    ? <strong>Part E</strong> � <a href="m03e_practice.html">Practice: 15 Problems</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase2/m02a_singly_ll.html">&larr; Module 2 &mdash; Linked Lists</a>
@@ -36,53 +37,53 @@
 </div>
 
 <div class="toc">
-    <h2>📚 Contents — Part D</h2>
+    <h2>?? Contents � Part D</h2>
     <ol>
-        <li>Section 1 — What is a Monotonic Stack? <span>— The concept and motivation</span></li>
-        <li>Section 2 — Monotonically Increasing vs Decreasing Stack <span>— Two variants</span></li>
-        <li>Section 3 — Pattern: Next Greater Element <span>— The foundational problem</span></li>
-        <li>Section 4 — Pattern: Previous Smaller Element <span>— Symmetric application</span></li>
-        <li>Section 5 — Pattern: Next Greater Element II (Circular Array) <span>— Double-pass trick</span></li>
-        <li>Section 6 — Application: Daily Temperatures <span>— Classic warm-up problem</span></li>
-        <li>Section 7 — Application: Largest Rectangle in Histogram <span>— Hard but elegant</span></li>
-        <li>Section 8 — Application: Trapping Rain Water <span>— Two-pass + stack approach</span></li>
-        <li>Section 9 — Monotonic Queue (Deque) <span>— Sliding window maximum</span></li>
-        <li>Section 10 — Pattern Summary &amp; Recognition Guide <span>— When to use it</span></li>
+        <li>Section 1 � What is a Monotonic Stack? <span>� The concept and motivation</span></li>
+        <li>Section 2 � Monotonically Increasing vs Decreasing Stack <span>� Two variants</span></li>
+        <li>Section 3 � Pattern: Next Greater Element <span>� The foundational problem</span></li>
+        <li>Section 4 � Pattern: Previous Smaller Element <span>� Symmetric application</span></li>
+        <li>Section 5 � Pattern: Next Greater Element II (Circular Array) <span>� Double-pass trick</span></li>
+        <li>Section 6 � Application: Daily Temperatures <span>� Classic warm-up problem</span></li>
+        <li>Section 7 � Application: Largest Rectangle in Histogram <span>� Hard but elegant</span></li>
+        <li>Section 8 � Application: Trapping Rain Water <span>� Two-pass + stack approach</span></li>
+        <li>Section 9 � Monotonic Queue (Deque) <span>� Sliding window maximum</span></li>
+        <li>Section 10 � Pattern Summary &amp; Recognition Guide <span>� When to use it</span></li>
     </ol>
 </div>
 
-<!-- ═══════ SECTION 1 ═══════ -->
-<div class="section-heading">Section 1 — What is a Monotonic Stack?</div>
+<!-- ------- SECTION 1 ------- -->
+<div class="section-heading">Section 1 � What is a Monotonic Stack?</div>
 
 <p>A <strong>Monotonic Stack</strong> is a regular stack with one extra constraint: the elements inside
 it are always kept in <strong>monotonically increasing or decreasing order</strong>. Whenever a new
 element would violate this order, you <strong>pop elements until the order is restored</strong>.</p>
 
 <p>The power of this constraint: when an element gets popped because a new element is larger (or smaller),
-that new element is the <strong>answer</strong> for the popped element — the "next greater" or
-"previous smaller" value. This transforms O(n²) brute-force searches into O(n) single-pass scans.</p>
+that new element is the <strong>answer</strong> for the popped element � the "next greater" or
+"previous smaller" value. This transforms O(n�) brute-force searches into O(n) single-pass scans.</p>
 
 <div class="realworld">
-    <strong>🌍 Real-World Analogy — Stock Market:</strong> Imagine you're tracking stock prices day by day.
+    <strong>?? Real-World Analogy � Stock Market:</strong> Imagine you're tracking stock prices day by day.
     For each day, you want to know: "How many days from now until the price is higher than today's?"
-    A brute force approach checks every future day for every day — O(n²). The monotonic stack does it
-    in one pass — O(n). The same pattern appears in temperature forecasting, histogram analysis,
+    A brute force approach checks every future day for every day � O(n�). The monotonic stack does it
+    in one pass � O(n). The same pattern appears in temperature forecasting, histogram analysis,
     water storage calculations, and compiler expression parsing.
 </div>
 
 <div class="note">
-    <strong>📌 Key Insight:</strong> Every element enters the stack once and leaves the stack once.
+    <strong>?? Key Insight:</strong> Every element enters the stack once and leaves the stack once.
     Therefore all push and pop operations combined are O(n), giving us O(n) total time complexity
     even though it looks like there's a loop inside a loop.
 </div>
 
 <hr>
 
-<!-- ═══════ SECTION 2 ═══════ -->
-<div class="section-heading">Section 2 — Monotonically Increasing vs Decreasing Stack</div>
+<!-- ------- SECTION 2 ------- -->
+<div class="section-heading">Section 2 � Monotonically Increasing vs Decreasing Stack</div>
 
 <div class="diagram">MONOTONICALLY INCREASING STACK
-  Maintains: bottom → top, elements go from SMALL to LARGE
+  Maintains: bottom ? top, elements go from SMALL to LARGE
   Rule: when pushing x, pop all elements GREATER THAN x first
 
   Input: [3, 1, 4, 1, 5, 9, 2, 6]
@@ -90,7 +91,7 @@ that new element is the <strong>answer</strong> for the popped element — the "
   Push 3: [3]
   Push 1: pop 3 (3>1), [1]
   Push 4: [1, 4]
-  Push 1: pop 4 (4>1), pop 1 (1>? no, 1≥1 — depends on strict/non-strict), [1, 1] or [1]
+  Push 1: pop 4 (4>1), pop 1 (1>? no, 1=1 � depends on strict/non-strict), [1, 1] or [1]
   Push 5: [1, 5]
   Push 9: [1, 5, 9]
   Push 2: pop 9 (9>2), pop 5 (5>2), [1, 2]
@@ -100,7 +101,7 @@ that new element is the <strong>answer</strong> for the popped element — the "
               when current element is pushed)
 
 MONOTONICALLY DECREASING STACK
-  Maintains: bottom → top, elements go from LARGE to SMALL
+  Maintains: bottom ? top, elements go from LARGE to SMALL
   Rule: when pushing x, pop all elements LESS THAN x first
 
   Input: [3, 1, 4, 1, 5, 9, 2, 6]
@@ -122,31 +123,31 @@ MONOTONICALLY DECREASING STACK
         <tr><th>Type</th><th>Stack Order</th><th>Pop When</th><th>Finds</th></tr>
     </thead>
     <tbody>
-        <tr><td>Monotonic Increasing</td><td>small → large (bottom→top)</td><td>new &lt; top (pop larger)</td><td>Previous Smaller Element</td></tr>
-        <tr><td>Monotonic Decreasing</td><td>large → small (bottom→top)</td><td>new &gt; top (pop smaller)</td><td>Next Greater Element</td></tr>
+        <tr><td>Monotonic Increasing</td><td>small ? large (bottom?top)</td><td>new &lt; top (pop larger)</td><td>Previous Smaller Element</td></tr>
+        <tr><td>Monotonic Decreasing</td><td>large ? small (bottom?top)</td><td>new &gt; top (pop smaller)</td><td>Next Greater Element</td></tr>
     </tbody>
 </table>
 
 <hr>
 
-<!-- ═══════ SECTION 3 ═══════ -->
-<div class="section-heading">Section 3 — Pattern: Next Greater Element</div>
+<!-- ------- SECTION 3 ------- -->
+<div class="section-heading">Section 3 � Pattern: Next Greater Element</div>
 
 <p>For every element in an array, find the first element to the right that is larger than it.
 Return <code>-1</code> if none exists. This is the canonical monotonic stack problem.</p>
 
-<div class="diagram">NEXT GREATER ELEMENT — nums=[2, 1, 2, 4, 3]
+<div class="diagram">NEXT GREATER ELEMENT � nums=[2, 1, 2, 4, 3]
 
 Use DECREASING monotonic stack (stores indices).
 When we pop index i because current element is larger, current = NGE for i.
 
 i=0, nums[0]=2: stack empty, push 0.  stack=[0]
 i=1, nums[1]=1: 1 &lt; nums[0]=2, just push.  stack=[0,1]
-i=2, nums[2]=2: 2 > nums[1]=1 → POP 1, result[1]=2.  2 = nums[0]=2 → stop.  push 2.  stack=[0,2]
-i=3, nums[3]=4: 4 > nums[2]=2 → POP 2, result[2]=4.  4 > nums[0]=2 → POP 0, result[0]=4.  push 3.  stack=[3]
-i=4, nums[4]=3: 3 &lt; nums[3]=4 → just push.  stack=[3,4]
+i=2, nums[2]=2: 2 > nums[1]=1 ? POP 1, result[1]=2.  2 = nums[0]=2 ? stop.  push 2.  stack=[0,2]
+i=3, nums[3]=4: 4 > nums[2]=2 ? POP 2, result[2]=4.  4 > nums[0]=2 ? POP 0, result[0]=4.  push 3.  stack=[3]
+i=4, nums[4]=3: 3 &lt; nums[3]=4 ? just push.  stack=[3,4]
 
-End: remaining in stack have no greater element → result = -1
+End: remaining in stack have no greater element ? result = -1
   result[3]=-1, result[4]=-1
 
 FINAL: result = [4, 2, 4, -1, -1]</div>
@@ -177,8 +178,8 @@ FINAL: result = [4, 2, 4, -1, -1]</div>
     <span class="kw">return</span> result;
 }
 
-<span class="cm">// [2,1,2,4,3] → [4,2,4,-1,-1]
-// [1,3,2,4]   → [3,4,4,-1]</span></pre>
+<span class="cm">// [2,1,2,4,3] ? [4,2,4,-1,-1]
+// [1,3,2,4]   ? [3,4,4,-1]</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -197,11 +198,11 @@ FINAL: result = [4, 2, 4, -1, -1]</div>
 
 <hr>
 
-<!-- ═══════ SECTION 4 ═══════ -->
-<div class="section-heading">Section 4 — Pattern: Previous Smaller Element</div>
+<!-- ------- SECTION 4 ------- -->
+<div class="section-heading">Section 4 � Pattern: Previous Smaller Element</div>
 
 <p>For every element, find the nearest element to the <strong>left</strong> that is smaller.
-Use a <strong>monotonically increasing</strong> stack — the top of the stack when you push
+Use a <strong>monotonically increasing</strong> stack � the top of the stack when you push
 element <code>i</code> is the previous smaller element for <code>i</code>.</p>
 
 
@@ -227,7 +228,7 @@ element <code>i</code> is the previous smaller element for <code>i</code>.</p>
     <span class="kw">return</span> result;
 }
 
-<span class="cm">// [2,1,2,4,3] → [-1,-1,1,2,2]
+<span class="cm">// [2,1,2,4,3] ? [-1,-1,1,2,2]
 // Meaning:
 //   PSE of index 0 (val=2): -1  (no smaller to the left)
 //   PSE of index 1 (val=1): -1  (no smaller to the left)
@@ -253,10 +254,10 @@ element <code>i</code> is the previous smaller element for <code>i</code>.</p>
 
 <hr>
 
-<!-- ═══════ SECTION 5 ═══════ -->
-<div class="section-heading">Section 5 — Next Greater Element II (Circular Array)</div>
+<!-- ------- SECTION 5 ------- -->
+<div class="section-heading">Section 5 � Next Greater Element II (Circular Array)</div>
 
-<p>Same as Next Greater Element, but the array wraps around — the next greater element of the last
+<p>Same as Next Greater Element, but the array wraps around � the next greater element of the last
 element might be in the beginning. The trick: <strong>process the array twice</strong> by looping
 from 0 to 2n-1 using modulo, but only record results in the first pass (indices 0..n-1).</p>
 
@@ -271,7 +272,7 @@ from 0 to 2n-1 using modulo, but only record results in the first pass (indices 
     <span class="tp">Array</span>.<span class="mt">Fill</span>(result, -<span class="nm">1</span>);
     <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack = <span class="kw">new</span>();
 
-    <span class="cm">// Loop TWICE — simulates circular array</span>
+    <span class="cm">// Loop TWICE � simulates circular array</span>
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">2</span> * n; i++)
     {
         <span class="kw">int</span> idx = i % n;  <span class="cm">// Wrap around</span>
@@ -282,9 +283,9 @@ from 0 to 2n-1 using modulo, but only record results in the first pass (indices 
     <span class="kw">return</span> result;
 }
 
-<span class="cm">// [1,2,1] → [2,-1,2]
+<span class="cm">// [1,2,1] ? [2,-1,2]
 //   Index 0 (val=1): next greater is 2 (index 1)
-//   Index 1 (val=2): no greater element in the whole array → -1
+//   Index 1 (val=2): no greater element in the whole array ? -1
 //   Index 2 (val=1): wraps around, next greater is 2 (index 1)</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -305,28 +306,28 @@ from 0 to 2n-1 using modulo, but only record results in the first pass (indices 
 
 <hr>
 
-<!-- ═══════ SECTION 6 ═══════ -->
-<div class="section-heading">Section 6 — Application: Daily Temperatures</div>
+<!-- ------- SECTION 6 ------- -->
+<div class="section-heading">Section 6 � Application: Daily Temperatures</div>
 
 <p>Given daily temperatures, for each day find how many days until a warmer temperature.
 Return 0 if no warmer day exists. This is the "Next Greater Element" with distances.</p>
 
-<div class="diagram">DAILY TEMPERATURES — temps=[73,74,75,71,69,72,76,73]
+<div class="diagram">DAILY TEMPERATURES � temps=[73,74,75,71,69,72,76,73]
 
 result[i] = distance to next warmer day (0 if none)
 
 Stack stores indices. When we find a warmer day, distance = i - popped_index.
 
 i=0 T=73: push 0.      stack=[0]
-i=1 T=74: 74>73 → pop0, result[0]=1-0=1. push 1.  stack=[1]
-i=2 T=75: 75>74 → pop1, result[1]=2-1=1. push 2.  stack=[2]
-i=3 T=71: 71&lt;75 → push.  stack=[2,3]
-i=4 T=69: 69&lt;71 → push.  stack=[2,3,4]
-i=5 T=72: 72>69→pop4,result[4]=5-4=1. 72>71→pop3,result[3]=5-3=2. 72&lt;75→push5. stack=[2,5]
-i=6 T=76: 76>72→pop5,result[5]=6-5=1. 76>75→pop2,result[2]=6-2=4. push6. stack=[6]
-i=7 T=73: 73&lt;76→push. stack=[6,7]
+i=1 T=74: 74>73 ? pop0, result[0]=1-0=1. push 1.  stack=[1]
+i=2 T=75: 75>74 ? pop1, result[1]=2-1=1. push 2.  stack=[2]
+i=3 T=71: 71&lt;75 ? push.  stack=[2,3]
+i=4 T=69: 69&lt;71 ? push.  stack=[2,3,4]
+i=5 T=72: 72>69?pop4,result[4]=5-4=1. 72>71?pop3,result[3]=5-3=2. 72&lt;75?push5. stack=[2,5]
+i=6 T=76: 76>72?pop5,result[5]=6-5=1. 76>75?pop2,result[2]=6-2=4. push6. stack=[6]
+i=7 T=73: 73&lt;76?push. stack=[6,7]
 
-End: stack=[6,7] → result[6]=0, result[7]=0
+End: stack=[6,7] ? result[6]=0, result[7]=0
 
 RESULT: [1, 1, 4, 2, 1, 1, 0, 0]</div>
 
@@ -351,7 +352,7 @@ RESULT: [1, 1, 4, 2, 1, 1, 0, 0]</div>
     <span class="kw">return</span> result;
 }
 
-<span class="cm">// [73,74,75,71,69,72,76,73] → [1,1,4,2,1,1,0,0]</span></pre>
+<span class="cm">// [73,74,75,71,69,72,76,73] ? [1,1,4,2,1,1,0,0]</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -371,14 +372,14 @@ RESULT: [1, 1, 4, 2, 1, 1, 0, 0]</div>
 
 <hr>
 
-<!-- ═══════ SECTION 7 ═══════ -->
-<div class="section-heading">Section 7 — Application: Largest Rectangle in Histogram</div>
+<!-- ------- SECTION 7 ------- -->
+<div class="section-heading">Section 7 � Application: Largest Rectangle in Histogram</div>
 
 <p>Given bar heights in a histogram, find the largest rectangle area. This is one of the hardest
-and most elegant monotonic stack problems — O(n).</p>
+and most elegant monotonic stack problems � O(n).</p>
 
 <div class="realworld">
-    <strong>🌍 Real-World:</strong> This pattern appears in: finding the largest contiguous region of
+    <strong>?? Real-World:</strong> This pattern appears in: finding the largest contiguous region of
     equal-height buildings, max area sub-matrix in an all-ones binary matrix, and signal processing
     (largest amplitude window that fits under a threshold curve).
 </div>
@@ -387,7 +388,7 @@ and most elegant monotonic stack problems — O(n).</p>
 
 heights = [2, 1, 5, 6, 2, 3]
 
-The largest rectangle is the one spanning indices 2–3 (heights 5,6)
+The largest rectangle is the one spanning indices 2�3 (heights 5,6)
 with height limited to min(5,6)=5, width=2, area=10.
 
 STRATEGY: For each bar i, what's the widest rectangle where bar i is
@@ -398,13 +399,13 @@ Stack stores indices. When we pop bar i because current bar is shorter,
   current bar's index (right) and new top (left) give us the width.
 
 i=0 h=2: push 0.    [0]
-i=1 h=1: 1&lt;h[0]=2 → pop 0. Width=i-(-1)-1=1. Area=2*1=2.
+i=1 h=1: 1&lt;h[0]=2 ? pop 0. Width=i-(-1)-1=1. Area=2*1=2.
          stack empty, push 1.  [1]
 i=2 h=5: push.  [1,2]
 i=3 h=6: push.  [1,2,3]
-i=4 h=2: 2&lt;h[3]=6 → pop 3. Left=stack.top=2. Width=4-2-1=1. Area=6*1=6.
-         2&lt;h[2]=5 → pop 2. Left=stack.top=1. Width=4-1-1=2. Area=5*2=10. ← MAX
-         2&gt;h[1]=1 → stop. push 4.  [1,4]
+i=4 h=2: 2&lt;h[3]=6 ? pop 3. Left=stack.top=2. Width=4-2-1=1. Area=6*1=6.
+         2&lt;h[2]=5 ? pop 2. Left=stack.top=1. Width=4-1-1=2. Area=5*2=10. ? MAX
+         2&gt;h[1]=1 ? stop. push 4.  [1,4]
 i=5 h=3: push.  [1,4,5]
 
 End: pop 5. Left=4. Width=6-4-1=1. Area=3*1=3.
@@ -441,9 +442,9 @@ MAX AREA = 10</div>
     <span class="kw">return</span> maxArea;
 }
 
-<span class="cm">// [2,1,5,6,2,3] → 10
-// [2,4]         → 4
-// [1]           → 1</span></pre>
+<span class="cm">// [2,1,5,6,2,3] ? 10
+// [2,4]         ? 4
+// [1]           ? 1</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -464,8 +465,8 @@ MAX AREA = 10</div>
 
 <hr>
 
-<!-- ═══════ SECTION 8 ═══════ -->
-<div class="section-heading">Section 8 — Application: Trapping Rain Water</div>
+<!-- ------- SECTION 8 ------- -->
+<div class="section-heading">Section 8 � Application: Trapping Rain Water</div>
 
 <p>Given an elevation map (bar heights), compute how much water is trapped after rain.
 The classic O(n) stack approach: water fills up between bars whenever a taller bar is found to the right.</p>
@@ -518,8 +519,8 @@ APPROACH:
     <span class="kw">return</span> water;
 }
 
-<span class="cm">// [0,1,0,2,1,0,1,3,2,1,2,1] → 6
-// [4,2,0,3,2,5]              → 9</span></pre>
+<span class="cm">// [0,1,0,2,1,0,1,3,2,1,2,1] ? 6
+// [4,2,0,3,2,5]              ? 9</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -539,28 +540,28 @@ APPROACH:
 
 <hr>
 
-<!-- ═══════ SECTION 9 ═══════ -->
-<div class="section-heading">Section 9 — Monotonic Queue (Deque) — Sliding Window Maximum</div>
+<!-- ------- SECTION 9 ------- -->
+<div class="section-heading">Section 9 � Monotonic Queue (Deque) � Sliding Window Maximum</div>
 
 <p>The <strong>Monotonic Queue</strong> (deque variant) keeps elements in decreasing order.
-It answers: "What is the maximum in the current window?" in O(1) per query — the front of the
+It answers: "What is the maximum in the current window?" in O(1) per query � the front of the
 deque is always the current window's maximum. Total time: O(n).</p>
 
-<div class="diagram">SLIDING WINDOW MAXIMUM — nums=[1,3,-1,-3,5,3,6,7], k=3
+<div class="diagram">SLIDING WINDOW MAXIMUM � nums=[1,3,-1,-3,5,3,6,7], k=3
 
 Deque stores INDICES. Maintains DECREASING values.
 
 i=0 v=1:  dq=[0]
-i=1 v=3:  3>1→remove 0. dq=[1]
+i=1 v=3:  3>1?remove 0. dq=[1]
 i=2 v=-1: -1&lt;3, just add. dq=[1,2]    Window[0..2]: max=nums[1]=3
 i=3 v=-3: -3&lt;-1, add. dq=[1,2,3]     Window[1..3]: max=nums[1]=3
-          (check front: 1 still in window [1..3] ✓)
-i=4 v=5:  5>-3→remove 3. 5>-1→remove 2. 5>3→remove 1. dq=[4]
+          (check front: 1 still in window [1..3] ?)
+i=4 v=5:  5>-3?remove 3. 5>-1?remove 2. 5>3?remove 1. dq=[4]
           Window[2..4]: max=nums[4]=5
 i=5 v=3:  3&lt;5, add. dq=[4,5]         Window[3..5]: max=nums[4]=5
-i=6 v=6:  6>3→remove 5. 6>5→remove 4. dq=[6]
+i=6 v=6:  6>3?remove 5. 6>5?remove 4. dq=[6]
           Window[4..6]: max=nums[6]=6
-i=7 v=7:  7>6→remove 6. dq=[7]       Window[5..7]: max=nums[7]=7
+i=7 v=7:  7>6?remove 6. dq=[7]       Window[5..7]: max=nums[7]=7
 
 RESULT: [3, 3, 5, 5, 6, 7]</div>
 
@@ -574,7 +575,7 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
     <span class="kw">if</span> (n == <span class="nm">0</span> || k == <span class="nm">0</span>) <span class="kw">return</span> [];
 
     <span class="kw">int</span>[] result = <span class="kw">new int</span>[n - k + <span class="nm">1</span>];
-    <span class="tp">LinkedList</span>&lt;<span class="kw">int</span>&gt; dq = <span class="kw">new</span>();  <span class="cm">// Decreasing monotonic queue — stores indices</span>
+    <span class="tp">LinkedList</span>&lt;<span class="kw">int</span>&gt; dq = <span class="kw">new</span>();  <span class="cm">// Decreasing monotonic queue � stores indices</span>
 
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
     {
@@ -595,8 +596,8 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
     <span class="kw">return</span> result;
 }
 
-<span class="cm">// [1,3,-1,-3,5,3,6,7], k=3 → [3,3,5,5,6,7]
-// [1], k=1                  → [1]</span></pre>
+<span class="cm">// [1,3,-1,-3,5,3,6,7], k=3 ? [3,3,5,5,6,7]
+// [1], k=1                  ? [1]</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -617,8 +618,8 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
 
 <hr>
 
-<!-- ═══════ SECTION 10 ═══════ -->
-<div class="section-heading">Section 10 — Pattern Summary &amp; Recognition Guide</div>
+<!-- ------- SECTION 10 ------- -->
+<div class="section-heading">Section 10 � Pattern Summary &amp; Recognition Guide</div>
 
 <table>
     <thead>
@@ -627,7 +628,7 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
     <tbody>
         <tr><td>Next Greater Element</td><td>Decreasing</td><td>Indices</td><td>Daily Temperatures, Stock Span</td></tr>
         <tr><td>Next Smaller Element</td><td>Increasing</td><td>Indices</td><td>Largest Rectangle (right boundary)</td></tr>
-        <tr><td>Previous Greater Element</td><td>Decreasing (scan right→left)</td><td>Indices</td><td>Trapping Rain Water (left boundary)</td></tr>
+        <tr><td>Previous Greater Element</td><td>Decreasing (scan right?left)</td><td>Indices</td><td>Trapping Rain Water (left boundary)</td></tr>
         <tr><td>Previous Smaller Element</td><td>Increasing</td><td>Indices</td><td>Largest Rectangle (left boundary)</td></tr>
         <tr><td>Largest valid span/area</td><td>Increasing or decreasing</td><td>Indices</td><td>Histogram, Rain Water</td></tr>
         <tr><td>Sliding window max/min</td><td>Monotonic deque</td><td>Indices</td><td>Sliding Window Maximum</td></tr>
@@ -635,33 +636,33 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
 </table>
 
 <div class="tip">
-    <strong>💡 Recognition Pattern — When to Use Monotonic Stack:</strong>
+    <strong>?? Recognition Pattern � When to Use Monotonic Stack:</strong>
     <ul style="margin-top:8px;">
         <li>Problem asks for "next/previous greater/smaller" relationships</li>
         <li>Problem involves a histogram or bar-chart structure</li>
-        <li>Brute force is O(n²) and involves comparing each element to all others</li>
+        <li>Brute force is O(n�) and involves comparing each element to all others</li>
         <li>The phrase "nearest", "closest", "immediately before/after" appears</li>
         <li>Sliding window problems that need max/min efficiently</li>
     </ul>
 </div>
 
 <div class="note">
-    <strong>📌 O(n) Why? — Amortized Analysis:</strong>
-    The nested while-loop looks like O(n²), but it's O(n) amortized. Each element is pushed <em>once</em>
+    <strong>?? O(n) Why? � Amortized Analysis:</strong>
+    The nested while-loop looks like O(n�), but it's O(n) amortized. Each element is pushed <em>once</em>
     and popped <em>at most once</em>. Therefore, the total number of push + pop operations across the
-    entire algorithm is bounded by 2n — giving O(n) overall.
+    entire algorithm is bounded by 2n � giving O(n) overall.
 </div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>✅ Module 3D Complete!</strong><br><br>
+    <strong>? Module 3D Complete!</strong><br><br>
     You now understand: monotonic increasing/decreasing stacks, next/previous greater/smaller element
     patterns, daily temperatures, largest rectangle in histogram, trapping rain water, and the
     monotonic deque for sliding window maximum.<br><br>
-    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ◀ <strong>Prev:</strong> <a href="m03c_priority_queue.html">Part C — Priority Queue</a> &nbsp;|&nbsp;
-    ▶ <strong>Next:</strong> <a href="m03e_practice.html">Part E — Practice Problems</a>
+    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Prev:</strong> <a href="m03c_priority_queue.html">Part C � Priority Queue</a> &nbsp;|&nbsp;
+    ? <strong>Next:</strong> <a href="m03e_practice.html">Part E � Practice Problems</a>
 </div>
 
     <script src="../dsa.js"></script>

@@ -1,46 +1,47 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 10G — Advanced Graph Practice | DSA Masterbook</title>
+    <title>Module 10G � Advanced Graph Practice | DSA Masterbook</title>
+    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
-    <h1>Module 10 — Part G</h1>
+    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
+    <h1>Module 10 � Part G</h1>
     <div class="tagline">Advanced Graph Practice: 12 Problems</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Dijkstra, Bellman-Ford, MST, Topological Sort, SCC, and hybrid graph problems</p>
     <div class="badges">
-        <span>⏱ Estimated Time: 4–6 Hours</span>
-        <span>🎯 Medium–Hard</span>
-        <span>💻 C# &amp; Python</span>
-        <span>📝 12 Problems</span>
+        <span>? Estimated Time: 4�6 Hours</span>
+        <span>?? Medium�Hard</span>
+        <span>?? C# &amp; Python</span>
+        <span>?? 12 Problems</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
-    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
-    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
-    ✅ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
-    ✅ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
-    ✅ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
-    ✅ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
-    ▶ <strong>Part G</strong> — <em>You are here</em> — Practice: 12 Problems<br>
-    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
-    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
-    🏠 <a href="../index.html">Back to Course Index</a>
+    <strong>?? Module 10 � Graph Algorithms:</strong><br><br>
+    ? <strong>Part A</strong> � <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ? <strong>Part B</strong> � <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ? <strong>Part C</strong> � <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ? <strong>Part D</strong> � <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ? <strong>Part E</strong> � <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ? <strong>Part F</strong> � <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ? <strong>Part G</strong> � <em>You are here</em> � Practice: 12 Problems<br>
+    ? <strong>Part H</strong> � <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ? <strong>Part I</strong> � <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    ?? <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
     <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
 </div>
 
-<!-- ═════════════════ GROUP 1: DIJKSTRA / WEIGHTED SHORTEST PATH -->
-<div class="section-heading">Group 1 — Dijkstra &amp; Weighted Shortest Path (4 Problems)</div>
+<!-- ----------------- GROUP 1: DIJKSTRA / WEIGHTED SHORTEST PATH -->
+<div class="section-heading">Group 1 � Dijkstra &amp; Weighted Shortest Path (4 Problems)</div>
 
 <!-- P1 -->
 <div class="prob-card">
@@ -51,15 +52,15 @@
     <div class="prob-desc">You have a network of <code>n</code> nodes, labeled from 1 to n. Given a list of travel times as directed edges <code>times[i] = [u, v, w]</code> (from u to v taking w milliseconds), and a source node k, return the minimum time for all nodes to receive the signal. If it's impossible, return -1.</div>
     <div class="prob-ex">Input:  times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2
 Output: 2
-Explanation: Start at 2. 2→1 takes 1ms. 2→3 takes 1ms, then 3→4 takes 1ms.
+Explanation: Start at 2. 2?1 takes 1ms. 2?3 takes 1ms, then 3?4 takes 1ms.
 All nodes reached by time 2 (max over all nodes of dist[node]).</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Dijkstra from k, return max dist.</strong> Build adjacency list. Run Dijkstra from k. Return max(dist.values()). If any node is unreachable (dist = ∞), return -1. The answer is the maximum shortest-path distance from k to any node — the time when the last node receives the signal.</div>
+        <div class="approach"><strong>Approach: Dijkstra from k, return max dist.</strong> Build adjacency list. Run Dijkstra from k. Return max(dist.values()). If any node is unreachable (dist = 8), return -1. The answer is the maximum shortest-path distance from k to any node � the time when the last node receives the signal.</div>
         <div class="complexity"><strong>Time:</strong> O((V+E) log V) | <strong>Space:</strong> O(V+E)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">NetworkDelayTime</span>(<span class="kw">int</span>[][] times, <span class="kw">int</span> n, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">int</span> v, <span class="kw">int</span> w)&gt;[n + <span class="nm">1</span>];
@@ -95,7 +96,7 @@ All nodes reached by time 2 (max over all nodes of dist[node]).</div>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">import</span> heapq
 <span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
@@ -126,15 +127,15 @@ All nodes reached by time 2 (max over all nodes of dist[node]).</div>
     <div class="prob-desc">You're hiking on a grid where <code>heights[r][c]</code> is the height of cell (r,c). "Effort" of a route = maximum absolute difference in heights of consecutive cells. Find the path from top-left (0,0) to bottom-right (rows-1, cols-1) that minimizes effort.</div>
     <div class="prob-ex">Input:  heights = [[1,2,2],[3,8,2],[5,3,5]]
 Output: 2
-Explanation: Path (0,0)→(0,1)→(0,2)→(1,2)→(2,2): efforts=[1,0,6,3], max=6. Too high.
-             Path (0,0)→(1,0)→(2,0)→(2,1)→(2,2): efforts=[2,2,2,2], max=2. ✓</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+Explanation: Path (0,0)?(0,1)?(0,2)?(1,2)?(2,2): efforts=[1,0,6,3], max=6. Too high.
+             Path (0,0)?(1,0)?(2,0)?(2,1)?(2,2): efforts=[2,2,2,2], max=2. ?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach: Modified Dijkstra minimizing max-edge instead of sum.</strong> Edge weight from cell (r,c) to neighbor (nr,nc) = abs(heights[r][c] - heights[nr][nc]). <code>dist[r][c]</code> = minimum possible maximum-effort to reach (r,c). Update: <code>dist[nr][nc] = min(dist[nr][nc], max(dist[r][c], edgeWeight))</code>. Use a min-heap on effort.</div>
-        <div class="complexity"><strong>Time:</strong> O(R×C × log(R×C)) | <strong>Space:</strong> O(R×C)</div>
+        <div class="complexity"><strong>Time:</strong> O(R�C � log(R�C)) | <strong>Space:</strong> O(R�C)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">MinimumEffortPath</span>(<span class="kw">int</span>[][] heights)
 {
     <span class="kw">int</span> rows = heights.Length, cols = heights[<span class="nm">0</span>].Length;
@@ -162,7 +163,7 @@ Explanation: Path (0,0)→(0,1)→(0,2)→(1,2)→(2,2): efforts=[1,0,6,3], max=
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">import</span> heapq
 
 <span class="kw">def</span> <span class="mt">minimumEffortPath</span>(heights):
@@ -194,14 +195,14 @@ Explanation: Path (0,0)→(0,1)→(0,2)→(1,2)→(2,2): efforts=[1,0,6,3], max=
     <div class="prob-desc">There are <code>n</code> cities connected by flights. Each flight has source, destination, and cost. Given src, dst, and k, find the cheapest price from src to dst with at most k stops. Return -1 if no such route exists.</div>
     <div class="prob-ex">Input:  n=4, flights=[[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]], src=0, dst=3, k=1
 Output: 700
-Explanation: 0→1→3 costs 700 (1 stop). 0→1→2→3 costs 400 but has 2 stops (too many).</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+Explanation: 0?1?3 costs 700 (1 stop). 0?1?2?3 costs 400 but has 2 stops (too many).</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach: Bellman-Ford with exactly k+1 passes.</strong> Run at most k+1 edge relaxations. This is Bellman-Ford limited to k+1 edges (k stops = k+1 edges). Key: copy the dist array before each pass to prevent cascading updates within the same pass (which would use more than 1 step per pass). This is also solvable with Dijkstra adding stops to the state, or DP.</div>
-        <div class="complexity"><strong>Time:</strong> O(k × E) | <strong>Space:</strong> O(n)</div>
+        <div class="complexity"><strong>Time:</strong> O(k � E) | <strong>Space:</strong> O(n)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">FindCheapestPrice</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] flights, <span class="kw">int</span> src, <span class="kw">int</span> dst, <span class="kw">int</span> k)
 {
     <span class="kw">int</span>[] prices = <span class="kw">new int</span>[n];
@@ -223,7 +224,7 @@ Explanation: 0→1→3 costs 700 (1 stop). 0→1→2→3 costs 400 but has 2 sto
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">findCheapestPrice</span>(n, flights, src, dst, k):
     prices = [<span class="mt">float</span>(<span class="st">'inf'</span>)] * n
     prices[src] = <span class="nm">0</span>
@@ -244,18 +245,18 @@ Explanation: 0→1→3 costs 700 (1 stop). 0→1→2→3 costs 400 but has 2 sto
         <div class="prob-title"><span class="prob-num">4</span>Find the City With Fewest Reachable Neighbors (LeetCode #1334)</div>
         <div class="prob-tags"><span class="tag tag-medium">Medium</span><span class="tag tag-algo">Floyd-Warshall</span></div>
     </div>
-    <div class="prob-desc">Given n cities, edges with distances, and a threshold, return the city that has the fewest number of other cities reachable with a distance ≤ threshold. If there's a tie, return the city with the greatest number (highest index).</div>
+    <div class="prob-desc">Given n cities, edges with distances, and a threshold, return the city that has the fewest number of other cities reachable with a distance = threshold. If there's a tie, return the city with the greatest number (highest index).</div>
     <div class="prob-ex">Input:  n=4, edges=[[0,1,3],[1,2,1],[1,3,4],[2,3,1]], distanceThreshold=4
 Output: 3
-City 0: reach {1,2,3} (dist 3,4,4) → 3 cities (4 is threshold, counts)
-City 3: reach {1,2} (dist 4,2) → 2 cities  ← fewest (tie with city 0 would pick 3)</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+City 0: reach {1,2,3} (dist 3,4,4) ? 3 cities (4 is threshold, counts)
+City 3: reach {1,2} (dist 4,2) ? 2 cities  ? fewest (tie with city 0 would pick 3)</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Floyd-Warshall for all-pairs shortest paths, then count.</strong> With n ≤ 100, O(n³) Floyd-Warshall is fine. After computing all-pairs shortest paths, for each city count how many others are reachable within the threshold. Return the city with minimum count (highest index on tie).</div>
-        <div class="complexity"><strong>Time:</strong> O(n³) | <strong>Space:</strong> O(n²)</div>
+        <div class="approach"><strong>Approach: Floyd-Warshall for all-pairs shortest paths, then count.</strong> With n = 100, O(n�) Floyd-Warshall is fine. After computing all-pairs shortest paths, for each city count how many others are reachable within the threshold. Return the city with minimum count (highest index on tie).</div>
+        <div class="complexity"><strong>Time:</strong> O(n�) | <strong>Space:</strong> O(n�)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">FindTheCity</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] edges, <span class="kw">int</span> thr)
 {
     <span class="kw">int</span>[,] dist = <span class="kw">new int</span>[n, n];
@@ -279,7 +280,7 @@ City 3: reach {1,2} (dist 4,2) → 2 cities  ← fewest (tie with city 0 would p
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">findTheCity</span>(n, edges, distanceThreshold):
     dist = [[<span class="mt">float</span>(<span class="st">'inf'</span>)] * n <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n): dist[i][i] = <span class="nm">0</span>
@@ -297,8 +298,8 @@ City 3: reach {1,2} (dist 4,2) → 2 cities  ← fewest (tie with city 0 would p
     </div>
 </div>
 
-<!-- ═════════════════ GROUP 2: MST + UNION-FIND -->
-<div class="section-heading">Group 2 — MST &amp; Union-Find (4 Problems)</div>
+<!-- ----------------- GROUP 2: MST + UNION-FIND -->
+<div class="section-heading">Group 2 � MST &amp; Union-Find (4 Problems)</div>
 
 <!-- P5 -->
 <div class="prob-card">
@@ -311,13 +312,13 @@ City 3: reach {1,2} (dist 4,2) → 2 cities  ← fewest (tie with city 0 would p
 Output: 20
 Explanation: MST uses edges: (0,0)-(2,2)=4, (2,2)-(5,2)=3, (5,2)-(7,0)=4,
              (2,2)-(3,10)=9. Total = 20.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Prim's MST on complete graph.</strong> All pairs are connected with Manhattan distance weight. Run Prim's: maintain a <code>minCost[]</code> array (minimum edge cost to reach each unvisited vertex from the current MST). At each step, greedily add the cheapest connection. O(n²) time — better than Kruskal's O(n² log n) edge sort for this dense complete graph.</div>
-        <div class="complexity"><strong>Time:</strong> O(n²) | <strong>Space:</strong> O(n)</div>
+        <div class="approach"><strong>Approach: Prim's MST on complete graph.</strong> All pairs are connected with Manhattan distance weight. Run Prim's: maintain a <code>minCost[]</code> array (minimum edge cost to reach each unvisited vertex from the current MST). At each step, greedily add the cheapest connection. O(n�) time � better than Kruskal's O(n� log n) edge sort for this dense complete graph.</div>
+        <div class="complexity"><strong>Time:</strong> O(n�) | <strong>Space:</strong> O(n)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">MinCostConnectPoints</span>(<span class="kw">int</span>[][] pts)
 {
     <span class="kw">int</span> n = pts.Length;
@@ -346,7 +347,7 @@ Explanation: MST uses edges: (0,0)-(2,2)=4, (2,2)-(5,2)=3, (5,2)-(7,0)=4,
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">minCostConnectPoints</span>(points):
     n = <span class="mt">len</span>(points)
     min_cost = [<span class="mt">float</span>(<span class="st">'inf'</span>)] * n; min_cost[<span class="nm">0</span>] = <span class="nm">0</span>
@@ -373,13 +374,13 @@ Explanation: MST uses edges: (0,0)-(2,2)=4, (2,2)-(5,2)=3, (5,2)-(7,0)=4,
     <div class="prob-ex">Input:  n=5, edges=[[0,1],[1,2],[3,4]]
 Output: 2
 Components: {0,1,2} and {3,4}.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Union-Find.</strong> Start with n components. For each edge, Union(u,v). If they were in different components (Union returns true), decrement count. Final count = number of connected components. Alternatively, use BFS/DFS counting unvisited start vertices. Union-Find is faster O(α(n)) per edge vs O(V+E) for BFS/DFS but both are optimal here.</div>
-        <div class="complexity"><strong>Time:</strong> O(n + E × α(n)) ≈ O(n + E) | <strong>Space:</strong> O(n)</div>
+        <div class="approach"><strong>Approach: Union-Find.</strong> Start with n components. For each edge, Union(u,v). If they were in different components (Union returns true), decrement count. Final count = number of connected components. Alternatively, use BFS/DFS counting unvisited start vertices. Union-Find is faster O(a(n)) per edge vs O(V+E) for BFS/DFS but both are optimal here.</div>
+        <div class="complexity"><strong>Time:</strong> O(n + E � a(n)) � O(n + E) | <strong>Space:</strong> O(n)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">CountComponents</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] edges)
 {
     <span class="kw">int</span>[] parent = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">ToArray</span>();
@@ -400,7 +401,7 @@ Components: {0,1,2} and {3,4}.</div>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">countComponents</span>(n, edges):
     parent = <span class="mt">list</span>(<span class="mt">range</span>(n)); rank = [<span class="nm">0</span>] * n; count = n
     <span class="kw">def</span> find(x):
@@ -428,13 +429,13 @@ Components: {0,1,2} and {3,4}.</div>
     <div class="prob-ex">Input:  edges = [[1,2],[1,3],[2,3]]
 Output: [2,3]
 Adding [2,3] creates a cycle 1-2-3-1. It appears last among valid cycle edges.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Process edges with Union-Find. First edge that connects same component = cycle edge.</strong> Process edges in order. For each edge (u,v), try Union(u,v). If Union returns false (already connected), this edge is the redundant one — return it. Since we process in order, the first such edge we encounter is exactly the one "added last" to create the cycle.</div>
-        <div class="complexity"><strong>Time:</strong> O(n × α(n)) | <strong>Space:</strong> O(n)</div>
+        <div class="approach"><strong>Approach: Process edges with Union-Find. First edge that connects same component = cycle edge.</strong> Process edges in order. For each edge (u,v), try Union(u,v). If Union returns false (already connected), this edge is the redundant one � return it. Since we process in order, the first such edge we encounter is exactly the one "added last" to create the cycle.</div>
+        <div class="complexity"><strong>Time:</strong> O(n � a(n)) | <strong>Space:</strong> O(n)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span>[] <span class="mt">FindRedundantConnection</span>(<span class="kw">int</span>[][] edges)
 {
     <span class="kw">int</span> n = edges.Length;
@@ -456,7 +457,7 @@ Adding [2,3] creates a cycle 1-2-3-1. It appears last among valid cycle edges.</
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">findRedundantConnection</span>(edges):
     n = <span class="mt">len</span>(edges)
     parent = <span class="mt">list</span>(<span class="mt">range</span>(n+<span class="nm">1</span>)); rank = [<span class="nm">0</span>] * (n+<span class="nm">1</span>)
@@ -482,17 +483,17 @@ Adding [2,3] creates a cycle 1-2-3-1. It appears last among valid cycle edges.</
         <div class="prob-title"><span class="prob-num">8</span>Swim in Rising Water (LeetCode #778)</div>
         <div class="prob-tags"><span class="tag tag-hard">Hard</span><span class="tag tag-algo">Dijkstra / Binary Search</span></div>
     </div>
-    <div class="prob-desc">You have an n×n grid where <code>grid[r][c]</code> is the elevation at cell (r,c). At time t, you can swim from any cell to adjacent cells if t ≥ elevation of both cells. Find the minimum time to swim from (0,0) to (n-1,n-1).</div>
+    <div class="prob-desc">You have an n�n grid where <code>grid[r][c]</code> is the elevation at cell (r,c). At time t, you can swim from any cell to adjacent cells if t = elevation of both cells. Find the minimum time to swim from (0,0) to (n-1,n-1).</div>
     <div class="prob-ex">Input:  grid = [[0,2],[1,3]]
 Output: 3
-At t=3: (0,0)→(0,1) requires max(0,2)=2 ≤ 3 ✓, (0,1)→(1,1) requires max(2,3)=3 ≤ 3 ✓.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+At t=3: (0,0)?(0,1) requires max(0,2)=2 = 3 ?, (0,1)?(1,1) requires max(2,3)=3 = 3 ?.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Dijkstra where edge weight = max(current_time, grid[nr][nc]).</strong> The "time" to reach (nr,nc) = max(time_to_reach_current, grid[nr][nc]) — you must wait until both the current cell and next cell are swimmable. This is exactly "minimum bottleneck path" — identical in structure to "Path With Minimum Effort" (P2) but with max(dist, elevation) instead of max(dist, abs_diff). Use Dijkstra with a min-heap on time.</div>
-        <div class="complexity"><strong>Time:</strong> O(n² × log(n²)) | <strong>Space:</strong> O(n²)</div>
+        <div class="approach"><strong>Approach: Dijkstra where edge weight = max(current_time, grid[nr][nc]).</strong> The "time" to reach (nr,nc) = max(time_to_reach_current, grid[nr][nc]) � you must wait until both the current cell and next cell are swimmable. This is exactly "minimum bottleneck path" � identical in structure to "Path With Minimum Effort" (P2) but with max(dist, elevation) instead of max(dist, abs_diff). Use Dijkstra with a min-heap on time.</div>
+        <div class="complexity"><strong>Time:</strong> O(n� � log(n�)) | <strong>Space:</strong> O(n�)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span> <span class="mt">SwimInWater</span>(<span class="kw">int</span>[][] grid)
 {
     <span class="kw">int</span> n = grid.Length;
@@ -519,7 +520,7 @@ At t=3: (0,0)→(0,1) requires max(0,2)=2 ≤ 3 ✓, (0,1)→(1,1) requires max(
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">import</span> heapq
 
 <span class="kw">def</span> <span class="mt">swimInWater</span>(grid):
@@ -541,8 +542,8 @@ At t=3: (0,0)→(0,1) requires max(0,2)=2 ≤ 3 ✓, (0,1)→(1,1) requires max(
     </div>
 </div>
 
-<!-- ═════════════════ GROUP 3: TOPOLOGICAL SORT + SCC -->
-<div class="section-heading">Group 3 — Topological Sort &amp; SCC (4 Problems)</div>
+<!-- ----------------- GROUP 3: TOPOLOGICAL SORT + SCC -->
+<div class="section-heading">Group 3 � Topological Sort &amp; SCC (4 Problems)</div>
 
 <!-- P9 -->
 <div class="prob-card">
@@ -553,13 +554,13 @@ At t=3: (0,0)→(0,1) requires max(0,2)=2 ≤ 3 ✓, (0,1)→(1,1) requires max(
     <div class="prob-desc">Given numCourses and prerequisites <code>[a,b]</code> (must take b before a), return a valid ordering to take all courses. If impossible (cycle), return an empty array.</div>
     <div class="prob-ex">Input:  numCourses=4, prerequisites=[[1,0],[2,0],[3,1],[3,2]]
 Output: [0,2,1,3] or [0,1,2,3]  (any valid topological order)</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Kahn's algorithm (BFS topological sort).</strong> Build graph: edge b→a for each [a,b] prerequisite. Compute in-degrees. Start with in-degree 0 courses. Process in BFS order, decrement neighbors' in-degrees. If result length == numCourses, return result. Else cycle exists, return [].</div>
+        <div class="approach"><strong>Approach: Kahn's algorithm (BFS topological sort).</strong> Build graph: edge b?a for each [a,b] prerequisite. Compute in-degrees. Start with in-degree 0 courses. Process in BFS order, decrement neighbors' in-degrees. If result length == numCourses, return result. Else cycle exists, return [].</div>
         <div class="complexity"><strong>Time:</strong> O(V+E) | <strong>Space:</strong> O(V+E)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public int</span>[] <span class="mt">FindOrder</span>(<span class="kw">int</span> numCourses, <span class="kw">int</span>[][] prereqs)
 {
     <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[numCourses];
@@ -578,7 +579,7 @@ Output: [0,2,1,3] or [0,1,2,3]  (any valid topological order)</div>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, deque
 
 <span class="kw">def</span> <span class="mt">findOrder</span>(numCourses, prerequisites):
@@ -607,14 +608,14 @@ Output: [0,2,1,3] or [0,1,2,3]  (any valid topological order)</div>
 Output: "wertf"
 From wrt vs wrf: t before f.  From wrf vs er: w before e.
 From er vs ett: r before t.  From ett vs rftt: e before r.
-Order: w→e→r→t→f</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+Order: w?e?r?t?f</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Build ordering graph from word comparisons, then topological sort.</strong> Compare adjacent words character by character. At the first differing character, word[i][j] comes before word[i+1][j] in the alphabet — add directed edge. Special case: if word[i] is a prefix of word[i+1] but longer, it's invalid (e.g., ["abc","ab"] is impossible). Run Kahn's on the character ordering graph. If all characters are ordered = return result. If cycle = return "".</div>
-        <div class="complexity"><strong>Time:</strong> O(C) where C = total chars in all words | <strong>Space:</strong> O(1) — only 26 letters</div>
+        <div class="approach"><strong>Approach: Build ordering graph from word comparisons, then topological sort.</strong> Compare adjacent words character by character. At the first differing character, word[i][j] comes before word[i+1][j] in the alphabet � add directed edge. Special case: if word[i] is a prefix of word[i+1] but longer, it's invalid (e.g., ["abc","ab"] is impossible). Run Kahn's on the character ordering graph. If all characters are ordered = return result. If cycle = return "".</div>
+        <div class="complexity"><strong>Time:</strong> O(C) where C = total chars in all words | <strong>Space:</strong> O(1) � only 26 letters</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public string</span> <span class="mt">AlienOrder</span>(<span class="kw">string</span>[] words)
 {
     <span class="kw">var</span> chars = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">char</span>&gt;(<span class="kw">string</span>.<span class="mt">Concat</span>(words));
@@ -640,7 +641,7 @@ Order: w→e→r→t→f</div>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, deque
 
 <span class="kw">def</span> <span class="mt">alienOrder</span>(words):
@@ -673,18 +674,18 @@ Order: w→e→r→t→f</div>
     <div class="prob-ex">Input:  graph = [[1,2],[2,3],[5],[0],[5],[],[]]
 Output: [2,4,5,6]
 Node 5,6 are terminals. Node 4 only goes to 5 (safe). Node 2 only goes to 5 (safe). Etc.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach: Reverse the graph, then topological sort from terminal nodes.</strong> A node is safe if it cannot reach a cycle. Reverse all edges. Terminal nodes in the original graph (out-degree 0) become source nodes in the reversed graph. Run Kahn's on the reversed graph. Only nodes in the topological order (reachable from sources in reversed graph = reachable from safe nodes in original) are safe.</div>
         <div class="complexity"><strong>Time:</strong> O(V+E) | <strong>Space:</strong> O(V+E)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">EventualSafeNodes</span>(<span class="kw">int</span>[][] graph)
 {
     <span class="kw">int</span> n = graph.Length;
     <span class="kw">var</span> radj  = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];  <span class="cm">// reversed graph</span>
-    <span class="kw">int</span>[] outDeg = <span class="kw">new int</span>[n];     <span class="cm">// original out-degree → in-degree in reversed</span>
+    <span class="kw">int</span>[] outDeg = <span class="kw">new int</span>[n];     <span class="cm">// original out-degree ? in-degree in reversed</span>
     <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n;i++) radj[i]=<span class="kw">new</span>();
     <span class="kw">for</span> (<span class="kw">int</span> u=<span class="nm">0</span>;u&lt;n;u++)
         <span class="kw">foreach</span>(<span class="kw">int</span> v <span class="kw">in</span> graph[u]) { radj[v].<span class="mt">Add</span>(u); outDeg[u]++; }
@@ -701,7 +702,7 @@ Node 5,6 are terminals. Node 4 only goes to 5 (safe). Node 2 only goes to 5 (saf
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, deque
 
 <span class="kw">def</span> <span class="mt">eventualSafeNodes</span>(graph):
@@ -728,18 +729,18 @@ Node 5,6 are terminals. Node 4 only goes to 5 (safe). Node 2 only goes to 5 (saf
         <div class="prob-title"><span class="prob-num">12</span>Critical Connections in a Network (LeetCode #1192)</div>
         <div class="prob-tags"><span class="tag tag-hard">Hard</span><span class="tag tag-algo">Bridges / DFS</span></div>
     </div>
-    <div class="prob-desc">Given a network of n servers and connections, find all critical connections — edges whose removal disconnects the network. These are also called "bridges." Return all such connections.</div>
+    <div class="prob-desc">Given a network of n servers and connections, find all critical connections � edges whose removal disconnects the network. These are also called "bridges." Return all such connections.</div>
     <div class="prob-ex">Input:  n=4, connections=[[0,1],[1,2],[2,0],[1,3]]
 Output: [[1,3]]
 Removing edge 1-3 disconnects server 3 from the network.
 The cycle 0-1-2-0 means no edge in the cycle is a bridge.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach: Tarjan's Bridge Finding Algorithm — DFS with discovery times and low-link values.</strong> For each edge (u,v), track: <code>disc[u]</code> = discovery time of u, <code>low[u]</code> = minimum discovery time reachable from the subtree of u (via back edges). An edge (u,v) is a bridge if <code>low[v] > disc[u]</code> — meaning v's subtree cannot reach u or anything above u without going through the edge (u,v). This runs in O(V+E).</div>
+        <div class="approach"><strong>Approach: Tarjan's Bridge Finding Algorithm � DFS with discovery times and low-link values.</strong> For each edge (u,v), track: <code>disc[u]</code> = discovery time of u, <code>low[u]</code> = minimum discovery time reachable from the subtree of u (via back edges). An edge (u,v) is a bridge if <code>low[v] > disc[u]</code> � meaning v's subtree cannot reach u or anything above u without going through the edge (u,v). This runs in O(V+E).</div>
         <div class="complexity"><strong>Time:</strong> O(V+E) | <strong>Space:</strong> O(V+E)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">CriticalConnections</span>(<span class="kw">int</span> n, <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; conns)
 {
     <span class="kw">var</span> adj  = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
@@ -766,7 +767,7 @@ The cycle 0-1-2-0 means no edge in the cycle is a bridge.</div>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
 <span class="kw">def</span> <span class="mt">criticalConnections</span>(n, connections):
@@ -788,8 +789,8 @@ The cycle 0-1-2-0 means no edge in the cycle is a bridge.</div>
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10G Complete</button>
-<div class="toast" id="toast">✅ Module 10G marked complete! Phase 6 complete!</div>
+<button class="mark-btn" onclick="markComplete()">? Mark Module 10G Complete</button>
+<div class="toast" id="toast">? Module 10G marked complete! Phase 6 complete!</div>
     <script>var MODULE_ID = 'm10g';</script>
     <script src="../dsa.js"></script>
 </body>
