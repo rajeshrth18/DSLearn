@@ -114,6 +114,26 @@
   [data-theme="light"] .copy-btn:hover { background: #dee2e6; }
   [data-theme="light"] .theme-toggle-btn { background: #e0e0e0; border-color: #ccc; color: #333; }
   [data-theme="light"] .theme-toggle-btn:hover { background: #d0d0d0; }
+
+  /* Floating theme toggle (bottom-right corner) */
+  .theme-toggle-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .theme-toggle-btn {
+      background: #313244;
+      border: 1px solid #45475a;
+      color: #cdd6f4;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.2s;
+  }
+  .theme-toggle-btn:hover { background: #45475a; }
 </style>
 </head>
 <body>
