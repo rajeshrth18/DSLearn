@@ -497,6 +497,115 @@ hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
+/* ══════════════════════════════════════════════════════════
+   DARK MODE OVERRIDES
+   ══════════════════════════════════════════════════════════ */
+[data-theme="dark"] body {
+    background: #1e1e2e;
+    color: #cdd6f4;
+}
+[data-theme="dark"] .nav-box {
+    background: #181825;
+    border-color: #313244;
+}
+[data-theme="dark"] .nav-box strong { color: #89b4fa; }
+[data-theme="dark"] .nav-box a { color: #89dceb; }
+[data-theme="dark"] .module-nav {
+    background: #181825;
+    border-color: #313244;
+}
+[data-theme="dark"] .module-nav a { color: #89b4fa; }
+[data-theme="dark"] .toc {
+    background: #181825;
+    border-color: #313244;
+}
+[data-theme="dark"] .toc h2 { color: #cba6f7; }
+[data-theme="dark"] .toc li { color: #cdd6f4; }
+[data-theme="dark"] .toc li span { color: #a6adc8; }
+[data-theme="dark"] .section-heading {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    color: #fff;
+}
+[data-theme="dark"] p, [data-theme="dark"] li { color: #cdd6f4; }
+[data-theme="dark"] h3, [data-theme="dark"] h4 { color: #89dceb; }
+[data-theme="dark"] strong { color: #f9e2af; }
+[data-theme="dark"] code {
+    background: #313244;
+    color: #cdd6f4;
+}
+[data-theme="dark"] pre {
+    background: #181825;
+    border-color: #313244;
+    color: #cdd6f4;
+}
+[data-theme="dark"] .kw { color: #569cd6; }
+[data-theme="dark"] .cm { color: #6a9955; }
+[data-theme="dark"] .st { color: #ce9178; }
+[data-theme="dark"] .nm { color: #b5cea8; }
+[data-theme="dark"] .tp { color: #4ec9b0; }
+[data-theme="dark"] .mt { color: #dcdcaa; }
+[data-theme="dark"] .diagram {
+    background: #0d1117;
+    border-color: #30363d;
+    color: #58a6ff;
+}
+[data-theme="dark"] .note {
+    background: #2d2b22;
+    border-color: #f9e2af;
+}
+[data-theme="dark"] .tip {
+    background: #1e2d2b;
+    border-color: #a6e3a1;
+}
+[data-theme="dark"] .warning {
+    background: #2d1e1e;
+    border-color: #f38ba8;
+}
+[data-theme="dark"] .realworld {
+    background: #1e2235;
+    border-color: #89b4fa;
+}
+[data-theme="dark"] table {
+    border-color: #313244;
+}
+[data-theme="dark"] th {
+    background: #313244;
+    color: #cba6f7;
+    border-color: #45475a;
+}
+[data-theme="dark"] td {
+    border-color: #313244;
+    color: #cdd6f4;
+}
+[data-theme="dark"] tr:nth-child(even) td { background: #1e1e2e; }
+[data-theme="dark"] tr:nth-child(odd) td { background: #181825; }
+[data-theme="dark"] .copy-btn {
+    background: #313244;
+    color: #cdd6f4;
+}
+[data-theme="dark"] .copy-btn:hover { background: #45475a; }
+[data-theme="dark"] .lang-tabs-btns { border-color: #313244; }
+[data-theme="dark"] .tab-btn {
+    background: #2d2d2d;
+    color: #888;
+    border-color: #444;
+}
+[data-theme="dark"] .tab-btn:hover { background: #383838; color: #ccc; }
+[data-theme="dark"] .tab-btn.active {
+    background: #181825;
+    color: #fff;
+    border-bottom-color: #181825;
+}
+[data-theme="dark"] .quiz-card {
+    background: #181825;
+    border-color: #313244;
+}
+[data-theme="dark"] .quiz-card .question { color: #cdd6f4; }
+[data-theme="dark"] .complete-box {
+    background: #1e2d2b;
+    border-color: #a6e3a1;
+}
+
 /* ── Print ──────────────────────────────────────────────── */
 @media print {
     body { padding: 20px; }
