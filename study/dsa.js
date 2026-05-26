@@ -8,6 +8,13 @@
 (function () {
     'use strict';
 
+    // ── Theme Initialization ───────────────────────────────────
+    // Apply theme from localStorage immediately (before DOM ready to prevent flash)
+    (function initTheme() {
+        var theme = localStorage.getItem('dslearn_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+
     // ── Progress Tracking ──────────────────────────────────────
     // Mark module as in-progress on first visit (don't overwrite 'c')
     if (typeof MODULE_ID !== 'undefined' && MODULE_ID) {
@@ -36,6 +43,9 @@
 
         // Wrap bare <pre> elements with .code-block + copy button (Phase 1-2 files)
         setupCopyButtons();
+
+        // Inject theme toggle button if not on index page
+        injectThemeToggle();
     });
 
     // ── Copy Code ─────────────────────────────────────────────
@@ -193,5 +203,43 @@
             wrapper.appendChild(pre);
         });
     }
+
+    // ── Theme Toggle ──────────────────────────────────────────
+    function injectThemeToggle() {
+        // Skip if index.html (has its own toggle) or if toggle already exists
+        if (document.getElementById('theme-btn')) return;
+        if (document.querySelector('.toolbar')) return;
+
+        // Find nav-bar to append toggle (most pages have .nav-bar)
+        var navBar = document.querySelector('.nav-bar');
+        if (!navBar) return;
+
+        var btn = document.createElement('button');
+        btn.id = 'theme-toggle';
+        btn.className = 'theme-toggle-btn';
+        var theme = document.documentElement.getAttribute('data-theme') || 'light';
+        btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        btn.title = 'Toggle dark/light mode';
+        btn.onclick = window.toggleTheme;
+        navBar.appendChild(btn);
+    }
+
+    window.setTheme = function (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('dslearn_theme', theme);
+        var btn = document.getElementById('theme-toggle') || document.getElementById('theme-btn');
+        if (btn) {
+            if (btn.id === 'theme-btn') {
+                btn.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+            } else {
+                btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+    };
+
+    window.toggleTheme = function () {
+        var curr = document.documentElement.getAttribute('data-theme') || 'light';
+        window.setTheme(curr === 'dark' ? 'light' : 'dark');
+    };
 
 })();

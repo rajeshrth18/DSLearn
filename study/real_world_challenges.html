@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,6 +67,53 @@
   .code-block { position:relative; }
   .copy-btn { position:absolute; top:8px; right:8px; background:#313244; color:#cdd6f4; border:none; border-radius:6px; padding:4px 10px; font-size:0.78em; cursor:pointer; z-index:1; }
   .copy-btn:hover { background:#45475a; }
+
+  /* ── Light Mode Overrides ── */
+  [data-theme="light"] body { background: #f5f6fa; color: #2c2c2c; }
+  [data-theme="light"] .cover { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); border-color: #dee2e6; }
+  [data-theme="light"] .cover h1 { color: #fff; }
+  [data-theme="light"] .cover .subtitle { color: #e0e0ff; }
+  [data-theme="light"] .cover .tagline { color: #d0d0e0; }
+  [data-theme="light"] .badge { background: rgba(255,255,255,0.2); color: #fff; }
+  [data-theme="light"] .nav-bar { background: #fff; border-color: #dee2e6; }
+  [data-theme="light"] .nav-bar a { color: #2980b9; border-color: #dee2e6; }
+  [data-theme="light"] .nav-bar a:hover { background: #f0f0f0; }
+  [data-theme="light"] .nav-bar .home { color: #27ae60; }
+  [data-theme="light"] h3 { color: #8e44ad; border-color: #8e44ad; }
+  [data-theme="light"] h4 { color: #2980b9; }
+  [data-theme="light"] p, [data-theme="light"] li { color: #2c2c2c; }
+  [data-theme="light"] strong { color: #d35400; }
+  [data-theme="light"] pre { background: #f8f9fa; border-color: #dee2e6; color: #2c2c2c; }
+  [data-theme="light"] code { background: #e9ecef; color: #2c2c2c; }
+  [data-theme="light"] .kw { color: #0000ff; }
+  [data-theme="light"] .cm { color: #008000; }
+  [data-theme="light"] .st { color: #a31515; }
+  [data-theme="light"] .nm { color: #098658; }
+  [data-theme="light"] .tp { color: #267f99; }
+  [data-theme="light"] .mt { color: #795e26; }
+  [data-theme="light"] .diagram { background: #f8f9fa; border-color: #dee2e6; color: #2980b9; }
+  [data-theme="light"] .note { background: #fffbe6; }
+  [data-theme="light"] .tip { background: #e8f8f5; }
+  [data-theme="light"] .warning { background: #fef5f5; }
+  [data-theme="light"] .realworld { background: #eaf4fc; }
+  [data-theme="light"] .challenge { background: #fff; border-color: #dee2e6; }
+  [data-theme="light"] .challenge-meta .company { color: #7f8c8d; }
+  [data-theme="light"] .algo-tag { background: #f0e6f6; color: #8e44ad; border-color: #d4b8e0; }
+  [data-theme="light"] .phase-ref { background: #e8f4fc; color: #2980b9; border-color: #b8d4e8; }
+  [data-theme="light"] .scale { background: #fff8e6; color: #d35400; border-color: #f5c27a; }
+  [data-theme="light"] table { border-color: #dee2e6; }
+  [data-theme="light"] th { background: #f0e6f6; color: #8e44ad; border-color: #dee2e6; }
+  [data-theme="light"] td { border-color: #dee2e6; color: #2c2c2c; }
+  [data-theme="light"] tr:nth-child(even) td { background: #f8f9fa; }
+  [data-theme="light"] tr:nth-child(odd) td { background: #fff; }
+  [data-theme="light"] .lang-tabs-btns { border-color: #dee2e6; }
+  [data-theme="light"] .tab-btn { background: #f0f0f0; color: #666; border-color: #ccc; }
+  [data-theme="light"] .tab-btn:hover { background: #e0e0e0; color: #333; }
+  [data-theme="light"] .tab-btn.active { background: #fff; color: #333; border-bottom-color: #fff; }
+  [data-theme="light"] .copy-btn { background: #e9ecef; color: #333; }
+  [data-theme="light"] .copy-btn:hover { background: #dee2e6; }
+  [data-theme="light"] .theme-toggle-btn { background: #e0e0e0; border-color: #ccc; color: #333; }
+  [data-theme="light"] .theme-toggle-btn:hover { background: #d0d0d0; }
 </style>
 </head>
 <body>
@@ -2310,6 +2357,397 @@
     <div class="note"><strong>Real-World Scale:</strong> Calendly processes millions of scheduling requests daily. For each booking link visit, it fetches the host's calendar (n busy slots), runs MergeIntervals + FindFreeSlots in O(n log n), and displays available windows in under 200ms. Google "Find a time" extends this to 10+ attendees by intersecting each person's free slots with a two-pointer O(m+n) merge — the same algorithm you learned in Phase 1.</div>
   </div>
 
+  <div class="challenge" id="rate-limiter">
+    <div class="challenge-header">
+      <div class="challenge-icon">🚦</div>
+      <div class="challenge-meta">
+        <h3>18) API Rate Limiter (Token Bucket + Sliding Window)</h3>
+        <div class="company">Company: Stripe / Cloudflare / GitHub</div>
+        <span class="algo-tag">HashMap</span>
+        <span class="algo-tag">Queue</span>
+        <span class="algo-tag">Sliding Window</span>
+        <span class="algo-tag">Greedy</span>
+        <span class="phase-ref">Phase 1</span>
+        <span class="phase-ref">Phase 3</span>
+        <span class="scale">Scale: 50M req/min</span>
+      </div>
+    </div>
+    <p>
+      Public APIs need fair-usage controls to stop abuse, brute-force attempts, and accidental traffic spikes.
+      Build a limiter that answers: "Can user X make this request right now?" while keeping latency tiny.
+      Two common production strategies are Sliding Window Counter and Token Bucket.
+    </p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br>
+      <strong>Problem:</strong> Enforce limits like "100 requests per minute" per API key or IP.<br>
+      <strong>Naive approach:</strong> Keep all timestamps forever and scan every request. Too slow + memory heavy.<br>
+      <strong>Key insight:</strong> Store only recent timestamps (window) or available credits (tokens), and evict stale state aggressively.
+    </div>
+
+    <div class="diagram">
+Sliding Window (limit=5, window=10s)
+
+t=1  [1]                     allow
+t=2  [1,2]                   allow
+t=4  [1,2,4]                 allow
+t=7  [1,2,4,7]               allow
+t=8  [1,2,4,7,8]             allow
+t=9  [1,2,4,7,8]             reject (already 5 in last 10s)
+t=12 remove 1,2 =&gt; [4,7,8]   allow
+
+Token Bucket (capacity=10, refill=2 tokens/sec)
+
+tokens += elapsed * refillRate (capped at capacity)
+if tokens &gt;= cost: tokens -= cost, allow
+else reject
+    </div>
+
+    <h4>Core Algorithm</h4>
+    <span class="lang-label lang-cs">C#</span>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+
+public class SlidingWindowRateLimiter
+{
+    private readonly int _limit;
+    private readonly TimeSpan _window;
+    private readonly Dictionary&lt;string, Queue&lt;DateTime&gt;&gt; _hits = new();
+
+    public SlidingWindowRateLimiter(int limit, TimeSpan window)
+    {
+        _limit = limit;
+        _window = window;
+    }
+
+    public bool Allow(string key, DateTime nowUtc)
+    {
+        if (!_hits.TryGetValue(key, out var q))
+        {
+            q = new Queue&lt;DateTime&gt;();
+            _hits[key] = q;
+        }
+
+        var cutoff = nowUtc - _window;
+        while (q.Count &gt; 0 &amp;&amp; q.Peek() &lt;= cutoff)
+            q.Dequeue();
+
+        if (q.Count &gt;= _limit)
+            return false;
+
+        q.Enqueue(nowUtc);
+        return true;
+    }
+}</code></pre>
+    </div>
+
+    <span class="lang-label lang-py">Python</span>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code class="language-python">from collections import defaultdict, deque
+from datetime import datetime, timedelta
+
+
+class SlidingWindowRateLimiter:
+    def __init__(self, limit: int, window_seconds: int):
+        self.limit = limit
+        self.window = timedelta(seconds=window_seconds)
+        self.hits = defaultdict(deque)
+
+    def allow(self, key: str, now_utc: datetime) -> bool:
+        q = self.hits[key]
+        cutoff = now_utc - self.window
+        while q and q[0] &lt;= cutoff:
+            q.popleft()
+
+        if len(q) &gt;= self.limit:
+            return False
+
+        q.append(now_utc)
+        return True</code></pre>
+    </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br>
+      Each client key maps to a small queue of recent timestamps. On each request, drop stale entries older than the window,
+      then check queue size against the limit. This gives near O(1) amortized work per request because every timestamp is
+      enqueued and dequeued once. In distributed systems, teams shard keys with consistent hashing and often back counters
+      by Redis for multi-instance coordination.
+    </div>
+  </div>
+
+  <div class="challenge" id="lru-cache">
+    <div class="challenge-header">
+      <div class="challenge-icon">🧠</div>
+      <div class="challenge-meta">
+        <h3>19) LRU Cache for Hot Data</h3>
+        <div class="company">Company: Redis / Netflix / Meta</div>
+        <span class="algo-tag">HashMap</span>
+        <span class="algo-tag">Doubly Linked List</span>
+        <span class="algo-tag">Cache Eviction</span>
+        <span class="phase-ref">Phase 2</span>
+        <span class="phase-ref">Phase 3</span>
+        <span class="scale">Scale: 100M key lookups/sec</span>
+      </div>
+    </div>
+    <p>
+      Caching speeds up systems by keeping hot items in memory. But memory is finite, so when cache is full, we need an
+      eviction policy. LRU (Least Recently Used) is popular because recency often predicts future access.
+      The interview-critical requirement is O(1) get/put.
+    </p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br>
+      <strong>Problem:</strong> Support <code>get(key)</code> and <code>put(key, value)</code> in O(1), evicting least recently used key when full.<br>
+      <strong>Naive approach:</strong> Array/list scan for oldest item gives O(n) updates.<br>
+      <strong>Key insight:</strong> HashMap gives O(1) node lookup, doubly linked list gives O(1) move-to-front and tail eviction.
+    </div>
+
+    <div class="diagram">
+Capacity = 3
+
+Most Recent &lt;- [A] &lt;-&gt; [B] &lt;-&gt; [C] -&gt; Least Recent
+
+get(B): move B to front
+Most Recent &lt;- [B] &lt;-&gt; [A] &lt;-&gt; [C] -&gt; Least Recent
+
+put(D): full, evict tail (C), insert D at front
+Most Recent &lt;- [D] &lt;-&gt; [B] &lt;-&gt; [A] -&gt; Least Recent
+    </div>
+
+    <h4>Core Algorithm</h4>
+    <span class="lang-label lang-cs">C#</span>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code class="language-csharp">using System.Collections.Generic;
+
+public class LRUCache
+{
+    private readonly int _capacity;
+    private readonly Dictionary&lt;int, LinkedListNode&lt;(int key, int value)&gt;&gt; _map = new();
+    private readonly LinkedList&lt;(int key, int value)&gt; _list = new();
+
+    public LRUCache(int capacity) =&gt; _capacity = capacity;
+
+    public int Get(int key)
+    {
+        if (!_map.TryGetValue(key, out var node)) return -1;
+        _list.Remove(node);
+        _list.AddFirst(node);
+        return node.Value.value;
+    }
+
+    public void Put(int key, int value)
+    {
+        if (_map.TryGetValue(key, out var node))
+        {
+            node.Value = (key, value);
+            _list.Remove(node);
+            _list.AddFirst(node);
+            return;
+        }
+
+        if (_map.Count == _capacity)
+        {
+            var lru = _list.Last!;
+            _map.Remove(lru.Value.key);
+            _list.RemoveLast();
+        }
+
+        var fresh = new LinkedListNode&lt;(int key, int value)&gt;((key, value));
+        _list.AddFirst(fresh);
+        _map[key] = fresh;
+    }
+}</code></pre>
+    </div>
+
+    <span class="lang-label lang-py">Python</span>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code class="language-python">from collections import OrderedDict
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.data = OrderedDict()
+
+    def get(self, key: int) -> int:
+        if key not in self.data:
+            return -1
+        self.data.move_to_end(key, last=False)  # move to MRU position
+        return self.data[key]
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.data:
+            self.data[key] = value
+            self.data.move_to_end(key, last=False)
+            return
+
+        if len(self.data) == self.capacity:
+            self.data.popitem(last=True)  # evict LRU
+
+        self.data[key] = value
+        self.data.move_to_end(key, last=False)</code></pre>
+    </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br>
+      The hashmap stores key -&gt; node pointers, so lookups are O(1). The doubly linked list stores recency order;
+      on every access/update, move node to front (MRU). When full, evict tail (LRU) in O(1). This exact pattern is used
+      in CDN edge caches, DB page caches, and API response caches. LFU variants add frequency buckets but keep the same
+      core idea: combine direct lookup with O(1) order maintenance.
+    </div>
+  </div>
+
+  <div class="challenge" id="leaderboard">
+    <div class="challenge-header">
+      <div class="challenge-icon">🏆</div>
+      <div class="challenge-meta">
+        <h3>20) Real-Time Leaderboard (Fenwick Tree)</h3>
+        <div class="company">Company: Riot Games / Duolingo / Strava</div>
+        <span class="algo-tag">Fenwick Tree</span>
+        <span class="algo-tag">Prefix Sum</span>
+        <span class="algo-tag">Order Statistics</span>
+        <span class="phase-ref">Phase 7</span>
+        <span class="phase-ref">Phase 4</span>
+        <span class="scale">Scale: 10M score updates/hour</span>
+      </div>
+    </div>
+    <p>
+      Leaderboards need fast score updates and instant rank queries. Sorting the whole player list after every update is too slow.
+      If score range is bounded (for example 0..100000), a Fenwick Tree over score frequencies supports update and rank in O(log M),
+      where M is max score.
+    </p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br>
+      <strong>Problem:</strong> Update a player's score and return rank quickly (1 = highest score).<br>
+      <strong>Naive approach:</strong> Re-sort all players every change: O(n log n) per update.<br>
+      <strong>Key insight:</strong> Track how many players have each score; rank is derived from suffix frequency sums.
+    </div>
+
+    <div class="diagram">
+Score frequencies
+score: 1 2 3 4 5
+freq : 2 1 3 0 1
+
+Players with score &gt;= 4 = freq(4)+freq(5) = 0+1 = 1
+If player score is 4, rank = players with score strictly greater + 1
+
+Fenwick Tree stores prefix sums:
+prefix(5) - prefix(score) =&gt; count of strictly higher scores
+rank = higher + 1
+    </div>
+
+    <h4>Core Algorithm</h4>
+    <span class="lang-label lang-cs">C#</span>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code class="language-csharp">using System.Collections.Generic;
+
+public class Fenwick
+{
+    private readonly int[] _bit;
+    public Fenwick(int n) =&gt; _bit = new int[n + 1];
+
+    public void Add(int idx, int delta)
+    {
+        for (; idx &lt; _bit.Length; idx += idx &amp; -idx) _bit[idx] += delta;
+    }
+
+    public int Sum(int idx)
+    {
+        int res = 0;
+        for (; idx &gt; 0; idx -= idx &amp; -idx) res += _bit[idx];
+        return res;
+    }
+}
+
+public class Leaderboard
+{
+    private readonly int _maxScore;
+    private readonly Fenwick _fw;
+    private readonly Dictionary&lt;string, int&gt; _playerScore = new();
+
+    public Leaderboard(int maxScore)
+    {
+        _maxScore = maxScore;
+        _fw = new Fenwick(maxScore + 2);
+    }
+
+    public void UpdateScore(string playerId, int newScore)
+    {
+        if (_playerScore.TryGetValue(playerId, out int oldScore))
+            _fw.Add(oldScore + 1, -1);
+
+        _playerScore[playerId] = newScore;
+        _fw.Add(newScore + 1, +1);
+    }
+
+    public int GetRank(string playerId)
+    {
+        int score = _playerScore[playerId];
+        int total = _fw.Sum(_maxScore + 1);
+        int upToScore = _fw.Sum(score + 1);
+        int higher = total - upToScore;
+        return higher + 1;
+    }
+}</code></pre>
+    </div>
+
+    <span class="lang-label lang-py">Python</span>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code class="language-python">class Fenwick:
+    def __init__(self, n: int):
+        self.bit = [0] * (n + 1)
+
+    def add(self, idx: int, delta: int) -> None:
+        while idx &lt; len(self.bit):
+            self.bit[idx] += delta
+            idx += idx &amp; -idx
+
+    def prefix_sum(self, idx: int) -> int:
+        result = 0
+        while idx &gt; 0:
+            result += self.bit[idx]
+            idx -= idx &amp; -idx
+        return result
+
+
+class Leaderboard:
+    def __init__(self, max_score: int):
+        self.max_score = max_score
+        self.fw = Fenwick(max_score + 2)
+        self.player_score = {}
+
+    def update_score(self, player_id: str, new_score: int) -> None:
+        old = self.player_score.get(player_id)
+        if old is not None:
+            self.fw.add(old + 1, -1)
+        self.player_score[player_id] = new_score
+        self.fw.add(new_score + 1, +1)
+
+    def get_rank(self, player_id: str) -> int:
+        score = self.player_score[player_id]
+        total = self.fw.prefix_sum(self.max_score + 1)
+        up_to_score = self.fw.prefix_sum(score + 1)
+        higher = total - up_to_score
+        return higher + 1</code></pre>
+    </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br>
+      We maintain a frequency table of scores and compress it into a Fenwick Tree for fast prefix sums.
+      Updating a player means decrementing old score bucket and incrementing new score bucket. Rank is computed as
+      <code>1 + count(scores strictly greater than mine)</code>, which is a suffix query derived from prefix sums.
+      Time complexity is O(log M) per update/query, a massive win over re-sorting all players.
+    </div>
+  </div>
+
   <!-- ══════════════════════ SUMMARY TABLE ══════════════════════ -->
   <h2>Challenge → Algorithm Mapping</h2>
   <table>
@@ -2336,6 +2774,9 @@
     <tr><td>PostgreSQL B-Tree index</td><td>B-Tree + Binary Search range scan</td><td>Phase 3, 7</td><td>Trillion-row tables</td></tr>
     <tr><td>Bitcoin Merkle proof</td><td>Merkle Tree (hash tree) + SHA-256</td><td>Phase 3, 4</td><td>900M+ transactions</td></tr>
     <tr><td>Google Calendar scheduling</td><td>Interval Merge + Min-Heap rooms + Two Pointers</td><td>Phase 1, 4, 7</td><td>500M users</td></tr>
+    <tr><td>API gateway throttling</td><td>Sliding Window / Token Bucket</td><td>Phase 1, 3</td><td>50M req/min</td></tr>
+    <tr><td>CDN/API hot-object cache</td><td>HashMap + Doubly Linked List (LRU)</td><td>Phase 2, 3</td><td>100M lookups/sec</td></tr>
+    <tr><td>Live gaming leaderboard</td><td>Fenwick Tree + Frequency Map</td><td>Phase 4, 7</td><td>10M updates/hour</td></tr>
   </table>
 
   <div class="tip">
