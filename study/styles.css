@@ -488,6 +488,13 @@ hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
 }
 [data-theme="light"] .theme-toggle-btn:hover { background: #d0d0d0; }
 
+/* Theme toggle in module-nav: align properly */
+.module-nav .theme-toggle-btn {
+    margin-right: auto;
+    padding: 4px 10px;
+    font-size: 0.9em;
+}
+
 /* ── Print ──────────────────────────────────────────────── */
 @media print {
     body { padding: 20px; }

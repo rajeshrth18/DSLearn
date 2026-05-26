@@ -208,11 +208,14 @@
     function injectThemeToggle() {
         // Skip if index.html (has its own toggle) or if toggle already exists
         if (document.getElementById('theme-btn')) return;
+        if (document.getElementById('theme-toggle')) return;
         if (document.querySelector('.toolbar')) return;
 
-        // Find nav-bar to append toggle (most pages have .nav-bar)
-        var navBar = document.querySelector('.nav-bar');
-        if (!navBar) return;
+        // Find container to append toggle - try multiple selectors
+        var container = document.querySelector('.nav-bar') ||
+                        document.querySelector('.module-nav') ||
+                        document.querySelector('.nav-box');
+        if (!container) return;
 
         var btn = document.createElement('button');
         btn.id = 'theme-toggle';
@@ -221,7 +224,13 @@
         btn.textContent = theme === 'dark' ? '☀️' : '🌙';
         btn.title = 'Toggle dark/light mode';
         btn.onclick = window.toggleTheme;
-        navBar.appendChild(btn);
+
+        // For module-nav, insert at beginning; otherwise append
+        if (container.classList.contains('module-nav')) {
+            container.insertBefore(btn, container.firstChild);
+        } else {
+            container.appendChild(btn);
+        }
     }
 
     window.setTheme = function (theme) {
