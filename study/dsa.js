@@ -75,13 +75,22 @@
         btn.textContent = hidden ? '🙈 Hide Solution' : '💡 Show Solution';
     };
 
-    // ── Toggle Answer (quiz files) ────────────────────────────
+    // ── Toggle Answer (quiz files — Phase 4–6) ───────────────
     window.toggleAnswer = function (btn) {
         var ans = btn.nextElementSibling;
         if (!ans) return;
         var hidden = ans.style.display !== 'block';
         ans.style.display = hidden ? 'block' : 'none';
         btn.textContent = hidden ? '🙈 Hide Answer' : '💡 Show Answer';
+    };
+
+    // ── Toggle Answer (quiz-card files — Phase 7+) ────────────
+    window.toggle = function (btn) {
+        var ans = btn.nextElementSibling;
+        if (!ans) return;
+        var hidden = ans.style.display !== 'block';
+        ans.style.display = hidden ? 'block' : 'none';
+        btn.textContent = hidden ? '🙈 Hide Answer' : '▶ Show Answer';
     };
 
     // ── Language Tab Setup ────────────────────────────────────
