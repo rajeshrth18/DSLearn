@@ -55,15 +55,15 @@
   .lang-cs { background:#dbeafe; color:#1e40af; }
   .lang-py { background:#fef3c7; color:#92400e; }
   .lang-tabs-wrapper { margin:16px 0 4px 0; }
-  .lang-tabs-btns { display:flex; gap:0; margin-bottom:0; }
-  .tab-btn { background:#2d2d2d; color:#888; border:1px solid #444; border-bottom:none; padding:6px 18px; font-size:0.82em; font-weight:700; cursor:pointer; border-radius:8px 8px 0 0; transition:background 0.15s,color 0.15s; }
+  .lang-tabs-btns { display:flex; gap:0; margin-bottom:0; border-bottom:2px solid #313244; }
+  .tab-btn { background:#2d2d2d; color:#888; border:1px solid #444; border-bottom:none; padding:6px 18px; font-size:0.82em; font-weight:700; cursor:pointer; border-radius:8px 8px 0 0; transition:background 0.15s,color 0.15s; position:relative; }
   .tab-btn:hover { color:#ccc; background:#383838; }
-  .tab-btn.active { background:#1e1e2e; color:#fff; }
+  .tab-btn.active { background:#181825; color:#fff; margin-bottom:-2px; border-bottom:2px solid #181825; z-index:1; }
   .tab-btn[data-lang="cs"].active { border-top:3px solid #3498db; color:#9cdcfe; }
   .tab-btn[data-lang="py"].active { border-top:3px solid #f39c12; color:#f39c12; }
   .lang-tabs-wrapper .lang-label { display:none !important; }
   .lang-tabs-wrapper .code-block { margin-top:0; }
-  .lang-tabs-wrapper .code-block pre { border-radius:0 10px 10px 10px; margin:0; }
+  .lang-tabs-wrapper .code-block pre { border-radius:0 8px 8px 8px; margin:0; }
   .code-block { position:relative; }
   .copy-btn { position:absolute; top:8px; right:8px; background:#313244; color:#cdd6f4; border:none; border-radius:6px; padding:4px 10px; font-size:0.78em; cursor:pointer; z-index:1; }
   .copy-btn:hover { background:#45475a; }

@@ -239,6 +239,7 @@ hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
     display: flex;
     gap: 0;
     margin-bottom: 0;
+    border-bottom: 2px solid #444; /* shelf — spans full width, connecting tabs to code */
 }
 .tab-btn {
     background: #2d2d2d;
@@ -252,14 +253,21 @@ hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
     border-radius: 8px 8px 0 0;
     transition: background 0.15s, color 0.15s;
     letter-spacing: 0.5px;
+    position: relative; /* needed for z-index */
 }
 .tab-btn:hover { color: #ccc; background: #383838; }
-.tab-btn.active { background: #1e1e1e; color: #fff; }
+.tab-btn.active {
+    background: #1e1e1e;
+    color: #fff;
+    margin-bottom: -2px;          /* overlap the 2px shelf */
+    border-bottom: 2px solid #1e1e1e; /* erase shelf under active tab (matches pre bg) */
+    z-index: 1;
+}
 .tab-btn[data-lang="cs"].active { border-top: 3px solid #3498db; color: #9cdcfe; }
 .tab-btn[data-lang="py"].active { border-top: 3px solid #f39c12; color: #f39c12; }
 .lang-tabs-wrapper .lang-label { display: none !important; }
 .lang-tabs-wrapper .code-block { margin-top: 0; }
-.lang-tabs-wrapper .code-block pre { border-radius: 0 10px 10px 10px; }
+.lang-tabs-wrapper .code-block pre { border-radius: 0 8px 8px 8px; margin: 0; } /* margin:0 overrides div>pre rule */
 
 /* ── Practice Problem Cards ─────────────────────────────── */
 .prob-card {
