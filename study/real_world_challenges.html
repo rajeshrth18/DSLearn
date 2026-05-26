@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -50,6 +50,23 @@
   td { padding: 8px 12px; border: 1px solid #313244; color: #cdd6f4; vertical-align: top; }
   tr:nth-child(even) td { background: #1e1e2e; }
   tr:nth-child(odd) td { background: #181825; }
+  /* ── Language Tabs ── */
+  .lang-label { display:inline-block; padding:3px 10px; border-radius:12px; font-size:0.8em; font-weight:700; margin-bottom:5px; margin-top:8px; }
+  .lang-cs { background:#dbeafe; color:#1e40af; }
+  .lang-py { background:#fef3c7; color:#92400e; }
+  .lang-tabs-wrapper { margin:16px 0 4px 0; }
+  .lang-tabs-btns { display:flex; gap:0; margin-bottom:0; }
+  .tab-btn { background:#2d2d2d; color:#888; border:1px solid #444; border-bottom:none; padding:6px 18px; font-size:0.82em; font-weight:700; cursor:pointer; border-radius:8px 8px 0 0; transition:background 0.15s,color 0.15s; }
+  .tab-btn:hover { color:#ccc; background:#383838; }
+  .tab-btn.active { background:#1e1e2e; color:#fff; }
+  .tab-btn[data-lang="cs"].active { border-top:3px solid #3498db; color:#9cdcfe; }
+  .tab-btn[data-lang="py"].active { border-top:3px solid #f39c12; color:#f39c12; }
+  .lang-tabs-wrapper .lang-label { display:none !important; }
+  .lang-tabs-wrapper .code-block { margin-top:0; }
+  .lang-tabs-wrapper .code-block pre { border-radius:0 10px 10px 10px; margin:0; }
+  .code-block { position:relative; }
+  .copy-btn { position:absolute; top:8px; right:8px; background:#313244; color:#cdd6f4; border:none; border-radius:6px; padding:4px 10px; font-size:0.78em; cursor:pointer; z-index:1; }
+  .copy-btn:hover { background:#45475a; }
 </style>
 </head>
 <body>
@@ -63,7 +80,7 @@
   </div>
 
   <div class="nav-bar">
-    <a href="phase10/m12c_capstone_practice.html">&#8592; Capstone Practice</a>
+    <a href="phase10/m20_final_review.html">&#8592; Final Review</a>
     <a href="index.html" class="home">&#8962; Course Home</a>
   </div>
 
@@ -72,7 +89,7 @@
   </div>
 
   <!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
-  <h2>1. GPS Navigation — Google Maps / Waze</h2>
+  <h2 id="gps">1. GPS Navigation — Google Maps / Waze</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -110,6 +127,10 @@
     <h4>Core Algorithm: A* (Dijkstra + Heuristic)</h4>
     <p>A* extends Dijkstra by adding a <strong>heuristic function</strong> — an estimate of the remaining distance to the goal (usually straight-line distance). This focuses the search toward the destination and drastically reduces nodes explored.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">AStarRouter</span>
 {
     <span class="cm">// Node = intersection, heuristic = straight-line distance to target</span>
@@ -155,12 +176,51 @@
 <span class="cm">// Real Google Maps uses Contraction Hierarchies (CH) on top of A*</span>
 <span class="cm">// CH pre-computes shortcuts: contracts low-importance nodes, creating a hierarchy</span>
 <span class="cm">// Result: London→Edinburgh in milliseconds on a billion-node graph</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> heapq
+<span class="kw">import</span> math
+
+<span class="kw">class</span> <span class="tp">AStarRouter</span>:
+    <span class="cm"># Node = intersection, heuristic = straight-line distance to target</span>
+    <span class="kw">def</span> <span class="mt">find_route</span>(self, src, dst, adj, lat, lng):
+        n = len(adj)
+        g_score = [float(<span class="st">'inf'</span>)] * n
+        prev = [-<span class="nm">1</span>] * n
+        g_score[src] = <span class="nm">0</span>
+        <span class="cm"># Priority queue: (f = g + h, node)</span>
+        pq = [(self.<span class="mt">_heuristic</span>(src, dst, lat, lng), src)]
+        <span class="kw">while</span> pq:
+            _, u = heapq.<span class="mt">heappop</span>(pq)
+            <span class="kw">if</span> u == dst:
+                <span class="kw">return</span> self.<span class="mt">_reconstruct_path</span>(prev, src, dst)
+            <span class="kw">for</span> v, w <span class="kw">in</span> adj[u]:
+                tentative = g_score[u] + w
+                <span class="kw">if</span> tentative &lt; g_score[v]:
+                    g_score[v] = tentative
+                    prev[v] = u
+                    <span class="cm"># f = actual cost + straight-line estimate to destination</span>
+                    f = tentative + self.<span class="mt">_heuristic</span>(v, dst, lat, lng)
+                    heapq.<span class="mt">heappush</span>(pq, (f, v))
+        <span class="kw">return</span> []  <span class="cm"># No path</span>
+
+    <span class="kw">def</span> <span class="mt">_heuristic</span>(self, a, b, lat, lng):
+        <span class="cm"># Haversine distance (straight-line on Earth's surface)</span>
+        dlat = lat[b] - lat[a]
+        dlng = lng[b] - lng[a]
+        <span class="kw">return</span> math.<span class="mt">sqrt</span>(dlat*dlat + dlng*dlng) * <span class="nm">111000</span>  <span class="cm"># rough meters</span>
+<span class="cm"># Real Google Maps uses Contraction Hierarchies (CH) on top of A*</span>
+<span class="cm"># CH pre-computes shortcuts: contracts low-importance nodes, creating a hierarchy</span>
+<span class="cm"># Result: London&#8594;Edinburgh in milliseconds on a billion-node graph</span></pre>
+</div>
 
     <div class="note"><strong>Real-World Scale:</strong> Google Maps' road network has ~300 million nodes. Standard Dijkstra explores all of them. Contraction Hierarchies reduce this to ~10,000 nodes per query. Live traffic updates modify edge weights — the system re-runs routing every few seconds for active navigations.</div>
   </div>
 
   <!-- ═══════════════════════ SOCIAL NETWORKS ═══════════════════════ -->
-  <h2>2. Social Network — LinkedIn / Facebook</h2>
+  <h2 id="social">2. Social Network — LinkedIn / Facebook</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -181,6 +241,10 @@
 
     <p>LinkedIn's "People You May Know" finds users who share mutual connections. This is a classic graph problem: find all nodes within 2 hops from the current user. At LinkedIn's scale, the social graph has billions of edges.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Find 2nd-degree connections (friends of friends)</span>
 <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">int</span>&gt; <span class="mt">GetSuggestions</span>(<span class="tp">int</span> userId, <span class="tp">HashSet</span>&lt;<span class="tp">int</span>&gt;[] graph)
 {
@@ -223,10 +287,45 @@
     <span class="kw">return</span> -<span class="nm">1</span>; <span class="cm">// Not connected</span>
 }
 <span class="cm">// LinkedIn famously showed that average degrees of separation = 4.7 (not 6)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="cm"># Find 2nd-degree connections (friends of friends)</span>
+<span class="kw">def</span> <span class="mt">get_suggestions</span>(user_id, graph):
+    direct = graph[user_id]   <span class="cm"># 1st-degree connections</span>
+    counts = {}               <span class="cm"># candidate &#8594; mutual count</span>
+    <span class="kw">for</span> friend <span class="kw">in</span> direct:
+        <span class="kw">for</span> fof <span class="kw">in</span> graph[friend]:  <span class="cm"># Friend-of-friend</span>
+            <span class="kw">if</span> fof == user_id <span class="kw">or</span> fof <span class="kw">in</span> direct:
+                <span class="kw">continue</span>  <span class="cm"># Already connected</span>
+            counts[fof] = counts.<span class="mt">get</span>(fof, <span class="nm">0</span>) + <span class="nm">1</span>
+    <span class="cm"># Sort by mutual connection count (most mutuals &#8594; best suggestion)</span>
+    <span class="kw">return</span> <span class="mt">sorted</span>(counts, key=counts.<span class="mt">get</span>, reverse=<span class="kw">True</span>)[:<span class="nm">10</span>]
+
+<span class="cm"># Six Degrees of Separation: BFS to find shortest path between any two users</span>
+<span class="kw">def</span> <span class="mt">degrees_of_separation</span>(a, b, graph):
+    <span class="kw">if</span> a == b: <span class="kw">return</span> <span class="nm">0</span>
+    visited = {a}
+    q = deque([a])
+    degree = <span class="nm">0</span>
+    <span class="kw">while</span> q:
+        degree += <span class="nm">1</span>
+        <span class="kw">for</span> _ <span class="kw">in</span> range(len(q)):
+            u = q.<span class="mt">popleft</span>()
+            <span class="kw">for</span> v <span class="kw">in</span> graph[u]:
+                <span class="kw">if</span> v == b: <span class="kw">return</span> degree
+                <span class="kw">if</span> v <span class="kw">not in</span> visited:
+                    visited.<span class="mt">add</span>(v); q.<span class="mt">append</span>(v)
+    <span class="kw">return</span> -<span class="nm">1</span>  <span class="cm"># Not connected</span>
+<span class="cm"># LinkedIn famously showed that average degrees of separation = 4.7 (not 6)</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ PACKAGE MANAGER ═══════════════════════ -->
-  <h2>3. Package Manager — npm / NuGet / Maven</h2>
+  <h2 id="pkg">3. Package Manager — npm / NuGet / Maven</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -263,6 +362,10 @@
     PackageA depends on PackageB
     PackageB depends on PackageA  ← cycle detected → error!</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">PackageInstaller</span>
 {
     <span class="cm">// Returns install order or throws if circular dependency exists</span>
@@ -293,10 +396,41 @@
 }
 <span class="cm">// Time: O(V+E), Space: O(V)</span>
 <span class="cm">// This is literally what `npm install` and `dotnet restore` do internally</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">class</span> <span class="tp">PackageInstaller</span>:
+    <span class="cm"># Returns install order or raises if circular dependency exists</span>
+    <span class="kw">def</span> <span class="mt">resolve_order</span>(self, deps):
+        in_degree = {pkg: <span class="nm">0</span> <span class="kw">for</span> pkg <span class="kw">in</span> deps}
+        <span class="kw">for</span> dep_list <span class="kw">in</span> deps.<span class="mt">values</span>():
+            <span class="kw">for</span> dep <span class="kw">in</span> dep_list:
+                in_degree[dep] = in_degree.<span class="mt">get</span>(dep, <span class="nm">0</span>) + <span class="nm">1</span>
+
+        <span class="cm"># Kahn&#39;s Algorithm &#8212; packages with no remaining dependencies install first</span>
+        ready = deque(pkg <span class="kw">for</span> pkg, d <span class="kw">in</span> in_degree.<span class="mt">items</span>() <span class="kw">if</span> d == <span class="nm">0</span>)
+        order = []
+        <span class="kw">while</span> ready:
+            pkg = ready.<span class="mt">popleft</span>()
+            order.<span class="mt">append</span>(pkg)
+            <span class="kw">for</span> dependant <span class="kw">in</span> deps.<span class="mt">get</span>(pkg, []):
+                in_degree[dependant] -= <span class="nm">1</span>
+                <span class="kw">if</span> in_degree[dependant] == <span class="nm">0</span>:
+                    ready.<span class="mt">append</span>(dependant)
+
+        <span class="kw">if</span> len(order) != len(deps):
+            <span class="kw">raise</span> <span class="tp">ValueError</span>(<span class="st">&quot;Circular dependency detected!&quot;</span>)
+        <span class="kw">return</span> order
+<span class="cm"># Time: O(V+E), Space: O(V)</span>
+<span class="cm"># This is literally what `npm install` and `dotnet restore` do internally</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ SEARCH ENGINE ═══════════════════════ -->
-  <h2>4. Search Engine — Google / Bing</h2>
+  <h2 id="search">4. Search Engine — Google / Bing</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -319,6 +453,10 @@
 
     <p>Google's search box has three algorithmic layers working together: <strong>Trie</strong> for instant prefix autocomplete, <strong>Edit Distance DP</strong> for "Did you mean X?" spell correction, and <strong>Inverted Index</strong> (hash map from word → documents) for finding matching pages.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Layer 1: Autocomplete via Trie (shows suggestions as you type)</span>
 <span class="kw">public class</span> <span class="tp">SearchTrie</span>
 {
@@ -369,10 +507,63 @@
 <span class="cm">//   index["C#"] → {doc1, doc5, doc9}</span>
 <span class="cm">//   index["algorithms"] → {doc1, doc3, doc9}</span>
 <span class="cm">//   INTERSECT → {doc1, doc9} → ranked by PageRank score</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="cm"># Layer 1: Autocomplete via Trie (shows suggestions as you type)</span>
+<span class="kw">class</span> <span class="tp">TrieNode</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        self.children = {}
+        self.frequency = <span class="nm">0</span>
+
+<span class="kw">class</span> <span class="tp">SearchTrie</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self): self._root = <span class="tp">TrieNode</span>()
+
+    <span class="kw">def</span> <span class="mt">insert</span>(self, query, frequency):
+        node = self._root
+        <span class="kw">for</span> c <span class="kw">in</span> query:
+            node = node.children.<span class="mt">setdefault</span>(c, <span class="tp">TrieNode</span>())
+        node.frequency = frequency
+
+    <span class="kw">def</span> <span class="mt">top_suggestions</span>(self, prefix, k):
+        node = self._root
+        <span class="kw">for</span> c <span class="kw">in</span> prefix:
+            <span class="kw">if</span> c <span class="kw">not in</span> node.children: <span class="kw">return</span> []
+            node = node.children[c]
+        <span class="cm"># DFS to collect top-k frequent completions</span>
+        results = []
+        self.<span class="mt">_collect</span>(node, list(prefix), results)
+        <span class="kw">return</span> [w <span class="kw">for</span> _, w <span class="kw">in</span> <span class="mt">sorted</span>(results, reverse=<span class="kw">True</span>)[:k]]
+
+    <span class="kw">def</span> <span class="mt">_collect</span>(self, node, path, results):
+        <span class="kw">if</span> node.frequency: results.<span class="mt">append</span>((node.frequency, <span class="st">''</span>.<span class="mt">join</span>(path)))
+        <span class="kw">for</span> c, child <span class="kw">in</span> node.children.<span class="mt">items</span>():
+            path.<span class="mt">append</span>(c); self.<span class="mt">_collect</span>(child, path, results); path.<span class="mt">pop</span>()
+
+<span class="cm"># Layer 2: &quot;Did you mean?&quot; via Edit Distance DP</span>
+<span class="kw">def</span> <span class="mt">edit_distance</span>(s, t):
+    m, n = len(s), len(t)
+    prev = list(range(n + <span class="nm">1</span>))
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, m + <span class="nm">1</span>):
+        curr = [i] + [<span class="nm">0</span>] * n
+        <span class="kw">for</span> j <span class="kw">in</span> range(<span class="nm">1</span>, n + <span class="nm">1</span>):
+            curr[j] = prev[j-<span class="nm">1</span>] <span class="kw">if</span> s[i-<span class="nm">1</span>] == t[j-<span class="nm">1</span>] \
+                      <span class="kw">else</span> <span class="nm">1</span> + <span class="mt">min</span>(prev[j-<span class="nm">1</span>], prev[j], curr[j-<span class="nm">1</span>])
+        prev = curr
+    <span class="kw">return</span> prev[n]
+<span class="cm"># Google compares your query against millions of known queries</span>
+<span class="cm"># Those within edit distance 1-2 become &quot;Did you mean?&quot; suggestions</span>
+<span class="cm"># Layer 3: Inverted Index (dict: word &#8594; [doc1, doc2, ...])</span>
+<span class="cm"># For query &quot;Python algorithms book&quot;:</span>
+<span class="cm">#   index[&quot;Python&quot;] &#8594; {doc1, doc5, doc9}</span>
+<span class="cm">#   index[&quot;algorithms&quot;] &#8594; {doc1, doc3, doc9}</span>
+<span class="cm">#   INTERSECT &#8594; {doc1, doc9} &#8594; ranked by PageRank score</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ COMPILER ═══════════════════════ -->
-  <h2>5. Compiler / IDE — Visual Studio / Roslyn</h2>
+  <h2 id="compiler">5. Compiler / IDE — Visual Studio / Roslyn</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -395,6 +586,10 @@
 
     <p>When you write <code>int x = (3 + 4) * 2 - 1;</code>, the C# compiler uses a stack to parse and evaluate that expression. The Roslyn compiler also uses a Trie-based symbol table for name resolution and topological sort for build project ordering.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Evaluate arithmetic expression: "3 + 4 * 2 - 1" → 10</span>
 <span class="cm">// Uses two stacks: one for numbers, one for operators</span>
 <span class="kw">public int</span> <span class="mt">Evaluate</span>(<span class="tp">string</span> expr)
@@ -431,10 +626,50 @@
     <span class="kw">return</span> nums.<span class="mt">Pop</span>();
 }
 <span class="cm">// This is the Shunting-Yard algorithm — how every compiler/interpreter works</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="cm"># Evaluate arithmetic expression: &quot;3 + 4 * 2 - 1&quot; &#8594; 10</span>
+<span class="cm"># Uses two stacks: one for numbers, one for operators</span>
+<span class="kw">def</span> <span class="mt">evaluate</span>(expr):
+    nums, ops = [], []
+    prec = {<span class="st">'+'</span>: <span class="nm">1</span>, <span class="st">'-'</span>: <span class="nm">1</span>, <span class="st">'*'</span>: <span class="nm">2</span>, <span class="st">'/'</span>: <span class="nm">2</span>}
+
+    <span class="kw">def</span> <span class="mt">apply</span>():
+        b, a = nums.<span class="mt">pop</span>(), nums.<span class="mt">pop</span>()
+        op = ops.<span class="mt">pop</span>()
+        <span class="kw">if</span>   op == <span class="st">'+'</span>: nums.<span class="mt">append</span>(a + b)
+        <span class="kw">elif</span> op == <span class="st">'-'</span>: nums.<span class="mt">append</span>(a - b)
+        <span class="kw">elif</span> op == <span class="st">'*'</span>: nums.<span class="mt">append</span>(a * b)
+        <span class="kw">else</span>:           nums.<span class="mt">append</span>(int(a / b))
+
+    i = <span class="nm">0</span>
+    <span class="kw">while</span> i &lt; len(expr):
+        c = expr[i]
+        <span class="kw">if</span> c == <span class="st">' '</span>: i += <span class="nm">1</span>; <span class="kw">continue</span>
+        <span class="kw">if</span> c.<span class="mt">isdigit</span>():
+            num = <span class="nm">0</span>
+            <span class="kw">while</span> i &lt; len(expr) <span class="kw">and</span> expr[i].<span class="mt">isdigit</span>():
+                num = num * <span class="nm">10</span> + int(expr[i]); i += <span class="nm">1</span>
+            nums.<span class="mt">append</span>(num); <span class="kw">continue</span>
+        <span class="kw">if</span>   c == <span class="st">'('</span>: ops.<span class="mt">append</span>(c)
+        <span class="kw">elif</span> c == <span class="st">')'</span>:
+            <span class="kw">while</span> ops[-<span class="nm">1</span>] != <span class="st">'('</span>: <span class="mt">apply</span>()
+            ops.<span class="mt">pop</span>()
+        <span class="kw">elif</span> c <span class="kw">in</span> prec:
+            <span class="kw">while</span> ops <span class="kw">and</span> ops[-<span class="nm">1</span>] != <span class="st">'('</span> <span class="kw">and</span> prec.<span class="mt">get</span>(ops[-<span class="nm">1</span>], <span class="nm">0</span>) &gt;= prec[c]:
+                <span class="mt">apply</span>()
+            ops.<span class="mt">append</span>(c)
+        i += <span class="nm">1</span>
+    <span class="kw">while</span> ops: <span class="mt">apply</span>()
+    <span class="kw">return</span> nums[<span class="nm">0</span>]
+<span class="cm"># This is the Shunting-Yard algorithm &#8212; how every compiler/interpreter works</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ STOCK EXCHANGE ═══════════════════════ -->
-  <h2>6. Stock Exchange — NASDAQ / NYSE Order Book</h2>
+  <h2 id="exchange">6. Stock Exchange — NASDAQ / NYSE Order Book</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -455,6 +690,10 @@
 
     <p>An exchange's order book matches buyers and sellers. Buy orders are sorted by <strong>descending price</strong> (highest bid wins), sell orders by <strong>ascending price</strong> (lowest ask wins). When the best bid ≥ best ask, a trade executes. This uses two priority queues (max-heap for bids, min-heap for asks).</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">OrderBook</span>
 {
     <span class="cm">// Bids: max-heap (highest price first)</span>
@@ -484,10 +723,42 @@
 }
 <span class="cm">// Real exchanges use lock-free data structures and FPGA hardware</span>
 <span class="cm">// Latency target: match an order in under 1 microsecond</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> heapq
+
+<span class="kw">class</span> <span class="tp">OrderBook</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        <span class="cm"># Bids: max-heap via negated price (highest price first)</span>
+        self._bids = []  <span class="cm"># (-price, qty, id)</span>
+        <span class="cm"># Asks: min-heap (lowest price first)</span>
+        self._asks = []  <span class="cm"># (price, qty, id)</span>
+
+    <span class="kw">def</span> <span class="mt">add_order</span>(self, order):
+        trades = []
+        <span class="kw">if</span> order[<span class="st">'is_buy'</span>]:
+            <span class="cm"># Try to match against asks (sell orders at or below bid price)</span>
+            <span class="kw">while</span> order[<span class="st">'qty'</span>] &gt; <span class="nm">0</span> <span class="kw">and</span> self._asks <span class="kw">and</span> self._asks[<span class="nm">0</span>][<span class="nm">0</span>] &lt;= order[<span class="st">'price'</span>]:
+                ask_price, ask_qty, ask_id = heapq.<span class="mt">heappop</span>(self._asks)
+                filled = <span class="mt">min</span>(order[<span class="st">'qty'</span>], ask_qty)
+                trades.<span class="mt">append</span>({<span class="st">'price'</span>: ask_price, <span class="st">'qty'</span>: filled})
+                order[<span class="st">'qty'</span>] -= filled; ask_qty -= filled
+                <span class="kw">if</span> ask_qty &gt; <span class="nm">0</span>:  <span class="cm"># Push remainder back</span>
+                    heapq.<span class="mt">heappush</span>(self._asks, (ask_price, ask_qty, ask_id))
+            <span class="kw">if</span> order[<span class="st">'qty'</span>] &gt; <span class="nm">0</span>:
+                <span class="cm"># Rest goes to book (negate price for max-heap)</span>
+                heapq.<span class="mt">heappush</span>(self._bids, (-order[<span class="st">'price'</span>], order[<span class="st">'qty'</span>], order[<span class="st">'id'</span>]))
+        <span class="cm"># Symmetric for sell orders...</span>
+        <span class="kw">return</span> trades
+<span class="cm"># Real exchanges use lock-free data structures and FPGA hardware</span>
+<span class="cm"># Latency target: match an order in under 1 microsecond</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ WAREHOUSE ROUTING ═══════════════════════ -->
-  <h2>7. Warehouse Robotics — Amazon Fulfillment Centers</h2>
+  <h2 id="warehouse">7. Warehouse Robotics — Amazon Fulfillment Centers</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -508,6 +779,10 @@
 
     <p>An order might contain 7 items scattered across a warehouse. A robot must pick all items and return to the packing station in the minimum total distance. With 7 items, there are 7! = 5040 possible orders — manageable with bitmask DP (<strong>n ≤ 20</strong> is the sweet spot).</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Minimum distance to pick all items and return to start</span>
 <span class="cm">// Distances pre-computed via BFS/Dijkstra on the warehouse grid</span>
 <span class="kw">public int</span> <span class="mt">OptimalPickPath</span>(<span class="tp">int</span>[] items, <span class="tp">int</span>[,] dist, <span class="tp">int</span> start)
@@ -537,10 +812,42 @@
     <span class="kw">return</span> ans;
 }
 <span class="cm">// O(n² * 2^n) — Amazon limits order batches to ~15 items per robot trip</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="cm"># Minimum distance to pick all items and return to start</span>
+<span class="cm"># Distances pre-computed via BFS/Dijkstra on the warehouse grid</span>
+<span class="kw">def</span> <span class="mt">optimal_pick_path</span>(items, dist, start):
+    n = len(items)
+    INF = float(<span class="st">'inf'</span>)
+    <span class="cm"># dp[mask][i] = min cost to pick items in mask, currently at item i</span>
+    dp = [[INF] * n <span class="kw">for</span> _ <span class="kw">in</span> range(<span class="nm">1</span> &lt;&lt; n)]
+    <span class="cm"># Initialize: cost to travel from start to each item</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):
+        dp[<span class="nm">1</span> &lt;&lt; i][i] = dist[start][items[i]]
+
+    <span class="kw">for</span> mask <span class="kw">in</span> range(<span class="nm">1</span>, <span class="nm">1</span> &lt;&lt; n):
+        <span class="kw">for</span> u <span class="kw">in</span> range(n):
+            <span class="kw">if not</span> (mask &amp; (<span class="nm">1</span> &lt;&lt; u)) <span class="kw">or</span> dp[mask][u] == INF: <span class="kw">continue</span>
+            <span class="kw">for</span> v <span class="kw">in</span> range(n):
+                <span class="kw">if not</span> (mask &amp; (<span class="nm">1</span> &lt;&lt; v)):
+                    new_cost = dp[mask][u] + dist[items[u]][items[v]]
+                    new_mask = mask | (<span class="nm">1</span> &lt;&lt; v)
+                    <span class="kw">if</span> new_cost &lt; dp[new_mask][v]:
+                        dp[new_mask][v] = new_cost
+
+    full = (<span class="nm">1</span> &lt;&lt; n) - <span class="nm">1</span>
+    ans = INF
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):  <span class="cm"># Return to packing station</span>
+        ans = <span class="mt">min</span>(ans, dp[full][i] + dist[items[i]][start])
+    <span class="kw">return</span> ans
+<span class="cm"># O(n&#178; * 2^n) &#8212; Amazon limits order batches to ~15 items per robot trip</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ GIT ═══════════════════════ -->
-  <h2>8. Version Control — Git</h2>
+  <h2 id="git">8. Version Control — Git</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -562,6 +869,10 @@
 
     <p>When you run <code>git diff</code>, Git computes the <strong>Longest Common Subsequence (LCS)</strong> between two file versions to find the minimal set of line additions/deletions. The commit history is a <strong>Directed Acyclic Graph (DAG)</strong> where <code>git rebase</code> is a topological sort.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// git diff — Longest Common Subsequence shows what changed between versions</span>
 <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">string</span>&gt; <span class="mt">DiffFiles</span>(<span class="tp">string</span>[] oldLines, <span class="tp">string</span>[] newLines)
 {
@@ -591,10 +902,38 @@
 }
 <span class="cm">// Git also uses content-defined chunking with rolling hashes (Rabin-Karp)</span>
 <span class="cm">// to split large files into blocks before diffing — reducing O(n²) work</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="cm"># git diff &#8212; Longest Common Subsequence shows what changed between versions</span>
+<span class="kw">def</span> <span class="mt">diff_files</span>(old_lines, new_lines):
+    m, n = len(old_lines), len(new_lines)
+    dp = [[<span class="nm">0</span>] * (n + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> range(m + <span class="nm">1</span>)]
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, m + <span class="nm">1</span>):
+        <span class="kw">for</span> j <span class="kw">in</span> range(<span class="nm">1</span>, n + <span class="nm">1</span>):
+            dp[i][j] = dp[i-<span class="nm">1</span>][j-<span class="nm">1</span>] + <span class="nm">1</span> <span class="kw">if</span> old_lines[i-<span class="nm">1</span>] == new_lines[j-<span class="nm">1</span>] \
+                       <span class="kw">else</span> <span class="mt">max</span>(dp[i-<span class="nm">1</span>][j], dp[i][j-<span class="nm">1</span>])
+
+    <span class="cm"># Reconstruct diff by backtracking through dp table</span>
+    diff = []
+    r, c = m, n
+    <span class="kw">while</span> r &gt; <span class="nm">0</span> <span class="kw">or</span> c &gt; <span class="nm">0</span>:
+        <span class="kw">if</span> r &gt; <span class="nm">0</span> <span class="kw">and</span> c &gt; <span class="nm">0</span> <span class="kw">and</span> old_lines[r-<span class="nm">1</span>] == new_lines[c-<span class="nm">1</span>]:
+            diff.<span class="mt">append</span>(<span class="st">&quot;  &quot;</span> + old_lines[r-<span class="nm">1</span>]); r -= <span class="nm">1</span>; c -= <span class="nm">1</span>
+        <span class="kw">elif</span> c &gt; <span class="nm">0</span> <span class="kw">and</span> (r == <span class="nm">0</span> <span class="kw">or</span> dp[r][c-<span class="nm">1</span>] &gt;= dp[r-<span class="nm">1</span>][c]):
+            diff.<span class="mt">append</span>(<span class="st">&quot;+ &quot;</span> + new_lines[c-<span class="nm">1</span>]); c -= <span class="nm">1</span>
+        <span class="kw">else</span>:
+            diff.<span class="mt">append</span>(<span class="st">&quot;- &quot;</span> + old_lines[r-<span class="nm">1</span>]); r -= <span class="nm">1</span>
+    diff.<span class="mt">reverse</span>()
+    <span class="kw">return</span> diff
+<span class="cm"># Git also uses content-defined chunking with rolling hashes (Rabin-Karp)</span>
+<span class="cm"># to split large files into blocks before diffing &#8212; reducing O(n&#178;) work</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ FRAUD DETECTION ═══════════════════════ -->
-  <h2>9. Banking — Real-Time Fraud Detection</h2>
+  <h2 id="fraud">9. Banking — Real-Time Fraud Detection</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -617,6 +956,10 @@
 
     <p>Fraud detection runs multiple checks simultaneously: a <strong>sliding window</strong> checks if too many transactions occurred in the last 60 seconds (velocity fraud), <strong>Union-Find</strong> clusters accounts that share devices/IPs to find fraud rings, and <strong>rolling hashes</strong> deduplicate retry attempts.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Velocity check: flag if > k transactions in last t seconds (sliding window)</span>
 <span class="kw">public bool</span> <span class="mt">IsVelocityFraud</span>(<span class="tp">Queue</span>&lt;<span class="tp">long</span>&gt; txTimestamps, <span class="tp">long</span> nowMs, <span class="tp">int</span> maxTx, <span class="tp">int</span> windowSec)
 {
@@ -646,10 +989,43 @@
                    .<span class="mt">ToDictionary</span>(g =&gt; g.Key, g =&gt; g.<span class="mt">ToList</span>());
 }
 <span class="cm">// Visa processes these checks in under 100 milliseconds per transaction</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> deque, defaultdict
+
+<span class="cm"># Velocity check: flag if &gt; k transactions in last t seconds (sliding window)</span>
+<span class="kw">def</span> <span class="mt">is_velocity_fraud</span>(tx_timestamps, now_ms, max_tx, window_sec):
+    window_ms = window_sec * <span class="nm">1000</span>
+    <span class="kw">while</span> tx_timestamps <span class="kw">and</span> now_ms - tx_timestamps[<span class="nm">0</span>] &gt; window_ms:
+        tx_timestamps.<span class="mt">popleft</span>()  <span class="cm"># Remove expired transactions</span>
+    tx_timestamps.<span class="mt">append</span>(now_ms)
+    <span class="kw">return</span> len(tx_timestamps) &gt; max_tx
+
+<span class="cm"># Fraud ring detection: group accounts by shared fingerprints</span>
+<span class="cm"># If account A and B share device_id &#8594; union them &#8594; same cluster = suspicious</span>
+<span class="kw">def</span> <span class="mt">find_fraud_clusters</span>(accounts, fingerprint_to_accounts):
+    parent = list(range(len(accounts)))
+    <span class="kw">def</span> <span class="mt">find</span>(x):
+        <span class="kw">while</span> parent[x] != x: parent[x] = parent[parent[x]]; x = parent[x]
+        <span class="kw">return</span> x
+
+    <span class="cm"># Accounts sharing any fingerprint (device, IP, card) get unioned</span>
+    <span class="kw">for</span> accts <span class="kw">in</span> fingerprint_to_accounts.<span class="mt">values</span>():
+        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, len(accts)):
+            parent[<span class="mt">find</span>(accts[<span class="nm">0</span>])] = <span class="mt">find</span>(accts[i])
+
+    <span class="cm"># Group by root &#8594; clusters of 3+ accounts are fraud ring candidates</span>
+    groups = defaultdict(list)
+    <span class="kw">for</span> a <span class="kw">in</span> accounts: groups[<span class="mt">find</span>(a)].<span class="mt">append</span>(a)
+    <span class="kw">return</span> {root: accts <span class="kw">for</span> root, accts <span class="kw">in</span> groups.<span class="mt">items</span>() <span class="kw">if</span> len(accts) &gt;= <span class="nm">3</span>}
+<span class="cm"># Visa processes these checks in under 100 milliseconds per transaction</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ VIDEO GAME ═══════════════════════ -->
-  <h2>10. Video Game AI — NPC Pathfinding</h2>
+  <h2 id="game">10. Video Game AI — NPC Pathfinding</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -670,6 +1046,10 @@
 
     <p>In every open-world game, NPCs (enemies, allies, vehicles) navigate around obstacles in real time. This is A* on a grid or navigation mesh. Games like The Witcher 3 run hundreds of pathfinding queries per frame (60fps), so optimization is critical.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// A* pathfinding on a 2D game grid (0=walkable, 1=wall)</span>
 <span class="kw">public</span> <span class="tp">List</span>&lt;(<span class="tp">int</span>,<span class="tp">int</span>)&gt; <span class="mt">FindPath</span>(<span class="tp">int</span>[,] grid, (<span class="tp">int</span> r, <span class="tp">int</span> c) src, (<span class="tp">int</span> r, <span class="tp">int</span> c) dst)
 {
@@ -707,10 +1087,46 @@
     =&gt; <span class="tp">Math</span>.<span class="mt">Sqrt</span>((a.r-b.r)*(a.r-b.r) + (a.c-b.c)*(a.c-b.c)); <span class="cm">// Euclidean</span>
 <span class="cm">// Games use navigation meshes (NavMesh) instead of raw grids for large worlds</span>
 <span class="cm">// NavMesh = convex polygon graph → A* on much fewer nodes</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> heapq, math
+
+<span class="cm"># A* pathfinding on a 2D game grid (0=walkable, 1=wall)</span>
+<span class="kw">def</span> <span class="mt">find_path</span>(grid, src, dst):
+    rows, cols = len(grid), len(grid[<span class="nm">0</span>])
+    INF = float(<span class="st">'inf'</span>)
+    g = [[INF] * cols <span class="kw">for</span> _ <span class="kw">in</span> range(rows)]
+    g[src[<span class="nm">0</span>]][src[<span class="nm">1</span>]] = <span class="nm">0</span>
+    prev = [[<span class="kw">None</span>] * cols <span class="kw">for</span> _ <span class="kw">in</span> range(rows)]
+    <span class="cm"># 8-directional movement</span>
+    dr = [-<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>,-<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>]; dc = [<span class="nm">0</span>,<span class="nm">0</span>,-<span class="nm">1</span>,<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">1</span>]
+    cost = [<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1.414</span>,<span class="nm">1.414</span>,<span class="nm">1.414</span>,<span class="nm">1.414</span>]  <span class="cm"># &#8730;2 for diagonal</span>
+    h = <span class="kw">lambda</span> a, b: math.<span class="mt">sqrt</span>((a[<span class="nm">0</span>]-b[<span class="nm">0</span>])**<span class="nm">2</span> + (a[<span class="nm">1</span>]-b[<span class="nm">1</span>])**<span class="nm">2</span>)  <span class="cm"># Euclidean</span>
+    pq = [(h(src, dst), src)]
+    <span class="kw">while</span> pq:
+        _, u = heapq.<span class="mt">heappop</span>(pq)
+        <span class="kw">if</span> u == dst:
+            path, cur = [], dst
+            <span class="kw">while</span> cur <span class="kw">is not None</span>:
+                path.<span class="mt">append</span>(cur); cur = prev[cur[<span class="nm">0</span>]][cur[<span class="nm">1</span>]]
+            <span class="kw">return</span> path[::-<span class="nm">1</span>]
+        <span class="kw">for</span> d <span class="kw">in</span> range(<span class="nm">8</span>):
+            nr, nc = u[<span class="nm">0</span>] + dr[d], u[<span class="nm">1</span>] + dc[d]
+            <span class="kw">if</span> nr &lt; <span class="nm">0</span> <span class="kw">or</span> nr &gt;= rows <span class="kw">or</span> nc &lt; <span class="nm">0</span> <span class="kw">or</span> nc &gt;= cols <span class="kw">or</span> grid[nr][nc] == <span class="nm">1</span>: <span class="kw">continue</span>
+            ng = g[u[<span class="nm">0</span>]][u[<span class="nm">1</span>]] + cost[d]
+            <span class="kw">if</span> ng &lt; g[nr][nc]:
+                g[nr][nc] = ng; prev[nr][nc] = u
+                heapq.<span class="mt">heappush</span>(pq, (ng + h((nr, nc), dst), (nr, nc)))
+    <span class="kw">return</span> []  <span class="cm"># No path</span>
+<span class="cm"># Games use navigation meshes (NavMesh) instead of raw grids for large worlds</span>
+<span class="cm"># NavMesh = convex polygon graph &#8594; A* on much fewer nodes</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ DNA / BIOINFORMATICS ═══════════════════════ -->
-  <h2>11. Bioinformatics — DNA Sequence Alignment</h2>
+  <h2 id="dna">11. Bioinformatics — DNA Sequence Alignment</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -732,6 +1148,10 @@
 
     <p>Comparing two DNA sequences to find genetic mutations is equivalent to computing edit distance. The Smith-Waterman algorithm (a DP variant) finds the <strong>best local alignment</strong> — the most similar substring between two sequences, ignoring mismatched ends.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Smith-Waterman local alignment: find best matching region between two DNA strings</span>
 <span class="cm">// Used to find where a gene mutation occurred</span>
 <span class="kw">public</span> (<span class="tp">int</span> score, <span class="tp">string</span> aligned) <span class="mt">SmithWaterman</span>(<span class="tp">string</span> seq1, <span class="tp">string</span> seq2,
@@ -764,10 +1184,43 @@
 }
 <span class="cm">// NCBI BLAST uses this to align your DNA sample against 3 billion known sequences</span>
 <span class="cm">// Hashing (k-mer seeds) narrows candidates before running full Smith-Waterman</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="cm"># Smith-Waterman local alignment: find best matching region between two DNA strings</span>
+<span class="cm"># Used to find where a gene mutation occurred</span>
+<span class="kw">def</span> <span class="mt">smith_waterman</span>(seq1, seq2, match_score=<span class="nm">2</span>, mismatch=-<span class="nm">1</span>, gap=-<span class="nm">1</span>):
+    m, n = len(seq1), len(seq2)
+    dp = [[<span class="nm">0</span>] * (n + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> range(m + <span class="nm">1</span>)]
+    max_score, max_pos = <span class="nm">0</span>, (<span class="nm">0</span>, <span class="nm">0</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, m + <span class="nm">1</span>):
+        <span class="kw">for</span> j <span class="kw">in</span> range(<span class="nm">1</span>, n + <span class="nm">1</span>):
+            s = match_score <span class="kw">if</span> seq1[i-<span class="nm">1</span>] == seq2[j-<span class="nm">1</span>] <span class="kw">else</span> mismatch
+            dp[i][j] = <span class="mt">max</span>(<span class="nm">0</span>, dp[i-<span class="nm">1</span>][j-<span class="nm">1</span>] + s, dp[i-<span class="nm">1</span>][j] + gap, dp[i][j-<span class="nm">1</span>] + gap)
+            <span class="kw">if</span> dp[i][j] &gt; max_score:
+                max_score = dp[i][j]; max_pos = (i, j)
+
+    <span class="cm"># Traceback from max_pos to find the aligned region</span>
+    aligned = []
+    r, c = max_pos
+    <span class="kw">while</span> dp[r][c] &gt; <span class="nm">0</span>:
+        s = match_score <span class="kw">if</span> seq1[r-<span class="nm">1</span>] == seq2[c-<span class="nm">1</span>] <span class="kw">else</span> mismatch
+        <span class="kw">if</span>   r &gt; <span class="nm">0</span> <span class="kw">and</span> c &gt; <span class="nm">0</span> <span class="kw">and</span> dp[r][c] == dp[r-<span class="nm">1</span>][c-<span class="nm">1</span>] + s:
+            aligned.<span class="mt">append</span>(seq1[r-<span class="nm">1</span>]); r -= <span class="nm">1</span>; c -= <span class="nm">1</span>
+        <span class="kw">elif</span> r &gt; <span class="nm">0</span> <span class="kw">and</span> dp[r][c] == dp[r-<span class="nm">1</span>][c] + gap:
+            aligned.<span class="mt">append</span>(<span class="st">'-'</span>); r -= <span class="nm">1</span>
+        <span class="kw">else</span>:
+            aligned.<span class="mt">append</span>(<span class="st">'-'</span>); c -= <span class="nm">1</span>
+    aligned.<span class="mt">reverse</span>()
+    <span class="kw">return</span> max_score, <span class="st">''</span>.<span class="mt">join</span>(aligned)
+<span class="cm"># NCBI BLAST uses this to align your DNA sample against 3 billion known sequences</span>
+<span class="cm"># Hashing (k-mer seeds) narrows candidates before running full Smith-Waterman</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ CDN ═══════════════════════ -->
-  <h2>12. Cloud CDN — Content Delivery &amp; Load Balancing</h2>
+  <h2 id="cdn">12. Cloud CDN — Content Delivery &amp; Load Balancing</h2>
 
   <div class="challenge">
     <div class="challenge-header">
@@ -788,6 +1241,10 @@
 
     <p>When you stream Netflix, your request is routed to one of hundreds of edge servers. <strong>Consistent hashing</strong> maps both requests and servers onto a virtual ring. A request goes to the nearest server clockwise on the ring — adding/removing servers only remaps a fraction of keys (vs. ~100% with plain modulo hashing).</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">ConsistentHashRing</span>
 {
     <span class="kw">private readonly</span> <span class="tp">SortedDictionary</span>&lt;<span class="tp">int</span>, <span class="tp">string</span>&gt; _ring = <span class="kw">new</span>();
@@ -824,6 +1281,43 @@
 }
 <span class="cm">// Adding 1 server redistributes only 1/n requests (not all)</span>
 <span class="cm">// Virtual nodes ensure even distribution even with heterogeneous servers</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> hashlib, bisect
+
+<span class="kw">class</span> <span class="tp">ConsistentHashRing</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, virtual_nodes=<span class="nm">150</span>):
+        self._ring = {}           <span class="cm"># hash &#8594; server</span>
+        self._sorted_keys = []    <span class="cm"># sorted hashes for binary search</span>
+        self._vnodes = virtual_nodes
+
+    <span class="kw">def</span> <span class="mt">_hash</span>(self, key):
+        <span class="kw">return</span> int(hashlib.<span class="mt">md5</span>(key.<span class="mt">encode</span>()).<span class="mt">hexdigest</span>(), <span class="nm">16</span>) % (<span class="nm">2</span>**<span class="nm">32</span>)
+
+    <span class="kw">def</span> <span class="mt">add_server</span>(self, server):
+        <span class="kw">for</span> i <span class="kw">in</span> range(self._vnodes):
+            h = self.<span class="mt">_hash</span>(f<span class="st">&quot;{server}#{i}&quot;</span>)
+            self._ring[h] = server
+            bisect.<span class="mt">insort</span>(self._sorted_keys, h)
+
+    <span class="kw">def</span> <span class="mt">remove_server</span>(self, server):
+        <span class="kw">for</span> i <span class="kw">in</span> range(self._vnodes):
+            h = self.<span class="mt">_hash</span>(f<span class="st">&quot;{server}#{i}&quot;</span>)
+            <span class="kw">del</span> self._ring[h]
+            self._sorted_keys.<span class="mt">remove</span>(h)
+
+    <span class="kw">def</span> <span class="mt">get_server</span>(self, request_key):
+        <span class="kw">if not</span> self._ring: <span class="kw">raise</span> <span class="tp">ValueError</span>(<span class="st">&quot;No servers&quot;</span>)
+        h = self.<span class="mt">_hash</span>(request_key)
+        <span class="cm"># Find nearest server clockwise: binary search for first key &#8805; h</span>
+        idx = bisect.<span class="mt">bisect_left</span>(self._sorted_keys, h)
+        <span class="kw">if</span> idx == len(self._sorted_keys): idx = <span class="nm">0</span>  <span class="cm"># Wrap around the ring</span>
+        <span class="kw">return</span> self._ring[self._sorted_keys[idx]]
+<span class="cm"># Adding 1 server redistributes only 1/n requests (not all)</span>
+<span class="cm"># Virtual nodes ensure even distribution even with heterogeneous servers</span></pre>
+</div>
   </div>
 
   <!-- ═══════════════════════ RIDE HAILING ═══════════════════════ -->
@@ -863,6 +1357,10 @@
     <h4>Core Algorithm: Geohash Dictionary + Min-Heap Nearest K</h4>
     <p>Drivers send GPS updates ~every 4 seconds, re-registering in their current geohash cell. On a ride request, look up the rider's cell plus 8 neighbours, then use a <strong>min-heap</strong> to extract the k nearest drivers by actual Haversine distance.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">DriverDispatch</span>
 {
     <span class="cm">// Spatial index: geohash cell → list of available drivers in that cell</span>
@@ -904,6 +1402,50 @@
 <span class="cm">// Uber's real system uses Google S2 geometry: hierarchical spherical cells</span>
 <span class="cm">// Redis GEOSEARCH / GEORADIUS implements the same pattern in O(1) cache lookup</span>
 <span class="cm">// 5.4M drivers × 1 update/4sec = 1.35M location writes/sec → sharded Redis</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> heapq, math
+
+<span class="kw">class</span> <span class="tp">DriverDispatch</span>:
+    <span class="cm"># Spatial index: geohash cell &#8594; list of available drivers in that cell</span>
+    <span class="kw">def</span> <span class="mt">__init__</span>(self): self._grid = {}
+
+    <span class="kw">def</span> <span class="mt">_encode</span>(self, lat, lng, bits=<span class="nm">6</span>):
+        lat_b = int((lat + <span class="nm">90</span>) / <span class="nm">180.0</span> * (<span class="nm">1</span> &lt;&lt; bits))
+        lng_b = int((lng + <span class="nm">180</span>) / <span class="nm">360.0</span> * (<span class="nm">1</span> &lt;&lt; bits))
+        <span class="kw">return</span> f<span class="st">&quot;{lat_b}:{lng_b}&quot;</span>
+
+    <span class="kw">def</span> <span class="mt">update_driver</span>(self, driver, lat, lng):
+        <span class="cm"># Remove from old cell, register in new cell</span>
+        old = self._grid.<span class="mt">get</span>(driver.<span class="mt">get</span>(<span class="st">'cell'</span>), [])
+        <span class="kw">if</span> driver <span class="kw">in</span> old: old.<span class="mt">remove</span>(driver)
+        driver[<span class="st">'cell'</span>] = self.<span class="mt">_encode</span>(lat, lng)
+        self._grid.<span class="mt">setdefault</span>(driver[<span class="st">'cell'</span>], []).<span class="mt">append</span>(driver)
+
+    <span class="cm"># Find k nearest drivers: geohash lookup &#8594; min-heap sort by real distance</span>
+    <span class="kw">def</span> <span class="mt">find_nearest</span>(self, lat, lng, k):
+        pq = []  <span class="cm"># min-heap: (distance, counter, driver)</span>
+        counter = <span class="nm">0</span>
+        <span class="kw">for</span> cell <span class="kw">in</span> self.<span class="mt">_get_neighbor_cells</span>(self.<span class="mt">_encode</span>(lat, lng)):
+            <span class="kw">for</span> d <span class="kw">in</span> self._grid.<span class="mt">get</span>(cell, []):
+                dist = self.<span class="mt">_haversine_km</span>(lat, lng, d[<span class="st">'lat'</span>], d[<span class="st">'lng'</span>])
+                heapq.<span class="mt">heappush</span>(pq, (dist, counter, d)); counter += <span class="nm">1</span>
+        result = []
+        <span class="kw">while</span> len(result) &lt; k <span class="kw">and</span> pq:
+            _, _, d = heapq.<span class="mt">heappop</span>(pq); result.<span class="mt">append</span>(d)
+        <span class="kw">return</span> result
+
+    <span class="kw">def</span> <span class="mt">_haversine_km</span>(self, lat1, lng1, lat2, lng2):
+        R = <span class="nm">6371</span>
+        dlat = math.<span class="mt">radians</span>(lat2 - lat1); dlng = math.<span class="mt">radians</span>(lng2 - lng1)
+        a = math.<span class="mt">sin</span>(dlat/<span class="nm">2</span>)**<span class="nm">2</span> + math.<span class="mt">cos</span>(math.<span class="mt">radians</span>(lat1)) * math.<span class="mt">cos</span>(math.<span class="mt">radians</span>(lat2)) * math.<span class="mt">sin</span>(dlng/<span class="nm">2</span>)**<span class="nm">2</span>
+        <span class="kw">return</span> R * <span class="nm">2</span> * math.<span class="mt">asin</span>(math.<span class="mt">sqrt</span>(a))
+<span class="cm"># Uber&#39;s real system uses Google S2 geometry: hierarchical spherical cells</span>
+<span class="cm"># Redis GEOSEARCH / GEORADIUS implements the same pattern in O(1) cache lookup</span>
+<span class="cm"># 5.4M drivers &#215; 1 update/4sec = 1.35M location writes/sec &#8594; sharded Redis</span></pre>
+</div>
 
     <div class="note"><strong>Real-World Scale:</strong> Without geohashing, matching 1 rider against 5.4M drivers takes ~500ms. With geohash precision-6 cells (~1.2km wide), only ~50 drivers per cell are evaluated — &lt;1ms. Uber's S2 library extends this to curved-Earth geometry with hierarchical cells from 0.44cm² to half the globe.</div>
   </div>
@@ -945,6 +1487,10 @@
 
     <h4>Core Algorithm: Min-Heap Top-K + Sliding Window Trending</h4>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Top-K recommendations: O(n log K) — optimal for large n, small K</span>
 <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Song</span>&gt; <span class="mt">TopKRecommendations</span>(<span class="tp">IEnumerable</span>&lt;<span class="tp">Song</span>&gt; candidates, <span class="tp">int</span> k)
 {
@@ -980,6 +1526,40 @@
 <span class="cm">// Final score = α × personalisation + β × trending + γ × freshness</span>
 <span class="cm">// Then TopKRecommendations(scoredCandidates, k=30) → your Discover Weekly</span>
 <span class="cm">// Runs as a Spark batch job every Monday for 600M users in parallel</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> heapq
+
+<span class="cm"># Top-K recommendations: O(n log K) &#8212; optimal for large n, small K</span>
+<span class="kw">def</span> <span class="mt">top_k_recommendations</span>(candidates, k):
+    <span class="cm"># Min-heap: smallest score at top, so we evict weak candidates cheaply</span>
+    heap = []  <span class="cm"># (score, song)</span>
+    <span class="kw">for</span> song <span class="kw">in</span> candidates:
+        heapq.<span class="mt">heappush</span>(heap, (song[<span class="st">'score'</span>], id(song), song))
+        <span class="kw">if</span> len(heap) &gt; k:
+            heapq.<span class="mt">heappop</span>(heap)  <span class="cm"># evict lowest scorer &#8212; O(log K)</span>
+    <span class="kw">return</span> <span class="mt">sorted</span>([s <span class="kw">for</span> _, _, s <span class="kw">in</span> heap], key=<span class="kw">lambda</span> s: s[<span class="st">'score'</span>], reverse=<span class="kw">True</span>)
+
+<span class="cm"># Trending this week: sliding window over a stream of play events (Kafka-style)</span>
+<span class="kw">def</span> <span class="mt">trending_tracks</span>(plays, now_ms,
+        window_ms=<span class="nm">7</span> * <span class="nm">24</span> * <span class="nm">3600</span> * <span class="nm">1000</span>):  <span class="cm"># 7-day rolling window</span>
+    counts = {}
+    left = <span class="nm">0</span>
+    <span class="kw">for</span> right <span class="kw">in</span> range(len(plays)):
+        ts, track_id = plays[right]
+        counts[track_id] = counts.<span class="mt">get</span>(track_id, <span class="nm">0</span>) + <span class="nm">1</span>
+        <span class="kw">while</span> now_ms - plays[left][<span class="nm">0</span>] &gt; window_ms:  <span class="cm"># expire old plays</span>
+            old_id = plays[left][<span class="nm">1</span>]
+            counts[old_id] -= <span class="nm">1</span>
+            <span class="kw">if</span> counts[old_id] == <span class="nm">0</span>: <span class="kw">del</span> counts[old_id]
+            left += <span class="nm">1</span>
+    <span class="kw">return</span> counts  <span class="cm"># track_id &#8594; play count in the last 7 days</span>
+<span class="cm"># Final score = &#945; &#215; personalisation + &#946; &#215; trending + &#947; &#215; freshness</span>
+<span class="cm"># top_k_recommendations(scored, k=30) &#8594; your Discover Weekly</span>
+<span class="cm"># Runs as a Spark batch job every Monday for 600M users in parallel</span></pre>
+</div>
 
     <div class="tip"><strong>Real-World Scale:</strong> Spotify generates Discover Weekly for 600M users every Monday. Per user: ~50K candidates × log(30) ≈ 750K heap operations. Across 600M users on a distributed Spark cluster, this completes over the weekend. The min-heap ensures each worker holds only 30 items in memory regardless of the candidate pool size — a crucial memory bound at scale.</div>
   </div>
@@ -1024,6 +1604,10 @@
 
     <h4>Core Algorithm: Binary Search to Find Range Start → Stream Leaf Pages</h4>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Simulate a B-Tree index using SortedList (uses binary search internally)</span>
 <span class="kw">public class</span> <span class="tp">BTreeIndex</span>&lt;<span class="tp">TKey</span>, <span class="tp">TRow</span>&gt; <span class="kw">where</span> <span class="tp">TKey</span> : <span class="tp">IComparable</span>&lt;<span class="tp">TKey</span>&gt;
 {
@@ -1060,6 +1644,36 @@
 <span class="cm">// Real PostgreSQL B-Tree: 8KB pages, ~100 keys/page</span>
 <span class="cm">// On 1 billion rows: height = log₁₀₀(1B) ≈ 5 → max 5 disk reads to reach leaf</span>
 <span class="cm">// CREATE INDEX is O(n log n) to build; every subsequent query is O(log n + k)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> bisect
+
+<span class="kw">class</span> <span class="tp">BTreeIndex</span>:
+    <span class="cm"># Simulate a B-Tree index using sorted list (binary search internally)</span>
+    <span class="cm"># SortedList keeps keys in order &#8212; mirrors B-Tree leaf pages in sorted sequence</span>
+    <span class="kw">def</span> <span class="mt">__init__</span>(self): self._keys = []; self._values = {}
+
+    <span class="kw">def</span> <span class="mt">insert</span>(self, key, row):
+        <span class="kw">if</span> key <span class="kw">not in</span> self._values:
+            bisect.<span class="mt">insort</span>(self._keys, key)
+            self._values[key] = []
+        self._values[key].<span class="mt">append</span>(row)
+
+    <span class="cm"># Range scan: O(log n) to find start + O(k) to stream k matching rows</span>
+    <span class="kw">def</span> <span class="mt">range_scan</span>(self, lo, hi):
+        <span class="cm"># Binary search for the first key &#8805; lo (B-Tree internal node traversal)</span>
+        start = bisect.<span class="mt">bisect_left</span>(self._keys, lo)
+        <span class="cm"># Stream forward through leaf pages while key &#8804; hi (linked-list scan)</span>
+        <span class="kw">for</span> i <span class="kw">in</span> range(start, len(self._keys)):
+            <span class="kw">if</span> self._keys[i] &gt; hi: <span class="kw">break</span>
+            <span class="kw">yield from</span> self._values[self._keys[i]]
+<span class="cm"># Same as: SELECT * FROM orders WHERE date BETWEEN lo AND hi</span>
+<span class="cm"># Real PostgreSQL B-Tree: 8KB pages, ~100 keys/page</span>
+<span class="cm"># On 1 billion rows: height = log&#8321;&#8320;&#8320;(1B) &#8776; 5 &#8594; max 5 disk reads to reach leaf</span>
+<span class="cm"># CREATE INDEX is O(n log n) to build; every subsequent query is O(log n + k)</span></pre>
+</div>
 
     <div class="note"><strong>Real-World Scale:</strong> On a 1-billion-row table, a B-Tree date range query touches just 4–5 disk pages to reach the first matching row, then streams results sequentially. Without an index: 1 billion row reads. With index: 5 reads. Adding <code>CREATE INDEX ON orders(date)</code> can make a query <strong>200,000,000× faster</strong>. This is why database indexing is the highest-ROI optimization in backend engineering.</div>
   </div>
@@ -1104,6 +1718,10 @@
 
     <h4>Core Algorithm: Build Merkle Tree + Generate and Verify Proof</h4>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">MerkleTree</span>
 {
     <span class="kw">private readonly</span> <span class="tp">List</span>&lt;<span class="tp">byte</span>[]&gt; _leaves;
@@ -1162,6 +1780,52 @@
 <span class="cm">// Bitcoin SPV wallets: store only 80-byte block headers (not full blocks)</span>
 <span class="cm">// To verify a payment: request Merkle proof → download ~384 bytes vs 1.5MB block</span>
 <span class="cm">// Ethereum extends this to Merkle-Patricia Tries for state, transactions, receipts</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> hashlib
+
+<span class="kw">class</span> <span class="tp">MerkleTree</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, transactions):
+        self._leaves = [self.<span class="mt">_hash</span>(tx) <span class="kw">for</span> tx <span class="kw">in</span> transactions]
+
+    <span class="kw">def</span> <span class="mt">_hash</span>(self, data):
+        <span class="kw">if</span> isinstance(data, str): data = data.<span class="mt">encode</span>()
+        <span class="kw">return</span> hashlib.<span class="mt">sha256</span>(data).<span class="mt">digest</span>()
+
+    <span class="kw">def</span> <span class="mt">_hash_pair</span>(self, a, b): <span class="kw">return</span> hashlib.<span class="mt">sha256</span>(a + b).<span class="mt">digest</span>()
+
+    <span class="cm"># Build bottom-up: pair-hash each level until one root hash remains</span>
+    <span class="kw">def</span> <span class="mt">root</span>(self):
+        level = list(self._leaves)
+        <span class="kw">while</span> len(level) &gt; <span class="nm">1</span>:
+            <span class="kw">if</span> len(level) % <span class="nm">2</span>: level.<span class="mt">append</span>(level[-<span class="nm">1</span>])  <span class="cm"># duplicate last if odd</span>
+            level = [self.<span class="mt">_hash_pair</span>(level[i], level[i+<span class="nm">1</span>]) <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">0</span>, len(level), <span class="nm">2</span>)]
+        <span class="kw">return</span> level[<span class="nm">0</span>]
+
+    <span class="cm"># Merkle proof: O(log n) sibling hashes needed to prove leaf at index</span>
+    <span class="kw">def</span> <span class="mt">get_proof</span>(self, idx):
+        proof, level = [], list(self._leaves)
+        <span class="kw">while</span> len(level) &gt; <span class="nm">1</span>:
+            <span class="kw">if</span> len(level) % <span class="nm">2</span>: level.<span class="mt">append</span>(level[-<span class="nm">1</span>])
+            is_left = idx % <span class="nm">2</span> == <span class="nm">0</span>  <span class="cm"># is current node a left child?</span>
+            sib_idx = idx + <span class="nm">1</span> <span class="kw">if</span> is_left <span class="kw">else</span> idx - <span class="nm">1</span>
+            proof.<span class="mt">append</span>((level[sib_idx], <span class="kw">not</span> is_left))  <span class="cm"># (sibling, sibling_on_right)</span>
+            level = [self.<span class="mt">_hash_pair</span>(level[i], level[i+<span class="nm">1</span>]) <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">0</span>, len(level), <span class="nm">2</span>)]
+            idx //= <span class="nm">2</span>
+        <span class="kw">return</span> proof
+
+    <span class="cm"># Verify: mobile wallet recomputes root from just O(log n) hashes</span>
+    <span class="kw">def</span> <span class="mt">verify</span>(self, tx, proof, expected_root):
+        cur = self.<span class="mt">_hash</span>(tx)
+        <span class="kw">for</span> sib, sib_on_right <span class="kw">in</span> proof:
+            cur = self.<span class="mt">_hash_pair</span>(cur, sib) <span class="kw">if</span> sib_on_right <span class="kw">else</span> self.<span class="mt">_hash_pair</span>(sib, cur)
+        <span class="kw">return</span> cur == expected_root
+<span class="cm"># Bitcoin SPV wallets: store only 80-byte block headers (not full blocks)</span>
+<span class="cm"># To verify a payment: request Merkle proof &#8594; download ~384 bytes vs 1.5MB block</span>
+<span class="cm"># Ethereum extends this to Merkle-Patricia Tries for state, transactions, receipts</span></pre>
+</div>
 
     <div class="tip"><strong>Real-World Scale:</strong> Bitcoin SPV (Simplified Payment Verification) wallets — used by millions of mobile apps — never download the full 500GB+ blockchain. They store only 80-byte block headers and request Merkle proofs on demand. To verify 1 transaction in a 4096-transaction block: download 12 hashes (384 bytes) vs ~2MB of raw transactions. That's a 5000× bandwidth saving — all thanks to a binary hash tree.</div>
   </div>
@@ -1208,6 +1872,10 @@
 
     <h4>Core Algorithm: Interval Merge + Min-Heap Room Counter + Free Slot Finder</h4>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Problem 1: Merge overlapping meetings — collapses conflicts into busy blocks</span>
 <span class="kw">public int</span>[][] <span class="mt">MergeIntervals</span>(<span class="tp">int</span>[][] meetings)
 {
@@ -1256,6 +1924,50 @@
 <span class="cm">// Calendly runs FindFreeSlots across your calendar entries to show booking windows</span>
 <span class="cm">// Google "Find a time": fetch all attendees' calendars → intersect free slots</span>
 <span class="cm">// Intersection of two free-slot lists: O(m+n) two-pointer merge</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="kw">import</span> heapq
+
+<span class="cm"># Problem 1: Merge overlapping meetings &#8212; collapses conflicts into busy blocks</span>
+<span class="kw">def</span> <span class="mt">merge_intervals</span>(meetings):
+    meetings = <span class="mt">sorted</span>(meetings, key=<span class="kw">lambda</span> m: m[<span class="nm">0</span>])  <span class="cm"># sort by start &#8212; O(n log n)</span>
+    result = [list(meetings[<span class="nm">0</span>])]
+    <span class="kw">for</span> m <span class="kw">in</span> meetings[<span class="nm">1</span>:]:
+        last = result[-<span class="nm">1</span>]
+        <span class="kw">if</span> m[<span class="nm">0</span>] &lt;= last[<span class="nm">1</span>]:           <span class="cm"># overlaps or touches &#8594; extend</span>
+            last[<span class="nm">1</span>] = <span class="mt">max</span>(last[<span class="nm">1</span>], m[<span class="nm">1</span>])
+        <span class="kw">else</span>:
+            result.<span class="mt">append</span>(list(m))    <span class="cm"># gap &#8594; start new block</span>
+    <span class="kw">return</span> result
+
+<span class="cm"># Problem 2: Minimum rooms needed = max simultaneous meetings</span>
+<span class="kw">def</span> <span class="mt">min_rooms_required</span>(meetings):
+    meetings = <span class="mt">sorted</span>(meetings, key=<span class="kw">lambda</span> m: m[<span class="nm">0</span>])
+    end_times = []  <span class="cm"># min-heap of active meeting end times</span>
+    <span class="kw">for</span> m <span class="kw">in</span> meetings:
+        <span class="kw">if</span> end_times <span class="kw">and</span> end_times[<span class="nm">0</span>] &lt;= m[<span class="nm">0</span>]:
+            heapq.<span class="mt">heappop</span>(end_times)   <span class="cm"># reuse room whose meeting just ended</span>
+        heapq.<span class="mt">heappush</span>(end_times, m[<span class="nm">1</span>])  <span class="cm"># assign room, track its end time</span>
+    <span class="kw">return</span> len(end_times)  <span class="cm"># rooms still occupied = peak rooms needed</span>
+
+<span class="cm"># Problem 3: Find free slots &#8805; min_duration for a new meeting</span>
+<span class="kw">def</span> <span class="mt">find_free_slots</span>(busy, day_start, day_end, min_duration):
+    merged = <span class="mt">merge_intervals</span>(busy)
+    free = []
+    prev = day_start
+    <span class="kw">for</span> m <span class="kw">in</span> merged:
+        <span class="kw">if</span> m[<span class="nm">0</span>] - prev &gt;= min_duration:
+            free.<span class="mt">append</span>((prev, m[<span class="nm">0</span>]))  <span class="cm"># gap before meeting</span>
+        prev = <span class="mt">max</span>(prev, m[<span class="nm">1</span>])
+    <span class="kw">if</span> day_end - prev &gt;= min_duration:
+        free.<span class="mt">append</span>((prev, day_end))   <span class="cm"># gap after last</span>
+    <span class="kw">return</span> free
+<span class="cm"># Calendly runs find_free_slots across your calendar entries to show booking windows</span>
+<span class="cm"># Google &quot;Find a time&quot;: fetch all attendees&#39; calendars &#8594; intersect free slots</span>
+<span class="cm"># Intersection of two free-slot lists: O(m+n) two-pointer merge</span></pre>
+</div>
 
     <div class="note"><strong>Real-World Scale:</strong> Calendly processes millions of scheduling requests daily. For each booking link visit, it fetches the host's calendar (n busy slots), runs MergeIntervals + FindFreeSlots in O(n log n), and displays available windows in under 200ms. Google "Find a time" extends this to 10+ attendees by intersecting each person's free slots with a two-pointer O(m+n) merge — the same algorithm you learned in Phase 1.</div>
   </div>
@@ -1293,10 +2005,11 @@
   </div>
 
   <div class="nav-bar">
-    <a href="phase10/m12c_capstone_practice.html">&#8592; Capstone Practice</a>
+    <a href="phase10/m20_final_review.html">&#8592; Final Review</a>
     <a href="index.html" class="home">&#8962; Course Home</a>
   </div>
 
 </div>
+<script src="../dsa.js"></script>
 </body>
 </html>

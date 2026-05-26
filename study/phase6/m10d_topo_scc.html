@@ -1,0 +1,635 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10D — Topological Sort &amp; SCC | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 10 — Part D</h1>
+    <div class="tagline">Topological Sort &amp; Strongly Connected Components</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Ordering dependencies with Kahn's algorithm, and finding cycles/SCCs with Kosaraju's two-pass DFS</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 10 of Phase 6</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ✅ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Topological Sort &amp; SCC<br>
+    ⬜ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
+    <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 1: TOPO SORT -->
+<div class="section-heading">Part 1 — Topological Sort</div>
+
+<!-- SECTION 1 -->
+<div class="section-heading">Section 1 — What is Topological Sort?</div>
+
+<p>Given a <strong>Directed Acyclic Graph (DAG)</strong>, a <strong>topological ordering</strong> is a linear ordering of vertices such that for every directed edge u→v, vertex u comes <em>before</em> v in the ordering. Intuitively, it answers: "Given dependencies, in what order should tasks be completed?"</p>
+
+<div class="diagram">TOPOLOGICAL SORT — Course Prerequisite Example
+
+Graph (directed edges = "must take before"):
+  Math101 ──▶ Math201 ──▶ Math301
+     │                       ▲
+     └──▶ CS101 ──▶ CS201 ───┘
+                     │
+                     └──▶ CS301
+
+Valid topological orderings (multiple valid orderings exist):
+  [Math101, Math201, CS101, CS201, Math301, CS301]
+  [Math101, CS101, Math201, CS201, CS301, Math301]
+  [CS101, Math101, CS201, Math201, CS301, Math301]  ← Wait: CS201 requires CS101 AND Math101
+  
+  So: Math101 and CS101 must both come before CS201.
+  And CS201 must come before CS301.
+  
+Correct ordering example:
+  Math101 → CS101 → Math201 → CS201 → Math301 → CS301
+
+KEY REQUIREMENT: Only valid on a DAG (Directed Acyclic Graph).
+A cycle means "A requires B, B requires C, C requires A" → impossible!
+Topological sort DETECTS cycles: if not all vertices can be ordered = cycle exists.</div>
+
+<div class="tip">
+    <strong>💡 Two approaches to Topological Sort:</strong><br>
+    1. <strong>DFS-based (Tarjan):</strong> Run DFS; push each vertex to a stack after all its descendants are visited. Reverse the stack → topological order.<br>
+    2. <strong>BFS-based (Kahn's algorithm):</strong> Repeatedly remove vertices with in-degree 0 (no prerequisites). This is more intuitive and also detects cycles cleanly. We'll focus on Kahn's.
+</div>
+
+<hr>
+
+<!-- SECTION 2 -->
+<div class="section-heading">Section 2 — Kahn's Algorithm (BFS-based)</div>
+
+<p>Kahn's algorithm (Arthur Kahn, 1962) uses the concept of <strong>in-degree</strong> — the number of incoming edges. A vertex with in-degree 0 has no prerequisites and can be processed first. After processing it, we "remove" it from the graph by decrementing the in-degree of its neighbors. Neighbors whose in-degree becomes 0 are enqueued next.</p>
+
+<div class="diagram">KAHN'S ALGORITHM WALKTHROUGH
+
+Graph: 5→2, 5→0, 4→0, 4→1, 2→3, 3→1
+
+In-degrees:
+  0: 2 (from 5, from 4)
+  1: 2 (from 4, from 3)
+  2: 1 (from 5)
+  3: 1 (from 2)
+  4: 0  ← start here
+  5: 0  ← and here
+
+Queue: [4, 5]  (in-degree 0 vertices)
+Result: []
+
+STEP 1 — Process 4:
+  Result: [4]
+  4→0: indegree[0] = 2-1 = 1
+  4→1: indegree[1] = 2-1 = 1
+  Queue: [5]
+
+STEP 2 — Process 5:
+  Result: [4, 5]
+  5→2: indegree[2] = 1-1 = 0 → enqueue 2
+  5→0: indegree[0] = 1-1 = 0 → enqueue 0
+  Queue: [2, 0]
+
+STEP 3 — Process 2:
+  Result: [4, 5, 2]
+  2→3: indegree[3] = 1-1 = 0 → enqueue 3
+  Queue: [0, 3]
+
+STEP 4 — Process 0:
+  Result: [4, 5, 2, 0]
+  (0 has no outgoing edges)
+  Queue: [3]
+
+STEP 5 — Process 3:
+  Result: [4, 5, 2, 0, 3]
+  3→1: indegree[1] = 1-1 = 0 → enqueue 1
+  Queue: [1]
+
+STEP 6 — Process 1:
+  Result: [4, 5, 2, 0, 3, 1]
+
+All 6 vertices processed = no cycle.
+If fewer than V vertices processed = cycle detected!</div>
+
+<hr>
+
+<!-- SECTION 3 -->
+<div class="section-heading">Section 3 — Topological Sort C# &amp; Python</div>
+
+<span class="lang-label lang-cs">C# — Kahn's Algorithm (BFS-based Topological Sort)</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">public class</span> <span class="tp">TopologicalSort</span>
+{
+    <span class="kw">private readonly int</span> n;
+    <span class="kw">private readonly</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj;
+
+    <span class="kw">public</span> <span class="mt">TopologicalSort</span>(<span class="kw">int</span> vertices)
+    {
+        n   = vertices;
+        adj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span>();
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v) => adj[u].<span class="mt">Add</span>(v);  <span class="cm">// u must come before v</span>
+
+    <span class="cm">// Returns (topological order, hasCycle)</span>
+    <span class="cm">// hasCycle = true if graph is not a DAG</span>
+    <span class="kw">public</span> (<span class="tp">List</span>&lt;<span class="kw">int</span>&gt; order, <span class="kw">bool</span> hasCycle) <span class="mt">KahnsSort</span>()
+    {
+        <span class="cm">// Step 1: Compute in-degrees</span>
+        <span class="kw">int</span>[] inDeg = <span class="kw">new int</span>[n];
+        <span class="kw">for</span> (<span class="kw">int</span> u = <span class="nm">0</span>; u &lt; n; u++)
+            <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+                inDeg[v]++;
+
+        <span class="cm">// Step 2: Enqueue all zero in-degree vertices</span>
+        <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            <span class="kw">if</span> (inDeg[i] == <span class="nm">0</span>) queue.<span class="mt">Enqueue</span>(i);
+
+        <span class="kw">var</span> order = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+
+        <span class="cm">// Step 3: BFS — process zero in-degree, decrement neighbors</span>
+        <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> u = queue.<span class="mt">Dequeue</span>();
+            order.<span class="mt">Add</span>(u);
+            <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+            {
+                inDeg[v]--;
+                <span class="kw">if</span> (inDeg[v] == <span class="nm">0</span>) queue.<span class="mt">Enqueue</span>(v);
+            }
+        }
+
+        <span class="cm">// If fewer vertices processed than n → cycle exists</span>
+        <span class="kw">return</span> (order, order.Count != n);
+    }
+
+    <span class="cm">// DFS-based topological sort (alternative approach)</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">DfsSort</span>()
+    {
+        <span class="kw">bool</span>[] visited = <span class="kw">new bool</span>[n];
+        <span class="kw">var</span> stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+
+        <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> u) {
+            visited[u] = <span class="kw">true</span>;
+            <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+                <span class="kw">if</span> (!visited[v]) <span class="mt">Dfs</span>(v);
+            stack.<span class="mt">Push</span>(u);  <span class="cm">// push AFTER all descendants</span>
+        }
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            <span class="kw">if</span> (!visited[i]) <span class="mt">Dfs</span>(i);
+
+        <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span>) result.<span class="mt">Add</span>(stack.<span class="mt">Pop</span>());
+        <span class="kw">return</span> result;
+    }
+
+    <span class="kw">public static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">TopologicalSort</span>(<span class="nm">6</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">5</span>,<span class="nm">2</span>); g.<span class="mt">AddEdge</span>(<span class="nm">5</span>,<span class="nm">0</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">4</span>,<span class="nm">0</span>); g.<span class="mt">AddEdge</span>(<span class="nm">4</span>,<span class="nm">1</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">2</span>,<span class="nm">3</span>); g.<span class="mt">AddEdge</span>(<span class="nm">3</span>,<span class="nm">1</span>);
+
+        <span class="kw">var</span> (order, cycle) = g.<span class="mt">KahnsSort</span>();
+        System.Console.<span class="mt">WriteLine</span>(<span class="st">$"Has cycle: {cycle}"</span>);         <span class="cm">// False</span>
+        System.Console.<span class="mt">WriteLine</span>(string.<span class="mt">Join</span>(<span class="st">" → "</span>, order));       <span class="cm">// 4 5 2 0 3 1</span>
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python — Kahn's Algorithm + DFS Topological Sort</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, deque
+
+<span class="kw">class</span> <span class="tp">TopologicalSort</span>:
+    <span class="kw">def</span> __init__(<span class="tp">self</span>, n):
+        <span class="tp">self</span>.n   = n
+        <span class="tp">self</span>.adj = defaultdict(<span class="mt">list</span>)
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(<span class="tp">self</span>, u, v):
+        <span class="tp">self</span>.adj[u].<span class="mt">append</span>(v)
+
+    <span class="kw">def</span> <span class="mt">kahns_sort</span>(<span class="tp">self</span>):
+        <span class="cm"># Compute in-degrees</span>
+        in_deg = [<span class="nm">0</span>] * <span class="tp">self</span>.n
+        <span class="kw">for</span> u <span class="kw">in</span> <span class="mt">range</span>(<span class="tp">self</span>.n):
+            <span class="kw">for</span> v <span class="kw">in</span> <span class="tp">self</span>.adj[u]: in_deg[v] += <span class="nm">1</span>
+
+        queue  = deque(i <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="tp">self</span>.n) <span class="kw">if</span> in_deg[i] == <span class="nm">0</span>)
+        order  = []
+        <span class="kw">while</span> queue:
+            u = queue.<span class="mt">popleft</span>()
+            order.<span class="mt">append</span>(u)
+            <span class="kw">for</span> v <span class="kw">in</span> <span class="tp">self</span>.adj[u]:
+                in_deg[v] -= <span class="nm">1</span>
+                <span class="kw">if</span> in_deg[v] == <span class="nm">0</span>: queue.<span class="mt">append</span>(v)
+
+        has_cycle = <span class="mt">len</span>(order) != <span class="tp">self</span>.n
+        <span class="kw">return</span> order, has_cycle
+
+    <span class="kw">def</span> <span class="mt">dfs_sort</span>(<span class="tp">self</span>):
+        visited, stack = <span class="mt">set</span>(), []
+        <span class="kw">def</span> dfs(u):
+            visited.<span class="mt">add</span>(u)
+            <span class="kw">for</span> v <span class="kw">in</span> <span class="tp">self</span>.adj[u]:
+                <span class="kw">if</span> v <span class="kw">not in</span> visited: dfs(v)
+            stack.<span class="mt">append</span>(u)          <span class="cm"># push AFTER all descendants</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="tp">self</span>.n):
+            <span class="kw">if</span> i <span class="kw">not in</span> visited: dfs(i)
+        <span class="kw">return</span> stack[::-<span class="nm">1</span>]         <span class="cm"># reverse = topological order</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    g = <span class="tp">TopologicalSort</span>(<span class="nm">6</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">5</span>,<span class="nm">2</span>); g.<span class="mt">add_edge</span>(<span class="nm">5</span>,<span class="nm">0</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">4</span>,<span class="nm">0</span>); g.<span class="mt">add_edge</span>(<span class="nm">4</span>,<span class="nm">1</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">2</span>,<span class="nm">3</span>); g.<span class="mt">add_edge</span>(<span class="nm">3</span>,<span class="nm">1</span>)
+    order, cycle = g.<span class="mt">kahns_sort</span>()
+    <span class="mt">print</span>(<span class="st">f"Has cycle: {cycle}"</span>)    <span class="cm"># False</span>
+    <span class="mt">print</span>(<span class="st">" → "</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, order)))  <span class="cm"># 4 → 5 → 2 → 0 → 3 → 1</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ PART 2: SCC -->
+<div class="section-heading">Part 2 — Strongly Connected Components (SCC)</div>
+
+<!-- SECTION 4 -->
+<div class="section-heading">Section 4 — What are SCCs?</div>
+
+<p>In a directed graph, a <strong>Strongly Connected Component (SCC)</strong> is a maximal set of vertices where <em>every vertex is reachable from every other vertex</em> in the set. In other words, for any u and v in the same SCC, there exists a path u→…→v AND a path v→…→u.</p>
+
+<div class="diagram">STRONGLY CONNECTED COMPONENTS — Example
+
+Directed graph:
+  1 ──▶ 2 ──▶ 3 ──▶ 4
+  ▲     │     ▲     │
+  │     ▼     │     ▼
+  0 ◀── 5     6 ──▶ 7
+  │           ▲
+  └──▶ 6 ─────┘
+
+Wait, let's use cleaner example:
+  Edges: 0→1, 1→2, 2→0,    ← forms a cycle: SCC = {0,1,2}
+         1→3, 3→4, 4→5, 5→3  ← forms a cycle: SCC = {3,4,5}
+         2→6                  ← just a node: SCC = {6}
+
+SCCs: {0,1,2}   {3,4,5}   {6}
+
+Within {0,1,2}: 0→1→2→0 (can reach anyone from anyone) ✓
+Within {3,4,5}: 3→4→5→3 (can reach anyone from anyone) ✓
+{6}: can't go anywhere else, nothing comes back ✓
+
+Condensation graph (replace each SCC with a node):
+  {0,1,2} ──▶ {3,4,5} (via 1→3)
+  {0,1,2} ──▶ {6}     (via 2→6)
+  
+This condensation is ALWAYS a DAG!</div>
+
+<div class="tip">
+    <strong>💡 Why SCCs matter:</strong> SCCs reveal the "strongly connected clusters" of a directed graph — groups that can mutually communicate. The condensation (DAG of SCCs) shows the high-level structure. SCCs are used to: detect circular dependencies in build systems, analyze web link structure (which pages form tight communities), find clusters in social networks (who influences whom), and solve 2-SAT boolean satisfiability problems.
+</div>
+
+<hr>
+
+<!-- SECTION 5 -->
+<div class="section-heading">Section 5 — Kosaraju's Algorithm (Two-Pass DFS)</div>
+
+<p>Kosaraju's algorithm finds all SCCs in O(V+E) using two DFS passes:</p>
+<ol>
+    <li><strong>Pass 1:</strong> Run DFS on the original graph. Push each vertex to a stack in the order DFS finishes (post-order). Vertices that finish later are "higher" in the condensation.</li>
+    <li><strong>Pass 2:</strong> Create the transposed graph (reverse all edges). Process vertices from the stack (highest finish time first). Each DFS in the transposed graph starting from an unvisited vertex discovers exactly one SCC.</li>
+</ol>
+
+<div class="diagram">KOSARAJU'S ALGORITHM WALKTHROUGH
+
+Original graph edges: 0→1, 1→2, 2→0, 1→3, 3→4, 4→5, 5→3, 2→6
+
+=== PASS 1: DFS on original graph, record finish order ===
+
+Start DFS from 0:
+  0→1→2→0 (visited), 2→6: 6 finishes first → stack: [6]
+  2 finishes → stack: [6, 2]
+  1→3→4→5→3 (visited), 5 finishes → stack: [6, 2, 5]
+  4 finishes → stack: [6, 2, 5, 4]
+  3 finishes → stack: [6, 2, 5, 4, 3]
+  1 finishes → stack: [6, 2, 5, 4, 3, 1]
+  0 finishes → stack: [6, 2, 5, 4, 3, 1, 0]
+
+Stack (top = last finished): [6, 2, 5, 4, 3, 1, 0]
+Process order (pop from stack): 0, 1, 3, 4, 5, 2, 6
+
+=== PASS 2: DFS on TRANSPOSED graph ===
+
+Transposed edges: 1→0, 2→1, 0→2, 3→1, 4→3, 5→4, 3→5, 6→2
+
+Process 0 (unvisited in transposed graph):
+  0→2→1→0 (visited), DFS collects: {0, 2, 1} ← SCC 1
+  Mark 0,1,2 as visited.
+
+Process 1 (already visited) → skip
+
+Process 3 (unvisited):
+  3→5→4→3 (visited), DFS collects: {3, 5, 4} ← SCC 2
+
+Process 4 (already visited) → skip
+Process 5 (already visited) → skip
+
+Process 2 (already visited) → skip
+
+Process 6 (unvisited):
+  6→2 (visited), DFS collects: {6} ← SCC 3
+
+=== RESULT: SCCs = {0,1,2}, {3,4,5}, {6} ===</div>
+
+<hr>
+
+<!-- SECTION 6 -->
+<div class="section-heading">Section 6 — SCC C# &amp; Python</div>
+
+<span class="lang-label lang-cs">C# — Kosaraju's SCC Algorithm</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">public class</span> <span class="tp">KosarajuSCC</span>
+{
+    <span class="kw">private readonly int</span> n;
+    <span class="kw">private readonly</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj;    <span class="cm">// original graph</span>
+    <span class="kw">private readonly</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] radj;   <span class="cm">// transposed (reversed) graph</span>
+
+    <span class="kw">public</span> <span class="mt">KosarajuSCC</span>(<span class="kw">int</span> vertices)
+    {
+        n    = vertices;
+        adj  = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+        radj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) { adj[i] = <span class="kw">new</span>(); radj[i] = <span class="kw">new</span>(); }
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v)
+    {
+        adj[u].<span class="mt">Add</span>(v);    <span class="cm">// original</span>
+        radj[v].<span class="mt">Add</span>(u);  <span class="cm">// transposed</span>
+    }
+
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">FindSCCs</span>()
+    {
+        <span class="kw">bool</span>[] visited = <span class="kw">new bool</span>[n];
+        <span class="kw">var</span> finishStack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+
+        <span class="cm">// ── Pass 1: DFS on original graph, record finish order ──</span>
+        <span class="kw">void</span> <span class="mt">DFS1</span>(<span class="kw">int</span> u) {
+            visited[u] = <span class="kw">true</span>;
+            <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+                <span class="kw">if</span> (!visited[v]) <span class="mt">DFS1</span>(v);
+            finishStack.<span class="mt">Push</span>(u);  <span class="cm">// push on finish</span>
+        }
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            <span class="kw">if</span> (!visited[i]) <span class="mt">DFS1</span>(i);
+
+        <span class="cm">// ── Pass 2: DFS on transposed graph in reverse finish order ──</span>
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(visited, <span class="kw">false</span>);
+        <span class="kw">var</span> sccs = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;();
+
+        <span class="kw">void</span> <span class="mt">DFS2</span>(<span class="kw">int</span> u, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; scc) {
+            visited[u] = <span class="kw">true</span>;
+            scc.<span class="mt">Add</span>(u);
+            <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> radj[u])
+                <span class="kw">if</span> (!visited[v]) <span class="mt">DFS2</span>(v, scc);
+        }
+
+        <span class="kw">while</span> (finishStack.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> u = finishStack.<span class="mt">Pop</span>();
+            <span class="kw">if</span> (!visited[u])
+            {
+                <span class="kw">var</span> scc = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+                <span class="mt">DFS2</span>(u, scc);
+                sccs.<span class="mt">Add</span>(scc);
+            }
+        }
+        <span class="kw">return</span> sccs;
+    }
+
+    <span class="kw">public static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">KosarajuSCC</span>(<span class="nm">7</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">0</span>,<span class="nm">1</span>); g.<span class="mt">AddEdge</span>(<span class="nm">1</span>,<span class="nm">2</span>); g.<span class="mt">AddEdge</span>(<span class="nm">2</span>,<span class="nm">0</span>);  <span class="cm">// SCC: {0,1,2}</span>
+        g.<span class="mt">AddEdge</span>(<span class="nm">1</span>,<span class="nm">3</span>); g.<span class="mt">AddEdge</span>(<span class="nm">3</span>,<span class="nm">4</span>); g.<span class="mt">AddEdge</span>(<span class="nm">4</span>,<span class="nm">5</span>); g.<span class="mt">AddEdge</span>(<span class="nm">5</span>,<span class="nm">3</span>);  <span class="cm">// SCC: {3,4,5}</span>
+        g.<span class="mt">AddEdge</span>(<span class="nm">2</span>,<span class="nm">6</span>);                                              <span class="cm">// SCC: {6}</span>
+
+        <span class="kw">var</span> sccs = g.<span class="mt">FindSCCs</span>();
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"{sccs.Count} SCCs found:"</span>);
+        <span class="kw">foreach</span> (<span class="kw">var</span> scc <span class="kw">in</span> sccs)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  [{string.Join(", ", scc)}]"</span>);
+        <span class="cm">// [0, 2, 1], [3, 5, 4], [6]  (order may vary)</span>
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python — Kosaraju's SCC</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+<span class="kw">class</span> <span class="tp">KosarajuSCC</span>:
+    <span class="kw">def</span> __init__(<span class="tp">self</span>, n):
+        <span class="tp">self</span>.n    = n
+        <span class="tp">self</span>.adj  = defaultdict(<span class="mt">list</span>)
+        <span class="tp">self</span>.radj = defaultdict(<span class="mt">list</span>)
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(<span class="tp">self</span>, u, v):
+        <span class="tp">self</span>.adj[u].<span class="mt">append</span>(v)
+        <span class="tp">self</span>.radj[v].<span class="mt">append</span>(u)
+
+    <span class="kw">def</span> <span class="mt">find_sccs</span>(<span class="tp">self</span>):
+        visited, finish_stack = <span class="mt">set</span>(), []
+
+        <span class="cm"># Pass 1: DFS on original, record finish times</span>
+        <span class="kw">def</span> dfs1(u):
+            visited.<span class="mt">add</span>(u)
+            <span class="kw">for</span> v <span class="kw">in</span> <span class="tp">self</span>.adj[u]:
+                <span class="kw">if</span> v <span class="kw">not in</span> visited: dfs1(v)
+            finish_stack.<span class="mt">append</span>(u)
+
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="tp">self</span>.n):
+            <span class="kw">if</span> i <span class="kw">not in</span> visited: dfs1(i)
+
+        <span class="cm"># Pass 2: DFS on transposed graph in reverse finish order</span>
+        visited2, sccs = <span class="mt">set</span>(), []
+
+        <span class="kw">def</span> dfs2(u, scc):
+            visited2.<span class="mt">add</span>(u); scc.<span class="mt">append</span>(u)
+            <span class="kw">for</span> v <span class="kw">in</span> <span class="tp">self</span>.radj[u]:
+                <span class="kw">if</span> v <span class="kw">not in</span> visited2: dfs2(v, scc)
+
+        <span class="kw">while</span> finish_stack:
+            u = finish_stack.<span class="mt">pop</span>()
+            <span class="kw">if</span> u <span class="kw">not in</span> visited2:
+                scc = []
+                dfs2(u, scc)
+                sccs.<span class="mt">append</span>(scc)
+        <span class="kw">return</span> sccs
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    g = <span class="tp">KosarajuSCC</span>(<span class="nm">7</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">0</span>,<span class="nm">1</span>); g.<span class="mt">add_edge</span>(<span class="nm">1</span>,<span class="nm">2</span>); g.<span class="mt">add_edge</span>(<span class="nm">2</span>,<span class="nm">0</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">1</span>,<span class="nm">3</span>); g.<span class="mt">add_edge</span>(<span class="nm">3</span>,<span class="nm">4</span>); g.<span class="mt">add_edge</span>(<span class="nm">4</span>,<span class="nm">5</span>); g.<span class="mt">add_edge</span>(<span class="nm">5</span>,<span class="nm">3</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">2</span>,<span class="nm">6</span>)
+    sccs = g.<span class="mt">find_sccs</span>()
+    <span class="mt">print</span>(<span class="st">f"{len(sccs)} SCCs:"</span>)
+    <span class="kw">for</span> scc <span class="kw">in</span> sccs:
+        <span class="mt">print</span>(<span class="st">f"  {sorted(scc)}"</span>)
+    <span class="cm"># [0, 1, 2], [3, 4, 5], [6]</span></pre>
+</div>
+
+<hr>
+
+<!-- SECTION 7 -->
+<div class="section-heading">Section 7 — Complexity &amp; Algorithm Comparison</div>
+
+<table>
+    <thead>
+        <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Kahn's Topological Sort</td><td class="g">O(V + E)</td><td>O(V + E)</td><td>BFS-based; detects cycles cleanly via count check</td></tr>
+        <tr><td>DFS Topological Sort</td><td class="g">O(V + E)</td><td>O(V)</td><td>Uses stack; less obvious cycle detection</td></tr>
+        <tr><td>Kosaraju's SCC</td><td class="g">O(V + E)</td><td>O(V + E)</td><td>Two DFS passes; requires storing transpose graph</td></tr>
+        <tr><td>Tarjan's SCC</td><td class="g">O(V + E)</td><td>O(V)</td><td>Single DFS pass; uses low-link values; slightly more complex to implement</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- SECTION 8 -->
+<div class="section-heading">Section 8 — Real-World Applications</div>
+
+<div class="realworld">
+    <strong>🌍 Topological Sort — Build Systems &amp; Package Managers</strong><br>
+    Make, CMake, Gradle, npm, pip — all use topological sort to determine the correct build/install order. Package A depends on B, B depends on C: install C first, then B, then A. If a circular dependency exists (A depends on B, B depends on A), the topological sort fails — detecting the circular dependency. This is exactly Kahn's algorithm: if not all packages can be ordered, a circular dependency must exist.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Topological Sort — Task Scheduling</strong><br>
+    Google's MapReduce, Apache Spark, and Airflow (workflow orchestration) all use DAGs to represent computation pipelines. Topological sort determines which tasks can run in parallel (same "level" in the DAG) and which must wait. Netflix uses this for data pipeline scheduling; Facebook uses it for their internal workflow engine.
+</div>
+
+<div class="realworld">
+    <strong>🌍 SCCs — Web Crawling &amp; SEO</strong><br>
+    Google's PageRank algorithm models the web as a directed graph. SCCs represent communities of tightly-linked pages. Pages within the same SCC have strong mutual influence. Finding SCCs helps identify "link farms" (sites that artificially create cycles to boost PageRank) and helps Google understand the web's community structure for better ranking.
+</div>
+
+<div class="realworld">
+    <strong>🌍 SCCs — 2-SAT Problem</strong><br>
+    Boolean satisfiability with clauses of exactly 2 literals (2-SAT) is solvable in linear time using SCCs. Model each variable x as two nodes (x and ¬x). Build an implication graph. The formula is unsatisfiable if and only if some variable x and its negation ¬x are in the same SCC. Otherwise, the topological order of SCCs gives the assignment. Used in circuit design verification and constraint satisfaction.
+</div>
+
+<hr>
+
+<!-- SECTION 9 -->
+<div class="section-heading">Section 9 — Common Mistakes</div>
+
+<div class="warning">
+    <strong>⚠️ Applying topological sort to a graph with cycles:</strong> If the graph has cycles, a topological ordering is impossible. Always check whether your input is guaranteed to be a DAG, or use Kahn's algorithm which detects cycles (process count &lt; V means a cycle exists).
+</div>
+
+<div class="warning">
+    <strong>⚠️ Kosaraju's Pass 2: forgetting to use the transposed graph:</strong> A common mistake is running both DFS passes on the original graph. Pass 2 must use the transposed (reversed-edge) graph. The intuition: in the original graph, edges go "into" SCCs from outside. In the transposed graph, those edges are reversed — so each DFS from an SCC's "representative vertex" stays confined to that SCC.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Stack overflow on large graphs with recursive DFS:</strong> Both DFS-based topological sort and Kosaraju's use recursive DFS. For graphs with V=100,000 vertices, this can cause stack overflow. Convert to iterative DFS using an explicit stack, or increase the call stack size (in Python: use <code>sys.setrecursionlimit</code> carefully, or rewrite iteratively). Kahn's BFS-based approach avoids this issue entirely.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Topological sort result is not unique:</strong> Multiple valid topological orderings can exist for the same DAG (whenever multiple vertices have in-degree 0 simultaneously). Don't assume there's one "correct" answer — any valid ordering is correct. If you need a specific ordering (e.g., lexicographically smallest), use a priority queue instead of a regular queue in Kahn's algorithm.
+</div>
+
+<hr>
+
+<!-- SECTION 10 -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q1 — In Kahn's algorithm, what does it mean if the final result list has fewer than V vertices?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer: The graph contains a cycle (it's not a DAG).</strong> Kahn's starts with vertices of in-degree 0. After processing each vertex, it decrements the in-degrees of its neighbors. In a DAG, eventually all vertices reach in-degree 0 and are processed. In a cyclic graph, the vertices forming the cycle can never reach in-degree 0 — each vertex in the cycle always has at least one incoming edge from another cycle vertex. So if the result has k &lt; V vertices, exactly V-k vertices are stuck in cycles. This is how LeetCode "Course Schedule" and "Course Schedule II" problems detect impossible schedules.</div>
+        <div class="complexity"><strong>Cycle detection:</strong> <code>if result.Count == n: no cycle else: cycle exists</code></div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q2 — Why does Kosaraju's algorithm need to reverse all edges for Pass 2? What would happen if you used the original graph for both passes?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>If you used the original graph for both passes, you'd get wrong results.</strong> The intuition: Pass 1 ends by identifying vertices with highest "reach" in the graph (they finish last in DFS because they can reach many others). In Pass 2, we want to find exactly the vertices that can reach back to them — i.e., vertices in the same SCC. In the original graph, DFS from a vertex could escape to other SCCs. In the <em>transposed</em> graph, edges pointing out of an SCC in the original now point into it — so DFS in the transposed graph starting from the SCC "leader" stays confined to that SCC, collecting exactly its members.</div>
+        <div class="complexity"><strong>Key insight:</strong> In original graph: "leader" of SCC can reach many things. In transposed graph: many things can reach the "leader" — but only those within the same SCC.</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q3 — You have tasks with dependencies. Some tasks form a cycle. Can you use topological sort to find all tasks that CAN be completed (are not part of, or downstream of, any cycle)?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Yes — Kahn's algorithm naturally identifies these.</strong> Run Kahn's algorithm. All vertices that appear in the output list are completable (they're not in any cycle AND they don't depend on any cycle). Vertices NOT in the output list are either: (a) in a cycle, or (b) downstream of a cycle (their prerequisites include cyclic tasks). Since cyclic tasks can never complete, their dependent tasks also can never complete. Kahn's algorithm efficiently separates completable from incompletable tasks in one O(V+E) pass. This is exactly the LeetCode "Course Schedule II" solution: return the Kahn's output if it includes all courses, otherwise return [] (impossible).</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E). The output is exactly the set of completable tasks in dependency order.</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q4 — How many SCCs does a DAG (directed acyclic graph) have?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>A DAG has exactly V SCCs — one per vertex.</strong> In a DAG, there are no cycles. For two distinct vertices u and v to be in the same SCC, there must exist paths u→v AND v→u — but a cycle u→…→v→…→u would contradict the DAG property. Therefore, every vertex forms its own singleton SCC. Conversely, condensing any directed graph to its SCCs always produces a DAG (the condensation graph). So "DAG" and "graph where every SCC is a singleton" are equivalent.</div>
+        <div class="complexity"><strong>Implication:</strong> Topological sort on a DAG is the same as ordering the V singleton SCCs in topological order.</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q5 — LeetCode #207: Course Schedule. Given numCourses and a list of prerequisites [a, b] meaning "to take course a, you must first take course b", return true if it's possible to finish all courses.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>This is cycle detection in a directed graph — equivalent to: "is this a DAG?"</strong> Use Kahn's algorithm: build the graph (b→a for each [a,b] pair), compute in-degrees, run Kahn's. If the result contains all numCourses vertices, return true (no cycle). Otherwise return false (cycle = impossible). Alternatively, use DFS with 3 states: 0=unvisited, 1=in current DFS path, 2=fully processed. If DFS visits a vertex with state 1, a cycle is found.</div>
+        <div class="complexity"><strong>C#:</strong> <code>var (order, hasCycle) = KahnsSort(); return !hasCycle;</code><br><strong>Python:</strong> <code>order, has_cycle = kahns_sort(); return not has_cycle</code><br><strong>Time:</strong> O(V+E), <strong>Space:</strong> O(V+E)</div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10D Complete</button>
+<div class="toast" id="toast">✅ Module 10D marked complete!</div>
+    <script>var MODULE_ID = 'm10d';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

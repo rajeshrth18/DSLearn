@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8C — Bloom Filters &amp; Probabilistic Data Structures</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 5</div>
+    <h1>Module 8 — Part C</h1>
+    <div class="tagline">Bloom Filters &amp; Probabilistic Data Structures</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Trade a tiny probability of error for massive memory savings — used in every large-scale system</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1 Hour</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part C of Module 8</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 8 — Hashing:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m08a_hashing.html">Hash Functions &amp; Collisions</a><br>
+    ✅ <strong>Part B</strong> — <a href="m08b_collections.html">Dictionary, HashSet &amp; LRU Cache</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Bloom Filters<br>
+    ⬜ <strong>Part D</strong> — <a href="m08d_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase4/m07a_avl_trees.html">&larr; Module 7 &mdash; Advanced Trees</a>
+    <a href="../phase6/m09a_graph_theory.html">Module 9 &mdash; Graph Basics &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 8C</h2>
+    <ol>
+        <li>The Analogy — The Spam Filter <span>— Probably not spam</span></li>
+        <li>What is a Bloom Filter? <span>— Bit array + k hash functions</span></li>
+        <li>Insert &amp; Query — Step by Step <span>— Visual walkthrough</span></li>
+        <li>False Positives vs False Negatives <span>— The asymmetry</span></li>
+        <li>Optimal Parameters <span>— How to choose m and k</span></li>
+        <li>Complete C# Implementation <span>— BitArray + multiple hash functions</span></li>
+        <li>Complete Python Implementation <span>— Same logic, Python idioms</span></li>
+        <li>Count-Min Sketch <span>— Bloom filter for frequency estimation</span></li>
+        <li>Real-World Applications <span>— Redis, Cassandra, Chrome, Akamai</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: The Spam Filter</div>
+
+<p>Imagine an email spam filter that maintains a list of known spam domains. For every incoming email, it checks whether the sender's domain is on the list. There are billions of domains — storing them all in a hash set would require gigabytes of RAM.</p>
+
+<p>Instead, the filter keeps a compact <strong>1 million-bit array</strong> (just 125 KB) and uses three hash functions. When a spam domain is added, three bits are set. When checking an incoming email, the filter checks those same three bit positions. If <em>all three bits are set</em>, the domain is <strong>probably</strong> spam. If <em>any bit is 0</em>, the domain is <strong>definitely not</strong> on the spam list.</p>
+
+<p>This is a Bloom filter. It can have <strong>false positives</strong> (occasionally flags a legitimate domain as spam) but <strong>never false negatives</strong> (never clears a known spam domain). For spam filtering, this tradeoff is acceptable.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — What is a Bloom Filter?</div>
+
+<p>A Bloom filter is a <strong>space-efficient probabilistic data structure</strong> for set membership testing. It uses a bit array of size <em>m</em> and <em>k</em> independent hash functions.</p>
+
+<table>
+    <thead>
+        <tr><th>Property</th><th>Bloom Filter</th><th>HashSet</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Memory usage</td><td class="g">O(m) bits — typically 10 bits/element</td><td class="r">O(n) — stores actual elements</td></tr>
+        <tr><td>Insert</td><td class="g">O(k) — set k bits</td><td class="g">O(1) amortized</td></tr>
+        <tr><td>Query "is X in set?"</td><td class="g">O(k)</td><td class="g">O(1)</td></tr>
+        <tr><td>False positives</td><td class="o">Possible (controllable)</td><td class="g">Never</td></tr>
+        <tr><td>False negatives</td><td class="g">Never</td><td class="g">Never</td></tr>
+        <tr><td>Delete</td><td class="r">Not supported (standard)</td><td class="g">O(1)</td></tr>
+        <tr><td>Count elements</td><td class="r">Not supported</td><td class="g">O(1)</td></tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 The Golden Rule of Bloom Filters:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>"Definitely NOT in set"</strong> → 100% certain (any zero bit means absent)</li>
+        <li><strong>"Probably IN set"</strong> → might be a false positive</li>
+    </ul>
+    This asymmetry makes Bloom filters perfect for "fast reject" scenarios: quickly eliminate candidates that definitely aren't in the set, and only do expensive checks on the (rare) positives.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Insert &amp; Query: Step by Step</div>
+
+<div class="diagram">BLOOM FILTER — m=18 bits, k=3 hash functions
+
+INITIAL STATE (all zeros):
+  Index: 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17
+  Bits:  0  0  0  0  0  0  0  0  0  0   0  0  0  0  0  0  0  0
+
+INSERT "Alice":
+  h1("Alice") % 18 = 1   → set bit[1]
+  h2("Alice") % 18 = 5   → set bit[5]
+  h3("Alice") % 18 = 13  → set bit[13]
+
+  Index: 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17
+  Bits:  0  1  0  0  0  1  0  0  0  0   0  0  0  1  0  0  0  0
+
+INSERT "Bob":
+  h1("Bob") % 18 = 4   → set bit[4]
+  h2("Bob") % 18 = 9   → set bit[9]
+  h3("Bob") % 18 = 1   → bit[1] already set (no problem, still 1)
+
+  Index: 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17
+  Bits:  0  1  0  0  1  1  0  0  0  1   0  0  0  1  0  0  0  0
+
+QUERY "Alice" → check bits 1, 5, 13 → all are 1 → "PROBABLY IN SET" ✓
+QUERY "Bob"   → check bits 4, 9,  1 → all are 1 → "PROBABLY IN SET" ✓
+QUERY "Carol" → h1=2, h2=7, h3=11  → bit[2]=0 → "DEFINITELY NOT IN SET" ✓
+
+FALSE POSITIVE EXAMPLE:
+QUERY "Dave"  → h1=1, h2=5, h3=9  → bits 1,5,9 are all 1!
+               → "PROBABLY IN SET" — but Dave was never inserted!
+               → This is a FALSE POSITIVE (all 3 bits happened to be set by Alice+Bob)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — False Positives vs. False Negatives</div>
+
+<p><strong>False positives</strong> (saying "probably in set" for an absent element) happen when all k bit positions checked happen to have been set by other insertions. The probability increases as the filter fills up.</p>
+
+<p><strong>False negatives are impossible</strong>: inserting an element sets certain bits permanently. Querying that same element will always find those bits set. A bit, once set, is never cleared (in a standard Bloom filter).</p>
+
+<div class="note">
+    <strong>📝 Why no deletion?</strong> Clearing a bit during deletion might remove bits set by other elements (sharing bits is the whole trick). A <strong>Counting Bloom Filter</strong> extends each bit to a counter, enabling deletion at the cost of more memory.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Optimal Parameters</div>
+
+<p>Given <em>n</em> expected insertions and a target false positive probability <em>p</em>, the optimal parameters are:</p>
+
+<ul>
+    <li><strong>Bit array size:</strong> m = −n · ln(p) / (ln 2)²  ≈  −n · 1.44 · log₂(p)</li>
+    <li><strong>Number of hash functions:</strong> k = (m / n) · ln 2  ≈  0.693 · (m / n)</li>
+</ul>
+
+<div class="diagram">PARAMETER EXAMPLES — n = 1,000,000 elements
+
+  Target FP rate    Bits/element (m/n)    # hash funcs (k)    Total memory
+  ─────────────────────────────────────────────────────────────────────────
+  p = 1%            9.59 bits              7                   1.2 MB
+  p = 0.1%          14.4 bits             10                   1.8 MB
+  p = 0.01%         19.2 bits             13                   2.4 MB
+  p = 0.001%        24.0 bits             17                   3.0 MB
+
+  Compare: HashSet of 1M strings ≈ 50–100 MB (storing actual 10–20 char strings)
+  → Bloom filter is 20–50× smaller for 1% false positive rate</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Complete C# Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections;
+<span class="kw">using</span> System.Text;
+
+<span class="kw">public class</span> <span class="tp">BloomFilter</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">BitArray</span> _bits;
+    <span class="kw">private readonly int</span> _hashCount;
+    <span class="kw">private readonly int</span> _size;
+    <span class="kw">private int</span> _insertCount;
+
+    <span class="cm">/// &lt;param name="capacity"&gt;Expected number of elements&lt;/param&gt;</span>
+    <span class="cm">/// &lt;param name="errorRate"&gt;Desired false positive probability (e.g., 0.01)&lt;/param&gt;</span>
+    <span class="kw">public</span> <span class="mt">BloomFilter</span>(<span class="kw">int</span> capacity, <span class="kw">double</span> errorRate = <span class="nm">0.01</span>)
+    {
+        <span class="cm">// Optimal m: -n * ln(p) / (ln2)^2</span>
+        _size = (<span class="kw">int</span>)(-capacity * <span class="tp">Math</span>.<span class="mt">Log</span>(errorRate) /
+                      (<span class="tp">Math</span>.<span class="mt">Log</span>(<span class="nm">2</span>) * <span class="tp">Math</span>.<span class="mt">Log</span>(<span class="nm">2</span>)));
+        <span class="cm">// Optimal k: (m/n) * ln2</span>
+        _hashCount = (<span class="kw">int</span>)((<span class="kw">double</span>)_size / capacity * <span class="tp">Math</span>.<span class="mt">Log</span>(<span class="nm">2</span>));
+        _bits = <span class="kw">new</span> <span class="tp">BitArray</span>(_size);
+    }
+
+    <span class="kw">public void</span> <span class="mt">Add</span>(<span class="kw">string</span> item)
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> idx <span class="kw">in</span> <span class="mt">GetBitIndices</span>(item))
+            _bits[idx] = <span class="kw">true</span>;
+        _insertCount++;
+    }
+
+    <span class="kw">public bool</span> <span class="mt">MightContain</span>(<span class="kw">string</span> item)
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> idx <span class="kw">in</span> <span class="mt">GetBitIndices</span>(item))
+            <span class="kw">if</span> (!_bits[idx]) <span class="kw">return false</span>;  <span class="cm">// definite miss</span>
+        <span class="kw">return true</span>;  <span class="cm">// probable hit (may be false positive)</span>
+    }
+
+    <span class="kw">public double</span> EstimatedFalsePositiveRate
+        =&gt; <span class="tp">Math</span>.<span class="mt">Pow</span>(<span class="nm">1</span> - <span class="tp">Math</span>.<span class="mt">Exp</span>(-(double)_hashCount * _insertCount / _size),
+                    _hashCount);
+
+    <span class="cm">// Generate k independent hash values for an item</span>
+    <span class="kw">private int</span>[] <span class="mt">GetBitIndices</span>(<span class="kw">string</span> item)
+    {
+        <span class="kw">var</span> indices = <span class="kw">new int</span>[_hashCount];
+        <span class="kw">byte</span>[] bytes = <span class="tp">Encoding</span>.UTF8.<span class="mt">GetBytes</span>(item);
+
+        <span class="cm">// Double hashing: h(i) = (h1 + i * h2) % m</span>
+        <span class="kw">long</span> h1 = <span class="mt">FNV1a</span>(bytes, seed: <span class="nm">0</span>);
+        <span class="kw">long</span> h2 = <span class="mt">FNV1a</span>(bytes, seed: <span class="nm">1597</span>);
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; _hashCount; i++)
+            indices[i] = (<span class="kw">int</span>)((<span class="tp">Math</span>.<span class="mt">Abs</span>(h1 + (<span class="kw">long</span>)i * h2)) % _size);
+        <span class="kw">return</span> indices;
+    }
+
+    <span class="kw">private static long</span> <span class="mt">FNV1a</span>(<span class="kw">byte</span>[] data, <span class="kw">long</span> seed)
+    {
+        <span class="kw">const uint</span> prime  = <span class="nm">16777619</span>;
+        <span class="kw">uint</span> hash = (<span class="kw">uint</span>)(<span class="nm">2166136261</span> ^ seed);
+        <span class="kw">foreach</span> (<span class="kw">var</span> b <span class="kw">in</span> data) { hash ^= b; hash *= prime; }
+        <span class="kw">return</span> hash;
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> bf = <span class="kw">new</span> <span class="tp">BloomFilter</span>(capacity: <span class="nm">1000</span>, errorRate: <span class="nm">0.01</span>);
+
+        <span class="kw">string</span>[] spamDomains = { <span class="st">"evil.com"</span>, <span class="st">"spam99.net"</span>, <span class="st">"phishing.org"</span> };
+        <span class="kw">foreach</span> (<span class="kw">var</span> d <span class="kw">in</span> spamDomains) bf.<span class="mt">Add</span>(d);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(bf.<span class="mt">MightContain</span>(<span class="st">"evil.com"</span>));      <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(bf.<span class="mt">MightContain</span>(<span class="st">"legit.com"</span>));     <span class="cm">// False (probably)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Est. FP rate: {bf.EstimatedFalsePositiveRate:P3}"</span>);
+
+        <span class="cm">/* ── Output ──
+        True
+        False
+        Est. FP rate: 0.000%   (only 3 items in a 1000-capacity filter)
+        */</span>
+    }
+}</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Complete Python Implementation</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">import</span> math
+<span class="kw">import</span> hashlib
+
+
+<span class="kw">class</span> <span class="tp">BloomFilter</span>:
+    <span class="st">"""Space-efficient probabilistic set membership filter."""</span>
+
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="tp">self</span>, capacity: <span class="kw">int</span>, error_rate: <span class="kw">float</span> = <span class="nm">0.01</span>):
+        <span class="cm"># Optimal bit array size</span>
+        <span class="tp">self</span>._size = <span class="kw">int</span>(
+            -capacity * math.<span class="mt">log</span>(error_rate) / (math.<span class="mt">log</span>(<span class="nm">2</span>) ** <span class="nm">2</span>)
+        )
+        <span class="cm"># Optimal number of hash functions</span>
+        <span class="tp">self</span>._k = <span class="kw">int</span>(<span class="tp">self</span>._size / capacity * math.<span class="mt">log</span>(<span class="nm">2</span>))
+        <span class="tp">self</span>._bits = bytearray((<span class="tp">self</span>._size + <span class="nm">7</span>) // <span class="nm">8</span>)  <span class="cm"># byte array</span>
+        <span class="tp">self</span>._count = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="mt">_get_indices</span>(<span class="tp">self</span>, item: <span class="kw">str</span>):
+        <span class="st">"""Generate k bit indices using double hashing."""</span>
+        data = item.<span class="mt">encode</span>()
+        h1 = <span class="kw">int</span>(hashlib.<span class="mt">md5</span>(data).<span class="mt">hexdigest</span>(), <span class="nm">16</span>)
+        h2 = <span class="kw">int</span>(hashlib.<span class="mt">sha1</span>(data).<span class="mt">hexdigest</span>(), <span class="nm">16</span>)
+        <span class="kw">return</span> [(<span class="mt">abs</span>(h1 + i * h2)) % <span class="tp">self</span>._size <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="tp">self</span>._k)]
+
+    <span class="kw">def</span> <span class="mt">_set_bit</span>(<span class="tp">self</span>, i: <span class="kw">int</span>):
+        <span class="tp">self</span>._bits[i // <span class="nm">8</span>] |= (<span class="nm">1</span> << (i % <span class="nm">8</span>))
+
+    <span class="kw">def</span> <span class="mt">_get_bit</span>(<span class="tp">self</span>, i: <span class="kw">int</span>) -> <span class="kw">bool</span>:
+        <span class="kw">return</span> <span class="kw">bool</span>(<span class="tp">self</span>._bits[i // <span class="nm">8</span>] & (<span class="nm">1</span> << (i % <span class="nm">8</span>)))
+
+    <span class="kw">def</span> <span class="mt">add</span>(<span class="tp">self</span>, item: <span class="kw">str</span>):
+        <span class="kw">for</span> idx <span class="kw">in</span> <span class="tp">self</span>.<span class="mt">_get_indices</span>(item):
+            <span class="tp">self</span>.<span class="mt">_set_bit</span>(idx)
+        <span class="tp">self</span>._count += <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">might_contain</span>(<span class="tp">self</span>, item: <span class="kw">str</span>) -> <span class="kw">bool</span>:
+        <span class="kw">return</span> <span class="mt">all</span>(<span class="tp">self</span>.<span class="mt">_get_bit</span>(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="tp">self</span>.<span class="mt">_get_indices</span>(item))
+
+    @property
+    <span class="kw">def</span> <span class="mt">estimated_fp_rate</span>(<span class="tp">self</span>) -> <span class="kw">float</span>:
+        <span class="kw">return</span> (<span class="nm">1</span> - math.<span class="mt">exp</span>(-<span class="tp">self</span>._k * <span class="tp">self</span>._count / <span class="tp">self</span>._size)) ** <span class="tp">self</span>._k
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    bf = <span class="tp">BloomFilter</span>(capacity=<span class="nm">1000</span>, error_rate=<span class="nm">0.01</span>)
+
+    spam = [<span class="st">"evil.com"</span>, <span class="st">"spam99.net"</span>, <span class="st">"phishing.org"</span>]
+    <span class="kw">for</span> d <span class="kw">in</span> spam:
+        bf.<span class="mt">add</span>(d)
+
+    <span class="mt">print</span>(bf.<span class="mt">might_contain</span>(<span class="st">"evil.com"</span>))    <span class="cm"># True</span>
+    <span class="mt">print</span>(bf.<span class="mt">might_contain</span>(<span class="st">"legit.com"</span>))   <span class="cm"># False</span>
+    <span class="mt">print</span>(f<span class="st">"FP rate: {bf.estimated_fp_rate:.6f}"</span>)
+
+    <span class="cm"># Output:</span>
+    <span class="cm"># True</span>
+    <span class="cm"># False</span>
+    <span class="cm"># FP rate: 0.000000</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Count-Min Sketch</div>
+
+<p>A <strong>Count-Min Sketch</strong> extends the Bloom filter idea to answer <em>frequency</em> queries rather than membership queries. Instead of a bit array, it uses a 2D array of counters (d rows × w columns), where d = number of hash functions and w = width.</p>
+
+<div class="diagram">COUNT-MIN SKETCH — d=3 hash functions, w=8 columns
+
+  Query: "How many times was 'apple' inserted?"
+
+  Insert "apple" 3 times: increment 3 cells per insertion
+  ┌────────────────────────────────────────────────────────┐
+  │ Row 0 (h0): [ 0  3  0  0  0  0  0  0 ]  ← h0(apple)=1 → col 1 → +=3 │
+  │ Row 1 (h1): [ 0  0  3  0  0  0  0  0 ]  ← h1(apple)=2 → col 2 → +=3 │
+  │ Row 2 (h2): [ 0  0  0  0  3  0  0  0 ]  ← h2(apple)=4 → col 4 → +=3 │
+  └────────────────────────────────────────────────────────┘
+
+  Query("apple"): min(row0[1], row1[2], row2[4]) = min(3,3,3) = 3 ✓
+
+  If other items collide and inflate some counters:
+  Query("apple"): min(5, 3, 4) = 3  (still correct — other items can only ADD)
+
+  GUARANTEE: answer >= true count (never underestimates)
+             error bounded by: ε × total insertions with probability ≥ 1-δ</div>
+
+<div class="tip">
+    <strong>💡 Used in:</strong> Network traffic analysis (finding "heavy hitters" — IP addresses sending lots of packets), streaming databases (approximate aggregations), search engines (tracking trending queries), and ad-tech (counting ad impressions without storing every event).
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Real-World Applications</div>
+
+<div class="realworld">
+    <strong>🌍 Where Bloom Filters Run Right Now:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Google Chrome</strong> — uses a Bloom filter to check if a URL is a known malware/phishing site before doing a full lookup. The filter runs locally, saving a network round-trip for safe URLs.</li>
+        <li><strong>Apache Cassandra</strong> — each SSTable (on-disk data file) has a Bloom filter. Before reading from disk, Cassandra checks if a key might be in that SSTable. False positives cause unnecessary disk reads; false negatives are impossible (we'd never miss data).</li>
+        <li><strong>Redis</strong> — the <code>RedisBloom</code> module adds native Bloom filter commands. Used by e-commerce companies to filter already-seen recommendation items.</li>
+        <li><strong>Akamai CDN</strong> — uses Bloom filters to avoid caching one-hit-wonder objects (pages visited only once). If a URL isn't in the filter, don't cache it; add it to the filter. On a second request, the filter says "probably seen before" and the CDN caches it.</li>
+        <li><strong>Ethereum / Bitcoin</strong> — SPV (Simple Payment Verification) wallets use Bloom filters to request only relevant transactions from full nodes without revealing which addresses they own.</li>
+    </ul>
+</div>
+
+<table>
+    <thead>
+        <tr><th>System</th><th>Use Case</th><th>What it avoids</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Chrome</td><td>Malware URL check</td><td>Network round-trip for safe URLs</td></tr>
+        <tr><td>Cassandra</td><td>SSTable membership</td><td>Unnecessary disk reads</td></tr>
+        <tr><td>Redis</td><td>Deduplication</td><td>Re-showing seen recommendations</td></tr>
+        <tr><td>Akamai</td><td>Cache admission</td><td>Caching one-hit-wonder content</td></tr>
+        <tr><td>Bitcoin SPV</td><td>Transaction filtering</td><td>Downloading entire blockchain</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. A Bloom filter with n=1M insertions and m=10M bits (10 bits/element) has approximately what false positive rate?</div>
+    <div class="quiz-meta">Hint: FP rate ≈ (1 − e^(−kn/m))^k. Optimal k ≈ 7 for 10 bits/element.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">With k=7 hash functions, n=1M elements, m=10M bits: FP ≈ (1 − e^(−7×1M/10M))^7 = (1 − e^(−0.7))^7 ≈ (1 − 0.4966)^7 ≈ 0.5034^7 ≈ <strong>0.82%</strong>. Approximately 1% false positive rate — meaning one in every ~120 non-member queries incorrectly returns "probably present".</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. You insert element X into a Bloom filter, then later query for X and get "DEFINITELY NOT IN SET". Is this possible?</div>
+    <div class="quiz-meta">Hint: Think about the fundamental guarantee.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a"><strong>No, this is impossible</strong> in a standard (non-concurrent) Bloom filter. Inserting X sets k specific bits permanently. Querying X checks those same k bits — they are still set. A "definitely not present" result requires at least one bit to be 0, but all bits set during insertion remain 1 (standard Bloom filters have no deletion). This is the fundamental asymmetry: false negatives are impossible; only false positives can occur.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. Cassandra's Bloom filter produces a false positive for key K. What actually happens in Cassandra?</div>
+    <div class="quiz-meta">Hint: A false positive means the filter says "probably here" but K isn't.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">A false positive causes Cassandra to perform an <strong>unnecessary disk read</strong> from the SSTable — it opens the file and scans for key K, only to find it's not there. This wastes I/O time but does not produce incorrect results. The query still returns "not found" correctly. This is an acceptable cost: false positives waste time but don't cause data corruption or incorrect responses. The Bloom filter still eliminates the vast majority (99%+) of unnecessary reads.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. How does a Count-Min Sketch differ from a Bloom filter, and what does it guarantee about its frequency estimates?</div>
+    <div class="quiz-meta">Hint: Think about what "false positive" means for frequency estimation.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">A Bloom filter answers "is X in the set?" (yes/no). A Count-Min Sketch answers "how many times was X inserted?" (frequency). The CMS guarantee is: the estimate is <strong>always ≥ the true count</strong> (never underestimates). The error is bounded by ε × N (where N = total insertions) with probability ≥ 1−δ. Collisions can only inflate counts (other items accidentally increment the same counters), never deflate them. Taking the minimum across all d rows minimises — but cannot eliminate — this overcounting.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. Why do we use double hashing (h1 + i×h2) rather than k fully independent hash functions in a Bloom filter implementation?</div>
+    <div class="quiz-meta">Hint: Think about implementation complexity and performance.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">Computing k independent, well-distributed hash functions is complex and slow (each requires separate computation over the input). Double hashing approximates k independent hash functions using only <em>two</em> base hash functions: <code>h_i(x) = (h1(x) + i × h2(x)) mod m</code>. A 2002 analysis by Kirsch and Mitzenmacher proved this achieves the same asymptotic false positive rate as k truly independent hash functions. So we get near-optimal behaviour with just two hash computations and cheap arithmetic per probe — a major practical speedup.</div>
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 8C Complete!</strong><br><br>
+    You now understand: Bloom filter mechanics, the no-false-negatives guarantee, optimal m and k selection,
+    full C# and Python implementations, Count-Min Sketch, and real-world deployments in Chrome, Cassandra, and Redis.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m08b_collections.html">Module 8B — Dictionary &amp; HashSet</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m08d_practice.html">Module 8D — Practice: 12 Problems</a>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+<div class="toast" id="toast">✅ Module 8C marked complete!</div>
+    <script>var MODULE_ID = 'm08c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

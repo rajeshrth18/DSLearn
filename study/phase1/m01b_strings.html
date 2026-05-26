@@ -1,50 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 1B — Strings &amp; StringBuilder</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
-        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
-        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
-        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
-        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
-        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
-        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
-        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
-        .toc ol { margin-left: 20px; }
-        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
-        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
-        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
-        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
-        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
-        p { margin: 10px 0 14px 0; font-size: 1em; }
-        ul, ol { margin: 10px 0 14px 28px; }
-        li { margin: 7px 0; }
-        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
-        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
-        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
-        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
-        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .note strong { color: #e67e22; }
-        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .tip strong { color: #16a085; }
-        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .warning strong { color: #c0392b; }
-        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .realworld strong { color: #1a5276; }
-        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
-        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
-        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
-        tbody tr:nth-child(even) { background: #f8f9fa; }
-        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
-        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
-        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
-        .nav-box strong { color: #1a5276; }
-        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-    </style>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
@@ -62,12 +22,16 @@
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 1 Navigation:</strong><br><br>
+    <strong>📂 Module 1 — Foundations:</strong><br><br>
     ✅ <strong>Part A</strong> — <a href="m01a_bigO_arrays.html">Big O, Complexity, Arrays</a><br>
     ▶ <strong>Part B</strong> — <em>You are here</em> — Strings &amp; StringBuilder<br>
     ⬜ <strong>Part C</strong> — <a href="m01c_listT.html">List&lt;T&gt; Dynamic Arrays</a><br>
     ⬜ <strong>Part D</strong> — <a href="m01d_practice.html">Practice: 15 Problems</a><br>
     🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <span style="color:#888">&larr; (First Module)</span>
+    <a href="../phase2/m02a_singly_ll.html">Module 2 &mdash; Linked Lists &rarr;</a>
 </div>
 
 <div class="toc">
@@ -131,6 +95,10 @@ serious performance bugs if you don't understand it: <strong>strings are immutab
   Old string 0x4A20 is now abandoned → garbage collector
   will eventually free that memory.</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">string</span> city = <span class="st">"london"</span>;
 
 <span class="cm">// These do NOT modify city — they return new strings</span>
@@ -146,6 +114,27 @@ city = city.<span class="mt">ToUpper</span>(); <span class="cm">// city now poin
 
 <span class="cm">// You CANNOT modify individual characters — no setter on string indexer:</span>
 <span class="cm">// city[0] = 'l';  ← COMPILE ERROR: string indexer has no setter</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+city = <span class="st">&quot;london&quot;</span>
+
+<span class="cm"># These do NOT modify city &mdash; they return new strings</span>
+upper   = city.<span class="mt">upper</span>()               <span class="cm"># &quot;LONDON&quot;  &mdash; new object</span>
+titled  = city.<span class="mt">replace</span>(<span class="st">&apos;l&apos;</span>, <span class="st">&apos;L&apos;</span>)  <span class="cm"># &quot;London&quot;  &mdash; new object</span>
+
+<span class="mt">print</span>(city)    <span class="cm"># &quot;london&quot;  &mdash; completely unchanged!</span>
+<span class="mt">print</span>(upper)   <span class="cm"># &quot;LONDON&quot;</span>
+<span class="mt">print</span>(titled)  <span class="cm"># &quot;London&quot;</span>
+
+<span class="cm"># You CAN reassign the variable (changes the reference, not the object):</span>
+city = city.<span class="mt">upper</span>()  <span class="cm"># city now points to &quot;LONDON&quot; &mdash; old &quot;london&quot; is abandoned</span>
+
+<span class="cm"># You CANNOT modify individual characters (strings are immutable in Python too):</span>
+<span class="cm"># city[0] = &apos;l&apos;  &larr; TypeError: &apos;str&apos; object does not support item assignment</span></pre>
+</div>
 
 <h3>The O(n²) Concatenation Disaster</h3>
 <p>The most common beginner performance bug is building a string inside a loop with <code>+=</code>:</p>
@@ -167,12 +156,28 @@ For n words of average length k:
 
 For 10,000 words: billions of character copies = MINUTES to complete.</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// ❌ NEVER DO THIS IN A LOOP — O(n²)</span>
 <span class="kw">string</span>[] words  = <span class="mt">GetWords</span>(); <span class="cm">// thousands of words</span>
 <span class="kw">string</span>  result = <span class="st">""</span>;
 <span class="kw">foreach</span> (<span class="kw">string</span> word <span class="kw">in</span> words)
     result += word + <span class="st">" "</span>; <span class="cm">// Each += copies EVERYTHING again from scratch</span>
 <span class="cm">// Fine for 5 words. Catastrophic for 50,000 words.</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># &cross; NEVER DO THIS IN A LOOP &mdash; O(n&sup2;)</span>
+words = <span class="mt">get_words</span>()  <span class="cm"># thousands of words</span>
+result = <span class="st">&quot;&quot;</span>
+<span class="kw">for</span> word <span class="kw">in</span> words:
+    result += word + <span class="st">&quot; &quot;</span>  <span class="cm"># Each += copies EVERYTHING again from scratch</span>
+<span class="cm"># Fine for 5 words. Catastrophic for 50,000 words.</span></pre>
+</div>
 
 <div class="warning">
     <strong>🚨 Real Performance Benchmark:</strong><br>
@@ -212,6 +217,10 @@ TOTAL: n appends at O(1) each + rare O(n) doublings = O(n) amortized ✓
 vs String +=: every append is O(total length so far)             = O(n²) ✗</div>
 
 <h4>Basic Usage</h4>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">using</span> System.Text; <span class="cm">// Required namespace</span>
 
 <span class="cm">// ✅ CORRECT — O(n) — StringBuilder for loop concatenation</span>
@@ -225,8 +234,29 @@ vs String +=: every append is O(total length so far)             = O(n²) ✗</d
 }
 <span class="kw">string</span> result = sb.<span class="mt">ToString</span>(); <span class="cm">// ONE string built here, at the end</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(result); <span class="cm">// "Hello from C# DSA Course "</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># &check; CORRECT &mdash; O(n) &mdash; collect into list, then join ONCE at the end</span>
+words = [<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;from&quot;</span>, <span class="st">&quot;Python&quot;</span>, <span class="st">&quot;DSA&quot;</span>, <span class="st">&quot;Course&quot;</span>]
+parts = []
+<span class="kw">for</span> word <span class="kw">in</span> words:
+    parts.<span class="mt">append</span>(word)
+    parts.<span class="mt">append</span>(<span class="st">&apos; &apos;</span>)  <span class="cm"># direct list write &mdash; no new string created</span>
+result = <span class="st">&apos;&apos;</span>.<span class="mt">join</span>(parts)  <span class="cm"># ONE string built here, at the end</span>
+<span class="mt">print</span>(result)  <span class="cm"># &quot;Hello from Python DSA Course &quot;</span>
+
+<span class="cm"># Even cleaner &mdash; join with separator directly:</span>
+result2 = <span class="st">&quot; &quot;</span>.<span class="mt">join</span>(words)  <span class="cm"># &quot;Hello from Python DSA Course&quot;</span></pre>
+</div>
 
 <h4>All StringBuilder Methods</h4>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="tp">StringBuilder</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>(<span class="st">"Start"</span>);
 
 <span class="cm">// ── APPEND (adds to end) ─────────────────────────────────────────</span>
@@ -264,8 +294,51 @@ sb5.Length = <span class="nm">0</span>;                  <span class="cm">// fas
 
 <span class="cm">// ── CONVERT TO STRING ─────────────────────────────────────────────</span>
 <span class="kw">string</span> final = sb5.<span class="mt">ToString</span>();   <span class="cm">// the ONLY time a string is created</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+parts = [<span class="st">&quot;Start&quot;</span>]
+
+<span class="cm"># &mdash;&mdash; APPEND (adds to end) &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+parts.<span class="mt">append</span>(<span class="st">&quot; World&quot;</span>)            <span class="cm"># [&quot;Start&quot;, &quot; World&quot;]    &mdash; string</span>
+parts.<span class="mt">append</span>(<span class="mt">str</span>(<span class="nm">42</span>))             <span class="cm"># adds &quot;42&quot;              &mdash; convert int first</span>
+parts.<span class="mt">append</span>(<span class="st">&quot;!\n&quot;</span>)              <span class="cm"># appends &quot;!&quot; then newline</span>
+parts.<span class="mt">append</span>(f<span class="st">&quot;{2} + {3} = {5}&quot;</span>) <span class="cm"># &quot;2 + 3 = 5&quot;</span>
+
+<span class="cm"># &mdash;&mdash; INSERT (adds at a specific index) &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+chunks = [<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot; World&quot;</span>]
+chunks.<span class="mt">insert</span>(<span class="nm">1</span>, <span class="st">&quot;,&quot;</span>)       <span class="cm"># [&quot;Hello&quot;, &quot;,&quot;, &quot; World&quot;] &rarr; &quot;Hello, World&quot;</span>
+chunks.<span class="mt">insert</span>(<span class="nm">0</span>, <span class="st">&quot;Say: &quot;</span>)   <span class="cm"># [&quot;Say: &quot;, &quot;Hello&quot;, &quot;,&quot;, &quot; World&quot;]</span>
+
+<span class="cm"># &mdash;&mdash; REMOVE (deletes a section) &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+chars = <span class="mt">list</span>(<span class="st">&quot;Hello, World!&quot;</span>)
+<span class="kw">del</span> chars[<span class="nm">5</span>:<span class="nm">7</span>]                  <span class="cm"># remove &quot;, &quot; (indices 5-6): &quot;Hello World!&quot;</span>
+
+<span class="cm"># &mdash;&mdash; REPLACE (substitutes text) &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+s = <span class="st">&quot;the cat sat on the mat&quot;</span>
+s = s.<span class="mt">replace</span>(<span class="st">&quot;the&quot;</span>, <span class="st">&quot;a&quot;</span>)    <span class="cm"># &quot;a cat sat on a mat&quot; &mdash; replaces ALL</span>
+s = s.<span class="mt">replace</span>(<span class="st">&apos;a&apos;</span>, <span class="st">&apos;A&apos;</span>)     <span class="cm"># &quot;A cAt sAt on A mAt&quot;</span>
+
+<span class="cm"># &mdash;&mdash; READ / INSPECT &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+chars2 = <span class="mt">list</span>(<span class="st">&quot;CSharp&quot;</span>)
+length = <span class="mt">len</span>(chars2)        <span class="cm"># 6 &mdash; current length</span>
+ch     = chars2[<span class="nm">2</span>]          <span class="cm"># &apos;h&apos; &mdash; O(1) index access</span>
+chars2[<span class="nm">0</span>] = <span class="st">&apos;c&apos;</span>            <span class="cm"># direct char assignment (unlike str!)</span>
+
+<span class="cm"># &mdash;&mdash; CLEAR &amp; RESET &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+chars2.<span class="mt">clear</span>()               <span class="cm"># resets to [] &mdash; list is REUSED (fast)</span>
+
+<span class="cm"># &mdash;&mdash; CONVERT TO STRING &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+final = <span class="st">&apos;&apos;</span>.<span class="mt">join</span>(parts)        <span class="cm"># the ONLY time a string is created</span></pre>
+</div>
 
 <h4>Fluent Chaining (Method Chaining)</h4>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// All StringBuilder methods return 'this' — so you can chain:</span>
 <span class="kw">string</span> html = <span class="kw">new</span> <span class="tp">StringBuilder</span>()
     .<span class="mt">Append</span>(<span class="st">"&lt;ul&gt;\n"</span>)
@@ -275,8 +348,27 @@ sb5.Length = <span class="nm">0</span>;                  <span class="cm">// fas
     .<span class="mt">Append</span>(<span class="st">"&lt;/ul&gt;"</span>)
     .<span class="mt">ToString</span>();
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(html);</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># Python equivalent: build list of parts, then join</span>
+html = <span class="st">&apos;&apos;</span>.<span class="mt">join</span>([
+    <span class="st">&quot;&lt;ul&gt;\n&quot;</span>,
+    <span class="st">&quot;  &lt;li&gt;Arrays&lt;/li&gt;\n&quot;</span>,
+    <span class="st">&quot;  &lt;li&gt;Strings&lt;/li&gt;\n&quot;</span>,
+    <span class="st">&quot;  &lt;li&gt;List&lt;/li&gt;\n&quot;</span>,
+    <span class="st">&quot;&lt;/ul&gt;&quot;</span>
+])
+<span class="mt">print</span>(html)</pre>
+</div>
 
 <h4>Pre-Sizing for Maximum Performance</h4>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// If you know the approximate final size, pre-allocate to skip ALL buffer doublings</span>
 <span class="kw">int</span> estimatedSize = logLines.Length * <span class="nm">80</span>; <span class="cm">// ~80 chars per line</span>
 <span class="tp">StringBuilder</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>(capacity: estimatedSize);
@@ -287,6 +379,27 @@ sb5.Length = <span class="nm">0</span>;                  <span class="cm">// fas
     sb.<span class="mt">Append</span>(<span class="st">'\n'</span>);
 }
 <span class="cm">// Zero resizes = maximum throughput</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># Python list.append() is already amortized O(1) &mdash; no pre-sizing needed</span>
+<span class="cm"># But collecting into a list and joining once is the correct pattern:</span>
+log_lines = [<span class="st">&quot;line1&quot;</span>, <span class="st">&quot;line2&quot;</span>, <span class="st">&quot;line3&quot;</span>]  <span class="cm"># example</span>
+parts = []
+<span class="kw">for</span> line <span class="kw">in</span> log_lines:
+    parts.<span class="mt">append</span>(line)
+    parts.<span class="mt">append</span>(<span class="st">&apos;\n&apos;</span>)
+result = <span class="st">&apos;&apos;</span>.<span class="mt">join</span>(parts)  <span class="cm"># Zero extra copies &mdash; maximum throughput</span>
+
+<span class="cm"># For very large joins, io.StringIO is the fastest approach:</span>
+<span class="kw">import</span> io
+buf = io.<span class="tp">StringIO</span>()
+<span class="kw">for</span> line <span class="kw">in</span> log_lines:
+    buf.<span class="mt">write</span>(line); buf.<span class="mt">write</span>(<span class="st">&apos;\n&apos;</span>)
+result = buf.<span class="mt">getvalue</span>()  <span class="cm"># equivalent to StringBuilder.ToString()</span></pre>
+</div>
 
 <div class="tip">
     <strong>💡 When to Use What:</strong>
@@ -307,6 +420,10 @@ sb5.Length = <span class="nm">0</span>;                  <span class="cm">// fas
 The original is <em>always</em> unchanged. Always assign the result: <code>s = s.Trim();</code></p>
 
 <h3>6.3.1 — Inspection (Read-Only, No New String)</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">string</span> s = <span class="st">"  Hello, World!  "</span>;
 
 <span class="cm">// Size</span>
@@ -326,8 +443,37 @@ The original is <em>always</em> unchanged. Always assign the result: <code>s = s
 
 <span class="cm">// Case-insensitive search (C# 10+):</span>
 <span class="kw">bool</span> hasCI  = s.<span class="mt">Contains</span>(<span class="st">"world"</span>, <span class="tp">StringComparison</span>.OrdinalIgnoreCase); <span class="cm">// true</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+s = <span class="st">&quot;  Hello, World!  &quot;</span>
+
+<span class="cm"># Size</span>
+length = <span class="mt">len</span>(s)                           <span class="cm"># 18  &mdash; O(1)</span>
+first  = s[<span class="nm">0</span>]                            <span class="cm"># &apos; &apos; &mdash; O(1) index access</span>
+
+<span class="cm"># None/empty checks</span>
+empty  = s <span class="kw">is not None and</span> <span class="mt">len</span>(s) == <span class="nm">0</span>  <span class="cm"># False</span>
+ws     = <span class="kw">not</span> <span class="st">&quot;  &quot;</span>.<span class="mt">strip</span>()                 <span class="cm"># True &mdash; whitespace-only</span>
+
+<span class="cm"># Search</span>
+has    = <span class="st">&quot;World&quot;</span> <span class="kw">in</span> s                    <span class="cm"># True  &mdash; O(n)</span>
+idx    = s.<span class="mt">find</span>(<span class="st">&quot;World&quot;</span>)                 <span class="cm"># 9     &mdash; first occurrence, -1 if absent</span>
+last   = s.<span class="mt">rfind</span>(<span class="st">&apos;l&apos;</span>)                   <span class="cm"># 12    &mdash; last occurrence</span>
+starts = s.<span class="mt">startswith</span>(<span class="st">&quot;  He&quot;</span>)           <span class="cm"># True  &mdash; O(prefix length)</span>
+ends   = s.<span class="mt">endswith</span>(<span class="st">&quot;!  &quot;</span>)              <span class="cm"># True</span>
+
+<span class="cm"># Case-insensitive search:</span>
+has_ci = <span class="st">&quot;world&quot;</span> <span class="kw">in</span> s.<span class="mt">lower</span>()           <span class="cm"># True</span></pre>
+</div>
 
 <h3>6.3.2 — Transformation (Returns New String)</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">string</span> s = <span class="st">"  Hello, World!  "</span>;
 
 <span class="cm">// Whitespace</span>
@@ -363,6 +509,45 @@ The original is <em>always</em> unchanged. Always assign the result: <code>s = s
 <span class="kw">string</span> pl  = <span class="st">"42"</span>.<span class="mt">PadLeft</span>(<span class="nm">6</span>);          <span class="cm">// "    42" — space padded</span>
 <span class="kw">string</span> pl2 = <span class="st">"42"</span>.<span class="mt">PadLeft</span>(<span class="nm">6</span>, <span class="st">'0'</span>);    <span class="cm">// "000042" — zero padded</span>
 <span class="kw">string</span> pr  = <span class="st">"Hi"</span>.<span class="mt">PadRight</span>(<span class="nm">8</span>, <span class="st">'-'</span>);   <span class="cm">// "Hi------"</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+s = <span class="st">&quot;  Hello, World!  &quot;</span>
+
+<span class="cm"># Whitespace</span>
+t   = s.<span class="mt">strip</span>()          <span class="cm"># &quot;Hello, World!&quot;     &mdash; both ends</span>
+t_l = s.<span class="mt">lstrip</span>()         <span class="cm"># &quot;Hello, World!  &quot;   &mdash; left only</span>
+t_r = s.<span class="mt">rstrip</span>()         <span class="cm"># &quot;  Hello, World!&quot;   &mdash; right only</span>
+
+<span class="cm"># Case</span>
+up  = s.<span class="mt">upper</span>()          <span class="cm"># &quot;  HELLO, WORLD!  &quot;</span>
+lo  = s.<span class="mt">lower</span>()          <span class="cm"># &quot;  hello, world!  &quot;</span>
+
+<span class="cm"># Extract &mdash; all create new strings (memory copies)</span>
+sub = s[<span class="nm">2</span>:<span class="nm">7</span>]               <span class="cm"># &quot;Hello&quot;   (start=2, end=7 exclusive)</span>
+end = s[<span class="nm">9</span>:]                <span class="cm"># &quot;World!  &quot; (from 9 to end)</span>
+
+<span class="cm"># Replace (all occurrences)</span>
+r1  = s.<span class="mt">replace</span>(<span class="st">&quot;World&quot;</span>, <span class="st">&quot;Python&quot;</span>)  <span class="cm"># &quot;  Hello, Python!  &quot;</span>
+r2  = s.<span class="mt">replace</span>(<span class="st">&apos;!&apos;</span>, <span class="st">&apos;.&apos;</span>)           <span class="cm"># &quot;  Hello, World.  &quot;</span>
+
+<span class="cm"># Split &mdash; divides into list of strings</span>
+csv   = <span class="st">&quot;Alice,Bob,Carol,David&quot;</span>
+parts = csv.<span class="mt">split</span>(<span class="st">&apos;,&apos;</span>)                   <span class="cm"># [&quot;Alice&quot;,&quot;Bob&quot;,&quot;Carol&quot;,&quot;David&quot;]</span>
+two   = csv.<span class="mt">split</span>(<span class="st">&apos;,&apos;</span>, <span class="nm">1</span>)                <span class="cm"># [&quot;Alice&quot;,&quot;Bob,Carol,David&quot;] &mdash; maxsplit=1</span>
+words = <span class="st">&quot;a  b   c&quot;</span>.<span class="mt">split</span>()                <span class="cm"># [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;] &mdash; split() removes empty</span>
+
+<span class="cm"># Join &mdash; combines list into one string</span>
+joined = <span class="st">&quot; | &quot;</span>.<span class="mt">join</span>(parts)               <span class="cm"># &quot;Alice | Bob | Carol | David&quot;</span>
+nums   = <span class="st">&quot;, &quot;</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>]))   <span class="cm"># &quot;1, 2, 3&quot;</span>
+
+<span class="cm"># Padding</span>
+pl   = <span class="st">&quot;42&quot;</span>.<span class="mt">rjust</span>(<span class="nm">6</span>)           <span class="cm"># &quot;    42&quot; &mdash; space padded (right-justify)</span>
+pl2  = <span class="st">&quot;42&quot;</span>.<span class="mt">rjust</span>(<span class="nm">6</span>, <span class="st">&apos;0&apos;</span>)    <span class="cm"># &quot;000042&quot; &mdash; zero padded</span>
+pr   = <span class="st">&quot;Hi&quot;</span>.<span class="mt">ljust</span>(<span class="nm">8</span>, <span class="st">&apos;-&apos;</span>)    <span class="cm"># &quot;Hi------&quot;</span></pre>
+</div>
 
 <div class="realworld">
     <strong>🌍 Real-World Use — Building a CSV Report:</strong>
@@ -401,6 +586,10 @@ KEY ARITHMETIC:
   (char)(c+32) = lowercase of c        ('A'+32 = 'a')
   (char)(c-32) = uppercase of c        ('a'-32 = 'A')</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// ── char arithmetic ──────────────────────────────────────────────</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>((<span class="kw">int</span>)<span class="st">'A'</span>);          <span class="cm">// 65</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>((<span class="kw">char</span>)(<span class="st">'A'</span> + <span class="nm">1</span>)); <span class="cm">// 'B'</span>
@@ -418,8 +607,35 @@ KEY ARITHMETIC:
 <span class="tp">char</span>.<span class="mt">IsPunctuation</span>(<span class="st">'!'</span>);     <span class="cm">// true</span>
 <span class="tp">char</span>.<span class="mt">ToUpper</span>(<span class="st">'a'</span>);           <span class="cm">// 'A'</span>
 <span class="tp">char</span>.<span class="mt">ToLower</span>(<span class="st">'Z'</span>);           <span class="cm">// 'z'</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># &mdash;&mdash; char arithmetic &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+<span class="mt">print</span>(<span class="mt">ord</span>(<span class="st">&apos;A&apos;</span>))              <span class="cm"># 65</span>
+<span class="mt">print</span>(<span class="mt">chr</span>(<span class="mt">ord</span>(<span class="st">&apos;A&apos;</span>) + <span class="nm">1</span>))     <span class="cm"># &apos;B&apos;</span>
+<span class="mt">print</span>(<span class="mt">chr</span>(<span class="mt">ord</span>(<span class="st">&apos;a&apos;</span>) + <span class="nm">4</span>))     <span class="cm"># &apos;e&apos; &mdash; 5th letter of alphabet</span>
+<span class="mt">print</span>(<span class="mt">ord</span>(<span class="st">&apos;7&apos;</span>) - <span class="mt">ord</span>(<span class="st">&apos;0&apos;</span>))   <span class="cm"># 7   &mdash; convert digit char to int</span>
+<span class="mt">print</span>(<span class="mt">ord</span>(<span class="st">&apos;e&apos;</span>) - <span class="mt">ord</span>(<span class="st">&apos;a&apos;</span>))   <span class="cm"># 4   &mdash; 0-based index of &apos;e&apos;</span>
+
+<span class="cm"># &mdash;&mdash; char classification &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+<span class="st">&apos;a&apos;</span>.<span class="mt">isalpha</span>()            <span class="cm"># True</span>
+<span class="st">&apos;5&apos;</span>.<span class="mt">isdigit</span>()            <span class="cm"># True</span>
+<span class="st">&apos;A&apos;</span>.<span class="mt">isupper</span>()            <span class="cm"># True</span>
+<span class="st">&apos;a&apos;</span>.<span class="mt">islower</span>()            <span class="cm"># True</span>
+<span class="st">&apos; &apos;</span>.<span class="mt">isspace</span>()            <span class="cm"># True (also \t, \n)</span>
+<span class="st">&apos;3&apos;</span>.<span class="mt">isalnum</span>()            <span class="cm"># True</span>
+<span class="kw">not</span> <span class="st">&apos;!&apos;</span>.<span class="mt">isalnum</span>()         <span class="cm"># True &mdash; punctuation check</span>
+<span class="st">&apos;a&apos;</span>.<span class="mt">upper</span>()              <span class="cm"># &apos;A&apos;</span>
+<span class="st">&apos;Z&apos;</span>.<span class="mt">lower</span>()              <span class="cm"># &apos;z&apos;</span></pre>
+</div>
 
 <h3>String ↔ char[] Conversion</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// string → char[] — creates a modifiable copy</span>
 <span class="kw">char</span>[] chars = <span class="st">"hello"</span>.<span class="mt">ToCharArray</span>(); <span class="cm">// ['h','e','l','l','o']</span>
 chars[<span class="nm">0</span>] = <span class="st">'H'</span>;                       <span class="cm">// can modify!</span>
@@ -433,8 +649,34 @@ chars[<span class="nm">0</span>] = <span class="st">'H'</span>;                 
 <span class="cm">// Create string of repeated chars:</span>
 <span class="kw">string</span> line  = <span class="kw">new</span> <span class="kw">string</span>(<span class="st">'-'</span>, <span class="nm">50</span>);  <span class="cm">// "--------------------------------------------------"</span>
 <span class="kw">string</span> zeros = <span class="kw">new</span> <span class="kw">string</span>(<span class="st">'0'</span>, <span class="nm">8</span>);  <span class="cm">// "00000000"</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># string &rarr; list &mdash; creates a modifiable copy</span>
+chars = <span class="mt">list</span>(<span class="st">&quot;hello&quot;</span>)   <span class="cm"># [&apos;h&apos;,&apos;e&apos;,&apos;l&apos;,&apos;l&apos;,&apos;o&apos;]</span>
+chars[<span class="nm">0</span>] = <span class="st">&apos;H&apos;</span>           <span class="cm"># can modify!</span>
+back = <span class="st">&apos;&apos;</span>.<span class="mt">join</span>(chars)    <span class="cm"># &quot;Hello&quot; &mdash; build new string from chars</span>
+
+<span class="cm"># Reverse a string &mdash; classic DSA technique:</span>
+rev = <span class="mt">list</span>(<span class="st">&quot;algorithm&quot;</span>)
+rev.<span class="mt">reverse</span>()               <span class="cm"># in-place reverse</span>
+reversed_s = <span class="st">&apos;&apos;</span>.<span class="mt">join</span>(rev)  <span class="cm"># &quot;mhtirogla&quot;</span>
+
+<span class="cm"># Pythonic one-liner &mdash; slicing:</span>
+reversed_s = <span class="st">&quot;algorithm&quot;</span>[::-<span class="nm">1</span>]  <span class="cm"># &quot;mhtirogla&quot;</span>
+
+<span class="cm"># Create string of repeated chars:</span>
+line  = <span class="st">&apos;-&apos;</span> * <span class="nm">50</span>   <span class="cm"># &quot;&mdash;&mdash;&mdash;&mdash;...&quot; (50 dashes)</span>
+zeros = <span class="st">&apos;0&apos;</span> * <span class="nm">8</span>   <span class="cm"># &quot;00000000&quot;</span></pre>
+</div>
 
 <h3>Essential DSA Pattern — Frequency Counting with char Array</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Count character frequencies — O(n) time, O(1) space (fixed 26-char array)</span>
 <span class="kw">public static int</span>[] <span class="mt">LetterFrequency</span>(<span class="kw">string</span> s)
 {
@@ -475,6 +717,41 @@ chars[<span class="nm">0</span>] = <span class="st">'H'</span>;                 
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsPalindrome</span>(<span class="st">"racecar"</span>));  <span class="cm">// true</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsPalindrome</span>(<span class="st">"madam"</span>));    <span class="cm">// true</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsPalindrome</span>(<span class="st">"hello"</span>));    <span class="cm">// false</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># Count character frequencies &mdash; O(n) time, O(1) space (fixed 26-char array)</span>
+<span class="kw">def</span> <span class="mt">letter_frequency</span>(s):
+    freq = [<span class="nm">0</span>] * <span class="nm">26</span>  <span class="cm"># index 0=&apos;a&apos;, 1=&apos;b&apos;, ..., 25=&apos;z&apos;</span>
+    <span class="kw">for</span> c <span class="kw">in</span> s.<span class="mt">lower</span>():
+        <span class="kw">if</span> <span class="st">&apos;a&apos;</span> &lt;= c &lt;= <span class="st">&apos;z&apos;</span>:
+            freq[<span class="mt">ord</span>(c) - <span class="mt">ord</span>(<span class="st">&apos;a&apos;</span>)] += <span class="nm">1</span>
+    <span class="kw">return</span> freq
+
+<span class="cm"># Check anagram &mdash; O(n)</span>
+<span class="kw">def</span> <span class="mt">is_anagram</span>(a, b):
+    <span class="kw">if</span> <span class="mt">len</span>(a) != <span class="mt">len</span>(b): <span class="kw">return False</span>
+    count = [<span class="nm">0</span>] * <span class="nm">26</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(a)):
+        count[<span class="mt">ord</span>(a[i]) - <span class="mt">ord</span>(<span class="st">&apos;a&apos;</span>)] += <span class="nm">1</span>  <span class="cm"># increment for a</span>
+        count[<span class="mt">ord</span>(b[i]) - <span class="mt">ord</span>(<span class="st">&apos;a&apos;</span>)] -= <span class="nm">1</span>  <span class="cm"># decrement for b</span>
+    <span class="kw">return</span> <span class="mt">all</span>(x == <span class="nm">0</span> <span class="kw">for</span> x <span class="kw">in</span> count)
+<span class="mt">print</span>(<span class="mt">is_anagram</span>(<span class="st">&quot;listen&quot;</span>, <span class="st">&quot;silent&quot;</span>))  <span class="cm"># True</span>
+<span class="mt">print</span>(<span class="mt">is_anagram</span>(<span class="st">&quot;hello&quot;</span>, <span class="st">&quot;world&quot;</span>))    <span class="cm"># False</span>
+
+<span class="cm"># Check palindrome &mdash; O(n) time, O(1) space</span>
+<span class="kw">def</span> <span class="mt">is_palindrome</span>(s):
+    l, r = <span class="nm">0</span>, <span class="mt">len</span>(s) - <span class="nm">1</span>
+    <span class="kw">while</span> l &lt; r:
+        <span class="kw">if</span> s[l] != s[r]: <span class="kw">return False</span>
+        l += <span class="nm">1</span>; r -= <span class="nm">1</span>
+    <span class="kw">return True</span>
+<span class="mt">print</span>(<span class="mt">is_palindrome</span>(<span class="st">&quot;racecar&quot;</span>))  <span class="cm"># True</span>
+<span class="mt">print</span>(<span class="mt">is_palindrome</span>(<span class="st">&quot;madam&quot;</span>))    <span class="cm"># True</span>
+<span class="mt">print</span>(<span class="mt">is_palindrome</span>(<span class="st">&quot;hello&quot;</span>))    <span class="cm"># False</span></pre>
+</div>
 
 <hr>
 
@@ -484,6 +761,10 @@ chars[<span class="nm">0</span>] = <span class="st">'H'</span>;                 
 <p>String comparison is a common source of subtle bugs. C# gives you multiple comparison methods,
 each with different behavior around case sensitivity and cultural rules.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">string</span> a = <span class="st">"Hello"</span>, b = <span class="st">"hello"</span>, c = <span class="st">"Hello"</span>;
 
 <span class="cm">// ── == operator ──────────────────────────────────────────────────</span>
@@ -503,6 +784,31 @@ each with different behavior around case sensitivity and cultural rules.</p>
 <span class="kw">bool</span> safe = <span class="kw">string</span>.<span class="mt">Equals</span>(nullStr, <span class="st">"hello"</span>, <span class="tp">StringComparison</span>.OrdinalIgnoreCase);
 <span class="cm">// false — no NullReferenceException (static Equals handles null)</span>
 <span class="cm">// nullStr.Equals("hello") would THROW NullReferenceException!</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+a, b, c = <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;hello&quot;</span>, <span class="st">&quot;Hello&quot;</span>
+
+<span class="cm"># &mdash;&mdash; == operator &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+<span class="mt">print</span>(a == c)   <span class="cm"># True  &mdash; same value</span>
+<span class="mt">print</span>(a == b)   <span class="cm"># False &mdash; case differs!</span>
+
+<span class="cm"># &mdash;&mdash; Case-insensitive comparison &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+<span class="mt">print</span>(a.<span class="mt">lower</span>() == b.<span class="mt">lower</span>())       <span class="cm"># True  &check;</span>
+<span class="mt">print</span>(a.<span class="mt">casefold</span>() == b.<span class="mt">casefold</span>()) <span class="cm"># True  &check; (better for Unicode/Turkish i)</span>
+
+<span class="cm"># &mdash;&mdash; Lexicographic comparison &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+<span class="mt">print</span>(<span class="st">&quot;apple&quot;</span> &lt; <span class="st">&quot;banana&quot;</span>)   <span class="cm"># True  (a &lt; b lexicographically)</span>
+<span class="mt">print</span>(<span class="st">&quot;HELLO&quot;</span> == <span class="st">&quot;hello&quot;</span>)   <span class="cm"># False (case-sensitive by default)</span>
+
+<span class="cm"># &mdash;&mdash; None-safe comparison &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</span>
+null_str = <span class="kw">None</span>
+safe = null_str == <span class="st">&quot;hello&quot;</span>  <span class="cm"># False &mdash; no AttributeError</span>
+<span class="cm"># null_str.lower() == &quot;hello&quot; would raise AttributeError!</span>
+safe_ci = null_str <span class="kw">is not None and</span> null_str.<span class="mt">lower</span>() == <span class="st">&quot;hello&quot;</span></pre>
+</div>
 
 <table>
     <thead>
@@ -529,6 +835,10 @@ each with different behavior around case sensitivity and cultural rules.</p>
 <div class="section-heading">Section 6.6 — String Formatting</div>
 
 <h3>Tool 1 — String Interpolation $"..." (Preferred)</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">string</span> name  = <span class="st">"Alice"</span>;
 <span class="kw">int</span>    score = <span class="nm">9542</span>;
 <span class="kw">double</span> price = <span class="nm">1234.5678</span>;
@@ -550,6 +860,33 @@ each with different behavior around case sensitivity and cultural rules.</p>
 <span class="cm">// Expressions are allowed inside {}:</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Length &gt; 3: {name.Length &gt; 3}"</span>); <span class="cm">// "Length > 3: True"</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Upper: {name.ToUpper()}"</span>);        <span class="cm">// "Upper: ALICE"</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+name  = <span class="st">&quot;Alice&quot;</span>
+score = <span class="nm">9542</span>
+price = <span class="nm">1234.5678</span>
+
+<span class="cm"># Basic f-string:</span>
+<span class="mt">print</span>(f<span class="st">&quot;Player {name} scored {score} points&quot;</span>)
+
+<span class="cm"># Format specifiers inside {}:</span>
+<span class="mt">print</span>(f<span class="st">&quot;Price:   {price:.2f}&quot;</span>)    <span class="cm"># &quot;1234.57&quot;  &mdash; 2 decimals</span>
+<span class="mt">print</span>(f<span class="st">&quot;Score:   {score:,}&quot;</span>)      <span class="cm"># &quot;9,542&quot;    &mdash; thousands separator</span>
+<span class="mt">print</span>(f<span class="st">&quot;Hex:     {score:X}&quot;</span>)      <span class="cm"># &quot;254E&quot;     &mdash; hexadecimal</span>
+<span class="mt">print</span>(f<span class="st">&quot;Percent: {0.875:.0%}&quot;</span>)    <span class="cm"># &quot;88%&quot;      &mdash; percentage</span>
+
+<span class="cm"># Column alignment (&lt; = left, &gt; = right, ^ = center):</span>
+<span class="mt">print</span>(f<span class="st">&quot;{&apos;Name&apos;:&lt;12}{&apos;Score&apos;:&gt;8}{&apos;Grade&apos;:&gt;6}&quot;</span>)
+<span class="mt">print</span>(f<span class="st">&quot;{name:&lt;12}{score:&gt;8}{&apos;A+&apos;:&gt;6}&quot;</span>)
+<span class="cm"># Name           9542    A+</span>
+
+<span class="cm"># Expressions are allowed inside {}:</span>
+<span class="mt">print</span>(f<span class="st">&quot;Length &gt; 3: {len(name) &gt; 3}&quot;</span>)  <span class="cm"># &quot;Length &gt; 3: True&quot;</span>
+<span class="mt">print</span>(f<span class="st">&quot;Upper: {name.upper()}&quot;</span>)         <span class="cm"># &quot;Upper: ALICE&quot;</span></pre>
+</div>
 
 <table>
     <thead>
@@ -568,6 +905,10 @@ each with different behavior around case sensitivity and cultural rules.</p>
 </table>
 
 <h3>Tool 2 — Verbatim @"..." and Raw """..."""</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Verbatim — backslash is NOT an escape character</span>
 <span class="kw">string</span> path = <span class="st">@"C:\Users\Alice\Documents\report.pdf"</span>; <span class="cm">// cleaner than escaping</span>
 
@@ -582,6 +923,32 @@ each with different behavior around case sensitivity and cultural rules.</p>
     "path": "C:\Users\Alice"
 }
 """</span>;</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># Raw string &mdash; backslash is NOT an escape character</span>
+path = r<span class="st">&quot;C:\Users\Alice\Documents\report.pdf&quot;</span>  <span class="cm"># cleaner than escaping</span>
+
+<span class="cm"># Combined raw + f-string (use rf&quot;&quot; or fr&quot;&quot;):</span>
+directory = <span class="st">&quot;Projects&quot;</span>
+full = rf<span class="st">&quot;C:\Users\Alice\{directory}\data.csv&quot;</span>
+
+<span class="cm"># Python multi-line strings (equivalent to C# raw string literals):</span>
+json_str = <span class="st">&quot;&quot;&quot;</span>
+<span class="st">{</span>
+<span class="st">    &quot;name&quot;: &quot;Alice&quot;,</span>
+<span class="st">    &quot;path&quot;: &quot;C:\\Users\\Alice&quot;</span>
+<span class="st">}</span>
+<span class="st">&quot;&quot;&quot;</span>
+
+<span class="cm"># Or use a raw multi-line string (no escape sequences at all):</span>
+json_raw = r<span class="st">&quot;&quot;&quot;{</span>
+<span class="st">    &quot;name&quot;: &quot;Alice&quot;,</span>
+<span class="st">    &quot;path&quot;: &quot;C:\Users\Alice&quot;</span>
+<span class="st">}&quot;&quot;&quot;</span></pre>
+</div>
 
 <hr>
 
@@ -624,5 +991,6 @@ each with different behavior around case sensitivity and cultural rules.</p>
     🏠 <a href="../index.html">Course Index</a>
 </div>
 
+    <script src="../dsa.js"></script>
 </body>
 </html>

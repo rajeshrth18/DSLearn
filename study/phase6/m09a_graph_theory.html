@@ -1,0 +1,927 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 9A — Graph Theory &amp; Representations | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 9 — Part A</h1>
+    <div class="tagline">Graph Theory &amp; Representations</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Vertices, edges, adjacency matrix, adjacency list — the building blocks of every graph algorithm</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Phase 6 · Module 9A</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 9 — Graph Fundamentals:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Graph Theory &amp; Representations<br>
+    ⬜ <strong>Part B</strong> — <a href="m09b_bfs.html">Breadth-First Search (BFS)</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m09c_dfs.html">Depth-First Search (DFS)</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m09d_graph_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase5/m08a_hashing.html">&larr; Module 8 &mdash; Hashing</a>
+    <a href="../phase6/m10a_dijkstra.html">Module 10 &mdash; Advanced Graphs &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 9A</h2>
+    <ol>
+        <li>What Is a Graph? <span>— The network of everything</span></li>
+        <li>Graph Terminology <span>— Vertices, edges, degree, path, cycle</span></li>
+        <li>Types of Graphs <span>— Directed, undirected, weighted, DAGs</span></li>
+        <li>Representation 1: Adjacency Matrix <span>— Fast edge lookup, high memory</span></li>
+        <li>Representation 2: Adjacency List <span>— Efficient for sparse graphs</span></li>
+        <li>Representation 3: Edge List <span>— Compact, used in Kruskal's MST</span></li>
+        <li>C# Graph Implementation <span>— Generic Graph&lt;T&gt; with all operations</span></li>
+        <li>Python Graph Implementation <span>— Pythonic equivalent</span></li>
+        <li>Representation Comparison Table <span>— Matrix vs List vs Edge List</span></li>
+        <li>Real-World Usage <span>— Facebook, Google Maps, Git, power grids</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 1 — What Is a Graph?</div>
+
+<p>Think of a <strong>graph</strong> as a map of connections. Every city on a road map is a
+<em>vertex</em>; every road connecting two cities is an <em>edge</em>. Social networks,
+the internet, airline routes, Git commit history, electrical circuits — all of these are
+graphs. Understanding graphs unlocks a whole category of algorithms used daily by Google,
+Facebook, LinkedIn, Uber, and every database engine.</p>
+
+<p>Formally, a <strong>graph G = (V, E)</strong> consists of:</p>
+<ul>
+    <li><strong>V</strong> — a set of <em>vertices</em> (also called nodes)</li>
+    <li><strong>E</strong> — a set of <em>edges</em>, where each edge connects two vertices</li>
+</ul>
+
+<div class="diagram">GRAPH — The Basic Concept
+
+   A social network with 5 people and their friendships:
+
+       Alice ─────── Bob
+         │             │ \
+         │             │   Dave
+         │             │ /
+       Carol ─────── Eve
+
+   Vertices (V) = { Alice, Bob, Carol, Dave, Eve }    (5 nodes)
+   Edges    (E) = { (Alice,Bob), (Alice,Carol), (Bob,Dave),
+                    (Bob,Eve), (Carol,Eve), (Dave,Eve) }  (6 edges)
+
+   This is an UNDIRECTED UNWEIGHTED graph.
+   Friendship is mutual — if Alice knows Bob, Bob knows Alice.</div>
+
+<div class="tip">
+    <strong>💡 Why Graphs Matter:</strong> Lists, stacks, queues, and trees are all
+    <em>special cases</em> of graphs. A tree is just a connected acyclic graph. A linked
+    list is a graph with each node having at most one outgoing edge. Mastering graphs
+    means mastering the most general and powerful data structure.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 2 — Graph Terminology</div>
+
+<h3>2.1 — Vertices &amp; Edges</h3>
+<ul>
+    <li><strong>Vertex (Node):</strong> A fundamental unit — a city, person, webpage, or router</li>
+    <li><strong>Edge (Link/Arc):</strong> A connection between two vertices — a road, friendship, hyperlink, or cable</li>
+    <li><strong>Adjacent:</strong> Two vertices are adjacent if directly connected by an edge</li>
+    <li><strong>Neighbor:</strong> All vertices adjacent to a given vertex</li>
+    <li><strong>Incident:</strong> An edge is incident to the two vertices it connects</li>
+</ul>
+
+<h3>2.2 — Degree</h3>
+<ul>
+    <li><strong>Degree:</strong> The number of edges incident to a vertex (how many direct connections)</li>
+    <li><strong>In-degree (directed):</strong> Number of edges pointing <em>into</em> a vertex</li>
+    <li><strong>Out-degree (directed):</strong> Number of edges pointing <em>out of</em> a vertex</li>
+</ul>
+
+<div class="diagram">DEGREE — How Connected Is Each Node?
+
+   Undirected graph:
+       A ── B ── C
+            |
+            D
+
+   Degree(A) = 1  (connected to B only)
+   Degree(B) = 3  (connected to A, C, D)
+   Degree(C) = 1  (connected to B only)
+   Degree(D) = 1  (connected to B only)
+
+   Handshaking Lemma: sum of all degrees = 2 × |E|
+   Here: 1+3+1+1 = 6 = 2 × 3 edges ✓
+
+   Directed graph:
+       A ──▶ B ──▶ C
+             │
+             ▼
+             D
+
+   In-degree(B)  = 1 (from A)   Out-degree(B)  = 2 (to C, to D)
+   In-degree(A)  = 0             Out-degree(A)  = 1 (to B)</div>
+
+<h3>2.3 — Paths, Cycles &amp; Connectivity</h3>
+<ul>
+    <li><strong>Path:</strong> A sequence of vertices where each consecutive pair is connected by an edge, with no vertex repeated</li>
+    <li><strong>Cycle:</strong> A path that starts and ends at the same vertex (closed loop)</li>
+    <li><strong>Connected graph:</strong> Every vertex is reachable from every other vertex</li>
+    <li><strong>Strongly connected (directed):</strong> There exists a directed path between every pair of vertices in both directions</li>
+    <li><strong>Component:</strong> A maximal connected subgraph — an isolated cluster</li>
+    <li><strong>Bridge:</strong> An edge whose removal disconnects the graph</li>
+    <li><strong>Articulation point:</strong> A vertex whose removal disconnects the graph</li>
+</ul>
+
+<div class="diagram">PATHS AND CYCLES
+
+   Graph: A ── B ── C ── D
+              |         |
+              E ──────────
+
+   Path from A to D:   A → B → C → D  (length 3)
+   Path from A to D:   A → B → E → D  (length 3, different path)
+   Cycle:              B → C → D → E → B  (length 4)
+
+   CONNECTED vs DISCONNECTED:
+
+   Connected:         Disconnected (2 components):
+   A ── B ── C        A ── B    C ── D
+        |                  |
+        D                  E        (C,D are isolated)</div>
+
+<h3>2.4 — Subgraph &amp; Special Properties</h3>
+<ul>
+    <li><strong>Subgraph:</strong> A graph formed by a subset of vertices and edges</li>
+    <li><strong>Spanning tree:</strong> A subgraph that includes all vertices but only enough edges to remain connected (no cycles), V-1 edges</li>
+    <li><strong>Bipartite graph:</strong> Vertices split into two groups where edges only cross between groups (no edges within a group). Used in matching problems</li>
+    <li><strong>Planar graph:</strong> Can be drawn on a plane without edge crossings</li>
+    <li><strong>Complete graph K_n:</strong> Every pair of vertices has an edge; n(n-1)/2 edges</li>
+</ul>
+
+<div class="note">
+    <strong>📌 Tree vs Graph:</strong> A tree is a <em>connected acyclic graph</em>. It has
+    exactly V-1 edges (for V vertices). Remove the "connected" requirement and you get a
+    <em>forest</em>. Add a single edge to a tree and you create exactly one cycle.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 3 — Types of Graphs</div>
+
+<h3>3.1 — Undirected vs Directed</h3>
+
+<div class="diagram">UNDIRECTED vs DIRECTED
+
+   UNDIRECTED — edges have no direction (mutual connections):
+   Examples: friendship, road (both ways), electrical circuits
+
+       A ─── B ─── C
+       |           |
+       D ──────────
+
+   If (A,B) is an edge, then (B,A) is the same edge. You can go either way.
+
+   DIRECTED (Digraph) — edges have direction (one-way connections):
+   Examples: follow on Twitter, one-way streets, citations, dependencies
+
+       A ──▶ B ──▶ C
+       ▲           │
+       └─── D ◀────┘
+
+   If (A→B) exists, (B→A) may NOT exist. "A follows B" ≠ "B follows A"</div>
+
+<h3>3.2 — Weighted vs Unweighted</h3>
+
+<div class="diagram">WEIGHTED vs UNWEIGHTED
+
+   UNWEIGHTED — edges just say "connected" (no cost):
+   Examples: friend network, hyperlinks
+
+       A ─── B ─── C
+
+   WEIGHTED — edges have a numeric cost/distance/capacity:
+   Examples: road distances, flight costs, bandwidth
+
+         100km      250km
+       A ───── B ───── C
+       |               |
+       └─── D ─────────┘
+       80km      300km
+
+   Weighted graph: used in Dijkstra's, Bellman-Ford, MST algorithms</div>
+
+<h3>3.3 — DAG (Directed Acyclic Graph)</h3>
+<p>A <strong>DAG</strong> is a directed graph with no cycles. It's one of the most important
+special graph types because it models hierarchical dependencies naturally.</p>
+
+<div class="diagram">DAG — Directed Acyclic Graph
+
+   Build system dependencies (must compile in order):
+   No cycles means we can always find a valid build order.
+
+       stdlib ──▶ utils ──▶ core ──▶ app
+                              │
+                    graphics──┘──▶ ui ──▶ app
+
+   Key property: topological ordering always exists in a DAG.
+   A topological sort gives us the order to process nodes
+   such that every dependency is processed before its dependent.
+
+   Real examples:
+   - Git commit history (each commit points to its parents)
+   - Course prerequisites (must take calculus before linear algebra)
+   - Task scheduling (dependencies between jobs)
+   - Spreadsheet formula evaluation (A1 depends on B1 and C1)</div>
+
+<h3>3.4 — Sparse vs Dense Graphs</h3>
+<ul>
+    <li><strong>Sparse graph:</strong> |E| ≈ O(V) — few edges relative to vertices. Most real-world graphs. Use adjacency list.</li>
+    <li><strong>Dense graph:</strong> |E| ≈ O(V²) — many edges, close to complete. Use adjacency matrix.</li>
+    <li><strong>Rule of thumb:</strong> If edges &lt; V × log V, it's sparse. If edges ≈ V², it's dense.</li>
+</ul>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 4 — Representation 1: Adjacency Matrix</div>
+
+<p>A 2D array where <code>matrix[i][j]</code> is the weight of the edge from vertex i to vertex j
+(or 1 if unweighted, 0 if no edge). The matrix always has V×V entries.</p>
+
+<div class="diagram">ADJACENCY MATRIX
+
+   Graph: 4 vertices (0,1,2,3), undirected edges: (0,1),(0,2),(1,3),(2,3)
+
+       0 ─── 1
+       |     |
+       2 ─── 3
+
+   Matrix (0=no edge, 1=edge):
+
+          0   1   2   3
+      0 [ 0   1   1   0 ]    Row 0: vertex 0 connects to 1 and 2
+      1 [ 1   0   0   1 ]    Row 1: vertex 1 connects to 0 and 3
+      2 [ 1   0   0   1 ]    Row 2: vertex 2 connects to 0 and 3
+      3 [ 0   1   1   0 ]    Row 3: vertex 3 connects to 1 and 2
+
+   For undirected graphs: matrix is symmetric (matrix[i][j] == matrix[j][i])
+   For directed graphs: matrix may NOT be symmetric
+
+   For weighted graph:
+   matrix[i][j] = weight  (e.g. 100)
+   matrix[i][j] = 0 or ∞  (no edge)
+
+   Space: O(V²) — ALWAYS, regardless of how many edges exist!</div>
+
+<h4>When to Use Adjacency Matrix</h4>
+<ul>
+    <li>✅ <strong>Dense graphs</strong> where |E| ≈ V²</li>
+    <li>✅ <strong>Fast edge lookup</strong> O(1) — "Does edge (u,v) exist?"</li>
+    <li>✅ <strong>Small graphs</strong> where V ≤ 1000 (1M cells = fine)</li>
+    <li>✅ <strong>Floyd-Warshall</strong> all-pairs shortest path algorithm</li>
+    <li>❌ <strong>Sparse graphs</strong> — wastes O(V²) space even with few edges</li>
+    <li>❌ <strong>Large graphs</strong> — V=100,000 would need 10¹⁰ cells (too much memory)</li>
+    <li>❌ <strong>Iterating neighbors</strong> — must scan entire row O(V) even for a vertex with 2 edges</li>
+</ul>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// Adjacency Matrix — Graph with 4 vertices</span>
+<span class="kw">class</span> <span class="tp">AdjMatrixGraph</span>
+{
+    <span class="kw">private readonly int</span>[,] matrix;
+    <span class="kw">private readonly int</span> vertices;
+    <span class="kw">private readonly bool</span> directed;
+
+    <span class="kw">public</span> <span class="mt">AdjMatrixGraph</span>(<span class="kw">int</span> v, <span class="kw">bool</span> directed = <span class="kw">false</span>)
+    {
+        vertices = v;
+        <span class="kw">this</span>.directed = directed;
+        matrix = <span class="kw">new int</span>[v, v];   <span class="cm">// all zeros = no edges</span>
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v, <span class="kw">int</span> weight = <span class="nm">1</span>)
+    {
+        matrix[u, v] = weight;
+        <span class="kw">if</span> (!directed) matrix[v, u] = weight;  <span class="cm">// undirected: symmetric</span>
+    }
+
+    <span class="kw">public bool</span> <span class="mt">HasEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v) =&gt; matrix[u, v] != <span class="nm">0</span>;  <span class="cm">// O(1)!</span>
+
+    <span class="kw">public int</span> <span class="mt">GetWeight</span>(<span class="kw">int</span> u, <span class="kw">int</span> v) =&gt; matrix[u, v];
+
+    <span class="cm">// Get all neighbors of vertex u — O(V) even for sparse vertex!</span>
+    <span class="kw">public</span> <span class="tp">IEnumerable</span>&lt;<span class="kw">int</span>&gt; <span class="mt">GetNeighbors</span>(<span class="kw">int</span> u)
+    {
+        <span class="kw">for</span> (<span class="kw">int</span> v = <span class="nm">0</span>; v &lt; vertices; v++)
+            <span class="kw">if</span> (matrix[u, v] != <span class="nm">0</span>) <span class="kw">yield return</span> v;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Print</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="st">"   "</span>);
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; vertices; i++) <span class="tp">Console</span>.<span class="mt">Write</span>($<span class="st">" {i}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; vertices; i++)
+        {
+            <span class="tp">Console</span>.<span class="mt">Write</span>($<span class="st">"{i}: "</span>);
+            <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; vertices; j++) <span class="tp">Console</span>.<span class="mt">Write</span>($<span class="st">" {matrix[i,j]}"</span>);
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>();
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">AdjMatrixGraph</span>(<span class="nm">4</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">1</span>); g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">2</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">1</span>, <span class="nm">3</span>); g.<span class="mt">AddEdge</span>(<span class="nm">2</span>, <span class="nm">3</span>);
+        g.<span class="mt">Print</span>();
+        <span class="cm">/*  Output:
+               0 1 2 3
+            0:  0 1 1 0
+            1:  1 0 0 1
+            2:  1 0 0 1
+            3:  0 1 1 0  */</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"HasEdge(0,1): {g.HasEdge(0,1)}"</span>);  <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"HasEdge(0,3): {g.HasEdge(0,3)}"</span>);  <span class="cm">// False</span>
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List, Iterator
+
+<span class="kw">class</span> <span class="tp">AdjMatrixGraph</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, vertices: <span class="tp">int</span>, directed: <span class="tp">bool</span> = <span class="kw">False</span>):
+        self.v = vertices
+        self.directed = directed
+        self.matrix = [[<span class="nm">0</span>] * vertices <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(vertices)]
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(self, u: <span class="tp">int</span>, v: <span class="tp">int</span>, weight: <span class="tp">int</span> = <span class="nm">1</span>) -> <span class="kw">None</span>:
+        self.matrix[u][v] = weight
+        <span class="kw">if not</span> self.directed:
+            self.matrix[v][u] = weight   <span class="cm"># symmetric for undirected</span>
+
+    <span class="kw">def</span> <span class="mt">has_edge</span>(self, u: <span class="tp">int</span>, v: <span class="tp">int</span>) -> <span class="tp">bool</span>:
+        <span class="kw">return</span> self.matrix[u][v] != <span class="nm">0</span>   <span class="cm"># O(1)</span>
+
+    <span class="kw">def</span> <span class="mt">get_neighbors</span>(self, u: <span class="tp">int</span>) -> Iterator[<span class="tp">int</span>]:
+        <span class="kw">for</span> v <span class="kw">in</span> <span class="mt">range</span>(self.v):
+            <span class="kw">if</span> self.matrix[u][v] != <span class="nm">0</span>:
+                <span class="kw">yield</span> v
+
+    <span class="kw">def</span> <span class="mt">__repr__</span>(self) -> <span class="tp">str</span>:
+        header = <span class="st">"   "</span> + <span class="st">" "</span>.join(<span class="mt">str</span>(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(self.v))
+        rows = [f<span class="st">"{i}: {' '.join(str(x) for x in row)}"</span>
+                <span class="kw">for</span> i, row <span class="kw">in</span> <span class="mt">enumerate</span>(self.matrix)]
+        <span class="kw">return</span> header + <span class="st">"\n"</span> + <span class="st">"\n"</span>.<span class="mt">join</span>(rows)
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    g = <span class="tp">AdjMatrixGraph</span>(<span class="nm">4</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">0</span>, <span class="nm">1</span>); g.<span class="mt">add_edge</span>(<span class="nm">0</span>, <span class="nm">2</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">1</span>, <span class="nm">3</span>); g.<span class="mt">add_edge</span>(<span class="nm">2</span>, <span class="nm">3</span>)
+    <span class="mt">print</span>(g)
+    <span class="mt">print</span>(g.<span class="mt">has_edge</span>(<span class="nm">0</span>, <span class="nm">1</span>))  <span class="cm"># True</span>
+    <span class="mt">print</span>(g.<span class="mt">has_edge</span>(<span class="nm">0</span>, <span class="nm">3</span>))  <span class="cm"># False</span>
+    <span class="mt">print</span>(<span class="mt">list</span>(g.<span class="mt">get_neighbors</span>(<span class="nm">0</span>)))  <span class="cm"># [1, 2]</span></pre>
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 5 — Representation 2: Adjacency List</div>
+
+<p>An array (or dictionary) where each entry is a <strong>list of neighbors</strong> for that
+vertex. The most common representation for real-world sparse graphs. Uses O(V + E) space —
+only stores edges that actually exist.</p>
+
+<div class="diagram">ADJACENCY LIST
+
+   Same graph: 4 vertices, edges (0,1),(0,2),(1,3),(2,3)
+
+       0 ─── 1
+       |     |
+       2 ─── 3
+
+   Array of neighbor lists:
+
+   adjList[0] → [ 1, 2 ]        vertex 0 connects to 1 and 2
+   adjList[1] → [ 0, 3 ]        vertex 1 connects to 0 and 3
+   adjList[2] → [ 0, 3 ]        vertex 2 connects to 0 and 3
+   adjList[3] → [ 1, 2 ]        vertex 3 connects to 1 and 2
+
+   Total storage: V pointers + 2E entries (each edge stored twice for undirected)
+                = O(V + E)
+
+   WEIGHTED adjacency list (stores neighbor + weight):
+   adjList[0] → [ (1, 100), (2, 80) ]    edge to 1 costs 100, to 2 costs 80
+   adjList[1] → [ (0, 100), (3, 250) ]
+   adjList[2] → [ (0, 80),  (3, 300) ]
+   adjList[3] → [ (1, 250), (2, 300) ]
+
+   With generic vertex labels (strings, etc.) use a Dictionary:</div>
+
+<h4>When to Use Adjacency List</h4>
+<ul>
+    <li>✅ <strong>Sparse graphs</strong> — most real-world graphs (social networks, road maps)</li>
+    <li>✅ <strong>Iterating neighbors</strong> — O(degree) instead of O(V)</li>
+    <li>✅ <strong>BFS and DFS</strong> — the standard representation for traversal algorithms</li>
+    <li>✅ <strong>Large graphs</strong> — millions of vertices; only stores existing edges</li>
+    <li>❌ <strong>Fast edge lookup</strong> — O(degree) to check if (u,v) exists, not O(1)</li>
+    <li>❌ <strong>Dense graphs</strong> — overhead of list pointers exceeds matrix for K_n</li>
+</ul>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// Generic Adjacency List Graph — works with any vertex type</span>
+<span class="kw">public class</span> <span class="tp">Graph</span>&lt;<span class="tp">T</span>&gt; <span class="kw">where</span> <span class="tp">T</span> : <span class="kw">notnull</span>
+{
+    <span class="cm">// Key: vertex, Value: list of (neighbor, weight) pairs</span>
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="tp">T</span>, <span class="tp">List</span>&lt;(<span class="tp">T</span> To, <span class="kw">int</span> Weight)&gt;&gt; adj;
+    <span class="kw">public bool</span> IsDirected { <span class="kw">get</span>; }
+    <span class="kw">public int</span> VertexCount =&gt; adj.Count;
+
+    <span class="kw">public</span> <span class="mt">Graph</span>(<span class="kw">bool</span> directed = <span class="kw">false</span>)
+    {
+        adj = <span class="kw">new</span>();
+        IsDirected = directed;
+    }
+
+    <span class="cm">// ── Structural Operations ─────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">AddVertex</span>(<span class="tp">T</span> v)
+    {
+        adj.<span class="mt">TryAdd</span>(v, <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">T</span>, <span class="kw">int</span>)&gt;());
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="tp">T</span> from, <span class="tp">T</span> to, <span class="kw">int</span> weight = <span class="nm">1</span>)
+    {
+        <span class="mt">AddVertex</span>(from); <span class="mt">AddVertex</span>(to);  <span class="cm">// auto-create vertices if needed</span>
+        adj[from].<span class="mt">Add</span>((to, weight));
+        <span class="kw">if</span> (!IsDirected)
+            adj[to].<span class="mt">Add</span>((from, weight));  <span class="cm">// bidirectional for undirected</span>
+    }
+
+    <span class="kw">public bool</span> <span class="mt">RemoveEdge</span>(<span class="tp">T</span> from, <span class="tp">T</span> to)
+    {
+        <span class="kw">if</span> (!adj.<span class="mt">ContainsKey</span>(from)) <span class="kw">return false</span>;
+        <span class="kw">int</span> removed = adj[from].<span class="mt">RemoveAll</span>(e =&gt; e.To.<span class="mt">Equals</span>(to));  <span class="cm">// O(degree)</span>
+        <span class="kw">if</span> (!IsDirected) adj[to].<span class="mt">RemoveAll</span>(e =&gt; e.To.<span class="mt">Equals</span>(from));
+        <span class="kw">return</span> removed &gt; <span class="nm">0</span>;
+    }
+
+    <span class="cm">// ── Queries ───────────────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">HasVertex</span>(<span class="tp">T</span> v) =&gt; adj.<span class="mt">ContainsKey</span>(v);
+
+    <span class="kw">public bool</span> <span class="mt">HasEdge</span>(<span class="tp">T</span> from, <span class="tp">T</span> to)                  <span class="cm">// O(degree)</span>
+        =&gt; adj.<span class="mt">ContainsKey</span>(from) &amp;&amp; adj[from].<span class="mt">Any</span>(e =&gt; e.To.<span class="mt">Equals</span>(to));
+
+    <span class="kw">public</span> <span class="tp">IReadOnlyList</span>&lt;(<span class="tp">T</span> To, <span class="kw">int</span> Weight)&gt; <span class="mt">GetNeighbors</span>(<span class="tp">T</span> v)  <span class="cm">// O(1) return</span>
+        =&gt; adj.<span class="mt">TryGetValue</span>(v, <span class="kw">out var</span> list) ? list : <span class="tp">Array</span>.Empty&lt;(<span class="tp">T</span>, <span class="kw">int</span>)&gt;();
+
+    <span class="kw">public int</span> <span class="mt">Degree</span>(<span class="tp">T</span> v)
+        =&gt; adj.<span class="mt">TryGetValue</span>(v, <span class="kw">out var</span> list) ? list.Count : <span class="nm">0</span>;
+
+    <span class="kw">public</span> <span class="tp">IEnumerable</span>&lt;<span class="tp">T</span>&gt; <span class="mt">Vertices</span>() =&gt; adj.Keys;
+
+    <span class="cm">// ── Display ───────────────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Print</span>()
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> (vertex, neighbors) <span class="kw">in</span> adj)
+        {
+            <span class="kw">string</span> edges = <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, neighbors.<span class="mt">Select</span>(
+                n =&gt; IsDirected || n.Weight != <span class="nm">1</span>
+                    ? $<span class="st">"{n.To}(w={n.Weight})"</span>
+                    : $<span class="st">"{n.To}"</span>));
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"{vertex} → [{edges}]"</span>);
+        }
+    }
+}
+
+<span class="kw">class</span> <span class="tp">GraphDemo</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="cm">// Unweighted undirected</span>
+        <span class="kw">var</span> social = <span class="kw">new</span> <span class="tp">Graph</span>&lt;<span class="kw">string</span>&gt;();
+        social.<span class="mt">AddEdge</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>);
+        social.<span class="mt">AddEdge</span>(<span class="st">"Alice"</span>, <span class="st">"Carol"</span>);
+        social.<span class="mt">AddEdge</span>(<span class="st">"Bob"</span>,   <span class="st">"Dave"</span>);
+        social.<span class="mt">AddEdge</span>(<span class="st">"Bob"</span>,   <span class="st">"Eve"</span>);
+        social.<span class="mt">AddEdge</span>(<span class="st">"Carol"</span>, <span class="st">"Eve"</span>);
+        social.<span class="mt">AddEdge</span>(<span class="st">"Dave"</span>,  <span class="st">"Eve"</span>);
+        social.<span class="mt">Print</span>();
+        <span class="cm">/* Output:
+           Alice → [Bob, Carol]
+           Bob   → [Alice, Dave, Eve]
+           Carol → [Alice, Eve]
+           Dave  → [Bob, Eve]
+           Eve   → [Bob, Carol, Dave]  */</span>
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(social.<span class="mt">HasEdge</span>(<span class="st">"Alice"</span>, <span class="st">"Dave"</span>)); <span class="cm">// False</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(social.<span class="mt">Degree</span>(<span class="st">"Bob"</span>));           <span class="cm">// 3</span>
+
+        <span class="cm">// Weighted directed — city road map</span>
+        <span class="kw">var</span> roads = <span class="kw">new</span> <span class="tp">Graph</span>&lt;<span class="kw">string</span>&gt;(directed: <span class="kw">true</span>);
+        roads.<span class="mt">AddEdge</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="nm">100</span>);  <span class="cm">// A→B costs 100km</span>
+        roads.<span class="mt">AddEdge</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="nm">80</span>);
+        roads.<span class="mt">AddEdge</span>(<span class="st">"B"</span>, <span class="st">"D"</span>, <span class="nm">250</span>);
+        roads.<span class="mt">AddEdge</span>(<span class="st">"C"</span>, <span class="st">"D"</span>, <span class="nm">300</span>);
+        roads.<span class="mt">Print</span>();
+        <span class="cm">/* Output:
+           A → [B(w=100), C(w=80)]
+           B → [D(w=250)]
+           C → [D(w=300)]
+           D → []                   */</span>
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">from</span> typing <span class="kw">import</span> Any, List, Tuple, Iterator
+
+<span class="kw">class</span> <span class="tp">Graph</span>:
+    <span class="st">"""Generic weighted graph with adjacency list representation."""</span>
+
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, directed: <span class="tp">bool</span> = <span class="kw">False</span>):
+        <span class="cm"># adj[v] = list of (neighbor, weight) tuples</span>
+        self.adj: <span class="tp">dict</span>[Any, List[Tuple[Any, <span class="tp">int</span>]]] = defaultdict(<span class="mt">list</span>)
+        self.directed = directed
+
+    <span class="kw">def</span> <span class="mt">add_vertex</span>(self, v: Any) -> <span class="kw">None</span>:
+        <span class="kw">if</span> v <span class="kw">not in</span> self.adj:
+            self.adj[v] = []
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(self, u: Any, v: Any, weight: <span class="tp">int</span> = <span class="nm">1</span>) -> <span class="kw">None</span>:
+        self.adj[u].append((v, weight))
+        <span class="kw">if not</span> self.directed:
+            self.adj[v].append((u, weight))   <span class="cm"># bidirectional</span>
+
+    <span class="kw">def</span> <span class="mt">remove_edge</span>(self, u: Any, v: Any) -> <span class="tp">bool</span>:
+        before = <span class="mt">len</span>(self.adj[u])
+        self.adj[u] = [(nb, w) <span class="kw">for</span> nb, w <span class="kw">in</span> self.adj[u] <span class="kw">if</span> nb != v]
+        <span class="kw">if not</span> self.directed:
+            self.adj[v] = [(nb, w) <span class="kw">for</span> nb, w <span class="kw">in</span> self.adj[v] <span class="kw">if</span> nb != u]
+        <span class="kw">return</span> <span class="mt">len</span>(self.adj[u]) < before
+
+    <span class="kw">def</span> <span class="mt">has_edge</span>(self, u: Any, v: Any) -> <span class="tp">bool</span>:
+        <span class="kw">return</span> <span class="mt">any</span>(nb == v <span class="kw">for</span> nb, _ <span class="kw">in</span> self.adj.get(u, []))  <span class="cm"># O(degree)</span>
+
+    <span class="kw">def</span> <span class="mt">get_neighbors</span>(self, v: Any) -> List[Tuple[Any, <span class="tp">int</span>]]:
+        <span class="kw">return</span> self.adj.get(v, [])
+
+    <span class="kw">def</span> <span class="mt">degree</span>(self, v: Any) -> <span class="tp">int</span>:
+        <span class="kw">return</span> <span class="mt">len</span>(self.adj.get(v, []))
+
+    <span class="kw">def</span> <span class="mt">vertices</span>(self) -> Iterator[Any]:
+        <span class="kw">return</span> <span class="mt">iter</span>(self.adj)
+
+    <span class="kw">def</span> <span class="mt">__repr__</span>(self) -> <span class="tp">str</span>:
+        lines = []
+        <span class="kw">for</span> v, neighbors <span class="kw">in</span> self.adj.items():
+            parts = [f<span class="st">"{nb}(w={w})"</span> <span class="kw">if</span> self.directed <span class="kw">or</span> w != <span class="nm">1</span>
+                     <span class="kw">else</span> <span class="mt">str</span>(nb) <span class="kw">for</span> nb, w <span class="kw">in</span> neighbors]
+            lines.append(f<span class="st">"{v} → [{', '.join(parts)}]"</span>)
+        <span class="kw">return</span> <span class="st">"\n"</span>.<span class="mt">join</span>(lines)
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="cm"># Social network (undirected, unweighted)</span>
+    social = <span class="tp">Graph</span>()
+    <span class="kw">for</span> u, v <span class="kw">in</span> [(<span class="st">"Alice"</span>,<span class="st">"Bob"</span>),(<span class="st">"Alice"</span>,<span class="st">"Carol"</span>),
+                  (<span class="st">"Bob"</span>,<span class="st">"Dave"</span>),(<span class="st">"Bob"</span>,<span class="st">"Eve"</span>),
+                  (<span class="st">"Carol"</span>,<span class="st">"Eve"</span>),(<span class="st">"Dave"</span>,<span class="st">"Eve"</span>)]:
+        social.<span class="mt">add_edge</span>(u, v)
+    <span class="mt">print</span>(social)
+    <span class="mt">print</span>(<span class="st">"Alice-Dave?"</span>, social.<span class="mt">has_edge</span>(<span class="st">"Alice"</span>, <span class="st">"Dave"</span>))  <span class="cm"># False</span>
+    <span class="mt">print</span>(<span class="st">"Bob degree:"</span>, social.<span class="mt">degree</span>(<span class="st">"Bob"</span>))             <span class="cm"># 3</span>
+
+    <span class="cm"># Weighted directed road map</span>
+    roads = <span class="tp">Graph</span>(directed=<span class="kw">True</span>)
+    roads.<span class="mt">add_edge</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="nm">100</span>); roads.<span class="mt">add_edge</span>(<span class="st">"A"</span>, <span class="st">"C"</span>, <span class="nm">80</span>)
+    roads.<span class="mt">add_edge</span>(<span class="st">"B"</span>, <span class="st">"D"</span>, <span class="nm">250</span>); roads.<span class="mt">add_edge</span>(<span class="st">"C"</span>, <span class="st">"D"</span>, <span class="nm">300</span>)
+    <span class="mt">print</span>(roads)
+    <span class="cm"># A → [B(w=100), C(w=80)]
+    # B → [D(w=250)]
+    # C → [D(w=300)]
+    # D → []</span></pre>
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 6 — Representation 3: Edge List</div>
+
+<p>Simply a list of all edges in the graph, each stored as <code>(u, v)</code> or <code>(u, v, weight)</code>.
+The simplest structure — just a flat list of connections.</p>
+
+<div class="diagram">EDGE LIST
+
+   Graph: 4 vertices, edges (0,1),(0,2),(1,3),(2,3), weights 10,20,30,40
+
+   Edge list:
+   [ (0, 1, 10),
+     (0, 2, 20),
+     (1, 3, 30),
+     (2, 3, 40) ]
+
+   Total storage: O(E) — only what exists
+
+   PROS:
+   + Extremely simple to implement
+   + Compact: just an array of tuples
+   + Easy to sort edges by weight (needed for Kruskal's MST)
+   + Great for building other representations
+
+   CONS:
+   - Has edge(u,v)? → must scan entire list O(E)
+   - Get neighbors of u? → must scan entire list O(E)
+   - No structure for fast access
+   - Not used for traversal algorithms</div>
+
+<div class="note">
+    <strong>📌 When is Edge List the right choice?</strong> Kruskal's Minimum Spanning Tree
+    algorithm sorts all edges by weight and processes them in order — an edge list is
+    perfect for this. Also useful when building other representations (scan once to
+    populate the adjacency list or matrix).
+</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// Edge List representation — used in Kruskal's MST</span>
+<span class="kw">public class</span> <span class="tp">EdgeListGraph</span>
+{
+    <span class="kw">public record</span> <span class="tp">Edge</span>(<span class="kw">int</span> U, <span class="kw">int</span> V, <span class="kw">int</span> Weight) : IComparable&lt;<span class="tp">Edge</span>&gt;
+    {
+        <span class="kw">public int</span> <span class="mt">CompareTo</span>(<span class="tp">Edge</span>? other) =&gt; Weight.<span class="mt">CompareTo</span>(other?.Weight);
+    }
+
+    <span class="kw">public int</span> Vertices { <span class="kw">get</span>; }
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Edge</span>&gt; Edges { <span class="kw">get</span>; } = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="mt">EdgeListGraph</span>(<span class="kw">int</span> v) =&gt; Vertices = v;
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v, <span class="kw">int</span> weight = <span class="nm">1</span>)
+        =&gt; Edges.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">Edge</span>(u, v, weight));
+
+    <span class="cm">// Sort edges by weight — needed for Kruskal's MST</span>
+    <span class="kw">public void</span> <span class="mt">SortByWeight</span>() =&gt; Edges.<span class="mt">Sort</span>();
+
+    <span class="kw">public void</span> <span class="mt">Print</span>()
+    {
+        <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> Edges)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"({e.U}, {e.V}, w={e.Weight})"</span>);
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">EdgeListGraph</span>(<span class="nm">4</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">40</span>); g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">2</span>, <span class="nm">10</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">30</span>); g.<span class="mt">AddEdge</span>(<span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">20</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Unsorted:"</span>); g.<span class="mt">Print</span>();
+        g.<span class="mt">SortByWeight</span>();
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\nSorted by weight (for Kruskal's):"</span>); g.<span class="mt">Print</span>();
+        <span class="cm">/* Sorted:
+           (0, 2, w=10)
+           (2, 3, w=20)
+           (1, 3, w=30)
+           (0, 1, w=40)   */</span>
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">class</span> <span class="tp">EdgeListGraph</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, vertices):
+        self.vertices = vertices
+        self.edges = []   <span class="cm"># list of (u, v, weight) tuples</span>
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(self, u, v, weight=<span class="nm">1</span>):
+        self.edges.<span class="mt">append</span>((u, v, weight))
+
+    <span class="kw">def</span> <span class="mt">sort_by_weight</span>(self):
+        self.edges.<span class="mt">sort</span>(key=<span class="kw">lambda</span> e: e[<span class="nm">2</span>])
+
+    <span class="kw">def</span> <span class="mt">print_edges</span>(self):
+        <span class="kw">for</span> u, v, w <span class="kw">in</span> self.edges:
+            <span class="mt">print</span>(<span class="st">f"({u}, {v}, w={w})"</span>)
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    g = <span class="tp">EdgeListGraph</span>(<span class="nm">4</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">40</span>); g.<span class="mt">add_edge</span>(<span class="nm">0</span>, <span class="nm">2</span>, <span class="nm">10</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">30</span>); g.<span class="mt">add_edge</span>(<span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">20</span>)
+    <span class="mt">print</span>(<span class="st">"Unsorted:"</span>); g.<span class="mt">print_edges</span>()
+    g.<span class="mt">sort_by_weight</span>()
+    <span class="mt">print</span>(<span class="st">"\nSorted by weight (for Kruskal's):"</span>); g.<span class="mt">print_edges</span>()
+    <span class="cm"># Sorted: (0,2,w=10), (2,3,w=20), (1,3,w=30), (0,1,w=40)</span></pre>
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 7 — Representation Comparison Table</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Operation</th>
+            <th>Adj Matrix</th>
+            <th>Adj List</th>
+            <th>Edge List</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Space</strong></td>
+            <td class="r">O(V²)</td>
+            <td class="g">O(V + E)</td>
+            <td class="g">O(E)</td>
+        </tr>
+        <tr>
+            <td><strong>Add Edge</strong></td>
+            <td class="g">O(1)</td>
+            <td class="g">O(1)</td>
+            <td class="g">O(1)</td>
+        </tr>
+        <tr>
+            <td><strong>Remove Edge</strong></td>
+            <td class="g">O(1)</td>
+            <td class="o">O(degree)</td>
+            <td class="r">O(E)</td>
+        </tr>
+        <tr>
+            <td><strong>Has Edge? (u,v)</strong></td>
+            <td class="g">O(1)</td>
+            <td class="o">O(degree)</td>
+            <td class="r">O(E)</td>
+        </tr>
+        <tr>
+            <td><strong>Get Neighbors of v</strong></td>
+            <td class="r">O(V) — scan row</td>
+            <td class="g">O(degree)</td>
+            <td class="r">O(E) — scan all</td>
+        </tr>
+        <tr>
+            <td><strong>Iterate all edges</strong></td>
+            <td class="r">O(V²)</td>
+            <td class="g">O(V + E)</td>
+            <td class="g">O(E)</td>
+        </tr>
+        <tr>
+            <td><strong>Best for</strong></td>
+            <td>Dense graphs, edge lookup, Floyd-Warshall</td>
+            <td>Sparse graphs, BFS/DFS, most algorithms</td>
+            <td>Kruskal's MST, building other reprs.</td>
+        </tr>
+        <tr>
+            <td><strong>Real-world example</strong></td>
+            <td>Routing tables (&lt;1000 nodes), game grids</td>
+            <td>Web graph, social networks, road maps</td>
+            <td>Telecom network MST, pipeline planning</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="note">
+    <strong>📌 The Golden Rule:</strong> For most interview problems and real systems, start with
+    <strong>adjacency list</strong>. It handles both sparse and moderate-density graphs, and BFS/DFS
+    are O(V+E) with it. Only switch to a matrix when you need O(1) edge lookup AND the graph
+    is small enough to afford O(V²) space.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
+
+<div class="realworld">
+    <strong>🌍 Facebook / Meta — Social Graph</strong><br>
+    Facebook's "social graph" stores 3 billion users as vertices and hundreds of billions of
+    friendships as edges. It uses a distributed adjacency list — each user's friends list is
+    stored in a sharded dictionary. Key algorithms: BFS for friend-of-friend suggestions,
+    connected components for "people you may know" clustering.
+    <br><br>
+    <strong>🌍 Google Maps — Road Network</strong><br>
+    Cities and intersections are vertices; roads are weighted directed edges (weight = travel
+    time, direction = one-way streets). Google uses compressed adjacency lists with Dijkstra's
+    and A* for routing. The full US road graph has ~50M vertices and ~120M edges — way too large
+    for a matrix!
+    <br><br>
+    <strong>🌍 Git — Commit DAG</strong><br>
+    Every Git commit is a vertex; every parent pointer is a directed edge. Git's history is a
+    DAG (Directed Acyclic Graph). The <code>git log --graph</code> command visually renders this
+    DAG. Operations like <code>git merge</code> find the Lowest Common Ancestor in the graph.
+    <br><br>
+    <strong>🌍 LinkedIn — Degree Connections (1st, 2nd, 3rd)</strong><br>
+    LinkedIn uses BFS to compute connection degrees. Direct connections = 1st degree (neighbors).
+    Their connections = 2nd degree (BFS depth 2). This requires an efficient sparse adjacency
+    list representation — a matrix would require 900M × 900M cells for LinkedIn's 900M members.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 9 — Check Your Understanding</div>
+
+<!-- Q1 -->
+<div class="quiz-block">
+    <p>Q1 — A graph has 1,000 vertices and 3,000 edges. Which representation should you use and why?</p>
+    <div class="quiz-meta">💡 Think about how sparse/dense this graph is. Compare O(V²) vs O(V+E) space.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> Use an <strong>adjacency list</strong>. The graph is very sparse: 3,000 edges vs the 1,000,000 possible edges in a complete graph (only 0.3% density). An adjacency matrix would waste 1,000,000 entries (1M integers = ~4MB) to store just 3,000 actual edges. The adjacency list uses only O(V+E) = O(1,000 + 3,000) = ~4,000 entries. Additionally, BFS/DFS and most graph algorithms run in O(V+E) with adjacency lists — scanning the entire matrix row to find neighbors would be O(V)=1,000 per vertex instead of O(degree)≈6.</div>
+        <div class="complexity"><strong>Rule:</strong> If |E| &lt;&lt; V², use adjacency list. The crossover point is roughly when |E| &gt; V²/3 — then a matrix becomes space-competitive.</div>
+    </div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-block">
+    <p>Q2 — In a directed graph, vertex B has in-degree 3 and out-degree 1. What does this tell you about B?</p>
+    <div class="quiz-meta">💡 In-degree = edges pointing IN. Out-degree = edges pointing OUT.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> Vertex B is a <strong>convergence point</strong> (or "sink-like" node). Three vertices point to B (it receives connections from 3 nodes), but B only points to 1 other vertex. This is typical of a "bottleneck" in a network — like a popular webpage that many sites link to but that only links to one other page, or a bus hub that many routes feed into but only one route leaves from. If out-degree were 0, B would be a <em>sink</em> (no outgoing edges). A node with in-degree 0 is called a <em>source</em>.</div>
+        <div class="complexity"><strong>Key fact:</strong> In any directed graph, sum of all in-degrees = sum of all out-degrees = total number of edges |E|.</div>
+    </div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-block">
+    <p>Q3 — Why can't a DAG contain cycles? What property of topological sort depends on this?</p>
+    <div class="quiz-meta">💡 DAG = Directed Acyclic Graph. Topological sort produces a linear ordering of vertices.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> By definition, a DAG has no directed cycles. If a cycle existed (A→B→C→A), then A would need to come before B (because A→B), B before C, C before A — which is impossible in a linear ordering. <strong>Topological sort</strong> produces a valid linear ordering where every edge (u→v) has u appearing before v. This ordering only exists when the graph is acyclic (Kahn's algorithm or DFS-based topological sort will fail or detect the cycle if one exists). Real-world impact: build systems, course prerequisites, spreadsheet evaluation — all rely on this property to guarantee a valid execution order.</div>
+        <div class="complexity"><strong>Algorithm:</strong> Kahn's BFS-based topological sort runs O(V+E). If it can't process all vertices, a cycle exists.</div>
+    </div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-block">
+    <p>Q4 — An adjacency matrix for a graph with 10,000 vertices uses how much memory? Why might this be a problem?</p>
+    <div class="quiz-meta">💡 Matrix is V×V. Each cell is a 4-byte int (or even 1 byte bool).</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> 10,000 × 10,000 = 100,000,000 cells. At 4 bytes each (int), that's 400 MB. At 1 byte (bool), still 100 MB. For a sparse social network where each user averages 200 friends, you'd need 100M cells to represent 2B edges (200 × 10M) — but 99.998% of the matrix would be 0. An adjacency list would use only O(V+E) = 10,000 + 2,000,000,000 ≈ 2GB total, but only for actual edges. In practice, LinkedIn (900M users) would need an 810 petabyte matrix — physically impossible. Adjacency lists with sharding handle this easily.</div>
+        <div class="complexity"><strong>Space:</strong> Matrix = O(V²) always. List = O(V+E) — much better when E &lt;&lt; V².</div>
+    </div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-block">
+    <p>Q5 — Convert this adjacency list to an adjacency matrix: V=3, edges (0→1, 1→2, 2→0) with weights 5, 10, 15.</p>
+    <div class="quiz-meta">💡 Create a 3×3 matrix. matrix[from][to] = weight, 0 means no edge.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> This is a directed weighted cycle 0→1→2→0. For matrix[i][j] = weight of edge from i to j (0 = no edge):
+            <br><br>
+            matrix[0][1] = 5   (edge 0→1, weight 5)<br>
+            matrix[1][2] = 10  (edge 1→2, weight 10)<br>
+            matrix[2][0] = 15  (edge 2→0, weight 15)<br>
+            All other cells = 0.
+            <pre style="margin-top:8px;font-size:0.85em">     0    1    2
+0  [ 0    5    0  ]
+1  [ 0    0   10  ]
+2  [ 15   0    0  ]</pre>
+        </div>
+        <div class="complexity"><strong>Note:</strong> The matrix is NOT symmetric — this is a directed graph. For undirected, matrix[i][j] always equals matrix[j][i].</div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 9A Complete</button>
+<div class="toast" id="toast">✅ Module 9A marked complete!</div>
+    <script>var MODULE_ID = 'm09a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

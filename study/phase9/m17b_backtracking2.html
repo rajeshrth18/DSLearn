@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 17B — Permutations &amp; Combinations | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 17 — Part B</h1>
+    <div class="tagline">Backtracking — Permutations &amp; Combinations</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Permutations · Power Set · Combination Sum · Letter Phone Codes</p>
+    <div class="badges">
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 17 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 17 — Backtracking:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m17a_backtracking.html">N-Queens &amp; Sudoku Solver</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Permutations &amp; Combinations<br>
+    ⬜ <strong>Part C</strong> — <a href="m17c_practice.html">Practice Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
+    <a href="../phase10/m18a_patterns1.html">Module 18 &mdash; Patterns I &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Permutations (LC 46)</div>
+
+<p>Generate all n! permutations of a list of distinct integers.</p>
+<p><strong>Approach:</strong> At each step, choose an unused element. Track used elements with a boolean array or by swapping in-place.</p>
+
+<div class="diagram">Permutations of [1, 2, 3]:
+  
+  []
+  ├── [1]
+  │   ├── [1,2] → [1,2,3] ✓
+  │   └── [1,3] → [1,3,2] ✓
+  ├── [2]
+  │   ├── [2,1] → [2,1,3] ✓
+  │   └── [2,3] → [2,3,1] ✓
+  └── [3]
+      ├── [3,1] → [3,1,2] ✓
+      └── [3,2] → [3,2,1] ✓   → 6 = 3! results</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">Permute</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">bool</span>[] used = <span class="kw">new bool</span>[nums.Length];
+    <span class="kw">var</span> path = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>()
+    {
+        <span class="kw">if</span> (path.Count == nums.Length) { results.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(path)); <span class="kw">return</span>; }
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+        {
+            <span class="kw">if</span> (used[i]) <span class="kw">continue</span>;
+            used[i] = <span class="kw">true</span>;  path.<span class="mt">Add</span>(nums[i]);
+            <span class="mt">Backtrack</span>();
+            used[i] = <span class="kw">false</span>; path.<span class="mt">RemoveAt</span>(path.Count - <span class="nm">1</span>);
+        }
+    }
+    <span class="mt">Backtrack</span>();
+    <span class="kw">return</span> results;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">permute</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">int</span>]]:
+    results, path, used = [], [], [<span class="kw">False</span>] * <span class="mt">len</span>(nums)
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>():
+        <span class="kw">if</span> <span class="mt">len</span>(path) == <span class="mt">len</span>(nums):
+            results.<span class="mt">append</span>(path[:])
+            <span class="kw">return</span>
+        <span class="kw">for</span> i, n <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
+            <span class="kw">if</span> used[i]: <span class="kw">continue</span>
+            used[i] = <span class="kw">True</span>;  path.<span class="mt">append</span>(n)
+            <span class="mt">backtrack</span>()
+            used[i] = <span class="kw">False</span>; path.<span class="mt">pop</span>()
+
+    <span class="mt">backtrack</span>()
+    <span class="kw">return</span> results
+
+print(<span class="mt">permute</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]))  <span class="cm"># 6 permutations</span></pre>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Subsets / Power Set (LC 78)</div>
+
+<p>Generate all 2^n subsets of a list of distinct integers.</p>
+<p><strong>Approach:</strong> At each index, choose to include or skip the element. Or iterate and extend current subsets.</p>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">Subsets</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">var</span> path    = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="kw">int</span> start)
+    {
+        results.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(path));  <span class="cm">// add subset at every node</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = start; i &lt; nums.Length; i++)
+        {
+            path.<span class="mt">Add</span>(nums[i]);
+            <span class="mt">Backtrack</span>(i + <span class="nm">1</span>);
+            path.<span class="mt">RemoveAt</span>(path.Count - <span class="nm">1</span>);
+        }
+    }
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>);
+    <span class="kw">return</span> results;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">subsets</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">int</span>]]:
+    results, path = [], []
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>(start: <span class="tp">int</span>):
+        results.<span class="mt">append</span>(path[:])   <span class="cm"># record subset at every level</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(start, <span class="mt">len</span>(nums)):
+            path.<span class="mt">append</span>(nums[i])
+            <span class="mt">backtrack</span>(i + <span class="nm">1</span>)
+            path.<span class="mt">pop</span>()
+
+    <span class="mt">backtrack</span>(<span class="nm">0</span>)
+    <span class="kw">return</span> results
+
+print(<span class="mt">subsets</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]))  <span class="cm"># [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]</span></pre>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Combination Sum (LC 39)</div>
+
+<p>Find all unique combinations in an array whose sum equals target. <div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public static</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">CombinationSum</span>(<span class="kw">int</span>[] candidates, <span class="kw">int</span> target)
+{
+    <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;(); <span class="kw">var</span> path = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(candidates);
+    <span class="kw">void</span> <span class="mt">Bt</span>(<span class="kw">int</span> start, <span class="kw">int</span> rem) {
+        <span class="kw">if</span> (rem == <span class="nm">0</span>) { results.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(path)); <span class="kw">return</span>; }
+        <span class="kw">for</span> (<span class="kw">int</span> i = start; i &lt; candidates.Length; i++) {
+            <span class="kw">if</span> (candidates[i] &gt; rem) <span class="kw">break</span>;   <span class="cm">// pruning</span>
+            path.<span class="mt">Add</span>(candidates[i]);
+            <span class="mt">Bt</span>(i, rem - candidates[i]);          <span class="cm">// i not i+1 → allow reuse</span>
+            path.<span class="mt">RemoveAt</span>(path.Count - <span class="nm">1</span>);
+        }
+    }
+    <span class="mt">Bt</span>(<span class="nm">0</span>, target); <span class="kw">return</span> results;
+}
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, <span class="mt">CombinationSum</span>(<span class="kw">new</span>[]{<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">6</span>,<span class="nm">7</span>}, <span class="nm">7</span>)
+    .<span class="mt">Select</span>(g =&gt; <span class="st">"["</span>+<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>,g)+<span class="st">"]"</span>))); <span class="cm">// [2,2,3], [7]</span></pre>
+</div>
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">combination_sum</span>(candidates: <span class="tp">list</span>[<span class="tp">int</span>], target: <span class="tp">int</span>) -&gt; <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">int</span>]]:
+    results, path = [], []
+    candidates.<span class="mt">sort</span>()
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>(start: <span class="tp">int</span>, remaining: <span class="tp">int</span>):
+        <span class="kw">if</span> remaining == <span class="nm">0</span>:
+            results.<span class="mt">append</span>(path[:])
+            <span class="kw">return</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(start, <span class="mt">len</span>(candidates)):
+            <span class="kw">if</span> candidates[i] &gt; remaining: <span class="kw">break</span>   <span class="cm"># pruning</span>
+            path.<span class="mt">append</span>(candidates[i])
+            <span class="mt">backtrack</span>(i, remaining - candidates[i])   <span class="cm"># i not i+1 → reuse</span>
+            path.<span class="mt">pop</span>()
+
+    <span class="mt">backtrack</span>(<span class="nm">0</span>, target)
+    <span class="kw">return</span> results
+
+print(<span class="mt">combination_sum</span>([<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">6</span>,<span class="nm">7</span>], <span class="nm">7</span>))  <span class="cm"># [[2,2,3],[7]]</span></pre>
+</div>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Letter Combinations of a Phone Number (LC 17)</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">LetterCombinations</span>(<span class="kw">string</span> digits)
+{
+    <span class="kw">if</span> (<span class="kw">string</span>.<span class="mt">IsNullOrEmpty</span>(digits)) <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">var</span> phone = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">string</span>&gt;
+    {
+        [<span class="st">'2'</span>]=<span class="st">"abc"</span>, [<span class="st">'3'</span>]=<span class="st">"def"</span>, [<span class="st">'4'</span>]=<span class="st">"ghi"</span>, [<span class="st">'5'</span>]=<span class="st">"jkl"</span>,
+        [<span class="st">'6'</span>]=<span class="st">"mno"</span>, [<span class="st">'7'</span>]=<span class="st">"pqrs"</span>, [<span class="st">'8'</span>]=<span class="st">"tuv"</span>, [<span class="st">'9'</span>]=<span class="st">"wxyz"</span>
+    };
+    <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">var</span> sb = <span class="kw">new</span> <span class="tp">System</span>.<span class="tp">Text</span>.<span class="tp">StringBuilder</span>();
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="kw">int</span> idx)
+    {
+        <span class="kw">if</span> (idx == digits.Length) { results.<span class="mt">Add</span>(sb.<span class="mt">ToString</span>()); <span class="kw">return</span>; }
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> phone[digits[idx]])
+        {
+            sb.<span class="mt">Append</span>(c);
+            <span class="mt">Backtrack</span>(idx + <span class="nm">1</span>);
+            sb.<span class="mt">Remove</span>(sb.Length - <span class="nm">1</span>, <span class="nm">1</span>);
+        }
+    }
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>);
+    <span class="kw">return</span> results;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">letter_combinations</span>(digits: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">str</span>]:
+    <span class="kw">if not</span> digits: <span class="kw">return</span> []
+    phone = {<span class="st">'2'</span>:<span class="st">"abc"</span>,<span class="st">'3'</span>:<span class="st">"def"</span>,<span class="st">'4'</span>:<span class="st">"ghi"</span>,<span class="st">'5'</span>:<span class="st">"jkl"</span>,
+             <span class="st">'6'</span>:<span class="st">"mno"</span>,<span class="st">'7'</span>:<span class="st">"pqrs"</span>,<span class="st">'8'</span>:<span class="st">"tuv"</span>,<span class="st">'9'</span>:<span class="st">"wxyz"</span>}
+    results, path = [], []
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>(idx: <span class="tp">int</span>):
+        <span class="kw">if</span> idx == <span class="mt">len</span>(digits):
+            results.<span class="mt">append</span>(<span class="st">""</span>.<span class="mt">join</span>(path))
+            <span class="kw">return</span>
+        <span class="kw">for</span> c <span class="kw">in</span> phone[digits[idx]]:
+            path.<span class="mt">append</span>(c)
+            <span class="mt">backtrack</span>(idx + <span class="nm">1</span>)
+            path.<span class="mt">pop</span>()
+
+    <span class="mt">backtrack</span>(<span class="nm">0</span>)
+    <span class="kw">return</span> results
+
+print(<span class="mt">letter_combinations</span>(<span class="st">"23"</span>))
+<span class="cm"># ["ad","ae","af","bd","be","bf","cd","ce","cf"]</span></pre>
+</div>
+
+<div class="note">
+    <strong>📌 Pattern Summary for Interview:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Permutations:</strong> All orderings of elements — use <code>used[]</code> array, no <code>start</code> index</li>
+        <li><strong>Subsets/Combinations:</strong> No repeated use, order doesn't matter — use <code>start</code> index, pass <code>i+1</code></li>
+        <li><strong>Combination Sum (reuse):</strong> Same as above but pass <code>i</code> instead of <code>i+1</code></li>
+        <li><strong>Sort + pruning:</strong> Sort candidates first so you can break early when <code>candidate &gt; remaining</code></li>
+    </ul>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17B Complete</button>
+<div class="toast" id="toast">✅ Module 17B complete! Permutations &amp; Combinations mastered!</div>
+    <script>var MODULE_ID = 'm17b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

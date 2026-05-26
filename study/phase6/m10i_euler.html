@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10I — Euler Path &amp; Circuit | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 10 — Part I</h1>
+    <div class="tagline">Euler Path &amp; Circuit — Hierholzer's Algorithm</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Traverse every edge exactly once — conditions, existence check, and O(E) construction</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 10 of Phase 6</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ✅ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ✅ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ✅ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ✅ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ✅ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ✅ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ▶ <strong>Part I</strong> — <em>You are here</em> — Euler Path &amp; Circuit<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
+    <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Euler Path vs. Euler Circuit</div>
+
+<p>Named after Leonhard Euler who solved the Königsberg Bridge Problem in 1736 — the origin of graph theory itself — an Euler path and circuit ask: can we traverse every edge in a graph exactly once?</p>
+
+<ul>
+    <li><strong>Euler Circuit (Closed Trail):</strong> A path that visits every edge exactly once and <em>returns to the starting vertex</em>.</li>
+    <li><strong>Euler Path (Open Trail):</strong> A path that visits every edge exactly once but <em>starts and ends at different vertices</em>.</li>
+</ul>
+
+<div class="diagram">Königsberg Bridge Problem (1736):
+
+     Land A
+    /|    |\
+   B1 B2  B3 B4      (7 bridges)
+    \|    |/
+     Land B ─── Land C
+         |
+     Land D
+
+Question: Can you walk through the city crossing each bridge exactly once?
+Answer: NO — Euler proved it impossible because all 4 landmasses have odd degree.
+
+Euler's key insight → degree parity determines Euler path/circuit existence!</div>
+
+<div class="realworld">
+    <strong>🌍 Real-World Applications:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Route optimization:</strong> Postman/delivery routes that traverse every street exactly once</li>
+        <li><strong>Circuit design:</strong> Single-stroke drawing of circuit diagrams</li>
+        <li><strong>DNA sequencing:</strong> Eulerian paths in de Bruijn graphs reconstruct DNA sequences</li>
+        <li><strong>Puzzle problems:</strong> "Draw this figure without lifting your pen" (LeetCode #332, #753)</li>
+    </ul>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Existence Conditions</div>
+
+<table>
+    <thead>
+        <tr><th>Graph Type</th><th>Euler Circuit Exists</th><th>Euler Path Exists (not circuit)</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Undirected</strong></td>
+            <td>All vertices have <em>even</em> degree, graph is connected</td>
+            <td>Exactly <em>2 vertices with odd degree</em>, graph is connected</td>
+        </tr>
+        <tr>
+            <td><strong>Directed</strong></td>
+            <td>Every vertex: in-degree = out-degree, graph is connected (weakly)</td>
+            <td>One vertex: out−in = 1 (start); one vertex: in−out = 1 (end); all others balanced</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="diagram">Quick check examples:
+
+Graph 1: 0─1─2─0 (triangle)
+  Degrees: 0→2, 1→2, 2→2   ← ALL EVEN ✅  → Euler Circuit exists
+
+Graph 2: 0─1─2─3
+  Degrees: 0→1, 1→2, 2→2, 3→1  ← 2 odd degree vertices ✅ → Euler Path (0→3 or 3→0)
+
+Graph 3: 0─1─2─3─0─2
+  Degrees: 0→3, 1→2, 2→3, 3→2  ← 2 odd vertices (0 and 2) → Euler Path only
+
+Graph 4: 0─1─2─0, plus isolated vertex 3
+  Connected? NO  ← Graph not connected → No Euler Circuit/Path</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Hierholzer's Algorithm O(E)</div>
+
+<p>Hierholzer's algorithm constructs an Euler circuit (or path) in O(E) time using a stack-based DFS with backtracking. The naive DFS approach would be O(E²); Hierholzer avoids this by using a stack to defer adding nodes to the result.</p>
+
+<h3>Algorithm Steps</h3>
+<ol>
+    <li>Check existence conditions (degree parity).</li>
+    <li>Choose the start vertex (any vertex with edges; for Euler path, start at the odd-degree vertex).</li>
+    <li>Use a stack + DFS: push the current vertex, follow any unused edge, repeat.</li>
+    <li>When stuck (no unused edges), pop the vertex into the result list.</li>
+    <li>Reverse the result — it's the Euler path/circuit.</li>
+</ol>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">EulerPath</span>
+{
+    <span class="cm">// Returns Euler circuit/path, or empty if none exists.</span>
+    <span class="cm">// For undirected graphs. Edges are passed as list of (u,v) pairs.</span>
+    <span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">Hierholzer</span>(<span class="kw">int</span> n, <span class="tp">List</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; edges)
+    {
+        <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+        <span class="kw">int</span>[] degree = <span class="kw">new int</span>[n];
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span>();
+        <span class="kw">foreach</span> (<span class="kw">var</span> (u, v) <span class="kw">in</span> edges)
+        {
+            adj[u].<span class="mt">Add</span>(v); adj[v].<span class="mt">Add</span>(u);
+            degree[u]++; degree[v]++;
+        }
+
+        <span class="cm">// Count odd-degree vertices</span>
+        <span class="kw">int</span> oddCount = <span class="nm">0</span>, start = <span class="nm">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+        {
+            <span class="kw">if</span> (degree[i] % <span class="nm">2</span> != <span class="nm">0</span>) { oddCount++; start = i; }
+            <span class="kw">else if</span> (degree[i] &gt; <span class="nm">0</span> &amp;&amp; oddCount == <span class="nm">0</span>) start = i;
+        }
+        <span class="kw">if</span> (oddCount != <span class="nm">0</span> &amp;&amp; oddCount != <span class="nm">2</span>) <span class="kw">return new</span>(); <span class="cm">// no Euler path/circuit</span>
+
+        <span class="cm">// Track index into each adjacency list (to mark "used" edges efficiently)</span>
+        <span class="kw">int</span>[] idx = <span class="kw">new int</span>[n];
+        <span class="kw">var</span> stack  = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        stack.<span class="mt">Push</span>(start);
+
+        <span class="kw">while</span> (stack.<span class="mt">Count</span> &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> u = stack.<span class="mt">Peek</span>();
+            <span class="kw">if</span> (idx[u] &lt; adj[u].<span class="mt">Count</span>)
+            {
+                <span class="kw">int</span> v = adj[u][idx[u]++];
+                stack.<span class="mt">Push</span>(v);
+            }
+            <span class="kw">else</span>
+            {
+                result.<span class="mt">Add</span>(stack.<span class="mt">Pop</span>());
+            }
+        }
+        result.<span class="mt">Reverse</span>();
+        <span class="kw">return</span> result; <span class="cm">// empty if graph not fully traversed</span>
+    }
+}
+
+<span class="cm">// Example: Euler circuit on a triangle</span>
+<span class="kw">var</span> path = <span class="tp">EulerPath</span>.<span class="mt">Hierholzer</span>(<span class="nm">3</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; { (<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">1</span>,<span class="nm">2</span>),(<span class="nm">2</span>,<span class="nm">0</span>) });
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, path)); <span class="cm">// e.g. 0 → 1 → 2 → 0</span></pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+<span class="kw">def</span> <span class="mt">hierholzer</span>(n: <span class="tp">int</span>, edges: <span class="tp">list</span>[<span class="tp">tuple</span>]) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+    adj = defaultdict(<span class="tp">list</span>)
+    degree = [<span class="nm">0</span>] * n
+    <span class="kw">for</span> u, v <span class="kw">in</span> edges:
+        adj[u].<span class="mt">append</span>(v); adj[v].<span class="mt">append</span>(u)
+        degree[u] += <span class="nm">1</span>; degree[v] += <span class="nm">1</span>
+
+    <span class="cm"># Determine start: odd-degree vertex for Euler path, any for circuit</span>
+    odd = [i <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n) <span class="kw">if</span> degree[i] % <span class="nm">2</span> == <span class="nm">1</span>]
+    <span class="kw">if</span> <span class="mt">len</span>(odd) <span class="kw">not in</span> (<span class="nm">0</span>, <span class="nm">2</span>):
+        <span class="kw">return</span> []  <span class="cm"># no Euler path/circuit</span>
+
+    start = odd[<span class="nm">0</span>] <span class="kw">if</span> odd <span class="kw">else</span> <span class="mt">next</span>((i <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n) <span class="kw">if</span> degree[i] &gt; <span class="nm">0</span>), <span class="nm">0</span>)
+
+    <span class="cm"># Use index pointers instead of removing from adj (for O(E) instead of O(E^2))</span>
+    idx = [<span class="nm">0</span>] * n
+    stack, result = [start], []
+
+    <span class="kw">while</span> stack:
+        u = stack[-<span class="nm">1</span>]
+        <span class="kw">if</span> idx[u] &lt; <span class="mt">len</span>(adj[u]):
+            v = adj[u][idx[u]]
+            idx[u] += <span class="nm">1</span>
+            stack.<span class="mt">append</span>(v)
+        <span class="kw">else</span>:
+            result.<span class="mt">append</span>(stack.<span class="mt">pop</span>())
+
+    <span class="kw">return</span> result[::-<span class="nm">1</span>]
+
+<span class="cm"># Euler circuit on 0-1-2-0</span>
+print(<span class="mt">hierholzer</span>(<span class="nm">3</span>, [(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">1</span>,<span class="nm">2</span>),(<span class="nm">2</span>,<span class="nm">0</span>)]))   <span class="cm"># [0, 2, 1, 0] or similar</span>
+
+<span class="cm"># Euler path: 0-1-2-3 chain</span>
+print(<span class="mt">hierholzer</span>(<span class="nm">4</span>, [(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">1</span>,<span class="nm">2</span>),(<span class="nm">2</span>,<span class="nm">3</span>)]))   <span class="cm"># [0, 1, 2, 3]</span></pre>
+</div>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Directed Graphs &amp; LeetCode Patterns</div>
+
+<p>For directed graphs, the conditions change: use in-degree and out-degree per vertex.
+A common LeetCode application is "reconstruct itinerary" <div class="lang-label lang-cs">C# — Directed Euler Path (Reconstruct Itinerary)</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="cm">// LeetCode 332 — Reconstruct Itinerary (start "JFK", lex smallest)</span>
+<span class="kw">public static</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">FindItinerary</span>(<span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; tickets)
+{
+    <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> t <span class="kw">in</span> tickets.<span class="mt">OrderBy</span>(t =&gt; t[<span class="nm">1</span>])) {
+        <span class="kw">if</span> (!adj.<span class="mt">ContainsKey</span>(t[<span class="nm">0</span>])) adj[t[<span class="nm">0</span>]] = <span class="kw">new</span>();
+        adj[t[<span class="nm">0</span>]].<span class="mt">AddLast</span>(t[<span class="nm">1</span>]);
+    }
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">string</span> ap) {
+        <span class="kw">while</span> (adj.<span class="mt">TryGetValue</span>(ap, <span class="kw">out var</span> nb) &amp;&amp; nb.Count &gt; <span class="nm">0</span>)
+            { <span class="kw">var</span> nx = nb.First!.Value; nb.<span class="mt">RemoveFirst</span>(); <span class="mt">Dfs</span>(nx); }
+        result.<span class="mt">AddFirst</span>(ap);
+    }
+    <span class="mt">Dfs</span>(<span class="st">"JFK"</span>); <span class="kw">return</span> result.<span class="mt">ToList</span>();
+}
+<span class="kw">var</span> tix = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; {
+    <span class="kw">new</span>[]{ <span class="st">"JFK"</span>,<span class="st">"MUC"</span> }, <span class="kw">new</span>[]{ <span class="st">"MUC"</span>,<span class="st">"LHR"</span> },
+    <span class="kw">new</span>[]{ <span class="st">"LHR"</span>,<span class="st">"SFO"</span> }, <span class="kw">new</span>[]{ <span class="st">"SFO"</span>,<span class="st">"SJC"</span> }};
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, <span class="mt">FindItinerary</span>(tix)));
+<span class="cm">// JFK → MUC → LHR → SFO → SJC</span></pre>
+</div>
+<div class="lang-label lang-py">Python — Directed Euler Path (Reconstruct Itinerary)</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">find_itinerary</span>(tickets: <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">str</span>]]) -&gt; <span class="tp">list</span>[<span class="tp">str</span>]:
+    <span class="cm">"""LeetCode 332: Reconstruct Itinerary
+    tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
+    Start at "JFK", use all tickets exactly once, lexicographically smallest."""</span>
+    <span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> src, dst <span class="kw">in</span> <span class="mt">sorted</span>(tickets, reverse=<span class="kw">True</span>):  <span class="cm"># sort descending for lex order</span>
+        adj[src].<span class="mt">append</span>(dst)
+
+    result = []
+    <span class="kw">def</span> <span class="mt">dfs</span>(airport):
+        <span class="kw">while</span> adj[airport]:
+            <span class="mt">dfs</span>(adj[airport].<span class="mt">pop</span>())
+        result.<span class="mt">append</span>(airport)
+
+    <span class="mt">dfs</span>(<span class="st">"JFK"</span>)
+    <span class="kw">return</span> result[::-<span class="nm">1</span>]
+
+tickets = [[<span class="st">"JFK"</span>,<span class="st">"MUC"</span>],[<span class="st">"MUC"</span>,<span class="st">"LHR"</span>],[<span class="st">"LHR"</span>,<span class="st">"SFO"</span>],[<span class="st">"SFO"</span>,<span class="st">"SJC"</span>]]
+print(<span class="mt">find_itinerary</span>(tickets))
+<span class="cm"># ["JFK", "MUC", "LHR", "SFO", "SJC"]</span></pre>
+</div>
+
+<div class="note">
+    <strong>📌 Summary:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Euler Circuit (undirected):</strong> All vertices even degree + connected → O(V+E) check</li>
+        <li><strong>Euler Path (undirected):</strong> Exactly 2 odd-degree vertices + connected</li>
+        <li><strong>Hierholzer's:</strong> O(E) — use adjacency list with index pointers, not edge deletion</li>
+        <li><strong>Directed Euler path:</strong> Track in-degree and out-degree; one source (out&gt;in), one sink (in&gt;out)</li>
+        <li><strong>LeetCode pattern:</strong> "Reconstruct itinerary", "Valid Arrangement of Pairs" (#2097)</li>
+    </ul>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10I Complete</button>
+<div class="toast" id="toast">✅ Module 10I complete! Euler Path &amp; Hierholzer's mastered!</div>
+    <script>var MODULE_ID = 'm10i';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

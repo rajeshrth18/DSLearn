@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 16C — Randomized Algorithms | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part C</h1>
+    <div class="tagline">Randomized Algorithms</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">QuickSelect · Reservoir Sampling · Fisher-Yates Shuffle</p>
+    <div class="badges">
+        <span>⏱ Estimated: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 16 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 16 — Bit Manipulation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m16a_bit_manipulation.html">Bit Operations &amp; Tricks</a><br>
+    ✅ <strong>Part B</strong> — <a href="m16b_bit_problems.html">Classic Bit Problems</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Randomized Algorithms<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
+    <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — QuickSelect: Kth Largest Element (LC 215)</div>
+
+<p>QuickSelect finds the k-th smallest/largest in <strong>O(n) average</strong> time using partitioning — without full sorting (which is O(n log n)).</p>
+<p>It's the selection version of QuickSort: after each partition, only recurse into the side that contains the target index.</p>
+
+<div class="diagram">Find 2nd largest in [3, 2, 1, 5, 6, 4]:
+
+After 1 partition around pivot=4 (for example):
+  [3, 2, 1, _4_, 5, 6]    pivot is at index 3
+  We need index 4 (0-based for 2nd largest = n-k=4)
+  Recurse only on right side [5, 6] → answer is 5 ✓
+
+Average: O(n). Worst case: O(n²) — use random pivot to avoid.</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="kw">public class</span> <span class="tp">KthLargest</span>
+{
+    <span class="kw">private static</span> <span class="tp">Random</span> _rng = <span class="kw">new</span> <span class="tp">Random</span>();
+
+    <span class="kw">public static int</span> <span class="mt">FindKthLargest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+    {
+        <span class="cm">// Target index in 0-based sorted order (0 = largest)</span>
+        <span class="kw">int</span> target = nums.Length - k;
+        <span class="kw">return</span> <span class="mt">QuickSelect</span>(nums, <span class="nm">0</span>, nums.Length - <span class="nm">1</span>, target);
+    }
+
+    <span class="kw">static int</span> <span class="mt">QuickSelect</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> lo, <span class="kw">int</span> hi, <span class="kw">int</span> k)
+    {
+        <span class="kw">if</span> (lo == hi) <span class="kw">return</span> nums[lo];
+
+        <span class="cm">// Random pivot to avoid worst case</span>
+        <span class="kw">int</span> pivotIdx = _rng.<span class="mt">Next</span>(lo, hi + <span class="nm">1</span>);
+        <span class="mt">Swap</span>(nums, pivotIdx, hi);
+        <span class="kw">int</span> p = <span class="mt">Partition</span>(nums, lo, hi);
+
+        <span class="kw">if</span>      (p == k) <span class="kw">return</span> nums[p];
+        <span class="kw">else if</span> (p &lt; k)  <span class="kw">return</span> <span class="mt">QuickSelect</span>(nums, p + <span class="nm">1</span>, hi, k);
+        <span class="kw">else</span>             <span class="kw">return</span> <span class="mt">QuickSelect</span>(nums, lo, p - <span class="nm">1</span>, k);
+    }
+
+    <span class="kw">static int</span> <span class="mt">Partition</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
+    {
+        <span class="kw">int</span> pivot = nums[hi], wall = lo;
+        <span class="kw">for</span> (<span class="kw">int</span> i = lo; i &lt; hi; i++)
+            <span class="kw">if</span> (nums[i] &lt;= pivot) <span class="mt">Swap</span>(nums, i, wall++);
+        <span class="mt">Swap</span>(nums, wall, hi);
+        <span class="kw">return</span> wall;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Swap</span>(<span class="kw">int</span>[] a, <span class="kw">int</span> i, <span class="kw">int</span> j) =&gt; (a[i], a[j]) = (a[j], a[i]);
+}
+
+<span class="cm">// KthLargest.FindKthLargest([3,2,1,5,6,4], 2) → 5</span></pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="mt">find_kth_largest</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>], k: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    target = <span class="mt">len</span>(nums) - k  <span class="cm"># index in sorted-ascending order</span>
+
+    <span class="kw">def</span> <span class="mt">quickselect</span>(lo: <span class="tp">int</span>, hi: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+        <span class="kw">if</span> lo == hi: <span class="kw">return</span> nums[lo]
+        pivot_idx = random.randint(lo, hi)
+        nums[pivot_idx], nums[hi] = nums[hi], nums[pivot_idx]
+        p = <span class="mt">partition</span>(lo, hi)
+        <span class="kw">if</span>   p == target: <span class="kw">return</span> nums[p]
+        <span class="kw">elif</span> p &lt; target:  <span class="kw">return</span> <span class="mt">quickselect</span>(p + <span class="nm">1</span>, hi)
+        <span class="kw">else</span>:             <span class="kw">return</span> <span class="mt">quickselect</span>(lo, p - <span class="nm">1</span>)
+
+    <span class="kw">def</span> <span class="mt">partition</span>(lo: <span class="tp">int</span>, hi: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+        pivot, wall = nums[hi], lo
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(lo, hi):
+            <span class="kw">if</span> nums[i] &lt;= pivot:
+                nums[i], nums[wall] = nums[wall], nums[i]
+                wall += <span class="nm">1</span>
+        nums[wall], nums[hi] = nums[hi], nums[wall]
+        <span class="kw">return</span> wall
+
+    <span class="kw">return</span> <span class="mt">quickselect</span>(<span class="nm">0</span>, <span class="mt">len</span>(nums) - <span class="nm">1</span>)
+
+print(<span class="mt">find_kth_largest</span>([<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">4</span>], <span class="nm">2</span>))  <span class="cm"># 5</span></pre>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Reservoir Sampling (LC 382)</div>
+
+<p>Randomly sample k items from a stream of unknown length n, ensuring each element has equal probability k/n — using O(k) space.</p>
+
+<div class="diagram">Reservoir Sampling — k=1 (pick 1 random element):
+
+i=0: reservoir = nums[0]
+i=1: with prob 1/2 → replace reservoir with nums[1]
+i=2: with prob 1/3 → replace reservoir with nums[2]
+i=3: with prob 1/4 → replace reservoir with nums[3]
+...
+
+After n items, each element has prob 1/n of being selected.
+Proof by induction: element i survives all future steps with
+probability (1/i+1) * (i+1/i+2) * ... * (n-1/n) = 1/n</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">Solution</span>  <span class="cm">// LC 382 — Linked List Random Node</span>
+{
+    <span class="kw">private</span> <span class="tp">ListNode</span> _head;
+    <span class="kw">private</span> <span class="tp">Random</span> _rng = <span class="kw">new</span> <span class="tp">Random</span>();
+
+    <span class="kw">public</span> <span class="mt">Solution</span>(<span class="tp">ListNode</span> head) { _head = head; }
+
+    <span class="kw">public int</span> <span class="mt">GetRandom</span>()
+    {
+        <span class="kw">int</span> result = _head.val, i = <span class="nm">2</span>;
+        <span class="kw">var</span> cur = _head.next;
+        <span class="kw">while</span> (cur != <span class="kw">null</span>)
+        {
+            <span class="kw">if</span> (_rng.<span class="mt">Next</span>(i) == <span class="nm">0</span>) result = cur.val;  <span class="cm">// prob 1/i</span>
+            cur = cur.next; i++;
+        }
+        <span class="kw">return</span> result;
+    }
+}
+
+<span class="cm">// General k-sample reservoir:</span>
+<span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">ReservoirSample</span>(<span class="tp">IEnumerable</span>&lt;<span class="kw">int</span>&gt; stream, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">var</span> rng = <span class="kw">new</span> <span class="tp">Random</span>();
+    <span class="kw">int</span> i = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">var</span> x <span class="kw">in</span> stream)
+    {
+        i++;
+        <span class="kw">if</span> (res.Count &lt; k)           res.<span class="mt">Add</span>(x);
+        <span class="kw">else if</span> (rng.<span class="mt">Next</span>(i) &lt; k)  res[rng.<span class="mt">Next</span>(k)] = x;
+    }
+    <span class="kw">return</span> res;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="mt">reservoir_sample</span>(stream, k: <span class="tp">int</span>) -&gt; <span class="tp">list</span>:
+    <span class="st">"""Sample k items uniformly at random from stream (O(k) space)."""</span>
+    reservoir = []
+    <span class="kw">for</span> i, item <span class="kw">in</span> <span class="mt">enumerate</span>(stream):
+        <span class="kw">if</span> i &lt; k:
+            reservoir.<span class="mt">append</span>(item)
+        <span class="kw">else</span>:
+            j = random.<span class="mt">randint</span>(<span class="nm">0</span>, i)
+            <span class="kw">if</span> j &lt; k:
+                reservoir[j] = item
+    <span class="kw">return</span> reservoir</pre>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Fisher-Yates Shuffle (LC 384)</div>
+
+<p>Produce a uniformly random permutation in O(n) time and O(1) extra space.
+Each of the n! orderings is equally likely.</p>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">ShuffleSolution</span>  <span class="cm">// LC 384</span>
+{
+    <span class="kw">private</span> <span class="kw">int</span>[] _orig, _nums;
+    <span class="kw">private</span> <span class="tp">Random</span> _rng = <span class="kw">new</span> <span class="tp">Random</span>();
+
+    <span class="kw">public</span> <span class="mt">ShuffleSolution</span>(<span class="kw">int</span>[] nums)
+    {
+        _orig = (<span class="kw">int</span>[])nums.<span class="mt">Clone</span>();
+        _nums = nums;
+    }
+
+    <span class="kw">public int</span>[] <span class="mt">Reset</span>() { <span class="tp">Array</span>.<span class="mt">Copy</span>(_orig, _nums, _orig.Length); <span class="kw">return</span> _nums; }
+
+    <span class="kw">public int</span>[] <span class="mt">Shuffle</span>()
+    {
+        <span class="cm">// Fisher-Yates: swap each element with a random later position</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = _nums.Length - <span class="nm">1</span>; i &gt; <span class="nm">0</span>; i--)
+        {
+            <span class="kw">int</span> j = _rng.<span class="mt">Next</span>(i + <span class="nm">1</span>);  <span class="cm">// 0 &lt;= j &lt;= i</span>
+            (_nums[i], _nums[j]) = (_nums[j], _nums[i]);
+        }
+        <span class="kw">return</span> _nums;
+    }
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> random
+
+<span class="kw">class</span> <span class="tp">Solution</span>:  <span class="cm"># LC 384</span>
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>, nums: <span class="tp">list</span>[<span class="tp">int</span>]):
+        <span class="kw">self</span>.orig = nums[:]
+        <span class="kw">self</span>.nums = nums
+
+    <span class="kw">def</span> <span class="mt">reset</span>(<span class="kw">self</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+        <span class="kw">self</span>.nums[:] = <span class="kw">self</span>.orig[:]
+        <span class="kw">return</span> <span class="kw">self</span>.nums
+
+    <span class="kw">def</span> <span class="mt">shuffle</span>(<span class="kw">self</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+        n = <span class="mt">len</span>(<span class="kw">self</span>.nums)
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n - <span class="nm">1</span>, <span class="nm">0</span>, -<span class="nm">1</span>):
+            j = random.<span class="mt">randint</span>(<span class="nm">0</span>, i)  <span class="cm"># 0 &lt;= j &lt;= i</span>
+            <span class="kw">self</span>.nums[i], <span class="kw">self</span>.nums[j] = <span class="kw">self</span>.nums[j], <span class="kw">self</span>.nums[i]
+        <span class="kw">return</span> <span class="kw">self</span>.nums
+
+<span class="cm"># random.shuffle() uses the same algorithm internally</span></pre>
+</div>
+
+<div class="note">
+    <strong>📌 Why NOT just random.random() for index?</strong> A naive shuffle where each swap is fully random
+    produces 3^n outcomes (for 3 elements), not 3!=6. Fisher-Yates produces exactly n! outcomes with uniform probability.
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16C Complete — Module 16 Done!</button>
+<div class="toast" id="toast">✅ Module 16C complete! Randomized Algorithms mastered! Module 16 done!</div>
+    <script>var MODULE_ID = 'm16c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 11B — Fenwick Trees (BIT) | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 7</div>
+    <h1>Module 11 — Part B</h1>
+    <div class="tagline">Fenwick Trees — Binary Indexed Trees (BIT)</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Prefix sums with point updates — half the code of a segment tree, just as fast</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 11</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 7 — Advanced Data Structures:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m11a_segment_trees.html">Segment Trees</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Fenwick Trees (BIT)<br>
+    ⬜ <strong>Part C</strong> — <a href="m11c_union_find.html">Disjoint Set Union</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m11e_skip_lists.html">Skip Lists</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m11f_kdtrees.html">K-D Trees</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase6/m10a_dijkstra.html">&larr; Module 10 &mdash; Advanced Graphs</a>
+    <a href="../phase8/m12a_dp_intro.html">Module 12 &mdash; Dynamic Programming &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — The Binary Indexed Tree Idea <span>— Storing partial sums cleverly</span></li>
+        <li>Section 2 — The Low-Bit Trick: i &amp; (-i) <span>— The magic of two's complement</span></li>
+        <li>Section 3 — Prefix Sum Query: O(log n) <span>— Walk backward through responsible ranges</span></li>
+        <li>Section 4 — Point Update: O(log n) <span>— Walk forward updating responsible nodes</span></li>
+        <li>Section 5 — Range Sum Query <span>— Prefix(R) − Prefix(L−1)</span></li>
+        <li>Section 6 — Build in O(n) <span>— Faster than n individual updates</span></li>
+        <li>Section 7 — Full C# &amp; Python Implementations <span>— With range update variant</span></li>
+        <li>Section 8 — 2D Fenwick Tree <span>— For 2D prefix sums</span></li>
+        <li>Section 9 — LeetCode Walkthroughs <span>— #307, #315, #493</span></li>
+        <li>Section 10 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Binary Indexed Tree Idea</div>
+
+<p>A <strong>Fenwick Tree</strong> (also called a Binary Indexed Tree or BIT) is a data structure that 
+supports prefix sum queries and point updates in O(log n) time using only O(n) space — 
+and with remarkably simple code.</p>
+
+<p>The key insight: instead of storing individual values, each index <code>i</code> in the BIT array 
+stores the sum of a specific range of original array elements. The range size is determined by 
+the <strong>lowest set bit</strong> of <code>i</code>.</p>
+
+<div class="diagram">FENWICK TREE STRUCTURE — Array [1, 3, 5, 7, 9, 11, 13, 15] (1-indexed)
+
+Index (binary):    1(001) 2(010) 3(011) 4(100) 5(101) 6(110) 7(111) 8(1000)
+
+Low-bit  (i&-i):       1      2      1      4      1      2      1      8
+
+Range covered:       [1,1] [1,2] [3,3] [1,4] [5,5] [5,6] [7,7]  [1,8]
+
+BIT values:
+  bit[1] = arr[1]         = 1
+  bit[2] = arr[1]+arr[2]  = 4
+  bit[3] = arr[3]         = 5
+  bit[4] = arr[1]+..+arr[4] = 16
+  bit[5] = arr[5]         = 9
+  bit[6] = arr[5]+arr[6]  = 20
+  bit[7] = arr[7]         = 13
+  bit[8] = arr[1]+..+arr[8] = 64
+
+INDEX:   1   2   3   4   5   6   7   8
+BIT[]:   1   4   5  16   9  20  13  64</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Low-Bit Trick: i &amp; (-i)</div>
+
+<p>The entire Fenwick Tree is built around one operation: <strong><code>lowbit(i) = i &amp; (-i)</code></strong></p>
+
+<p>In two's complement, <code>-i</code> flips all bits of <code>i</code> and adds 1. The result of 
+<code>i &amp; (-i)</code> isolates the <strong>lowest set bit</strong> of <code>i</code>.</p>
+
+<div class="diagram">LOW-BIT EXAMPLES (how i & (-i) works)
+
+i = 6  →  binary:  0110
+-i = -6 → binary:  1010  (flip all bits = 1001, add 1 = 1010)
+i & (-i) = 0110 & 1010 = 0010 = 2  ← lowest set bit of 6
+
+i = 12 → binary: 01100
+-i = -12 → binary: 10100
+i & (-i) = 00100 = 4  ← lowest set bit of 12
+
+WHAT IT MEANS for the BIT:
+  bit[i] stores the sum of the last lowbit(i) elements: arr[i-lowbit(i)+1 .. i]
+  
+  bit[6] → lowbit=2 → stores arr[5..6]
+  bit[4] → lowbit=4 → stores arr[1..4]
+  bit[8] → lowbit=8 → stores arr[1..8]
+
+QUERY navigation (subtract lowbit to go to previous "bucket"):
+  prefix(7): 7→6→4  (7-1=6, 6-2=4, 4-4=0 stop)
+             bit[7] + bit[6] + bit[4] = 13 + 20 + 16 = 49 ← sum of arr[1..7] ✓
+
+UPDATE navigation (add lowbit to update all covering buckets):
+  update(3): 3→4→8  (3+1=4, 4+4=8, 8+8=16 out of range)
+             Update bit[3], bit[4], bit[8]</div>
+
+<div class="tip">
+    <strong>💡 Why is this elegant?</strong> The lowbit operation encodes a complete tree structure 
+    implicitly in the index bits — no explicit tree pointers needed. The query and update paths 
+    visit at most O(log n) indices because each step either clears the lowest bit (query) or sets 
+    the next bit (update), and there are only log₂(n) bits.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Prefix Sum Query: O(log n)</div>
+
+<p>To compute <code>sum(1..i)</code>: walk backward by repeatedly subtracting the low bit.</p>
+
+<div class="diagram">QUERY prefix(6) — sum of arr[1..6]
+
+i=6: add bit[6]=20  →  i -= (6&-6)=2  →  i=4
+i=4: add bit[4]=16  →  i -= (4&-4)=4  →  i=0
+Stop (i=0).
+
+prefix(6) = 20 + 16 = 36  ✓  (1+3+5+7+9+11 = 36)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Query: prefix sum of arr[1..i] — O(log n)
+// BIT is 1-indexed; bit[0] is unused</span>
+<span class="kw">int</span> <span class="mt">Query</span>(<span class="kw">int</span> i)
+{
+    <span class="kw">int</span> sum = <span class="nm">0</span>;
+    <span class="kw">for</span> (; i > <span class="nm">0</span>; i -= i &amp; (-i))
+        sum += bit[i];
+    <span class="kw">return</span> sum;
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Query: prefix sum of arr[1..i] — O(log n)
+# BIT is 1-indexed; bit[0] is unused</span>
+<span class="kw">def</span> <span class="mt">query</span>(i):
+    s = <span class="nm">0</span>
+    <span class="kw">while</span> i &gt; <span class="nm">0</span>:
+        s += bit[i]; i -= i &amp; (-i)
+    <span class="kw">return</span> s</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Point Update: O(log n)</div>
+
+<p>To add <code>delta</code> to <code>arr[i]</code>: walk forward by repeatedly adding the low bit, 
+updating all BIT cells responsible for covering index i.</p>
+
+<div class="diagram">UPDATE index 3 (+5) — update all cells covering position 3
+
+i=3: bit[3] += 5  →  i += (3&-3)=1  →  i=4
+i=4: bit[4] += 5  →  i += (4&-4)=4  →  i=8
+i=8: bit[8] += 5  →  i += (8&-8)=8  →  i=16 (out of range, stop)
+
+All cells that "include" position 3 in their sum have been updated ✓</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Update: add delta to arr[i] — O(log n)</span>
+<span class="kw">void</span> <span class="mt">Update</span>(<span class="kw">int</span> i, <span class="kw">int</span> delta)
+{
+    <span class="kw">for</span> (; i &lt;= n; i += i &amp; (-i))
+        bit[i] += delta;
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Update: add delta to arr[i] — O(log n)</span>
+<span class="kw">def</span> <span class="mt">update</span>(i, delta):
+    <span class="kw">while</span> i &lt;= n:
+        bit[i] += delta; i += i &amp; (-i)</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Range Sum Query</div>
+
+<p>A Fenwick Tree naturally gives prefix sums. For an arbitrary range [L, R]:</p>
+<p style="text-align:center; font-size:1.1em;"><strong>RangeSum(L, R) = prefix(R) − prefix(L − 1)</strong></p>
+
+<div class="warning">
+    <strong>⚠️ 1-indexed requirement:</strong> Fenwick Trees are almost always 1-indexed. 
+    If your array is 0-indexed, either shift all indices by +1 when calling BIT operations, 
+    or use a wrapper that does the shifting internally. Calling <code>Query(0)</code> or 
+    <code>Update(0, delta)</code> will cause an infinite loop (0 &amp; -0 = 0).
+</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Range sum of arr[l..r] (1-indexed)</span>
+<span class="kw">int</span> <span class="mt">RangeSum</span>(<span class="kw">int</span> l, <span class="kw">int</span> r) => <span class="mt">Query</span>(r) - <span class="mt">Query</span>(l - <span class="nm">1</span>);</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Range sum of arr[l..r] (1-indexed)</span>
+<span class="kw">def</span> <span class="mt">range_sum</span>(l, r): <span class="kw">return</span> <span class="mt">query</span>(r) - <span class="mt">query</span>(l - <span class="nm">1</span>)</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Build in O(n)</div>
+
+<p>Calling <code>Update(i, arr[i])</code> n times builds the BIT in O(n log n). But there's an O(n) method:</p>
+
+<div class="diagram">O(n) BUILD METHOD
+
+For each index i from 1 to n:
+  bit[i] += arr[i]         ← add the original value  
+  j = i + (i & -i)         ← find the parent  
+  if j <= n: bit[j] += bit[i]  ← propagate up to parent
+
+This visits each cell at most twice and runs in O(n).</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">void</span> <span class="mt">BuildLinear</span>(<span class="kw">int</span>[] nums)   <span class="cm">// O(n) build</span>
+{
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++)
+    {
+        bit[i] += nums[i - <span class="nm">1</span>];         <span class="cm">// nums is 0-indexed, bit is 1-indexed</span>
+        <span class="kw">int</span> j = i + (i &amp; (-i));
+        <span class="kw">if</span> (j &lt;= n) bit[j] += bit[i];
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">build_linear</span>(nums):   <span class="cm"># O(n) build</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n + <span class="nm">1</span>):
+        bit[i] += nums[i - <span class="nm">1</span>]       <span class="cm"># nums is 0-indexed, bit is 1-indexed</span>
+        j = i + (i &amp; (-i))
+        <span class="kw">if</span> j &lt;= n: bit[j] += bit[i]</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Full C# &amp; Python Implementations</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">FenwickTree</span>
+{
+    <span class="kw">private readonly int</span> n;
+    <span class="kw">private readonly int</span>[] bit;   <span class="cm">// 1-indexed, size n+1</span>
+
+    <span class="kw">public</span> <span class="mt">FenwickTree</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">this</span>.n = n;
+        bit = <span class="kw">new int</span>[n + <span class="nm">1</span>];
+    }
+
+    <span class="kw">public</span> <span class="mt">FenwickTree</span>(<span class="kw">int</span>[] nums) : <span class="kw">this</span>(nums.Length)
+    {
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++)
+        {
+            bit[i] += nums[i-<span class="nm">1</span>];
+            <span class="kw">int</span> j = i + (i &amp; -i);
+            <span class="kw">if</span> (j &lt;= n) bit[j] += bit[i];
+        }
+    }
+
+    <span class="cm">/// Add delta to position i (1-indexed) — O(log n)</span>
+    <span class="kw">public void</span> <span class="mt">Add</span>(<span class="kw">int</span> i, <span class="kw">int</span> delta)
+    {
+        <span class="kw">for</span> (; i &lt;= n; i += i &amp; -i) bit[i] += delta;
+    }
+
+    <span class="cm">/// Prefix sum [1..i] — O(log n)</span>
+    <span class="kw">public int</span> <span class="mt">Prefix</span>(<span class="kw">int</span> i)
+    {
+        <span class="kw">int</span> s = <span class="nm">0</span>;
+        <span class="kw">for</span> (; i > <span class="nm">0</span>; i -= i &amp; -i) s += bit[i];
+        <span class="kw">return</span> s;
+    }
+
+    <span class="cm">/// Range sum [l..r] (1-indexed) — O(log n)</span>
+    <span class="kw">public int</span> <span class="mt">RangeSum</span>(<span class="kw">int</span> l, <span class="kw">int</span> r) => <span class="mt">Prefix</span>(r) - <span class="mt">Prefix</span>(l - <span class="nm">1</span>);
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> ft = <span class="kw">new</span> <span class="tp">FenwickTree</span>(<span class="kw">new int</span>[] {<span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">5</span>,<span class="nm">7</span>,<span class="nm">9</span>,<span class="nm">11</span>,<span class="nm">13</span>,<span class="nm">15</span>});
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(ft.<span class="mt">Prefix</span>(<span class="nm">4</span>));       <span class="cm">// 16  (1+3+5+7)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(ft.<span class="mt">RangeSum</span>(<span class="nm">3</span>,<span class="nm">6</span>)); <span class="cm">// 32  (5+7+9+11)</span>
+ft.<span class="mt">Add</span>(<span class="nm">3</span>, <span class="nm">4</span>);                         <span class="cm">// arr[3] += 4  (5 → 9)</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(ft.<span class="mt">RangeSum</span>(<span class="nm">3</span>,<span class="nm">6</span>)); <span class="cm">// 36  (9+7+9+11)</span></pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">class</span> <span class="tp">FenwickTree</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, nums):
+        self.n = <span class="mt">len</span>(nums)
+        self.bit = [<span class="nm">0</span>] * (self.n + <span class="nm">1</span>)
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, self.n + <span class="nm">1</span>):  <span class="cm"># O(n) build</span>
+            self.bit[i] += nums[i-<span class="nm">1</span>]
+            j = i + (i & -i)
+            <span class="kw">if</span> j <= self.n: self.bit[j] += self.bit[i]
+
+    <span class="kw">def</span> <span class="mt">add</span>(self, i, delta):  <span class="cm"># 1-indexed, O(log n)</span>
+        <span class="kw">while</span> i <= self.n:
+            self.bit[i] += delta
+            i += i & -i
+
+    <span class="kw">def</span> <span class="mt">prefix</span>(self, i):  <span class="cm"># sum [1..i], O(log n)</span>
+        s = <span class="nm">0</span>
+        <span class="kw">while</span> i > <span class="nm">0</span>:
+            s += self.bit[i]
+            i -= i & -i
+        <span class="kw">return</span> s
+
+    <span class="kw">def</span> <span class="mt">range_sum</span>(self, l, r):  <span class="cm"># sum [l..r] (1-indexed)</span>
+        <span class="kw">return</span> self.<span class="mt">prefix</span>(r) - self.<span class="mt">prefix</span>(l - <span class="nm">1</span>)</pre>
+</div>
+
+<h3>7.1 — Range Update Variant (using two BITs)</h3>
+
+<p>A standard BIT supports only <em>point updates</em>. To support <em>range updates</em> 
+(add val to all elements in [L, R]) while still answering <em>prefix sum queries</em>, 
+use two BITs with a mathematical trick:</p>
+
+<div class="diagram">RANGE UPDATE TRICK with two BITs (B1, B2)
+
+Goal: RangeUpdate(L, R, val) and Query(i) = prefix sum of modified array.
+
+Observation: after adding val to arr[L..R],
+  prefix(i) = 
+    sum of original arr[1..i]
+    + val * (i - L + 1)   if L <= i <= R
+    + val * (R - L + 1)   if i > R
+
+This can be expressed as:
+  prefix(i) = B1.prefix(i) * i - B2.prefix(i)
+
+Range update:
+  B1.add(L,  val);   B1.add(R+1, -val)
+  B2.add(L,  val*(L-1));   B2.add(R+1, -val*R)</pre>
+</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">RangeUpdateFenwick</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">FenwickTree</span> b1, b2;
+    <span class="kw">private readonly int</span> n;
+
+    <span class="kw">public</span> <span class="mt">RangeUpdateFenwick</span>(<span class="kw">int</span> n) {
+        <span class="kw">this</span>.n = n;
+        b1 = <span class="kw">new</span> <span class="tp">FenwickTree</span>(n);
+        b2 = <span class="kw">new</span> <span class="tp">FenwickTree</span>(n);
+    }
+
+    <span class="cm">/// Add val to arr[l..r] — O(log n)</span>
+    <span class="kw">public void</span> <span class="mt">RangeAdd</span>(<span class="kw">int</span> l, <span class="kw">int</span> r, <span class="kw">int</span> val)
+    {
+        b1.<span class="mt">Add</span>(l,   val);
+        b1.<span class="mt">Add</span>(r+<span class="nm">1</span>, -val);
+        b2.<span class="mt">Add</span>(l,   val * (l - <span class="nm">1</span>));
+        b2.<span class="mt">Add</span>(r+<span class="nm">1</span>, -val * r);
+    }
+
+    <span class="cm">/// Prefix sum [1..i] — O(log n)</span>
+    <span class="kw">public long</span> <span class="mt">Prefix</span>(<span class="kw">int</span> i) => (<span class="kw">long</span>)b1.<span class="mt">Prefix</span>(i) * i - b2.<span class="mt">Prefix</span>(i);
+    <span class="kw">public long</span> <span class="mt">RangeSum</span>(<span class="kw">int</span> l, <span class="kw">int</span> r) => <span class="mt">Prefix</span>(r) - <span class="mt">Prefix</span>(l - <span class="nm">1</span>);
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">class</span> <span class="tp">RangeUpdateFenwick</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, n):
+        self.n  = n
+        self.b1 = <span class="tp">FenwickTree</span>(n)
+        self.b2 = <span class="tp">FenwickTree</span>(n)
+
+    <span class="kw">def</span> <span class="mt">range_add</span>(self, l, r, val):
+        <span class="cm">"""Add val to arr[l..r] — O(log n)"""</span>
+        self.b1.<span class="mt">add</span>(l,   val);        self.b1.<span class="mt">add</span>(r+<span class="nm">1</span>, -val)
+        self.b2.<span class="mt">add</span>(l,   val * (l - <span class="nm">1</span>)); self.b2.<span class="mt">add</span>(r+<span class="nm">1</span>, -val * r)
+
+    <span class="kw">def</span> <span class="mt">prefix</span>(self, i) -&gt; <span class="tp">int</span>:
+        <span class="cm">"""Prefix sum [1..i] — O(log n)"""</span>
+        <span class="kw">return</span> self.b1.<span class="mt">prefix</span>(i) * i - self.b2.<span class="mt">prefix</span>(i)
+
+    <span class="kw">def</span> <span class="mt">range_sum</span>(self, l, r) -&gt; <span class="tp">int</span>:
+        <span class="kw">return</span> self.<span class="mt">prefix</span>(r) - self.<span class="mt">prefix</span>(l - <span class="nm">1</span>)</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — 2D Fenwick Tree</div>
+
+<p>Extending to 2D: each cell <code>bit[i][j]</code> stores the sum over a 2D "rectangle" of elements. 
+Updates and queries use nested loops applying the lowbit trick in both dimensions.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">FenwickTree2D</span>
+{
+    <span class="kw">private readonly int</span>[,] bit;
+    <span class="kw">private readonly int</span> rows, cols;
+
+    <span class="kw">public</span> <span class="mt">FenwickTree2D</span>(<span class="kw">int</span> rows, <span class="kw">int</span> cols)
+    {
+        <span class="kw">this</span>.rows = rows; <span class="kw">this</span>.cols = cols;
+        bit = <span class="kw">new int</span>[rows+<span class="nm">1</span>, cols+<span class="nm">1</span>];
+    }
+
+    <span class="kw">public void</span> <span class="mt">Update</span>(<span class="kw">int</span> r, <span class="kw">int</span> c, <span class="kw">int</span> delta)
+    {
+        <span class="kw">for</span> (<span class="kw">int</span> i = r; i &lt;= rows; i += i &amp; -i)
+            <span class="kw">for</span> (<span class="kw">int</span> j = c; j &lt;= cols; j += j &amp; -j)
+                bit[i,j] += delta;
+    }
+
+    <span class="kw">public int</span> <span class="mt">Prefix</span>(<span class="kw">int</span> r, <span class="kw">int</span> c)
+    {
+        <span class="kw">int</span> s = <span class="nm">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = r; i > <span class="nm">0</span>; i -= i &amp; -i)
+            <span class="kw">for</span> (<span class="kw">int</span> j = c; j > <span class="nm">0</span>; j -= j &amp; -j)
+                s += bit[i,j];
+        <span class="kw">return</span> s;
+    }
+
+    <span class="cm">/// Sum of rectangle with top-left (r1,c1) and bottom-right (r2,c2)</span>
+    <span class="kw">public int</span> <span class="mt">RectSum</span>(<span class="kw">int</span> r1, <span class="kw">int</span> c1, <span class="kw">int</span> r2, <span class="kw">int</span> c2)
+        => <span class="mt">Prefix</span>(r2,c2) - <span class="mt">Prefix</span>(r1-<span class="nm">1</span>,c2) - <span class="mt">Prefix</span>(r2,c1-<span class="nm">1</span>) + <span class="mt">Prefix</span>(r1-<span class="nm">1</span>,c1-<span class="nm">1</span>);
+}
+<span class="cm">// Time: O(log(rows) * log(cols)) per operation</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">class</span> <span class="tp">FenwickTree2D</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, rows, cols):
+        self.rows = rows; self.cols = cols
+        self.bit  = [[<span class="nm">0</span>] * (cols + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(rows + <span class="nm">1</span>)]
+
+    <span class="kw">def</span> <span class="mt">update</span>(self, r, c, delta):
+        i = r
+        <span class="kw">while</span> i &lt;= self.rows:
+            j = c
+            <span class="kw">while</span> j &lt;= self.cols:
+                self.bit[i][j] += delta
+                j += j &amp; (-j)
+            i += i &amp; (-i)
+
+    <span class="kw">def</span> <span class="mt">prefix</span>(self, r, c) -&gt; <span class="tp">int</span>:
+        s, i = <span class="nm">0</span>, r
+        <span class="kw">while</span> i &gt; <span class="nm">0</span>:
+            j = c
+            <span class="kw">while</span> j &gt; <span class="nm">0</span>: s += self.bit[i][j]; j -= j &amp; (-j)
+            i -= i &amp; (-i)
+        <span class="kw">return</span> s
+
+    <span class="kw">def</span> <span class="mt">rect_sum</span>(self, r1, c1, r2, c2) -&gt; <span class="tp">int</span>:
+        <span class="cm">"""Sum of rectangle top-left (r1,c1) to bottom-right (r2,c2)"""</span>
+        <span class="kw">return</span> (self.<span class="mt">prefix</span>(r2, c2) - self.<span class="mt">prefix</span>(r1-<span class="nm">1</span>, c2)
+                - self.<span class="mt">prefix</span>(r2, c1-<span class="nm">1</span>) + self.<span class="mt">prefix</span>(r1-<span class="nm">1</span>, c1-<span class="nm">1</span>))
+<span class="cm"># Time: O(log(rows) * log(cols)) per operation</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — LeetCode Walkthroughs</div>
+
+<h3>LeetCode #307 — Range Sum Query — Mutable (Medium)</h3>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">NumArray</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">FenwickTree</span> ft;
+    <span class="kw">private readonly int</span>[] nums;
+
+    <span class="kw">public</span> <span class="mt">NumArray</span>(<span class="kw">int</span>[] nums)
+    {
+        <span class="kw">this</span>.nums = (<span class="kw">int</span>[])nums.<span class="mt">Clone</span>();
+        ft = <span class="kw">new</span> <span class="tp">FenwickTree</span>(nums);
+    }
+
+    <span class="kw">public void</span> <span class="mt">Update</span>(<span class="kw">int</span> index, <span class="kw">int</span> val)
+    {
+        ft.<span class="mt">Add</span>(index + <span class="nm">1</span>, val - nums[index]);   <span class="cm">// BIT is 1-indexed</span>
+        nums[index] = val;
+    }
+
+    <span class="kw">public int</span> <span class="mt">SumRange</span>(<span class="kw">int</span> l, <span class="kw">int</span> r)
+        => ft.<span class="mt">RangeSum</span>(l + <span class="nm">1</span>, r + <span class="nm">1</span>);   <span class="cm">// convert 0-indexed to 1-indexed</span>
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">class</span> <span class="tp">NumArray</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, nums: list):
+        self.nums = nums[:]
+        self.ft   = <span class="tp">FenwickTree</span>(nums)
+
+    <span class="kw">def</span> <span class="mt">update</span>(self, index: <span class="tp">int</span>, val: <span class="tp">int</span>):
+        self.ft.<span class="mt">add</span>(index + <span class="nm">1</span>, val - self.nums[index])  <span class="cm"># BIT is 1-indexed</span>
+        self.nums[index] = val
+
+    <span class="kw">def</span> <span class="mt">sum_range</span>(self, l: <span class="tp">int</span>, r: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+        <span class="kw">return</span> self.ft.<span class="mt">range_sum</span>(l + <span class="nm">1</span>, r + <span class="nm">1</span>)  <span class="cm"># convert 0-indexed to 1-indexed</span></pre>
+</div>
+
+<h3>LeetCode #493 — Reverse Pairs (Hard)</h3>
+<p><em>Count pairs (i,j) where i &lt; j and nums[i] &gt; 2 * nums[j].</em></p>
+<div class="note">
+    <strong>📝 Approach: Merge Sort or BIT with coordinate compression.</strong>  
+    BIT approach: process array left to right. For each element <code>x</code>, query the BIT for 
+    count of elements already inserted that are in range [2x+1, ∞] (elements already seen that 
+    are less than x/2). Coordinate compress all values and 2*values together. 
+    Then insert x into the BIT, repeating for all elements.
+    Time: O(n log n). This showcases how BIT can count "inversions" and "reverse pairs."
+</div>
+
+<h3>LeetCode #1649 — Create Sorted Array through Instructions (Hard)</h3>
+<p><em>While inserting elements into a sorted array, count the cost (min of insertions before and after current element). Return total cost mod 10⁹+7.</em></p>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">CreateSortedArray</span>(<span class="kw">int</span>[] instructions)
+{
+    <span class="kw">const int</span> MOD = <span class="nm">1_000_000_007</span>;
+    <span class="kw">int</span> maxVal = instructions.<span class="mt">Max</span>() + <span class="nm">1</span>;
+    <span class="kw">int</span>[] bit = <span class="kw">new int</span>[maxVal + <span class="nm">1</span>];
+    <span class="kw">long</span> cost = <span class="nm">0</span>;
+    <span class="kw">int</span> total = <span class="nm">0</span>;
+
+    <span class="kw">int</span> <span class="mt">Query</span>(<span class="kw">int</span> i) {
+        <span class="kw">int</span> s = <span class="nm">0</span>;
+        <span class="kw">for</span> (; i > <span class="nm">0</span>; i -= i&amp;-i) s += bit[i];
+        <span class="kw">return</span> s;
+    }
+    <span class="kw">void</span> <span class="mt">Update</span>(<span class="kw">int</span> i) {
+        <span class="kw">for</span> (; i &lt;= maxVal; i += i&amp;-i) bit[i]++;
+    }
+
+    <span class="kw">foreach</span> (<span class="kw">int</span> x <span class="kw">in</span> instructions)
+    {
+        <span class="kw">int</span> less    = <span class="mt">Query</span>(x - <span class="nm">1</span>);                <span class="cm">// count of elements < x</span>
+        <span class="kw">int</span> greater = total - <span class="mt">Query</span>(x);            <span class="cm">// count of elements > x</span>
+        cost = (cost + <span class="tp">Math</span>.<span class="mt">Min</span>(less, greater)) % MOD;
+        <span class="mt">Update</span>(x);
+        total++;
+    }
+    <span class="kw">return</span> (<span class="kw">int</span>)cost;
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">create_sorted_array</span>(instructions: list) -&gt; <span class="tp">int</span>:
+    MOD     = <span class="nm">1_000_000_007</span>
+    max_val = <span class="mt">max</span>(instructions) + <span class="nm">1</span>
+    bit     = [<span class="nm">0</span>] * (max_val + <span class="nm">1</span>)
+    cost = total = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="mt">query</span>(i):
+        s = <span class="nm">0</span>
+        <span class="kw">while</span> i &gt; <span class="nm">0</span>: s += bit[i]; i -= i &amp; (-i)
+        <span class="kw">return</span> s
+
+    <span class="kw">def</span> <span class="mt">update</span>(i):
+        <span class="kw">while</span> i &lt;= max_val: bit[i] += <span class="nm">1</span>; i += i &amp; (-i)
+
+    <span class="kw">for</span> x <span class="kw">in</span> instructions:
+        less    = <span class="mt">query</span>(x - <span class="nm">1</span>)           <span class="cm"># count of elements &lt; x</span>
+        greater = total - <span class="mt">query</span>(x)       <span class="cm"># count of elements &gt; x</span>
+        cost    = (cost + <span class="mt">min</span>(less, greater)) % MOD
+        <span class="mt">update</span>(x); total += <span class="nm">1</span>
+    <span class="kw">return</span> cost</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: Why is the Fenwick Tree always 1-indexed? What happens if you call Update(0)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The algorithm relies on <code>i & (-i)</code> to find the low bit. When i=0: <code>0 & (-0) = 0 & 0 = 0</code>, so <code>i += 0</code> — an infinite loop. The 1-indexed convention avoids this edge case. Index 0 is left unused (or used as a sentinel). When working with 0-indexed arrays, always pass <code>index + 1</code> to BIT operations and store the BIT array with size <code>n + 1</code>.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: The Fenwick Tree is sometimes called "the easiest O(log n) data structure." Why? What's the simplest way to remember the two core operations?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Each operation is literally a 3-line loop: Query walks backwards subtracting lowbit (<code>i -= i&(-i)</code>), Update walks forwards adding lowbit (<code>i += i&(-i)</code>). The only thing to remember: Query goes down/backward (smaller indices, toward prefix start), Update goes up/forward (larger indices, updating all nodes that "cover" the updated position). Memory trick: "Q minus, U plus."</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: Can a Fenwick Tree compute the minimum over a range? Why or why not?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">No. Minimum is not an invertible operation — given prefix_min(R) and prefix_min(L-1), you cannot recover range_min(L,R) via subtraction or any other formula. Fenwick Trees work because prefix_sum(R) - prefix_sum(L-1) = range_sum(L,R) due to the invertibility of addition. Since min has no inverse, range minimum queries require a Segment Tree or Sparse Table. This is the key limitation of Fenwick Trees vs. Segment Trees.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: How does the O(n) build compare to calling Update(i, arr[i]) n times?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Calling Update n times: each Update is O(log n), so total O(n log n). The O(n) linear build works by directly constructing the BIT bottom-up: for each i, copy the value to bit[i], then propagate to the immediate parent (bit[i + lowbit(i)]) — similar to how a segment tree builds bottom-up. This avoids the overhead of the while-loop in Update. For n = 10^5, the speedup is ~17x (log₂(10^5) ≈ 17). In competitive programming this often makes the difference between TLE and AC.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: Describe the "inversion count" problem and how a Fenwick Tree solves it.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Inversion count: given an array, count pairs (i,j) where i &lt; j but arr[i] &gt; arr[j]. Brute force: O(n²). BIT solution: coordinate compress values to [1..n]. Process elements left to right. For each element x, the number of inversions it creates = number of elements already inserted with value &gt; x = (total elements inserted so far) - Query(x). Then insert x: Update(x, 1). Total time: O(n log n). This pattern (count elements in a range seen so far) appears in many problems: Count Smaller Numbers After Self, Reverse Pairs, etc.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 11B Complete</button>
+<div class="toast" id="toast">✅ Module 11B marked complete!</div>
+    <script>var MODULE_ID = 'm11b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

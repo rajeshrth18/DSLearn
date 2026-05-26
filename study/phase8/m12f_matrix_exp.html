@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 12F — Matrix Exponentiation | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
+    <h1>Module 12 — Part F</h1>
+    <div class="tagline">Matrix Exponentiation</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Fast Fibonacci · Linear Recurrences · O(k³ log n) Recurrence Solver</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part F of Module 12</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m12a_dp_intro.html">DP Introduction</a><br>
+    ✅ <strong>Part B</strong> — <a href="m12b_dp_1d.html">1D DP</a><br>
+    ✅ <strong>Part C</strong> — <a href="m12c_dp_2d.html">2D DP</a><br>
+    ✅ <strong>Part D</strong> — <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
+    ✅ <strong>Part E</strong> — <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
+    ▶ <strong>Part F</strong> — <em>You are here</em> — Matrix Exponentiation<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase7/m11a_segment_trees.html">&larr; Module 11 &mdash; Segment Trees &amp; More</a>
+    <a href="../phase8/m13a_greedy.html">Module 13 &mdash; Greedy Algorithms &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Fast Power (Binary Exponentiation) <span>— O(log n)</span></li>
+        <li>Section 2 — Matrix Multiplication &amp; Matrix Power <span>— The core building block</span></li>
+        <li>Section 3 — Fibonacci via Matrix Exponentiation <span>— O(log n) Fibonacci</span></li>
+        <li>Section 4 — General Linear Recurrences <span>— Any k-term recurrence</span></li>
+        <li>Section 5 — Counting Paths in Graphs <span>— A^n for path counts</span></li>
+        <li>Section 6 — LeetCode Walkthroughs <span>— #509, #1137, #552</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Fast Power (Binary Exponentiation)</div>
+
+<p>Computing <code>a^n mod m</code> naively takes O(n) multiplications. 
+Binary exponentiation (fast power) reduces this to O(log n) by squaring repeatedly.</p>
+
+<div class="diagram">IDEA: a^n = (a^(n/2))² if n is even
+           a^n = a * a^(n-1) if n is odd
+
+EXAMPLE: 2^13
+  13 = 1101₂ (binary)
+  2^13 = 2^8 * 2^4 * 2^1
+  
+  Step by step:
+  n=13, result=1, base=2
+  13 is odd: result = 1*2 = 2, n=12, base=4
+  12 is even: n=6, base=16
+  6 is even: n=3, base=256
+  3 is odd: result = 2*256 = 512, n=2, base=65536
+  2 is even: n=1, base=65536²
+  1 is odd: result = 512*65536² ... 
+  
+  Simpler: 2^13 = 2*(4^2*16^1) ... = 8192 in 4 multiplications vs 12 naive.
+
+TIME: O(log n) multiplications</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public long</span> <span class="mt">FastPow</span>(<span class="kw">long</span> base_, <span class="kw">long</span> exp, <span class="kw">long</span> mod)
+{
+    <span class="kw">long</span> result = <span class="nm">1</span>;
+    base_ %= mod;
+    <span class="kw">while</span> (exp > <span class="nm">0</span>)
+    {
+        <span class="kw">if</span> ((exp & <span class="nm">1</span>) == <span class="nm">1</span>) result = result * base_ % mod;
+        base_ = base_ * base_ % mod;
+        exp >>= <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">fast_pow</span>(base, exp, mod):
+    result = <span class="nm">1</span>; base %= mod
+    <span class="kw">while</span> exp > <span class="nm">0</span>:
+        <span class="kw">if</span> exp & <span class="nm">1</span>: result = result * base % mod
+        base = base * base % mod
+        exp >>= <span class="nm">1</span>
+    <span class="kw">return</span> result
+
+<span class="cm"># Python built-in: pow(base, exp, mod)  ← always prefer this!</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Matrix Multiplication &amp; Matrix Power</div>
+
+<p>We extend fast power from scalars to matrices. Matrix multiplication of k×k matrices is O(k³). 
+Matrix power A^n takes O(k³ log n) time.</p>
+
+<div class="diagram">MATRIX MULTIPLY: C = A × B
+  C[i][j] = sum over k: A[i][k] * B[k][j]
+
+IDENTITY MATRIX I: I[i][i]=1, I[i][j≠i]=0
+  A × I = I × A = A
+
+MATRIX POWER: A^n using fast power
+  A^0 = I
+  A^n = (A^(n/2))^2     if n even
+  A^n = A * A^(n-1)     if n odd
+
+For Fibonacci:
+  [F(n+1)]   [1 1]^n   [1]
+  [F(n)  ] = [1 0]   × [0]
+  
+  Call M = [[1,1],[1,0]]. Then M^n[0][1] = F(n).
+
+COMPLEXITY: O(k³ log n) where k = matrix dimension
+  For Fibonacci k=2: O(8 log n) ≈ O(log n)
+  For k-term recurrence k=k: O(k³ log n)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">const long</span> MOD = <span class="nm">1_000_000_007</span>;
+
+<span class="kw">long</span>[,] <span class="mt">MatMul</span>(<span class="kw">long</span>[,] A, <span class="kw">long</span>[,] B)
+{
+    <span class="kw">int</span> n = A.<span class="mt">GetLength</span>(<span class="nm">0</span>);
+    <span class="kw">var</span> C = <span class="kw">new long</span>[n, n];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; n; j++)
+            <span class="kw">for</span> (<span class="kw">int</span> k = <span class="nm">0</span>; k &lt; n; k++)
+                C[i, j] = (C[i, j] + A[i, k] * B[k, j]) % MOD;
+    <span class="kw">return</span> C;
+}
+
+<span class="kw">long</span>[,] <span class="mt">MatPow</span>(<span class="kw">long</span>[,] M, <span class="kw">long</span> p)
+{
+    <span class="kw">int</span> n = M.<span class="mt">GetLength</span>(<span class="nm">0</span>);
+    <span class="kw">var</span> result = <span class="kw">new long</span>[n, n];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) result[i, i] = <span class="nm">1</span>;  <span class="cm">// identity</span>
+    <span class="kw">while</span> (p > <span class="nm">0</span>)
+    {
+        <span class="kw">if</span> ((p & <span class="nm">1</span>) == <span class="nm">1</span>) result = <span class="mt">MatMul</span>(result, M);
+        M = <span class="mt">MatMul</span>(M, M);
+        p >>= <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python">MOD = <span class="nm">10</span>**<span class="nm">9</span> + <span class="nm">7</span>
+
+<span class="kw">def</span> <span class="mt">mat_mul</span>(A, B):
+    n = <span class="mt">len</span>(A)
+    C = [[<span class="nm">0</span>]*n <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(n):
+            <span class="kw">for</span> k <span class="kw">in</span> <span class="mt">range</span>(n):
+                C[i][j] = (C[i][j] + A[i][k] * B[k][j]) % MOD
+    <span class="kw">return</span> C
+
+<span class="kw">def</span> <span class="mt">mat_pow</span>(M, p):
+    n = <span class="mt">len</span>(M)
+    result = [[<span class="nm">1</span> <span class="kw">if</span> i==j <span class="kw">else</span> <span class="nm">0</span> <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(n)] <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n)]
+    <span class="kw">while</span> p > <span class="nm">0</span>:
+        <span class="kw">if</span> p & <span class="nm">1</span>: result = <span class="mt">mat_mul</span>(result, M)
+        M = <span class="mt">mat_mul</span>(M, M)
+        p >>= <span class="nm">1</span>
+    <span class="kw">return</span> result</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Fibonacci via Matrix Exponentiation</div>
+
+<div class="diagram">FIBONACCI MATRIX:
+
+[F(n+1)]   [1 1]   [F(n)  ]
+[F(n)  ] = [1 0] × [F(n-1)]
+
+Apply n-1 times starting from [F(2),F(1)]=[1,1]:
+[F(n+1)]   [1 1]^(n-1)   [1]
+[F(n)  ] = [1 0]       × [1]
+
+Or equivalently: M^n where M = [[1,1],[1,0]]
+  M^1 = [[1,1],[1,0]]   → F(1)=1, F(2)=1
+  M^2 = [[2,1],[1,1]]   → F(2)=1, F(3)=2
+  M^n[0][1] = F(n)
+
+VERIFICATION:
+  M^5 = [[8,5],[5,3]]
+  M^5[0][1] = 5 = F(5) ✓
+
+COMPLEXITY: O(log n) vs O(n) standard DP
+  For n=10^18, standard DP is impossible; matrix exp handles it.</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// LeetCode #509 — Fibonacci Number, O(log n)</span>
+<span class="kw">public int</span> <span class="mt">Fib</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">long</span>[,] M = { { <span class="nm">1</span>, <span class="nm">1</span> }, { <span class="nm">1</span>, <span class="nm">0</span> } };
+    <span class="kw">var</span> R = <span class="mt">MatPow</span>(M, n - <span class="nm">1</span>);
+    <span class="kw">return</span> (<span class="kw">int</span>)R[<span class="nm">0</span>, <span class="nm">0</span>];  <span class="cm">// R[0][0] = F(n)</span>
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">fib_matrix</span>(n):
+    <span class="kw">if</span> n &lt;= <span class="nm">1</span>: <span class="kw">return</span> n
+    M = [[<span class="nm">1</span>,<span class="nm">1</span>],[<span class="nm">1</span>,<span class="nm">0</span>]]
+    R = <span class="mt">mat_pow</span>(M, n-<span class="nm">1</span>)
+    <span class="kw">return</span> R[<span class="nm">0</span>][<span class="nm">0</span>]</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — General Linear Recurrences</div>
+
+<p>Any k-term linear recurrence <code>f(n) = c₁f(n-1) + c₂f(n-2) + ... + cₖf(n-k)</code> 
+can be solved with matrix exponentiation.</p>
+
+<div class="diagram">TRIBONACCI: f(n) = f(n-1) + f(n-2) + f(n-3), f(0)=0, f(1)=1, f(2)=1
+
+State vector: [f(n), f(n-1), f(n-2)]
+
+[f(n+1)]   [1 1 1] [f(n)  ]
+[f(n)  ] = [1 0 0] [f(n-1)]
+[f(n-1)]   [0 1 0] [f(n-2)]
+
+GENERAL PATTERN: for f(n) = c₁f(n-1) + c₂f(n-2) + ... + cₖf(n-k)
+
+Companion matrix (k×k):
+[c₁  c₂  c₃  ... cₖ ]
+[1   0   0   ... 0  ]
+[0   1   0   ... 0  ]
+[0   0   1   ... 0  ]
+[...                ]
+[0   0   0   ... 1  0]
+
+Apply matrix^n to initial state vector to get f(n) in O(k³ log n)
+
+LeetCode #1137 Tribonacci:
+  M = [[1,1,1],[1,0,0],[0,1,0]]
+  For n≥3: M^(n-2) × [1,1,0]^T gives [f(n), f(n-1), f(n-2)]</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// LeetCode #1137 — N-th Tribonacci Number</span>
+<span class="kw">public int</span> <span class="mt">Tribonacci</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">if</span> (n &lt;= <span class="nm">2</span>) <span class="kw">return</span> <span class="nm">1</span>;
+    <span class="kw">long</span>[,] M = { { <span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span> }, { <span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span> }, { <span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span> } };
+    <span class="kw">var</span> R = <span class="mt">MatPow</span>(M, n - <span class="nm">2</span>);
+    <span class="cm">// initial [T(2),T(1),T(0)] = [1,1,0]</span>
+    <span class="kw">return</span> (<span class="kw">int</span>)(R[<span class="nm">0</span>, <span class="nm">0</span>] * <span class="nm">1</span> + R[<span class="nm">0</span>, <span class="nm">1</span>] * <span class="nm">1</span> + R[<span class="nm">0</span>, <span class="nm">2</span>] * <span class="nm">0</span>);
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">tribonacci</span>(n):
+    <span class="kw">if</span> n == <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">if</span> n &lt;= <span class="nm">2</span>: <span class="kw">return</span> <span class="nm">1</span>
+    M = [[<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>],[<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>],[<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span>]]
+    R = <span class="mt">mat_pow</span>(M, n-<span class="nm">2</span>)
+    <span class="cm"># initial state [T(2),T(1),T(0)] = [1,1,0]</span>
+    <span class="kw">return</span> R[<span class="nm">0</span>][<span class="nm">0</span>]*<span class="nm">1</span> + R[<span class="nm">0</span>][<span class="nm">1</span>]*<span class="nm">1</span> + R[<span class="nm">0</span>][<span class="nm">2</span>]*<span class="nm">0</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Counting Paths in Graphs</div>
+
+<p>If A is the adjacency matrix of a directed graph, then <code>(A^n)[i][j]</code> 
+gives the number of paths of exactly n edges from node i to node j.</p>
+
+<div class="diagram">ADJACENCY MATRIX PATH COUNTING:
+
+Graph: 0→1, 1→2, 2→0, 0→2
+A = [0 1 1]   (node 0 → nodes 1, 2)
+    [0 0 1]   (node 1 → node 2)
+    [1 0 0]   (node 2 → node 0)
+
+A^2 = A×A:
+  [0 0 1]   [0 1 1]   = ?
+  A²[0][0] = A[0][1]*A[1][0] + A[0][2]*A[2][0] = 0 + 1 = 1
+  → 1 path of length 2 from 0 to 0: 0→2→0
+
+A^3[i][j] = number of paths of length 3 from i to j.
+
+APPLICATION: LeetCode #552 Student Attendance Record II
+  Count sequences of length n with at most 1 'A' and no 3 consecutive 'L'.
+  State: (number of A's so far: 0 or 1) × (trailing L's: 0, 1, or 2)
+  = 6 states → 6×6 transition matrix → matrix^n × initial_state</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// LeetCode #552 — Student Attendance Record II, O(log n)</span>
+<span class="cm">// States: (A-count: 0-1) x (trailing-L: 0-2)</span>
+<span class="cm">// [A=0,L=0], [A=0,L=1], [A=0,L=2], [A=1,L=0], [A=1,L=1], [A=1,L=2]</span>
+<span class="kw">public int</span> <span class="mt">CheckRecord</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">long</span>[,] M = {
+        { <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span> },  <span class="cm">// [A=0,L=0] → P from any A=0; A from A=0,L=0</span>
+        { <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span> },
+        { <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span> },
+        { <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span> },
+        { <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span> },
+        { <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span> }
+    };
+    <span class="kw">var</span> R = <span class="mt">MatPow</span>(M, n);
+    <span class="kw">long</span> ans = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; <span class="nm">6</span>; j++) ans = (ans + R[<span class="nm">0</span>, j]) % MOD;
+    <span class="kw">return</span> (<span class="kw">int</span>)ans;
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">check_record</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    MOD = <span class="nm">1_000_000_007</span>
+    <span class="cm"># States: (A-count: 0-1) x (trailing-L: 0-2)
+    # [A=0,L=0], [A=0,L=1], [A=0,L=2], [A=1,L=0], [A=1,L=1], [A=1,L=2]</span>
+    M = [
+        [<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>],
+        [<span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>],
+        [<span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>],
+        [<span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">0</span>],
+        [<span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>],
+        [<span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>],
+    ]
+    R = <span class="mt">mat_pow</span>(M, n, MOD)
+    <span class="kw">return</span> <span class="mt">sum</span>(R[<span class="nm">0</span>]) % MOD</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Comparison Table</div>
+
+<table>
+    <thead>
+        <tr><th>Problem</th><th>Standard DP</th><th>Matrix Exp</th><th>When to Use Matrix Exp</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Fibonacci F(n)</td>
+            <td class="o">O(n)</td>
+            <td class="g">O(log n)</td>
+            <td>n up to 10¹⁸, mod required</td>
+        </tr>
+        <tr>
+            <td>k-th term linear recurrence</td>
+            <td class="o">O(k·n)</td>
+            <td class="g">O(k³ log n)</td>
+            <td>n huge, k small (≤ 20)</td>
+        </tr>
+        <tr>
+            <td>Count paths of length n</td>
+            <td class="r">N/A</td>
+            <td class="g">O(V³ log n)</td>
+            <td>Exact path length required</td>
+        </tr>
+        <tr>
+            <td>Attendance sequences length n</td>
+            <td class="o">O(n)</td>
+            <td class="g">O(log n)</td>
+            <td>n up to 10⁵ (both work; matrix is O(1) space)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Real-World Applications:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Cryptography</strong> — RSA uses fast modular exponentiation (scalar fast power)</li>
+        <li><strong>Population modeling</strong> — Leslie matrix models use matrix power for generations</li>
+        <li><strong>PageRank</strong> — Markov chain power iteration</li>
+        <li><strong>Competitive programming</strong> — Any linear recurrence mod 10⁹+7 with large n</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: What is the time complexity of computing the n-th Fibonacci number using matrix exponentiation, and how does it compare to standard DP?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Matrix exponentiation: O(2³ × log n) = O(8 log n) = O(log n). Standard tabulation DP: O(n). Standard memoization: O(n). Space-optimized DP: O(1) space but still O(n) time. Matrix exp uses O(4) space (2×2 matrix). For n ≤ 10⁸, standard O(n) DP is fine. For n = 10¹⁸ (as in competitive programming), only O(log n) approaches work. Python's arbitrary precision integers make the matrix approach straightforward; in C# you need modular arithmetic for large n.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: How do you construct the companion matrix for a general k-term linear recurrence?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For f(n) = c₁f(n-1) + c₂f(n-2) + ... + cₖf(n-k), the k×k companion matrix has:
+    - Row 0 (top): [c₁, c₂, c₃, ..., cₖ] — the recurrence coefficients
+    - Row 1: [1, 0, 0, ..., 0] — "shift" f(n-1) to f(n-2) position
+    - Row 2: [0, 1, 0, ..., 0]
+    - ...
+    - Row k-1: [0, 0, ..., 1, 0]
+    The rows below row 0 form a "shift register." The state vector is [f(n), f(n-1), ..., f(n-k+1)]. Multiplying by the matrix advances all states by one step. This is the "companion matrix" of the characteristic polynomial of the recurrence.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: Why does (A^n)[i][j] count paths of exactly n edges from i to j in adjacency matrix A?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Proof by induction. Base: A^1[i][j] = A[i][j] = 1 if edge i→j exists = number of 1-edge paths from i to j. Inductive step: A^n = A^(n-1) × A. (A^n)[i][j] = Σₖ (A^(n-1))[i][k] × A[k][j]. By induction, (A^(n-1))[i][k] = number of (n-1)-edge paths from i to k. A[k][j] = 1 if edge k→j exists. So (A^n)[i][j] = Σₖ (paths from i to k of length n-1) × (edge k→j) = number of n-edge paths from i to j. The matrix multiplication formula naturally counts paths by "stitching" (n-1)-paths with one more edge.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: When should you NOT use matrix exponentiation?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Avoid matrix exponentiation when: (1) n is small (≤ 10⁶) — standard DP is simpler and faster with smaller constants; (2) the recurrence is NOT linear (matrix exp only works for linear recurrences of the form f(n) = c₁f(n-1)+...); (3) the matrix dimension k is large (k ≥ 50 makes k³ log n worse than k·n for reasonable n); (4) you need the actual sequence values (not just f(n)); (5) the problem has state transitions that don't form a constant transition matrix (e.g., coefficients change each step). Matrix exp is niche — use it only when n is very large AND the recurrence is simple and linear.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: How does binary exponentiation avoid integer overflow when computing a^n mod m?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The key is applying mod at EVERY multiplication step, not just at the end. Since a, b &lt; m, the product a*b &lt; m² which fits in a 64-bit integer (m up to ~3×10⁹ allows m² ~9×10¹⁸ &lt; 2⁶³ ≈ 9.2×10¹⁸). In Python, integers are arbitrary precision so overflow never occurs. In C#/Java/C++, if mod ~10⁹ then (mod-1)² ~10¹⁸ which fits in long/int64. If mod ~10¹⁸, you'd need __int128 in C++ or special handling. For matrix exponentiation, apply mod after each cell addition and multiplication in MatMul. The result is always in [0, mod-1] and stays correct by properties of modular arithmetic: (a*b) mod m = ((a mod m)*(b mod m)) mod m.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 12F Complete</button>
+<div class="toast" id="toast">✅ Module 12F marked complete!</div>
+    <script>var MODULE_ID = 'm12f';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

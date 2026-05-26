@@ -1,0 +1,1002 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5E — Sorting Practice Problems | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+.toc{background:#fff;border-radius:12px;padding:22px 28px;margin:24px 0;border:1px solid #e0e0e0}
+.toc h2{font-size:1em;text-transform:uppercase;letter-spacing:2px;color:#7d3c98;margin-bottom:14px}
+.toc ol{padding-left:20px}.toc li{font-size:.9em;padding:4px 0;color:#444}.toc li span{color:#888;font-size:.88em}
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+p{margin:0 0 14px;color:#444}
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.warning{background:#fde8e8;border-left:4px solid #e74c3c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong,.warning strong{display:block;margin-bottom:4px}
+table.cmplx{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88em}
+table.cmplx th{background:#2c3e50;color:#9cdcfe;padding:10px 14px;text-align:left}
+table.cmplx td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
+table.cmplx tr:nth-child(even) td{background:#f8f9fa}
+.qg{color:#27ae60;font-weight:700}.qr{color:#c0392b;font-weight:700}
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:18px 22px;margin:18px 0}
+.quiz-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.badge{display:inline-block;padding:3px 12px;border-radius:12px;font-size:.78em;font-weight:700;white-space:nowrap;margin-top:2px}
+.easy{background:#d5f5e3;color:#1e8449}
+.medium{background:#fef9e7;color:#d68910}
+.hard{background:#fde8e8;color:#c0392b}
+.quiz-q{font-weight:600;color:#2c3e50;flex:1}
+.quiz-meta{font-size:.82em;color:#888;margin-bottom:10px;padding-left:4px}
+.sol-btn{background:#2980b9;color:#fff;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:.9em;margin-top:6px}
+        .sol-btn:hover { background: #1a6fa0; }
+.sol {background:#f8f9fa;border-radius:8px;padding:14px 18px;margin-top:12px;display:none}
+.approach{background:#f0f9ff;border-left:4px solid #2980b9;padding:12px 16px;border-radius:0 10px 10px 0;margin:10px 0 0;font-size:.93em}
+.approach strong{color:#1a5276}
+.complexity{font-size:.83em;color:#555;margin:0 0 12px;padding:5px 14px 8px;background:#eaf4fd;border-left:4px solid #2980b9;border-radius:0 0 10px 10px}
+.complexity strong{color:#2c3e50;font-weight:700}
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+.prob-num{background:#9b59b6;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.82em;font-weight:700;flex-shrink:0;margin-top:2px}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> — Phase 3 — Module 5 — Part E</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 5 — Part E</h1>
+  <div class="tagline">Sorting Practice — 15 Problems from Easy to Hard</div>
+  <div class="badges">
+    <span>⏱ Estimated: 3 Hours</span><span>🎯 All Levels</span><span>💻 C# &amp; Python</span><span>📝 Phase 3 — Module 5E</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 5 — Sorting Algorithms:</strong><br>
+  ✅ <strong>Part A</strong> — <a href="m05a_basic_sorts.html">O(n—) Sorts</a><br>
+  ✅ <strong>Part B</strong> — <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
+  ✅ <strong>Part C</strong> — <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
+  ✅ <strong>Part D</strong> — <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
+  ▶ <strong>Part E</strong> — <em>You are here</em> — Practice &amp; Comparison<br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
+    <a href="../phase4/m06a_binary_trees.html">Module 6 &mdash; Binary Trees &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="toc">
+  <h2>📚 Contents — Module 5E</h2>
+  <ol>
+    <li>Master Comparison Table — all sorting algorithms</li>
+    <li>Easy Problems (1—5) <span>— Foundation warmup</span></li>
+    <li>Medium Problems (6—11) <span>— Classic interview problems</span></li>
+    <li>Hard Problems (12—15) <span>— Expert-level challenges</span></li>
+  </ol>
+</div>
+
+<h2 class="sec">Master Comparison — All Sorting Algorithms</h2>
+
+<table class="cmplx">
+  <thead>
+    <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Bubble Sort</td><td class="qg">O(n)</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td>O(1)</td><td>?</td><td>Adaptive with swapped flag</td></tr>
+    <tr><td>Selection Sort</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td>O(1)</td><td>?</td><td>Min writes (n-1 swaps)</td></tr>
+    <tr><td>Insertion Sort</td><td class="qg">O(n)</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td>O(1)</td><td>?</td><td>Best for nearly-sorted &lt;50 items</td></tr>
+    <tr><td>Merge Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(n)</td><td>?</td><td>Guaranteed O(n log n), stable</td></tr>
+    <tr><td>Quick Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(n—)*</td><td>O(log n)</td><td>?</td><td>*Rare with random pivot. Fastest avg</td></tr>
+    <tr><td>3-Way Quick Sort</td><td class="qg">O(n)</td><td class="qg">O(n log n)</td><td class="qr">O(n—)*</td><td>O(log n)</td><td>?</td><td>O(n) for all-equal arrays</td></tr>
+    <tr><td>Counting Sort</td><td class="qg">O(n+k)</td><td class="qg">O(n+k)</td><td class="qg">O(n+k)</td><td class="qr">O(n+k)</td><td>?</td><td>k = value range; integers only</td></tr>
+    <tr><td>Radix Sort</td><td class="qg">O(d—n)</td><td class="qg">O(d—n)</td><td class="qg">O(d—n)</td><td class="qr">O(n+b)</td><td>?</td><td>d=digits, b=base. Integers/strings</td></tr>
+    <tr><td>Bucket Sort</td><td class="qg">O(n)</td><td class="qg">O(n)</td><td class="qr">O(n—)</td><td class="qr">O(n+k)</td><td>?</td><td>Uniform distribution needed</td></tr>
+    <tr><td>Heap Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qg">O(1)</td><td>?</td><td>In-place, guaranteed O(n log n)</td></tr>
+    <tr><td>TimSort (.NET/Python)</td><td class="qg">O(n)</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(n)</td><td>?</td><td>Hybrid merge+insertion; adaptive</td></tr>
+  </tbody>
+</table>
+
+<h2 class="sec">Easy Problems (1—5)</h2>
+
+<!-- P1 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">1</div>
+    <div class="quiz-q">Sort Colors (Dutch National Flag) — Given array with values 0, 1, 2 only, sort in-place in a single pass without using sort().</div>
+    <span class="badge easy">Easy</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: 3-pointer (low, mid, high). O(n) time, O(1) space.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Use 3 pointers (low, mid, high) to partition in-place. Elements before low = 0, between low and mid = 1, after high = 2. Swap 0s left, 2s right, advance mid for 1s — all in a single O(n) pass.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — single pass with 3 pointers &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place, no extra memory</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="cm">// LeetCode 75 — Sort Colors
+// Constraint: single pass, in-place</span>
+
+<span class="kw">class</span> <span class="tp">SortColors</span>
+{
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] nums)
+    {
+        <span class="kw">int</span> low = <span class="nm">0</span>, mid = <span class="nm">0</span>, high = nums.<span class="tp">Length</span> - <span class="nm">1</span>;
+
+        <span class="kw">while</span> (mid &lt;= high)
+        {
+            <span class="kw">if</span>      (nums[mid] == <span class="nm">0</span>) (nums[low++], nums[mid++]) = (nums[mid], nums[low]);
+            <span class="kw">else if</span> (nums[mid] == <span class="nm">1</span>) mid++;
+            <span class="kw">else</span>                   (nums[mid], nums[high--]) = (nums[high], nums[mid]);
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr = { <span class="nm">2</span>,<span class="nm">0</span>,<span class="nm">2</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span> };
+        <span class="mt">Sort</span>(arr);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr)); <span class="cm">// 0,0,1,1,2,2</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">sort_colors</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="kw">None</span>:
+    low, mid, high = <span class="nm">0</span>, <span class="nm">0</span>, <span class="mt">len</span>(nums) - <span class="nm">1</span>
+    <span class="kw">while</span> mid &lt;= high:
+        <span class="kw">if</span>   nums[mid] == <span class="nm">0</span>: nums[low], nums[mid] = nums[mid], nums[low]; low+=<span class="nm">1</span>; mid+=<span class="nm">1</span>
+        <span class="kw">elif</span> nums[mid] == <span class="nm">1</span>: mid+=<span class="nm">1</span>
+        <span class="kw">else</span>: nums[mid], nums[high] = nums[high], nums[mid]; high-=<span class="nm">1</span>
+
+arr = [<span class="nm">2</span>,<span class="nm">0</span>,<span class="nm">2</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span>]
+sort_colors(arr)
+<span class="mt">print</span>(arr)  <span class="cm"># [0,0,1,1,2,2]</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">2</div>
+    <div class="quiz-q">Kth Largest Element — Find the kth largest element in an unsorted array without fully sorting it.</div>
+    <span class="badge easy">Easy</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Quickselect — partition-based O(n) average. Or min-heap of size k: O(n log k).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Quickselect: randomly choose pivot, partition so pivot lands in final sorted position. The kth largest is the (n-k)th smallest. Recurse only on the half containing the target index — expected O(n) with random pivot.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) average, O(n&sup2;) worst &amp;mdash; Quickselect with random pivot &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(log n) — recursion stack depth (log n levels)</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="cm">// LeetCode 215 — Kth Largest Element
+// Quickselect: partition then recurse only on the side containing k</span>
+
+<span class="kw">class</span> <span class="tp">KthLargest</span>
+{
+    <span class="kw">static</span> <span class="tp">Random</span> _rng = <span class="kw">new</span> <span class="tp">Random</span>();
+
+    <span class="kw">static int</span> <span class="mt">FindKthLargest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+    {
+        <span class="cm">// kth largest = (n-k)th smallest (0-indexed)</span>
+        <span class="kw">return</span> <span class="mt">Quickselect</span>(nums, <span class="nm">0</span>, nums.<span class="tp">Length</span>-<span class="nm">1</span>, nums.<span class="tp">Length</span>-k);
+    }
+
+    <span class="kw">static int</span> <span class="mt">Quickselect</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> lo, <span class="kw">int</span> hi, <span class="kw">int</span> targetIdx)
+    {
+        <span class="kw">if</span> (lo == hi) <span class="kw">return</span> arr[lo];
+        <span class="kw">int</span> pivotIdx = <span class="mt">Partition</span>(arr, lo, hi);
+        <span class="kw">if</span>      (pivotIdx == targetIdx) <span class="kw">return</span> arr[pivotIdx];
+        <span class="kw">else if</span> (pivotIdx &lt; targetIdx)  <span class="kw">return</span> <span class="mt">Quickselect</span>(arr, pivotIdx+<span class="nm">1</span>, hi, targetIdx);
+        <span class="kw">else</span>                             <span class="kw">return</span> <span class="mt">Quickselect</span>(arr, lo, pivotIdx-<span class="nm">1</span>, targetIdx);
+    }
+
+    <span class="kw">static int</span> <span class="mt">Partition</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
+    {
+        <span class="kw">int</span> ri = _rng.<span class="mt">Next</span>(lo, hi+<span class="nm">1</span>);
+        (arr[ri], arr[hi]) = (arr[hi], arr[ri]);
+        <span class="kw">int</span> pivot = arr[hi], i = lo-<span class="nm">1</span>;
+        <span class="kw">for</span>(<span class="kw">int</span> j=lo;j&lt;hi;j++) <span class="kw">if</span>(arr[j]&lt;=pivot)(arr[++i],arr[j])=(arr[j],arr[i]);
+        (arr[i+<span class="nm">1</span>],arr[hi])=(arr[hi],arr[i+<span class="nm">1</span>]);
+        <span class="kw">return</span> i+<span class="nm">1</span>;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">FindKthLargest</span>(<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">4</span>}, <span class="nm">2</span>)); <span class="cm">// 5</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">FindKthLargest</span>(<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">6</span>},<span class="nm">4</span>)); <span class="cm">// 4</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">import</span> random
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">find_kth_largest</span>(nums: List[<span class="tp">int</span>], k: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    target = <span class="mt">len</span>(nums) - k  <span class="cm"># kth largest = (n-k)th smallest</span>
+    <span class="kw">def</span> <span class="mt">quickselect</span>(lo, hi):
+        ri = random.<span class="mt">randint</span>(lo, hi)
+        nums[ri], nums[hi] = nums[hi], nums[ri]
+        pivot, i = nums[hi], lo - <span class="nm">1</span>
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(lo, hi):
+            <span class="kw">if</span> nums[j] &lt;= pivot: i+=<span class="nm">1</span>; nums[i],nums[j]=nums[j],nums[i]
+        nums[i+<span class="nm">1</span>],nums[hi]=nums[hi],nums[i+<span class="nm">1</span>]
+        pi = i+<span class="nm">1</span>
+        <span class="kw">if</span>   pi == target: <span class="kw">return</span> nums[pi]
+        <span class="kw">elif</span> pi &lt;  target: <span class="kw">return</span> quickselect(pi+<span class="nm">1</span>, hi)
+        <span class="kw">else</span>:              <span class="kw">return</span> quickselect(lo, pi-<span class="nm">1</span>)
+    <span class="kw">return</span> quickselect(<span class="nm">0</span>, <span class="mt">len</span>(nums)-<span class="nm">1</span>)
+
+<span class="mt">print</span>(find_kth_largest([<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">4</span>], <span class="nm">2</span>))              <span class="cm"># 5</span>
+<span class="mt">print</span>(find_kth_largest([<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">6</span>], <span class="nm">4</span>))   <span class="cm"># 4</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">3</div>
+    <div class="quiz-q">Meeting Rooms — Given meeting intervals [[s1,e1],[s2,e2],...], determine if a person can attend all meetings (no overlaps).</div>
+    <span class="badge easy">Easy</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Sort by start time. Check if any meeting starts before previous one ends.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Sort meetings by start time. Then do a linear scan: if any meeting starts before the previous one ends (curr.start &lt; prev.end), there's an overlap and the person cannot attend all meetings.</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — sorting dominates &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place sort comparison</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">MeetingRooms</span>
+{
+    <span class="kw">static bool</span> <span class="mt">CanAttendAll</span>(<span class="kw">int</span>[][] intervals)
+    {
+        <span class="cm">// Sort by start time</span>
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(intervals, (a, b) =&gt; a[<span class="nm">0</span>].CompareTo(b[<span class="nm">0</span>]));
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; intervals.<span class="tp">Length</span>; i++)
+        {
+            <span class="cm">// If current meeting starts before previous one ends ? conflict</span>
+            <span class="kw">if</span> (intervals[i][<span class="nm">0</span>] &lt; intervals[i-<span class="nm">1</span>][<span class="nm">1</span>]) <span class="kw">return false</span>;
+        }
+        <span class="kw">return true</span>;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">CanAttendAll</span>(<span class="kw">new</span>[]{ <span class="kw">new</span>[]{<span class="nm">0</span>,<span class="nm">30</span>},<span class="kw">new</span>[]{<span class="nm">5</span>,<span class="nm">10</span>},<span class="kw">new</span>[]{<span class="nm">15</span>,<span class="nm">20</span>} })); <span class="cm">// False</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">CanAttendAll</span>(<span class="kw">new</span>[]{ <span class="kw">new</span>[]{<span class="nm">7</span>,<span class="nm">10</span>},<span class="kw">new</span>[]{<span class="nm">2</span>,<span class="nm">4</span>} }));            <span class="cm">// True</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">can_attend_all</span>(intervals: List[List[<span class="tp">int</span>]]) -&gt; <span class="tp">bool</span>:
+    intervals.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">0</span>])
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(intervals)):
+        <span class="kw">if</span> intervals[i][<span class="nm">0</span>] &lt; intervals[i-<span class="nm">1</span>][<span class="nm">1</span>]:
+            <span class="kw">return False</span>
+    <span class="kw">return True</span>
+
+<span class="mt">print</span>(can_attend_all([[<span class="nm">0</span>,<span class="nm">30</span>],[<span class="nm">5</span>,<span class="nm">10</span>],[<span class="nm">15</span>,<span class="nm">20</span>]]))  <span class="cm"># False</span>
+<span class="mt">print</span>(can_attend_all([[<span class="nm">7</span>,<span class="nm">10</span>],[<span class="nm">2</span>,<span class="nm">4</span>]]))            <span class="cm"># True</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">4</div>
+    <div class="quiz-q">Valid Anagram — Given two strings, determine if one is an anagram of the other using sorting.</div>
+    <span class="badge easy">Easy</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Sort both strings, compare. O(n log n). Also solvable with counting sort O(n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Sort both strings and compare (O(n log n)). Or faster: use a 26-element frequency array, increment for chars in s, decrement for chars in t. If all frequencies are zero, strings are anagrams.</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) sort, or O(n) with counting array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — 26-element fixed-size array</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">ValidAnagram</span>
+{
+    <span class="cm">// Approach 1: Sort O(n log n)</span>
+    <span class="kw">static bool</span> <span class="mt">IsAnagramSort</span>(<span class="kw">string</span> s, <span class="kw">string</span> t) {
+        <span class="kw">if</span> (s.<span class="tp">Length</span> != t.<span class="tp">Length</span>) <span class="kw">return false</span>;
+        <span class="kw">char</span>[] a = s.<span class="mt">ToCharArray</span>(), b = t.<span class="mt">ToCharArray</span>();
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(a); <span class="tp">Array</span>.<span class="mt">Sort</span>(b);
+        <span class="kw">return new string</span>(a) == <span class="kw">new string</span>(b);
+    }
+
+    <span class="cm">// Approach 2: Counting sort O(n)</span>
+    <span class="kw">static bool</span> <span class="mt">IsAnagramCount</span>(<span class="kw">string</span> s, <span class="kw">string</span> t) {
+        <span class="kw">if</span> (s.<span class="tp">Length</span> != t.<span class="tp">Length</span>) <span class="kw">return false</span>;
+        <span class="kw">int</span>[] count = <span class="kw">new int</span>[<span class="nm">26</span>];
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;s.<span class="tp">Length</span>;i++) { count[s[i]-<span class="st">'a'</span>]++; count[t[i]-<span class="st">'a'</span>]--; }
+        <span class="kw">foreach</span>(<span class="kw">int</span> c <span class="kw">in</span> count) <span class="kw">if</span>(c!=<span class="nm">0</span>) <span class="kw">return false</span>;
+        <span class="kw">return true</span>;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsAnagramCount</span>(<span class="st">"anagram"</span>, <span class="st">"nagaram"</span>)); <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">IsAnagramCount</span>(<span class="st">"rat"</span>, <span class="st">"car"</span>));         <span class="cm">// False</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+<span class="kw">def</span> <span class="mt">is_anagram</span>(s: <span class="tp">str</span>, t: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
+    <span class="cm"># Option 1: Sort</span>
+    <span class="kw">return</span> <span class="mt">sorted</span>(s) == <span class="mt">sorted</span>(t)  <span class="cm"># O(n log n)</span>
+    <span class="cm"># Option 2: Counter (counting sort concept) — O(n)</span>
+    <span class="cm"># return Counter(s) == Counter(t)</span>
+
+<span class="mt">print</span>(is_anagram(<span class="st">"anagram"</span>, <span class="st">"nagaram"</span>))  <span class="cm"># True</span>
+<span class="mt">print</span>(is_anagram(<span class="st">"rat"</span>, <span class="st">"car"</span>))          <span class="cm"># False</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">5</div>
+    <div class="quiz-q">Merge Intervals — Given a list of intervals, merge all overlapping intervals.</div>
+    <span class="badge easy">Easy</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Sort by start. Merge current with previous if overlapping.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Sort intervals by start time. Initialize result with the first interval. For each subsequent interval: if it overlaps the last result interval (curr.start &le; last.end), extend the end; otherwise append as a new interval.</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — sorting dominates; merge scan is O(n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — output list of merged intervals</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">class</span> <span class="tp">MergeIntervals</span>
+{
+    <span class="kw">static int</span>[][] <span class="mt">Merge</span>(<span class="kw">int</span>[][] intervals)
+    {
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(intervals, (a,b)=&gt;a[<span class="nm">0</span>].CompareTo(b[<span class="nm">0</span>]));
+        <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>[]&gt;();
+        res.<span class="mt">Add</span>(intervals[<span class="nm">0</span>]);
+        <span class="kw">foreach</span>(<span class="kw">var</span> iv <span class="kw">in</span> intervals) {
+            <span class="kw">var</span> last = res[res.<span class="tp">Count</span>-<span class="nm">1</span>];
+            <span class="kw">if</span>(iv[<span class="nm">0</span>] &lt;= last[<span class="nm">1</span>]) last[<span class="nm">1</span>] = <span class="tp">Math</span>.<span class="mt">Max</span>(last[<span class="nm">1</span>], iv[<span class="nm">1</span>]);
+            <span class="kw">else</span> res.<span class="mt">Add</span>(iv);
+        }
+        <span class="kw">return</span> res.<span class="mt">ToArray</span>();
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">var</span> merged = <span class="mt">Merge</span>(<span class="kw">new</span>[]{<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">3</span>},<span class="kw">new</span>[]{<span class="nm">2</span>,<span class="nm">6</span>},<span class="kw">new</span>[]{<span class="nm">8</span>,<span class="nm">10</span>},<span class="kw">new</span>[]{<span class="nm">15</span>,<span class="nm">18</span>}});
+        <span class="kw">foreach</span>(<span class="kw">var</span> iv <span class="kw">in</span> merged) <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="st">$"[{iv[0]},{iv[1]}] "</span>);
+        <span class="cm">// [1,6] [8,10] [15,18]</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">merge_intervals</span>(intervals: List[List[<span class="tp">int</span>]]) -&gt; List[List[<span class="tp">int</span>]]:
+    intervals.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">0</span>])
+    merged = [intervals[<span class="nm">0</span>]]
+    <span class="kw">for</span> start, end <span class="kw">in</span> intervals[<span class="nm">1</span>:]:
+        <span class="kw">if</span> start &lt;= merged[-<span class="nm">1</span>][<span class="nm">1</span>]: merged[-<span class="nm">1</span>][<span class="nm">1</span>] = <span class="mt">max</span>(merged[-<span class="nm">1</span>][<span class="nm">1</span>], end)
+        <span class="kw">else</span>: merged.<span class="mt">append</span>([start, end])
+    <span class="kw">return</span> merged
+
+<span class="mt">print</span>(merge_intervals([[<span class="nm">1</span>,<span class="nm">3</span>],[<span class="nm">2</span>,<span class="nm">6</span>],[<span class="nm">8</span>,<span class="nm">10</span>],[<span class="nm">15</span>,<span class="nm">18</span>]]))  <span class="cm"># [[1,6],[8,10],[15,18]]</span></pre></div></div>
+  </div>
+</div>
+
+<h2 class="sec">Medium Problems (6—11)</h2>
+
+<!-- P6 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">6</div>
+    <div class="quiz-q">Largest Number — Arrange an array of non-negative integers to form the largest possible number.</div>
+    <span class="badge medium">Medium</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Custom comparator — compare ab vs ba string concatenations. O(n log n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Custom comparator: for two numbers a and b, compare string concatenations ab vs ba. If "ab" &gt; "ba", a should come first. Sort all numbers using this comparator descending. Edge case: if result starts with 0 (all zeros), return "0".</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n &times; L) — sort with string comparator; L = avg digit length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n &times; L) — string output list</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">LargestNumber</span>
+{
+    <span class="kw">static string</span> <span class="mt">Solve</span>(<span class="kw">int</span>[] nums) {
+        <span class="kw">string</span>[] s = <span class="tp">Array</span>.<span class="mt">ConvertAll</span>(nums, n =&gt; n.<span class="mt">ToString</span>());
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(s, (a, b) =&gt; <span class="kw">string</span>.<span class="mt">Compare</span>(b+a, a+b, <span class="tp">StringComparison</span>.Ordinal));
+        <span class="kw">string</span> result = <span class="kw">string</span>.<span class="mt">Concat</span>(s);
+        <span class="kw">return</span> result[<span class="nm">0</span>] == <span class="st">'0'</span> ? <span class="st">"0"</span> : result;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">30</span>,<span class="nm">34</span>,<span class="nm">5</span>,<span class="nm">9</span>}));  <span class="cm">// 9534330</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">10</span>,<span class="nm">2</span>}));            <span class="cm">// 210</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> functools <span class="kw">import</span> cmp_to_key
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">largest_number</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="tp">str</span>:
+    s = <span class="mt">list</span>(<span class="mt">map</span>(<span class="tp">str</span>, nums))
+    s.<span class="mt">sort</span>(key=cmp_to_key(<span class="kw">lambda</span> a,b: (<span class="nm">1</span> <span class="kw">if</span> a+b &gt; b+a <span class="kw">else</span> -<span class="nm">1</span>)), reverse=<span class="kw">False</span>)
+    <span class="cm"># Simpler:</span>
+    s.<span class="mt">sort</span>(key=cmp_to_key(<span class="kw">lambda</span> a,b: -<span class="nm">1</span> <span class="kw">if</span> a+b&gt;b+a <span class="kw">else</span> (<span class="nm">1</span> <span class="kw">if</span> a+b&lt;b+a <span class="kw">else</span> <span class="nm">0</span>)))
+    result = <span class="st">""</span>.<span class="mt">join</span>(s)
+    <span class="kw">return</span> <span class="st">"0"</span> <span class="kw">if</span> result[<span class="nm">0</span>]==<span class="st">"0"</span> <span class="kw">else</span> result
+
+<span class="mt">print</span>(largest_number([<span class="nm">3</span>,<span class="nm">30</span>,<span class="nm">34</span>,<span class="nm">5</span>,<span class="nm">9</span>]))  <span class="cm"># 9534330</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P7 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">7</div>
+    <div class="quiz-q">H-Index — A researcher has citations[i] for ith paper. Find the H-Index: maximum h such that h papers have at least h citations.</div>
+    <span class="badge medium">Medium</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Sort descending. Scan until citations[i] &lt; i+1. O(n log n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Sort citations in descending order. At index i (0-based), at least i+1 papers have citations[i] or more citations. The h-index is the largest i+1 where citations[i] &ge; i+1 — stop scanning when citations[i] &lt; i+1.</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — sorting &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — linear scan with one variable</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">HIndex</span>
+{
+    <span class="kw">static int</span> <span class="mt">Solve</span>(<span class="kw">int</span>[] citations) {
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(citations, (a,b) =&gt; b.CompareTo(a)); <span class="cm">// sort descending</span>
+        <span class="kw">int</span> h = <span class="nm">0</span>;
+        <span class="kw">while</span> (h &lt; citations.<span class="tp">Length</span> &amp;&amp; citations[h] &gt; h) h++;
+        <span class="kw">return</span> h;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">0</span>,<span class="nm">6</span>,<span class="nm">1</span>,<span class="nm">5</span>}));  <span class="cm">// 3</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">1</span>}));         <span class="cm">// 1</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">h_index</span>(citations):
+    citations.<span class="mt">sort</span>(reverse=<span class="kw">True</span>)
+    h = <span class="nm">0</span>
+    <span class="kw">while</span> h &lt; <span class="mt">len</span>(citations) <span class="kw">and</span> citations[h] > h:
+        h += <span class="nm">1</span>
+    <span class="kw">return</span> h
+
+<span class="mt">print</span>(h_index([<span class="nm">3</span>,<span class="nm">0</span>,<span class="nm">6</span>,<span class="nm">1</span>,<span class="nm">5</span>]))  <span class="cm"># 3</span>
+<span class="mt">print</span>(h_index([<span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">1</span>]))         <span class="cm"># 1</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P8 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">8</div>
+    <div class="quiz-q">Find All Duplicates — Given an integer array where each element is between 1 and n, find all elements that appear twice. Use O(1) extra space.</div>
+    <span class="badge medium">Medium</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Use array indices as a "visited" marker by negating values. O(n) time, O(1) space.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Use array indices as a hash set without extra space. For each value v, negate arr[|v|-1] (use absolute value since values may already be negative). After marking, scan for positive values: their (index+1) is a missing number.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — two linear passes over the array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — negation trick uses no extra space</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">class</span> <span class="tp">FindDuplicates</span>
+{
+    <span class="kw">static</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">Solve</span>(<span class="kw">int</span>[] nums) {
+        <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">foreach</span>(<span class="kw">int</span> n <span class="kw">in</span> nums) {
+            <span class="kw">int</span> idx = <span class="tp">Math</span>.<span class="mt">Abs</span>(n) - <span class="nm">1</span>;
+            <span class="kw">if</span>(nums[idx] &lt; <span class="nm">0</span>) res.<span class="mt">Add</span>(<span class="tp">Math</span>.<span class="mt">Abs</span>(n)); <span class="cm">// seen before ? duplicate</span>
+            <span class="kw">else</span> nums[idx] = -nums[idx];                <span class="cm">// mark as seen</span>
+        }
+        <span class="kw">return</span> res;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">var</span> r = <span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">4</span>,<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">7</span>,<span class="nm">8</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">1</span>});
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>,r)); <span class="cm">// 2,3</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">find_duplicates</span>(nums: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    res = []
+    <span class="kw">for</span> n <span class="kw">in</span> nums:
+        idx = <span class="mt">abs</span>(n) - <span class="nm">1</span>
+        <span class="kw">if</span> nums[idx] &lt; <span class="nm">0</span>: res.<span class="mt">append</span>(<span class="mt">abs</span>(n))
+        <span class="kw">else</span>: nums[idx] = -nums[idx]
+    <span class="kw">return</span> res
+
+<span class="mt">print</span>(find_duplicates([<span class="nm">4</span>,<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">7</span>,<span class="nm">8</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">1</span>]))  <span class="cm"># [2, 3]</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P9 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">9</div>
+    <div class="quiz-q">Sort Array By Parity — Move all even numbers before odd numbers. The order within each group doesn't matter.</div>
+    <span class="badge medium">Medium</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Two-pointer in-place O(n). Or stable version: sort by parity key.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Two pointers in-place: left pointer scans from start (looking for odd number), right pointer from end (looking for even number). Swap when left is odd and right is even, then advance both. Continue until pointers meet.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — each element examined at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place swaps only</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">SortParity</span>
+{
+    <span class="kw">static int</span>[] <span class="mt">Solve</span>(<span class="kw">int</span>[] arr) {
+        <span class="kw">int</span> l=<span class="nm">0</span>, r=arr.<span class="tp">Length</span>-<span class="nm">1</span>;
+        <span class="kw">while</span>(l&lt;r) {
+            <span class="kw">if</span>(arr[l]%<span class="nm">2</span>!=<span class="nm">0</span> &amp;&amp; arr[r]%<span class="nm">2</span>==<span class="nm">0</span>) (arr[l],arr[r])=(arr[r],arr[l]);
+            <span class="kw">if</span>(arr[l]%<span class="nm">2</span>==<span class="nm">0</span>) l++;
+            <span class="kw">if</span>(arr[r]%<span class="nm">2</span>!=<span class="nm">0</span>) r--;
+        }
+        <span class="kw">return</span> arr;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>,<span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">4</span>}))); <span class="cm">// 4,2,1,3 (or similar)</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">sort_array_by_parity</span>(arr):
+    <span class="cm"># One-liner using key (stable, O(n log n))</span>
+    <span class="kw">return</span> <span class="mt">sorted</span>(arr, key=<span class="kw">lambda</span> x: x % <span class="nm">2</span>)  <span class="cm"># even=0 first, odd=1 second</span>
+
+<span class="mt">print</span>(sort_array_by_parity([<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">4</span>]))  <span class="cm"># [2,4,3,1]</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P10 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">10</div>
+    <div class="quiz-q">Non-overlapping Intervals — Given intervals, find the minimum number to remove to make the rest non-overlapping.</div>
+    <span class="badge medium">Medium</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Greedy — sort by end time. Keep interval if it doesn't overlap. Count removals.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Greedy: sort intervals by end time. Keep an interval if it does not overlap with the last kept interval. When two intervals overlap, discard the one with the later end time (keep the one ending sooner — it leaves maximum room for future intervals).</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — sort by end time; scan is O(n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — scan with one variable tracking last kept end</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">NonOverlapping</span>
+{
+    <span class="kw">static int</span> <span class="mt">EraseOverlapIntervals</span>(<span class="kw">int</span>[][] intervals) {
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(intervals, (a,b) =&gt; a[<span class="nm">1</span>].CompareTo(b[<span class="nm">1</span>])); <span class="cm">// sort by END</span>
+        <span class="kw">int</span> count=<span class="nm">0</span>, prevEnd=<span class="tp">int</span>.MinValue;
+        <span class="kw">foreach</span>(<span class="kw">var</span> iv <span class="kw">in</span> intervals) {
+            <span class="kw">if</span>(iv[<span class="nm">0</span>] &gt;= prevEnd) prevEnd=iv[<span class="nm">1</span>]; <span class="cm">// keep: no overlap</span>
+            <span class="kw">else</span> count++;                            <span class="cm">// remove: overlaps</span>
+        }
+        <span class="kw">return</span> count;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">EraseOverlapIntervals</span>(<span class="kw">new</span>[]{<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">2</span>},<span class="kw">new</span>[]{<span class="nm">2</span>,<span class="nm">3</span>},<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">4</span>},<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">3</span>}})); <span class="cm">// 1</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">EraseOverlapIntervals</span>(<span class="kw">new</span>[]{<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">2</span>},<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">2</span>},<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">2</span>}}));         <span class="cm">// 2</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">erase_overlap_intervals</span>(intervals):
+    intervals.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])
+    count, prev_end = <span class="nm">0</span>, <span class="mt">float</span>(<span class="st">'-inf'</span>)
+    <span class="kw">for</span> start, end <span class="kw">in</span> intervals:
+        <span class="kw">if</span> start >= prev_end: prev_end = end
+        <span class="kw">else</span>: count += <span class="nm">1</span>
+    <span class="kw">return</span> count
+
+<span class="mt">print</span>(erase_overlap_intervals([[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">2</span>,<span class="nm">3</span>],[<span class="nm">3</span>,<span class="nm">4</span>],[<span class="nm">1</span>,<span class="nm">3</span>]]))  <span class="cm"># 1</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P11 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">11</div>
+    <div class="quiz-q">Sort Characters by Frequency — Given a string, sort its characters in decreasing order based on the frequency of characters.</div>
+    <span class="badge medium">Medium</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Count frequencies, sort by count descending (bucket sort for O(n)).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Count element frequencies using a HashMap. Then use bucket sort: create n+1 buckets indexed by frequency; add each element to its frequency bucket. Scan buckets from highest to lowest to collect the top k elements.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — HashMap counting + bucket sort &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — frequency map + n+1 bucket array</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="kw">class</span> <span class="tp">FreqSort</span>
+{
+    <span class="kw">static string</span> <span class="mt">Solve</span>(<span class="kw">string</span> s) {
+        <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="kw">int</span>&gt;();
+        <span class="kw">foreach</span>(<span class="kw">char</span> c <span class="kw">in</span> s) { freq[c] = freq.<span class="mt">GetValueOrDefault</span>(c) + <span class="nm">1</span>; }
+        <span class="kw">return</span> <span class="kw">string</span>.<span class="mt">Concat</span>(freq.<span class="mt">OrderByDescending</span>(kv=&gt;kv.<span class="tp">Value</span>)
+            .<span class="mt">Select</span>(kv=&gt;<span class="kw">new string</span>(kv.<span class="tp">Key</span>,kv.<span class="tp">Value</span>)));
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="st">"tree"</span>));    <span class="cm">// "eert" or "eetr"</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="st">"cccaaa"</span>)); <span class="cm">// "cccaaa" or "aaaccc"</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+<span class="kw">def</span> <span class="mt">frequency_sort</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
+    freq = Counter(s)
+    <span class="kw">return</span> <span class="st">""</span>.<span class="mt">join</span>(c * n <span class="kw">for</span> c, n <span class="kw">in</span> freq.<span class="mt">most_common</span>())
+
+<span class="mt">print</span>(frequency_sort(<span class="st">"tree"</span>))    <span class="cm"># "eert"</span>
+<span class="mt">print</span>(frequency_sort(<span class="st">"cccaaa"</span>)) <span class="cm"># "cccaaa"</span></pre></div></div>
+  </div>
+</div>
+
+<h2 class="sec">Hard Problems (12—15)</h2>
+
+<!-- P12 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">12</div>
+    <div class="quiz-q">Count Smaller Numbers After Self — For each number in nums, count how many smaller numbers appear to its right.</div>
+    <span class="badge hard">Hard</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Modified merge sort — count during merge phase. O(n log n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Modified merge sort with index tracking. Sort an index array by value. During each merge step: when a right-side element is placed before remaining left-side elements, add the count of remaining left elements to that right element's answer (each is an inversion).</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — merge sort with O(1) extra work per comparison &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — index array + temporary merge arrays</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">class</span> <span class="tp">CountSmaller</span>
+{
+    <span class="kw">static int</span>[] _counts;
+    <span class="kw">static int</span>[] _indices;
+
+    <span class="kw">static</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">Solve</span>(<span class="kw">int</span>[] nums) {
+        <span class="kw">int</span> n = nums.<span class="tp">Length</span>;
+        _counts = <span class="kw">new int</span>[n];
+        _indices = <span class="kw">new int</span>[n];
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n;i++) _indices[i]=i;
+        <span class="mt">MergeSort</span>(nums, <span class="nm">0</span>, n-<span class="nm">1</span>);
+        <span class="kw">return</span> _counts;
+    }
+
+    <span class="kw">static void</span> <span class="mt">MergeSort</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> lo, <span class="kw">int</span> hi) {
+        <span class="kw">if</span>(lo&gt;=hi) <span class="kw">return</span>;
+        <span class="kw">int</span> mid=(lo+hi)/<span class="nm">2</span>;
+        <span class="mt">MergeSort</span>(nums,lo,mid); <span class="mt">MergeSort</span>(nums,mid+<span class="nm">1</span>,hi);
+        <span class="mt">Merge</span>(nums,lo,mid,hi);
+    }
+
+    <span class="kw">static void</span> <span class="mt">Merge</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> lo, <span class="kw">int</span> mid, <span class="kw">int</span> hi) {
+        <span class="kw">var</span> tmp = <span class="kw">new int</span>[hi-lo+<span class="nm">1</span>]; <span class="kw">int</span> i=lo,j=mid+<span class="nm">1</span>,k=<span class="nm">0</span>;
+        <span class="kw">while</span>(i&lt;=mid &amp;&amp; j&lt;=hi) {
+            <span class="kw">if</span>(nums[_indices[i]] &gt; nums[_indices[j]]) {
+                _counts[_indices[i]] += hi-j+<span class="nm">1</span>; <span class="cm">// all remaining right elements are smaller</span>
+                tmp[k++]=_indices[i++];
+            } <span class="kw">else</span> tmp[k++]=_indices[j++];
+        }
+        <span class="kw">while</span>(i&lt;=mid) tmp[k++]=_indices[i++];
+        <span class="kw">while</span>(j&lt;=hi) tmp[k++]=_indices[j++];
+        <span class="kw">for</span>(<span class="kw">int</span> x=<span class="nm">0</span>;x&lt;tmp.<span class="tp">Length</span>;x++) _indices[lo+x]=tmp[x];
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">var</span> r = <span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">5</span>,<span class="nm">2</span>,<span class="nm">6</span>,<span class="nm">1</span>});
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>,r)); <span class="cm">// 2, 1, 1, 0</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">count_smaller</span>(nums: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    n = <span class="mt">len</span>(nums)
+    counts = [<span class="nm">0</span>] * n
+    indices = <span class="mt">list</span>(<span class="mt">range</span>(n))
+
+    <span class="kw">def</span> <span class="mt">merge_sort</span>(idx_list):
+        <span class="kw">if</span> <span class="mt">len</span>(idx_list) &lt;= <span class="nm">1</span>: <span class="kw">return</span> idx_list
+        mid = <span class="mt">len</span>(idx_list) // <span class="nm">2</span>
+        L = merge_sort(idx_list[:mid])
+        R = merge_sort(idx_list[mid:])
+        merged, i, j = [], <span class="nm">0</span>, <span class="nm">0</span>
+        <span class="kw">while</span> i &lt; <span class="mt">len</span>(L) <span class="kw">and</span> j &lt; <span class="mt">len</span>(R):
+            <span class="kw">if</span> nums[L[i]] > nums[R[j]]:
+                counts[L[i]] += <span class="mt">len</span>(R) - j  <span class="cm"># all remaining R are smaller</span>
+                merged.<span class="mt">append</span>(L[i]); i += <span class="nm">1</span>
+            <span class="kw">else</span>: merged.<span class="mt">append</span>(R[j]); j += <span class="nm">1</span>
+        merged.<span class="mt">extend</span>(L[i:]); merged.<span class="mt">extend</span>(R[j:])
+        <span class="kw">return</span> merged
+
+    merge_sort(indices)
+    <span class="kw">return</span> counts
+
+<span class="mt">print</span>(count_smaller([<span class="nm">5</span>,<span class="nm">2</span>,<span class="nm">6</span>,<span class="nm">1</span>]))  <span class="cm"># [2,1,1,0]</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P13 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">13</div>
+    <div class="quiz-q">Maximum Gap — Given an unsorted array, find the maximum difference between successive elements in its sorted form. Must run in O(n) time and space.</div>
+    <span class="badge hard">Hard</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Bucket sort + pigeonhole principle. Gap must come from different buckets.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Pigeonhole principle: n numbers spanning [min, max] have n-1 gaps; the max gap is &ge; (max-min)/(n-1). Create buckets of that minimum gap size. The maximum gap must span across adjacent non-empty bucket boundaries — check only consecutive non-empty buckets.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — bucket sort; each element placed once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — n-1 buckets each storing (min, max) pair</div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">import</span> math
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">maximum_gap</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> <span class="mt">len</span>(nums) &lt; <span class="nm">2</span>: <span class="kw">return</span> <span class="nm">0</span>
+    lo, hi = <span class="mt">min</span>(nums), <span class="mt">max</span>(nums)
+    <span class="kw">if</span> lo == hi: <span class="kw">return</span> <span class="nm">0</span>
+    n = <span class="mt">len</span>(nums)
+    <span class="cm"># Bucket width (by pigeonhole, max gap >= ceil((hi-lo)/(n-1)))</span>
+    bw = max(<span class="nm">1</span>, math.<span class="mt">ceil</span>((hi - lo) / (n - <span class="nm">1</span>)))
+    nb = (hi - lo) // bw + <span class="nm">1</span>
+    <span class="cm"># Each bucket stores (min, max) of elements it contains</span>
+    buckets = [[<span class="mt">float</span>(<span class="st">'inf'</span>), <span class="mt">float</span>(<span class="st">'-inf'</span>)] <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(nb)]
+    <span class="kw">for</span> x <span class="kw">in</span> nums:
+        bi = (x - lo) // bw
+        buckets[bi][<span class="nm">0</span>] = <span class="mt">min</span>(buckets[bi][<span class="nm">0</span>], x)
+        buckets[bi][<span class="nm">1</span>] = <span class="mt">max</span>(buckets[bi][<span class="nm">1</span>], x)
+    <span class="cm"># Max gap must come between buckets (elements in same bucket have gap &lt; bw)</span>
+    max_gap, prev_max = <span class="nm">0</span>, lo
+    <span class="kw">for</span> bmin, bmax <span class="kw">in</span> buckets:
+        <span class="kw">if</span> bmin == <span class="mt">float</span>(<span class="st">'inf'</span>): <span class="kw">continue</span>   <span class="cm"># empty bucket</span>
+        max_gap = <span class="mt">max</span>(max_gap, bmin - prev_max)
+        prev_max = bmax
+    <span class="kw">return</span> max_gap
+
+<span class="mt">print</span>(maximum_gap([<span class="nm">3</span>,<span class="nm">6</span>,<span class="nm">9</span>,<span class="nm">1</span>]))   <span class="cm"># 3</span>
+<span class="mt">print</span>(maximum_gap([<span class="nm">10</span>]))          <span class="cm"># 0</span>
+<span class="mt">print</span>(maximum_gap([<span class="nm">1</span>,<span class="nm">10000000</span>])) <span class="cm"># 9999999</span></pre></div></div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">MaximumGap</span>
+{
+    <span class="kw">static int</span> <span class="mt">Solve</span>(<span class="kw">int</span>[] nums) {
+        <span class="kw">int</span> n=nums.<span class="tp">Length</span>; <span class="kw">if</span>(n&lt;<span class="nm">2</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> lo=<span class="tp">int</span>.MaxValue, hi=<span class="tp">int</span>.MinValue;
+        <span class="kw">foreach</span>(<span class="kw">int</span> x <span class="kw">in</span> nums){<span class="kw">if</span>(x&lt;lo)lo=x;<span class="kw">if</span>(x&gt;hi)hi=x;}
+        <span class="kw">if</span>(lo==hi) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> bw=<span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">1</span>,(hi-lo+n-<span class="nm">2</span>)/(n-<span class="nm">1</span>)), nb=(hi-lo)/bw+<span class="nm">1</span>;
+        <span class="kw">int</span>[] bMin=<span class="kw">new int</span>[nb], bMax=<span class="kw">new int</span>[nb];
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(bMin,<span class="tp">int</span>.MaxValue); <span class="tp">Array</span>.<span class="mt">Fill</span>(bMax,<span class="tp">int</span>.MinValue);
+        <span class="kw">foreach</span>(<span class="kw">int</span> x <span class="kw">in</span> nums){<span class="kw">int</span> bi=(x-lo)/bw;bMin[bi]=<span class="tp">Math</span>.<span class="mt">Min</span>(bMin[bi],x);bMax[bi]=<span class="tp">Math</span>.<span class="mt">Max</span>(bMax[bi],x);}
+        <span class="kw">int</span> gap=<span class="nm">0</span>,prevMax=lo;
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;nb;i++){<span class="kw">if</span>(bMin[i]==<span class="tp">int</span>.MaxValue)<span class="kw">continue</span>;gap=<span class="tp">Math</span>.<span class="mt">Max</span>(gap,bMin[i]-prevMax);prevMax=bMax[i];}
+        <span class="kw">return</span> gap;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">6</span>,<span class="nm">9</span>,<span class="nm">1</span>}));  <span class="cm">// 3</span>
+    }
+}</pre></div></div>
+  </div>
+</div>
+
+<!-- P14 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">14</div>
+    <div class="quiz-q">Median of Two Sorted Arrays — Find the median of two sorted arrays in O(log(min(m,n))) time.</div>
+    <span class="badge hard">Hard</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Binary search on partition of smaller array.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Binary search on a partition of the smaller array. Find split i of A and j=(m+n+1)/2-i of B such that A[i-1] &le; B[j] and B[j-1] &le; A[i]. This ensures the left half has the correct elements. Compute median from the four boundary values.</div>
+    <div class="complexity"><strong>Time:</strong> O(log(min(m,n))) — binary search on shorter array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — just partition index variables</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">MedianTwoSortedArrays</span>
+{
+    <span class="kw">static double</span> <span class="mt">FindMedianSortedArrays</span>(<span class="kw">int</span>[] nums1, <span class="kw">int</span>[] nums2)
+    {
+        <span class="cm">// Ensure nums1 is the smaller array for binary search</span>
+        <span class="kw">if</span> (nums1.<span class="tp">Length</span> &gt; nums2.<span class="tp">Length</span>) <span class="kw">return</span> <span class="mt">FindMedianSortedArrays</span>(nums2, nums1);
+        <span class="kw">int</span> m=nums1.<span class="tp">Length</span>, n=nums2.<span class="tp">Length</span>, half=(m+n+<span class="nm">1</span>)/<span class="nm">2</span>;
+        <span class="kw">int</span> lo=<span class="nm">0</span>, hi=m;
+        <span class="kw">while</span>(lo&lt;=hi) {
+            <span class="kw">int</span> i=(lo+hi)/<span class="nm">2</span>, j=half-i;
+            <span class="kw">int</span> maxL1=(i==<span class="nm">0</span>?<span class="tp">int</span>.MinValue:nums1[i-<span class="nm">1</span>]), minR1=(i==m?<span class="tp">int</span>.MaxValue:nums1[i]);
+            <span class="kw">int</span> maxL2=(j==<span class="nm">0</span>?<span class="tp">int</span>.MinValue:nums2[j-<span class="nm">1</span>]), minR2=(j==n?<span class="tp">int</span>.MaxValue:nums2[j]);
+            <span class="kw">if</span>(maxL1&lt;=minR2 &amp;&amp; maxL2&lt;=minR1) {
+                <span class="kw">if</span>((m+n)%<span class="nm">2</span>==<span class="nm">1</span>) <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Max</span>(maxL1,maxL2);
+                <span class="kw">return</span> (<span class="tp">Math</span>.<span class="mt">Max</span>(maxL1,maxL2)+<span class="tp">Math</span>.<span class="mt">Min</span>(minR1,minR2))/<span class="nm">2.0</span>;
+            } <span class="kw">else if</span>(maxL1&gt;minR2) hi=i-<span class="nm">1</span>; <span class="kw">else</span> lo=i+<span class="nm">1</span>;
+        }
+        <span class="kw">return</span> <span class="nm">0</span>;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">FindMedianSortedArrays</span>(<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">3</span>},<span class="kw">new</span>[]{<span class="nm">2</span>}));       <span class="cm">// 2.0</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">FindMedianSortedArrays</span>(<span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">2</span>},<span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">4</span>}));   <span class="cm">// 2.5</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">find_median_sorted_arrays</span>(nums1: List[<span class="tp">int</span>], nums2: List[<span class="tp">int</span>]) -&gt; <span class="tp">float</span>:
+    <span class="kw">if</span> <span class="mt">len</span>(nums1) > <span class="mt">len</span>(nums2): nums1, nums2 = nums2, nums1
+    m, n = <span class="mt">len</span>(nums1), <span class="mt">len</span>(nums2)
+    half = (m + n + <span class="nm">1</span>) // <span class="nm">2</span>
+    lo, hi = <span class="nm">0</span>, m
+    <span class="kw">while</span> lo &lt;= hi:
+        i = (lo + hi) // <span class="nm">2</span>; j = half - i
+        maxL1 = nums1[i-<span class="nm">1</span>] <span class="kw">if</span> i > <span class="nm">0</span> <span class="kw">else</span> <span class="mt">float</span>(<span class="st">'-inf'</span>)
+        minR1 = nums1[i]   <span class="kw">if</span> i &lt; m <span class="kw">else</span> <span class="mt">float</span>(<span class="st">'inf'</span>)
+        maxL2 = nums2[j-<span class="nm">1</span>] <span class="kw">if</span> j > <span class="nm">0</span> <span class="kw">else</span> <span class="mt">float</span>(<span class="st">'-inf'</span>)
+        minR2 = nums2[j]   <span class="kw">if</span> j &lt; n <span class="kw">else</span> <span class="mt">float</span>(<span class="st">'inf'</span>)
+        <span class="kw">if</span> maxL1 &lt;= minR2 <span class="kw">and</span> maxL2 &lt;= minR1:
+            <span class="kw">if</span> (m+n) % <span class="nm">2</span>: <span class="kw">return</span> max(maxL1,maxL2)
+            <span class="kw">return</span> (max(maxL1,maxL2)+min(minR1,minR2)) / <span class="nm">2</span>
+        <span class="kw">elif</span> maxL1 > minR2: hi = i - <span class="nm">1</span>
+        <span class="kw">else</span>: lo = i + <span class="nm">1</span>
+
+<span class="mt">print</span>(find_median_sorted_arrays([<span class="nm">1</span>,<span class="nm">3</span>],[<span class="nm">2</span>]))    <span class="cm"># 2.0</span>
+<span class="mt">print</span>(find_median_sorted_arrays([<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>]))  <span class="cm"># 2.5</span></pre></div></div>
+  </div>
+</div>
+
+<!-- P15 -->
+<div class="quiz">
+  <div class="quiz-header">
+    <div class="prob-num">15</div>
+    <div class="quiz-q">Wiggle Sort II — Given unsorted array, reorder such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]...</div>
+    <span class="badge hard">Hard</span>
+  </div>
+  <div class="quiz-meta">🧠 Approach: Find median (Quickselect), then 3-way partition + virtual indexing trick.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Find the median using Quickselect (O(n)). Apply 3-way Dutch National Flag partition around the median. Use virtual index mapping (odd indices: n-2, n-4,... then even: n-1, n-3,...) to interleave small and large values in-place without needing a separate array.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — Quickselect for median + 3-way partition &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place with virtual index mapping</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="tp">WiggleSortII</span>
+{
+    <span class="kw">static void</span> <span class="mt">WiggleSort</span>(<span class="kw">int</span>[] nums) {
+        <span class="kw">int</span>[] sorted = (<span class="kw">int</span>[])nums.<span class="mt">Clone</span>();
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(sorted);
+        <span class="kw">int</span> n=nums.<span class="tp">Length</span>, lo=(n-<span class="nm">1</span>)/<span class="nm">2</span>, hi=n-<span class="nm">1</span>;
+        <span class="cm">// Place larger half at odd indices (descending), smaller half at even (descending)</span>
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n;i++) {
+            nums[i] = (i%<span class="nm">2</span>==<span class="nm">0</span>) ? sorted[lo--] : sorted[hi--];
+        }
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] a1={<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">6</span>,<span class="nm">4</span>}; <span class="mt">WiggleSort</span>(a1);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>,a1)); <span class="cm">// e.g. 1,6,1,5,1,4</span>
+        <span class="kw">int</span>[] a2={<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">6</span>}; <span class="mt">WiggleSort</span>(a2);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>,a2)); <span class="cm">// e.g. 4,6,5,5 ? verify pattern</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">wiggle_sort</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="kw">None</span>:
+    n = <span class="mt">len</span>(nums)
+    s = <span class="mt">sorted</span>(nums)
+    lo = (n-<span class="nm">1</span>) // <span class="nm">2</span>   <span class="cm"># median index</span>
+    hi = n - <span class="nm">1</span>
+    <span class="cm"># Fill even indices with smaller half (descending), odd with larger half (descending)</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> i % <span class="nm">2</span> == <span class="nm">0</span>: nums[i] = s[lo]; lo -= <span class="nm">1</span>
+        <span class="kw">else</span>:           nums[i] = s[hi]; hi -= <span class="nm">1</span>
+
+arr = [<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">6</span>,<span class="nm">4</span>]
+wiggle_sort(arr)
+<span class="mt">print</span>(arr)  <span class="cm"># [1,6,1,5,1,4] — verify: 1<6>1<5>1<4 ?</span></pre></div></div>
+  </div>
+</div>
+
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">🎉 Excellent work! You've completed all 5 sorting modules. From O(n—) basics to O(n) linear sorts, API mastery, and 15 practice problems — you're now a sorting expert!</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="../index.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Back to Course Index ? Next Phase: Trees ??</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm05e';
+(function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='? Completed!';b.disabled=true;showToast('? Module 5E marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='? Completed!';b.disabled=true;}}})();
+function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
+function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
+applyLang();
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='❌ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleSolution(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Solution':'💡 Show Solution';}
+let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

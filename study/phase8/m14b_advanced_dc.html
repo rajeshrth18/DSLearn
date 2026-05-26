@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 14B — Closest Pair & Master Theorem | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
+    <h1>Module 14 — Part B</h1>
+    <div class="tagline">Closest Pair &amp; Master Theorem</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Closest Pair O(n log n) · Strassen Matrix Multiply · Karatsuba · FFT Intro</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 14</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ✅ Module 12 — <a href="m12a_dp_intro.html">Dynamic Programming (Parts A–F)</a><br>
+    ✅ Module 13 — <a href="m13a_greedy.html">Greedy Algorithms (Parts A–C)</a><br>
+    ✅ <strong>Module 14 Part A</strong> — <a href="m14a_divide_conquer.html">Divide &amp; Conquer</a><br>
+    ▶ <strong>Module 14 Part B</strong> — <em>You are here</em> — Closest Pair &amp; Master Theorem<br>
+    ⬜ <strong>Module 14 Part C</strong> — <a href="m14c_number_theory.html">Number Theory</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m13a_greedy.html">&larr; Module 13 &mdash; Greedy Algorithms</a>
+    <a href="../phase9/m15a_kmp.html">Module 15 &mdash; String Algorithms &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Closest Pair of Points <span>— O(n log n) D&amp;C algorithm</span></li>
+        <li>Section 2 — Master Theorem Deep Dive <span>— All cases with proofs</span></li>
+        <li>Section 3 — Strassen Matrix Multiplication <span>— O(n^2.81) via 7 multiplications</span></li>
+        <li>Section 4 — Karatsuba Algorithm <span>— Fast integer multiplication</span></li>
+        <li>Section 5 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Closest Pair of Points</div>
+
+<p>Given n points in 2D, find the pair with minimum Euclidean distance. 
+Brute force is O(n²). D&amp;C achieves O(n log n).</p>
+
+<div class="diagram">ALGORITHM:
+  1. Sort points by x-coordinate.
+  2. Divide: split at median x into L and R halves.
+  3. Conquer: recursively find δ_L = min_dist(L), δ_R = min_dist(R).
+  4. δ = min(δ_L, δ_R).
+  5. COMBINE: check cross-strip pairs.
+     - Collect points within δ of the dividing line (|x - mid_x| < δ).
+     - For each strip point, compare with at most 7 others above it
+       (sorted by y — it's proven at most 7 points can fit in δ×2δ rectangle).
+     - Update δ if closer pair found.
+  6. Return δ.
+
+WHY AT MOST 7 POINTS?
+  The 2δ × δ strip on each side contains points ≥ δ apart (from sub-results).
+  Pack circles of radius δ/2 around each point — at most 8 fit in 2δ×2δ box.
+  So each point compares with at most 7 others. O(n log n) total.
+
+RECURRENCE: T(n) = 2T(n/2) + O(n log n) = O(n log² n)
+  (or O(n log n) with pre-sorted y lists passed to each level)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> <span class="tp">System</span>;
+<span class="kw">public double</span> <span class="mt">ClosestPair</span>((<span class="kw">double</span> x, <span class="kw">double</span> y)[] pts)
+{
+    <span class="kw">var</span> byX = pts.<span class="mt">OrderBy</span>(p => p.x).<span class="mt">ToArray</span>();
+    <span class="kw">return</span> <span class="mt">Rec</span>(byX, <span class="nm">0</span>, byX.Length - <span class="nm">1</span>);
+}
+<span class="kw">private double</span> <span class="mt">Dist</span>((<span class="kw">double</span> x, <span class="kw">double</span> y) a, (<span class="kw">double</span> x, <span class="kw">double</span> y) b)
+    => <span class="tp">Math</span>.<span class="mt">Sqrt</span>((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+
+<span class="kw">private double</span> <span class="mt">Rec</span>((<span class="kw">double</span> x, <span class="kw">double</span> y)[] pts, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
+{
+    <span class="kw">if</span> (hi - lo &lt; <span class="nm">3</span>)  <span class="cm">// brute force for small inputs</span>
+    {
+        <span class="kw">double</span> d = <span class="kw">double</span>.MaxValue;
+        <span class="kw">for</span> (<span class="kw">int</span> i = lo; i &lt;= hi; i++)
+            <span class="kw">for</span> (<span class="kw">int</span> j = i+<span class="nm">1</span>; j &lt;= hi; j++)
+                d = <span class="tp">Math</span>.<span class="mt">Min</span>(d, <span class="mt">Dist</span>(pts[i], pts[j]));
+        <span class="kw">return</span> d;
+    }
+    <span class="kw">int</span> mid = (lo + hi) / <span class="nm">2</span>;
+    <span class="kw">double</span> midX = pts[mid].x;
+    <span class="kw">double</span> delta = <span class="tp">Math</span>.<span class="mt">Min</span>(<span class="mt">Rec</span>(pts, lo, mid), <span class="mt">Rec</span>(pts, mid+<span class="nm">1</span>, hi));
+    <span class="cm">// Collect strip points within delta of midline</span>
+    <span class="kw">var</span> strip = pts[lo..(hi+<span class="nm">1</span>)].<span class="mt">Where</span>(p => <span class="tp">Math</span>.<span class="mt">Abs</span>(p.x - midX) &lt; delta)
+                               .<span class="mt">OrderBy</span>(p => p.y).<span class="mt">ToArray</span>();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; strip.Length; i++)
+        <span class="kw">for</span> (<span class="kw">int</span> j = i+<span class="nm">1</span>; j &lt; strip.Length &amp;&amp; strip[j].y - strip[i].y &lt; delta; j++)
+            delta = <span class="tp">Math</span>.<span class="mt">Min</span>(delta, <span class="mt">Dist</span>(strip[i], strip[j]));
+    <span class="kw">return</span> delta;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> math
+<span class="kw">def</span> <span class="mt">closest_pair</span>(points):
+    pts = <span class="mt">sorted</span>(points, key=<span class="kw">lambda</span> p: p[<span class="nm">0</span>])
+    <span class="kw">def</span> <span class="mt">dist</span>(a, b): <span class="kw">return</span> math.<span class="mt">hypot</span>(a[<span class="nm">0</span>]-b[<span class="nm">0</span>], a[<span class="nm">1</span>]-b[<span class="nm">1</span>])
+    <span class="kw">def</span> <span class="mt">rec</span>(sub):
+        n = <span class="mt">len</span>(sub)
+        <span class="kw">if</span> n &lt;= <span class="nm">3</span>:
+            <span class="kw">return</span> <span class="mt">min</span>(<span class="mt">dist</span>(sub[i],sub[j]) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n) <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(i+<span class="nm">1</span>,n))
+        mid = n // <span class="nm">2</span>; mid_x = sub[mid][<span class="nm">0</span>]
+        delta = <span class="mt">min</span>(<span class="mt">rec</span>(sub[:mid]), <span class="mt">rec</span>(sub[mid:]))
+        strip = <span class="mt">sorted</span>([p <span class="kw">for</span> p <span class="kw">in</span> sub <span class="kw">if</span> <span class="mt">abs</span>(p[<span class="nm">0</span>]-mid_x) &lt; delta], key=<span class="kw">lambda</span> p: p[<span class="nm">1</span>])
+        <span class="kw">for</span> i, p <span class="kw">in</span> <span class="mt">enumerate</span>(strip):
+            <span class="kw">for</span> q <span class="kw">in</span> strip[i+<span class="nm">1</span>:]:
+                <span class="kw">if</span> q[<span class="nm">1</span>] - p[<span class="nm">1</span>] >= delta: <span class="kw">break</span>
+                delta = <span class="mt">min</span>(delta, <span class="mt">dist</span>(p, q))
+        <span class="kw">return</span> delta
+    <span class="kw">return</span> <span class="mt">rec</span>(pts)</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Master Theorem Deep Dive</div>
+
+<div class="diagram">MASTER THEOREM: T(n) = aT(n/b) + f(n),  a≥1, b>1
+
+INTUITION: The recursion tree has log_b(n) levels.
+  Level 0 (root): f(n)
+  Level 1: a × f(n/b)  
+  Level k: a^k × f(n/b^k)
+  Leaves (level log_b n): a^(log_b n) = n^(log_b a) leaves, each O(1).
+
+THREE CASES compare work at LEAVES vs work at INTERNAL NODES:
+
+Case 1 — LEAVES DOMINATE: f(n) = O(n^(log_b(a) - ε)) for some ε>0
+  → T(n) = Θ(n^log_b(a))
+  EXAMPLE: T(n) = 8T(n/2) + O(n²)
+    log_2(8)=3, n²=O(n^(3-1)) → Case 1 → T(n)=Θ(n³)
+
+Case 2 — TIED (equal at all levels): f(n) = Θ(n^log_b(a) · log^k n)  [k≥0]
+  → T(n) = Θ(n^log_b(a) · log^(k+1) n)
+  EXAMPLE: T(n) = 2T(n/2) + O(n) [merge sort, k=0]
+    log_2(2)=1, n=Θ(n¹) → Case 2, k=0 → T(n)=Θ(n log n) ✓
+
+Case 3 — INTERNAL NODES DOMINATE: f(n) = Ω(n^(log_b(a) + ε))
+  AND regularity: af(n/b) ≤ cf(n) for c<1
+  → T(n) = Θ(f(n))
+  EXAMPLE: T(n) = T(n/2) + O(n²)
+    log_2(1)=0, n²=Ω(n^(0+2)) → Case 3 → T(n)=Θ(n²) ✓
+
+COMMON RECURRENCES TABLE:
+  Algorithm                  Recurrence        Complexity
+  Binary Search              T=T(n/2)+1        O(log n)
+  Merge Sort                 T=2T(n/2)+n       O(n log n)
+  Strassen                   T=7T(n/2)+n²      O(n^2.807)
+  Karatsuba                  T=3T(n/2)+n       O(n^1.585)
+  FFT                        T=2T(n/2)+n log n O(n log² n) → O(n log n) with care
+  Closest Pair               T=2T(n/2)+n log n O(n log² n)
+  Matrix Multiplication (std) T=8T(n/2)+n²    O(n³)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Strassen Matrix Multiplication</div>
+
+<p>Standard matrix multiplication is O(n³). Strassen reduces 8 recursive multiplications 
+to 7, giving O(n^log₂7) ≈ O(n^2.807).</p>
+
+<div class="diagram">STANDARD 2×2 BLOCK MULTIPLICATION requires 8 multiplications:
+  [A B] × [E F] = [AE+BG  AF+BH]
+  [C D]   [G H]   [CE+DG  CF+DH]
+
+STRASSEN'S TRICK — 7 multiplications:
+  M₁ = (A+D)(E+H)
+  M₂ = (C+D)E
+  M₃ = A(F-H)
+  M₄ = D(G-E)
+  M₅ = (A+B)H
+  M₆ = (C-A)(E+F)
+  M₇ = (B-D)(G+H)
+
+  Result:
+  [0,0] = M₁ + M₄ - M₅ + M₇
+  [0,1] = M₃ + M₅
+  [1,0] = M₂ + M₄
+  [1,1] = M₁ - M₂ + M₃ + M₆
+
+RECURRENCE: T(n) = 7T(n/2) + O(n²)
+  log_2(7) ≈ 2.807 > 2, so n² = O(n^(2.807-0.807)) → Case 1
+  T(n) = Θ(n^log_2(7)) ≈ Θ(n^2.807)
+
+NOTE: Strassen is mainly of theoretical interest — the constant factors are large
+and cache performance is poor vs standard multiplication for typical n.
+Current best: Coppersmith-Winograd O(n^2.376), AlphaTensor O(n^2.778) (DeepMind, 2022).</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Karatsuba Fast Integer Multiplication</div>
+
+<p>Multiplying two n-digit numbers. Standard: O(n²). Karatsuba: O(n^log₂3) ≈ O(n^1.585).</p>
+
+<div class="diagram">KEY INSIGHT:
+  Represent n-digit numbers as: x = x₁·10^m + x₀, y = y₁·10^m + y₀
+  where m = n/2.
+
+  Naively: x·y = x₁y₁·10^2m + (x₁y₀+x₀y₁)·10^m + x₀y₀  [4 multiplications]
+  
+  KARATSUBA: Compute only 3 multiplications:
+  z₂ = x₁·y₁
+  z₀ = x₀·y₀
+  z₁ = (x₁+x₀)·(y₁+y₀) - z₂ - z₀    [= x₁y₀ + x₀y₁]
+  
+  x·y = z₂·10^2m + z₁·10^m + z₀
+
+RECURRENCE: T(n) = 3T(n/2) + O(n)
+  log_2(3) ≈ 1.585 > 1, Case 1 → T(n) = Θ(n^log_2(3)) ≈ Θ(n^1.585)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Karatsuba multiplication for large integers (simplified, using long)</span>
+<span class="kw">public long</span> <span class="mt">Karatsuba</span>(<span class="kw">long</span> x, <span class="kw">long</span> y)
+{
+    <span class="kw">if</span> (x &lt; <span class="nm">10</span> || y &lt; <span class="nm">10</span>) <span class="kw">return</span> x * y;
+    <span class="kw">int</span> n = <span class="tp">Math</span>.<span class="mt">Max</span>(x.<span class="mt">ToString</span>().Length, y.<span class="mt">ToString</span>().Length);
+    <span class="kw">int</span> m = n / <span class="nm">2</span>;
+    <span class="kw">long</span> pow = (<span class="kw">long</span>)<span class="tp">Math</span>.<span class="mt">Pow</span>(<span class="nm">10</span>, m);
+    <span class="kw">long</span> x1 = x / pow, x0 = x % pow;
+    <span class="kw">long</span> y1 = y / pow, y0 = y % pow;
+    <span class="kw">long</span> z2 = <span class="mt">Karatsuba</span>(x1, y1);
+    <span class="kw">long</span> z0 = <span class="mt">Karatsuba</span>(x0, y0);
+    <span class="kw">long</span> z1 = <span class="mt">Karatsuba</span>(x1 + x0, y1 + y0) - z2 - z0;
+    <span class="kw">return</span> z2 * pow * pow + z1 * pow + z0;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">karatsuba</span>(x, y):
+    <span class="kw">if</span> x &lt; <span class="nm">10</span> <span class="kw">or</span> y &lt; <span class="nm">10</span>: <span class="kw">return</span> x * y
+    n = <span class="mt">max</span>(<span class="mt">len</span>(<span class="mt">str</span>(x)), <span class="mt">len</span>(<span class="mt">str</span>(y)))
+    m = n // <span class="nm">2</span>; pow10 = <span class="nm">10</span> ** m
+    x1, x0 = x // pow10, x % pow10
+    y1, y0 = y // pow10, y % pow10
+    z2 = <span class="mt">karatsuba</span>(x1, y1)
+    z0 = <span class="mt">karatsuba</span>(x0, y0)
+    z1 = <span class="mt">karatsuba</span>(x1+x0, y1+y0) - z2 - z0
+    <span class="kw">return</span> z2 * pow10**<span class="nm">2</span> + z1 * pow10 + z0</pre>
+</div>
+
+<div class="realworld">
+    <strong>🌍 Real-World Applications:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Closest Pair</strong> — computational geometry, collision detection in graphics engines, spatial databases</li>
+        <li><strong>Strassen</strong> — numerical linear algebra libraries (BLAS), machine learning matrix operations at scale</li>
+        <li><strong>Karatsuba</strong> — Python's built-in bignum multiplication uses Karatsuba; cryptographic libraries (RSA key generation)</li>
+        <li><strong>FFT (future)</strong> — signal processing, polynomial multiplication, convolution in CNNs, audio compression</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: Why does the Closest Pair strip check only ~7 points per strip point?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">After recursion, δ is the minimum distance within each half. In the strip region (within δ of the midline), all points have already been proven to be at least δ apart from other points on the same side. The strip rectangle on each side is δ wide and 2δ tall (we only look at points within δ in y). In this 2δ × δ rectangle on each side, points must be δ apart. You can pack at most 8 points in a 2δ × 2δ square where each pair is ≥ δ apart. Subtracting the point itself, each strip point compares with at most 7 others. This bounds the strip check at O(n) per level, giving O(n log n) or O(n log² n) total.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: Apply the Master Theorem to T(n) = 4T(n/2) + n².</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">a=4, b=2, n^(log_b a) = n^(log_2 4) = n^2. The driving function f(n) = n². Compare f(n) = n² vs n^2 = n²: they are equal, so this is Case 2 (with k=0 in the log extension). T(n) = Θ(n² log n). This is the recurrence for standard matrix multiplication where you do 4 recursive multiplications of n/2 × n/2 matrices and O(n²) work to combine. Note: standard naive matrix mult recurrence is T(n)=8T(n/2)+n² → Case 1 → O(n³). The 4 subproblem version here gives O(n² log n), which is still worse than Strassen's O(n^2.807)? No: n^2.807 > n² log n for large n, so Θ(n² log n) would be BETTER. But you can't do standard matmul with only 4 recursive multiplications.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: How does Strassen achieve 7 multiplications from 8? Why does this help asymptotically?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Strassen defines 7 intermediate products (M1...M7) using only 7 multiplications (plus 18 additions). The key observation is that the four output submatrices can be expressed as linear combinations of these 7 products. This substitutes one multiplication (the 8th) for several additions, which at large n costs O(n²) instead of the recursive O(n^c) for multiplication. Why it helps: in the recurrence T(n)=aT(n/2)+n², reducing a from 8 to 7 changes log_2(a) from 3 to ~2.807. Since leaves dominate (Case 1), T(n)=Θ(n^log_2 a). Every time we reduce the number of recursive calls, the leaf count drops, improving the overall bound.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: Karatsuba uses 3 recursive multiplications vs 4 for naive. What is the "trick"?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The trick is that x₁y₀ + x₀y₁ (the "cross term") can be computed without two separate multiplications. Instead: compute (x₁+x₀)(y₁+y₀) = x₁y₁ + x₁y₀ + x₀y₁ + x₀y₀. Then subtract z₂=x₁y₁ and z₀=x₀y₀ (which we've already computed): z₁ = (x₁+x₀)(y₁+y₀) - z₂ - z₀ = x₁y₀ + x₀y₁. This is one extra multiplication instead of two, plus two extra subtractions. The subtractions are cheap (linear), so the net saving is one recursive multiplication per level. This is the same algebraic trick Strassen uses in 2D: exploit the structure of linear algebra to replace multiplications with additions.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: When does the Master Theorem NOT apply?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The Master Theorem does not apply in these cases: (1) Non-uniform subproblems: T(n) = T(n/3) + T(2n/3) + O(n) — different-size subproblems. (2) Subtractive recurrences: T(n) = T(n-1) + f(n) — e.g., factorial, which is T(n) = T(n-1) + O(1) → O(n). (3) f(n) is not polynomially larger/smaller than n^(log_b a): e.g., T(n) = 2T(n/2) + n/log(n). (4) a &lt; 1: meaningless for recursion. For case (1) use Akra-Bazzi method. For case (2) use telescoping or substitution. For case (3), you may need to solve the recurrence directly by expanding the recursion tree and summing the levels.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 14B Complete</button>
+<div class="toast" id="toast">✅ Module 14B marked complete!</div>
+    <script>var MODULE_ID = 'm14b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

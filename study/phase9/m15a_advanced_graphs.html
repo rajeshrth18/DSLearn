@@ -1,0 +1,497 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15A — Articulation Points &amp; Bridges | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part A</h1>
+    <div class="tagline">Articulation Points, Bridges &amp; DFS Trees</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Tarjan's Algorithm · DFS Discovery &amp; Low Times · Critical Connections · Network Vulnerability</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 15</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Advanced Graph Theory &amp; String Algorithms:</strong><br><br>
+    ▶ <strong>Module 15 Part A</strong> — <em>You are here</em> — Articulation Points &amp; Bridges<br>
+    ⬜ <strong>Module 15 Part B</strong> — <a href="m15b_scc_euler.html">SCC &amp; Euler Paths</a><br>
+    ⬜ <strong>Module 15 Part C</strong> — <a href="m15c_graph_practice.html">Graph Practice: 10 Problems</a><br>
+    ⬜ <strong>Module 16</strong> — <a href="m16a_string_algorithms.html">String Algorithms (KMP, Z, Rabin-Karp)</a><br>
+    ⬜ <strong>Module 17</strong> — <a href="m17a_bit_manipulation.html">Bit Manipulation &amp; Advanced Math</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
+    <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — DFS Trees &amp; Back Edges <span>— Foundation for advanced graph analysis</span></li>
+        <li>Section 2 — Discovery Time &amp; Low Values <span>— The two arrays that power Tarjan's</span></li>
+        <li>Section 3 — Bridges (Cut Edges) <span>— Edges whose removal disconnects the graph</span></li>
+        <li>Section 4 — Articulation Points (Cut Vertices) <span>— Vertices whose removal disconnects the graph</span></li>
+        <li>Section 5 — Full Implementation <span>— Combined C# and Python with both algorithms</span></li>
+        <li>Section 6 — LeetCode: Critical Connections #1192 <span>— Bridge-finding in a network</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — DFS Trees &amp; Back Edges</div>
+
+<p>When you run DFS on an undirected graph, the traversal implicitly defines a <strong>DFS tree</strong>: tree edges (edges you traverse to discover new nodes) and <strong>back edges</strong> (edges that connect a node back to one of its DFS ancestors). Understanding this structure is the foundation for almost all advanced graph algorithms.</p>
+
+<div class="diagram">GRAPH and its DFS TREE (starting from node 0):
+
+ORIGINAL GRAPH:
+   0 ── 1 ── 3
+   |    |    |
+   2    4    5
+        |
+        6
+
+DFS TREE (tree edges = solid, back edges = dashed):
+
+   0
+   ├── 1 (tree edge)
+   │   ├── 3 (tree edge)
+   │   │   └── 5 (tree edge)
+   │   └── 4 (tree edge)
+   │       └── 6 (tree edge)
+   └── 2 (tree edge)
+
+If edge 4──1 also existed, it would be a BACK EDGE (4 is a descendant of 1 and 4 connects up to 1).
+
+KEY INSIGHT:
+  Tree edges = used by DFS to explore new nodes
+  Back edges = connect descendants to ancestors (create CYCLES)
+  In an undirected DFS: every non-tree edge IS a back edge (no forward/cross edges)</div>
+
+<div class="note">
+    <strong>📝 Why DFS Trees Matter:</strong> A back edge from node <em>u</em> to ancestor <em>v</em> means there's an <em>alternative path</em> between all nodes on the path from <em>v</em> to <em>u</em> in the DFS tree. This alternative path is what prevents those edges and nodes from being <em>critical</em>. No back edge = single path = removing it disconnects the graph.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Discovery Time &amp; Low Values</div>
+
+<p>Tarjan's bridge/articulation point algorithm tracks two values at each node during DFS:</p>
+
+<div class="diagram">DISCOVERY TIME (disc[u]):
+  The DFS clock time when node u was FIRST VISITED.
+  Assigned in order: 0, 1, 2, 3, ... as DFS progresses.
+  disc[u] is UNIQUE for each node and NEVER changes after assignment.
+
+LOW VALUE (low[u]):
+  The EARLIEST discovery time reachable from the subtree rooted at u.
+  This includes:
+    - disc[u] itself
+    - disc of all nodes reachable via ≥1 back edge from u or u's descendants
+
+  low[u] = min(
+    disc[u],                              ← itself
+    low[child]  for each DFS-tree child,  ← through tree edges
+    disc[w]     for each back edge (u,w)  ← direct back edge
+  )
+
+EXAMPLE: Graph 0-1-2-0 (triangle):
+  DFS order: 0 → 1 → 2 → (back edge to 0)
+  disc = [0, 1, 2]
+  low  = [0, 0, 0]   ← all can reach node 0 via back edge
+
+Graph 0-1-2 (path, no cycle):
+  disc = [0, 1, 2]
+  low  = [0, 1, 2]   ← no back edges, low = disc
+
+KEY OBSERVATIONS:
+  Edge (u, v) is a BRIDGE    if low[v] > disc[u]
+  Node u is ARTICULATION PT  if any child v has low[v] >= disc[u]
+                              (with special rule for root)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Bridges (Cut Edges)</div>
+
+<p>A <strong>bridge</strong> is an edge whose removal increases the number of connected components in the graph. Networks depend on bridges — they're single points of failure for connectivity.</p>
+
+<div class="diagram">BRIDGE DETECTION RULE:
+  Edge (u → v) is a bridge if and only if:
+    low[v] > disc[u]
+
+  Meaning: the subtree rooted at v has NO back edge that reaches u or any ancestor of u.
+  Therefore removing edge (u,v) would completely disconnect v's subtree.
+
+EXAMPLE:
+  Graph: 0──1──2──3
+              |
+              4
+
+  DFS from 0: disc = [0,1,2,3,4]  (in order of visit)
+
+  Compute low:
+    Node 3: no back edges → low[3] = disc[3] = 3
+    Node 2: low[3]=3 > disc[2]=2 → edge 2──3 IS A BRIDGE
+            low[4]=4 > disc[2]=2 → edge 2──4 IS A BRIDGE
+            low[2] = min(disc[2], low[3], low[4]) = 2
+    Node 1: low[2]=2 > disc[1]=1 → edge 1──2 IS A BRIDGE
+    Node 0: low[1]=1 > disc[0]=0 → edge 0──1 IS A BRIDGE
+
+  All edges in a path graph are bridges (no cycles = every edge is critical).
+
+  COUNTER-EXAMPLE (cycle protects edges):
+  Graph: 0──1──2──0 (triangle)
+    No bridges because low[v] = 0 for all v (all can reach 0 via back edge).</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Articulation Points (Cut Vertices)</div>
+
+<p>An <strong>articulation point</strong> is a vertex whose removal increases the number of connected components. It's the vertex equivalent of a bridge.</p>
+
+<div class="diagram">ARTICULATION POINT DETECTION RULE:
+  Node u is an articulation point if EITHER:
+
+  CASE 1 — u is the ROOT of the DFS tree AND has ≥ 2 children.
+    (Removing root disconnects its subtrees from each other.)
+
+  CASE 2 — u is NOT the root AND has a child v with low[v] >= disc[u].
+    (The subtree at v cannot bypass u via a back edge → removing u disconnects v.)
+
+  NOTE: "child" here means DFS-tree child, not just any neighbor.
+
+EXAMPLE:
+  Graph:   1──2──3──4──5
+                |
+                6──7
+
+  DFS from 1:
+    disc = [0,1,2,3,4,5,6]  (for nodes 1..7 in order)
+    
+    Node 3 has children 4 and 6.
+      low[4] = disc[4] = 3 >= disc[3] = 2 → 3 is an ARTICULATION POINT
+      low[6] = disc[6] = 5 >= disc[3] = 2 → 3 is CONFIRMED articulation point
+
+  Removing node 3 splits: {1,2} | {4,5} | {6,7}
+
+ROOT SPECIAL CASE:
+  If start node has 2+ DFS children, removing it disconnects those subtrees.
+  Example: star graph with center 0 → 0 is articulation point (root, 3 children).</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Full Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">GraphAnalysis</span>
+{
+    <span class="kw">private int</span> n;
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj;
+    <span class="kw">private int</span>[] disc, low;
+    <span class="kw">private bool</span>[] visited;
+    <span class="kw">private int</span> timer = <span class="nm">0</span>;
+
+    <span class="kw">public</span> <span class="tp">GraphAnalysis</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">this</span>.n = n;
+        adj  = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+        disc = <span class="kw">new int</span>[n]; low = <span class="kw">new int</span>[n]; visited = <span class="kw">new bool</span>[n];
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v) { adj[u].<span class="mt">Add</span>(v); adj[v].<span class="mt">Add</span>(u); }
+
+    <span class="cm">// ── Find all Bridges ───────────────────────────────────</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt; <span class="mt">FindBridges</span>()
+    {
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(visited, <span class="kw">false</span>); timer = <span class="nm">0</span>;
+        <span class="kw">var</span> bridges = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            <span class="kw">if</span> (!visited[i]) <span class="mt">BridgeDfs</span>(i, -<span class="nm">1</span>, bridges);
+        <span class="kw">return</span> bridges;
+    }
+
+    <span class="kw">private void</span> <span class="mt">BridgeDfs</span>(<span class="kw">int</span> u, <span class="kw">int</span> parent, <span class="tp">List</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt; bridges)
+    {
+        visited[u] = <span class="kw">true</span>;
+        disc[u] = low[u] = timer++;
+
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+        {
+            <span class="kw">if</span> (!visited[v])
+            {
+                <span class="mt">BridgeDfs</span>(v, u, bridges);
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], low[v]);
+                <span class="kw">if</span> (low[v] > disc[u])             <span class="cm">// BRIDGE CONDITION</span>
+                    bridges.<span class="mt">Add</span>((u, v));
+            }
+            <span class="kw">else if</span> (v != parent)             <span class="cm">// back edge (not parent edge)</span>
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], disc[v]);
+        }
+    }
+
+    <span class="cm">// ── Find all Articulation Points ───────────────────────</span>
+    <span class="kw">public</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; <span class="mt">FindArticulationPoints</span>()
+    {
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(visited, <span class="kw">false</span>); timer = <span class="nm">0</span>;
+        <span class="kw">var</span> ap = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            <span class="kw">if</span> (!visited[i]) <span class="mt">ApDfs</span>(i, -<span class="nm">1</span>, ap);
+        <span class="kw">return</span> ap;
+    }
+
+    <span class="kw">private void</span> <span class="mt">ApDfs</span>(<span class="kw">int</span> u, <span class="kw">int</span> parent, <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; ap)
+    {
+        visited[u] = <span class="kw">true</span>;
+        disc[u] = low[u] = timer++;
+        <span class="kw">int</span> childCount = <span class="nm">0</span>;
+
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+        {
+            <span class="kw">if</span> (!visited[v])
+            {
+                childCount++;
+                <span class="mt">ApDfs</span>(v, u, ap);
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], low[v]);
+
+                <span class="kw">if</span> (parent == -<span class="nm">1</span> &amp;&amp; childCount > <span class="nm">1</span>) ap.<span class="mt">Add</span>(u);  <span class="cm">// root case</span>
+                <span class="kw">if</span> (parent != -<span class="nm">1</span> &amp;&amp; low[v] >= disc[u])  ap.<span class="mt">Add</span>(u);  <span class="cm">// non-root case</span>
+            }
+            <span class="kw">else if</span> (v != parent)
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], disc[v]);
+        }
+    }
+}
+
+<span class="cm">// ── Usage ───────────────────────────────────────────────</span>
+<span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">GraphAnalysis</span>(<span class="nm">6</span>);
+g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">1</span>); g.<span class="mt">AddEdge</span>(<span class="nm">1</span>, <span class="nm">2</span>); g.<span class="mt">AddEdge</span>(<span class="nm">2</span>, <span class="nm">0</span>);  <span class="cm">// triangle</span>
+g.<span class="mt">AddEdge</span>(<span class="nm">1</span>, <span class="nm">3</span>); g.<span class="mt">AddEdge</span>(<span class="nm">3</span>, <span class="nm">4</span>); g.<span class="mt">AddEdge</span>(<span class="nm">4</span>, <span class="nm">5</span>); g.<span class="mt">AddEdge</span>(<span class="nm">5</span>, <span class="nm">3</span>); <span class="cm">// triangle</span>
+<span class="cm">// Bridges: only edge 1──3 (connects two triangles)</span>
+<span class="cm">// Articulation point: node 1 and node 3</span>
+<span class="kw">var</span> bridges = g.<span class="mt">FindBridges</span>();
+<span class="kw">var</span> aps = g.<span class="mt">FindArticulationPoints</span>();
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Bridges: {string.Join(", ", bridges.Select(b => $"({b.Item1},{b.Item2})"))}"</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Articulation Points: {string.Join(", ", aps)}"</span>);</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">import</span> sys; sys.setrecursionlimit(<span class="nm">10</span>**<span class="nm">5</span>)
+
+<span class="kw">class</span> <span class="tp">GraphAnalysis</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, n):
+        self.n = n
+        self.adj = defaultdict(<span class="tp">list</span>)
+        self.disc = [<span class="nm">0</span>] * n; self.low = [<span class="nm">0</span>] * n
+        self.visited = [<span class="kw">False</span>] * n
+        self.timer = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(self, u, v):
+        self.adj[u].<span class="mt">append</span>(v); self.adj[v].<span class="mt">append</span>(u)
+
+    <span class="cm"># ── Find all Bridges ──────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">find_bridges</span>(self):
+        self.visited = [<span class="kw">False</span>] * self.n; self.timer = <span class="nm">0</span>
+        bridges = []
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(self.n):
+            <span class="kw">if not</span> self.visited[i]:
+                self.<span class="mt">_bridge_dfs</span>(i, -<span class="nm">1</span>, bridges)
+        <span class="kw">return</span> bridges
+
+    <span class="kw">def</span> <span class="mt">_bridge_dfs</span>(self, u, parent, bridges):
+        self.visited[u] = <span class="kw">True</span>
+        self.disc[u] = self.low[u] = self.timer; self.timer += <span class="nm">1</span>
+        <span class="kw">for</span> v <span class="kw">in</span> self.adj[u]:
+            <span class="kw">if not</span> self.visited[v]:
+                self.<span class="mt">_bridge_dfs</span>(v, u, bridges)
+                self.low[u] = <span class="mt">min</span>(self.low[u], self.low[v])
+                <span class="kw">if</span> self.low[v] > self.disc[u]:      <span class="cm"># BRIDGE CONDITION</span>
+                    bridges.<span class="mt">append</span>((u, v))
+            <span class="kw">elif</span> v != parent:                      <span class="cm"># back edge</span>
+                self.low[u] = <span class="mt">min</span>(self.low[u], self.disc[v])
+
+    <span class="cm"># ── Find all Articulation Points ──────────────────────</span>
+    <span class="kw">def</span> <span class="mt">find_articulation_points</span>(self):
+        self.visited = [<span class="kw">False</span>] * self.n; self.timer = <span class="nm">0</span>
+        ap = <span class="mt">set</span>()
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(self.n):
+            <span class="kw">if not</span> self.visited[i]:
+                self.<span class="mt">_ap_dfs</span>(i, -<span class="nm">1</span>, ap)
+        <span class="kw">return</span> ap
+
+    <span class="kw">def</span> <span class="mt">_ap_dfs</span>(self, u, parent, ap):
+        self.visited[u] = <span class="kw">True</span>
+        self.disc[u] = self.low[u] = self.timer; self.timer += <span class="nm">1</span>
+        child_count = <span class="nm">0</span>
+        <span class="kw">for</span> v <span class="kw">in</span> self.adj[u]:
+            <span class="kw">if not</span> self.visited[v]:
+                child_count += <span class="nm">1</span>
+                self.<span class="mt">_ap_dfs</span>(v, u, ap)
+                self.low[u] = <span class="mt">min</span>(self.low[u], self.low[v])
+                <span class="kw">if</span> parent == -<span class="nm">1</span> <span class="kw">and</span> child_count > <span class="nm">1</span>: ap.<span class="mt">add</span>(u)  <span class="cm"># root</span>
+                <span class="kw">if</span> parent != -<span class="nm">1</span> <span class="kw">and</span> self.low[v] >= self.disc[u]: ap.<span class="mt">add</span>(u)
+            <span class="kw">elif</span> v != parent:
+                self.low[u] = <span class="mt">min</span>(self.low[u], self.disc[v])
+
+<span class="cm"># ── Usage ──────────────────────────────────────────────</span>
+g = <span class="tp">GraphAnalysis</span>(<span class="nm">6</span>)
+g.<span class="mt">add_edge</span>(<span class="nm">0</span>,<span class="nm">1</span>); g.<span class="mt">add_edge</span>(<span class="nm">1</span>,<span class="nm">2</span>); g.<span class="mt">add_edge</span>(<span class="nm">2</span>,<span class="nm">0</span>)  <span class="cm"># triangle</span>
+g.<span class="mt">add_edge</span>(<span class="nm">1</span>,<span class="nm">3</span>); g.<span class="mt">add_edge</span>(<span class="nm">3</span>,<span class="nm">4</span>); g.<span class="mt">add_edge</span>(<span class="nm">4</span>,<span class="nm">5</span>); g.<span class="mt">add_edge</span>(<span class="nm">5</span>,<span class="nm">3</span>)
+<span class="mt">print</span>(<span class="st">"Bridges:"</span>, g.<span class="mt">find_bridges</span>())               <span class="cm"># [(1, 3)]</span>
+<span class="mt">print</span>(<span class="st">"Articulation Points:"</span>, g.<span class="mt">find_articulation_points</span>()) <span class="cm"># {1, 3}</span></pre>
+</div>
+
+<div class="warning">
+    <strong>⚠️ Parallel Edges (Multi-Graph):</strong> The basic algorithm above breaks when there are multiple edges between the same two nodes (multi-graph). The fix: track the <em>edge index</em> (not the parent node) to distinguish "going back on the same edge" from "a true back edge via a parallel edge." In LeetCode problems, check constraints — most guarantee simple graphs.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — LeetCode: Critical Connections #1192</div>
+
+<p><strong>Problem:</strong> There are <code>n</code> servers numbered 0 to n-1. You are given the list of connections as undirected edges. A <em>critical connection</em> is a connection that, if removed, will make some servers unable to reach some other server. Return all critical connections.</p>
+
+<div class="note">
+    <strong>📝 This IS the bridge problem.</strong> "Critical connection" = bridge. The solution is exactly the Tarjan bridge algorithm above, just applied to this specific graph. Time: O(V + E).
+</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// LeetCode #1192 — Critical Connections in a Network</span>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">CriticalConnections</span>(<span class="kw">int</span> n, <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; connections)
+{
+    <span class="kw">var</span> adj = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> c <span class="kw">in</span> connections) { adj[c[<span class="nm">0</span>]].<span class="mt">Add</span>(c[<span class="nm">1</span>]); adj[c[<span class="nm">1</span>]].<span class="mt">Add</span>(c[<span class="nm">0</span>]); }
+
+    <span class="kw">int</span>[] disc = <span class="kw">new int</span>[n], low = <span class="kw">new int</span>[n];
+    <span class="tp">Array</span>.<span class="mt">Fill</span>(disc, -<span class="nm">1</span>);
+    <span class="kw">int</span> timer = <span class="nm">0</span>;
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> u, <span class="kw">int</span> parent)
+    {
+        disc[u] = low[u] = timer++;
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+        {
+            <span class="kw">if</span> (disc[v] == -<span class="nm">1</span>)
+            {
+                <span class="mt">Dfs</span>(v, u);
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], low[v]);
+                <span class="kw">if</span> (low[v] > disc[u]) result.<span class="mt">Add</span>(<span class="kw">new</span>[] { u, v });
+            }
+            <span class="kw">else if</span> (v != parent) low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], disc[v]);
+        }
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) <span class="kw">if</span> (disc[i] == -<span class="nm">1</span>) <span class="mt">Dfs</span>(i, -<span class="nm">1</span>);
+    <span class="kw">return</span> result;
+}
+<span class="cm">// n=4, connections=[[0,1],[1,2],[2,0],[1,3]] → [[1,3]]</span></pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">criticalConnections</span>(n, connections):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> connections: adj[u].<span class="mt">append</span>(v); adj[v].<span class="mt">append</span>(u)
+
+    disc = [-<span class="nm">1</span>] * n; low = [<span class="nm">0</span>] * n; timer = [<span class="nm">0</span>]; result = []
+
+    <span class="kw">def</span> <span class="mt">dfs</span>(u, parent):
+        disc[u] = low[u] = timer[<span class="nm">0</span>]; timer[<span class="nm">0</span>] += <span class="nm">1</span>
+        <span class="kw">for</span> v <span class="kw">in</span> adj[u]:
+            <span class="kw">if</span> disc[v] == -<span class="nm">1</span>:
+                <span class="mt">dfs</span>(v, u)
+                low[u] = <span class="mt">min</span>(low[u], low[v])
+                <span class="kw">if</span> low[v] > disc[u]: result.<span class="mt">append</span>([u, v])
+            <span class="kw">elif</span> v != parent: low[u] = <span class="mt">min</span>(low[u], disc[v])
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> disc[i] == -<span class="nm">1</span>: <span class="mt">dfs</span>(i, -<span class="nm">1</span>)
+    <span class="kw">return</span> result</pre>
+</div>
+
+<table>
+    <thead>
+        <tr><th>Problem</th><th>Algorithm</th><th>Key Condition</th><th>Time</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>#1192 Critical Connections</td><td>Tarjan bridges</td><td>low[v] &gt; disc[u]</td><td class="g">O(V+E)</td></tr>
+        <tr><td>Articulation Points (Codeforces)</td><td>Tarjan AP</td><td>low[v] &ge; disc[u] &amp; root has 2+ children</td><td class="g">O(V+E)</td></tr>
+        <tr><td>#2685 Count Complete Components</td><td>DFS + component check</td><td>edges = V*(V-1)/2 per component</td><td class="g">O(V+E)</td></tr>
+        <tr><td>#1568 Min Days to Disconnect Island</td><td>Articulation + brute force</td><td>0, 1, or 2 days</td><td class="o">O(V²)</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Real-World Applications:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Network reliability</strong> — Find single points of failure in internet backbone routers</li>
+        <li><strong>Power grids</strong> — Identify critical transmission lines whose failure causes blackouts</li>
+        <li><strong>Social networks</strong> — Articulation points are influencers whose removal fragments communities</li>
+        <li><strong>Road networks</strong> — Bridges are roads/bridges whose closure isolates towns</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: What is the difference between a bridge and an articulation point?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">A <strong>bridge</strong> is an edge — removing it increases connected components. An <strong>articulation point</strong> is a vertex — removing it (along with all its incident edges) increases connected components. They're related but distinct: a bridge's endpoints are often articulation points, but an articulation point doesn't necessarily have a bridge incident to it (e.g., the center of a "bowtie" graph — two triangles sharing one vertex — is an AP but the edges are not bridges). Both are detectable in O(V+E) using DFS.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: What does <code>low[v]</code> represent, and how is it computed?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer"><code>low[v]</code> = the minimum discovery time reachable from the subtree rooted at v in the DFS tree. It's computed as: <code>low[v] = min(disc[v], min(low[child]) for each DFS-tree child, min(disc[w]) for each back edge (v,w))</code>. Intuitively, low[v] tells us "can this subtree escape upward in the tree via a back edge?" If low[v] > disc[u], the subtree at v is "trapped" below u — there's no back edge reaching u or above, meaning edge (u,v) is a bridge and u is a potential articulation point.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: Why is the root node of the DFS tree treated as a special case for articulation points?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For non-root nodes, the condition low[child] >= disc[u] works because: if the subtree at child can't reach any ancestor of u via a back edge, removing u disconnects child from the rest. But for the ROOT, it has no parent, so the "can it reach above u" concept doesn't apply the same way. The root is an articulation point if and only if it has 2 or more DFS children. Removing the root disconnects those child subtrees from each other. With only 1 child, the root is just a leaf's perspective — removing it leaves one connected piece (the child's subtree), so it's not an AP.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: How does the algorithm handle multi-graphs (parallel edges between the same two nodes)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The naive approach (skip neighbor == parent) breaks with parallel edges because two separate edges between u and v form a "cycle" — neither should be a bridge. Fix: track edge indices instead of parent nodes. Each edge gets an index. When at node u coming from edge <em>id</em>, skip edge <em>id</em> (not all edges to parent). This way, a second parallel edge from u back to v is correctly treated as a back edge (alternative path), preventing false bridge detection. In Python: <code>adj[u].append((v, edge_id))</code> and skip <code>if eid == parent_edge: continue</code>.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: Can you find bridges iteratively (without recursion)? Why might you need to?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Yes — the recursive DFS will stack-overflow on large graphs (n = 10^5+). Iterative version: use an explicit stack of (node, parent, iterator_position). Maintain the iterator over each node's adjacency list. When you push a new node, save the adjacency list iterator for the parent. When you pop (finish a node), update parent's low value. Python's default recursion limit is 1000 — set <code>sys.setrecursionlimit(10**6)</code> or use iterative DFS for large inputs. C# default stack is ~1MB; for n=50k+ nodes, either increase stack size (<code>new Thread(...) { ... }.Start()</code> with <code>StackSize</code>) or convert to iterative.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15A Complete</button>
+<div class="toast" id="toast">✅ Module 15A marked complete! Great work on advanced graphs!</div>
+    <script>var MODULE_ID = 'm15a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

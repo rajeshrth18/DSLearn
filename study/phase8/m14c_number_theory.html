@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 14C — Number Theory | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
+    <h1>Module 14 — Part C</h1>
+    <div class="tagline">Number Theory: GCD, Sieve &amp; Modular Arithmetic</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Euclidean Algorithm · Sieve of Eratosthenes · Modular Exponentiation · Chinese Remainder Theorem</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 14</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ✅ Module 12 — <a href="m12a_dp_intro.html">Dynamic Programming (Parts A–F)</a><br>
+    ✅ Module 13 — <a href="m13a_greedy.html">Greedy Algorithms (Parts A–C)</a><br>
+    ✅ <strong>Module 14 Part A</strong> — <a href="m14a_divide_conquer.html">Divide &amp; Conquer</a><br>
+    ✅ <strong>Module 14 Part B</strong> — <a href="m14b_advanced_dc.html">Closest Pair &amp; Master Theorem</a><br>
+    ▶ <strong>Module 14 Part C</strong> — <em>You are here</em> — Number Theory<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m13a_greedy.html">&larr; Module 13 &mdash; Greedy Algorithms</a>
+    <a href="../phase9/m15a_kmp.html">Module 15 &mdash; String Algorithms &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — GCD, LCM &amp; Extended Euclidean <span>— Foundation algorithms</span></li>
+        <li>Section 2 — Sieve of Eratosthenes <span>— All primes to n in O(n log log n)</span></li>
+        <li>Section 3 — Modular Arithmetic <span>— Properties + modular inverse</span></li>
+        <li>Section 4 — Modular Exponentiation <span>— Fast power O(log n)</span></li>
+        <li>Section 5 — LeetCode Applications <span>— #204, #1201, #1323, Combinatorics</span></li>
+        <li>Section 6 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — GCD, LCM &amp; Extended Euclidean Algorithm</div>
+
+<div class="diagram">EUCLIDEAN ALGORITHM: gcd(a, b) = gcd(b, a mod b)
+  Base case: gcd(a, 0) = a
+
+  WHY: If d divides a and b, then d divides a - k·b.
+       gcd(a,b) = gcd(b, a mod b) because same divisors divide both pairs.
+
+  EXAMPLE: gcd(48, 18)
+    gcd(48, 18) = gcd(18, 48 mod 18) = gcd(18, 12)
+    gcd(18, 12) = gcd(12, 6)
+    gcd(12, 6)  = gcd(6, 0) = 6 ✓
+
+  COMPLEXITY: O(log(min(a,b))) — Fibonacci numbers are worst case.
+
+LCM: lcm(a, b) = a * b / gcd(a, b)
+  CAUTION: compute a/gcd(a,b) * b to avoid overflow!
+
+EXTENDED EUCLIDEAN (Bezout's Identity):
+  For integers a, b, there exist integers x, y such that:
+    ax + by = gcd(a, b)
+  
+  The extended algorithm finds these x, y.
+  Used for: modular inverse (when gcd(a,m)=1, x = a^(-1) mod m)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public long</span> <span class="mt">Gcd</span>(<span class="kw">long</span> a, <span class="kw">long</span> b) => b == <span class="nm">0</span> ? a : <span class="mt">Gcd</span>(b, a % b);
+
+<span class="kw">public long</span> <span class="mt">Lcm</span>(<span class="kw">long</span> a, <span class="kw">long</span> b) => a / <span class="mt">Gcd</span>(a, b) * b; <span class="cm">// avoid overflow</span>
+
+<span class="cm">// Extended GCD: returns gcd, sets x and y s.t. a*x + b*y = gcd</span>
+<span class="kw">public long</span> <span class="mt">ExtGcd</span>(<span class="kw">long</span> a, <span class="kw">long</span> b, <span class="kw">out long</span> x, <span class="kw">out long</span> y)
+{
+    <span class="kw">if</span> (b == <span class="nm">0</span>) { x = <span class="nm">1</span>; y = <span class="nm">0</span>; <span class="kw">return</span> a; }
+    <span class="kw">long</span> g = <span class="mt">ExtGcd</span>(b, a % b, <span class="kw">out long</span> x1, <span class="kw">out long</span> y1);
+    x = y1; y = x1 - (a / b) * y1;
+    <span class="kw">return</span> g;
+}
+<span class="cm">// Modular inverse: a^(-1) mod m, requires gcd(a,m)=1</span>
+<span class="kw">public long</span> <span class="mt">ModInverse</span>(<span class="kw">long</span> a, <span class="kw">long</span> m)
+{
+    <span class="kw">long</span> g = <span class="mt">ExtGcd</span>(a % m, m, <span class="kw">out long</span> x, <span class="kw">out var</span> _);
+    <span class="kw">if</span> (g != <span class="nm">1</span>) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Inverse doesn't exist"</span>);
+    <span class="kw">return</span> (x % m + m) % m;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> math <span class="kw">import</span> gcd
+
+<span class="kw">def</span> <span class="mt">lcm</span>(a, b): <span class="kw">return</span> a // <span class="mt">gcd</span>(a, b) * b
+
+<span class="kw">def</span> <span class="mt">ext_gcd</span>(a, b):
+    <span class="cm"># Returns (g, x, y) s.t. a*x + b*y = g</span>
+    <span class="kw">if</span> b == <span class="nm">0</span>: <span class="kw">return</span> a, <span class="nm">1</span>, <span class="nm">0</span>
+    g, x1, y1 = <span class="mt">ext_gcd</span>(b, a % b)
+    <span class="kw">return</span> g, y1, x1 - (a // b) * y1
+
+<span class="kw">def</span> <span class="mt">mod_inverse</span>(a, m):
+    g, x, _ = <span class="mt">ext_gcd</span>(a % m, m)
+    <span class="kw">if</span> g != <span class="nm">1</span>: <span class="kw">raise</span> <span class="tp">ValueError</span>(<span class="st">"Inverse doesn't exist"</span>)
+    <span class="kw">return</span> x % m
+
+<span class="cm"># Python 3.8+ built-in: pow(a, -1, m) computes modular inverse</span>
+<span class="cm"># inv = pow(a, -1, m)</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Sieve of Eratosthenes</div>
+
+<div class="diagram">SIEVE: Find all primes ≤ n in O(n log log n) time, O(n) space.
+
+ALGORITHM:
+  1. Create boolean array is_prime[0..n], initialize all to true.
+  2. is_prime[0] = is_prime[1] = false.
+  3. For i from 2 to sqrt(n):
+       if is_prime[i]: mark i*i, i*(i+1), i*(i+2), ... as composite.
+  4. All remaining true entries are prime.
+
+WHY START AT i²?
+  All multiples of i less than i² have already been marked by smaller primes.
+  e.g., 2×i, 3×i, ..., (i-1)×i are all handled already.
+
+EXAMPLE (n=30):
+  i=2: mark 4,6,8,10,12,14,16,18,20,22,24,26,28,30
+  i=3: mark 9,12,15,18,21,24,27,30
+  i=5: mark 25,30
+  Primes: 2,3,5,7,11,13,17,19,23,29 ✓
+
+COMPLEXITY: O(n) for array + O(n/2 + n/3 + n/5 + ...) = O(n log log n)
+  (sum of reciprocals of primes up to n)
+
+SEGMENTED SIEVE: Useful when n is huge (>10^8) but range is small.
+  Use precomputed primes to sieve ranges [L, R] in O((R-L) log log R + sqrt(R)) space.</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span>[] <span class="mt">SieveOfEratosthenes</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">var</span> isPrime = <span class="kw">new bool</span>[n + <span class="nm">1</span>];
+    <span class="tp">Array</span>.<span class="mt">Fill</span>(isPrime, <span class="kw">true</span>);
+    isPrime[<span class="nm">0</span>] = isPrime[<span class="nm">1</span>] = <span class="kw">false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; (<span class="kw">long</span>)i * i &lt;= n; i++)
+        <span class="kw">if</span> (isPrime[i])
+            <span class="kw">for</span> (<span class="kw">int</span> j = i * i; j &lt;= n; j += i)
+                isPrime[j] = <span class="kw">false</span>;
+    <span class="kw">return</span> isPrime;
+}
+<span class="cm">// Count primes ≤ n: isPrime.Count(b => b)</span>
+<span class="cm">// LeetCode #204 — Count Primes</span>
+<span class="kw">public int</span> <span class="mt">CountPrimes</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">2</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">var</span> sieve = <span class="mt">SieveOfEratosthenes</span>(n - <span class="nm">1</span>);
+    <span class="kw">return</span> sieve.<span class="mt">Count</span>(b => b);
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">sieve</span>(n):
+    is_prime = [<span class="kw">True</span>] * (n + <span class="nm">1</span>)
+    is_prime[<span class="nm">0</span>] = is_prime[<span class="nm">1</span>] = <span class="kw">False</span>
+    i = <span class="nm">2</span>
+    <span class="kw">while</span> i * i &lt;= n:
+        <span class="kw">if</span> is_prime[i]:
+            <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(i*i, n+<span class="nm">1</span>, i): is_prime[j] = <span class="kw">False</span>
+        i += <span class="nm">1</span>
+    <span class="kw">return</span> is_prime
+
+<span class="kw">def</span> <span class="mt">count_primes</span>(n):
+    <span class="kw">if</span> n &lt;= <span class="nm">2</span>: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> <span class="mt">sum</span>(<span class="mt">sieve</span>(n-<span class="nm">1</span>))</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Modular Arithmetic &amp; Fast Exponentiation</div>
+
+<div class="diagram">MODULAR ARITHMETIC RULES:
+  (a + b) mod m = ((a mod m) + (b mod m)) mod m
+  (a * b) mod m = ((a mod m) * (b mod m)) mod m
+  (a - b) mod m = ((a mod m) - (b mod m) + m) mod m  ← add m to prevent negative
+  
+  MODULAR INVERSE (a^(-1) mod m):
+  - Exists iff gcd(a, m) = 1 (a and m are coprime).
+  - By Fermat's Little Theorem: if m is prime, a^(-1) ≡ a^(m-2) mod m
+  - By Extended Euclidean: works for any m.
+  
+  FERMAT'S LITTLE THEOREM: If p is prime and gcd(a,p)=1:
+    a^(p-1) ≡ 1 (mod p)  →  a^(-1) ≡ a^(p-2) (mod p)
+  
+MODULAR EXPONENTIATION: Compute a^b mod m in O(log b).
+  Use binary exponentiation (fast power):
+  
+  If b is even: a^b = (a^(b/2))^2
+  If b is odd:  a^b = a × a^(b-1)
+  
+  EXAMPLE: 3^10 mod 1000000007
+    10 = 1010₂
+    3^1  = 3
+    3^2  = 9
+    3^4  = 81
+    3^8  = 6561
+    3^10 = 3^8 × 3^2 = 6561 × 9 = 59049 mod MOD ✓
+
+COMMON LeetCode MODULUS: MOD = 10^9 + 7 (is prime → Fermat's theorem applies)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">const long</span> MOD = <span class="nm">1_000_000_007</span>;
+
+<span class="cm">// Modular exponentiation: base^exp mod mod</span>
+<span class="kw">public long</span> <span class="mt">ModPow</span>(<span class="kw">long</span> base_, <span class="kw">long</span> exp, <span class="kw">long</span> mod = MOD)
+{
+    <span class="kw">long</span> result = <span class="nm">1</span>;
+    base_ %= mod;
+    <span class="kw">while</span> (exp > <span class="nm">0</span>)
+    {
+        <span class="kw">if</span> ((exp &amp; <span class="nm">1</span>) == <span class="nm">1</span>) result = result * base_ % mod;
+        base_ = base_ * base_ % mod;
+        exp >>= <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// Modular inverse using Fermat's Little Theorem (MOD must be prime)</span>
+<span class="kw">public long</span> <span class="mt">ModInvFermat</span>(<span class="kw">long</span> a, <span class="kw">long</span> mod = MOD) => <span class="mt">ModPow</span>(a, mod - <span class="nm">2</span>, mod);
+
+<span class="cm">// Combinations C(n, k) mod p using precomputed factorials</span>
+<span class="kw">public long</span>[] fact, inv_fact;
+<span class="kw">public void</span> <span class="mt">PrecomputeFactorials</span>(<span class="kw">int</span> n)
+{
+    fact = <span class="kw">new long</span>[n + <span class="nm">1</span>]; inv_fact = <span class="kw">new long</span>[n + <span class="nm">1</span>];
+    fact[<span class="nm">0</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++) fact[i] = fact[i-<span class="nm">1</span>] * i % MOD;
+    inv_fact[n] = <span class="mt">ModInvFermat</span>(fact[n]);
+    <span class="kw">for</span> (<span class="kw">int</span> i = n-<span class="nm">1</span>; i >= <span class="nm">0</span>; i--) inv_fact[i] = inv_fact[i+<span class="nm">1</span>] * (i+<span class="nm">1</span>) % MOD;
+}
+<span class="kw">public long</span> <span class="mt">Comb</span>(<span class="kw">int</span> n, <span class="kw">int</span> k)
+{
+    <span class="kw">if</span> (k &lt; <span class="nm">0</span> || k > n) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">return</span> fact[n] * inv_fact[k] % MOD * inv_fact[n-k] % MOD;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python">MOD = <span class="nm">10</span>**<span class="nm">9</span> + <span class="nm">7</span>
+
+<span class="kw">def</span> <span class="mt">mod_pow</span>(base, exp, mod=MOD):
+    result = <span class="nm">1</span>; base %= mod
+    <span class="kw">while</span> exp > <span class="nm">0</span>:
+        <span class="kw">if</span> exp &amp; <span class="nm">1</span>: result = result * base % mod
+        base = base * base % mod
+        exp >>= <span class="nm">1</span>
+    <span class="kw">return</span> result
+<span class="cm"># Python built-in: pow(base, exp, mod) — uses fast exponentiation</span>
+
+<span class="kw">def</span> <span class="mt">precompute_factorials</span>(n, mod=MOD):
+    fact = [<span class="nm">1</span>] * (n + <span class="nm">1</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>): fact[i] = fact[i-<span class="nm">1</span>] * i % mod
+    inv_fact = [<span class="nm">1</span>] * (n + <span class="nm">1</span>)
+    inv_fact[n] = <span class="mt">pow</span>(fact[n], mod-<span class="nm">2</span>, mod)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n-<span class="nm">1</span>, -<span class="nm">1</span>, -<span class="nm">1</span>): inv_fact[i] = inv_fact[i+<span class="nm">1</span>] * (i+<span class="nm">1</span>) % mod
+    <span class="kw">return</span> fact, inv_fact
+
+<span class="kw">def</span> <span class="mt">comb</span>(n, k, fact, inv_fact, mod=MOD):
+    <span class="kw">if</span> k &lt; <span class="nm">0</span> <span class="kw">or</span> k > n: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> fact[n] * inv_fact[k] % mod * inv_fact[n-k] % mod</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — LeetCode Applications</div>
+
+<table>
+    <thead>
+        <tr><th>Problem</th><th>Key Technique</th><th>Complexity</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>#204 Count Primes</td><td>Sieve of Eratosthenes</td><td class="g">O(n log log n)</td></tr>
+        <tr><td>#1201 Ugly Number III</td><td>Binary search + inclusion-exclusion + LCM</td><td class="g">O(log n)</td></tr>
+        <tr><td>#50 Pow(x, n)</td><td>Modular fast exponentiation</td><td class="g">O(log n)</td></tr>
+        <tr><td>#62 Unique Paths</td><td>C(m+n-2, m-1) mod — combinatorics</td><td class="g">O(m+n)</td></tr>
+        <tr><td>#1922 Count Good Numbers</td><td>Modular exponentiation for large n</td><td class="g">O(log n)</td></tr>
+        <tr><td>#1071 GCD of Strings</td><td>gcd of lengths → check prefix</td><td class="g">O(m+n)</td></tr>
+        <tr><td>#2413 Smallest Multiple</td><td>lcm(1..n) — primorial + small factors</td><td class="g">O(n)</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Number Theory in the Real World:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>RSA Encryption</strong> — modular exponentiation, Euler's theorem, prime factorization</li>
+        <li><strong>Hashing</strong> — polynomial rolling hash uses modular arithmetic: hash = Σ s[i] × p^i mod MOD</li>
+        <li><strong>Calendar computations</strong> — modular arithmetic for day-of-week (Zeller's congruence)</li>
+        <li><strong>Competitive programming</strong> — almost every counting problem mod 10^9+7 needs modular combinatorics</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: Why is the Euclidean algorithm O(log(min(a,b)))? What are the worst-case inputs?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Each step reduces the problem: gcd(a, b) → gcd(b, a mod b). The key observation is that b and a mod b together are at most a + b in value, but more specifically, after two steps the larger value decreases by at least half: if b ≤ a/2 then a mod b ≤ b ≤ a/2. If b > a/2 then a mod b = a - b &lt; a/2. Either way, every two steps the values decrease by at least half, giving O(log(max(a,b))) = O(log(min(a,b))) steps. Worst case inputs are consecutive Fibonacci numbers: gcd(F(n), F(n-1)) = gcd(F(n-1), F(n-2)) = ... = 1, taking exactly n-1 steps. This is why the algorithm's maximum number of steps is ≈ 1.44 × log₂(min(a,b)) + 1.328.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: Why does the Sieve of Eratosthenes start marking from i² instead of 2i?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">All multiples of i that are less than i² have already been marked by a smaller prime factor. Specifically: 2i has been marked when we processed i=2. 3i has been marked when we processed i=3. In general, k×i where k &lt; i was marked when processing k (since k is either prime or had a prime factor ≤ k &lt; i). So the first new composite we need to mark for prime i is i×i. Starting from i² avoids redundant work and slightly speeds up the algorithm. The total work done is still O(n log log n) — the harmonic series of prime reciprocals up to √n.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: When can you use a^(m-2) mod m as the modular inverse, and when must you use Extended Euclidean?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Fermat's Little Theorem states a^(p-1) ≡ 1 (mod p) when p is prime and gcd(a,p)=1. So a^(p-2) ≡ a^(-1) (mod p). This ONLY works when the modulus m is prime. If m is composite, Fermat's doesn't apply (though Euler's theorem gives a^(φ(m)) ≡ 1 (mod m) for coprime a,m). The Extended Euclidean algorithm works for ANY modulus m as long as gcd(a,m)=1. In competitive programming, the modulus is almost always 10^9+7 (prime), so Fermat's is fine. For general moduli (like in CRT problems), use Extended Euclidean. Python 3.8+: pow(a, -1, m) automatically uses the correct algorithm.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: How do you compute C(n, k) mod p efficiently when n can be up to 10^6 and k up to n?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Precompute factorial table: fact[0]=1, fact[i]=fact[i-1]*i mod p. Precompute inverse factorial: inv_fact[n] = pow(fact[n], p-2, p) (Fermat's inverse), then inv_fact[i] = inv_fact[i+1]*(i+1) mod p going backward. Then C(n,k) = fact[n] * inv_fact[k] * inv_fact[n-k] mod p. Total precomputation: O(n). Each query: O(1). This is far better than computing C(n,k) = n!/(k!(n-k)!) naively. Warning: if p is small (like p=2 or p=5) and n is large, many factorials become 0 mod p. For those cases, use Lucas's theorem: C(n,k) mod p = product of C(n_i, k_i) mod p where n = Σ n_i * p^i in base p.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: Explain inclusion-exclusion for counting multiples. When is it needed in LeetCode problems?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Inclusion-Exclusion principle for counting numbers ≤ n divisible by at least one of a,b,c: |A∪B∪C| = |A| + |B| + |C| - |A∩B| - |A∩C| - |B∩C| + |A∩B∩C|. For divisibility: |{x≤n: a|x or b|x}| = ⌊n/a⌋ + ⌊n/b⌋ - ⌊n/lcm(a,b)⌋. LeetCode #1201 (Ugly Number III): "Find the nth ugly number divisible by a, b, or c." Solution: binary search on answer x + count(x) = count of ugly numbers ≤ x using inclusion-exclusion with LCM. LeetCode #204 type-problems: when you need to count without double-counting overlapping sets. Also used in LeetCode #878 (Nth Magical Number): binary search + lcm.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 14C Complete</button>
+<div class="toast" id="toast">✅ Module 14C marked complete! Phase 8 is now complete! 🎉</div>
+    <script>var MODULE_ID = 'm14c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

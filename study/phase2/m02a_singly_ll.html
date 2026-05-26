@@ -1,50 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 2A — Singly Linked List</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
-        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
-        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
-        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
-        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
-        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
-        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
-        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
-        .toc ol { margin-left: 20px; }
-        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
-        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
-        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
-        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
-        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
-        p { margin: 10px 0 14px 0; font-size: 1em; }
-        ul, ol { margin: 10px 0 14px 28px; }
-        li { margin: 7px 0; }
-        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
-        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
-        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
-        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
-        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .note strong { color: #e67e22; }
-        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .tip strong { color: #16a085; }
-        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .warning strong { color: #c0392b; }
-        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .realworld strong { color: #1a5276; }
-        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
-        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
-        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
-        tbody tr:nth-child(even) { background: #f8f9fa; }
-        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
-        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
-        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
-        .nav-box strong { color: #1a5276; }
-        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-    </style>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
@@ -62,11 +22,16 @@
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 2 Navigation:</strong><br><br>
+    <strong>📂 Module 2 — Linked Lists:</strong><br><br>
     ▶ <strong>Part A</strong> — <em>You are here</em> — Singly Linked List<br>
     ⬜ <strong>Part B</strong> — <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
     ⬜ <strong>Part C</strong> — <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m02d_floyd.html">Floyd's Cycle Detection</a><br>
     🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase1/m01a_bigO_arrays.html">&larr; Module 1 &mdash; Big O &amp; Arrays</a>
+    <a href="../phase2/m03a_stacks.html">Module 3 &mdash; Stacks &amp; Queues &rarr;</a>
 </div>
 
 <div class="toc">
@@ -163,6 +128,10 @@ object that holds <strong>two things</strong>:</p>
     <li><strong>Next</strong> — a reference (pointer) to the <em>next node</em> in the chain, or <code>null</code> if there is no next node</li>
 </ol>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// The simplest possible Node for integers</span>
 <span class="kw">public class</span> <span class="tp">Node</span>
 {
@@ -188,6 +157,25 @@ object that holds <strong>two things</strong>:</p>
         Next = <span class="kw">null</span>;
     }
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">class</span> <span class="tp">Node</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>, data):
+        <span class="kw">self</span>.data = data
+        <span class="kw">self</span>.next = <span class="kw">None</span>  <span class="cm"># reference to the next node</span>
+
+<span class="cm"># Generic version using TypeVar:</span>
+<span class="kw">from</span> typing <span class="kw">import</span> TypeVar, Generic
+T = TypeVar(<span class="st">'T'</span>)
+
+<span class="kw">class</span> <span class="tp">Node</span>(Generic[T]):
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>, data: T):
+        <span class="kw">self</span>.data = data
+        <span class="kw">self</span>.next: <span class="st">'Node[T] | None'</span> = <span class="kw">None</span></pre>
+</div>
 
 <div class="diagram">A SINGLE NODE in Memory
 
@@ -202,6 +190,10 @@ object that holds <strong>two things</strong>:</p>
 
 When Next = null, this node is the LAST node in the list (the TAIL).</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Creating nodes manually to understand how they link:</span>
 <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt; node1 = <span class="kw">new</span> <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt;(<span class="nm">10</span>);
 <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt; node2 = <span class="kw">new</span> <span class="tp">Node</span>&lt;<span class="kw">int</span>&gt;(<span class="nm">20</span>);
@@ -220,6 +212,24 @@ node2.Next = node3;
     current = current.Next;
 }
 <span class="cm">// Output: 10 → 20 → 30 → </span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+node1 = <span class="tp">Node</span>(<span class="nm">10</span>)
+node2 = <span class="tp">Node</span>(<span class="nm">20</span>)
+node3 = <span class="tp">Node</span>(<span class="nm">30</span>)
+node1.next = node2
+node2.next = node3
+<span class="cm"># node3.next is None (end of list)</span>
+
+<span class="cm"># Traverse and print all values</span>
+current = node1
+<span class="kw">while</span> current <span class="kw">is not</span> <span class="kw">None</span>:
+    <span class="mt">print</span>(current.data)
+    current = current.next</pre>
+</div>
 
 <div class="note">
     <strong>📌 C# References are Pointers:</strong> In C#, when you write <code>Node? Next</code>, the variable
@@ -261,6 +271,10 @@ node2.Next = node3;
   │  Count = 0                                    │
   └──────────────────────────────────────────────┘</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">SinglyLinkedList</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">private</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? head;    <span class="cm">// first node</span>
@@ -271,6 +285,20 @@ node2.Next = node3;
 
     <span class="cm">// We'll add methods in the sections below</span>
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">class</span> <span class="tp">SinglyLinkedList</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>):
+        <span class="kw">self</span>.head  = <span class="kw">None</span>   <span class="cm"># first node</span>
+        <span class="kw">self</span>.tail  = <span class="kw">None</span>   <span class="cm"># last node (avoid O(n) add_last)</span>
+        <span class="kw">self</span>.count = <span class="nm">0</span>
+
+    @property
+    <span class="kw">def</span> <span class="mt">is_empty</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="kw">self</span>.count == <span class="nm">0</span></pre>
+</div>
 
 <hr>
 
@@ -286,6 +314,10 @@ you always start at <code>head</code> and follow the <code>Next</code> pointer u
     <code>head</code> means losing access to the entire list!
 </div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Print all nodes: O(n) — must visit every node</span>
 <span class="kw">public void</span> <span class="mt">Print</span>()
 {
@@ -310,6 +342,26 @@ you always start at <code>head</code> and follow the <code>Next</code> pointer u
 
     <span class="kw">return</span> current!.Data;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">print_all</span>(<span class="kw">self</span>):
+    current = <span class="kw">self</span>.head
+    <span class="kw">while</span> current:
+        <span class="mt">print</span>(current.data, end=<span class="st">' '</span>)
+        current = current.next
+    <span class="mt">print</span>()
+
+<span class="kw">def</span> <span class="mt">get</span>(<span class="kw">self</span>, index: <span class="tp">int</span>):
+    <span class="kw">if</span> index &lt; <span class="nm">0</span> <span class="kw">or</span> index &gt;= <span class="kw">self</span>.count:
+        <span class="kw">raise</span> <span class="tp">IndexError</span>(<span class="st">"Index out of range"</span>)
+    current = <span class="kw">self</span>.head
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(index):
+        current = current.next
+    <span class="kw">return</span> current.data</pre>
+</div>
 
 <div class="diagram">TRAVERSAL TRACE — List: 10 → 20 → 30 → null
 
@@ -354,6 +406,10 @@ Edge case (empty list): head = null, tail = null
   → head = newNode
   → tail = newNode  (the only node is both head AND tail)</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public void</span> <span class="mt">AddFirst</span>(<span class="tp">T</span> value)
 {
     <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt; newNode = <span class="kw">new</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;(value);
@@ -370,6 +426,20 @@ Edge case (empty list): head = null, tail = null
     }
     Count++;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">add_first</span>(<span class="kw">self</span>, value):
+    new_node = <span class="tp">Node</span>(value)
+    <span class="kw">if</span> <span class="kw">self</span>.is_empty:
+        <span class="kw">self</span>.head = <span class="kw">self</span>.tail = new_node
+    <span class="kw">else</span>:
+        new_node.next = <span class="kw">self</span>.head
+        <span class="kw">self</span>.head = new_node
+    <span class="kw">self</span>.count += <span class="nm">1</span></pre>
+</div>
 
 <h3>5.2 — Insert at Tail — O(1)</h3>
 <p>Adding a node to the <strong>end</strong> of the list. With a <code>tail</code> reference, this is O(1) —
@@ -385,6 +455,10 @@ Step 3: tail = newNode
 
 AFTER:   head ──▶ [10|──▶] [20|──▶] [30|──▶] [99|null] ◀── tail</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public void</span> <span class="mt">AddLast</span>(<span class="tp">T</span> value)
 {
     <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt; newNode = <span class="kw">new</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;(value);
@@ -401,6 +475,20 @@ AFTER:   head ──▶ [10|──▶] [20|──▶] [30|──▶] [99|null] �
     }
     Count++;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">add_last</span>(<span class="kw">self</span>, value):
+    new_node = <span class="tp">Node</span>(value)
+    <span class="kw">if</span> <span class="kw">self</span>.is_empty:
+        <span class="kw">self</span>.head = <span class="kw">self</span>.tail = new_node
+    <span class="kw">else</span>:
+        <span class="kw">self</span>.tail.next = new_node
+        <span class="kw">self</span>.tail = new_node
+    <span class="kw">self</span>.count += <span class="nm">1</span></pre>
+</div>
 
 <h3>5.3 — Insert at Index — O(n)</h3>
 <p>Adding a node at a <strong>specific position</strong> requires traversal to the node <em>before</em> the
@@ -430,6 +518,10 @@ KEY: You always wire the NEW node to point FORWARD first (step 2),
      THEN update the PREVIOUS node (step 3).
      Reversing these steps would lose the rest of the list!</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public void</span> <span class="mt">AddAt</span>(<span class="kw">int</span> index, <span class="tp">T</span> value)
 {
     <span class="kw">if</span> (index &lt; <span class="nm">0</span> || index &gt; Count)
@@ -450,6 +542,24 @@ KEY: You always wire the NEW node to point FORWARD first (step 2),
     prev.Next = newNode;          <span class="cm">// Step 3: prev → new</span>
     Count++;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">add_at</span>(<span class="kw">self</span>, index: <span class="tp">int</span>, value):
+    <span class="kw">if</span> index == <span class="nm">0</span>:   <span class="kw">self</span>.<span class="mt">add_first</span>(value); <span class="kw">return</span>
+    <span class="kw">if</span> index == <span class="kw">self</span>.count: <span class="kw">self</span>.<span class="mt">add_last</span>(value);  <span class="kw">return</span>
+    <span class="kw">if</span> index &lt; <span class="nm">0</span> <span class="kw">or</span> index &gt; <span class="kw">self</span>.count:
+        <span class="kw">raise</span> <span class="tp">IndexError</span>(<span class="st">"Index out of range"</span>)
+    current = <span class="kw">self</span>.head
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(index - <span class="nm">1</span>):
+        current = current.next
+    new_node = <span class="tp">Node</span>(value)
+    new_node.next  = current.next
+    current.next   = new_node
+    <span class="kw">self</span>.count += <span class="nm">1</span></pre>
+</div>
 
 <div class="tip">
     <strong>💡 The Two-Step Rule for Middle Insertion:</strong> Always:<br>
@@ -480,6 +590,10 @@ Edge: One-element list (head == tail):
   head = head.Next (= null)
   tail = null  ← must also clear tail!</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveFirst</span>()
 {
     <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"List is empty"</span>);
@@ -491,6 +605,19 @@ Edge: One-element list (head == tail):
     <span class="kw">if</span> (Count == <span class="nm">0</span>) tail = <span class="kw">null</span>;  <span class="cm">// Was one node — clear tail too</span>
     <span class="kw">return</span> value;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">remove_first</span>(<span class="kw">self</span>):
+    <span class="kw">if</span> <span class="kw">self</span>.is_empty: <span class="kw">raise</span> <span class="tp">Exception</span>(<span class="st">"List is empty"</span>)
+    value = <span class="kw">self</span>.head.data
+    <span class="kw">self</span>.head = <span class="kw">self</span>.head.next
+    <span class="kw">self</span>.count -= <span class="nm">1</span>
+    <span class="kw">if</span> <span class="kw">self</span>.count == <span class="nm">0</span>: <span class="kw">self</span>.tail = <span class="kw">None</span>
+    <span class="kw">return</span> value</pre>
+</div>
 
 <h3>6.2 — Delete Last Node — O(n)</h3>
 <p>Even with a <code>tail</code> reference, deleting the last node requires O(n) traversal. Why? You need
@@ -511,6 +638,10 @@ Step 3: tail = prev          →    tail now points to node(20)
 
 AFTER:   head ──▶ [10|──▶] [20|null] ◀── tail</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveLast</span>()
 {
     <span class="kw">if</span> (IsEmpty) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"List is empty"</span>);
@@ -535,12 +666,35 @@ AFTER:   head ──▶ [10|──▶] [20|null] ◀── tail</div>
     Count--;
     <span class="kw">return</span> value;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">remove_last</span>(<span class="kw">self</span>):
+    <span class="kw">if</span> <span class="kw">self</span>.is_empty: <span class="kw">raise</span> <span class="tp">Exception</span>(<span class="st">"List is empty"</span>)
+    value = <span class="kw">self</span>.tail.data
+    <span class="kw">if</span> <span class="kw">self</span>.head == <span class="kw">self</span>.tail:   <span class="cm"># single node</span>
+        <span class="kw">self</span>.head = <span class="kw">self</span>.tail = <span class="kw">None</span>
+    <span class="kw">else</span>:
+        current = <span class="kw">self</span>.head
+        <span class="kw">while</span> current.next != <span class="kw">self</span>.tail:
+            current = current.next
+        current.next = <span class="kw">None</span>
+        <span class="kw">self</span>.tail = current
+    <span class="kw">self</span>.count -= <span class="nm">1</span>
+    <span class="kw">return</span> value</pre>
+</div>
 
 <h3>6.3 — Delete by Value — O(n)</h3>
 <p>Find the <strong>first occurrence</strong> of a value and remove it. The pattern: use two pointers
 (<code>prev</code> and <code>current</code>) — when you find the node, rewire <code>prev.Next</code>
 to skip over <code>current</code>.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public bool</span> <span class="mt">Remove</span>(<span class="tp">T</span> value)
 {
     <span class="kw">if</span> (IsEmpty) <span class="kw">return false</span>;
@@ -570,6 +724,25 @@ to skip over <code>current</code>.</p>
     }
     <span class="kw">return false</span>;  <span class="cm">// Value not found</span>
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">remove</span>(<span class="kw">self</span>, value) -&gt; <span class="tp">bool</span>:
+    <span class="kw">if</span> <span class="kw">self</span>.is_empty: <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">if</span> <span class="kw">self</span>.head.data == value:
+        <span class="kw">self</span>.<span class="mt">remove_first</span>(); <span class="kw">return</span> <span class="kw">True</span>
+    prev, current = <span class="kw">self</span>.head, <span class="kw">self</span>.head.next
+    <span class="kw">while</span> current:
+        <span class="kw">if</span> current.data == value:
+            prev.next = current.next
+            <span class="kw">if</span> current == <span class="kw">self</span>.tail: <span class="kw">self</span>.tail = prev
+            <span class="kw">self</span>.count -= <span class="nm">1</span>
+            <span class="kw">return</span> <span class="kw">True</span>
+        prev, current = current, current.next
+    <span class="kw">return</span> <span class="kw">False</span></pre>
+</div>
 
 <div class="diagram">DELETE BY VALUE — Remove node(20) from: 10 → 20 → 30 → null
 
@@ -590,6 +763,10 @@ AFTER:  head ──▶ [10|──▶] [30|null]
 <p>Since a linked list is <strong>not indexed</strong>, searching requires traversal — O(n) in all cases
 (we cannot do binary search because we can't jump to a middle position).</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Returns true if value exists in list — O(n)</span>
 <span class="kw">public bool</span> <span class="mt">Contains</span>(<span class="tp">T</span> value)
 {
@@ -615,6 +792,26 @@ AFTER:  head ──▶ [10|──▶] [30|null]
     }
     <span class="kw">return</span> -<span class="nm">1</span>;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">contains</span>(<span class="kw">self</span>, value) -&gt; <span class="tp">bool</span>:
+    current = <span class="kw">self</span>.head
+    <span class="kw">while</span> current:
+        <span class="kw">if</span> current.data == value: <span class="kw">return</span> <span class="kw">True</span>
+        current = current.next
+    <span class="kw">return</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="mt">index_of</span>(<span class="kw">self</span>, value) -&gt; <span class="tp">int</span>:
+    current, index = <span class="kw">self</span>.head, <span class="nm">0</span>
+    <span class="kw">while</span> current:
+        <span class="kw">if</span> current.data == value: <span class="kw">return</span> index
+        current = current.next
+        index += <span class="nm">1</span>
+    <span class="kw">return</span> -<span class="nm">1</span></pre>
+</div>
 
 <hr>
 
@@ -653,6 +850,10 @@ Step 2: slow=3, fast=5
 Step 3: slow=4, fast=3  (fast wrapped in cycle)
 Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Floyd's Cycle Detection — O(n) time, O(1) space</span>
 <span class="kw">public bool</span> <span class="mt">HasCycle</span>()
 {
@@ -695,6 +896,31 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
     }
     <span class="kw">return</span> slow;  <span class="cm">// Start of cycle</span>
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">has_cycle</span>(<span class="kw">self</span>) -&gt; <span class="tp">bool</span>:
+    slow = fast = <span class="kw">self</span>.head
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        <span class="kw">if</span> slow == fast: <span class="kw">return</span> <span class="kw">True</span>
+    <span class="kw">return</span> <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="mt">find_cycle_start</span>(<span class="kw">self</span>):
+    slow = fast = <span class="kw">self</span>.head
+    found = <span class="kw">False</span>
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next; fast = fast.next.next
+        <span class="kw">if</span> slow == fast: found = <span class="kw">True</span>; <span class="kw">break</span>
+    <span class="kw">if</span> <span class="kw">not</span> found: <span class="kw">return</span> <span class="kw">None</span>
+    slow = <span class="kw">self</span>.head       <span class="cm"># Phase 2: reset slow to head</span>
+    <span class="kw">while</span> slow != fast:
+        slow = slow.next; fast = fast.next
+    <span class="kw">return</span> slow             <span class="cm"># meeting point = cycle entry</span></pre>
+</div>
 
 <div class="note">
     <strong>📌 Why Does Phase 2 Work?</strong> This is a beautiful math proof:
@@ -712,6 +938,10 @@ Step 4: slow=5, fast=5  ← THEY MET! Cycle detected!</div>
 
 <p>Here is the complete, production-quality implementation putting everything together:</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">public</span> <span class="tp">T</span> Data;
@@ -863,6 +1093,30 @@ list.<span class="mt">Remove</span>(<span class="nm">15</span>);
 list.<span class="mt">Print</span>();          <span class="cm">// 5 → 10 → 20 → 30 → null</span>
 list.<span class="mt">Reverse</span>();
 list.<span class="mt">Print</span>();          <span class="cm">// 30 → 20 → 10 → 5 → null</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm"># --- Usage example ---</span>
+ll = <span class="tp">SinglyLinkedList</span>()
+<span class="kw">for</span> v <span class="kw">in</span> [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>]: ll.<span class="mt">add_last</span>(v)
+ll.<span class="mt">print_all</span>()              <span class="cm"># 1 2 3 4</span>
+ll.<span class="mt">remove</span>(<span class="nm">3</span>)
+ll.<span class="mt">print_all</span>()              <span class="cm"># 1 2 4</span>
+<span class="mt">print</span>(ll.<span class="mt">contains</span>(<span class="nm">2</span>))       <span class="cm"># True</span>
+<span class="mt">print</span>(ll.<span class="mt">index_of</span>(<span class="nm">4</span>))       <span class="cm"># 2</span>
+
+<span class="kw">def</span> <span class="mt">reverse</span>(<span class="kw">self</span>):
+    prev, current = <span class="kw">None</span>, <span class="kw">self</span>.head
+    <span class="kw">self</span>.tail = <span class="kw">self</span>.head   <span class="cm"># old head becomes new tail</span>
+    <span class="kw">while</span> current:
+        nxt          = current.next
+        current.next = prev
+        prev         = current
+        current      = nxt
+    <span class="kw">self</span>.head = prev</pre>
+</div>
 
 <h3>9.1 — List Reversal — O(n)</h3>
 <p>Reversing a singly linked list in-place using three pointers is one of the most common interview questions. The key insight: you process one node at a time, always pointing it backward.</p>
@@ -946,5 +1200,6 @@ RESULT: [4→3→2→1→null]  ✓</div>
     ▶ <strong>Next:</strong> <a href="m02b_doubly_circular.html">Part B — Doubly &amp; Circular Linked Lists</a>
 </div>
 
+    <script src="../dsa.js"></script>
 </body>
 </html>

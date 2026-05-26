@@ -1,0 +1,615 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5D — .NET & Python Sorting APIs | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+.toc{background:#fff;border-radius:12px;padding:22px 28px;margin:24px 0;border:1px solid #e0e0e0}
+.toc h2{font-size:1em;text-transform:uppercase;letter-spacing:2px;color:#7d3c98;margin-bottom:14px}
+.toc ol{padding-left:20px}.toc li{font-size:.9em;padding:4px 0;color:#444}.toc li span{color:#888;font-size:.88em}
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+p{margin:0 0 14px;color:#444}
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+.diagram{background:#1e1e1e;color:#4ec9b0;font-family:'Courier New',monospace;font-size:.86em;padding:20px 24px;border-radius:10px;border-left:4px solid #4ec9b0;margin:18px 0;overflow-x:auto;white-space:pre}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.warning{background:#fde8e8;border-left:4px solid #e74c3c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.realworld{background:#eaf4fb;border-left:4px solid #2980b9;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong,.warning strong,.realworld strong{display:block;margin-bottom:4px}
+table.cmplx{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88em}
+table.cmplx th{background:#2c3e50;color:#9cdcfe;padding:10px 14px;text-align:left}
+table.cmplx td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
+table.cmplx tr:nth-child(even) td{background:#f8f9fa}
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 20px;margin:14px 0}
+.quiz-q{font-weight:600;color:#2c3e50;margin-bottom:8px}
+.quiz-btn{background:#9b59b6;color:#fff;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:.84em}
+.quiz-a{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:10px;display:none}
+.quiz-a .ans-label{color:#27ae60;font-weight:700;margin-bottom:6px}
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 5 › Part D</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 5 — Part D</h1>
+  <div class="tagline">Built-in Sorting APIs — .NET &amp; Python in Production</div>
+  <div class="badges">
+    <span>⏱ Estimated: 1.5 Hours</span><span>🎯 Intermediate</span><span>💻 C# &amp; Python</span><span>📐 Phase 3 · Module 5D</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 5 — Sorting Algorithms:</strong><br>
+  ✅ <strong>Part A</strong> — <a href="m05a_basic_sorts.html">O(n²) Sorts</a><br>
+  ✅ <strong>Part B</strong> — <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
+  ✅ <strong>Part C</strong> — <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
+  ▶ <strong>Part D</strong> — <em>You are here</em> — .NET &amp; Python Sorting APIs<br>
+  ⬜ <strong>Part E</strong> — <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
+    <a href="../phase4/m06a_binary_trees.html">Module 6 &mdash; Binary Trees &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="toc">
+  <h2>📚 Contents — Module 5D</h2>
+  <ol>
+    <li>C# Array.Sort() and List.Sort() <span>— Basic usage</span></li>
+    <li>IComparable&lt;T&gt; — Natural Ordering <span>— Make your class sortable</span></li>
+    <li>IComparer&lt;T&gt; — Custom Ordering <span>— Multiple sort strategies</span></li>
+    <li>LINQ OrderBy, ThenBy, OrderByDescending <span>— Readable sort chains</span></li>
+    <li>Python sorted() and list.sort() <span>— key= parameter, reverse=</span></li>
+    <li>Python functools.cmp_to_key <span>— Legacy comparator migration</span></li>
+    <li>Multi-key sort, stable sort guarantee</li>
+    <li>Practice Questions</li>
+  </ol>
+</div>
+
+<h2 class="sec">Section 1 — C# Array.Sort() and List&lt;T&gt;.Sort()</h2>
+
+<h3>1.1 Basic Sorting</h3>
+<p>The simplest way to sort in C# is to call <code>Array.Sort()</code> or <code>list.Sort()</code>. These use the <strong>introspective sort</strong> internally — a hybrid of quick sort, heap sort, and insertion sort that guarantees O(n log n) worst-case.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="kw">class</span> <span class="tp">BasicSortingApis</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="cm">// ── Array.Sort (in-place, introspective sort) ──</span>
+        <span class="kw">int</span>[] nums = { <span class="nm">5</span>, <span class="nm">2</span>, <span class="nm">8</span>, <span class="nm">1</span>, <span class="nm">9</span>, <span class="nm">3</span> };
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(nums);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Array.Sort: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, nums)); <span class="cm">// 1,2,3,5,8,9</span>
+
+        <span class="cm">// ── Array.Sort Descending (with Comparison lambda) ──</span>
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(nums, (a, b) =&gt; b.CompareTo(a));
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Descending: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, nums)); <span class="cm">// 9,8,5,3,2,1</span>
+
+        <span class="cm">// ── Array.Sort sub-range (sort only part of array) ──</span>
+        <span class="kw">int</span>[] arr = { <span class="nm">9</span>,<span class="nm">7</span>,<span class="nm">5</span>,<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">6</span>,<span class="nm">8</span> };
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(arr, <span class="nm">2</span>, <span class="nm">4</span>);  <span class="cm">// sort 4 elements starting at index 2</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Sub-range: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));
+        <span class="cm">// 9,7,[1,2,3,5],4,6,8 — only indices 2-5 sorted</span>
+
+        <span class="cm">// ── List&lt;T&gt;.Sort ──</span>
+        <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; names = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; { <span class="st">"Charlie"</span>, <span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Dave"</span> };
+        names.<span class="mt">Sort</span>();
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Names: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, names)); <span class="cm">// Alice,Bob,Charlie,Dave</span>
+
+        <span class="cm">// Sort by string length, then alphabetically</span>
+        names.<span class="mt">Sort</span>((a, b) =&gt; {
+            <span class="kw">int</span> lenCmp = a.<span class="tp">Length</span>.CompareTo(b.<span class="tp">Length</span>);
+            <span class="kw">return</span> lenCmp != <span class="nm">0</span> ? lenCmp : <span class="kw">string</span>.<span class="mt">Compare</span>(a, b, <span class="tp">StringComparison</span>.Ordinal);
+        });
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"By length: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, names)); <span class="cm">// Bob,Alice,Dave,Charlie</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Python Sorting Basics ────────────────────────────────────────────────────</span>
+
+<span class="cm"># sorted() — creates a new sorted list (does not modify original)</span>
+nums = [<span class="nm">5</span>, <span class="nm">2</span>, <span class="nm">8</span>, <span class="nm">1</span>, <span class="nm">9</span>, <span class="nm">3</span>]
+result = <span class="mt">sorted</span>(nums)
+<span class="mt">print</span>(<span class="st">"sorted():"</span>, result)   <span class="cm"># [1, 2, 3, 5, 8, 9]</span>
+<span class="mt">print</span>(<span class="st">"original:"</span>, nums)    <span class="cm"># [5, 2, 8, 1, 9, 3] — unchanged!</span>
+
+<span class="cm"># list.sort() — sorts IN PLACE (returns None)</span>
+nums.<span class="mt">sort</span>()
+<span class="mt">print</span>(<span class="st">"After .sort():"</span>, nums)  <span class="cm"># [1, 2, 3, 5, 8, 9]</span>
+
+<span class="cm"># Reverse sort</span>
+nums.<span class="mt">sort</span>(reverse=<span class="kw">True</span>)
+<span class="mt">print</span>(<span class="st">"Descending:"</span>, nums)  <span class="cm"># [9, 8, 5, 3, 2, 1]</span>
+
+<span class="cm"># Strings sort lexicographically by default</span>
+names = [<span class="st">"Charlie"</span>, <span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Dave"</span>]
+names.<span class="mt">sort</span>()
+<span class="mt">print</span>(<span class="st">"Names:"</span>, names)  <span class="cm"># ['Alice', 'Bob', 'Charlie', 'Dave']</span>
+
+<span class="cm"># Sort by length, then alphabetically</span>
+names.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: (<span class="mt">len</span>(x), x))
+<span class="mt">print</span>(<span class="st">"By length:"</span>, names)  <span class="cm"># ['Bob', 'Alice', 'Dave', 'Charlie']</span></pre>
+</div>
+
+<h2 class="sec">Section 2 — IComparable&lt;T&gt; — Natural Ordering</h2>
+<p>When your class has a natural ordering (e.g., students by GPA, products by price), implement <code>IComparable&lt;T&gt;</code>. This defines the <strong>default</strong> sort order — what happens when you call <code>Sort()</code> without any extra arguments.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ─── IComparable&lt;T&gt; — Natural Order ──────────────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">Student</span> : <span class="tp">IComparable</span>&lt;<span class="tp">Student</span>&gt;
+{
+    <span class="kw">public string</span> <span class="tp">Name</span>  { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public double</span> <span class="tp">GPA</span>   { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public int</span>    <span class="tp">Year</span>  { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    <span class="cm">/// Natural order: sort by GPA descending (highest first)
+    /// If GPAs are equal, sort by Name ascending</span>
+    <span class="kw">public int</span> <span class="mt">CompareTo</span>(<span class="tp">Student</span> other)
+    {
+        <span class="kw">if</span> (other == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">1</span>;  <span class="cm">// this > null</span>
+
+        <span class="cm">// Primary: GPA descending (note: other.GPA.CompareTo for descending)</span>
+        <span class="kw">int</span> gpaCmp = other.<span class="tp">GPA</span>.CompareTo(<span class="kw">this</span>.<span class="tp">GPA</span>);
+        <span class="kw">if</span> (gpaCmp != <span class="nm">0</span>) <span class="kw">return</span> gpaCmp;
+
+        <span class="cm">// Tiebreaker: Name ascending</span>
+        <span class="kw">return</span> <span class="kw">string</span>.<span class="mt">Compare</span>(<span class="kw">this</span>.<span class="tp">Name</span>, other.<span class="tp">Name</span>, <span class="tp">StringComparison</span>.Ordinal);
+    }
+
+    <span class="kw">public override string</span> <span class="mt">ToString</span>() =&gt; <span class="st">$"{Name} (GPA:{GPA}, Year:{Year})"</span>;
+}
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> students = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">Student</span>&gt;
+        {
+            <span class="kw">new</span> <span class="tp">Student</span> { <span class="tp">Name</span>=<span class="st">"Charlie"</span>, <span class="tp">GPA</span>=<span class="nm">3.5</span>, <span class="tp">Year</span>=<span class="nm">2</span> },
+            <span class="kw">new</span> <span class="tp">Student</span> { <span class="tp">Name</span>=<span class="st">"Alice"</span>,   <span class="tp">GPA</span>=<span class="nm">3.9</span>, <span class="tp">Year</span>=<span class="nm">3</span> },
+            <span class="kw">new</span> <span class="tp">Student</span> { <span class="tp">Name</span>=<span class="st">"Bob"</span>,     <span class="tp">GPA</span>=<span class="nm">3.9</span>, <span class="tp">Year</span>=<span class="nm">1</span> },
+            <span class="kw">new</span> <span class="tp">Student</span> { <span class="tp">Name</span>=<span class="st">"Diana"</span>,   <span class="tp">GPA</span>=<span class="nm">3.2</span>, <span class="tp">Year</span>=<span class="nm">4</span> }
+        };
+
+        students.<span class="mt">Sort</span>();  <span class="cm">// uses IComparable&lt;Student&gt;.CompareTo</span>
+
+        <span class="kw">foreach</span> (<span class="kw">var</span> s <span class="kw">in</span> students)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(s);
+    }
+}
+
+<span class="cm">/* Output:
+   Alice (GPA:3.9, Year:3)    ← GPA 3.9, Alice before Bob alphabetically
+   Bob (GPA:3.9, Year:1)      ← GPA 3.9
+   Charlie (GPA:3.5, Year:2)
+   Diana (GPA:3.2, Year:4)
+*/</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field
+<span class="kw">from</span> functools <span class="kw">import</span> total_ordering
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="cm"># ─── Python — Natural Ordering with total_ordering ───────────────────────────</span>
+<span class="cm"># @total_ordering fills in all comparison methods from __eq__ and one other</span>
+
+@total_ordering
+@dataclass
+<span class="kw">class</span> <span class="tp">Student</span>:
+    name: <span class="tp">str</span>
+    gpa:  <span class="tp">float</span>
+    year: <span class="tp">int</span>
+
+    <span class="kw">def</span> <span class="mt">__eq__</span>(<span class="kw">self</span>, other):
+        <span class="kw">return</span> (<span class="kw">self</span>.gpa, <span class="kw">self</span>.name) == (other.gpa, other.name)
+
+    <span class="kw">def</span> <span class="mt">__lt__</span>(<span class="kw">self</span>, other):
+        <span class="cm"># Descending GPA: if self.gpa > other.gpa, self comes first (is "less than" in sort order)</span>
+        <span class="kw">if</span> <span class="kw">self</span>.gpa != other.gpa:
+            <span class="kw">return</span> <span class="kw">self</span>.gpa > other.gpa  <span class="cm"># higher GPA = "smaller" (sorts first)</span>
+        <span class="kw">return</span> <span class="kw">self</span>.name &lt; other.name   <span class="cm"># same GPA: alphabetical</span>
+
+    <span class="kw">def</span> <span class="mt">__repr__</span>(<span class="kw">self</span>):
+        <span class="kw">return</span> <span class="st">f"{self.name} (GPA:{self.gpa}, Year:{self.year})"</span>
+
+
+students = [
+    <span class="tp">Student</span>(<span class="st">"Charlie"</span>, <span class="nm">3.5</span>, <span class="nm">2</span>),
+    <span class="tp">Student</span>(<span class="st">"Alice"</span>,   <span class="nm">3.9</span>, <span class="nm">3</span>),
+    <span class="tp">Student</span>(<span class="st">"Bob"</span>,     <span class="nm">3.9</span>, <span class="nm">1</span>),
+    <span class="tp">Student</span>(<span class="st">"Diana"</span>,   <span class="nm">3.2</span>, <span class="nm">4</span>),
+]
+students.<span class="mt">sort</span>()   <span class="cm"># uses __lt__ via total_ordering</span>
+<span class="kw">for</span> s <span class="kw">in</span> students: <span class="mt">print</span>(s)
+<span class="cm"># Alice (GPA:3.9, Year:3)
+# Bob (GPA:3.9, Year:1)
+# Charlie (GPA:3.5, Year:2)
+# Diana (GPA:3.2, Year:4)</span></pre>
+</div>
+
+<h2 class="sec">Section 3 — IComparer&lt;T&gt; — Custom Sort Strategies</h2>
+<p>Sometimes you need <strong>multiple different sort orders</strong> for the same type. For example: sort students by GPA, or by name, or by year — all without changing the class itself. Use <code>IComparer&lt;T&gt;</code> for this.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ─── IComparer&lt;T&gt; — Multiple Sort Strategies ──────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">Product</span>
+{
+    <span class="kw">public string</span> <span class="tp">Name</span>  { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public decimal</span> <span class="tp">Price</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public int</span>    <span class="tp">Stock</span> { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public override string</span> <span class="mt">ToString</span>() =&gt; <span class="st">$"{Name,10} ${Price:F2} Stock:{Stock}"</span>;
+}
+
+<span class="cm">// Comparer 1: Sort by price ascending</span>
+<span class="kw">class</span> <span class="tp">PriceComparer</span> : <span class="tp">IComparer</span>&lt;<span class="tp">Product</span>&gt;
+{
+    <span class="kw">public int</span> <span class="mt">Compare</span>(<span class="tp">Product</span> x, <span class="tp">Product</span> y) =&gt; x.<span class="tp">Price</span>.CompareTo(y.<span class="tp">Price</span>);
+}
+
+<span class="cm">// Comparer 2: Sort by stock descending (highest stock first)</span>
+<span class="kw">class</span> <span class="tp">StockDescComparer</span> : <span class="tp">IComparer</span>&lt;<span class="tp">Product</span>&gt;
+{
+    <span class="kw">public int</span> <span class="mt">Compare</span>(<span class="tp">Product</span> x, <span class="tp">Product</span> y) =&gt; y.<span class="tp">Stock</span>.CompareTo(x.<span class="tp">Stock</span>);
+}
+
+<span class="cm">// Comparer 3: Sort by name length, then alphabetically</span>
+<span class="kw">class</span> <span class="tp">NameLengthComparer</span> : <span class="tp">IComparer</span>&lt;<span class="tp">Product</span>&gt;
+{
+    <span class="kw">public int</span> <span class="mt">Compare</span>(<span class="tp">Product</span> x, <span class="tp">Product</span> y)
+    {
+        <span class="kw">int</span> lenCmp = x.<span class="tp">Name</span>.<span class="tp">Length</span>.CompareTo(y.<span class="tp">Name</span>.<span class="tp">Length</span>);
+        <span class="kw">return</span> lenCmp != <span class="nm">0</span> ? lenCmp : <span class="kw">string</span>.<span class="mt">Compare</span>(x.<span class="tp">Name</span>, y.<span class="tp">Name</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> products = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">Product</span>&gt;
+        {
+            <span class="kw">new</span> <span class="tp">Product</span> { <span class="tp">Name</span>=<span class="st">"Widget"</span>,  <span class="tp">Price</span>=<span class="nm">9.99m</span>,  <span class="tp">Stock</span>=<span class="nm">50</span> },
+            <span class="kw">new</span> <span class="tp">Product</span> { <span class="tp">Name</span>=<span class="st">"Gadget"</span>,  <span class="tp">Price</span>=<span class="nm">24.99m</span>, <span class="tp">Stock</span>=<span class="nm">10</span> },
+            <span class="kw">new</span> <span class="tp">Product</span> { <span class="tp">Name</span>=<span class="st">"Gizmo"</span>,   <span class="tp">Price</span>=<span class="nm">4.99m</span>,  <span class="tp">Stock</span>=<span class="nm">200</span>},
+            <span class="kw">new</span> <span class="tp">Product</span> { <span class="tp">Name</span>=<span class="st">"Doohickey"</span>,<span class="tp">Price</span>=<span class="nm">14.99m</span>,<span class="tp">Stock</span>=<span class="nm">75</span> },
+        };
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"─ By Price:"</span>);
+        products.<span class="mt">Sort</span>(<span class="kw">new</span> <span class="tp">PriceComparer</span>());
+        products.<span class="mt">ForEach</span>(p =&gt; <span class="tp">Console</span>.<span class="mt">WriteLine</span>(p));
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\n─ By Stock (descending):"</span>);
+        products.<span class="mt">Sort</span>(<span class="kw">new</span> <span class="tp">StockDescComparer</span>());
+        products.<span class="mt">ForEach</span>(p =&gt; <span class="tp">Console</span>.<span class="mt">WriteLine</span>(p));
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="cm"># ─── Python — Multiple Sort Strategies using key= ────────────────────────────</span>
+
+@dataclass
+<span class="kw">class</span> <span class="tp">Product</span>:
+    name:  <span class="tp">str</span>
+    price: <span class="tp">float</span>
+    stock: <span class="tp">int</span>
+    <span class="kw">def</span> <span class="mt">__repr__</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="st">f"{self.name:10} ${self.price:.2f} Stock:{self.stock}"</span>
+
+products = [
+    <span class="tp">Product</span>(<span class="st">"Widget"</span>,   <span class="nm">9.99</span>,  <span class="nm">50</span>),
+    <span class="tp">Product</span>(<span class="st">"Gadget"</span>,   <span class="nm">24.99</span>, <span class="nm">10</span>),
+    <span class="tp">Product</span>(<span class="st">"Gizmo"</span>,    <span class="nm">4.99</span>,  <span class="nm">200</span>),
+    <span class="tp">Product</span>(<span class="st">"Doohickey"</span>,<span class="nm">14.99</span>, <span class="nm">75</span>),
+]
+
+<span class="cm"># Sort by price (ascending)</span>
+by_price = <span class="mt">sorted</span>(products, key=<span class="kw">lambda</span> p: p.price)
+<span class="mt">print</span>(<span class="st">"By price:"</span>)
+<span class="kw">for</span> p <span class="kw">in</span> by_price: <span class="mt">print</span>(p)
+
+<span class="cm"># Sort by stock descending</span>
+by_stock_desc = <span class="mt">sorted</span>(products, key=<span class="kw">lambda</span> p: p.stock, reverse=<span class="kw">True</span>)
+<span class="mt">print</span>(<span class="st">"\nBy stock (descending):"</span>)
+<span class="kw">for</span> p <span class="kw">in</span> by_stock_desc: <span class="mt">print</span>(p)
+
+<span class="cm"># Multi-key: first by length of name, then alphabetically</span>
+by_name = <span class="mt">sorted</span>(products, key=<span class="kw">lambda</span> p: (<span class="mt">len</span>(p.name), p.name))
+<span class="mt">print</span>(<span class="st">"\nBy name length then alpha:"</span>)
+<span class="kw">for</span> p <span class="kw">in</span> by_name: <span class="mt">print</span>(p)</pre>
+</div>
+
+<h2 class="sec">Section 4 — LINQ Sorting (C#)</h2>
+<p>LINQ provides a fluent, readable API for sorting collections. It uses deferred execution and returns <code>IEnumerable&lt;T&gt;</code> rather than modifying in place — very useful in functional pipelines.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="kw">record</span> <span class="tp">Employee</span>(<span class="kw">string</span> <span class="tp">Name</span>, <span class="kw">string</span> <span class="tp">Department</span>, <span class="kw">int</span> <span class="tp">Salary</span>, <span class="kw">int</span> <span class="tp">Years</span>);
+
+<span class="kw">class</span> <span class="tp">LinqSortingExamples</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> employees = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">Employee</span>&gt;
+        {
+            <span class="kw">new</span>(<span class="st">"Alice"</span>,   <span class="st">"Engineering"</span>, <span class="nm">95000</span>, <span class="nm">5</span>),
+            <span class="kw">new</span>(<span class="st">"Bob"</span>,     <span class="st">"Marketing"</span>,   <span class="nm">72000</span>, <span class="nm">3</span>),
+            <span class="kw">new</span>(<span class="st">"Charlie"</span>, <span class="st">"Engineering"</span>, <span class="nm">88000</span>, <span class="nm">8</span>),
+            <span class="kw">new</span>(<span class="st">"Diana"</span>,   <span class="st">"Marketing"</span>,   <span class="nm">85000</span>, <span class="nm">6</span>),
+            <span class="kw">new</span>(<span class="st">"Eve"</span>,     <span class="st">"Engineering"</span>, <span class="nm">95000</span>, <span class="nm">2</span>),
+        };
+
+        <span class="cm">// ── Single key: sort by salary descending ──</span>
+        <span class="kw">var</span> bySalary = employees.<span class="mt">OrderByDescending</span>(e =&gt; e.<span class="tp">Salary</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"By Salary (desc):"</span>);
+        <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> bySalary)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  {e.Name,-10} ${e.Salary}"</span>);
+
+        <span class="cm">// ── Multi-key: by department, then by salary descending ──</span>
+        <span class="kw">var</span> byDeptThenSalary = employees
+            .<span class="mt">OrderBy</span>(e =&gt; e.<span class="tp">Department</span>)
+            .<span class="mt">ThenByDescending</span>(e =&gt; e.<span class="tp">Salary</span>)
+            .<span class="mt">ThenBy</span>(e =&gt; e.<span class="tp">Name</span>);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\nBy Dept → Salary↓ → Name↑:"</span>);
+        <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> byDeptThenSalary)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"  {e.Department,-12} {e.Name,-10} ${e.Salary}"</span>);
+
+        <span class="cm">// ── LINQ + Where + OrderBy pipeline ──</span>
+        <span class="kw">var</span> seniorEngineers = employees
+            .<span class="mt">Where</span>(e =&gt; e.<span class="tp">Department</span> == <span class="st">"Engineering"</span> &amp;&amp; e.<span class="tp">Years</span> &gt;= <span class="nm">4</span>)
+            .<span class="mt">OrderBy</span>(e =&gt; e.<span class="tp">Years</span>)
+            .<span class="mt">Select</span>(e =&gt; <span class="st">$"{e.Name} ({e.Years}yr)"</span>);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\nSenior engineers by seniority:"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, seniorEngineers));
+        <span class="cm">// Alice (5yr), Charlie (8yr)</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+
+@dataclass
+<span class="kw">class</span> <span class="tp">Employee</span>:
+    name:       <span class="tp">str</span>
+    department: <span class="tp">str</span>
+    salary:     <span class="tp">int</span>
+    years:      <span class="tp">int</span>
+
+employees = [
+    <span class="tp">Employee</span>(<span class="st">"Alice"</span>,   <span class="st">"Engineering"</span>, <span class="nm">95000</span>, <span class="nm">5</span>),
+    <span class="tp">Employee</span>(<span class="st">"Bob"</span>,     <span class="st">"Marketing"</span>,   <span class="nm">72000</span>, <span class="nm">3</span>),
+    <span class="tp">Employee</span>(<span class="st">"Charlie"</span>, <span class="st">"Engineering"</span>, <span class="nm">88000</span>, <span class="nm">8</span>),
+    <span class="tp">Employee</span>(<span class="st">"Diana"</span>,   <span class="st">"Marketing"</span>,   <span class="nm">85000</span>, <span class="nm">6</span>),
+    <span class="tp">Employee</span>(<span class="st">"Eve"</span>,     <span class="st">"Engineering"</span>, <span class="nm">95000</span>, <span class="nm">2</span>),
+]
+
+<span class="cm"># Single key: salary descending</span>
+by_salary = <span class="mt">sorted</span>(employees, key=<span class="kw">lambda</span> e: e.salary, reverse=<span class="kw">True</span>)
+<span class="mt">print</span>(<span class="st">"By Salary (desc):"</span>)
+<span class="kw">for</span> e <span class="kw">in</span> by_salary: <span class="mt">print</span>(<span class="st">f"  {e.name:<span class="nm">10</span>} ${e.salary}"</span>)
+
+<span class="cm"># Multi-key: department asc, then salary desc
+# Python tip: for descending numeric key, negate it</span>
+by_dept_salary = <span class="mt">sorted</span>(employees, key=<span class="kw">lambda</span> e: (e.department, -e.salary, e.name))
+<span class="mt">print</span>(<span class="st">"\nBy Dept → Salary↓ → Name↑:"</span>)
+<span class="kw">for</span> e <span class="kw">in</span> by_dept_salary:
+    <span class="mt">print</span>(<span class="st">f"  {e.department:<span class="nm">12</span>} {e.name:<span class="nm">10</span>} ${e.salary}"</span>)
+
+<span class="cm"># Filter + sort pipeline</span>
+senior_engineers = <span class="mt">sorted</span>(
+    (e <span class="kw">for</span> e <span class="kw">in</span> employees <span class="kw">if</span> e.department==<span class="st">"Engineering"</span> <span class="kw">and</span> e.years >= <span class="nm">4</span>),
+    key=<span class="kw">lambda</span> e: e.years
+)
+<span class="mt">print</span>(<span class="st">"\nSenior engineers:"</span>, [<span class="st">f"{e.name}({e.years}yr)"</span> <span class="kw">for</span> e <span class="kw">in</span> senior_engineers])</pre>
+</div>
+
+<h2 class="sec">Section 5 — Python functools.cmp_to_key</h2>
+<p>Python's <code>sorted()</code> uses a <strong>key function</strong> (returns a sortable value). But sometimes you inherit legacy code using a comparator (like Java's Comparator or C's qsort). The <code>functools.cmp_to_key</code> adapter converts a comparator to a key function.</p>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> functools <span class="kw">import</span> cmp_to_key
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="cm"># ─── functools.cmp_to_key — Legacy Comparator ─────────────────────────────────
+# A comparator: return negative if a < b, 0 if equal, positive if a > b</span>
+
+<span class="cm"># Example 1: Sort version strings like "1.10.2" correctly
+# String sort: "1.10.2" < "1.9.0" (wrong!), numeric sort: "1.9.0" < "1.10.2" (correct!)</span>
+<span class="kw">def</span> <span class="mt">version_cmp</span>(a: <span class="tp">str</span>, b: <span class="tp">str</span>) -&gt; <span class="tp">int</span>:
+    parts_a = [<span class="tp">int</span>(x) <span class="kw">for</span> x <span class="kw">in</span> a.<span class="mt">split</span>(<span class="st">"."</span>)]
+    parts_b = [<span class="tp">int</span>(x) <span class="kw">for</span> x <span class="kw">in</span> b.<span class="mt">split</span>(<span class="st">"."</span>)]
+    <span class="kw">for</span> pa, pb <span class="kw">in</span> <span class="mt">zip</span>(parts_a, parts_b):
+        <span class="kw">if</span> pa != pb: <span class="kw">return</span> pa - pb
+    <span class="kw">return</span> <span class="mt">len</span>(parts_a) - <span class="mt">len</span>(parts_b)
+
+versions = [<span class="st">"1.10.2"</span>, <span class="st">"1.9.0"</span>, <span class="st">"2.0.0"</span>, <span class="st">"1.10.1"</span>, <span class="st">"1.2.3"</span>]
+<span class="mt">print</span>(<span class="mt">sorted</span>(versions))                               <span class="cm"># WRONG: lexicographic</span>
+<span class="mt">print</span>(<span class="mt">sorted</span>(versions, key=cmp_to_key(version_cmp))) <span class="cm"># CORRECT: semantic version</span>
+<span class="cm"># ['1.2.3', '1.9.0', '1.10.1', '1.10.2', '2.0.0']</span>
+
+<span class="cm"># Example 2: LeetCode 179 — Largest Number
+# Given [3,30,34,5,9], arrange to form the largest number: "9534330"</span>
+<span class="kw">def</span> <span class="mt">largest_number</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="tp">str</span>:
+    <span class="kw">def</span> <span class="mt">cmp</span>(a: <span class="tp">str</span>, b: <span class="tp">str</span>) -&gt; <span class="tp">int</span>:
+        <span class="kw">if</span> a+b > b+a: <span class="kw">return</span> -<span class="nm">1</span>   <span class="cm"># a should come first</span>
+        <span class="kw">if</span> a+b &lt; b+a: <span class="kw">return</span>  <span class="nm">1</span>   <span class="cm"># b should come first</span>
+        <span class="kw">return</span> <span class="nm">0</span>
+    strs = <span class="mt">sorted</span>(<span class="mt">map</span>(<span class="tp">str</span>, nums), key=cmp_to_key(cmp))
+    result = <span class="st">""</span>.<span class="mt">join</span>(strs)
+    <span class="kw">return</span> <span class="st">"0"</span> <span class="kw">if</span> result[<span class="nm">0</span>]==<span class="st">"0"</span> <span class="kw">else</span> result
+
+<span class="mt">print</span>(largest_number([<span class="nm">3</span>,<span class="nm">30</span>,<span class="nm">34</span>,<span class="nm">5</span>,<span class="nm">9</span>]))  <span class="cm"># "9534330"</span>
+<span class="mt">print</span>(largest_number([<span class="nm">10</span>,<span class="nm">2</span>]))          <span class="cm"># "210"</span></pre>
+</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="cm">// ─── C# — Sorting with custom Comparison lambda (equivalent to cmp_to_key) ─────</span>
+<span class="cm">// LeetCode 179 — Largest Number</span>
+
+<span class="kw">class</span> <span class="tp">LargestNumber</span>
+{
+    <span class="kw">static string</span> <span class="mt">Solve</span>(<span class="kw">int</span>[] nums)
+    {
+        <span class="kw">string</span>[] strs = <span class="tp">Array</span>.<span class="mt">ConvertAll</span>(nums, n =&gt; n.<span class="mt">ToString</span>());
+        <span class="cm">// Comparator: prefer ab over ba if ab > ba lexicographically</span>
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(strs, (a, b) =&gt; <span class="kw">string</span>.<span class="mt">Compare</span>(b + a, a + b, <span class="tp">StringComparison</span>.Ordinal));
+        <span class="kw">string</span> result = <span class="kw">string</span>.<span class="mt">Concat</span>(strs);
+        <span class="kw">return</span> result.<span class="mt">TrimStart</span>(<span class="st">'0'</span>) == <span class="st">""</span> ? <span class="st">"0"</span> : result.<span class="mt">TrimStart</span>(<span class="st">'0'</span>);
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[] { <span class="nm">3</span>,<span class="nm">30</span>,<span class="nm">34</span>,<span class="nm">5</span>,<span class="nm">9</span> }));  <span class="cm">// 9534330</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[] { <span class="nm">10</span>,<span class="nm">2</span> }));           <span class="cm">// 210</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Solve</span>(<span class="kw">new</span>[] { <span class="nm">0</span>,<span class="nm">0</span> }));            <span class="cm">// 0</span>
+    }
+}</pre>
+</div>
+
+<h2 class="sec">Section 6 — API Comparison Table</h2>
+
+<table class="cmplx">
+  <thead><tr><th>Task</th><th>C# .NET</th><th>Python</th></tr></thead>
+  <tbody>
+    <tr><td>Sort array/list in place</td><td><code>Array.Sort(arr)</code> / <code>list.Sort()</code></td><td><code>arr.sort()</code></td></tr>
+    <tr><td>Return new sorted list</td><td><code>arr.OrderBy(x=&gt;x).ToList()</code></td><td><code>sorted(arr)</code></td></tr>
+    <tr><td>Sort descending</td><td><code>arr.Sort((a,b)=&gt;b.CompareTo(a))</code></td><td><code>sorted(arr, reverse=True)</code></td></tr>
+    <tr><td>Sort by key</td><td><code>list.Sort((a,b)=&gt;a.Key.CompareTo(b.Key))</code></td><td><code>sorted(lst, key=lambda x: x.key)</code></td></tr>
+    <tr><td>Multi-key sort</td><td><code>.OrderBy(x=&gt;x.A).ThenBy(x=&gt;x.B)</code></td><td><code>sorted(lst, key=lambda x: (x.a, x.b))</code></td></tr>
+    <tr><td>Custom comparator</td><td><code>IComparer&lt;T&gt;</code> or Comparison delegate</td><td><code>functools.cmp_to_key(cmp)</code></td></tr>
+    <tr><td>Natural order on class</td><td><code>IComparable&lt;T&gt;</code></td><td><code>@total_ordering</code> + <code>__lt__</code></td></tr>
+    <tr><td>Stable sort guarantee</td><td>List.Sort: ✅ Stable. Array.Sort: ❌ Unstable</td><td>✅ Always stable (TimSort)</td></tr>
+  </tbody>
+</table>
+
+<div class="note"><strong>📝 .NET Stability Note</strong><code>List&lt;T&gt;.Sort()</code> is NOT guaranteed stable in .NET. For a stable sort, use LINQ's <code>OrderBy()</code> which IS stable. Example: <code>list.OrderBy(x =&gt; x.Key).ToList()</code> maintains original order for equal keys.</div>
+
+<h2 class="sec">Section 7 — Practice Questions</h2>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q1: Sort this list of tuples (name, age) first by age ascending, then by name descending: [("Alice", 30), ("Bob", 25), ("Charlie", 30), ("Diana", 25)]</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Multi-key sort with mixed directions</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">var</span> people = <span class="kw">new</span>[] {(<span class="st">"Alice"</span>,<span class="nm">30</span>),(<span class="st">"Bob"</span>,<span class="nm">25</span>),(<span class="st">"Charlie"</span>,<span class="nm">30</span>),(<span class="st">"Diana"</span>,<span class="nm">25</span>)};
+<span class="kw">var</span> sorted = people.<span class="mt">OrderBy</span>(p=&gt;p.<span class="tp">Item2</span>).<span class="mt">ThenByDescending</span>(p=&gt;p.<span class="tp">Item1</span>).<span class="mt">ToList</span>();
+<span class="cm">// Diana 25, Bob 25, Charlie 30, Alice 30</span></pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre>people = [(<span class="st">"Alice"</span>,<span class="nm">30</span>),(<span class="st">"Bob"</span>,<span class="nm">25</span>),(<span class="st">"Charlie"</span>,<span class="nm">30</span>),(<span class="st">"Diana"</span>,<span class="nm">25</span>)]
+result = <span class="mt">sorted</span>(people, key=<span class="kw">lambda</span> x: (x[<span class="nm">1</span>], [-<span class="mt">ord</span>(c) <span class="kw">for</span> c <span class="kw">in</span> x[<span class="nm">0</span>]]))
+<span class="cm"># Simpler approach: two stable passes (sort by secondary first, then primary)</span>
+result2 = <span class="mt">sorted</span>(people, key=<span class="kw">lambda</span> x: x[<span class="nm">0</span>], reverse=<span class="kw">True</span>)  <span class="cm"># name desc</span>
+result2 = <span class="mt">sorted</span>(result2, key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])              <span class="cm"># age asc (stable!)</span>
+<span class="mt">print</span>(result2)  <span class="cm"># [('Diana',25),('Bob',25),('Charlie',30),('Alice',30)]</span></pre></div></div>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q2: In C#, what is the difference between Array.Sort() and LINQ OrderBy() in terms of stability?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Array.Sort = unstable, OrderBy = stable</div>
+    <p><code>Array.Sort()</code> uses introspective sort which is unstable. If two elements compare equal, their original relative order is NOT preserved. <code>LINQ OrderBy()</code> is documented as a stable sort — equal elements maintain their original order. For <code>List&lt;T&gt;.Sort()</code>: also technically unstable. Best practice: use LINQ's <code>OrderBy()</code> when stability matters.</p>
+  </div>
+</div>
+
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">You now know how to leverage built-in sorting in both .NET and Python — the practical skill used daily in production code.</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="m05e_sorting_practice.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part E — Sorting Practice Problems →</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm05d';
+(function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='✅ Completed!';b.disabled=true;showToast('✅ Module 5D marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='✅ Completed!';b.disabled=true;}}})();
+function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
+function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
+applyLang();
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='⚠️ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Answer':'💡 Show Answer';}
+let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

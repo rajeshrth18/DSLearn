@@ -1,0 +1,418 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 14A — Divide & Conquer | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
+    <h1>Module 14 — Part A</h1>
+    <div class="tagline">Divide &amp; Conquer</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Master Theorem · Merge Sort · Quick Select · Binary Search Variants</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 14</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ✅ Module 12 — <a href="m12a_dp_intro.html">Dynamic Programming (Parts A–F)</a><br>
+    ✅ Module 13 — <a href="m13a_greedy.html">Greedy Algorithms (Parts A–C)</a><br>
+    ▶ <strong>Module 14 Part A</strong> — <em>You are here</em> — Divide &amp; Conquer<br>
+    ⬜ <strong>Module 14 Part B</strong> — <a href="m14b_advanced_dc.html">Closest Pair &amp; Master Theorem</a><br>
+    ⬜ <strong>Module 14 Part C</strong> — <a href="m14c_number_theory.html">Number Theory</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m13a_greedy.html">&larr; Module 13 &mdash; Greedy Algorithms</a>
+    <a href="../phase9/m15a_kmp.html">Module 15 &mdash; String Algorithms &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Divide &amp; Conquer Framework <span>— Divide, Conquer, Combine</span></li>
+        <li>Section 2 — Merge Sort <span>— Classic D&amp;C with inversion counting</span></li>
+        <li>Section 3 — Quick Select <span>— O(n) average kth element</span></li>
+        <li>Section 4 — Binary Search Deep Dive <span>— Template + variants</span></li>
+        <li>Section 5 — D&amp;C on LeetCode <span>— #215, #240, #4 Binary Search problems</span></li>
+        <li>Section 6 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Divide &amp; Conquer Framework</div>
+
+<p>Divide &amp; Conquer (D&amp;C) works by recursively breaking a problem into smaller subproblems, 
+solving each independently, then combining results. The key is that subproblems are <strong>independent</strong> 
+(unlike DP, which has overlapping subproblems).</p>
+
+<div class="diagram">D&C FRAMEWORK:
+
+1. DIVIDE: Split problem into k subproblems of size n/b.
+2. CONQUER: Recursively solve each subproblem.
+3. COMBINE: Merge/combine the solutions.
+
+BASE CASE: When problem is small enough to solve directly.
+
+RECURRENCE FORM: T(n) = aT(n/b) + f(n)
+  a = number of subproblems
+  b = factor by which problem size shrinks
+  f(n) = cost of divide + combine steps
+
+MASTER THEOREM (simplified):
+  Compare f(n) vs n^(log_b(a)):
+  
+  Case 1: f(n) = O(n^(log_b(a) - ε))  →  T(n) = Θ(n^log_b(a))
+  Case 2: f(n) = Θ(n^log_b(a))        →  T(n) = Θ(n^log_b(a) · log n)
+  Case 3: f(n) = Ω(n^(log_b(a) + ε))  →  T(n) = Θ(f(n))
+
+EXAMPLES:
+  Merge Sort:  T(n) = 2T(n/2) + O(n)  → Case 2 → O(n log n) ✓
+  Binary Search: T(n) = T(n/2) + O(1) → Case 2 (log_2(1)=0) → O(log n) ✓
+  Strassen: T(n) = 7T(n/2) + O(n²)    → Case 1 (log_2(7)≈2.81>2) → O(n^2.81) ✓</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Merge Sort &amp; Counting Inversions</div>
+
+<p>Merge Sort is the quintessential D&amp;C algorithm. It also solves the <strong>Count Inversions</strong> 
+problem (LeetCode #315 / similar) with no extra complexity.</p>
+
+<div class="diagram">MERGE SORT:
+  Divide: split array in half
+  Conquer: recursively sort each half
+  Combine: merge two sorted halves in O(n)
+
+INVERSION COUNTING: An inversion is a pair (i,j) where i&lt;j but arr[i]>arr[j].
+  Key insight: during merge, when we take an element from the RIGHT array before
+  exhausting the LEFT array, all remaining left elements form inversions with it.
+  inversions += mid - left_ptr + 1  (for each right element taken out of order)
+
+EXAMPLE: [3, 1, 2]
+  Inversions: (3,1), (3,2) → 2 inversions
+  
+  Merge [3] and [1,2]:
+  Compare 3 vs 1: take 1 from right. inversions += 1 (only 3 remains left).
+  Compare 3 vs 2: take 2 from right. inversions += 1.
+  Take 3. Total = 2 ✓</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Merge Sort + Count Inversions</span>
+<span class="kw">public int</span> <span class="mt">MergeSortCount</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
+{
+    <span class="kw">if</span> (hi - lo &lt;= <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">int</span> mid = (lo + hi) / <span class="nm">2</span>;
+    <span class="kw">int</span> inv = <span class="mt">MergeSortCount</span>(arr, lo, mid) + <span class="mt">MergeSortCount</span>(arr, mid, hi);
+    <span class="kw">var</span> temp = <span class="kw">new int</span>[hi - lo];
+    <span class="kw">int</span> i = lo, j = mid, k = <span class="nm">0</span>;
+    <span class="kw">while</span> (i &lt; mid &amp;&amp; j &lt; hi)
+    {
+        <span class="kw">if</span> (arr[i] &lt;= arr[j]) temp[k++] = arr[i++];
+        <span class="kw">else</span> { inv += mid - i; temp[k++] = arr[j++]; } <span class="cm">// right taken before all lefts</span>
+    }
+    <span class="kw">while</span> (i &lt; mid) temp[k++] = arr[i++];
+    <span class="kw">while</span> (j &lt; hi)  temp[k++] = arr[j++];
+    <span class="tp">Array</span>.<span class="mt">Copy</span>(temp, <span class="nm">0</span>, arr, lo, hi - lo);
+    <span class="kw">return</span> inv;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">merge_sort_count</span>(arr):
+    <span class="kw">if</span> <span class="mt">len</span>(arr) &lt;= <span class="nm">1</span>: <span class="kw">return</span> arr, <span class="nm">0</span>
+    mid = <span class="mt">len</span>(arr) // <span class="nm">2</span>
+    L, l_inv = <span class="mt">merge_sort_count</span>(arr[:mid])
+    R, r_inv = <span class="mt">merge_sort_count</span>(arr[mid:])
+    merged, inv = [], l_inv + r_inv
+    i = j = <span class="nm">0</span>
+    <span class="kw">while</span> i &lt; <span class="mt">len</span>(L) <span class="kw">and</span> j &lt; <span class="mt">len</span>(R):
+        <span class="kw">if</span> L[i] &lt;= R[j]: merged.<span class="mt">append</span>(L[i]); i += <span class="nm">1</span>
+        <span class="kw">else</span>: merged.<span class="mt">append</span>(R[j]); inv += <span class="mt">len</span>(L) - i; j += <span class="nm">1</span>
+    <span class="kw">return</span> merged + L[i:] + R[j:], inv</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Quick Select: Kth Largest Element</div>
+
+<p>Quick Select finds the kth element in O(n) average time, O(n²) worst case. 
+It's the backbone of <strong>LeetCode #215 — Kth Largest Element in an Array</strong>.</p>
+
+<div class="diagram">QUICK SELECT:
+  Like quicksort, but only recurse into ONE side after partitioning.
+  
+  Partition around pivot p:
+    - Elements &lt; p go left
+    - Elements &gt; p go right
+    - Pivot ends at index q
+  
+  If q == target_index → found!
+  If q &lt; target_index  → recurse right
+  If q &gt; target_index  → recurse left
+
+COMPLEXITY:
+  Average: O(n) — each recursion reduces size by ~half
+  Worst:   O(n²) — always pick smallest/largest as pivot
+  → Use random pivot or median-of-3 to avoid worst case
+
+EXAMPLE: [3,2,1,5,6,4], k=2 (2nd largest = index 4 from left in 0-indexed sorted)
+  Target index = n - k = 4
+  Partition [3,2,1,5,6,4]: pivot=4, result = [3,2,1,4,5,6]? No.
+  Actually pivot=arr[right], partition puts it at correct position.
+  → O(n) average per call, total O(n) amortized.</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// LeetCode #215 — Kth Largest Element</span>
+<span class="kw">public int</span> <span class="mt">FindKthLargest</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span> target = nums.Length - k;
+    <span class="kw">return</span> <span class="mt">QuickSelect</span>(nums, <span class="nm">0</span>, nums.Length - <span class="nm">1</span>, target);
+}
+<span class="kw">private int</span> <span class="mt">QuickSelect</span>(<span class="kw">int</span>[] a, <span class="kw">int</span> lo, <span class="kw">int</span> hi, <span class="kw">int</span> target)
+{
+    <span class="kw">if</span> (lo == hi) <span class="kw">return</span> a[lo];
+    <span class="kw">int</span> p = <span class="mt">Partition</span>(a, lo, hi);
+    <span class="kw">if</span> (p == target) <span class="kw">return</span> a[p];
+    <span class="kw">return</span> p &lt; target ? <span class="mt">QuickSelect</span>(a, p + <span class="nm">1</span>, hi, target)
+                      : <span class="mt">QuickSelect</span>(a, lo, p - <span class="nm">1</span>, target);
+}
+<span class="kw">private int</span> <span class="mt">Partition</span>(<span class="kw">int</span>[] a, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
+{
+    <span class="kw">int</span> pivot = a[hi], i = lo;
+    <span class="kw">for</span> (<span class="kw">int</span> j = lo; j &lt; hi; j++)
+        <span class="kw">if</span> (a[j] &lt;= pivot) { (a[i], a[j]) = (a[j], a[i]); i++; }
+    (a[i], a[hi]) = (a[hi], a[i]);
+    <span class="kw">return</span> i;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> random
+<span class="kw">def</span> <span class="mt">findKthLargest</span>(nums, k):
+    target = <span class="mt">len</span>(nums) - k
+    <span class="kw">def</span> <span class="mt">quick_select</span>(lo, hi):
+        <span class="cm"># Random pivot to avoid O(n²) worst case</span>
+        rand = random.<span class="mt">randint</span>(lo, hi)
+        nums[rand], nums[hi] = nums[hi], nums[rand]
+        pivot, i = nums[hi], lo
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(lo, hi):
+            <span class="kw">if</span> nums[j] &lt;= pivot:
+                nums[i], nums[j] = nums[j], nums[i]; i += <span class="nm">1</span>
+        nums[i], nums[hi] = nums[hi], nums[i]
+        <span class="kw">if</span> i == target: <span class="kw">return</span> nums[i]
+        <span class="kw">return</span> <span class="mt">quick_select</span>(i+<span class="nm">1</span>, hi) <span class="kw">if</span> i &lt; target <span class="kw">else</span> <span class="mt">quick_select</span>(lo, i-<span class="nm">1</span>)
+    <span class="kw">return</span> <span class="mt">quick_select</span>(<span class="nm">0</span>, <span class="mt">len</span>(nums)-<span class="nm">1</span>)</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Binary Search Deep Dive</div>
+
+<p>Binary search is D&amp;C with one subproblem (one-sided). The key challenge is getting 
+the boundaries right. There are two templates that cover all variants.</p>
+
+<div class="diagram">BINARY SEARCH TEMPLATES:
+
+Template 1 — Exact match (or simple condition):
+  lo, hi = 0, n-1
+  while lo &lt;= hi:
+      mid = lo + (hi-lo)//2    ← prevents integer overflow
+      if arr[mid] == target: return mid
+      elif arr[mid] &lt; target:  lo = mid + 1
+      else:                     hi = mid - 1
+  return -1
+
+Template 2 — "Find leftmost/rightmost index satisfying condition":
+  lo, hi = 0, n   ← hi = n (open right bound) or n-1 (closed)
+  while lo &lt; hi:  ← strict &lt;
+      mid = lo + (hi-lo)//2
+      if condition(mid): hi = mid   ← for leftmost true
+      else:              lo = mid+1
+  return lo        ← lo == hi, the answer
+
+CHOOSING TEMPLATE:
+  - "Is target in array?" → Template 1
+  - "First/last position of value" → Template 2 (leftmost/rightmost)
+  - "First index where f(x) = true" → Template 2 (binary search on answer)
+  - "Minimum value satisfying condition" → Template 2 on answer space
+
+CLASSIC PATTERNS:
+  • Lower bound = first index where arr[i] >= target
+  • Upper bound = first index where arr[i] > target  
+  • Rotated sorted array → check which half is sorted, narrow accordingly
+  • 2D matrix search → treat as 1D array (row = mid/cols, col = mid%cols)</div>
+
+<h3>Binary Search on Answer — Template 2</h3>
+
+<p>Many problems require finding the minimum value of <code>x</code> such that <code>f(x)</code> is true — 
+the answer space itself is searched with binary search.</p>
+
+<div class="diagram">BINARY SEARCH ON ANSWER pattern:
+  
+  If "is f(x) satisfiable with threshold x?" can be checked in O(check_time),
+  and the answer is monotone (f(x) true implies f(x+1) true for minimization),
+  then binary search on x in O(log(answer_range) × check_time).
+
+EXAMPLE: LeetCode #875 — Koko Eating Bananas
+  "Can Koko eat all piles within h hours at speed k?"
+  → greedy check: sum(ceil(pile/k)) &lt;= h → O(n)
+  Binary search k in [1, max(piles)] → O(n log(max))
+
+EXAMPLE: LeetCode #1011 — Ship Packages Within D Days
+  "Can we ship all packages within d days at capacity cap?"
+  → greedy check: greedily pack days, each up to cap → O(n)
+  Binary search cap in [max(weights), sum(weights)] → O(n log(sum))</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// LeetCode #875 — Koko Eating Bananas (Binary search on answer)</span>
+<span class="kw">public int</span> <span class="mt">MinEatingSpeed</span>(<span class="kw">int</span>[] piles, <span class="kw">int</span> h)
+{
+    <span class="kw">int</span> lo = <span class="nm">1</span>, hi = piles.<span class="mt">Max</span>();
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="kw">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (<span class="mt">CanFinish</span>(piles, mid, h)) hi = mid;
+        <span class="kw">else</span> lo = mid + <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> lo;
+}
+<span class="kw">private bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span>[] piles, <span class="kw">int</span> k, <span class="kw">int</span> h)
+    => piles.<span class="mt">Sum</span>(p => (p + k - <span class="nm">1</span>) / k) &lt;= h;
+
+<span class="cm">// LeetCode #33 — Search in Rotated Sorted Array</span>
+<span class="kw">public int</span> <span class="mt">Search</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target) {
+    <span class="kw">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
+    <span class="kw">while</span> (lo &lt;= hi) {
+        <span class="kw">int</span> mid = lo + (hi - lo) / <span class="nm">2</span>;
+        <span class="kw">if</span> (nums[mid] == target) <span class="kw">return</span> mid;
+        <span class="kw">if</span> (nums[lo] &lt;= nums[mid]) { <span class="cm">// left half sorted</span>
+            <span class="kw">if</span> (nums[lo] &lt;= target &amp;&amp; target &lt; nums[mid]) hi = mid - <span class="nm">1</span>;
+            <span class="kw">else</span> lo = mid + <span class="nm">1</span>;
+        } <span class="kw">else</span> { <span class="cm">// right half sorted</span>
+            <span class="kw">if</span> (nums[mid] &lt; target &amp;&amp; target &lt;= nums[hi]) lo = mid + <span class="nm">1</span>;
+            <span class="kw">else</span> hi = mid - <span class="nm">1</span>;
+        }
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> math
+<span class="kw">def</span> <span class="mt">minEatingSpeed</span>(piles, h):
+    lo, hi = <span class="nm">1</span>, <span class="mt">max</span>(piles)
+    <span class="kw">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="nm">2</span>
+        <span class="kw">if</span> <span class="mt">sum</span>(math.<span class="mt">ceil</span>(p/mid) <span class="kw">for</span> p <span class="kw">in</span> piles) &lt;= h: hi = mid
+        <span class="kw">else</span>: lo = mid + <span class="nm">1</span>
+    <span class="kw">return</span> lo
+
+<span class="kw">def</span> <span class="mt">search_rotated</span>(nums, target):
+    lo, hi = <span class="nm">0</span>, <span class="mt">len</span>(nums) - <span class="nm">1</span>
+    <span class="kw">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="nm">2</span>
+        <span class="kw">if</span> nums[mid] == target: <span class="kw">return</span> mid
+        <span class="kw">if</span> nums[lo] &lt;= nums[mid]:  <span class="cm"># left half sorted</span>
+            <span class="kw">if</span> nums[lo] &lt;= target &lt; nums[mid]: hi = mid - <span class="nm">1</span>
+            <span class="kw">else</span>: lo = mid + <span class="nm">1</span>
+        <span class="kw">else</span>:  <span class="cm"># right half sorted</span>
+            <span class="kw">if</span> nums[mid] &lt; target &lt;= nums[hi]: lo = mid + <span class="nm">1</span>
+            <span class="kw">else</span>: hi = mid - <span class="nm">1</span>
+    <span class="kw">return</span> -<span class="nm">1</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Key LeetCode Problems Summary</div>
+
+<table>
+    <thead>
+        <tr><th>Problem</th><th>Technique</th><th>Complexity</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>#215 Kth Largest</td><td>Quick Select (random pivot)</td><td class="g">O(n) avg, O(n²) worst</td></tr>
+        <tr><td>#912 Sort an Array</td><td>Merge Sort</td><td class="g">O(n log n)</td></tr>
+        <tr><td>#315 Count Smaller After Self</td><td>Merge Sort + inversions</td><td class="g">O(n log n)</td></tr>
+        <tr><td>#33 Search Rotated</td><td>Binary Search (check sorted half)</td><td class="g">O(log n)</td></tr>
+        <tr><td>#74 Search 2D Matrix</td><td>Binary Search (treat as 1D)</td><td class="g">O(log(mn))</td></tr>
+        <tr><td>#240 Search 2D Matrix II</td><td>Staircase search from top-right</td><td class="g">O(m+n)</td></tr>
+        <tr><td>#4 Median of Two Sorted Arrays</td><td>Binary Search on partition</td><td class="g">O(log(min(m,n)))</td></tr>
+        <tr><td>#875 Koko Eating Bananas</td><td>Binary search on answer</td><td class="g">O(n log max)</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 D&amp;C in the Real World:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Merge Sort</strong> — foundation of TimSort (Python's/Java's default sort)</li>
+        <li><strong>Binary Search</strong> — database index lookups, git bisect for bug hunting</li>
+        <li><strong>FFT (Fast Fourier Transform)</strong> — D&amp;C for polynomial multiplication O(n log n), used in signal processing, image compression, cryptography</li>
+        <li><strong>Quicksort / QuickSelect</strong> — used in C++ std::nth_element, database ORDER BY LIMIT queries</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: What is the key difference between D&C and Dynamic Programming?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Both divide problems into subproblems. The key difference: D&C subproblems are INDEPENDENT — solving one doesn't help solve another. DP subproblems OVERLAP — the same subproblem recurs, so caching (memoization/tabulation) saves work. Merge sort's subproblems are completely independent (left half and right half never share elements). Fibonacci subproblems overlap: fib(5) needs fib(4) AND fib(3), and fib(4) also needs fib(3). If you applied memoization to merge sort, you'd get no benefit; if you didn't apply it to Fibonacci, you'd get exponential time.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: Why use mid = lo + (hi - lo) / 2 instead of (lo + hi) / 2 in binary search?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Integer overflow prevention. If lo and hi are both large (e.g., near INT_MAX), lo + hi overflows 32-bit integer, producing a negative number. lo + (hi - lo)/2 computes the midpoint without overflow because hi - lo ≤ hi which doesn't overflow when lo ≥ 0. In Python, integers have arbitrary precision so overflow can't happen, but in C#/Java/C++ with int, this is a critical bug. The formula is equivalent: lo + (hi-lo)/2 = (2lo + hi - lo)/2 = (lo + hi)/2.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: Quick Select is O(n) average but O(n²) worst case. How do you prevent the worst case?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Worst case occurs when the pivot is always the smallest or largest element (e.g., sorted array with last element as pivot). Solutions: (1) Random pivot: randomly select pivot before partitioning. This makes worst case occur with probability 1/n^k for k partitions, essentially impossible in practice. (2) Median-of-3: take median of first, middle, last elements as pivot. Reduces worst case for nearly-sorted inputs. (3) Introselect: hybrid algorithm that switches to deterministic O(n) "median-of-medians" algorithm after too many recursions. C++ std::nth_element typically uses introselect internally.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: How do you apply the Master Theorem to T(n) = 2T(n/2) + O(n log n)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Here a=2, b=2, so n^(log_b(a)) = n^(log_2(2)) = n^1 = n. The f(n) = n log n. Compare f(n) = n log n vs n^1 = n: n log n is slightly larger than n, but NOT by a polynomial factor. This falls OUTSIDE the standard Master Theorem (none of the three cases apply cleanly). This is the "Case 2 extension": when f(n) = n^(log_b a) · log^k(n), T(n) = Θ(n^(log_b a) · log^(k+1) n). Here k=1, so T(n) = Θ(n log² n). This applies to things like merge sort on linked lists where merging costs O(n log n).</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: Describe the binary search approach to find the median of two sorted arrays in O(log(min(m,n))).</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Binary search on a partition index in the smaller array. We want to find i (in array A) and j = (m+n+1)/2 - i (in array B) such that: (1) i elements from A and j from B are on the "left" side of the partition, and (2) A[i-1] ≤ B[j] and B[j-1] ≤ A[i] (the partition is correct). Binary search i in [0, m] (m = len(A), m ≤ n). If A[i-1] > B[j]: i is too large, move left. If B[j-1] > A[i]: i is too small, move right. When partition is correct: for odd total, median = max(A[i-1], B[j-1]); for even total, median = (max(A[i-1],B[j-1]) + min(A[i],B[j])) / 2. This is LeetCode #4, difficulty Hard.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 14A Complete</button>
+<div class="toast" id="toast">✅ Module 14A marked complete!</div>
+    <script>var MODULE_ID = 'm14a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

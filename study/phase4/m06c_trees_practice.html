@@ -1,0 +1,832 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6C — Trees Practice: 15 Problems</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
+    <h1>Module 6 — Part C</h1>
+    <div class="tagline">Trees Practice: 15 Problems — Binary Trees &amp; BST</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From easy traversal questions to hard tree transformations — every pattern covered</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Mixed Difficulty</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part C of Module 6</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 6 — Binary Trees:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m06a_binary_trees.html">Binary Trees &amp; Traversals</a><br>
+    ✅ <strong>Part B</strong> — <a href="m06b_bst.html">Binary Search Trees</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Practice: 15 Problems<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase3/m05a_basic_sorts.html">&larr; Module 5 &mdash; Sorting</a>
+    <a href="../phase4/m07a_avl_trees.html">Module 7 &mdash; Advanced Trees &rarr;</a>
+</div>
+
+<div class="section-heading">Problems 1–5 — Easy: Core Traversals &amp; Properties</div>
+
+<!-- ── PROBLEM 1 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 1 — Maximum Depth of Binary Tree</span>
+        <div class="tags"><span class="tag tag-easy">Easy</span><span class="tag tag-topic">DFS</span><span class="tag tag-topic">Recursion</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, return its maximum depth (number of nodes along the longest path from root to the farthest leaf node).</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 10⁴ | −100 ≤ Node.val ≤ 100</div>
+    <div class="approach"><strong>Approach:</strong> At each node, the depth is 1 + max(depth of left subtree, depth of right subtree). Base case: null node → return 0. Single recursive call — clean and minimal.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">MaxDepth</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;   <span class="cm">// Empty tree → depth 0</span>
+    <span class="kw">int</span> left  = <span class="mt">MaxDepth</span>(root.Left);
+    <span class="kw">int</span> right = <span class="mt">MaxDepth</span>(root.Right);
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(left, right);  <span class="cm">// 1 for current node + deeper child</span>
+}
+<span class="cm">// Input: [3,9,20,null,null,15,7]  Output: 3</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">maxDepth</span>(root: Optional[TreeNode]) -> <span class="kw">int</span>:
+    <span class="kw">if not</span> root: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(<span class="mt">maxDepth</span>(root.left), <span class="mt">maxDepth</span>(root.right))</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) — visit every node once &nbsp;|&nbsp; <strong>Space:</strong> O(h) — call stack depth = tree height</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 2 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 2 — Symmetric Tree</span>
+        <div class="tags"><span class="tag tag-easy">Easy</span><span class="tag tag-topic">DFS</span><span class="tag tag-topic">Mirror</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).</div>
+    <div class="constraints">Constraints: 1 ≤ nodes ≤ 1000</div>
+    <div class="approach"><strong>Approach:</strong> Two trees are mirrors if: their roots are equal AND the left subtree of one mirrors the right subtree of the other. Use a helper <code>isMirror(left, right)</code> that checks left.val == right.val AND isMirror(left.left, right.right) AND isMirror(left.right, right.left).</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">IsSymmetric</span>(<span class="tp">TreeNode</span>? root) =>
+    <span class="mt">IsMirror</span>(root?.Left, root?.Right);
+
+<span class="kw">private bool</span> <span class="mt">IsMirror</span>(<span class="tp">TreeNode</span>? left, <span class="tp">TreeNode</span>? right)
+{
+    <span class="kw">if</span> (left == <span class="kw">null</span> &amp;&amp; right == <span class="kw">null</span>) <span class="kw">return true</span>;   <span class="cm">// Both empty = symmetric</span>
+    <span class="kw">if</span> (left == <span class="kw">null</span> || right == <span class="kw">null</span>) <span class="kw">return false</span>;  <span class="cm">// One empty = asymmetric</span>
+    <span class="kw">return</span> left.Val == right.Val                         <span class="cm">// Values match AND...</span>
+        &amp;&amp; <span class="mt">IsMirror</span>(left.Left,  right.Right)              <span class="cm">// outer edges match AND...</span>
+        &amp;&amp; <span class="mt">IsMirror</span>(left.Right, right.Left);              <span class="cm">// inner edges match</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">isSymmetric</span>(root: Optional[TreeNode]) -> <span class="kw">bool</span>:
+    <span class="kw">def</span> <span class="mt">mirror</span>(left, right):
+        <span class="kw">if not</span> left <span class="kw">and not</span> right: <span class="kw">return True</span>
+        <span class="kw">if not</span> left <span class="kw">or  not</span> right: <span class="kw">return False</span>
+        <span class="kw">return</span> (left.val == right.val
+                <span class="kw">and</span> <span class="mt">mirror</span>(left.left,  right.right)
+                <span class="kw">and</span> <span class="mt">mirror</span>(left.right, right.left))
+    <span class="kw">return</span> <span class="mt">mirror</span>(root.left, root.right)</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 3 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 3 — Path Sum</span>
+        <div class="tags"><span class="tag tag-easy">Easy</span><span class="tag tag-topic">DFS</span><span class="tag tag-topic">Path</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree and an integer <code>targetSum</code>, return <code>true</code> if there is a root-to-leaf path such that the sum of all node values equals <code>targetSum</code>.</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 5000 | −1000 ≤ Node.val, targetSum ≤ 1000</div>
+    <div class="approach"><strong>Approach:</strong> Subtract the current node's value from targetSum at each step. At a leaf node, check if targetSum == 0. If yes, we found our path. Key: check "is this a leaf?" with <code>left == null && right == null</code>, not just <code>node == null</code>.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">HasPathSum</span>(<span class="tp">TreeNode</span>? root, <span class="kw">int</span> targetSum)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return false</span>;      <span class="cm">// Empty subtree: no path</span>
+    targetSum -= root.Val;               <span class="cm">// Subtract current node's value</span>
+    <span class="kw">if</span> (root.Left == <span class="kw">null</span> &amp;&amp; root.Right == <span class="kw">null</span>)
+        <span class="kw">return</span> targetSum == <span class="nm">0</span>;          <span class="cm">// Leaf: did we hit the target?</span>
+    <span class="kw">return</span> <span class="mt">HasPathSum</span>(root.Left,  targetSum) <span class="cm">// Check left subtree</span>
+        || <span class="mt">HasPathSum</span>(root.Right, targetSum); <span class="cm">// OR right subtree</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">hasPathSum</span>(root: Optional[TreeNode], targetSum: <span class="kw">int</span>) -> <span class="kw">bool</span>:
+    <span class="kw">if not</span> root: <span class="kw">return False</span>
+    targetSum -= root.val
+    <span class="kw">if not</span> root.left <span class="kw">and not</span> root.right:
+        <span class="kw">return</span> targetSum == <span class="nm">0</span>
+    <span class="kw">return</span> <span class="mt">hasPathSum</span>(root.left, targetSum) <span class="kw">or</span> <span class="mt">hasPathSum</span>(root.right, targetSum)</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 4 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 4 — Invert Binary Tree</span>
+        <div class="tags"><span class="tag tag-easy">Easy</span><span class="tag tag-topic">DFS</span><span class="tag tag-topic">Classic</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, invert the tree (mirror it left-to-right), and return its root. This is the famous "Google Homebrew" interview question.</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 100 | −100 ≤ Node.val ≤ 100</div>
+    <div class="approach"><strong>Approach:</strong> At each node, swap left and right children, then recursively invert each child subtree. The recursion naturally handles all levels. Two lines of code once you see the pattern.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">InvertTree</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return null</span>;
+    (root.Left, root.Right) = (<span class="mt">InvertTree</span>(root.Right), <span class="mt">InvertTree</span>(root.Left));
+    <span class="kw">return</span> root;
+    <span class="cm">// C# tuple swap: invert right first, then left, swap them in one line</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">invertTree</span>(root: Optional[TreeNode]) -> Optional[TreeNode]:
+    <span class="kw">if not</span> root: <span class="kw">return None</span>
+    root.left, root.right = <span class="mt">invertTree</span>(root.right), <span class="mt">invertTree</span>(root.left)
+    <span class="kw">return</span> root</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) — visit every node once &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 5 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 5 — Level-Order Zigzag Traversal</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">BFS</span><span class="tag tag-topic">Deque</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, return the <em>zigzag level-order</em> traversal: level 0 left-to-right, level 1 right-to-left, level 2 left-to-right, and so on.</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 2000 | −100 ≤ Node.val ≤ 100</div>
+    <div class="approach"><strong>Approach:</strong> Standard BFS level-order, but alternate the direction of appending values per level. Use a boolean flag <code>leftToRight</code> — flip it after each level. For right-to-left levels, either reverse the list or insert at front using a deque/LinkedList.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">ZigzagLevelOrder</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> result;
+
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+    queue.<span class="mt">Enqueue</span>(root);
+    <span class="kw">bool</span> leftToRight = <span class="kw">true</span>;
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> size = queue.Count;
+        <span class="kw">var</span> level = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="kw">int</span>&gt;();  <span class="cm">// Allows O(1) add at front AND back</span>
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; size; i++)
+        {
+            <span class="kw">var</span> node = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (leftToRight) level.<span class="mt">AddLast</span>(node.Val);   <span class="cm">// Normal: add at end</span>
+            <span class="kw">else</span>             level.<span class="mt">AddFirst</span>(node.Val);  <span class="cm">// Zigzag: add at front</span>
+            <span class="kw">if</span> (node.Left  != <span class="kw">null</span>) queue.<span class="mt">Enqueue</span>(node.Left);
+            <span class="kw">if</span> (node.Right != <span class="kw">null</span>) queue.<span class="mt">Enqueue</span>(node.Right);
+        }
+        result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(level));
+        leftToRight = !leftToRight;          <span class="cm">// Flip direction for next level</span>
+    }
+    <span class="kw">return</span> result;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">zigzagLevelOrder</span>(root: Optional[TreeNode]) -> List[List[<span class="kw">int</span>]]:
+    <span class="kw">if not</span> root: <span class="kw">return</span> []
+    result, q = [], deque([root])
+    left_to_right = <span class="kw">True</span>
+    <span class="kw">while</span> q:
+        level = deque()
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(q)):
+            node = q.<span class="mt">popleft</span>()
+            <span class="kw">if</span> left_to_right: level.<span class="mt">append</span>(node.val)
+            <span class="kw">else</span>:             level.<span class="mt">appendleft</span>(node.val)
+            <span class="kw">if</span> node.left:  q.<span class="mt">append</span>(node.left)
+            <span class="kw">if</span> node.right: q.<span class="mt">append</span>(node.right)
+        result.<span class="mt">append</span>(<span class="mt">list</span>(level))
+        left_to_right = <span class="kw">not</span> left_to_right
+    <span class="kw">return</span> result</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(w) where w = maximum tree width</div>
+    </div>
+</div>
+
+<div class="section-heading">Problems 6–10 — Medium: Classic Tree Patterns</div>
+
+<!-- ── PROBLEM 6 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 6 — Validate Binary Search Tree</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">BST</span><span class="tag tag-topic">Bounds</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, determine if it is a valid Binary Search Tree. A valid BST: left subtree contains ONLY nodes with values less than the node's value, right subtree contains ONLY nodes greater than the node's value, and both subtrees are themselves BSTs.</div>
+    <div class="constraints">Constraints: 1 ≤ nodes ≤ 10⁴ | −2³¹ ≤ Node.val ≤ 2³¹−1</div>
+    <div class="approach"><strong>Approach:</strong> Pass min and max bounds down recursively. At each node: value must be strictly between (min, max). For left child: max becomes current node's value. For right child: min becomes current node's value. Initialize with (-∞, +∞) at root.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">IsValidBST</span>(<span class="tp">TreeNode</span>? root) =>
+    <span class="mt">Validate</span>(root, <span class="kw">long</span>.MinValue, <span class="kw">long</span>.MaxValue);  <span class="cm">// Use long to handle int limits</span>
+
+<span class="kw">private bool</span> <span class="mt">Validate</span>(<span class="tp">TreeNode</span>? node, <span class="kw">long</span> min, <span class="kw">long</span> max)
+{
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return true</span>;
+    <span class="kw">if</span> (node.Val &lt;= min || node.Val &gt;= max) <span class="kw">return false</span>;  <span class="cm">// Violates bounds</span>
+    <span class="kw">return</span> <span class="mt">Validate</span>(node.Left,  min, node.Val)   <span class="cm">// Left: upper bound = current</span>
+        &amp;&amp; <span class="mt">Validate</span>(node.Right, node.Val, max);   <span class="cm">// Right: lower bound = current</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">isValidBST</span>(root: Optional[TreeNode]) -> <span class="kw">bool</span>:
+    <span class="kw">def</span> <span class="mt">validate</span>(node, lo, hi):
+        <span class="kw">if not</span> node: <span class="kw">return True</span>
+        <span class="kw">if not</span> (lo &lt; node.val &lt; hi): <span class="kw">return False</span>
+        <span class="kw">return</span> <span class="mt">validate</span>(node.left, lo, node.val) <span class="kw">and</span> <span class="mt">validate</span>(node.right, node.val, hi)
+    <span class="kw">return</span> <span class="mt">validate</span>(root, <span class="mt">float</span>(<span class="st">'-inf'</span>), <span class="mt">float</span>(<span class="st">'inf'</span>))</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+        <div class="tip" style="margin-top:10px;"><strong>💡 Why not just check left.val &lt; root.val &lt; right.val?</strong> This misses cases like: root=5, left=3, left.right=7. The local check passes (3 &lt; 5) but 7 is in the left subtree and 7 &gt; 5, violating the BST property.</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 7 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 7 — Lowest Common Ancestor of BST</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">BST</span><span class="tag tag-topic">LCA</span></div>
+    </div>
+    <div class="problem-stmt">Given a BST and two nodes p and q, find their Lowest Common Ancestor (LCA) — the deepest node that is an ancestor of both p and q.</div>
+    <div class="constraints">Constraints: 2 ≤ nodes ≤ 10⁵ | Both p and q exist in the tree</div>
+    <div class="approach"><strong>Approach:</strong> In a BST, use the ordering property. If both p and q are less than current node → LCA is in left subtree. If both greater → in right subtree. If one on each side (or one equals current) → current node IS the LCA. Much faster than general tree LCA.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">TreeNode</span> <span class="mt">LowestCommonAncestor</span>(<span class="tp">TreeNode</span> root, <span class="tp">TreeNode</span> p, <span class="tp">TreeNode</span> q)
+{
+    <span class="kw">while</span> (root != <span class="kw">null</span>)
+    {
+        <span class="kw">if</span> (p.Val &lt; root.Val &amp;&amp; q.Val &lt; root.Val)
+            root = root.Left;                   <span class="cm">// Both left → go left</span>
+        <span class="kw">else if</span> (p.Val &gt; root.Val &amp;&amp; q.Val &gt; root.Val)
+            root = root.Right;                  <span class="cm">// Both right → go right</span>
+        <span class="kw">else</span>
+            <span class="kw">return</span> root;                       <span class="cm">// Split point = LCA</span>
+    }
+    <span class="kw">return</span> root!;  <span class="cm">// Won't reach here if p,q guaranteed in tree</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">lowestCommonAncestor</span>(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    node = root
+    <span class="kw">while</span> node:
+        <span class="kw">if</span>   p.val &lt; node.val <span class="kw">and</span> q.val &lt; node.val: node = node.left
+        <span class="kw">elif</span> p.val &gt; node.val <span class="kw">and</span> q.val &gt; node.val: node = node.right
+        <span class="kw">else</span>: <span class="kw">return</span> node</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(h) — O(log n) balanced, O(n) worst &nbsp;|&nbsp; <strong>Space:</strong> O(1) iterative</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 8 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 8 — Binary Tree Right Side View</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">BFS</span><span class="tag tag-topic">Level Order</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, imagine yourself standing on the right side. Return the values of the nodes you can see ordered from top to bottom.</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 100 | −100 ≤ Node.val ≤ 100</div>
+    <div class="approach"><strong>Approach:</strong> Level-order BFS. For each level, the LAST node you process is the rightmost visible node — add it to the result. Process nodes left-to-right so that the last node dequeued per level is always the rightmost.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">RightSideView</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> result;
+
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+    queue.<span class="mt">Enqueue</span>(root);
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> size = queue.Count;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; size; i++)
+        {
+            <span class="kw">var</span> node = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (i == size - <span class="nm">1</span>) result.<span class="mt">Add</span>(node.Val);  <span class="cm">// Last in level = rightmost</span>
+            <span class="kw">if</span> (node.Left  != <span class="kw">null</span>) queue.<span class="mt">Enqueue</span>(node.Left);
+            <span class="kw">if</span> (node.Right != <span class="kw">null</span>) queue.<span class="mt">Enqueue</span>(node.Right);
+        }
+    }
+    <span class="kw">return</span> result;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">rightSideView</span>(root: Optional[TreeNode]) -> List[<span class="kw">int</span>]:
+    <span class="kw">if not</span> root: <span class="kw">return</span> []
+    result, q = [], deque([root])
+    <span class="kw">while</span> q:
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(q)):
+            node = q.<span class="mt">popleft</span>()
+            <span class="kw">if</span> i == <span class="mt">len</span>(q):       <span class="cm"># After popleft, len is size-1 at last node</span>
+                result.<span class="mt">append</span>(node.val)
+            <span class="kw">if</span> node.left:  q.<span class="mt">append</span>(node.left)
+            <span class="kw">if</span> node.right: q.<span class="mt">append</span>(node.right)
+    <span class="kw">return</span> result
+
+<span class="cm"># Cleaner Python version using level list:</span>
+<span class="kw">def</span> <span class="mt">rightSideViewClean</span>(root: Optional[TreeNode]) -> List[<span class="kw">int</span>]:
+    <span class="kw">if not</span> root: <span class="kw">return</span> []
+    result, q = [], deque([root])
+    <span class="kw">while</span> q:
+        size = <span class="mt">len</span>(q)
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(size):
+            node = q.<span class="mt">popleft</span>()
+            <span class="kw">if</span> i == size - <span class="nm">1</span>: result.<span class="mt">append</span>(node.val)
+            <span class="kw">if</span> node.left:  q.<span class="mt">append</span>(node.left)
+            <span class="kw">if</span> node.right: q.<span class="mt">append</span>(node.right)
+    <span class="kw">return</span> result</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(w) — max width of tree</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 9 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 9 — Construct Binary Tree from Preorder and Inorder</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">Tree Construction</span><span class="tag tag-topic">Divide &amp; Conquer</span></div>
+    </div>
+    <div class="problem-stmt">Given two integer arrays <code>preorder</code> and <code>inorder</code> (both representing the same tree), construct and return the binary tree. No duplicates in the tree.</div>
+    <div class="constraints">Constraints: 1 ≤ n ≤ 3000 | Both arrays contain same n elements</div>
+    <div class="approach"><strong>Approach:</strong> Preorder's first element is always the root. Find that value in inorder — everything to its left is the left subtree, everything to its right is the right subtree. Use a HashMap for O(1) inorder index lookup. Recurse on left and right halves of both arrays.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">BuildTree</span>(<span class="kw">int</span>[] preorder, <span class="kw">int</span>[] inorder)
+{
+    <span class="cm">// Map inorder values → indices for O(1) lookup</span>
+    <span class="kw">var</span> inMap = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; inorder.Length; i++) inMap[inorder[i]] = i;
+
+    <span class="kw">int</span> preIdx = <span class="nm">0</span>;  <span class="cm">// Global index into preorder array</span>
+    <span class="kw">return</span> <span class="mt">Build</span>(<span class="nm">0</span>, inorder.Length - <span class="nm">1</span>);
+
+    <span class="tp">TreeNode</span>? <span class="mt">Build</span>(<span class="kw">int</span> inLeft, <span class="kw">int</span> inRight)
+    {
+        <span class="kw">if</span> (inLeft &gt; inRight) <span class="kw">return null</span>;   <span class="cm">// No elements left</span>
+
+        <span class="kw">int</span> rootVal = preorder[preIdx++];      <span class="cm">// Next in preorder = current root</span>
+        <span class="kw">var</span> root = <span class="kw">new</span> <span class="tp">TreeNode</span>(rootVal);
+        <span class="kw">int</span> mid = inMap[rootVal];              <span class="cm">// Position in inorder</span>
+
+        root.Left  = <span class="mt">Build</span>(inLeft,   mid - <span class="nm">1</span>); <span class="cm">// Left subtree: inorder[inLeft..mid-1]</span>
+        root.Right = <span class="mt">Build</span>(mid + <span class="nm">1</span>, inRight);  <span class="cm">// Right subtree: inorder[mid+1..inRight]</span>
+        <span class="kw">return</span> root;
+    }
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">buildTree</span>(preorder: List[<span class="kw">int</span>], inorder: List[<span class="kw">int</span>]) -> Optional[TreeNode]:
+    in_map = {v: i <span class="kw">for</span> i, v <span class="kw">in</span> <span class="mt">enumerate</span>(inorder)}  <span class="cm"># val → index</span>
+    pre_iter = <span class="mt">iter</span>(preorder)                          <span class="cm"># Consume preorder in order</span>
+
+    <span class="kw">def</span> <span class="mt">build</span>(in_left, in_right):
+        <span class="kw">if</span> in_left &gt; in_right: <span class="kw">return None</span>
+        root_val = <span class="mt">next</span>(pre_iter)
+        root = <span class="tp">TreeNode</span>(root_val)
+        mid = in_map[root_val]
+        root.left  = <span class="mt">build</span>(in_left,  mid - <span class="nm">1</span>)
+        root.right = <span class="mt">build</span>(mid + <span class="nm">1</span>, in_right)
+        <span class="kw">return</span> root
+
+    <span class="kw">return</span> <span class="mt">build</span>(<span class="nm">0</span>, <span class="mt">len</span>(inorder) - <span class="nm">1</span>)</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) with HashMap &nbsp;|&nbsp; <strong>Space:</strong> O(n) for HashMap + O(h) stack</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 10 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 10 — Diameter of Binary Tree</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">DFS</span><span class="tag tag-topic">Post-order</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, return the length of the diameter — the length of the longest path between any two nodes (path may or may not pass through the root).</div>
+    <div class="constraints">Constraints: 1 ≤ nodes ≤ 10⁴ | −100 ≤ Node.val ≤ 100</div>
+    <div class="approach"><strong>Approach:</strong> At each node, the diameter passing through it = depth(left) + depth(right). Track the global maximum using a reference variable. Return depth (not diameter) upward so parent can compute its own diameter. Use postorder — compute children first.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">DiameterOfBinaryTree</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">int</span> maxDiameter = <span class="nm">0</span>;
+    <span class="mt">Depth</span>(root);
+    <span class="kw">return</span> maxDiameter;
+
+    <span class="kw">int</span> <span class="mt">Depth</span>(<span class="tp">TreeNode</span>? node)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> left  = <span class="mt">Depth</span>(node.Left);   <span class="cm">// Depth of left subtree</span>
+        <span class="kw">int</span> right = <span class="mt">Depth</span>(node.Right);  <span class="cm">// Depth of right subtree</span>
+        maxDiameter = <span class="tp">Math</span>.<span class="mt">Max</span>(maxDiameter, left + right);  <span class="cm">// Path through this node</span>
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(left, right);                  <span class="cm">// Return depth upward</span>
+    }
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">diameterOfBinaryTree</span>(root: Optional[TreeNode]) -> <span class="kw">int</span>:
+    max_d = [<span class="nm">0</span>]  <span class="cm"># Use list to allow mutation inside nested function</span>
+    <span class="kw">def</span> <span class="mt">depth</span>(node):
+        <span class="kw">if not</span> node: <span class="kw">return</span> <span class="nm">0</span>
+        left, right = <span class="mt">depth</span>(node.left), <span class="mt">depth</span>(node.right)
+        max_d[<span class="nm">0</span>] = <span class="mt">max</span>(max_d[<span class="nm">0</span>], left + right)
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(left, right)
+    <span class="mt">depth</span>(root)
+    <span class="kw">return</span> max_d[<span class="nm">0</span>]</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) — single DFS pass &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+        <div class="tip" style="margin-top:10px;"><strong>💡 Key insight:</strong> Return the depth (max height of one path going down), NOT the diameter. The diameter at each node is left_depth + right_depth. We track the global max in an external variable updated at each node.</div>
+    </div>
+</div>
+
+<div class="section-heading">Problems 11–15 — Hard: Advanced Tree Algorithms</div>
+
+<!-- ── PROBLEM 11 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 11 — Binary Tree Maximum Path Sum</span>
+        <div class="tags"><span class="tag tag-hard">Hard</span><span class="tag tag-topic">DFS</span><span class="tag tag-topic">Path Sum</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, return the maximum path sum. A path goes from any node to any other node through any sequence of parent-child connections. A single node counts as a path. Node values can be negative.</div>
+    <div class="constraints">Constraints: 1 ≤ nodes ≤ 3×10⁴ | −1000 ≤ Node.val ≤ 1000</div>
+    <div class="approach"><strong>Approach:</strong> At each node, compute the max contribution going DOWN (only take a child if it adds positive value). The path through this node = node.val + max(0, left_gain) + max(0, right_gain). Track global max. Return to parent only the one-arm gain: node.val + max(0, max(left_gain, right_gain)) — because a path can't split.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">MaxPathSum</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">int</span> maxSum = <span class="kw">int</span>.MinValue;
+    <span class="mt">Gain</span>(root);
+    <span class="kw">return</span> maxSum;
+
+    <span class="kw">int</span> <span class="mt">Gain</span>(<span class="tp">TreeNode</span>? node)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> leftGain  = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="mt">Gain</span>(node.Left));   <span class="cm">// Only take if positive</span>
+        <span class="kw">int</span> rightGain = <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="nm">0</span>, <span class="mt">Gain</span>(node.Right));  <span class="cm">// Only take if positive</span>
+        maxSum = <span class="tp">Math</span>.<span class="mt">Max</span>(maxSum, node.Val + leftGain + rightGain); <span class="cm">// Path THROUGH this node</span>
+        <span class="kw">return</span> node.Val + <span class="tp">Math</span>.<span class="mt">Max</span>(leftGain, rightGain);            <span class="cm">// Return ONE arm to parent</span>
+    }
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">maxPathSum</span>(root: Optional[TreeNode]) -> <span class="kw">int</span>:
+    max_sum = [<span class="mt">float</span>(<span class="st">'-inf'</span>)]
+    <span class="kw">def</span> <span class="mt">gain</span>(node):
+        <span class="kw">if not</span> node: <span class="kw">return</span> <span class="nm">0</span>
+        l = <span class="mt">max</span>(<span class="nm">0</span>, <span class="mt">gain</span>(node.left))   <span class="cm"># Discard negative contributions</span>
+        r = <span class="mt">max</span>(<span class="nm">0</span>, <span class="mt">gain</span>(node.right))
+        max_sum[<span class="nm">0</span>] = <span class="mt">max</span>(max_sum[<span class="nm">0</span>], node.val + l + r)
+        <span class="kw">return</span> node.val + <span class="mt">max</span>(l, r)   <span class="cm"># Only ONE direction to parent</span>
+    <span class="mt">gain</span>(root)
+    <span class="kw">return</span> max_sum[<span class="nm">0</span>]</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 12 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 12 — Serialize and Deserialize Binary Tree</span>
+        <div class="tags"><span class="tag tag-hard">Hard</span><span class="tag tag-topic">BFS</span><span class="tag tag-topic">Serialization</span></div>
+    </div>
+    <div class="problem-stmt">Design an algorithm to serialize a binary tree to a string and deserialize that string back to the original tree. No specific format required — just make it invertible.</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 10⁴ | −1000 ≤ Node.val ≤ 1000</div>
+    <div class="approach"><strong>Approach:</strong> Use BFS level-order serialization with null markers ("N"). Serialize: enqueue root, dequeue nodes writing values, enqueue children (or "N" for null children). Deserialize: split by comma, build queue of values, use index tracking to assign children.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public string</span> <span class="mt">Serialize</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return</span> <span class="st">""</span>;
+    <span class="kw">var</span> sb = <span class="kw">new</span> <span class="tp">System</span>.<span class="tp">Text</span>.<span class="tp">StringBuilder</span>();
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>?&gt;();
+    queue.<span class="mt">Enqueue</span>(root);
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> node = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">if</span> (node == <span class="kw">null</span>) { sb.<span class="mt">Append</span>(<span class="st">"N,"</span>); <span class="kw">continue</span>; }
+        sb.<span class="mt">Append</span>(node.Val + <span class="st">","</span>);
+        queue.<span class="mt">Enqueue</span>(node.Left);
+        queue.<span class="mt">Enqueue</span>(node.Right);
+    }
+    <span class="kw">return</span> sb.<span class="mt">ToString</span>().<span class="mt">TrimEnd</span>(<span class="st">','</span>);
+}
+
+<span class="kw">public</span> <span class="tp">TreeNode</span>? <span class="mt">Deserialize</span>(<span class="kw">string</span> data)
+{
+    <span class="kw">if</span> (<span class="kw">string</span>.<span class="mt">IsNullOrEmpty</span>(data)) <span class="kw">return null</span>;
+    <span class="kw">var</span> vals = data.<span class="mt">Split</span>(<span class="st">','</span>);
+    <span class="kw">var</span> root = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="kw">int</span>.<span class="mt">Parse</span>(vals[<span class="nm">0</span>]));
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;();
+    queue.<span class="mt">Enqueue</span>(root);
+    <span class="kw">int</span> i = <span class="nm">1</span>;
+    <span class="kw">while</span> (i &lt; vals.Length)
+    {
+        <span class="kw">var</span> node = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">if</span> (vals[i] != <span class="st">"N"</span>) { node.Left = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="kw">int</span>.<span class="mt">Parse</span>(vals[i])); queue.<span class="mt">Enqueue</span>(node.Left); }
+        i++;
+        <span class="kw">if</span> (i &lt; vals.Length &amp;&amp; vals[i] != <span class="st">"N"</span>) { node.Right = <span class="kw">new</span> <span class="tp">TreeNode</span>(<span class="kw">int</span>.<span class="mt">Parse</span>(vals[i])); queue.<span class="mt">Enqueue</span>(node.Right); }
+        i++;
+    }
+    <span class="kw">return</span> root;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">serialize</span>(root: Optional[TreeNode]) -> <span class="kw">str</span>:
+    <span class="kw">if not</span> root: <span class="kw">return</span> <span class="st">""</span>
+    q, res = deque([root]), []
+    <span class="kw">while</span> q:
+        node = q.<span class="mt">popleft</span>()
+        <span class="kw">if not</span> node: res.<span class="mt">append</span>(<span class="st">"N"</span>)
+        <span class="kw">else</span>:
+            res.<span class="mt">append</span>(<span class="mt">str</span>(node.val))
+            q.<span class="mt">append</span>(node.left)
+            q.<span class="mt">append</span>(node.right)
+    <span class="kw">return</span> <span class="st">","</span>.<span class="mt">join</span>(res)
+
+<span class="kw">def</span> <span class="mt">deserialize</span>(data: <span class="kw">str</span>) -> Optional[TreeNode]:
+    <span class="kw">if not</span> data: <span class="kw">return None</span>
+    vals = data.<span class="mt">split</span>(<span class="st">","</span>)
+    root = <span class="tp">TreeNode</span>(<span class="mt">int</span>(vals[<span class="nm">0</span>]))
+    q, i = deque([root]), <span class="nm">1</span>
+    <span class="kw">while</span> q <span class="kw">and</span> i &lt; <span class="mt">len</span>(vals):
+        node = q.<span class="mt">popleft</span>()
+        <span class="kw">if</span> vals[i] != <span class="st">"N"</span>:
+            node.left = <span class="tp">TreeNode</span>(<span class="mt">int</span>(vals[i]))
+            q.<span class="mt">append</span>(node.left)
+        i += <span class="nm">1</span>
+        <span class="kw">if</span> i &lt; <span class="mt">len</span>(vals) <span class="kw">and</span> vals[i] != <span class="st">"N"</span>:
+            node.right = <span class="tp">TreeNode</span>(<span class="mt">int</span>(vals[i]))
+            q.<span class="mt">append</span>(node.right)
+        i += <span class="nm">1</span>
+    <span class="kw">return</span> root</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) for both &nbsp;|&nbsp; <strong>Space:</strong> O(n) for the queue and string</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 13 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 13 — Kth Smallest Element in BST</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">BST</span><span class="tag tag-topic">Inorder</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a BST and an integer k, return the kth smallest value (1-indexed) of all values in the BST.</div>
+    <div class="constraints">Constraints: 1 ≤ k ≤ n ≤ 10⁴ | 0 ≤ Node.val ≤ 10⁴</div>
+    <div class="approach"><strong>Approach:</strong> Inorder traversal of a BST gives sorted ascending order. Count nodes visited — when count reaches k, that's your answer. Use iterative inorder to stop early (no need to traverse the whole tree). Early termination makes this O(h + k) instead of O(n).</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">KthSmallest</span>(<span class="tp">TreeNode</span>? root, <span class="kw">int</span> k)
+{
+    <span class="kw">var</span> stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="tp">TreeNode</span>&gt;();
+    <span class="kw">var</span> current = root;
+
+    <span class="kw">while</span> (current != <span class="kw">null</span> || stack.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">while</span> (current != <span class="kw">null</span>) { stack.<span class="mt">Push</span>(current); current = current.Left; }
+        current = stack.<span class="mt">Pop</span>();
+        <span class="kw">if</span> (--k == <span class="nm">0</span>) <span class="kw">return</span> current.Val;  <span class="cm">// Decrement k; if 0, this is the kth</span>
+        current = current.Right;
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>;  <span class="cm">// k > tree size (shouldn't happen per constraints)</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">kthSmallest</span>(root: Optional[TreeNode], k: <span class="kw">int</span>) -> <span class="kw">int</span>:
+    stack, cur = [], root
+    <span class="kw">while</span> cur <span class="kw">or</span> stack:
+        <span class="kw">while</span> cur: stack.<span class="mt">append</span>(cur); cur = cur.left
+        cur = stack.<span class="mt">pop</span>()
+        k -= <span class="nm">1</span>
+        <span class="kw">if</span> k == <span class="nm">0</span>: <span class="kw">return</span> cur.val
+        cur = cur.right</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(h + k) — h to reach leftmost, then k steps &nbsp;|&nbsp; <strong>Space:</strong> O(h)</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 14 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 14 — Flatten Binary Tree to Linked List</span>
+        <div class="tags"><span class="tag tag-med">Medium</span><span class="tag tag-topic">Preorder</span><span class="tag tag-topic">In-place</span></div>
+    </div>
+    <div class="problem-stmt">Given the root of a binary tree, flatten it to a linked list in-place. The linked list should follow preorder traversal of the tree, using only right pointers (left pointers all null).</div>
+    <div class="constraints">Constraints: 0 ≤ nodes ≤ 2000 | −100 ≤ Node.val ≤ 100 | Must do in-place (O(1) extra space).</div>
+    <div class="approach"><strong>Approach:</strong> Morris Traversal style. At each node with a left child: find the rightmost node of the left subtree, attach the current right subtree there, then move left subtree to right position. Repeat until no left children remain. O(1) space, no recursion.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public void</span> <span class="mt">Flatten</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="kw">var</span> curr = root;
+    <span class="kw">while</span> (curr != <span class="kw">null</span>)
+    {
+        <span class="kw">if</span> (curr.Left != <span class="kw">null</span>)
+        {
+            <span class="cm">// Find rightmost of left subtree</span>
+            <span class="kw">var</span> rightmost = curr.Left;
+            <span class="kw">while</span> (rightmost.Right != <span class="kw">null</span>) rightmost = rightmost.Right;
+
+            <span class="cm">// Attach curr's right subtree to rightmost's right</span>
+            rightmost.Right = curr.Right;
+
+            <span class="cm">// Move left subtree to right; clear left</span>
+            curr.Right = curr.Left;
+            curr.Left  = <span class="kw">null</span>;
+        }
+        curr = curr.Right;  <span class="cm">// Move to next node in preorder</span>
+    }
+}
+<span class="cm">// Input: 1→(2→(3,4), 5→(null,6))  Output: 1→2→3→4→5→6 (all right links)</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">flatten</span>(root: Optional[TreeNode]) -> <span class="kw">None</span>:
+    curr = root
+    <span class="kw">while</span> curr:
+        <span class="kw">if</span> curr.left:
+            rightmost = curr.left
+            <span class="kw">while</span> rightmost.right: rightmost = rightmost.right
+            rightmost.right = curr.right   <span class="cm"># Attach right subtree</span>
+            curr.right = curr.left         <span class="cm"># Left becomes new right</span>
+            curr.left  = <span class="kw">None</span>
+        curr = curr.right</pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) — each node visited at most twice &nbsp;|&nbsp; <strong>Space:</strong> O(1) — no recursion, no stack</div>
+    </div>
+</div>
+
+<!-- ── PROBLEM 15 ── -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">Problem 15 — Recover BST (Two Nodes Swapped)</span>
+        <div class="tags"><span class="tag tag-hard">Hard</span><span class="tag tag-topic">BST</span><span class="tag tag-topic">Inorder</span><span class="tag tag-topic">Morris</span></div>
+    </div>
+    <div class="problem-stmt">Two nodes in a BST have been accidentally swapped. Recover the tree without changing its structure (restore the original BST property).</div>
+    <div class="constraints">Constraints: 2 ≤ nodes ≤ 1000 | Must do in O(1) space (Morris traversal bonus). Swap back only the VALUES, not the nodes.</div>
+    <div class="approach"><strong>Approach:</strong> Inorder traversal of a valid BST is strictly increasing. If two nodes are swapped, there are exactly 1 or 2 "inversions" (places where prev.val &gt; curr.val). The first inversion's "prev" node and the last inversion's "curr" node are the two swapped nodes. Swap their values back.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public void</span> <span class="mt">RecoverTree</span>(<span class="tp">TreeNode</span>? root)
+{
+    <span class="tp">TreeNode</span>? first = <span class="kw">null</span>, second = <span class="kw">null</span>, prev = <span class="kw">null</span>;
+
+    <span class="cm">// Inorder traversal — find the two swapped nodes</span>
+    <span class="mt">InOrder</span>(root);
+
+    <span class="cm">// Swap values back</span>
+    <span class="kw">if</span> (first != <span class="kw">null</span> &amp;&amp; second != <span class="kw">null</span>)
+        (first.Val, second.Val) = (second.Val, first.Val);
+
+    <span class="kw">void</span> <span class="mt">InOrder</span>(<span class="tp">TreeNode</span>? node)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span>;
+        <span class="mt">InOrder</span>(node.Left);
+
+        <span class="kw">if</span> (prev != <span class="kw">null</span> &amp;&amp; prev.Val &gt; node.Val)
+        {
+            <span class="kw">if</span> (first == <span class="kw">null</span>) first = prev;   <span class="cm">// First inversion: record prev</span>
+            second = node;                       <span class="cm">// Always update second (handles adjacent swap)</span>
+        }
+        prev = node;                             <span class="cm">// Advance prev pointer</span>
+
+        <span class="mt">InOrder</span>(node.Right);
+    }
+}
+<span class="cm">// Example: BST [3,1,4,null,null,2] where 3 and 2 are swapped
+// Inorder would be: 1,3,2,4 → inversion at (3,2) → swap 3&lt;→2 → [2,1,4,null,null,3]</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">def</span> <span class="mt">recoverTree</span>(root: Optional[TreeNode]) -> <span class="kw">None</span>:
+    first = second = prev = <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="mt">inorder</span>(node):
+        <span class="kw">nonlocal</span> first, second, prev
+        <span class="kw">if not</span> node: <span class="kw">return</span>
+        <span class="mt">inorder</span>(node.left)
+        <span class="kw">if</span> prev <span class="kw">and</span> prev.val &gt; node.val:
+            <span class="kw">if not</span> first: first = prev   <span class="cm"># First violation: candidate 1</span>
+            second = node                 <span class="cm"># Always update: candidate 2</span>
+        prev = node
+        <span class="mt">inorder</span>(node.right)
+
+    <span class="mt">inorder</span>(root)
+    first.val, second.val = second.val, first.val  <span class="cm"># Restore BST</span></pre>
+        </div>
+        <div class="complexity"><strong>Time:</strong> O(n) &nbsp;|&nbsp; <strong>Space:</strong> O(h) for recursion (O(1) with Morris traversal)</div>
+        <div class="tip" style="margin-top:10px;"><strong>💡 Adjacent vs. Non-adjacent swap:</strong> If the two swapped nodes are adjacent in inorder (e.g., [1,3,2,4] — 3 and 2 swapped), there is exactly ONE inversion. If they're non-adjacent (e.g., [1,4,3,2] — 4 and 2 swapped), there are TWO inversions. The algorithm handles both: <code>first</code> is set at the first inversion, <code>second</code> keeps getting updated — so it ends up at the correct second node in both cases.</div>
+    </div>
+</div>
+
+<br>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 6C Complete</button>
+<div class="toast" id="toast">✅ Module 6C marked complete!</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 6C Complete!</strong><br><br>
+    You've practiced: traversal variants, path problems, BST validation, tree construction, diameter, max path sum,
+    serialization, kth smallest, flatten, and recover BST — the complete interview tree toolkit.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m06b_bst.html">Part B — Binary Search Trees</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m07a_avl_trees.html">Part D — AVL Trees</a>
+</div>
+    <script>var MODULE_ID = 'm06c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

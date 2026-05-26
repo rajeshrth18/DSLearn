@@ -1,0 +1,616 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 19A — Interview: Arrays &amp; Strings | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 19 — Part A</h1>
+    <div class="tagline">Top Interview Problems — Arrays &amp; Strings</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">15 Essential Problems · FAANG Frequency · C# &amp; Python Solutions · Hint System</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🔥 FAANG Prep</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 19</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 10 — Module 19 — Top 50 Interview Problems:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Arrays &amp; Strings (15 Problems)<br>
+    ⬜ <strong>Part B</strong> — <a href="m19b_interview_trees.html">Trees &amp; Graphs (15 Problems)</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m19c_interview_dp.html">DP &amp; Advanced (20 Problems)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase10/m18a_patterns1.html">&larr; Module 18 &mdash; Patterns I</a>
+    <a href="../phase10/m20_final_review.html">Module 20 &mdash; Final Review &rarr;</a>
+</div>
+
+<div class="note"><strong>How to use this section:</strong> Read the problem. Try to solve it independently for at least 10 minutes. Use the Hint if stuck. Reveal Solution only after a genuine attempt. Both C# and Python solutions are provided.</div>
+
+<!-- ═══════ GROUP A: Array Fundamentals ═══════ -->
+<div class="section-heading">Group A — Array Fundamentals</div>
+
+<!-- Problem 1 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#1</span>
+        <span class="problem-title">Two Sum</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #1 · 🔥 Most common FAANG problem</span>
+    </div>
+    <p>Given an array <code>nums</code> and a target, return indices of the two numbers that add up to target. Exactly one solution exists. May not use the same element twice.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: Hash Map</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Use a hash map to store <code>value → index</code>. For each element, check if <code>target - element</code> exists in the map before inserting the element.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target) {
+    <span class="kw">var</span> map = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++) {
+        <span class="kw">int</span> comp = target - nums[i];
+        <span class="kw">if</span> (map.<span class="mt">ContainsKey</span>(comp)) <span class="kw">return new</span>[] {map[comp], i};
+        map[nums[i]] = i;
+    }
+    <span class="kw">return</span> Array.Empty&lt;<span class="kw">int</span>&gt;();
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">twoSum</span>(nums, target):
+    seen = {}
+    <span class="kw">for</span> i, v <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
+        <span class="kw">if</span> target-v <span class="kw">in</span> seen: <span class="kw">return</span> [seen[target-v], i]
+        seen[v] = i</pre></div>
+    </div>
+</div>
+
+<!-- Problem 2 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#2</span>
+        <span class="problem-title">Best Time to Buy and Sell Stock</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #121</span>
+    </div>
+    <p>Given prices array, find the maximum profit from buying on one day and selling on a later day.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: Running Min</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Track the minimum price seen so far. For each price, compute potential profit (price - minSoFar) and update the maximum profit.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">MaxProfit</span>(<span class="kw">int</span>[] prices) {
+    <span class="kw">int</span> minP = <span class="kw">int</span>.MaxValue, best = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> p <span class="kw">in</span> prices) {
+        minP = Math.<span class="mt">Min</span>(minP, p);
+        best = Math.<span class="mt">Max</span>(best, p - minP);
+    }
+    <span class="kw">return</span> best;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">maxProfit</span>(prices):
+    min_p, best = <span class="mt">float</span>(<span class="st">'inf'</span>), <span class="nm">0</span>
+    <span class="kw">for</span> p <span class="kw">in</span> prices:
+        min_p = <span class="mt">min</span>(min_p, p); best = <span class="mt">max</span>(best, p-min_p)
+    <span class="kw">return</span> best</pre></div>
+    </div>
+</div>
+
+<!-- Problem 3 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#3</span>
+        <span class="problem-title">Contains Duplicate</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #217</span>
+    </div>
+    <p>Return true if any value appears at least twice in the array.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: Hash Set</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Use a HashSet. Try to add each element; if it's already present, return true.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">ContainsDuplicate</span>(<span class="kw">int</span>[] nums)
+    => <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(nums).Count &lt; nums.Length;</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">containsDuplicate</span>(nums): <span class="kw">return</span> <span class="mt">len</span>(<span class="mt">set</span>(nums)) &lt; <span class="mt">len</span>(nums)</pre></div>
+    </div>
+</div>
+
+<!-- Problem 4 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#4</span>
+        <span class="problem-title">Product of Array Except Self</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #238 · No division allowed</span>
+    </div>
+    <p>Return array where each element is the product of all other elements. Must run in O(n) without using division.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1) extra</span><span>Pattern: Prefix/Suffix Products</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">For each position i: result[i] = (product of all elements to the left) × (product of all elements to the right). Do two passes: left-to-right building prefix products, then right-to-left multiplying suffix products.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span>[] <span class="mt">ProductExceptSelf</span>(<span class="kw">int</span>[] nums) {
+    <span class="kw">int</span> n = nums.Length; <span class="kw">var</span> res = <span class="kw">new int</span>[n];
+    res[<span class="nm">0</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; n; i++) res[i] = res[i-<span class="nm">1</span>] * nums[i-<span class="nm">1</span>];
+    <span class="kw">int</span> right = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = n-<span class="nm">1</span>; i >= <span class="nm">0</span>; i--) { res[i] *= right; right *= nums[i]; }
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">productExceptSelf</span>(nums):
+    n = <span class="mt">len</span>(nums); res = [<span class="nm">1</span>]*n
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n): res[i] = res[i-<span class="nm">1</span>] * nums[i-<span class="nm">1</span>]
+    r = <span class="nm">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n-<span class="nm">1</span>, -<span class="nm">1</span>, -<span class="nm">1</span>): res[i] *= r; r *= nums[i]
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- Problem 5 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#5</span>
+        <span class="problem-title">Maximum Subarray (Kadane's Algorithm)</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #53 · Classic</span>
+    </div>
+    <p>Find the contiguous subarray (at least one element) which has the largest sum.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: Kadane / DP</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">At each position, decide: extend the previous subarray or start a new one. <code>curr = max(nums[i], curr + nums[i])</code>. Track global max.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">MaxSubArray</span>(<span class="kw">int</span>[] nums) {
+    <span class="kw">int</span> curr = nums[<span class="nm">0</span>], best = nums[<span class="nm">0</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; nums.Length; i++) {
+        curr = Math.<span class="mt">Max</span>(nums[i], curr + nums[i]);
+        best = Math.<span class="mt">Max</span>(best, curr);
+    }
+    <span class="kw">return</span> best;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">maxSubArray</span>(nums):
+    curr = best = nums[<span class="nm">0</span>]
+    <span class="kw">for</span> x <span class="kw">in</span> nums[<span class="nm">1</span>:]: curr = <span class="mt">max</span>(x, curr+x); best = <span class="mt">max</span>(best, curr)
+    <span class="kw">return</span> best</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP B: String Problems ═══════ -->
+<div class="section-heading">Group B — String Problems</div>
+
+<!-- Problem 6 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#6</span>
+        <span class="problem-title">Valid Anagram</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #242</span>
+    </div>
+    <p>Given two strings s and t, return true if t is an anagram of s.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1) (26 chars)</span><span>Pattern: Frequency Count</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Count character frequencies. Two strings are anagrams iff they have identical frequency tables. Either use two frequency arrays, or use one and increment for s, decrement for t, check all zeros.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">IsAnagram</span>(<span class="kw">string</span> s, <span class="kw">string</span> t) {
+    <span class="kw">if</span> (s.Length != t.Length) <span class="kw">return false</span>;
+    <span class="kw">var</span> cnt = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) cnt[c-<span class="st">'a'</span>]++;
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> t) <span class="kw">if</span> (--cnt[c-<span class="st">'a'</span>] &lt; <span class="nm">0</span>) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">def</span> <span class="mt">isAnagram</span>(s, t): <span class="kw">return</span> <span class="tp">Counter</span>(s) == <span class="tp">Counter</span>(t)</pre></div>
+    </div>
+</div>
+
+<!-- Problem 7 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#7</span>
+        <span class="problem-title">Group Anagrams</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #49</span>
+    </div>
+    <p>Given an array of strings, group the anagrams together.</p>
+    <div class="complexity-row"><span>Time: O(n·k log k)</span><span>Space: O(n·k)</span><span>Pattern: HashMap with sorted key</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Anagrams have the same sorted form. Use a dictionary keyed by the sorted string. Group all strings with the same sorted form together.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">GroupAnagrams</span>(<span class="kw">string</span>[] strs) {
+    <span class="kw">var</span> map = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> s <span class="kw">in</span> strs) {
+        <span class="kw">var</span> key = <span class="kw">new string</span>(s.<span class="mt">OrderBy</span>(c =&gt; c).<span class="mt">ToArray</span>());
+        <span class="kw">if</span> (!map.<span class="mt">ContainsKey</span>(key)) map[key] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+        map[key].<span class="mt">Add</span>(s);
+    }
+    <span class="kw">return</span> map.Values.<span class="mt">ToList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt;();
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">def</span> <span class="mt">groupAnagrams</span>(strs):
+    d = <span class="mt">defaultdict</span>(<span class="mt">list</span>)
+    <span class="kw">for</span> s <span class="kw">in</span> strs: d[<span class="mt">tuple</span>(<span class="mt">sorted</span>(s))].<span class="mt">append</span>(s)
+    <span class="kw">return</span> <span class="mt">list</span>(d.<span class="mt">values</span>())</pre></div>
+    </div>
+</div>
+
+<!-- Problem 8 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#8</span>
+        <span class="problem-title">Valid Parentheses</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #20</span>
+    </div>
+    <p>Determine if a string of brackets <code>'('</code>, <code>')'</code>, <code>'{'</code>, <code>'}'</code>, <code>'['</code>, <code>']'</code> is valid (properly opened and closed).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: Stack</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Use a stack. Push opening brackets. When you see a closing bracket, check if the stack top is the matching opener. If not, or stack is empty, return false. At end, stack should be empty.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">IsValid</span>(<span class="kw">string</span> s) {
+    <span class="kw">var</span> st = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">char</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) {
+        <span class="kw">if</span> (<span class="st">"([{"</span>.<span class="mt">Contains</span>(c)) st.<span class="mt">Push</span>(c);
+        <span class="kw">else</span> {
+            <span class="kw">if</span> (st.Count == <span class="nm">0</span>) <span class="kw">return false</span>;
+            <span class="kw">char</span> top = st.<span class="mt">Pop</span>();
+            <span class="kw">if</span> (c==<span class="st">')'</span> &amp;&amp; top!=<span class="st">'('</span> || c==<span class="st">']'</span> &amp;&amp; top!=<span class="st">'['</span> || c==<span class="st">'}'</span> &amp;&amp; top!=<span class="st">'{'</span>) <span class="kw">return false</span>;
+        }
+    }
+    <span class="kw">return</span> st.Count == <span class="nm">0</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">isValid</span>(s):
+    st = []; m = {<span class="st">')'</span>:<span class="st">'('</span>, <span class="st">']'</span>:<span class="st">'['</span>, <span class="st">'}'</span>:<span class="st">'{'</span>}
+    <span class="kw">for</span> c <span class="kw">in</span> s:
+        <span class="kw">if</span> c <span class="kw">not in</span> m: st.<span class="mt">append</span>(c)
+        <span class="kw">elif</span> <span class="kw">not</span> st <span class="kw">or</span> st[-<span class="nm">1</span>] != m[c]: <span class="kw">return False</span>
+        <span class="kw">else</span>: st.<span class="mt">pop</span>()
+    <span class="kw">return not</span> st</pre></div>
+    </div>
+</div>
+
+<!-- Problem 9 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#9</span>
+        <span class="problem-title">Longest Consecutive Sequence</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #128</span>
+    </div>
+    <p>Given an unsorted array, find the length of the longest consecutive elements sequence. Must run in O(n).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: HashSet, start detection</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Put all numbers in a HashSet. For each number n, only start counting if n-1 is NOT in the set (it's the start of a sequence). Then count n, n+1, n+2... This ensures each sequence is counted exactly once.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">LongestConsecutive</span>(<span class="kw">int</span>[] nums) {
+    <span class="kw">var</span> set = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(nums);
+    <span class="kw">int</span> best = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> set) {
+        <span class="kw">if</span> (!set.<span class="mt">Contains</span>(n - <span class="nm">1</span>)) {
+            <span class="kw">int</span> len = <span class="nm">1</span>;
+            <span class="kw">while</span> (set.<span class="mt">Contains</span>(n + len)) len++;
+            best = Math.<span class="mt">Max</span>(best, len);
+        }
+    }
+    <span class="kw">return</span> best;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">longestConsecutive</span>(nums):
+    s = <span class="mt">set</span>(nums); best = <span class="nm">0</span>
+    <span class="kw">for</span> n <span class="kw">in</span> s:
+        <span class="kw">if</span> n-<span class="nm">1</span> <span class="kw">not in</span> s:
+            length = <span class="nm">1</span>
+            <span class="kw">while</span> n+length <span class="kw">in</span> s: length += <span class="nm">1</span>
+            best = <span class="mt">max</span>(best, length)
+    <span class="kw">return</span> best</pre></div>
+    </div>
+</div>
+
+<!-- Problem 10 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#10</span>
+        <span class="problem-title">Trapping Rain Water</span>
+        <span class="diff-hard">Hard</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #42 · Classic</span>
+    </div>
+    <p>Given heights array, compute how much water can be trapped after rain.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: Two Pointers</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Two-pointer approach: maintain <code>maxLeft</code> and <code>maxRight</code>. Water at position i = min(maxLeft, maxRight) - height[i]. Process the side with the smaller max pointer first — that side's water is determined.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">Trap</span>(<span class="kw">int</span>[] h) {
+    <span class="kw">int</span> L=<span class="nm">0</span>, R=h.Length-<span class="nm">1</span>, maxL=<span class="nm">0</span>, maxR=<span class="nm">0</span>, water=<span class="nm">0</span>;
+    <span class="kw">while</span> (L &lt; R) {
+        <span class="kw">if</span> (h[L] &lt; h[R]) {
+            maxL = Math.<span class="mt">Max</span>(maxL, h[L]);
+            water += maxL - h[L++];
+        } <span class="kw">else</span> {
+            maxR = Math.<span class="mt">Max</span>(maxR, h[R]);
+            water += maxR - h[R--];
+        }
+    }
+    <span class="kw">return</span> water;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">trap</span>(height):
+    L, R, maxL, maxR, w = <span class="nm">0</span>, <span class="mt">len</span>(height)-<span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>
+    <span class="kw">while</span> L &lt; R:
+        <span class="kw">if</span> height[L] &lt; height[R]:
+            maxL = <span class="mt">max</span>(maxL, height[L]); w += maxL-height[L]; L+=<span class="nm">1</span>
+        <span class="kw">else</span>:
+            maxR = <span class="mt">max</span>(maxR, height[R]); w += maxR-height[R]; R-=<span class="nm">1</span>
+    <span class="kw">return</span> w</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP C: Medium+ Arrays ═══════ -->
+<div class="section-heading">Group C — Medium–Hard Arrays</div>
+
+<!-- Problem 11 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#11</span>
+        <span class="problem-title">3Sum</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #15</span>
+    </div>
+    <p>Find all unique triplets that sum to zero.</p>
+    <div class="complexity-row"><span>Time: O(n²)</span><span>Space: O(1)</span><span>Pattern: Sort + Two Pointers</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Sort the array. Fix one element i, then use two pointers L and R on the rest to find pairs summing to -nums[i]. Skip duplicates at each level to avoid duplicate triplets.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">ThreeSum</span>(<span class="kw">int</span>[] nums) {
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(nums); <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;nums.Length-<span class="nm">2</span>; i++) {
+        <span class="kw">if</span> (i&gt;<span class="nm">0</span> &amp;&amp; nums[i]==nums[i-<span class="nm">1</span>]) <span class="kw">continue</span>;
+        <span class="kw">int</span> L=i+<span class="nm">1</span>, R=nums.Length-<span class="nm">1</span>;
+        <span class="kw">while</span> (L&lt;R) {
+            <span class="kw">int</span> s=nums[i]+nums[L]+nums[R];
+            <span class="kw">if</span>(s==<span class="nm">0</span>){
+                res.<span class="mt">Add</span>(<span class="kw">new</span>[]{nums[i],nums[L],nums[R]});
+                <span class="kw">while</span>(L&lt;R&amp;&amp;nums[L]==nums[L+<span class="nm">1</span>])L++;
+                <span class="kw">while</span>(L&lt;R&amp;&amp;nums[R]==nums[R-<span class="nm">1</span>])R--;
+                L++; R--;
+            } <span class="kw">else if</span>(s&lt;<span class="nm">0</span>) L++; <span class="kw">else</span> R--;
+        }
+    }
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">threeSum</span>(nums):
+    nums.<span class="mt">sort</span>(); res = []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums)-<span class="nm">2</span>):
+        <span class="kw">if</span> i > <span class="nm">0</span> <span class="kw">and</span> nums[i]==nums[i-<span class="nm">1</span>]: <span class="kw">continue</span>
+        L, R = i+<span class="nm">1</span>, <span class="mt">len</span>(nums)-<span class="nm">1</span>
+        <span class="kw">while</span> L &lt; R:
+            s = nums[i]+nums[L]+nums[R]
+            <span class="kw">if</span> s == <span class="nm">0</span>:
+                res.<span class="mt">append</span>([nums[i],nums[L],nums[R]])
+                <span class="kw">while</span> L &lt; R <span class="kw">and</span> nums[L]==nums[L+<span class="nm">1</span>]: L+=<span class="nm">1</span>
+                <span class="kw">while</span> L &lt; R <span class="kw">and</span> nums[R]==nums[R-<span class="nm">1</span>]: R-=<span class="nm">1</span>
+                L+=<span class="nm">1</span>; R-=<span class="nm">1</span>
+            <span class="kw">elif</span> s &lt; <span class="nm">0</span>: L+=<span class="nm">1</span>
+            <span class="kw">else</span>: R-=<span class="nm">1</span>
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- Problem 12 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#12</span>
+        <span class="problem-title">Rotate Array</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #189</span>
+    </div>
+    <p>Rotate array to the right by k steps in-place with O(1) extra space.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: Triple Reverse</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Triple reverse: (1) reverse the whole array, (2) reverse the first k elements, (3) reverse the remaining n-k elements. Remember to take k mod n first.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public void</span> <span class="mt">Rotate</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k) {
+    <span class="kw">int</span> n=nums.Length; k%=n;
+    <span class="kw">void</span> <span class="mt">Rev</span>(<span class="kw">int</span> l, <span class="kw">int</span> r){<span class="kw">while</span>(l&lt;r){(nums[l],nums[r])=(nums[r],nums[l]);l++;r--;}}
+    <span class="mt">Rev</span>(<span class="nm">0</span>,n-<span class="nm">1</span>); <span class="mt">Rev</span>(<span class="nm">0</span>,k-<span class="nm">1</span>); <span class="mt">Rev</span>(k,n-<span class="nm">1</span>);
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">rotate</span>(nums, k):
+    n = <span class="mt">len</span>(nums); k %= n
+    <span class="kw">def</span> <span class="mt">rev</span>(l, r):
+        <span class="kw">while</span> l &lt; r: nums[l],nums[r]=nums[r],nums[l]; l+=<span class="nm">1</span>; r-=<span class="nm">1</span>
+    <span class="mt">rev</span>(<span class="nm">0</span>,n-<span class="nm">1</span>); <span class="mt">rev</span>(<span class="nm">0</span>,k-<span class="nm">1</span>); <span class="mt">rev</span>(k,n-<span class="nm">1</span>)</pre></div>
+    </div>
+</div>
+
+<!-- Problem 13 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#13</span>
+        <span class="problem-title">Find Duplicate Number</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #287 · Floyd's cycle</span>
+    </div>
+    <p>Given n+1 integers in [1,n], find the one duplicate. Must not modify the array, O(1) extra space.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: Floyd's Cycle Detection</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Treat the array as a linked list where index i points to nums[i]. There's a cycle iff there's a duplicate. Find the cycle start using Floyd's algorithm (fast/slow pointers). The cycle entry = duplicate number.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">FindDuplicate</span>(<span class="kw">int</span>[] nums) {
+    <span class="kw">int</span> slow=nums[<span class="nm">0</span>], fast=nums[<span class="nm">0</span>];
+    <span class="kw">do</span> { slow=nums[slow]; fast=nums[nums[fast]]; } <span class="kw">while</span> (slow!=fast);
+    slow=nums[<span class="nm">0</span>];
+    <span class="kw">while</span>(slow!=fast){ slow=nums[slow]; fast=nums[fast]; }
+    <span class="kw">return</span> slow;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">findDuplicate</span>(nums):
+    slow = fast = nums[<span class="nm">0</span>]
+    <span class="kw">while True</span>:
+        slow = nums[slow]; fast = nums[nums[fast]]
+        <span class="kw">if</span> slow == fast: <span class="kw">break</span>
+    slow = nums[<span class="nm">0</span>]
+    <span class="kw">while</span> slow != fast: slow = nums[slow]; fast = nums[fast]
+    <span class="kw">return</span> slow</pre></div>
+    </div>
+</div>
+
+<!-- Problem 14 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#14</span>
+        <span class="problem-title">Encode and Decode Strings</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #271</span>
+    </div>
+    <p>Design an algorithm to encode a list of strings to a single string and decode it back. No special character is forbidden in input.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: Length-prefix encoding</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Prefix each string with its length and a delimiter: <code>"4#word"</code>. Decoding: read the number before '#' to know how many characters to read next. This handles any characters in the string (even '#').</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">Encode</span>(<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; strs)
+    =&gt; <span class="kw">string</span>.<span class="mt">Concat</span>(strs.<span class="mt">Select</span>(s =&gt; $<span class="st">"{s.Length}#{s}"</span>));
+
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">Decode</span>(<span class="kw">string</span> s) {
+    <span class="kw">var</span> res=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;(); <span class="kw">int</span> i=<span class="nm">0</span>;
+    <span class="kw">while</span>(i&lt;s.Length){
+        <span class="kw">int</span> j=s.<span class="mt">IndexOf</span>(<span class="st">'#'</span>,i); <span class="kw">int</span> n=<span class="kw">int</span>.<span class="mt">Parse</span>(s[i..j]);
+        res.<span class="mt">Add</span>(s.<span class="mt">Substring</span>(j+<span class="nm">1</span>,n)); i=j+<span class="nm">1</span>+n;
+    }
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">encode</span>(strs): <span class="kw">return</span> <span class="st">''</span>.<span class="mt">join</span>(f<span class="st">'{len(s)}#{s}'</span> <span class="kw">for</span> s <span class="kw">in</span> strs)
+
+<span class="kw">def</span> <span class="mt">decode</span>(s):
+    res, i = [], <span class="nm">0</span>
+    <span class="kw">while</span> i &lt; <span class="mt">len</span>(s):
+        j = s.<span class="mt">index</span>(<span class="st">'#'</span>, i); n = <span class="mt">int</span>(s[i:j])
+        res.<span class="mt">append</span>(s[j+<span class="nm">1</span>:j+<span class="nm">1</span>+n]); i = j+<span class="nm">1</span>+n
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- Problem 15 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#15</span>
+        <span class="problem-title">Minimum Window Substring</span>
+        <span class="diff-hard">Hard</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #76</span>
+    </div>
+    <p>Find the minimum window in s that contains all characters of t.</p>
+    <div class="complexity-row"><span>Time: O(n+m)</span><span>Space: O(m)</span><span>Pattern: Variable Sliding Window</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Expand right until all t characters are covered. Then shrink left while maintaining coverage. Track minimum window. Use a "formed" counter to know when all required characters have sufficient frequency.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">MinWindow</span>(<span class="kw">string</span> s, <span class="kw">string</span> t) {
+    <span class="kw">var</span> need=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span>(<span class="kw">char</span> c <span class="kw">in</span> t) need[c]=need.<span class="mt">GetValueOrDefault</span>(c)+<span class="nm">1</span>;
+    <span class="kw">int</span> have=<span class="nm">0</span>,req=need.Count,L=<span class="nm">0</span>,mLen=<span class="kw">int</span>.MaxValue,mL=<span class="nm">0</span>;
+    <span class="kw">var</span> win=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="kw">int</span>&gt;();
+    <span class="kw">for</span>(<span class="kw">int</span> R=<span class="nm">0</span>;R&lt;s.Length;R++){
+        <span class="kw">char</span> c=s[R]; win[c]=win.<span class="mt">GetValueOrDefault</span>(c)+<span class="nm">1</span>;
+        <span class="kw">if</span>(need.<span class="mt">ContainsKey</span>(c)&amp;&amp;win[c]==need[c]) have++;
+        <span class="kw">while</span>(have==req){
+            <span class="kw">if</span>(R-L+<span class="nm">1</span>&lt;mLen){mLen=R-L+<span class="nm">1</span>;mL=L;}
+            <span class="kw">char</span> lc=s[L++]; win[lc]--;
+            <span class="kw">if</span>(need.<span class="mt">ContainsKey</span>(lc)&amp;&amp;win[lc]&lt;need[lc]) have--;
+        }
+    }
+    <span class="kw">return</span> mLen==<span class="kw">int</span>.MaxValue?<span class="st">""</span>:s.<span class="mt">Substring</span>(mL,mLen);
+}</pre></div>
+        <span class="lang-label lang-py">Python (see Module 18A for full solution)</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">def</span> <span class="mt">minWindow</span>(s, t):
+    need = <span class="tp">Counter</span>(t); window = {}; formed = <span class="nm">0</span>
+    L = best = <span class="nm">0</span>; ans = <span class="st">''</span>
+    <span class="kw">for</span> R, c <span class="kw">in</span> <span class="mt">enumerate</span>(s):
+        window[c] = window.<span class="mt">get</span>(c,<span class="nm">0</span>)+<span class="nm">1</span>
+        <span class="kw">if</span> c <span class="kw">in</span> need <span class="kw">and</span> window[c]==need[c]: formed+=<span class="nm">1</span>
+        <span class="kw">while</span> formed==<span class="mt">len</span>(need):
+            <span class="kw">if</span> <span class="kw">not</span> ans <span class="kw">or</span> R-L+<span class="nm">1</span>&lt;<span class="mt">len</span>(ans): ans=s[L:R+<span class="nm">1</span>]
+            window[s[L]]-=<span class="nm">1</span>
+            <span class="kw">if</span> s[L] <span class="kw">in</span> need <span class="kw">and</span> window[s[L]]&lt;need[s[L]]: formed-=<span class="nm">1</span>
+            L+=<span class="nm">1</span>
+    <span class="kw">return</span> ans</pre></div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 19A Complete</button>
+<div class="toast" id="toast">✅ Module 19A complete! Arrays &amp; Strings mastered!</div>
+    <script>var MODULE_ID = 'm19a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10A — Dijkstra's Shortest Path | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 10 — Part A</h1>
+    <div class="tagline">Dijkstra's Shortest Path Algorithm</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Find the shortest path in weighted graphs using a priority queue (min-heap)</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 10 of Phase 6</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Dijkstra's Shortest Path<br>
+    ⬜ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
+    <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 1 -->
+<div class="section-heading">Section 1 — Why BFS Fails for Weighted Graphs</div>
+
+<p>In Module 9, BFS found the shortest path perfectly — but only because every edge had the same cost (weight = 1). In weighted graphs, edges have different costs, and BFS completely ignores those weights.</p>
+
+<div class="diagram">PROBLEM — BFS picks the wrong "shortest" path in weighted graphs
+
+    A ──(1)── B ──(1)── C
+    │                   ▲
+    └─────(10)──────────┘
+
+BFS from A to C:
+  BFS finds:  A → B → C  (2 hops)
+  BFS ignores weight:  cost = 1 + 1 = 2  ← BFS says this is shortest
+
+  Actual shortest cost: A → C direct = 10  ← WRONG, BFS path (cost 2) IS shorter here
+
+Another example where BFS fails:
+    A ──(1)── B ──(100)── C
+    │                      ▲
+    └────────(3)────────────┘
+
+BFS from A to C:
+  BFS finds:  A → B → C  (2 hops = "fewer edges")
+  Cost: 1 + 100 = 101
+
+  Actual shortest: A → C direct = 3  ← BFS missed this!
+
+BFS counts HOPS. For weighted graphs, we need to count COST.</div>
+
+<p>The solution is <strong>Dijkstra's algorithm</strong>, published by Edsger W. Dijkstra in 1959. Instead of processing vertices in order of discovery (like BFS), Dijkstra processes them in order of their <em>current best distance</em> from the source — using a <strong>min-heap priority queue</strong>.</p>
+
+<div class="tip">
+    <strong>💡 The Core Insight:</strong> Dijkstra is "BFS with a priority queue instead of a regular queue." At each step, rather than exploring the vertex discovered earliest, we explore the vertex with the <em>smallest known distance from source</em>. This greedy choice is provably optimal — once a vertex's distance is finalized, no shorter path can exist.
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 2 -->
+<div class="section-heading">Section 2 — The Algorithm: Step-by-Step</div>
+
+<p>We maintain a <strong>distance array</strong> (or dictionary) where <code>dist[v]</code> = the shortest known distance from source to <code>v</code>. Initially all distances are infinity except <code>dist[source] = 0</code>. We also maintain a min-heap priority queue containing <code>(distance, vertex)</code> pairs.</p>
+
+<h3>2.1 — Dijkstra's Algorithm Steps</h3>
+<ol>
+    <li>Initialize: <code>dist[source] = 0</code>, all others = ∞. Enqueue <code>(0, source)</code>.</li>
+    <li>Dequeue the vertex <code>u</code> with the minimum distance.</li>
+    <li>If <code>u</code> is already <em>finalized</em> (we've seen it before with a lower distance), skip it.</li>
+    <li>Mark <code>u</code> as finalized. For each neighbor <code>v</code> of <code>u</code> with edge weight <code>w</code>:</li>
+    <li>&nbsp;&nbsp;&nbsp;If <code>dist[u] + w &lt; dist[v]</code>, update <code>dist[v] = dist[u] + w</code> and enqueue <code>(dist[v], v)</code>.</li>
+    <li>Repeat from step 2 until the queue is empty.</li>
+</ol>
+
+<h3>2.2 — Full Walkthrough with State Diagrams</h3>
+
+<div class="diagram">GRAPH (weighted, directed):
+    A ──(4)──▶ B ──(1)──▶ D
+    │          │           ▲
+   (2)        (3)         (2)
+    ▼          ▼           │
+    C ──(1)──▶ B          C ─(5)─▶ D
+
+Let's use this cleaner graph:
+  Vertices: A B C D E
+  Edges (directed):
+    A→B weight 4    A→C weight 2
+    B→C weight 1    B→D weight 5
+    C→B weight 1    C→D weight 8    C→E weight 10
+    D→E weight 2    E→D weight -  (no negative edges)
+
+═══════════════════════════════════════════════════
+INITIAL STATE:
+  dist:  A=0  B=∞  C=∞  D=∞  E=∞
+  finalized: {}
+  priority queue: [(0,A)]
+
+STEP 1 — Dequeue (0,A):
+  Process A's neighbors:
+    A→B: dist[A]+4=4 < ∞  →  dist[B]=4, enqueue (4,B)
+    A→C: dist[A]+2=2 < ∞  →  dist[C]=2, enqueue (2,C)
+  dist:  A=0  B=4  C=2  D=∞  E=∞
+  finalized: {A}
+  queue: [(2,C), (4,B)]
+
+STEP 2 — Dequeue (2,C):   ← smallest!
+  Process C's neighbors:
+    C→B: dist[C]+1=3 < 4  →  dist[B]=3, enqueue (3,B)  ← IMPROVEMENT!
+    C→D: dist[C]+8=10 < ∞ →  dist[D]=10, enqueue (10,D)
+    C→E: dist[C]+10=12 < ∞→  dist[E]=12, enqueue (12,E)
+  dist:  A=0  B=3  C=2  D=10  E=12
+  finalized: {A,C}
+  queue: [(3,B), (4,B)*, (10,D), (12,E)]  * stale entry
+
+STEP 3 — Dequeue (3,B):   ← smallest!
+  Process B's neighbors:
+    B→C: dist[B]+1=4 > 2  →  no improvement (C already finalized anyway)
+    B→D: dist[B]+5=8 < 10 →  dist[D]=8, enqueue (8,D)
+  dist:  A=0  B=3  C=2  D=8  E=12
+  finalized: {A,C,B}
+  queue: [(4,B)*, (8,D), (10,D)*, (12,E)]
+
+STEP 4 — Dequeue (4,B):   ← B already finalized → SKIP
+
+STEP 5 — Dequeue (8,D):
+  Process D's neighbors:
+    D→E: dist[D]+2=10 < 12 → dist[E]=10, enqueue (10,E)
+  finalized: {A,C,B,D}
+  queue: [(10,D)*, (10,E), (12,E)*]
+
+STEP 6 — Dequeue (10,D)*: already finalized → SKIP
+STEP 7 — Dequeue (10,E): finalize E
+
+═══════════════════════════════════════════════════
+FINAL SHORTEST DISTANCES FROM A:
+  A=0   B=3   C=2   D=8   E=10
+
+PATH RECONSTRUCTION (using parent map):
+  A→B: best came via C  →  A→C→B  (cost 3)
+  A→D: best came via B  →  A→C→B→D  (cost 8)
+  A→E: best came via D  →  A→C→B→D→E  (cost 10)</div>
+
+<div class="warning">
+    <strong>⚠️ Stale Entries in the Priority Queue:</strong> When we improve a distance (e.g., dist[B] goes from 4 to 3), we push a new entry <code>(3,B)</code> into the heap but do NOT remove the old <code>(4,B)</code>. These "stale" entries remain. The fix is simple: when dequeuing, if the vertex is already finalized, skip it. This is the lazy deletion approach — standard in production Dijkstra implementations.
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 3 -->
+<div class="section-heading">Section 3 — Path Reconstruction</div>
+
+<p>The distance algorithm tells us the <em>cost</em> of the shortest path, but not the path itself. To recover the actual route, we maintain a <strong>parent map</strong> (same idea as in BFS) — for each vertex, record which vertex provided its best distance.</p>
+
+<div class="diagram">PARENT MAP DURING DIJKSTRA (same graph as above):
+
+After finalization:
+  parent: { B→C, C→A, D→B, E→D }
+           (B's best distance came through C)
+
+PATH RECONSTRUCTION — trace backward from destination:
+  To find path A→E:
+    Start at E  →  parent[E] = D
+    D           →  parent[D] = B
+    B           →  parent[B] = C
+    C           →  parent[C] = A  (source reached!)
+    Path reversed: A → C → B → D → E</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 4 -->
+<div class="section-heading">Section 4 — C# Implementation</div>
+
+<span class="lang-label lang-cs">C# — Full Implementation</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">public class</span> <span class="tp">Dijkstra</span>
+{
+    <span class="cm">// Adjacency list: vertex → list of (neighbor, weight)</span>
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">List</span>&lt;(<span class="kw">int</span> to, <span class="kw">int</span> w)&gt;&gt; adj = <span class="kw">new</span>();
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> from, <span class="kw">int</span> to, <span class="kw">int</span> weight, <span class="kw">bool</span> undirected = <span class="kw">false</span>)
+    {
+        <span class="kw">if</span> (!adj.<span class="mt">ContainsKey</span>(from)) adj[from] = <span class="kw">new</span>();
+        adj[from].<span class="mt">Add</span>((to, weight));
+        <span class="kw">if</span> (undirected)
+        {
+            <span class="kw">if</span> (!adj.<span class="mt">ContainsKey</span>(to)) adj[to] = <span class="kw">new</span>();
+            adj[to].<span class="mt">Add</span>((from, weight));
+        }
+    }
+
+    <span class="cm">// ─── Single-Source Shortest Distances ───────────────────────────</span>
+    <span class="cm">// Returns dist[] where dist[v] = shortest cost from source to v</span>
+    <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; <span class="mt">ShortestDistances</span>(<span class="kw">int</span> source)
+    {
+        <span class="cm">// dist[v] = best known distance from source to v</span>
+        <span class="kw">var</span> dist = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; { [source] = <span class="nm">0</span> };
+
+        <span class="cm">// .NET 6+ PriorityQueue&lt;TElement, TPriority&gt;</span>
+        <span class="cm">// Pair = (vertex, cost), priority = cost (min-heap by default)</span>
+        <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+        pq.<span class="mt">Enqueue</span>(source, <span class="nm">0</span>);
+
+        <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+        {
+            pq.<span class="mt">TryDequeue</span>(<span class="kw">out int</span> u, <span class="kw">out int</span> d);
+
+            <span class="cm">// Skip stale entries — vertex already finalized with lower dist</span>
+            <span class="kw">if</span> (dist.<span class="mt">TryGetValue</span>(u, <span class="kw">out int</span> best) &amp;&amp; d &gt; best) <span class="kw">continue</span>;
+
+            <span class="kw">foreach</span> (<span class="kw">var</span> (v, w) <span class="kw">in</span> adj.GetValueOrDefault(u, <span class="kw">new</span>()))
+            {
+                <span class="kw">int</span> nd = d + w;
+                <span class="kw">if</span> (!dist.<span class="mt">TryGetValue</span>(v, <span class="kw">out int</span> dv) || nd &lt; dv)
+                {
+                    dist[v] = nd;            <span class="cm">// relax the edge</span>
+                    pq.<span class="mt">Enqueue</span>(v, nd);     <span class="cm">// push (potentially stale entries remain)</span>
+                }
+            }
+        }
+        <span class="kw">return</span> dist;
+    }
+
+    <span class="cm">// ─── Shortest Path with Route Reconstruction ────────────────────</span>
+    <span class="kw">public</span> (<span class="kw">int</span> cost, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; path) <span class="mt">ShortestPath</span>(<span class="kw">int</span> source, <span class="kw">int</span> target)
+    {
+        <span class="kw">var</span> dist   = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;  { [source] = <span class="nm">0</span>  };
+        <span class="kw">var</span> parent = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;  { [source] = -<span class="nm">1</span> };
+        <span class="kw">var</span> pq     = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+        pq.<span class="mt">Enqueue</span>(source, <span class="nm">0</span>);
+
+        <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+        {
+            pq.<span class="mt">TryDequeue</span>(<span class="kw">out int</span> u, <span class="kw">out int</span> d);
+            <span class="kw">if</span> (dist.<span class="mt">TryGetValue</span>(u, <span class="kw">out int</span> b) &amp;&amp; d &gt; b) <span class="kw">continue</span>;
+
+            <span class="kw">if</span> (u == target) <span class="kw">break</span>;  <span class="cm">// early exit — target finalized</span>
+
+            <span class="kw">foreach</span> (<span class="kw">var</span> (v, w) <span class="kw">in</span> adj.GetValueOrDefault(u, <span class="kw">new</span>()))
+            {
+                <span class="kw">int</span> nd = d + w;
+                <span class="kw">if</span> (!dist.<span class="mt">TryGetValue</span>(v, <span class="kw">out int</span> dv) || nd &lt; dv)
+                {
+                    dist[v] = nd;
+                    parent[v] = u;  <span class="cm">// record the predecessor</span>
+                    pq.<span class="mt">Enqueue</span>(v, nd);
+                }
+            }
+        }
+
+        <span class="kw">if</span> (!dist.<span class="mt">ContainsKey</span>(target))
+            <span class="kw">return</span> (-<span class="nm">1</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;());  <span class="cm">// unreachable</span>
+
+        <span class="cm">// Reconstruct path by tracing parent pointers backward</span>
+        <span class="kw">var</span> path = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> cur = target; cur != -<span class="nm">1</span>; cur = parent[cur])
+            path.<span class="mt">Insert</span>(<span class="nm">0</span>, cur);
+        <span class="kw">return</span> (dist[target], path);
+    }
+
+    <span class="kw">public static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> g = <span class="kw">new</span> <span class="tp">Dijkstra</span>();
+        g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">4</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">0</span>, <span class="nm">2</span>, <span class="nm">2</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">5</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">2</span>, <span class="nm">1</span>, <span class="nm">1</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">8</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">2</span>, <span class="nm">4</span>, <span class="nm">10</span>);
+        g.<span class="mt">AddEdge</span>(<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">2</span>);
+
+        <span class="kw">var</span> dists = g.<span class="mt">ShortestDistances</span>(<span class="nm">0</span>);
+        <span class="kw">foreach</span> (<span class="kw">var</span> (v, d) <span class="kw">in</span> dists)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"0→{v}: {d}"</span>);
+        <span class="cm">// 0→0: 0   0→1: 3   0→2: 2   0→3: 8   0→4: 10</span>
+
+        <span class="kw">var</span> (cost, path) = g.<span class="mt">ShortestPath</span>(<span class="nm">0</span>, <span class="nm">4</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Path: {string.Join("→", path)}  Cost: {cost}"</span>);
+        <span class="cm">// Path: 0→2→1→3→4  Cost: 10</span>
+    }
+}</pre>
+</div>
+
+<div class="note">
+    <strong>📌 .NET Version Note:</strong> <code>PriorityQueue&lt;TElement, TPriority&gt;</code> was added in .NET 6. If you're on .NET 5 or earlier, use a <code>SortedSet&lt;(int cost, int vertex)&gt;</code> or install the <code>OptimizedPriorityQueue</code> NuGet package. In competitive programming, many developers implement a simple binary heap or use <code>SortedSet</code> as a workaround.
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 5 -->
+<div class="section-heading">Section 5 — Python Implementation</div>
+
+<span class="lang-label lang-py">Python — Full Implementation</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> heapq
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">from</span> typing <span class="kw">import</span> Dict, List, Tuple, Optional
+
+<span class="kw">class</span> <span class="tp">Dijkstra</span>:
+    <span class="kw">def</span> __init__(<span class="tp">self</span>):
+        <span class="cm"># adjacency list: vertex → [(neighbor, weight), ...]</span>
+        <span class="tp">self</span>.adj = defaultdict(<span class="mt">list</span>)
+
+    <span class="kw">def</span> <span class="mt">add_edge</span>(<span class="tp">self</span>, frm: <span class="kw">int</span>, to: <span class="kw">int</span>, w: <span class="kw">int</span>, undirected: <span class="kw">bool</span> = <span class="kw">False</span>):
+        <span class="tp">self</span>.adj[frm].<span class="mt">append</span>((to, w))
+        <span class="kw">if</span> undirected:
+            <span class="tp">self</span>.adj[to].<span class="mt">append</span>((frm, w))
+
+    <span class="cm"># ─── Single-Source Shortest Distances ───────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">shortest_distances</span>(<span class="tp">self</span>, source: <span class="kw">int</span>) -> Dict[<span class="kw">int</span>, <span class="kw">int</span>]:
+        <span class="cm"># dist[v] = shortest known cost from source to v</span>
+        dist = {source: <span class="nm">0</span>}
+        <span class="cm"># min-heap: (cost, vertex)  — heapq is a min-heap by default</span>
+        pq   = [(<span class="nm">0</span>, source)]
+
+        <span class="kw">while</span> pq:
+            d, u = heapq.<span class="mt">heappop</span>(pq)
+
+            <span class="cm"># Skip stale entries</span>
+            <span class="kw">if</span> d > dist.get(u, <span class="mt">float</span>(<span class="st">'inf'</span>)):
+                <span class="kw">continue</span>
+
+            <span class="kw">for</span> v, w <span class="kw">in</span> <span class="tp">self</span>.adj[u]:
+                nd = d + w
+                <span class="kw">if</span> nd < dist.get(v, <span class="mt">float</span>(<span class="st">'inf'</span>)):
+                    dist[v] = nd          <span class="cm"># relax edge</span>
+                    heapq.<span class="mt">heappush</span>(pq, (nd, v))
+
+        <span class="kw">return</span> dist
+
+    <span class="cm"># ─── Shortest Path with Route Reconstruction ────────────────────</span>
+    <span class="kw">def</span> <span class="mt">shortest_path</span>(<span class="tp">self</span>, source: <span class="kw">int</span>, target: <span class="kw">int</span>) -> Tuple[<span class="kw">int</span>, List[<span class="kw">int</span>]]:
+        dist   = {source: <span class="nm">0</span>}
+        parent = {source: <span class="kw">None</span>}
+        pq     = [(<span class="nm">0</span>, source)]
+
+        <span class="kw">while</span> pq:
+            d, u = heapq.<span class="mt">heappop</span>(pq)
+            <span class="kw">if</span> d > dist.get(u, <span class="mt">float</span>(<span class="st">'inf'</span>)): <span class="kw">continue</span>
+            <span class="kw">if</span> u == target: <span class="kw">break</span>             <span class="cm"># early exit</span>
+
+            <span class="kw">for</span> v, w <span class="kw">in</span> <span class="tp">self</span>.adj[u]:
+                nd = d + w
+                <span class="kw">if</span> nd < dist.get(v, <span class="mt">float</span>(<span class="st">'inf'</span>)):
+                    dist[v]   = nd
+                    parent[v] = u       <span class="cm"># record predecessor</span>
+                    heapq.<span class="mt">heappush</span>(pq, (nd, v))
+
+        <span class="kw">if</span> target <span class="kw">not in</span> dist:
+            <span class="kw">return</span> -<span class="nm">1</span>, []       <span class="cm"># unreachable</span>
+
+        <span class="cm"># Reconstruct by tracing parent pointers</span>
+        path, cur = [], target
+        <span class="kw">while</span> cur <span class="kw">is not None</span>:
+            path.<span class="mt">append</span>(cur)
+            cur = parent[cur]
+        <span class="kw">return</span> dist[target], path[::-<span class="nm">1</span>]
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    g = <span class="tp">Dijkstra</span>()
+    g.<span class="mt">add_edge</span>(<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">4</span>); g.<span class="mt">add_edge</span>(<span class="nm">0</span>, <span class="nm">2</span>, <span class="nm">2</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>); g.<span class="mt">add_edge</span>(<span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">5</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">2</span>, <span class="nm">1</span>, <span class="nm">1</span>); g.<span class="mt">add_edge</span>(<span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">8</span>)
+    g.<span class="mt">add_edge</span>(<span class="nm">2</span>, <span class="nm">4</span>, <span class="nm">10</span>); g.<span class="mt">add_edge</span>(<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">2</span>)
+
+    dists = g.<span class="mt">shortest_distances</span>(<span class="nm">0</span>)
+    <span class="kw">for</span> v, d <span class="kw">in</span> <span class="mt">sorted</span>(dists.items()):
+        <span class="mt">print</span>(<span class="st">f"0→{v}: {d}"</span>)
+    <span class="cm"># 0→0: 0   0→1: 3   0→2: 2   0→3: 8   0→4: 10</span>
+
+    cost, path = g.<span class="mt">shortest_path</span>(<span class="nm">0</span>, <span class="nm">4</span>)
+    <span class="mt">print</span>(<span class="st">f"Path: {'→'.join(map(str, path))}  Cost: {cost}"</span>)
+    <span class="cm"># Path: 0→2→1→3→4  Cost: 10</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 6 -->
+<div class="section-heading">Section 6 — Dijkstra on Grids</div>
+
+<p>Many problems present a weighted grid where each cell has a cost to enter. Dijkstra works perfectly here — treat each cell as a vertex and each valid move as a weighted edge.</p>
+
+<h3>6.1 — Cheapest Path Through a Grid</h3>
+<div class="diagram">GRID — cost to enter each cell:
+
+  1  3  1
+  1  5  1
+  4  2  1
+
+Find the cheapest path from top-left (0,0) to bottom-right (2,2).
+Each step costs the value of the cell you're ENTERING.
+
+Standard BFS would be wrong (ignores cell costs).
+Dijkstra gives the true minimum-cost path:
+  (0,0)→(1,0)→(2,0)?  costs: 1+4=5... 
+  (0,0)→(0,1)→(0,2)→(1,2)→(2,2) costs: 3+1+1+1=6
+  (0,0)→(1,0)→(1,1)→(1,2)→(2,2) costs: 1+5+1+1=8
+  (0,0)→(0,1)→(0,2)→(1,2)→(2,2) costs: 3+1+1+1=6
+  Cheapest: 1→1→1→1 = 4... try (0,0)→(1,0)→(2,0)→(2,1)→(2,2)
+  costs: 1+4+2+1=8  Nope.
+  (0,0)→(0,1)→(0,2)→(1,2)→(2,2) = 3+1+1+1 = 6. Answer = 6.</div>
+
+<span class="lang-label lang-cs">C# — Grid Dijkstra</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public static int</span> <span class="mt">MinCostGrid</span>(<span class="kw">int</span>[][] grid)
+{
+    <span class="kw">int</span> rows = grid.Length, cols = grid[<span class="nm">0</span>].Length;
+    <span class="kw">var</span> dist = <span class="kw">new int</span>[rows, cols];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; rows; i++)
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; cols; j++)
+            dist[i, j] = <span class="kw">int</span>.MaxValue;
+    dist[<span class="nm">0</span>, <span class="nm">0</span>] = grid[<span class="nm">0</span>][<span class="nm">0</span>];  <span class="cm">// starting cost</span>
+
+    <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;(<span class="kw">int</span> r, <span class="kw">int</span> c), <span class="kw">int</span>&gt;();
+    pq.<span class="mt">Enqueue</span>((<span class="nm">0</span>, <span class="nm">0</span>), dist[<span class="nm">0</span>, <span class="nm">0</span>]);
+    (<span class="kw">int</span>, <span class="kw">int</span>)[] dirs = { (-<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">0</span>,-<span class="nm">1</span>), (<span class="nm">0</span>,<span class="nm">1</span>) };
+
+    <span class="kw">while</span> (pq.Count &gt; <span class="nm">0</span>)
+    {
+        pq.<span class="mt">TryDequeue</span>(<span class="kw">out var</span> pos, <span class="kw">out int</span> d);
+        <span class="kw">var</span> (r, c) = pos;
+        <span class="kw">if</span> (d &gt; dist[r, c]) <span class="kw">continue</span>;  <span class="cm">// stale</span>
+
+        <span class="kw">foreach</span> (<span class="kw">var</span> (dr, dc) <span class="kw">in</span> dirs)
+        {
+            <span class="kw">int</span> nr = r+dr, nc = c+dc;
+            <span class="kw">if</span> (nr &lt; <span class="nm">0</span> || nr &gt;= rows || nc &lt; <span class="nm">0</span> || nc &gt;= cols) <span class="kw">continue</span>;
+            <span class="kw">int</span> nd = d + grid[nr][nc];  <span class="cm">// cost of entering (nr,nc)</span>
+            <span class="kw">if</span> (nd &lt; dist[nr, nc])
+            {
+                dist[nr, nc] = nd;
+                pq.<span class="mt">Enqueue</span>((nr, nc), nd);
+            }
+        }
+    }
+    <span class="kw">return</span> dist[rows-<span class="nm">1</span>, cols-<span class="nm">1</span>];
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">import</span> heapq
+
+<span class="kw">def</span> <span class="mt">min_cost_grid</span>(grid: list) -&gt; <span class="tp">int</span>:
+    rows, cols = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>])
+    dist = [[<span class="mt">float</span>(<span class="st">'inf'</span>)] * cols <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(rows)]
+    dist[<span class="nm">0</span>][<span class="nm">0</span>] = grid[<span class="nm">0</span>][<span class="nm">0</span>]
+    pq = [(dist[<span class="nm">0</span>][<span class="nm">0</span>], <span class="nm">0</span>, <span class="nm">0</span>)]
+    dirs = [(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,-<span class="nm">1</span>),(<span class="nm">0</span>,<span class="nm">1</span>)]
+    <span class="kw">while</span> pq:
+        d, r, c = <span class="mt">heapq.heappop</span>(pq)
+        <span class="kw">if</span> d &gt; dist[r][c]: <span class="kw">continue</span>   <span class="cm"># stale</span>
+        <span class="kw">for</span> dr, dc <span class="kw">in</span> dirs:
+            nr, nc = r + dr, c + dc
+            <span class="kw">if</span> <span class="nm">0</span> &lt;= nr &lt; rows <span class="kw">and</span> <span class="nm">0</span> &lt;= nc &lt; cols:
+                nd = d + grid[nr][nc]   <span class="cm"># cost of entering (nr, nc)</span>
+                <span class="kw">if</span> nd &lt; dist[nr][nc]:
+                    dist[nr][nc] = nd
+                    <span class="mt">heapq.heappush</span>(pq, (nd, nr, nc))
+    <span class="kw">return</span> dist[rows-<span class="nm">1</span>][cols-<span class="nm">1</span>]</pre>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 7 -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Data Structure</th><th>Time Complexity</th><th>Space</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Binary Heap (heapq / PriorityQueue)</td><td class="g">O((V + E) log V)</td><td>O(V + E)</td><td>Standard implementation — used in practice</td></tr>
+        <tr><td>Fibonacci Heap</td><td class="g">O(E + V log V)</td><td>O(V + E)</td><td>Theoretically optimal; complex to implement</td></tr>
+        <tr><td>Simple array (no heap)</td><td class="r">O(V²)</td><td>O(V)</td><td>Only good for very dense graphs (E ≈ V²)</td></tr>
+        <tr><td>BFS (unweighted graphs only)</td><td>O(V + E)</td><td>O(V)</td><td>Faster but only works when all weights = 1</td></tr>
+    </tbody>
+</table>
+
+<h3>7.1 — Why O((V + E) log V)?</h3>
+<ul>
+    <li>Each vertex is dequeued at most once: O(V) dequeue operations × O(log V) heap time = <strong>O(V log V)</strong></li>
+    <li>Each edge causes at most one enqueue: O(E) enqueue operations × O(log V) = <strong>O(E log V)</strong></li>
+    <li>Total: <strong>O((V + E) log V)</strong> = O(E log V) for connected graphs (E ≥ V-1)</li>
+</ul>
+
+<div class="tip">
+    <strong>💡 Dense vs Sparse:</strong> For sparse graphs (E ≈ V), binary heap Dijkstra is O(V log V). For dense graphs (E ≈ V²), the O(V²) simple array approach can actually be faster since O(V²) &lt; O(V² log V). In practice, most real-world graphs (road networks, social graphs) are sparse — use the heap.
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 8 -->
+<div class="section-heading">Section 8 — Limitations &amp; When NOT to Use Dijkstra</div>
+
+<div class="warning">
+    <strong>⚠️ Critical Limitation — No Negative Edge Weights:</strong> Dijkstra's greedy assumption is "once a vertex is finalized, its distance is optimal." This breaks with negative edges — a later-discovered path with a negative edge could give a shorter total distance than an already-finalized one. Use <strong>Bellman-Ford</strong> for graphs with negative edges (covered in Module 10B).
+</div>
+
+<div class="diagram">WHY NEGATIVE EDGES BREAK DIJKSTRA:
+
+    A ──(5)──▶ B
+    │           ▲
+   (2)        (-8)
+    ▼           │
+    C ──(1)──▶ D
+
+Dijkstra from A:
+  1. Dequeue A(0): dist[B]=5, dist[C]=2
+  2. Dequeue C(2): dist[D]=3  (2+1)
+  3. Dequeue D(3): tries B → dist[B]=3+(-8)=-5  ← SHOULD update B!
+  4. But step 3 happens AFTER step 2 which finalized B=5
+     → Dijkstra already output dist[B]=5 as FINAL ← WRONG!
+
+Correct answer: A→C→D→B = 2+1+(-8) = -5
+Dijkstra says: dist[B] = 5  ← incorrect!</div>
+
+<table>
+    <thead>
+        <tr><th>Scenario</th><th>Use This Algorithm</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Weighted graph, no negative edges</td><td class="g">Dijkstra (fastest practical)</td></tr>
+        <tr><td>Negative edge weights</td><td class="o">Bellman-Ford</td></tr>
+        <tr><td>Negative weight cycles (detect them)</td><td class="o">Bellman-Ford</td></tr>
+        <tr><td>All-pairs shortest path</td><td class="o">Floyd-Warshall</td></tr>
+        <tr><td>Unweighted graph (all weights = 1)</td><td class="g">BFS (faster: O(V+E))</td></tr>
+        <tr><td>Heuristic available (informed search)</td><td class="g">A* (Dijkstra + heuristic)</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 9 -->
+<div class="section-heading">Section 9 — Real-World Applications</div>
+
+<div class="realworld">
+    <strong>🌍 GPS &amp; Mapping — Google Maps / Apple Maps / Waze</strong><br>
+    Every time you ask for driving directions, Dijkstra (or A*) runs on a road network graph where vertices = intersections, edges = roads, and weights = travel time or distance. Google Maps processes billions of route requests daily using highly optimized variants of this algorithm. The graph has hundreds of millions of vertices for the entire global road network.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Network Routing — OSPF (Open Shortest Path First)</strong><br>
+    The OSPF routing protocol, used in enterprise and ISP networks, explicitly uses Dijkstra's algorithm. Each router maintains a map of the entire network and runs Dijkstra to compute the shortest path to every other router (measured in link cost). When a link fails or a new router is added, Dijkstra runs again to update routing tables.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Game Development — Pathfinding in RTS Games</strong><br>
+    In real-time strategy games (StarCraft, Age of Empires), units must navigate through terrain with different movement costs (roads = fast, swamps = slow, mountains = blocked). The game world is a weighted grid, and Dijkstra (often enhanced with A* heuristic) computes optimal movement paths. Games like StarCraft II run pathfinding for hundreds of units simultaneously using highly optimized versions.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Flight Search Engines — Kayak / Google Flights</strong><br>
+    Finding the cheapest flight itinerary is a shortest path problem where vertices = airports, edges = flights, and weights = ticket price (or duration). Flight search engines use Dijkstra variants to find cheapest/fastest routes, often considering layovers and multi-hop journeys across hundreds of airports.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Social Networks — LinkedIn "Degrees of Separation"</strong><br>
+    LinkedIn's "You are 2nd degree connection" feature computes shortest path in a social graph. While the graph is unweighted (use BFS), LinkedIn's "InMail reach" features use weighted variants where edge weights represent relationship strength or response likelihood.
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 10 -->
+<div class="section-heading">Section 10 — Common Mistakes</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 1 — Forgetting to skip stale entries:</strong> When a vertex's distance is improved, the old entry remains in the heap. If you process it again later without checking, you'll re-process already-finalized edges, producing wrong results or infinite loops. Always check: <code>if d &gt; dist[u]: continue</code>.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 2 — Using a list as a queue (wrong data structure):</strong> Dijkstra requires a min-heap priority queue. Using a regular queue (like BFS) ignores edge weights. Using <code>list.pop(0)</code> in Python is O(n) instead of O(log n) — use <code>heapq</code>.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 3 — Applying Dijkstra to negative-weight graphs:</strong> This is the most common conceptual error. Always verify your graph has no negative edges before using Dijkstra. If in doubt, use Bellman-Ford — it's slower but always correct.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 4 — Initializing dist[source] = ∞ instead of 0:</strong> The source starts with distance 0 from itself. All other vertices start at infinity (or Integer.MaxValue). Setting source to ∞ means it will never be processed.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 5 — Integer overflow when adding to MaxValue:</strong> In C#, <code>int.MaxValue + weight</code> overflows to a negative number! Guard with: <code>if (d == int.MaxValue) continue;</code> or use <code>long</code> instead of <code>int</code> for distances.
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ SECTION 11 -->
+<div class="section-heading">Section 11 — Check Your Understanding</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q1 — Why does Dijkstra use a min-heap priority queue instead of a regular FIFO queue?</div>
+    <div class="quiz-opt">A) To support negative edge weights</div>
+    <div class="quiz-opt">B) To always process the vertex with the current smallest known distance next</div>
+    <div class="quiz-opt">C) To reduce memory usage compared to BFS</div>
+    <div class="quiz-opt">D) To avoid revisiting vertices</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer: B.</strong> The min-heap ensures we always process the vertex with the smallest currently known distance first. This greedy ordering is the key insight — by always choosing the closest unfinalized vertex, we guarantee that when a vertex is dequeued and processed, its distance is already optimal. A regular FIFO queue (BFS) processes vertices in discovery order, which ignores edge weights entirely.</div>
+        <div class="complexity"><strong>Key property:</strong> Once a vertex is popped from the min-heap in Dijkstra, its distance is finalized — no shorter path will ever be found. This is not true with a regular queue.</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q2 — You run Dijkstra on a graph and find that the heap has many "stale" (vertex, distance) entries. What causes them and how do we handle them?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Cause:</strong> When a shorter path to vertex v is found, we push a new <code>(new_dist, v)</code> entry into the heap but do NOT remove the old <code>(old_dist, v)</code> entry (standard heaps don't support decrease-key efficiently). This leaves stale entries with outdated, larger distances. <strong>Fix:</strong> When dequeuing entry <code>(d, u)</code>, check if <code>d &gt; dist[u]</code> (i.e., we've already found a better path). If so, skip this entry — it's stale. This "lazy deletion" approach is the standard in all practical implementations.</div>
+        <div class="complexity"><strong>Impact on complexity:</strong> Stale entries can increase heap size to O(E) entries instead of O(V), making total time O(E log E) ≈ O(E log V) — same asymptotic complexity as a "clean" implementation.</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q3 — A graph has 5 vertices and the following edges (all undirected): A–B(2), A–C(6), B–C(3), B–D(4), C–D(1), D–E(3). What is the shortest distance from A to E?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer: 9.</strong> Run Dijkstra from A:
+        <br>• dist[A]=0 → relax: dist[B]=2, dist[C]=6
+        <br>• Dequeue B(2) → relax: dist[C]=min(6, 2+3)=5, dist[D]=min(∞, 2+4)=6
+        <br>• Dequeue C(5) → relax: dist[D]=min(6, 5+1)=6 (no improvement)
+        <br>• Dequeue D(6) → relax: dist[E]=min(∞, 6+3)=9
+        <br>• Dequeue E(9) — done!
+        <br>Shortest path: A→B→C→D→E, cost = 2+3+1+3 = 9</div>
+        <div class="complexity"><strong>Path:</strong> A→B→C→D→E (cost 9). Note: A→B→D→E = 2+4+3 = 9 (tied!). Both are valid shortest paths.</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q4 — You have a weighted graph where some edge weights are 0. Can you still use Dijkstra? What about edge weights of -1?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Zero weights: Yes, Dijkstra works.</strong> Zero-weight edges just mean traversing them doesn't increase cost. The algorithm handles them correctly — a vertex reached via a zero-weight edge can have the same distance as its predecessor. <strong>Negative weights (e.g., -1): No, Dijkstra is incorrect.</strong> Negative weights violate the greedy assumption. Once a vertex is "finalized," a later path using a negative edge could produce a shorter distance, but Dijkstra won't revisit finalized vertices. Use Bellman-Ford for graphs with negative edge weights.</div>
+        <div class="complexity"><strong>Special case:</strong> If your graph has only 0 and 1 weights, use a deque (0-1 BFS) which is O(V+E) — faster than Dijkstra's O((V+E) log V).</div>
+    </div>
+</div>
+
+<div class="quiz-card">
+    <div class="quiz-q">Q5 — You need to find the shortest path between ALL pairs of vertices in a graph of 500 vertices. Would you run Dijkstra 500 times, or use a different approach?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>It depends on graph density.</strong> Running Dijkstra from each vertex (V times) gives O(V × (V+E) log V) total. For a sparse graph (E ≈ V), this is O(V² log V) — very reasonable. For a dense graph (E ≈ V²), this becomes O(V³ log V) — expensive. <strong>Floyd-Warshall</strong> is O(V³) and simpler to implement for all-pairs, but it also handles negative edge weights (just not negative cycles). For V=500 with a sparse graph, running Dijkstra 500 times is perfectly acceptable. For V=500 dense graph or if negative edges exist, use Floyd-Warshall (covered in Module 10B).</div>
+        <div class="complexity"><strong>Rule of thumb:</strong> V × Dijkstra for sparse graphs; Floyd-Warshall for dense graphs or graphs with negative edges.</div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10A Complete</button>
+<div class="toast" id="toast">✅ Module 10A marked complete!</div>
+    <script>var MODULE_ID = 'm10a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

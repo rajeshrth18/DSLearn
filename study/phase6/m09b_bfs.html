@@ -1,0 +1,724 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 9B — Breadth-First Search (BFS) | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 9 — Part B</h1>
+    <div class="tagline">Breadth-First Search (BFS)</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Level-by-level traversal — shortest paths, connected components, six degrees of separation</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Phase 6 · Module 9B</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 9 — Graph Fundamentals:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m09a_graph_theory.html">Graph Theory &amp; Representations</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Breadth-First Search (BFS)<br>
+    ⬜ <strong>Part C</strong> — <a href="m09c_dfs.html">Depth-First Search (DFS)</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m09d_graph_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase5/m08a_hashing.html">&larr; Module 8 &mdash; Hashing</a>
+    <a href="../phase6/m10a_dijkstra.html">Module 10 &mdash; Advanced Graphs &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 9B</h2>
+    <ol>
+        <li>What Is BFS? <span>— The ripple in the pond</span></li>
+        <li>BFS Step-by-Step Walkthrough <span>— Detailed state diagram</span></li>
+        <li>BFS Algorithm &amp; Properties <span>— Queue, visited set, levels</span></li>
+        <li>BFS for Shortest Path (Unweighted) <span>— Reconstruct path with parent map</span></li>
+        <li>BFS for Connected Components <span>— Find isolated clusters</span></li>
+        <li>Multi-Source BFS <span>— Start from multiple nodes simultaneously</span></li>
+        <li>BFS on Grids <span>— 2D matrix shortest path</span></li>
+        <li>C# Full Implementation <span>— BFS + shortest path + components</span></li>
+        <li>Python Full Implementation <span>— Pythonic equivalent with deque</span></li>
+        <li>Complexity Analysis <span>— Time O(V+E), space O(V)</span></li>
+        <li>Real-World Usage <span>— Google, Facebook, GPS navigation</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 1 — What Is BFS?</div>
+
+<p>Imagine throwing a stone into a still pond. The ripples spread outward in perfect circles —
+first the innermost ring, then the next ring, then the next. <strong>BFS works exactly like
+those ripples</strong>: starting from a source vertex, it visits all neighbors first (distance 1),
+then all <em>their</em> neighbors (distance 2), then distance 3, and so on — level by level,
+never jumping ahead.</p>
+
+<p>BFS is the go-to algorithm for finding the <strong>shortest path in an unweighted graph</strong>
+and for <strong>exploring a graph layer by layer</strong>. It uses a <strong>queue</strong> (FIFO)
+to ensure vertices are processed in the order they're discovered.</p>
+
+<div class="tip">
+    <strong>💡 BFS vs DFS — The Core Difference:</strong> BFS uses a <strong>queue</strong> (process
+    oldest discovered first → level by level). DFS uses a <strong>stack</strong> (process newest
+    discovered first → go deep before backtracking). BFS finds shortest paths. DFS explores all
+    branches fully before backtracking.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 2 — BFS Step-by-Step Walkthrough</div>
+
+<div class="diagram">BFS TRAVERSAL — Complete Step-by-Step
+
+   Graph (undirected, start at A):
+          A
+         / \
+        B   C
+       / \   \
+      D   E   F
+
+   Edges: A-B, A-C, B-D, B-E, C-F
+
+   Initial state:
+     Queue:   [ A ]
+     Visited: { A }
+     Output:  []
+
+   Step 1 — Dequeue A, visit A's neighbors B and C:
+     Queue:   [ B, C ]
+     Visited: { A, B, C }
+     Output:  [ A ]
+
+   Step 2 — Dequeue B, visit B's unvisited neighbors D and E:
+     Queue:   [ C, D, E ]
+     Visited: { A, B, C, D, E }
+     Output:  [ A, B ]
+
+   Step 3 — Dequeue C, visit C's unvisited neighbor F:
+     Queue:   [ D, E, F ]
+     Visited: { A, B, C, D, E, F }
+     Output:  [ A, B, C ]
+
+   Step 4 — Dequeue D (no unvisited neighbors):
+     Queue:   [ E, F ]
+     Output:  [ A, B, C, D ]
+
+   Step 5 — Dequeue E (no unvisited neighbors):
+     Queue:   [ F ]
+     Output:  [ A, B, C, D, E ]
+
+   Step 6 — Dequeue F (no unvisited neighbors):
+     Queue:   []
+     Output:  [ A, B, C, D, E, F ]  ← BFS traversal complete!
+
+   BFS ORDER: A → B → C → D → E → F
+              Level 0  Level 1   Level 2
+
+   KEY INSIGHT: BFS processes ALL level-1 nodes before ANY level-2 node.
+   This guarantees the FIRST time a node is visited = SHORTEST path from source.</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 3 — BFS Algorithm &amp; Properties</div>
+
+<h3>3.1 — The Algorithm</h3>
+<ol>
+    <li>Create a <strong>queue</strong> and enqueue the source vertex</li>
+    <li>Mark the source as <strong>visited</strong> (in a HashSet or boolean array)</li>
+    <li>While the queue is not empty:
+        <ul>
+            <li>Dequeue a vertex <code>u</code></li>
+            <li>For each neighbor <code>v</code> of <code>u</code>:
+                <ul>
+                    <li>If <code>v</code> is not visited: mark visited, enqueue</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ol>
+
+<div class="warning">
+    <strong>⚠️ Critical: Mark visited WHEN ENQUEUING, not when dequeuing.</strong>
+    If you mark visited only when you dequeue, the same vertex may be enqueued multiple times,
+    causing wasted work — or infinite loops in cyclic graphs. Mark it visited the instant
+    you add it to the queue.
+</div>
+
+<h3>3.2 — BFS Properties</h3>
+<ul>
+    <li><strong>Finds shortest path</strong> (in terms of edge count) in unweighted graphs — guaranteed</li>
+    <li><strong>Level order traversal</strong> — processes all nodes at distance d before distance d+1</li>
+    <li><strong>Complete</strong> — will find any reachable node from the source</li>
+    <li><strong>Optimal</strong> — for unweighted shortest path, no algorithm can do better</li>
+    <li><strong>Not recursive</strong> — naturally iterative using a queue (unlike DFS)</li>
+</ul>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 4 — BFS for Shortest Path</div>
+
+<p>BFS's most important property: the <strong>first time</strong> BFS reaches a vertex, it has
+found the <strong>shortest path</strong> (minimum number of edges) from the source. To reconstruct
+the actual path, keep a <code>parent</code> map tracking how each vertex was reached.</p>
+
+<div class="diagram">BFS SHORTEST PATH — With parent tracking
+
+   Graph:  A ─ B ─ D
+           |   |
+           C ─ E
+
+   BFS from A to D:
+
+   Start: parent = {A: null}, queue = [A]
+
+   Dequeue A → neighbors B, C
+     parent[B] = A, parent[C] = A
+     queue = [B, C]
+
+   Dequeue B → neighbors A(visited), D, E
+     parent[D] = B, parent[E] = B
+     queue = [C, D, E]
+
+   Dequeue C → neighbors A(visited), E(visited)
+     (no new nodes)
+
+   Dequeue D → FOUND! D is the target.
+
+   Reconstruct path: trace parent pointers back
+     D → parent[D]=B → parent[B]=A → parent[A]=null
+     Path: A → B → D  (length 2 — shortest!)
+
+   Note: path A → C → E → ... would be length 3 or more.
+   BFS guarantees we found A→B→D (length 2) FIRST.</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 5 — BFS Applications</div>
+
+<h3>5.1 — Connected Components</h3>
+<p>Run BFS from each unvisited vertex. Each BFS invocation discovers one complete connected
+component. Count of BFS starts = number of components.</p>
+
+<div class="diagram">CONNECTED COMPONENTS
+
+   Graph with 8 vertices, 3 components:
+   Component 1: {A, B, C}     A─B─C
+   Component 2: {D, E}        D─E
+   Component 3: {F, G, H}     F─G─H
+
+   Algorithm:
+   1. Mark all as unvisited
+   2. For each vertex v:
+      if v is not visited:
+         component_count++
+         BFS from v  (marks entire component as visited)
+   3. Return component_count  → 3</div>
+
+<h3>5.2 — Multi-Source BFS</h3>
+<p>Instead of starting from one vertex, enqueue <em>all</em> source vertices simultaneously.
+BFS then expands from all sources in parallel. Used for: finding minimum distance from any
+of several sources, spreading infections, nearest facility problems.</p>
+
+<div class="diagram">MULTI-SOURCE BFS — Nearest Rotten Orange Problem
+
+   Grid: 0=empty, 1=fresh, 2=rotten
+   Initial:  2 1 1    All rotten oranges = initial queue
+             1 1 0    BFS spreads rot level by level
+             0 1 1
+
+   Start: enqueue all cells with value 2: {(0,0)}
+          Queue = [(0,0)]
+
+   Round 1: spread from (0,0) to neighbors
+            fresh→rotten: (0,1) and (1,0)
+            grid:  2 2 1
+                   2 1 0
+                   0 1 1
+
+   Round 2: spread from (0,1) and (1,0)
+            fresh→rotten: (0,2), (1,1)
+            grid:  2 2 2
+                   2 2 0
+                   0 1 1
+
+   Round 3: spread from (0,2) and (1,1)
+            fresh→rotten: (2,1)
+            grid:  2 2 2
+                   2 2 0
+                   0 2 1
+
+   Round 4: spread to (2,2)
+   Final:   2 2 2    Minimum time = 4 rounds
+            2 2 0
+            0 2 2</div>
+
+<h3>5.3 — BFS on Grids (2D Matrix)</h3>
+<p>Grids are graphs where each cell is a vertex and adjacent cells (up/down/left/right) are
+edges. BFS finds the shortest path from one cell to another in an unweighted grid.</p>
+
+<div class="diagram">BFS ON GRID — Shortest path from S to E
+
+   Grid (0=open, 1=wall, S=start, E=end):
+   S 0 1 0
+   0 0 0 0
+   1 0 0 0
+   0 0 0 E
+
+   Represent cells as (row, col) pairs.
+   Neighbors = 4 directions: up, down, left, right
+
+   BFS from (0,0)=(S):
+   Level 0: {(0,0)}
+   Level 1: {(0,1), (1,0)}         skip (0,-1) and (-1,0) = out of bounds
+   Level 2: {(1,1), (2,1)}         skip (0,2)=wall, (1,0) visited
+   Level 3: {(1,2), (2,2), (3,1)}
+   Level 4: {(1,3), (2,3), (3,2)}
+   Level 5: {(2,3)→visited, (3,3)}=(E) FOUND at level 5!
+
+   Shortest path = 5 steps (can reconstruct with parent map)</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 6 — C# Full BFS Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ═══════════════════════════════════════════════════════════════
+// BFS — Complete Implementation with Traversal, Shortest Path,
+//       Connected Components, and Grid BFS
+// ═══════════════════════════════════════════════════════════════</span>
+
+<span class="kw">public static class</span> <span class="tp">BFS</span>
+{
+    <span class="cm">// ── 1. Basic BFS traversal — returns visited order ─────────</span>
+    <span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; <span class="mt">Traverse</span>&lt;<span class="tp">T</span>&gt;(
+        <span class="tp">Dictionary</span>&lt;<span class="tp">T</span>, <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;&gt; graph, <span class="tp">T</span> start) <span class="kw">where</span> <span class="tp">T</span> : <span class="kw">notnull</span>
+    {
+        <span class="kw">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">T</span>&gt; { start };  <span class="cm">// mark when enqueuing!</span>
+        <span class="kw">var</span> queue   = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">T</span>&gt;();
+        <span class="kw">var</span> result  = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;();
+
+        queue.<span class="mt">Enqueue</span>(start);
+
+        <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="tp">T</span> u = queue.<span class="mt">Dequeue</span>();
+            result.<span class="mt">Add</span>(u);  <span class="cm">// process vertex u</span>
+
+            <span class="kw">if</span> (!graph.<span class="mt">ContainsKey</span>(u)) <span class="kw">continue</span>;
+            <span class="kw">foreach</span> (<span class="tp">T</span> v <span class="kw">in</span> graph[u])
+            {
+                <span class="kw">if</span> (visited.<span class="mt">Add</span>(v))   <span class="cm">// Add() returns true if newly added</span>
+                    queue.<span class="mt">Enqueue</span>(v);
+            }
+        }
+        <span class="kw">return</span> result;
+    }
+
+    <span class="cm">// ── 2. BFS Shortest Path — returns path as list, null if unreachable</span>
+    <span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;? <span class="mt">ShortestPath</span>&lt;<span class="tp">T</span>&gt;(
+        <span class="tp">Dictionary</span>&lt;<span class="tp">T</span>, <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;&gt; graph, <span class="tp">T</span> start, <span class="tp">T</span> end) <span class="kw">where</span> <span class="tp">T</span> : <span class="kw">notnull</span>
+    {
+        <span class="kw">if</span> (start.<span class="mt">Equals</span>(end)) <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt; { start };
+
+        <span class="kw">var</span> parent  = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">T</span>, <span class="tp">T</span>?&gt; { [start] = <span class="kw">default</span> };
+        <span class="kw">var</span> queue   = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">T</span>&gt;();
+        queue.<span class="mt">Enqueue</span>(start);
+
+        <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="tp">T</span> u = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (!graph.<span class="mt">ContainsKey</span>(u)) <span class="kw">continue</span>;
+
+            <span class="kw">foreach</span> (<span class="tp">T</span> v <span class="kw">in</span> graph[u])
+            {
+                <span class="kw">if</span> (parent.<span class="mt">ContainsKey</span>(v)) <span class="kw">continue</span>;  <span class="cm">// already visited</span>
+                parent[v] = u;                           <span class="cm">// record how we reached v</span>
+
+                <span class="kw">if</span> (v.<span class="mt">Equals</span>(end))                    <span class="cm">// found! reconstruct path</span>
+                {
+                    <span class="kw">var</span> path = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;();
+                    <span class="kw">for</span> (<span class="tp">T</span>? cur = end; cur != <span class="kw">null</span>; cur = parent[cur])
+                        path.<span class="mt">Insert</span>(<span class="nm">0</span>, cur);
+                    <span class="kw">return</span> path;
+                }
+                queue.<span class="mt">Enqueue</span>(v);
+            }
+        }
+        <span class="kw">return null</span>;  <span class="cm">// unreachable</span>
+    }
+
+    <span class="cm">// ── 3. Connected Components — count clusters in undirected graph</span>
+    <span class="kw">public static int</span> <span class="mt">CountComponents</span>&lt;<span class="tp">T</span>&gt;(
+        <span class="tp">Dictionary</span>&lt;<span class="tp">T</span>, <span class="tp">List</span>&lt;<span class="tp">T</span>&gt;&gt; graph) <span class="kw">where</span> <span class="tp">T</span> : <span class="kw">notnull</span>
+    {
+        <span class="kw">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="tp">T</span>&gt;();
+        <span class="kw">int</span> components = <span class="nm">0</span>;
+
+        <span class="kw">foreach</span> (<span class="tp">T</span> start <span class="kw">in</span> graph.Keys)
+        {
+            <span class="kw">if</span> (visited.<span class="mt">Contains</span>(start)) <span class="kw">continue</span>;
+            components++;
+
+            <span class="cm">// BFS from this unvisited vertex — marks entire component</span>
+            <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">T</span>&gt;();
+            visited.<span class="mt">Add</span>(start);
+            queue.<span class="mt">Enqueue</span>(start);
+
+            <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+            {
+                <span class="tp">T</span> u = queue.<span class="mt">Dequeue</span>();
+                <span class="kw">foreach</span> (<span class="tp">T</span> v <span class="kw">in</span> graph[u])
+                    <span class="kw">if</span> (visited.<span class="mt">Add</span>(v)) queue.<span class="mt">Enqueue</span>(v);
+            }
+        }
+        <span class="kw">return</span> components;
+    }
+
+    <span class="cm">// ── 4. BFS on Grid — shortest path from start to end cell ───</span>
+    <span class="kw">public static int</span> <span class="mt">GridBFS</span>(<span class="kw">int</span>[][] grid, (<span class="kw">int</span> r, <span class="kw">int</span> c) start, (<span class="kw">int</span> r, <span class="kw">int</span> c) end)
+    {
+        <span class="kw">int</span> rows = grid.Length, cols = grid[<span class="nm">0</span>].Length;
+        (<span class="kw">int</span> dr, <span class="kw">int</span> dc)[] dirs = { (<span class="nm">-1</span>,<span class="nm">0</span>), (<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">0</span>,<span class="nm">-1</span>), (<span class="nm">0</span>,<span class="nm">1</span>) };  <span class="cm">// 4-directional</span>
+
+        <span class="kw">if</span> (grid[start.r][start.c] == <span class="nm">1</span>) <span class="kw">return</span> -<span class="nm">1</span>;  <span class="cm">// start is a wall</span>
+
+        <span class="kw">var</span> visited = <span class="kw">new bool</span>[rows, cols];
+        <span class="kw">var</span> queue   = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span> r, <span class="kw">int</span> c, <span class="kw">int</span> dist)&gt;();
+        visited[start.r, start.c] = <span class="kw">true</span>;
+        queue.<span class="mt">Enqueue</span>((start.r, start.c, <span class="nm">0</span>));
+
+        <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">var</span> (r, c, dist) = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (r == end.r &amp;&amp; c == end.c) <span class="kw">return</span> dist;  <span class="cm">// found!</span>
+
+            <span class="kw">foreach</span> (<span class="kw">var</span> (dr, dc) <span class="kw">in</span> dirs)
+            {
+                <span class="kw">int</span> nr = r + dr, nc = c + dc;
+                <span class="kw">if</span> (nr &lt; <span class="nm">0</span> || nr &gt;= rows || nc &lt; <span class="nm">0</span> || nc &gt;= cols) <span class="kw">continue</span>;
+                <span class="kw">if</span> (grid[nr][nc] == <span class="nm">1</span> || visited[nr, nc]) <span class="kw">continue</span>;    <span class="cm">// wall or visited</span>
+                visited[nr, nc] = <span class="kw">true</span>;
+                queue.<span class="mt">Enqueue</span>((nr, nc, dist + <span class="nm">1</span>));
+            }
+        }
+        <span class="kw">return</span> -<span class="nm">1</span>;  <span class="cm">// unreachable</span>
+    }
+}
+
+<span class="kw">class</span> <span class="tp">BFSDemo</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="cm">// Build a sample graph: A-B-D, A-C, B-E, C-F</span>
+        <span class="kw">var</span> graph = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;
+        {
+            [<span class="st">"A"</span>] = <span class="kw">new</span> { <span class="st">"B"</span>, <span class="st">"C"</span> },
+            [<span class="st">"B"</span>] = <span class="kw">new</span> { <span class="st">"A"</span>, <span class="st">"D"</span>, <span class="st">"E"</span> },
+            [<span class="st">"C"</span>] = <span class="kw">new</span> { <span class="st">"A"</span>, <span class="st">"F"</span> },
+            [<span class="st">"D"</span>] = <span class="kw">new</span> { <span class="st">"B"</span> },
+            [<span class="st">"E"</span>] = <span class="kw">new</span> { <span class="st">"B"</span> },
+            [<span class="st">"F"</span>] = <span class="kw">new</span> { <span class="st">"C"</span> }
+        };
+
+        <span class="cm">// 1. Basic traversal</span>
+        <span class="kw">var</span> order = <span class="tp">BFS</span>.<span class="mt">Traverse</span>(graph, <span class="st">"A"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"BFS order: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, order));
+        <span class="cm">// BFS order: A → B → C → D → E → F</span>
+
+        <span class="cm">// 2. Shortest path A to F</span>
+        <span class="kw">var</span> path = <span class="tp">BFS</span>.<span class="mt">ShortestPath</span>(graph, <span class="st">"A"</span>, <span class="st">"F"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Path A→F: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, path!));
+        <span class="cm">// Path A→F: A → C → F  (2 hops)</span>
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Path A→D: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" → "</span>, <span class="tp">BFS</span>.<span class="mt">ShortestPath</span>(graph, <span class="st">"A"</span>, <span class="st">"D"</span>)!));
+        <span class="cm">// Path A→D: A → B → D</span>
+
+        <span class="cm">// 3. Grid BFS: find shortest path (0=open, 1=wall)</span>
+        <span class="kw">int</span>[][] grid = {
+            <span class="kw">new</span>[] { <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span> },
+            <span class="kw">new</span>[] { <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span> },
+            <span class="kw">new</span>[] { <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span> },
+            <span class="kw">new</span>[] { <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span> }
+        };
+        <span class="kw">int</span> dist = <span class="tp">BFS</span>.<span class="mt">GridBFS</span>(grid, (<span class="nm">0</span>,<span class="nm">0</span>), (<span class="nm">3</span>,<span class="nm">3</span>));
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Grid shortest path (0,0)→(3,3): {dist} steps"</span>);
+        <span class="cm">// Grid shortest path (0,0)→(3,3): 6 steps</span>
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">from</span> typing <span class="kw">import</span> Any, Dict, List, Optional, Tuple
+
+<span class="cm"># ═══════════════════════════════════════════════════════════════
+# BFS — Full Python Implementation
+# Uses collections.deque for O(1) popleft (NEVER use list.pop(0)!)
+# ═══════════════════════════════════════════════════════════════</span>
+
+<span class="tp">Graph</span> = Dict[Any, List[Any]]  <span class="cm"># type alias: adjacency list</span>
+
+<span class="kw">def</span> <span class="mt">bfs_traverse</span>(graph: <span class="tp">Graph</span>, start: Any) -> List[Any]:
+    <span class="st">"""BFS traversal — returns vertices in visit order."""</span>
+    visited = {start}
+    queue   = deque([start])
+    result  = []
+
+    <span class="kw">while</span> queue:
+        u = queue.<span class="mt">popleft</span>()      <span class="cm"># O(1) with deque!</span>
+        result.<span class="mt">append</span>(u)
+
+        <span class="kw">for</span> v <span class="kw">in</span> graph.get(u, []):
+            <span class="kw">if</span> v <span class="kw">not in</span> visited:
+                visited.<span class="mt">add</span>(v)   <span class="cm"># mark when enqueuing, not dequeuing</span>
+                queue.<span class="mt">append</span>(v)
+    <span class="kw">return</span> result
+
+
+<span class="kw">def</span> <span class="mt">bfs_shortest_path</span>(graph: <span class="tp">Graph</span>, start: Any, end: Any) -> Optional[List[Any]]:
+    <span class="st">"""BFS shortest path — returns path list or None if unreachable."""</span>
+    <span class="kw">if</span> start == end:
+        <span class="kw">return</span> [start]
+
+    parent = {start: <span class="kw">None</span>}   <span class="cm"># parent[v] = vertex that discovered v</span>
+    queue  = deque([start])
+
+    <span class="kw">while</span> queue:
+        u = queue.<span class="mt">popleft</span>()
+        <span class="kw">for</span> v <span class="kw">in</span> graph.get(u, []):
+            <span class="kw">if</span> v <span class="kw">in</span> parent:
+                <span class="kw">continue</span>             <span class="cm"># already visited</span>
+            parent[v] = u
+            <span class="kw">if</span> v == end:
+                <span class="cm"># reconstruct path by tracing parent pointers</span>
+                path, cur = [], end
+                <span class="kw">while</span> cur <span class="kw">is not None</span>:
+                    path.<span class="mt">append</span>(cur)
+                    cur = parent[cur]
+                <span class="kw">return</span> path[::-<span class="nm">1</span>]    <span class="cm"># reverse to get start→end order</span>
+            queue.<span class="mt">append</span>(v)
+    <span class="kw">return None</span>  <span class="cm"># unreachable</span>
+
+
+<span class="kw">def</span> <span class="mt">count_components</span>(graph: <span class="tp">Graph</span>) -> <span class="tp">int</span>:
+    <span class="st">"""Count connected components using BFS."""</span>
+    visited = <span class="mt">set</span>()
+    count   = <span class="nm">0</span>
+    <span class="kw">for</span> start <span class="kw">in</span> graph:
+        <span class="kw">if</span> start <span class="kw">in</span> visited:
+            <span class="kw">continue</span>
+        count += <span class="nm">1</span>
+        queue = deque([start])
+        visited.<span class="mt">add</span>(start)
+        <span class="kw">while</span> queue:
+            u = queue.<span class="mt">popleft</span>()
+            <span class="kw">for</span> v <span class="kw">in</span> graph.get(u, []):
+                <span class="kw">if</span> v <span class="kw">not in</span> visited:
+                    visited.<span class="mt">add</span>(v)
+                    queue.<span class="mt">append</span>(v)
+    <span class="kw">return</span> count
+
+
+<span class="kw">def</span> <span class="mt">grid_bfs</span>(grid: List[List[<span class="tp">int</span>]], start: Tuple[<span class="tp">int</span>,<span class="tp">int</span>], end: Tuple[<span class="tp">int</span>,<span class="tp">int</span>]) -> <span class="tp">int</span>:
+    <span class="st">"""BFS on grid. 0=open, 1=wall. Returns min steps or -1."""</span>
+    rows, cols = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>])
+    dirs = [(-<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">0</span>,-<span class="nm">1</span>), (<span class="nm">0</span>,<span class="nm">1</span>)]
+    <span class="kw">if</span> grid[start[<span class="nm">0</span>]][start[<span class="nm">1</span>]] == <span class="nm">1</span>:
+        <span class="kw">return</span> -<span class="nm">1</span>
+
+    visited = {start}
+    queue   = deque([(start[<span class="nm">0</span>], start[<span class="nm">1</span>], <span class="nm">0</span>)])  <span class="cm"># (row, col, distance)</span>
+
+    <span class="kw">while</span> queue:
+        r, c, dist = queue.<span class="mt">popleft</span>()
+        <span class="kw">if</span> (r, c) == end:
+            <span class="kw">return</span> dist
+        <span class="kw">for</span> dr, dc <span class="kw">in</span> dirs:
+            nr, nc = r + dr, c + dc
+            <span class="kw">if</span> <span class="nm">0</span> <= nr < rows <span class="kw">and</span> <span class="nm">0</span> <= nc < cols <span class="kw">and</span> \
+               grid[nr][nc] == <span class="nm">0</span> <span class="kw">and</span> (nr, nc) <span class="kw">not in</span> visited:
+                visited.<span class="mt">add</span>((nr, nc))
+                queue.<span class="mt">append</span>((nr, nc, dist + <span class="nm">1</span>))
+    <span class="kw">return</span> -<span class="nm">1</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    graph = {
+        <span class="st">"A"</span>: [<span class="st">"B"</span>, <span class="st">"C"</span>],
+        <span class="st">"B"</span>: [<span class="st">"A"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>],
+        <span class="st">"C"</span>: [<span class="st">"A"</span>, <span class="st">"F"</span>],
+        <span class="st">"D"</span>: [<span class="st">"B"</span>],
+        <span class="st">"E"</span>: [<span class="st">"B"</span>],
+        <span class="st">"F"</span>: [<span class="st">"C"</span>],
+    }
+    <span class="mt">print</span>(<span class="st">"BFS order:"</span>, <span class="st">" → "</span>.<span class="mt">join</span>(<span class="mt">bfs_traverse</span>(graph, <span class="st">"A"</span>)))
+    <span class="cm"># BFS order: A → B → C → D → E → F</span>
+
+    <span class="mt">print</span>(<span class="st">"Path A→F:"</span>, <span class="st">" → "</span>.<span class="mt">join</span>(<span class="mt">bfs_shortest_path</span>(graph, <span class="st">"A"</span>, <span class="st">"F"</span>)))
+    <span class="cm"># Path A→F: A → C → F</span>
+
+    grid = [[<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span>],[<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>],[<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>],[<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>]]
+    <span class="mt">print</span>(<span class="st">"Grid (0,0)→(3,3):"</span>, <span class="mt">grid_bfs</span>(grid, (<span class="nm">0</span>,<span class="nm">0</span>), (<span class="nm">3</span>,<span class="nm">3</span>)), <span class="st">"steps"</span>)
+    <span class="cm"># Grid (0,0)→(3,3): 6 steps</span></pre>
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Aspect</th><th>Value</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Time complexity</strong></td>
+            <td class="g">O(V + E)</td>
+            <td>Each vertex enqueued/dequeued once (O(V)). Each edge examined once when checking neighbors (O(E)).</td>
+        </tr>
+        <tr>
+            <td><strong>Space complexity</strong></td>
+            <td class="o">O(V)</td>
+            <td>Queue holds at most O(V) vertices (entire level in worst case). Visited set also O(V). Parent map O(V).</td>
+        </tr>
+        <tr>
+            <td><strong>Grid BFS time</strong></td>
+            <td class="g">O(rows × cols)</td>
+            <td>Each cell is a vertex, each boundary between cells is an edge. V = rows×cols, E = 4×rows×cols.</td>
+        </tr>
+        <tr>
+            <td><strong>Shortest path</strong></td>
+            <td class="g">Optimal</td>
+            <td>BFS guarantees minimum number of edges. First discovery = shortest path for unweighted graphs.</td>
+        </tr>
+        <tr>
+            <td><strong>With adjacency matrix</strong></td>
+            <td class="r">O(V²)</td>
+            <td>Checking all neighbors of a vertex requires scanning entire row (O(V)), done V times total.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="warning">
+    <strong>⚠️ Python deque vs list:</strong> Always use <code>collections.deque</code> for BFS
+    queues in Python. <code>list.pop(0)</code> is O(n) — it shifts all elements left. <code>deque.popleft()</code>
+    is O(1). For 10,000 nodes, the difference is 50,000× speedup.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
+
+<div class="realworld">
+    <strong>🌍 Facebook — "People You May Know"</strong><br>
+    Facebook uses multi-source BFS starting from your friends. Level-1 = your friends (1st degree).
+    Level-2 = their friends (2nd degree connections = "People You May Know"). The algorithm
+    runs BFS up to depth 2 or 3 from each user, ranking suggestions by mutual friend count.
+    With 3 billion users, this runs on distributed graph shards — BFS limited to depth 3 to
+    avoid blowup.
+    <br><br>
+    <strong>🌍 Google Maps — Shortest Route (Unweighted)</strong><br>
+    For "how many roads to cross?" or "minimum number of hops?", BFS gives the answer.
+    For real driving directions (with distances/times), Dijkstra's or A* is used instead.
+    But when planning routes on public transit with fixed stops, BFS on station graphs finds
+    the minimum number of transfers.
+    <br><br>
+    <strong>🌍 Web Crawlers (Google's Googlebot)</strong><br>
+    Web crawlers use BFS to discover new pages. Start from seed URLs; BFS explores outlinks
+    level by level. This ensures that pages "close" to the seed (fewer hops) are crawled
+    before deeply nested ones — important for fresh indexing of popular content.
+    <br><br>
+    <strong>🌍 Puzzle Solving (Rubik's Cube, 15-Puzzle)</strong><br>
+    State-space search uses BFS to find the minimum number of moves to solve a puzzle. Each
+    state is a vertex; each legal move is an edge. BFS guarantees the optimal (minimum-move)
+    solution — used in AI solvers for sliding puzzles, chess endgame tablebases, etc.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="section-heading">Section 9 — Check Your Understanding</div>
+
+<!-- Q1 -->
+<div class="quiz-block">
+    <p>Q1 — BFS visits a graph with 6 vertices. The queue contains [C, D] after processing A and B. In what order were vertices A and B discovered relative to the start?</p>
+    <div class="quiz-meta">💡 BFS processes level by level. Think about what BFS order looks like.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> A was the start vertex (level 0). B was a direct neighbor of A (level 1). After processing A, BFS enqueued A's neighbors. After processing B, BFS enqueued C and D (B's unvisited neighbors — level 2). So the discovery order is A (start, level 0) → B (level 1, neighbor of A) → C and D (level 2, neighbors of B). This confirms BFS processes all level-1 nodes before any level-2 nodes.</div>
+        <div class="complexity"><strong>Key insight:</strong> The queue in BFS is always ordered by level. When the queue contains [C, D], you know A and B were at earlier levels and have already been fully processed.</div>
+    </div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-block">
+    <p>Q2 — Why must you mark a vertex as visited when you ENQUEUE it, not when you DEQUEUE it?</p>
+    <div class="quiz-meta">💡 Think about what happens with a vertex that has two neighbors pointing to it.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> Consider vertex C reachable from both A and B. If you only mark visited on dequeue, when processing A's neighbors you enqueue C. Then when processing B's neighbors (before C is dequeued), you see C is "not visited" and enqueue it again. Now C is in the queue twice. For graphs with many paths to a vertex, it could be enqueued O(E) times instead of O(1), making BFS O(E²) instead of O(V+E). Worse, in certain graph structures this causes incorrect results (distances counted multiple times). Mark visited immediately on enqueue to guarantee each vertex is processed exactly once.</div>
+        <div class="complexity"><strong>Rule:</strong> visited = "added to queue" not "processed from queue". This prevents duplicate enqueuing.</div>
+    </div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-block">
+    <p>Q3 — You run BFS on a disconnected graph (3 components) starting from vertex A. How many vertices does BFS visit?</p>
+    <div class="quiz-meta">💡 BFS only explores vertices reachable from the start.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> Only the vertices in A's connected component. BFS can only reach vertices connected to the start vertex via edges. The other 2 components are completely isolated — no path exists from A to any vertex in those components. To visit all vertices in a disconnected graph, you need to run BFS from an unvisited vertex after each BFS completes — this is exactly the "count connected components" approach. Number of times you restart BFS = number of components.</div>
+        <div class="complexity"><strong>Pattern:</strong> Loop over all vertices, run BFS only from unvisited ones. This is O(V+E) overall — each vertex and edge still processed exactly once across all BFS calls.</div>
+    </div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-block">
+    <p>Q4 — You use a stack instead of a queue in BFS. What happens? What algorithm do you get?</p>
+    <div class="quiz-meta">💡 Stack = LIFO. Queue = FIFO. Which algorithm uses a stack for graph traversal?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> Replacing the queue with a stack turns BFS into an iterative DFS (Depth-First Search). With a stack (LIFO), you process the most recently discovered neighbor first, diving as deep as possible before backtracking — which is DFS behavior. The traversal order changes completely: instead of level-by-level (A→B→C→D→E→F), you get a deep-first exploration (A→B→D→E→C→F or similar depending on neighbor order). Crucially, you also LOSE the shortest-path guarantee — DFS does NOT find shortest paths in general.</div>
+        <div class="complexity"><strong>Takeaway:</strong> Queue → BFS → shortest path in unweighted graphs. Stack → DFS → good for cycle detection, topological sort, connected components. Same O(V+E) time complexity for both.</div>
+    </div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-block">
+    <p>Q5 — In a 5×5 grid with no walls, what is the BFS shortest path length from (0,0) to (4,4)? How many cells does BFS visit before finding the target?</p>
+    <div class="quiz-meta">💡 Movement is 4-directional (no diagonals). Count minimum steps needed.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Answer:</strong> Shortest path = 8 steps (move 4 right + 4 down = Manhattan distance = |4-0| + |4-0| = 8). BFS visits cells by level. Level k contains all cells at Manhattan distance k from (0,0). Level 8 includes (4,4). Before reaching (4,4), BFS visits all cells at Manhattan distance 0 through 7. Cells at distance d from (0,0) in a 5×5 grid (clamped to grid bounds): the total cells visited is all cells with distance ≤ 7, which is 24 cells (entire grid minus (4,4) and some out-of-bounds). Actually, in a 5×5 grid all 25 cells are reachable at distances 0 to 8, so BFS visits all 24 cells before (4,4) appears at level 8.</div>
+        <div class="complexity"><strong>Key concept:</strong> BFS explores in "diamond" shapes (all cells at Manhattan distance ≤ d). In a 5×5 grid, almost all cells are visited before the farthest corner — demonstrating BFS's level-order completeness.</div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 9B Complete</button>
+<div class="toast" id="toast">✅ Module 9B marked complete!</div>
+    <script>var MODULE_ID = 'm09b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

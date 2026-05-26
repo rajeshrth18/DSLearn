@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15E — Aho-Corasick | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part E</h1>
+    <div class="tagline">Aho-Corasick — Multi-Pattern Search Automaton</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Search all patterns simultaneously · Trie + Failure Links · O(n + m + k)</p>
+    <div class="badges">
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 15 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ✅ <strong>Part B</strong> — <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
+    ✅ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ✅ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ▶ <strong>Part E</strong> — <em>You are here</em> — Aho-Corasick (Multi-Pattern)<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
+    <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Multi-Pattern Problem</div>
+
+<p>Given a text of length <em>n</em> and <em>k</em> patterns of total length <em>m</em>,
+find all occurrences of all patterns in the text.</p>
+
+<p>Running KMP separately for each pattern takes O(n·k + m). <strong>Aho-Corasick</strong> does it
+in <strong>O(n + m + z)</strong> where z is the total number of matches — regardless of k.
+It's KMP generalized to a trie.</p>
+
+<div class="diagram">Patterns: {"he", "she", "his", "hers"}
+
+Build Trie:
+        root
+       /    \
+      h      s
+     / \      \
+    e   i      h
+    |   |       \
+   [he] s       e
+        |        \
+       [his]     [she]
+         (failure links guide search when mismatch occurs)
+
+Key insight: KMP's failure function = Aho-Corasick's failure links on a single-path trie.
+Aho-Corasick extends this to a trie of all patterns.</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Build: Trie + Failure Links</div>
+
+<h3>2.1 — Step 1: Insert All Patterns into a Trie</h3>
+<h3>2.2 — Step 2: Build Failure Links via BFS</h3>
+<p>Failure links are the trie equivalent of KMP's failure function. For each node <code>u</code>,
+<code>fail[u]</code> = the longest proper suffix of the string represented by <code>u</code> that
+is also a prefix of some pattern in the trie.</p>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">AhoCorasick</span>
+{
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;&gt; _goto = <span class="kw">new</span>();
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; _fail = <span class="kw">new</span>();
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; _output = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="mt">AhoCorasick</span>() { <span class="mt">NewNode</span>(); }  <span class="cm">// root = 0</span>
+
+    <span class="kw">private int</span> <span class="mt">NewNode</span>()
+    {
+        _goto.<span class="mt">Add</span>(<span class="kw">new</span>()); _fail.<span class="mt">Add</span>(<span class="nm">0</span>); _output.<span class="mt">Add</span>(<span class="kw">new</span>());
+        <span class="kw">return</span> _goto.Count - <span class="nm">1</span>;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Add</span>(<span class="kw">string</span> pattern)
+    {
+        <span class="kw">int</span> cur = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> pattern)
+        {
+            <span class="kw">if</span> (!_goto[cur].<span class="mt">ContainsKey</span>(c)) _goto[cur][c] = <span class="mt">NewNode</span>();
+            cur = _goto[cur][c];
+        }
+        _output[cur].<span class="mt">Add</span>(pattern);
+    }
+
+    <span class="kw">public void</span> <span class="mt">Build</span>()
+    {
+        <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">foreach</span> (<span class="kw">var</span> (c, child) <span class="kw">in</span> _goto[<span class="nm">0</span>]) q.<span class="mt">Enqueue</span>(child);
+        <span class="kw">while</span> (q.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> u = q.<span class="mt">Dequeue</span>();
+            _output[u].<span class="mt">AddRange</span>(_output[_fail[u]]);  <span class="cm">// dictionary link</span>
+            <span class="kw">foreach</span> (<span class="kw">var</span> (c, v) <span class="kw">in</span> _goto[u])
+            {
+                <span class="kw">int</span> f = _fail[u];
+                <span class="kw">while</span> (f != <span class="nm">0</span> &amp;&amp; !_goto[f].<span class="mt">ContainsKey</span>(c)) f = _fail[f];
+                _fail[v] = _goto[f].<span class="mt">GetValueOrDefault</span>(c, <span class="nm">0</span>);
+                <span class="kw">if</span> (_fail[v] == v) _fail[v] = <span class="nm">0</span>;
+                q.<span class="mt">Enqueue</span>(v);
+            }
+        }
+    }
+
+    <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">Search</span>(<span class="kw">string</span> text)
+    {
+        <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;();
+        <span class="kw">int</span> cur = <span class="nm">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; text.Length; i++)
+        {
+            <span class="kw">char</span> c = text[i];
+            <span class="kw">while</span> (cur != <span class="nm">0</span> &amp;&amp; !_goto[cur].<span class="mt">ContainsKey</span>(c)) cur = _fail[cur];
+            cur = _goto[cur].<span class="mt">GetValueOrDefault</span>(c, <span class="nm">0</span>);
+            <span class="kw">foreach</span> (<span class="kw">string</span> p <span class="kw">in</span> _output[cur])
+            {
+                <span class="kw">if</span> (!res.<span class="mt">ContainsKey</span>(p)) res[p] = <span class="kw">new</span>();
+                res[p].<span class="mt">Add</span>(i - p.Length + <span class="nm">1</span>);
+            }
+        }
+        <span class="kw">return</span> res;
+    }
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> ac = <span class="kw">new</span> <span class="tp">AhoCorasick</span>();
+<span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> <span class="kw">new</span>[] { <span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"his"</span>, <span class="st">"hers"</span> }) ac.<span class="mt">Add</span>(p);
+ac.<span class="mt">Build</span>();
+<span class="kw">var</span> found = ac.<span class="mt">Search</span>(<span class="st">"ushers"</span>);
+<span class="cm">// she: [1], he: [2], hers: [2]</span></pre>
+</div>
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque, defaultdict
+
+<span class="kw">class</span> <span class="tp">AhoCorasick</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>):
+        <span class="cm"># Each node: children dict, fail link, output list</span>
+        <span class="kw">self</span>.goto = [{}]        <span class="cm"># goto[node][char] = next_node</span>
+        <span class="kw">self</span>.fail = [<span class="nm">0</span>]         <span class="cm"># failure link</span>
+        <span class="kw">self</span>.output = [[]]      <span class="cm"># patterns ending at this node</span>
+        <span class="kw">self</span>.size = <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">_new_node</span>(<span class="kw">self</span>):
+        <span class="kw">self</span>.goto.<span class="mt">append</span>({})
+        <span class="kw">self</span>.fail.<span class="mt">append</span>(<span class="nm">0</span>)
+        <span class="kw">self</span>.output.<span class="mt">append</span>([])
+        <span class="kw">self</span>.size += <span class="nm">1</span>
+        <span class="kw">return</span> <span class="kw">self</span>.size - <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">add_pattern</span>(<span class="kw">self</span>, pattern: <span class="tp">str</span>):
+        cur = <span class="nm">0</span>
+        <span class="kw">for</span> ch <span class="kw">in</span> pattern:
+            <span class="kw">if</span> ch <span class="kw">not in</span> <span class="kw">self</span>.goto[cur]:
+                <span class="kw">self</span>.goto[cur][ch] = <span class="kw">self</span>.<span class="mt">_new_node</span>()
+            cur = <span class="kw">self</span>.goto[cur][ch]
+        <span class="kw">self</span>.output[cur].<span class="mt">append</span>(pattern)
+
+    <span class="kw">def</span> <span class="mt">build</span>(<span class="kw">self</span>):
+        <span class="st">"""BFS to set failure links."""</span>
+        q = deque()
+        <span class="cm"># Root's children: fail = 0 (root itself)</span>
+        <span class="kw">for</span> ch, child <span class="kw">in</span> <span class="kw">self</span>.goto[<span class="nm">0</span>].<span class="mt">items</span>():
+            <span class="kw">self</span>.fail[child] = <span class="nm">0</span>
+            q.<span class="mt">append</span>(child)
+
+        <span class="kw">while</span> q:
+            u = q.<span class="mt">popleft</span>()
+            <span class="cm"># Merge outputs via fail chain</span>
+            <span class="kw">self</span>.output[u] += <span class="kw">self</span>.output[<span class="kw">self</span>.fail[u]]
+
+            <span class="kw">for</span> ch, v <span class="kw">in</span> <span class="kw">self</span>.goto[u].<span class="mt">items</span>():
+                f = <span class="kw">self</span>.fail[u]
+                <span class="kw">while</span> f != <span class="nm">0</span> <span class="kw">and</span> ch <span class="kw">not in</span> <span class="kw">self</span>.goto[f]:
+                    f = <span class="kw">self</span>.fail[f]
+                <span class="kw">self</span>.fail[v] = <span class="kw">self</span>.goto[f].<span class="mt">get</span>(ch, <span class="nm">0</span>)
+                <span class="kw">if</span> <span class="kw">self</span>.fail[v] == v:
+                    <span class="kw">self</span>.fail[v] = <span class="nm">0</span>
+                q.<span class="mt">append</span>(v)
+
+    <span class="kw">def</span> <span class="mt">search</span>(<span class="kw">self</span>, text: <span class="tp">str</span>) -&gt; <span class="tp">dict</span>:
+        <span class="st">"""Returns {pattern: [start_indices]} for all matches."""</span>
+        results = defaultdict(<span class="tp">list</span>)
+        cur = <span class="nm">0</span>
+        <span class="kw">for</span> i, ch <span class="kw">in</span> <span class="mt">enumerate</span>(text):
+            <span class="kw">while</span> cur != <span class="nm">0</span> <span class="kw">and</span> ch <span class="kw">not in</span> <span class="kw">self</span>.goto[cur]:
+                cur = <span class="kw">self</span>.fail[cur]
+            cur = <span class="kw">self</span>.goto[cur].<span class="mt">get</span>(ch, <span class="nm">0</span>)
+            <span class="kw">for</span> pattern <span class="kw">in</span> <span class="kw">self</span>.output[cur]:
+                results[pattern].<span class="mt">append</span>(i - <span class="mt">len</span>(pattern) + <span class="nm">1</span>)
+        <span class="kw">return</span> <span class="tp">dict</span>(results)
+
+<span class="cm"># Usage</span>
+ac = <span class="tp">AhoCorasick</span>()
+<span class="kw">for</span> p <span class="kw">in</span> [<span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"his"</span>, <span class="st">"hers"</span>]:
+    ac.<span class="mt">add_pattern</span>(p)
+ac.<span class="mt">build</span>()
+
+print(ac.<span class="mt">search</span>(<span class="st">"ushers"</span>))
+<span class="cm"># {'she': [1], 'he': [2], 'hers': [2]}</span></pre>
+</div>
+
+<div class="note">
+    <strong>📌 Key Takeaways:</strong>
+    <ul style="margin-top:8px;">
+        <li>Aho-Corasick = KMP failure function extended to a trie of multiple patterns</li>
+        <li>Build: O(total pattern length m); Search: O(n + z) where z = total matches</li>
+        <li>Failure links built via BFS from root — children of root always have fail = root</li>
+        <li>Output links (dictionary links) propagate outputs through the fail chain</li>
+        <li>Used in antivirus engines, DNA search, network intrusion detection</li>
+    </ul>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15E Complete</button>
+<div class="toast" id="toast">✅ Module 15E complete! Aho-Corasick mastered! Module 15 done! 🎉</div>
+    <script>var MODULE_ID = 'm15e';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

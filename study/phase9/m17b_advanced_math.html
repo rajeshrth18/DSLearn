@@ -1,0 +1,402 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 17B — Advanced Math | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 17 — Part B</h1>
+    <div class="tagline">Advanced Math: Modular Arithmetic, CRT &amp; Combinatorics</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Modular Inverse · Chinese Remainder Theorem · Catalan Numbers · Lucas' Theorem</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Module 17:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m17a_bit_manipulation.html">Bit Manipulation</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Advanced Math<br>
+    ⬜ <strong>Part C</strong> — <a href="m17c_geometry.html">Computational Geometry</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m17d_phase9_practice.html">Phase 9 Mixed Practice</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
+    <a href="../phase10/m18a_patterns1.html">Module 18 &mdash; Patterns I &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Modular Arithmetic Review <span>— mod, addition, multiplication</span></li>
+        <li>Section 2 — Modular Inverse <span>— Fermat's Little Theorem, Extended GCD</span></li>
+        <li>Section 3 — Precomputed Factorials for nCr <span>— Fast C(n,k) mod p</span></li>
+        <li>Section 4 — Chinese Remainder Theorem <span>— Combining congruences</span></li>
+        <li>Section 5 — Catalan Numbers <span>— Formula, recurrence, applications</span></li>
+        <li>Section 6 — Lucas' Theorem <span>— C(n,k) mod prime for large n</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Modular Arithmetic Review</div>
+
+<div class="diagram">MODULAR ARITHMETIC RULES (all mod p):
+  (a + b) mod p = ((a mod p) + (b mod p)) mod p
+  (a - b) mod p = ((a mod p) - (b mod p) + p) mod p   ← ADD p to avoid negative
+  (a * b) mod p = ((a mod p) * (b mod p)) mod p
+  (a / b) mod p = (a * b^(-1)) mod p                   ← division requires modular inverse!
+
+  Power: a^b mod p → use binary exponentiation (O(log b))
+  
+BINARY EXPONENTIATION (fast pow):
+  pow(a, b, p):
+    result = 1
+    a = a % p
+    while b > 0:
+        if b & 1: result = result * a % p
+        a = a * a % p
+        b >>= 1
+    return result
+  
+  Python: pow(a, b, p)  ← built-in, very fast
+  C#:    no built-in for long; implement manually
+
+IMPORTANT: For LeetCode problems with "return answer mod 10^9+7":
+  MOD = 1_000_000_007  (prime)
+  Every intermediate result: apply % MOD after each multiplication/addition
+  Never let values accumulate past ~10^18 before taking mod (use long in C#)</div>
+
+<span class="lang-label lang-cs">C# Binary Exponentiation</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public long</span> <span class="mt">ModPow</span>(<span class="kw">long</span> baseVal, <span class="kw">long</span> exp, <span class="kw">long</span> mod)
+{
+    <span class="kw">long</span> result = <span class="nm">1</span>; baseVal %= mod;
+    <span class="kw">while</span> (exp > <span class="nm">0</span>) {
+        <span class="kw">if</span> ((exp &amp; <span class="nm">1</span>) == <span class="nm">1</span>) result = result * baseVal % mod;
+        baseVal = baseVal * baseVal % mod;
+        exp >>= <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Modular Inverse</div>
+
+<div class="diagram">MODULAR INVERSE of a mod p: the value a^(-1) such that a * a^(-1) ≡ 1 (mod p)
+  Required when dividing under modulus: a/b mod p = a * b^(-1) mod p
+
+METHOD 1: Fermat's Little Theorem (p must be prime, a ≢ 0 mod p)
+  a^(p-1) ≡ 1 (mod p)   →   a^(-1) ≡ a^(p-2) (mod p)
+  inv(a, p) = pow(a, p-2, p)
+  Time: O(log p) — simple, works for all a in [1, p-1]
+
+METHOD 2: Extended Euclidean Algorithm (works even when p is not prime)
+  Bezout's identity: gcd(a, p) = a*x + p*y
+  If gcd(a, p) = 1, then x is the modular inverse of a mod p.
+  Time: O(log min(a,p))
+
+METHOD 3: Precomputed inverse table in O(n) linear time
+  inv[1] = 1
+  inv[i] = -(p / i) * inv[p % i] mod p    ← avoid the division loop
+  Use this when you need inv[1..n] for many values</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">const long</span> MOD = <span class="nm">1_000_000_007</span>;
+
+<span class="cm">// Fermat's: inv(a) = a^(MOD-2) mod MOD (MOD must be prime)</span>
+<span class="kw">long</span> <span class="mt">ModInv</span>(<span class="kw">long</span> a) => <span class="mt">ModPow</span>(a, MOD - <span class="nm">2</span>, MOD);
+
+<span class="cm">// Extended GCD — returns gcd and sets x, y such that a*x + b*y = gcd</span>
+<span class="kw">long</span> <span class="mt">ExtGcd</span>(<span class="kw">long</span> a, <span class="kw">long</span> b, <span class="kw">out long</span> x, <span class="kw">out long</span> y)
+{
+    <span class="kw">if</span> (b == <span class="nm">0</span>) { x = <span class="nm">1</span>; y = <span class="nm">0</span>; <span class="kw">return</span> a; }
+    <span class="kw">long</span> g = <span class="mt">ExtGcd</span>(b, a % b, <span class="kw">out long</span> x1, <span class="kw">out long</span> y1);
+    x = y1; y = x1 - (a / b) * y1;
+    <span class="kw">return</span> g;
+}
+<span class="kw">long</span> <span class="mt">ModInvExtGcd</span>(<span class="kw">long</span> a, <span class="kw">long</span> m)
+{
+    <span class="mt">ExtGcd</span>(a, m, <span class="kw">out long</span> x, <span class="kw">out long</span> _);
+    <span class="kw">return</span> ((x % m) + m) % m;
+}
+
+<span class="cm">// Precompute factorials and inverse factorials for C(n,k) mod MOD</span>
+<span class="kw">long</span>[] fact, invFact;
+<span class="kw">void</span> <span class="mt">Precompute</span>(<span class="kw">int</span> n)
+{
+    fact = <span class="kw">new long</span>[n + <span class="nm">1</span>]; invFact = <span class="kw">new long</span>[n + <span class="nm">1</span>];
+    fact[<span class="nm">0</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++) fact[i] = fact[i - <span class="nm">1</span>] * i % MOD;
+    invFact[n] = <span class="mt">ModInv</span>(fact[n]);
+    <span class="kw">for</span> (<span class="kw">int</span> i = n - <span class="nm">1</span>; i >= <span class="nm">0</span>; i--) invFact[i] = invFact[i + <span class="nm">1</span>] * (i + <span class="nm">1</span>) % MOD;
+}
+<span class="kw">long</span> <span class="mt">C</span>(<span class="kw">int</span> n, <span class="kw">int</span> k)
+{
+    <span class="kw">if</span> (k &lt; <span class="nm">0</span> || k > n) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">return</span> fact[n] * invFact[k] % MOD * invFact[n - k] % MOD;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python">MOD = <span class="nm">10</span>**<span class="nm">9</span> + <span class="nm">7</span>
+
+<span class="kw">def</span> <span class="mt">mod_inv</span>(a, p=MOD): <span class="kw">return</span> <span class="mt">pow</span>(a, p-<span class="nm">2</span>, p)  <span class="cm"># Fermat</span>
+
+<span class="kw">def</span> <span class="mt">precompute</span>(n, p=MOD):
+    fact = [<span class="nm">1</span>] * (n+<span class="nm">1</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>): fact[i] = fact[i-<span class="nm">1</span>] * i % p
+    inv_fact = [<span class="nm">1</span>] * (n+<span class="nm">1</span>)
+    inv_fact[n] = <span class="mt">pow</span>(fact[n], p-<span class="nm">2</span>, p)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n-<span class="nm">1</span>, -<span class="nm">1</span>, -<span class="nm">1</span>): inv_fact[i] = inv_fact[i+<span class="nm">1</span>] * (i+<span class="nm">1</span>) % p
+    <span class="kw">return</span> fact, inv_fact
+
+<span class="kw">def</span> <span class="mt">comb</span>(n, k, fact, inv_fact, p=MOD):
+    <span class="kw">if</span> k &lt; <span class="nm">0</span> <span class="kw">or</span> k > n: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> fact[n] * inv_fact[k] % p * inv_fact[n-k] % p</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Chinese Remainder Theorem</div>
+
+<div class="diagram">CHINESE REMAINDER THEOREM (CRT):
+  Given system of congruences:
+    x ≡ r1 (mod m1)
+    x ≡ r2 (mod m2)
+    ...
+    x ≡ rk (mod mk)
+  
+  If all mi are pairwise coprime, there exists a UNIQUE solution mod M = m1*m2*...*mk.
+
+ALGORITHM (for 2 congruences):
+  x ≡ a (mod m)
+  x ≡ b (mod n)
+  
+  Use Extended GCD: find p,q such that m*p + n*q = gcd(m,n)
+  If gcd(m,n) doesn't divide (b-a): NO solution.
+  Otherwise: x = a + m * p * (b-a)/gcd(m,n)   [mod lcm(m,n)]
+
+SIMPLE CASE (m and n coprime):
+  x = a * n * inv(n, m) + b * m * inv(m, n)   mod (m*n)
+
+EXAMPLE:
+  x ≡ 2 (mod 3)    →  x could be 2, 5, 8, 11, ...
+  x ≡ 3 (mod 5)    →  x could be 3, 8, 13, 18, ...
+  Solution: x ≡ 8 (mod 15)
+
+APPLICATIONS:
+  - LeetCode #1390 (Four Divisors), construction problems
+  - Number theory proofs
+  - Calendar computations
+  - Breaking ciphers (RSA small exponent)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// CRT for two congruences: x ≡ a (mod m), x ≡ b (mod n)
+// Returns (solution, lcm) or (-1, -1) if no solution</span>
+(<span class="kw">long</span> sol, <span class="kw">long</span> lcm) <span class="mt">CRT</span>(<span class="kw">long</span> a, <span class="kw">long</span> m, <span class="kw">long</span> b, <span class="kw">long</span> n)
+{
+    <span class="kw">long</span> g = <span class="mt">ExtGcd</span>(m, n, <span class="kw">out long</span> p, <span class="kw">out long</span> _);
+    <span class="kw">if</span> ((b - a) % g != <span class="nm">0</span>) <span class="kw">return</span> (-<span class="nm">1</span>, -<span class="nm">1</span>);
+    <span class="kw">long</span> lcm = m / g * n;
+    <span class="kw">long</span> x = (a + m * ((b - a) / g % (n / g)) * p % (n / g)) % lcm;
+    <span class="kw">return</span> ((x + lcm) % lcm, lcm);
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">crt</span>(a, m, b, n):
+    <span class="st">"""Solve x ≡ a (mod m) and x ≡ b (mod n). Returns (sol, lcm) or (-1,-1)."""</span>
+    <span class="kw">from</span> math <span class="kw">import</span> gcd
+    g = <span class="mt">gcd</span>(m, n)
+    <span class="kw">if</span> (b - a) % g != <span class="nm">0</span>: <span class="kw">return</span> -<span class="nm">1</span>, -<span class="nm">1</span>
+    lcm = m // g * n
+    <span class="cm"># p = modular inverse of m//g mod n//g</span>
+    p = <span class="mt">pow</span>(m//g, -<span class="nm">1</span>, n//g)  <span class="cm"># Python 3.8+ supports pow(a, -1, m) for modular inverse</span>
+    x = (a + m * ((b - a) // g * p % (n // g))) % lcm
+    <span class="kw">return</span> x, lcm</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Catalan Numbers</div>
+
+<div class="diagram">CATALAN NUMBERS: C_n = (2n choose n) / (n+1) = C(2n,n) / (n+1)
+
+  C_0=1, C_1=1, C_2=2, C_3=5, C_4=14, C_5=42, C_6=132, ...
+
+RECURRENCE: C_n = Σ C_i * C_(n-1-i) for i in [0, n-1]
+CLOSED FORM: C_n = C(2n, n) - C(2n, n+1)  =  C(2n, n) / (n+1)
+
+WHAT CATALAN NUMBERS COUNT (all equivalent!):
+  1. Number of valid sequences of n pairs of balanced parentheses
+     n=2: ()() and (()) → 2
+     n=3: ()()(), (())(), ()(()), (()()), ((())) → 5
+  
+  2. Number of distinct BSTs with n nodes
+     (Each BST corresponds to a parenthesization)
+  
+  3. Number of ways to triangulate a convex polygon with n+2 sides
+  
+  4. Number of monotonic lattice paths from (0,0) to (n,n) that
+     do not go above the main diagonal
+  
+  5. Number of full binary trees with n+1 leaves
+
+RECURRENCE for DP:
+  dp[0] = 1, dp[1] = 1
+  dp[n] = sum(dp[i] * dp[n-1-i] for i in range(n))</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Catalan number C_n mod MOD using precomputed factorials</span>
+<span class="kw">long</span> <span class="mt">Catalan</span>(<span class="kw">int</span> n)
+{
+    <span class="cm">// C_n = C(2n, n) * inv(n+1) mod MOD</span>
+    <span class="kw">return</span> <span class="mt">C</span>(<span class="nm">2</span> * n, n) * <span class="mt">ModInv</span>(n + <span class="nm">1</span>) % MOD;
+}
+
+<span class="cm">// DP recurrence version (for small n, useful to see structure)</span>
+<span class="kw">long</span>[] <span class="mt">CatalanDP</span>(<span class="kw">int</span> maxN)
+{
+    <span class="kw">long</span>[] dp = <span class="kw">new long</span>[maxN + <span class="nm">1</span>]; dp[<span class="nm">0</span>] = dp[<span class="nm">1</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> n = <span class="nm">2</span>; n &lt;= maxN; n++)
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            dp[n] = (dp[n] + dp[i] * dp[n - <span class="nm">1</span> - i]) % MOD;
+    <span class="kw">return</span> dp;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">catalan</span>(n, MOD=<span class="nm">10</span>**<span class="nm">9</span>+<span class="nm">7</span>):
+    fact, inv_fact = <span class="mt">precompute</span>(<span class="nm">2</span>*n)
+    <span class="kw">return</span> <span class="mt">comb</span>(<span class="nm">2</span>*n, n, fact, inv_fact) * <span class="mt">pow</span>(n+<span class="nm">1</span>, MOD-<span class="nm">2</span>, MOD) % MOD
+
+<span class="cm"># Number of unique BSTs with n nodes (LeetCode #96)
+def numTrees(n):
+    dp = [0] * (n+1); dp[0] = dp[1] = 1
+    for i in range(2, n+1):
+        for j in range(i): dp[i] += dp[j] * dp[i-1-j]
+    return dp[n]  # = Catalan(n)</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Lucas' Theorem &amp; LeetCode Map</div>
+
+<div class="diagram">LUCAS' THEOREM: For prime p and non-negative integers n, k:
+  C(n, k) mod p = product of C(n_i, k_i) mod p
+  where n_i, k_i are the digits of n and k in base p.
+
+  More concisely: C(n, k) ≡ C(n mod p, k mod p) * C(n/p, k/p) (mod p)
+
+  If any k_i > n_i, then C(n, k) ≡ 0 (mod p).
+
+USE CASE: When n can be very large (up to 10^18) but p is small prime.
+  Normal precomputed factorial table won't work (table would be huge).
+  Lucas reduces it to C(small, small) computations recursively.
+
+EXAMPLE: C(1000000000, 500000000) mod 7
+  Represent in base 7 and apply Lucas recursively.
+
+PYTHON SHORTCUT for moderate n:
+  import math; math.comb(n, k) % MOD
+  But this fails for n > ~10^5 with mod — use precomputed inv_fact instead.</div>
+
+<span class="lang-label lang-py">Python — Lucas' Theorem</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">lucas</span>(n, k, p):
+    <span class="st">"""C(n, k) mod p where p is prime, using Lucas' theorem."""</span>
+    <span class="kw">if</span> k == <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">1</span>
+    ni, ki = n % p, k % p
+    <span class="kw">if</span> ki > ni: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="cm"># C(ni, ki) computed directly (ni < p, so small factorial table)</span>
+    fact_p = [<span class="nm">1</span>] * p
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, p): fact_p[i] = fact_p[i-<span class="nm">1</span>] * i % p
+    <span class="kw">def</span> <span class="mt">small_comb</span>(a, b): <span class="kw">return</span> fact_p[a] * <span class="mt">pow</span>(fact_p[b], p-<span class="nm">2</span>, p) % p * <span class="mt">pow</span>(fact_p[a-b], p-<span class="nm">2</span>, p) % p
+    <span class="kw">return</span> <span class="mt">small_comb</span>(ni, ki) * <span class="mt">lucas</span>(n//p, k//p, p) % p</pre>
+</div>
+
+<table>
+    <thead>
+        <tr><th>Topic</th><th>LeetCode Problems</th><th>Key Formula</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>Modular Arithmetic</strong></td><td>#50 Pow(x,n), #1922, #372</td><td class="g">ModPow: O(log n)</td></tr>
+        <tr><td><strong>Modular Inverse</strong></td><td>#62 Unique Paths, #2400</td><td class="g">pow(a, p-2, p)</td></tr>
+        <tr><td><strong>nCr mod p</strong></td><td>#62, #1916, #2400</td><td class="g">fact[n] * inv_fact[k] * inv_fact[n-k]</td></tr>
+        <tr><td><strong>Catalan Numbers</strong></td><td>#96 Unique BSTs, #22 Parentheses</td><td class="g">C(2n,n) / (n+1)</td></tr>
+        <tr><td><strong>CRT</strong></td><td>#1201 Ugly Number III</td><td class="g">combine congruences</td></tr>
+        <tr><td><strong>Lucas' Theorem</strong></td><td>Large n, small prime p</td><td class="g">Recurse in base p</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: Why does division mod p require the modular inverse, and when does it not exist?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">In modular arithmetic, a/b mod p means multiplying by b's multiplicative inverse: a * b^(-1) mod p. b^(-1) exists iff gcd(b, p) = 1 (b and p are coprime). If p is prime and 0 &lt; b &lt; p, then gcd(b,p) = 1 always, so every non-zero element has an inverse. When p is not prime, some elements have no inverse (e.g., 2 has no inverse mod 4: 2x ≡ 1 mod 4 has no integer solution). For competitive programming with MOD = 10^9+7 (prime): every value in [1, MOD-1] has a unique inverse. Fermat's Little Theorem gives b^(-1) = b^(p-2) mod p in O(log p) time.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: How do you efficiently compute C(n, k) mod p for many different k values (all with the same n)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Precompute factorial and inverse factorial tables once in O(n). Then each C(n, k) = fact[n] * inv_fact[k] * inv_fact[n-k] mod p is O(1). Build tables: fact[0]=1, fact[i] = fact[i-1]*i % p. inv_fact[n] = pow(fact[n], p-2, p). inv_fact[i] = inv_fact[i+1] * (i+1) % p (fill backwards). This leverages the identity inv_fact[i] = inv_fact[i+1] * (i+1) because inv_fact[i] = (i! )^(-1) = (i+1)! ^(-1) * (i+1) = inv_fact[i+1] * (i+1). Total preprocessing: O(n log p) for one inverse at the end + O(n) fill.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: Explain why the number of unique BSTs with n nodes equals the n-th Catalan number.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For a BST with keys 1..n, choose the root r (1 ≤ r ≤ n). The left subtree uses keys 1..r-1 (exactly r-1 keys), and the right subtree uses keys r+1..n (exactly n-r keys). The number of BSTs is independent of actual key values — only the count matters. So: dp[n] = Σ dp[r-1] * dp[n-r] for r in 1..n = Σ dp[i] * dp[n-1-i] for i in 0..n-1. This is exactly the Catalan recurrence. Base case dp[0] = dp[1] = 1. The first few values: dp[2]=2, dp[3]=5, dp[4]=14 match C_2, C_3, C_4.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: What is the Chinese Remainder Theorem and how does it apply to LeetCode #1201 (Ugly Number III)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">CRT states: if m and n are coprime, the system x ≡ a (mod m), x ≡ b (mod n) has a unique solution mod mn. #1201 asks for the n-th ugly number divisible by a, b, or c. Use binary search on the answer X. Count of ugly numbers ≤ X: by inclusion-exclusion = X/a + X/b + X/c - X/lcm(a,b) - X/lcm(b,c) - X/lcm(a,c) + X/lcm(a,b,c). Binary search: find smallest X where count = n. The lcm computations use gcd. CRT isn't directly needed here but the underlying modular structure (lcm = product/gcd) is the same mathematical machinery.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: When would you use Lucas' Theorem over the standard precomputed factorial approach?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Use Lucas' Theorem when: (1) n is very large (up to 10^18) — building a factorial table of size n is impossible, (2) the modulus p is a small prime. Lucas reduces C(n,k) mod p to a product of C(n_i, k_i) mod p where n_i, k_i are the base-p digits of n and k. Since each n_i &lt; p, we only need a factorial table of size p (tiny). Standard precomputed approach works when n ≤ ~10^6 and p is large prime (like 10^9+7). If n ≤ 10^6 and p = 10^9+7: precomputed table. If n ≤ 10^18 and p is small prime like 7 or 13: Lucas. If n ≤ 10^18 and p = 10^9+7: need different techniques (Andrew Granville's generalization for composite moduli).</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17B Complete</button>
+<div class="toast" id="toast">✅ Module 17B complete! Advanced Math mastered!</div>
+    <script>var MODULE_ID = 'm17b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 18A — Two Pointers &amp; Sliding Window | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 18 — Part A</h1>
+    <div class="tagline">Two Pointers &amp; Sliding Window — The Most Common Interview Patterns</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Fast/Slow · Left/Right · Fixed Window · Variable Window · Shrink on Condition</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 18</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 10 — Module 18 — Problem-Solving Patterns:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Two Pointers &amp; Sliding Window<br>
+    ⬜ <strong>Part B</strong> — <a href="m18b_patterns2.html">Intervals &amp; Top K Elements</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m18c_patterns3.html">Modified Binary Search &amp; Subsets</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m17a_backtracking.html">&larr; Module 17 &mdash; Backtracking+</a>
+    <a href="../phase10/m19a_interview_arrays.html">Module 19 &mdash; Interview Prep &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Two Pointers: Opposite Ends <span>— Sorted array, pair sum</span></li>
+        <li>Section 2 — Two Pointers: Same Direction <span>— Fast/slow, in-place editing</span></li>
+        <li>Section 3 — Fixed-Size Sliding Window <span>— Window sum, max subarray of size k</span></li>
+        <li>Section 4 — Variable Sliding Window <span>— Expand/shrink, condition-driven</span></li>
+        <li>Section 5 — Template Gallery <span>— Copy-paste patterns</span></li>
+        <li>Section 6 — LeetCode Map <span>— Key problems by sub-pattern</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Two Pointers: Opposite Ends</div>
+
+<div class="diagram">OPPOSITE-ENDS PATTERN:
+  Two pointers start at the two ends of the array.
+  Move inward based on a condition. Stop when they meet.
+
+  Requires: SORTED array (usually).
+
+  Typical problems:
+    - Two Sum II (sorted array, find pair summing to target)
+    - Container With Most Water (maximize area)
+    - 3Sum (reduce to 2-pointer after fixing first element)
+    - Palindrome check
+
+VISUAL — Two Sum II on [2, 7, 11, 15], target=9:
+  L=0, R=3   →  2+15=17 > 9  →  R--
+  L=0, R=2   →  2+11=13 > 9  →  R--
+  L=0, R=1   →  2+7=9  == 9  →  FOUND [0, 1]
+
+TEMPLATE:
+  L, R = 0, n-1
+  while L < R:
+      if condition_met(arr[L], arr[R]): return result
+      elif need_bigger: L++
+      else: R--</div>
+
+<span class="lang-label lang-cs">C# — Two Sum II + Container With Most Water</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #167 Two Sum II — sorted array, O(n) time, O(1) space</span>
+<span class="kw">public int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] numbers, <span class="kw">int</span> target)
+{
+    <span class="kw">int</span> L = <span class="nm">0</span>, R = numbers.Length - <span class="nm">1</span>;
+    <span class="kw">while</span> (L &lt; R) {
+        <span class="kw">int</span> s = numbers[L] + numbers[R];
+        <span class="kw">if</span> (s == target) <span class="kw">return new</span>[] { L + <span class="nm">1</span>, R + <span class="nm">1</span> };  <span class="cm">// 1-indexed</span>
+        <span class="kw">if</span> (s &lt; target) L++; <span class="kw">else</span> R--;
+    }
+    <span class="kw">return</span> Array.Empty&lt;<span class="kw">int</span>&gt;();
+}
+
+<span class="cm">// #11 Container With Most Water — O(n)</span>
+<span class="kw">public int</span> <span class="mt">MaxArea</span>(<span class="kw">int</span>[] height)
+{
+    <span class="kw">int</span> L = <span class="nm">0</span>, R = height.Length - <span class="nm">1</span>, best = <span class="nm">0</span>;
+    <span class="kw">while</span> (L &lt; R) {
+        best = Math.<span class="mt">Max</span>(best, Math.<span class="mt">Min</span>(height[L], height[R]) * (R - L));
+        <span class="kw">if</span> (height[L] &lt; height[R]) L++; <span class="kw">else</span> R--;  <span class="cm">// always move shorter side</span>
+    }
+    <span class="kw">return</span> best;
+}
+
+<span class="cm">// #15 3Sum — O(n²), sorted, no duplicates in answer</span>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">ThreeSum</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(nums);
+    <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length - <span class="nm">2</span>; i++) {
+        <span class="kw">if</span> (i > <span class="nm">0</span> &amp;&amp; nums[i] == nums[i - <span class="nm">1</span>]) <span class="kw">continue</span>;  <span class="cm">// skip dup</span>
+        <span class="kw">int</span> L = i + <span class="nm">1</span>, R = nums.Length - <span class="nm">1</span>;
+        <span class="kw">while</span> (L &lt; R) {
+            <span class="kw">int</span> s = nums[i] + nums[L] + nums[R];
+            <span class="kw">if</span> (s == <span class="nm">0</span>) {
+                res.<span class="mt">Add</span>(<span class="kw">new</span>[] { nums[i], nums[L], nums[R] });
+                <span class="kw">while</span> (L &lt; R &amp;&amp; nums[L] == nums[L + <span class="nm">1</span>]) L++;
+                <span class="kw">while</span> (L &lt; R &amp;&amp; nums[R] == nums[R - <span class="nm">1</span>]) R--;
+                L++; R--;
+            } <span class="kw">else if</span> (s &lt; <span class="nm">0</span>) L++; <span class="kw">else</span> R--;
+        }
+    }
+    <span class="kw">return</span> res;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">twoSumSorted</span>(numbers, target):
+    L, R = <span class="nm">0</span>, <span class="mt">len</span>(numbers)-<span class="nm">1</span>
+    <span class="kw">while</span> L &lt; R:
+        s = numbers[L] + numbers[R]
+        <span class="kw">if</span> s == target: <span class="kw">return</span> [L+<span class="nm">1</span>, R+<span class="nm">1</span>]
+        <span class="kw">elif</span> s &lt; target: L += <span class="nm">1</span>
+        <span class="kw">else</span>: R -= <span class="nm">1</span>
+
+<span class="kw">def</span> <span class="mt">threeSum</span>(nums):
+    nums.<span class="mt">sort</span>(); res = []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums)-<span class="nm">2</span>):
+        <span class="kw">if</span> i > <span class="nm">0</span> <span class="kw">and</span> nums[i] == nums[i-<span class="nm">1</span>]: <span class="kw">continue</span>
+        L, R = i+<span class="nm">1</span>, <span class="mt">len</span>(nums)-<span class="nm">1</span>
+        <span class="kw">while</span> L &lt; R:
+            s = nums[i]+nums[L]+nums[R]
+            <span class="kw">if</span> s == <span class="nm">0</span>:
+                res.<span class="mt">append</span>([nums[i],nums[L],nums[R]])
+                <span class="kw">while</span> L &lt; R <span class="kw">and</span> nums[L]==nums[L+<span class="nm">1</span>]: L+=<span class="nm">1</span>
+                <span class="kw">while</span> L &lt; R <span class="kw">and</span> nums[R]==nums[R-<span class="nm">1</span>]: R-=<span class="nm">1</span>
+                L+=<span class="nm">1</span>; R-=<span class="nm">1</span>
+            <span class="kw">elif</span> s &lt; <span class="nm">0</span>: L+=<span class="nm">1</span>
+            <span class="kw">else</span>: R-=<span class="nm">1</span>
+    <span class="kw">return</span> res</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Two Pointers: Same Direction (Fast/Slow)</div>
+
+<div class="diagram">SAME-DIRECTION PATTERNS:
+
+1. FAST/SLOW (Floyd's — cycle detection):
+   slow = slow.next          (1 step)
+   fast = fast.next.next     (2 steps)
+   If fast meets slow → cycle exists.
+   To find cycle start: after meeting, put one pointer at head,
+   advance both by 1 until they meet → cycle entry point.
+
+2. IN-PLACE ARRAY EDITING (overwrite mode):
+   slow = write position (how many valid elements kept so far)
+   fast = read position (iterates through all elements)
+   
+   Write arr[slow] only when arr[fast] meets the keep condition.
+   
+   Example: Remove duplicates from sorted array
+   [1,1,2,3,3] → slow writes unique values as fast scans
+   Result: [1,2,3,_,_], return slow (= 3)
+
+3. REMOVE ELEMENT:
+   slow = write index
+   fast scans, writes arr[fast] to arr[slow] only if arr[fast] != val</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #26 Remove Duplicates from Sorted Array — O(n), O(1)</span>
+<span class="kw">public int</span> <span class="mt">RemoveDuplicates</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> slow = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> fast = <span class="nm">1</span>; fast &lt; nums.Length; fast++)
+        <span class="kw">if</span> (nums[fast] != nums[slow - <span class="nm">1</span>]) nums[slow++] = nums[fast];
+    <span class="kw">return</span> slow;
+}
+
+<span class="cm">// #141 Linked List Cycle — Floyd's algorithm</span>
+<span class="kw">public bool</span> <span class="mt">HasCycle</span>(<span class="tp">ListNode</span>? head)
+{
+    <span class="tp">ListNode</span>? slow = head, fast = head;
+    <span class="kw">while</span> (fast?.Next != <span class="kw">null</span>) {
+        slow = slow!.Next;
+        fast = fast.Next.Next;
+        <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>;
+}
+
+<span class="cm">// #142 Linked List Cycle II — Find cycle start</span>
+<span class="kw">public</span> <span class="tp">ListNode</span>? <span class="mt">DetectCycle</span>(<span class="tp">ListNode</span>? head)
+{
+    <span class="tp">ListNode</span>? slow = head, fast = head;
+    <span class="kw">while</span> (fast?.Next != <span class="kw">null</span>) {
+        slow = slow!.Next; fast = fast.Next.Next;
+        <span class="kw">if</span> (slow == fast) {
+            slow = head;  <span class="cm">// reset one pointer to head</span>
+            <span class="kw">while</span> (slow != fast) { slow = slow!.Next; fast = fast!.Next; }
+            <span class="kw">return</span> slow;  <span class="cm">// cycle entry point</span>
+        }
+    }
+    <span class="kw">return null</span>;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">removeDuplicates</span>(nums):
+    slow = <span class="nm">1</span>
+    <span class="kw">for</span> fast <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(nums)):
+        <span class="kw">if</span> nums[fast] != nums[slow-<span class="nm">1</span>]: nums[slow] = nums[fast]; slow += <span class="nm">1</span>
+    <span class="kw">return</span> slow
+
+<span class="kw">def</span> <span class="mt">hasCycle</span>(head):
+    slow = fast = head
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next; fast = fast.next.next
+        <span class="kw">if</span> slow is fast: <span class="kw">return True</span>
+    <span class="kw">return False</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Fixed-Size Sliding Window</div>
+
+<div class="diagram">FIXED WINDOW (size = k):
+  Maintain a window of exactly k elements.
+  Slide it one step at a time: add rightmost, remove leftmost.
+  
+  Key: reuse computation from previous window instead of re-scanning.
+  
+  Examples:
+    - Max sum of subarray of size k: O(n) vs O(n*k) brute force
+    - Max of each window of size k (#239 Sliding Window Maximum) — use deque
+    - Find all anagrams (#438) — character frequency window
+
+TEMPLATE:
+  Initialize window (first k elements)
+  for i in range(k, n):
+      add arr[i]         # enter right
+      remove arr[i-k]    # leave left
+      update answer
+
+DEQUE FOR WINDOW MAX: O(n) total
+  Maintain a deque of indices in DECREASING order of arr[idx].
+  - Remove from front if out of window (idx <= i - k)
+  - Remove from back while arr[back] <= arr[i]  (useless smaller elements)
+  - Front of deque = max of current window</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #239 Sliding Window Maximum — O(n) using deque of indices</span>
+<span class="kw">public int</span>[] <span class="mt">MaxSlidingWindow</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">int</span>[] res = <span class="kw">new int</span>[n - k + <span class="nm">1</span>];
+    <span class="kw">var</span> dq = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="kw">int</span>&gt;();  <span class="cm">// stores indices, decreasing value order</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) {
+        <span class="kw">while</span> (dq.Count > <span class="nm">0</span> &amp;&amp; dq.First!.Value &lt;= i - k) dq.<span class="mt">RemoveFirst</span>();
+        <span class="kw">while</span> (dq.Count > <span class="nm">0</span> &amp;&amp; nums[dq.Last!.Value] &lt;= nums[i]) dq.<span class="mt">RemoveLast</span>();
+        dq.<span class="mt">AddLast</span>(i);
+        <span class="kw">if</span> (i >= k - <span class="nm">1</span>) res[i - k + <span class="nm">1</span>] = nums[dq.First!.Value];
+    }
+    <span class="kw">return</span> res;
+}
+
+<span class="cm">// Max sum subarray of fixed size k</span>
+<span class="kw">public int</span> <span class="mt">MaxSumFixed</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> k)
+{
+    <span class="kw">int</span> sum = arr[..<span class="kw">k</span>].<span class="mt">Sum</span>(), best = sum;
+    <span class="kw">for</span> (<span class="kw">int</span> i = k; i &lt; arr.Length; i++) {
+        sum += arr[i] - arr[i - k];
+        best = Math.<span class="mt">Max</span>(best, sum);
+    }
+    <span class="kw">return</span> best;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">maxSlidingWindow</span>(nums, k):
+    dq, res = deque(), []
+    <span class="kw">for</span> i, v <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
+        <span class="kw">while</span> dq <span class="kw">and</span> dq[<span class="nm">0</span>] &lt;= i-k: dq.<span class="mt">popleft</span>()
+        <span class="kw">while</span> dq <span class="kw">and</span> nums[dq[-<span class="nm">1</span>]] &lt;= v: dq.<span class="mt">pop</span>()
+        dq.<span class="mt">append</span>(i)
+        <span class="kw">if</span> i >= k-<span class="nm">1</span>: res.<span class="mt">append</span>(nums[dq[<span class="nm">0</span>]])
+    <span class="kw">return</span> res</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Variable Sliding Window</div>
+
+<div class="diagram">VARIABLE WINDOW — Expand right freely, shrink left on violation:
+  
+  PATTERN:
+    L = 0
+    for R in range(n):
+        add arr[R] to window
+        while window_invalid:
+            remove arr[L] from window
+            L += 1
+        update answer with (R - L + 1)   ← or (R - L + 1 for max) / L for min
+  
+  When to use:
+    - Longest substring without repeating characters (#3)
+    - Minimum window substring (#76) 
+    - Longest subarray with at most k distinct values (#340)
+    - Longest substring with at most 2 distinct (#159)
+
+INVARIANT: After the while loop, window [L..R] always satisfies the constraint.
+  For maximum window: update answer AFTER while loop (window is valid).
+  For minimum window: update answer INSIDE while loop (window is valid and shrinking).
+
+TRICK for "at most k" → "exactly k":
+  f(exactly k) = f(at most k) - f(at most k-1)  ← powerful decomposition</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #3 Longest Substring Without Repeating Characters</span>
+<span class="kw">public int</span> <span class="mt">LengthOfLongestSubstring</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">var</span> last = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">int</span> L = <span class="nm">0</span>, ans = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> R = <span class="nm">0</span>; R &lt; s.Length; R++) {
+        <span class="kw">if</span> (last.<span class="mt">TryGetValue</span>(s[R], <span class="kw">out int</span> prev) &amp;&amp; prev >= L)
+            L = prev + <span class="nm">1</span>;  <span class="cm">// jump L past last occurrence</span>
+        last[s[R]] = R;
+        ans = Math.<span class="mt">Max</span>(ans, R - L + <span class="nm">1</span>);
+    }
+    <span class="kw">return</span> ans;
+}
+
+<span class="cm">// #76 Minimum Window Substring — O(n+m)</span>
+<span class="kw">public string</span> <span class="mt">MinWindow</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
+{
+    <span class="kw">var</span> need = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> t) need[c] = need.<span class="mt">GetValueOrDefault</span>(c) + <span class="nm">1</span>;
+    <span class="kw">int</span> formed = <span class="nm">0</span>, required = need.Count, L = <span class="nm">0</span>, minLen = <span class="kw">int</span>.MaxValue, minL = <span class="nm">0</span>;
+    <span class="kw">var</span> window = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> R = <span class="nm">0</span>; R &lt; s.Length; R++) {
+        window[s[R]] = window.<span class="mt">GetValueOrDefault</span>(s[R]) + <span class="nm">1</span>;
+        <span class="kw">if</span> (need.<span class="mt">ContainsKey</span>(s[R]) &amp;&amp; window[s[R]] == need[s[R]]) formed++;
+        <span class="kw">while</span> (formed == required) {
+            <span class="kw">if</span> (R - L + <span class="nm">1</span> &lt; minLen) { minLen = R - L + <span class="nm">1</span>; minL = L; }
+            window[s[L]]--;
+            <span class="kw">if</span> (need.<span class="mt">ContainsKey</span>(s[L]) &amp;&amp; window[s[L]] &lt; need[s[L]]) formed--;
+            L++;
+        }
+    }
+    <span class="kw">return</span> minLen == <span class="kw">int</span>.MaxValue ? <span class="st">""</span> : s.<span class="mt">Substring</span>(minL, minLen);
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
+
+<span class="kw">def</span> <span class="mt">lengthOfLongestSubstring</span>(s):
+    last = {}; L = ans = <span class="nm">0</span>
+    <span class="kw">for</span> R, c <span class="kw">in</span> <span class="mt">enumerate</span>(s):
+        <span class="kw">if</span> c <span class="kw">in</span> last <span class="kw">and</span> last[c] >= L: L = last[c] + <span class="nm">1</span>
+        last[c] = R; ans = <span class="mt">max</span>(ans, R-L+<span class="nm">1</span>)
+    <span class="kw">return</span> ans
+
+<span class="kw">def</span> <span class="mt">minWindow</span>(s, t):
+    need = <span class="tp">Counter</span>(t); window = {}
+    formed = required = <span class="mt">len</span>(need)
+    L = ans_l = ans_r = <span class="nm">0</span>; best = <span class="mt">float</span>(<span class="st">'inf'</span>)
+    <span class="kw">for</span> R, c <span class="kw">in</span> <span class="mt">enumerate</span>(s):
+        window[c] = window.<span class="mt">get</span>(c, <span class="nm">0</span>) + <span class="nm">1</span>
+        <span class="kw">if</span> c <span class="kw">in</span> need <span class="kw">and</span> window[c] == need[c]: formed += <span class="nm">1</span>
+        <span class="kw">while</span> formed == required:
+            <span class="kw">if</span> R-L+<span class="nm">1</span> &lt; best: best = R-L+<span class="nm">1</span>; ans_l, ans_r = L, R+<span class="nm">1</span>
+            window[s[L]] -= <span class="nm">1</span>
+            <span class="kw">if</span> s[L] <span class="kw">in</span> need <span class="kw">and</span> window[s[L]] &lt; need[s[L]]: formed -= <span class="nm">1</span>
+            L += <span class="nm">1</span>
+    <span class="kw">return</span> s[ans_l:ans_r] <span class="kw">if</span> best &lt; <span class="mt">float</span>(<span class="st">'inf'</span>) <span class="kw">else</span> <span class="st">''</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — LeetCode Map &amp; Q&amp;A</div>
+
+<table>
+    <thead><tr><th>Pattern</th><th>LeetCode #</th><th>Problem</th><th>Complexity</th></tr></thead>
+    <tbody>
+        <tr><td><strong>Opposite Ends</strong></td><td>#167</td><td>Two Sum II</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Opposite Ends</strong></td><td>#11</td><td>Container With Most Water</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Opposite Ends</strong></td><td>#15</td><td>3Sum</td><td class="o">O(n²)</td></tr>
+        <tr><td><strong>Opposite Ends</strong></td><td>#42</td><td>Trapping Rain Water</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Fast/Slow</strong></td><td>#141</td><td>Linked List Cycle</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Fast/Slow</strong></td><td>#26</td><td>Remove Duplicates</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Fixed Window</strong></td><td>#239</td><td>Sliding Window Max</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Fixed Window</strong></td><td>#438</td><td>Find All Anagrams</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Variable Window</strong></td><td>#3</td><td>Longest Substring No Repeat</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Variable Window</strong></td><td>#76</td><td>Minimum Window Substring</td><td class="g">O(n+m)</td></tr>
+    </tbody>
+</table>
+
+<div class="quiz-card">
+    <div class="q">Q1: How do you decide whether to use two pointers vs. a hash map for "Two Sum"?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">If the array is <strong>sorted</strong> (or you can sort it): two pointers is O(n) time and O(1) space — optimal. If unsorted and sorting would break index requirements (LeetCode #1 wants original indices): use a hash map for O(n) time and O(n) space. If sorted and you need original indices after sorting — two pointers but track original indices. Rule of thumb: sorted + pair sum → two pointers. Unsorted + any pair sum → hash map. The two-pointer works because of monotonicity: moving L right increases the sum, moving R left decreases it — a binary-search-like logical structure.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: What's the key insight that makes the variable sliding window O(n) instead of O(n²)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The L pointer never moves backward. Each element is added once (when R includes it) and removed once (when L passes it). Total pointer movement: O(2n) = O(n). By contrast, a naive approach fixes L and scans all R from L to n, giving O(n²). The critical design: instead of re-scanning the window from scratch each time, we maintain an incrementally updated data structure (counter, sum, set) so adding/removing an element is O(1). This makes each step O(1) and the total O(n). This amortized analysis is the core of all sliding window efficiency.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: When should you use a monotone deque in a sliding window problem?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Use a monotone deque when you need the maximum (or minimum) of a sliding window efficiently. A plain max-tracking variable fails because when the current max leaves the window (gets removed from the left), you don't know what the new max is without scanning. A sorted structure would work but sorting per window is O(n log k). A monotone deque maintains indices in strictly decreasing (for max) or increasing (for min) value order. Key operations: (1) Remove expired indices from front (left of window). (2) Remove useless elements from back (smaller than incoming element, since they'll never be the max). The front is always the current window's max. Each element is pushed/popped at most once → O(n) total.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: Explain the "at most k distinct → exactly k distinct" transformation.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Count(exactly k) = Count(at most k) - Count(at most k-1). Why? "At most k" includes windows with 0, 1, 2, ..., k distinct values. Subtracting "at most k-1" removes those with 0 to k-1 distinct, leaving exactly those with k distinct. This is powerful because the variable window template naturally handles "at most k" (expand right, shrink left when distinct > k). The "exactly k" variant is hard to code directly (window boundaries are not clean) but trivially decomposable. Example: LeetCode #904 (fruit into baskets) asks "longest subarray with at most 2 distinct" — directly a variable window. #992 asks "subarrays with exactly k odd numbers" — use the decomposition.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: Why does the two-pointer approach for Container With Most Water always move the shorter side?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Area = min(height[L], height[R]) × (R - L). The width decreases by 1 with each move. To potentially increase area, we need to increase the height component. The height is determined by the shorter side. If we move the taller side inward: min(height[L], height[R]) can only stay the same or decrease (the limiting factor is still the short side), while width decreases — area can only decrease or stay. If we move the shorter side inward: the new min might be larger (if we find a taller bar), potentially increasing area despite the smaller width. Keeping the taller side is always the greedy choice because it leaves the "potential" open. Moving the shorter side is the only move that could possibly improve the answer.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 18A Complete</button>
+<div class="toast" id="toast">✅ Module 18A complete! Two Pointers &amp; Sliding Window mastered!</div>
+    <script>var MODULE_ID = 'm18a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

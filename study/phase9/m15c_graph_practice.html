@@ -1,0 +1,546 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15C — Advanced Graph Practice | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part C</h1>
+    <div class="tagline">Advanced Graph Practice — 10 Curated Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Bridges · SCC · Euler Paths · Bipartite · Topological Sort</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 15</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Module 15:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_advanced_graphs.html">Articulation Points &amp; Bridges</a><br>
+    ✅ <strong>Part B</strong> — <a href="m15b_scc_euler.html">SCC &amp; Euler Paths</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Practice: 10 Problems<br>
+    ⬜ <strong>Module 16</strong> — <a href="m16a_string_algorithms.html">String Algorithms</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
+    <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
+</div>
+
+<div class="note">
+    <strong>📝 How to Use This Page:</strong> Try each problem independently for at least 10 minutes before reading the hint. Only open the solution after writing your own attempt. Each solution includes both C# and Python.
+</div>
+
+<!-- ═══════ GROUP A ═══════ -->
+<div class="section-heading">Group A — Connectivity &amp; Critical Structures</div>
+
+<!-- P1 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Bridges</span>
+        <span class="badge topic">Tarjan</span>
+    </div>
+    <h3>#1192 — Critical Connections in a Network</h3>
+    <p>There are <code>n</code> servers (0 to n-1) connected by undirected edges. A <em>critical connection</em> is one whose removal makes some servers unreachable. Return all critical connections.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Run Tarjan's bridge-finding algorithm. Edge (u,v) is a bridge if <code>low[v] &gt; disc[u]</code>. The "low" value is the earliest discovery time reachable from v's subtree.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">CriticalConnections</span>(<span class="kw">int</span> n, <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; connections)
+{
+    <span class="kw">var</span> adj = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+    <span class="kw">foreach</span> (<span class="kw">var</span> c <span class="kw">in</span> connections) { adj[c[<span class="nm">0</span>]].<span class="mt">Add</span>(c[<span class="nm">1</span>]); adj[c[<span class="nm">1</span>]].<span class="mt">Add</span>(c[<span class="nm">0</span>]); }
+    <span class="kw">int</span>[] disc = <span class="kw">new int</span>[n], low = <span class="kw">new int</span>[n]; <span class="tp">Array</span>.<span class="mt">Fill</span>(disc, -<span class="nm">1</span>);
+    <span class="kw">int</span> t = <span class="nm">0</span>; <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> u, <span class="kw">int</span> p) {
+        disc[u] = low[u] = t++;
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u]) {
+            <span class="kw">if</span> (disc[v] == -<span class="nm">1</span>) { <span class="mt">Dfs</span>(v, u); low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], low[v]);
+                <span class="kw">if</span> (low[v] > disc[u]) res.<span class="mt">Add</span>(<span class="kw">new</span>[] { u, v }); }
+            <span class="kw">else if</span> (v != p) low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], disc[v]);
+        }
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) <span class="kw">if</span> (disc[i] == -<span class="nm">1</span>) <span class="mt">Dfs</span>(i, -<span class="nm">1</span>);
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">criticalConnections</span>(n, connections):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> connections: adj[u].<span class="mt">append</span>(v); adj[v].<span class="mt">append</span>(u)
+    disc = [-<span class="nm">1</span>]*n; low = [<span class="nm">0</span>]*n; t = [<span class="nm">0</span>]; res = []
+    <span class="kw">def</span> <span class="mt">dfs</span>(u, p):
+        disc[u] = low[u] = t[<span class="nm">0</span>]; t[<span class="nm">0</span>] += <span class="nm">1</span>
+        <span class="kw">for</span> v <span class="kw">in</span> adj[u]:
+            <span class="kw">if</span> disc[v]==-<span class="nm">1</span>: <span class="mt">dfs</span>(v,u); low[u]=<span class="mt">min</span>(low[u],low[v]);
+                <span class="kw">if</span> low[v]>disc[u]: res.<span class="mt">append</span>([u,v])
+            <span class="kw">elif</span> v!=p: low[u]=<span class="mt">min</span>(low[u],disc[v])
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> disc[i]==-<span class="nm">1</span>: <span class="mt">dfs</span>(i,-<span class="nm">1</span>)
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- P2 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">Bipartite</span>
+        <span class="badge topic">BFS/DFS</span>
+    </div>
+    <h3>#785 — Is Graph Bipartite?</h3>
+    <p>Given an undirected graph, return true if it is bipartite (2-colorable). The graph may be disconnected.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Try to 2-color the graph using BFS. Assign alternating colors (0/1) to each node. If you encounter a neighbor with the same color as the current node, it's not bipartite. Run for every unvisited node to handle disconnected components.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">IsBipartite</span>(<span class="kw">int</span>[][] graph)
+{
+    <span class="kw">int</span> n = graph.Length;
+    <span class="kw">int</span>[] color = <span class="kw">new int</span>[n]; <span class="tp">Array</span>.<span class="mt">Fill</span>(color, -<span class="nm">1</span>);
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="kw">if</span> (color[i] != -<span class="nm">1</span>) <span class="kw">continue</span>;
+        <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;(); q.<span class="mt">Enqueue</span>(i); color[i] = <span class="nm">0</span>;
+        <span class="kw">while</span> (q.Count > <span class="nm">0</span>) {
+            <span class="kw">int</span> u = q.<span class="mt">Dequeue</span>();
+            <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> graph[u]) {
+                <span class="kw">if</span> (color[v] == -<span class="nm">1</span>) { color[v] = <span class="nm">1</span> - color[u]; q.<span class="mt">Enqueue</span>(v); }
+                <span class="kw">else if</span> (color[v] == color[u]) <span class="kw">return false</span>;
+            }
+        }
+    }
+    <span class="kw">return true</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">def</span> <span class="mt">isBipartite</span>(graph):
+    n = <span class="mt">len</span>(graph); color = [-<span class="nm">1</span>] * n
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> color[i] != -<span class="nm">1</span>: <span class="kw">continue</span>
+        q = <span class="mt">deque</span>([i]); color[i] = <span class="nm">0</span>
+        <span class="kw">while</span> q:
+            u = q.<span class="mt">popleft</span>()
+            <span class="kw">for</span> v <span class="kw">in</span> graph[u]:
+                <span class="kw">if</span> color[v] == -<span class="nm">1</span>: color[v] = <span class="nm">1</span>-color[u]; q.<span class="mt">append</span>(v)
+                <span class="kw">elif</span> color[v] == color[u]: <span class="kw">return False</span>
+    <span class="kw">return True</span></pre></div>
+    </div>
+</div>
+
+<!-- P3 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">Topological Sort</span>
+        <span class="badge topic">Cycle Detection</span>
+    </div>
+    <h3>#207 — Course Schedule</h3>
+    <p>Given <code>numCourses</code> and a list of <code>[course, prerequisite]</code> pairs, return true if all courses can be finished (i.e., no cycle in the prerequisite graph).</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Build a directed graph: prerequisite → course. Detect cycles using Kahn's algorithm (BFS topological sort) or DFS with 3-color marking (white/gray/black). If a cycle exists, return false.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] pre)
+{
+    <span class="kw">var</span> adj = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+    <span class="kw">int</span>[] indeg = <span class="kw">new int</span>[n];
+    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> pre) { adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]); indeg[p[<span class="nm">0</span>]]++; }
+    <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) <span class="kw">if</span> (indeg[i] == <span class="nm">0</span>) q.<span class="mt">Enqueue</span>(i);
+    <span class="kw">int</span> count = <span class="nm">0</span>;
+    <span class="kw">while</span> (q.Count > <span class="nm">0</span>) {
+        <span class="kw">int</span> u = q.<span class="mt">Dequeue</span>(); count++;
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u]) <span class="kw">if</span> (--indeg[v] == <span class="nm">0</span>) q.<span class="mt">Enqueue</span>(v);
+    }
+    <span class="kw">return</span> count == n;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">canFinish</span>(numCourses, prerequisites):
+    adj = defaultdict(<span class="tp">list</span>); indeg = [<span class="nm">0</span>] * numCourses
+    <span class="kw">for</span> c, p <span class="kw">in</span> prerequisites: adj[p].<span class="mt">append</span>(c); indeg[c] += <span class="nm">1</span>
+    q = deque(i <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(numCourses) <span class="kw">if</span> indeg[i]==<span class="nm">0</span>); count = <span class="nm">0</span>
+    <span class="kw">while</span> q:
+        u = q.<span class="mt">popleft</span>(); count += <span class="nm">1</span>
+        <span class="kw">for</span> v <span class="kw">in</span> adj[u]:
+            indeg[v] -= <span class="nm">1</span>
+            <span class="kw">if</span> indeg[v] == <span class="nm">0</span>: q.<span class="mt">append</span>(v)
+    <span class="kw">return</span> count == numCourses</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP B ═══════ -->
+<div class="section-heading">Group B — Euler Paths &amp; Graph Construction</div>
+
+<!-- P4 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">Euler Path</span>
+        <span class="badge topic">Hierholzer</span>
+    </div>
+    <h3>#332 — Reconstruct Itinerary</h3>
+    <p>Given a list of airline tickets [from, to], reconstruct the itinerary starting from "JFK". Use all tickets exactly once. If multiple valid itineraries, return the one with lexicographic smallest order.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">This is an Euler path problem on a directed graph. Sort adjacency lists alphabetically. Use Hierholzer's algorithm (DFS with stack). When a node has no more neighbors, prepend it to the result. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">FindItinerary</span>(<span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; tickets) {
+    <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> t <span class="kw">in</span> tickets.<span class="mt">OrderBy</span>(t =&gt; t[<span class="nm">1</span>])) {
+        <span class="kw">if</span> (!adj.<span class="mt">ContainsKey</span>(t[<span class="nm">0</span>])) adj[t[<span class="nm">0</span>]] = <span class="kw">new</span>();
+        adj[t[<span class="nm">0</span>]].<span class="mt">AddLast</span>(t[<span class="nm">1</span>]);
+    }
+    <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">string</span> u) {
+        <span class="kw">while</span> (adj.<span class="mt">TryGetValue</span>(u, <span class="kw">out var</span> nb) &amp;&amp; nb.Count &gt; <span class="nm">0</span>)
+            { <span class="kw">var</span> nx=nb.First!.Value; nb.<span class="mt">RemoveFirst</span>(); <span class="mt">Dfs</span>(nx); }
+        res.<span class="mt">AddFirst</span>(u);
+    }
+    <span class="mt">Dfs</span>(<span class="st">"JFK"</span>); <span class="kw">return</span> res.<span class="mt">ToList</span>();
+}
+<span class="cm">// ["JFK","MUC","LHR","SFO","SJC"]</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">findItinerary</span>(tickets):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> <span class="mt">sorted</span>(tickets, reverse=<span class="kw">True</span>): adj[u].<span class="mt">append</span>(v)
+    res = []; stack = [<span class="st">"JFK"</span>]
+    <span class="kw">while</span> stack:
+        <span class="kw">while</span> adj[stack[-<span class="nm">1</span>]]: stack.<span class="mt">append</span>(adj[stack[-<span class="nm">1</span>]].<span class="mt">pop</span>())
+        res.<span class="mt">append</span>(stack.<span class="mt">pop</span>())
+    <span class="kw">return</span> res[::-<span class="nm">1</span>]
+<span class="cm"># ["JFK","MUC","LHR","SFO","SJC"]</span></pre></div>
+    </div>
+</div>
+
+<!-- P5 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Euler Circuit</span>
+        <span class="badge topic">De Bruijn</span>
+    </div>
+    <h3>#753 — Cracking the Safe</h3>
+    <p>A safe's combination is a sequence of n digits (0–k-1). The safe unlocks if any n consecutive digits match the combination. Find the shortest string that contains ALL possible combinations as substrings.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">This is a De Bruijn sequence — an Euler circuit problem. Build a graph where nodes are (n-1)-digit strings. Add an edge from node s to s[1:]+d for each digit d (representing the n-digit password s+d). Find an Euler circuit in this graph (all nodes have equal in/out degree). <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">CrackSafe</span>(<span class="kw">int</span> n, <span class="kw">int</span> k) {
+    <span class="kw">if</span> (n == <span class="nm">1</span>) <span class="kw">return string</span>.<span class="mt">Concat</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, k));
+    <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">Stack</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="cm">// Build De Bruijn graph: node = (n-1)-digit string</span>
+    <span class="kw">var</span> nodes = <span class="mt">GetAllStrings</span>(n-<span class="nm">1</span>, k);
+    <span class="kw">foreach</span> (<span class="kw">var</span> node <span class="kw">in</span> nodes) {
+        adj[node] = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">string</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> d = k-<span class="nm">1</span>; d &gt;= <span class="nm">0</span>; d--) adj[node].<span class="mt">Push</span>(node[<span class="nm">1</span>..]+d);
+    }
+    <span class="kw">string</span> start = <span class="kw">new</span>(<span class="st">'0'</span>, n-<span class="nm">1</span>);
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">char</span>&gt;(); <span class="kw">var</span> stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">string</span>&gt;();
+    stack.<span class="mt">Push</span>(start);
+    <span class="kw">while</span> (stack.Count &gt; <span class="nm">0</span>) {
+        <span class="kw">var</span> top = stack.<span class="mt">Peek</span>();
+        <span class="kw">if</span> (adj.<span class="mt">TryGetValue</span>(top, <span class="kw">out var</span> nb) &amp;&amp; nb.Count &gt; <span class="nm">0</span>)
+            stack.<span class="mt">Push</span>(nb.<span class="mt">Pop</span>());
+        <span class="kw">else</span> { result.<span class="mt">Add</span>(stack.<span class="mt">Pop</span>()[^<span class="nm">1</span>]); }
+    }
+    result.<span class="mt">Reverse</span>();
+    <span class="kw">return</span> start + <span class="kw">new string</span>(result.<span class="mt">ToArray</span>());
+}</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">crackSafe</span>(n, k):
+    <span class="kw">if</span> n == <span class="nm">1</span>: <span class="kw">return</span> <span class="st">""</span>.<span class="mt">join</span>(<span class="mt">str</span>(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(k))
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> node <span class="kw">in</span> (<span class="st">""</span>.<span class="mt">join</span>(p) <span class="kw">for</span> p <span class="kw">in</span> __import__(<span class="st">'itertools'</span>).<span class="mt">product</span>(<span class="mt">map</span>(<span class="tp">str</span>, <span class="mt">range</span>(k)), repeat=n-<span class="nm">1</span>)):
+        <span class="kw">for</span> d <span class="kw">in</span> <span class="mt">range</span>(k): adj[node].<span class="mt">append</span>(node[<span class="nm">1</span>:] + <span class="mt">str</span>(d))
+    <span class="cm"># Hierholzer's on this De Bruijn graph</span>
+    start = <span class="st">"0"</span> * (n-<span class="nm">1</span>); result = []; stack = [start]
+    <span class="kw">while</span> stack:
+        top = stack[-<span class="nm">1</span>]
+        <span class="kw">if</span> adj[top]: stack.<span class="mt">append</span>(adj[top].<span class="mt">pop</span>())
+        <span class="kw">else</span>: result.<span class="mt">append</span>(stack.<span class="mt">pop</span>()[-<span class="nm">1</span>])  <span class="cm"># take last digit</span>
+    <span class="kw">return</span> start + <span class="st">""</span>.<span class="mt">join</span>(<span class="mt">reversed</span>(result))</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP C ═══════ -->
+<div class="section-heading">Group C — SCC &amp; Advanced Connectivity</div>
+
+<!-- P6 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">SCC</span>
+        <span class="badge topic">Condensation</span>
+    </div>
+    <h3>#1557 — Minimum Number of Vertices to Reach All Nodes</h3>
+    <p>Given a directed acyclic graph, find the smallest set of vertices from which all other nodes are reachable. Each vertex appears at most once in the answer.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Since the graph is a DAG, any node that can be reached from another node doesn't need to be in the set. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">FindSmallestSetOfVertices</span>(<span class="kw">int</span> n, <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; edges) {
+    <span class="kw">var</span> hasIncoming = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> edges) hasIncoming.<span class="mt">Add</span>(e[<span class="nm">1</span>]);
+    <span class="kw">return</span> <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Where</span>(i =&gt; !hasIncoming.<span class="mt">Contains</span>(i)).<span class="mt">ToList</span>();
+}
+<span class="cm">// O(V+E) — nodes with in-degree=0 can't be reached from anywhere else</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">findSmallestSetOfVertices</span>(n, edges):
+    has_incoming = <span class="mt">set</span>()
+    <span class="kw">for</span> _, v <span class="kw">in</span> edges: has_incoming.<span class="mt">add</span>(v)
+    <span class="kw">return</span> [i <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n) <span class="kw">if</span> i <span class="kw">not in</span> has_incoming]
+<span class="cm"># O(V+E) — elegantly, nodes with in-degree=0 can't be reached from anywhere else</span></pre></div>
+    </div>
+</div>
+
+<!-- P7 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">DFS</span>
+        <span class="badge topic">SCC / Reachability</span>
+    </div>
+    <h3>#802 — Find Eventual Safe States</h3>
+    <p>A node is "safe" if every path starting from it eventually leads to a terminal node (no cycle). Return all safe nodes in sorted order.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">A node is safe if it's NOT part of a cycle and doesn't lead to a cycle. Use 3-color DFS (0=unvisited, 1=in-progress, 2=safe). A node is safe if ALL its neighbors are safe. Nodes involved in cycles will remain color=1 (never reach 2).</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">EventualSafeNodes</span>(<span class="kw">int</span>[][] graph)
+{
+    <span class="kw">int</span> n = graph.Length;
+    <span class="kw">int</span>[] color = <span class="kw">new int</span>[n];  <span class="cm">// 0=unvisited,1=visiting,2=safe</span>
+    <span class="kw">bool</span> <span class="mt">IsSafe</span>(<span class="kw">int</span> u) {
+        <span class="kw">if</span> (color[u] > <span class="nm">0</span>) <span class="kw">return</span> color[u] == <span class="nm">2</span>;
+        color[u] = <span class="nm">1</span>;
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> graph[u]) <span class="kw">if</span> (!<span class="mt">IsSafe</span>(v)) <span class="kw">return false</span>;
+        color[u] = <span class="nm">2</span>; <span class="kw">return true</span>;
+    }
+    <span class="kw">return</span> <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Where</span>(<span class="mt">IsSafe</span>).<span class="mt">ToList</span>();
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">eventualSafeNodes</span>(graph):
+    n = <span class="mt">len</span>(graph); color = [<span class="nm">0</span>] * n
+    <span class="kw">def</span> <span class="mt">is_safe</span>(u):
+        <span class="kw">if</span> color[u] > <span class="nm">0</span>: <span class="kw">return</span> color[u] == <span class="nm">2</span>
+        color[u] = <span class="nm">1</span>
+        <span class="kw">for</span> v <span class="kw">in</span> graph[u]:
+            <span class="kw">if not</span> <span class="mt">is_safe</span>(v): <span class="kw">return False</span>
+        color[u] = <span class="nm">2</span>; <span class="kw">return True</span>
+    <span class="kw">return</span> [i <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n) <span class="kw">if</span> <span class="mt">is_safe</span>(i)]</pre></div>
+    </div>
+</div>
+
+<!-- P8 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Graph</span>
+        <span class="badge topic">Articulation Points</span>
+    </div>
+    <h3>#1568 — Minimum Number of Days to Disconnect Island</h3>
+    <p>Given a grid of 0s (water) and 1s (land), return the minimum number of days to disconnect the island (make it so there is NOT exactly 1 connected component of land). You can set one land cell to water per day.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">The answer is always 0, 1, or 2. Check: 0 days = already disconnected. 1 day = an articulation point exists (removing it disconnects). 2 days = always possible by removing a corner cell. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">MinDays</span>(<span class="kw">int</span>[][] grid) {
+    <span class="kw">int</span> m=grid.Length, n=grid[<span class="nm">0</span>].Length;
+    <span class="kw">int</span> <span class="mt">CountIslands</span>() {
+        <span class="kw">bool</span>[][] vis = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,m).<span class="mt">Select</span>(_=&gt;<span class="kw">new bool</span>[n]).<span class="mt">ToArray</span>(); <span class="kw">int</span> cnt=<span class="nm">0</span>;
+        <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> r,<span class="kw">int</span> c) {
+            vis[r][c]=<span class="kw">true</span>;
+            <span class="kw">foreach</span> (<span class="kw">var</span> (dr,dc) <span class="kw">in</span> <span class="kw">new</span>[]{(<span class="nm">1</span>,<span class="nm">0</span>),(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">0</span>,-<span class="nm">1</span>)}) {
+                <span class="kw">int</span> nr=r+dr,nc=c+dc;
+                <span class="kw">if</span>(nr&gt;=<span class="nm">0</span>&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=<span class="nm">0</span>&amp;&amp;nc&lt;n&amp;&amp;grid[nr][nc]==<span class="nm">1</span>&amp;&amp;!vis[nr][nc]) <span class="mt">Dfs</span>(nr,nc);
+            }
+        }
+        <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;m;r++) <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;n;c++) <span class="kw">if</span>(grid[r][c]==<span class="nm">1</span>&amp;&amp;!vis[r][c]){<span class="mt">Dfs</span>(r,c);cnt++;}
+        <span class="kw">return</span> cnt;
+    }
+    <span class="kw">if</span>(<span class="mt">CountIslands</span>()!=<span class="nm">1</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;m;r++) <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;n;c++) <span class="kw">if</span>(grid[r][c]==<span class="nm">1</span>){
+        grid[r][c]=<span class="nm">0</span>; <span class="kw">if</span>(<span class="mt">CountIslands</span>()!=<span class="nm">1</span>) <span class="kw">return</span> <span class="nm">1</span>; grid[r][c]=<span class="nm">1</span>;
+    }
+    <span class="kw">return</span> <span class="nm">2</span>;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">minDays</span>(grid):
+    m, n = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>])
+    <span class="kw">def</span> <span class="mt">count_islands</span>(g):
+        vis = [[<span class="kw">False</span>]*n <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m)]; cnt = <span class="nm">0</span>
+        <span class="kw">def</span> <span class="mt">dfs</span>(r,c):
+            vis[r][c] = <span class="kw">True</span>
+            <span class="kw">for</span> dr,dc <span class="kw">in</span> [(<span class="nm">1</span>,<span class="nm">0</span>),(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">0</span>,-<span class="nm">1</span>)]:
+                nr,nc=r+dr,c+dc
+                <span class="kw">if</span> <span class="nm">0</span><=nr<m <span class="kw">and</span> <span class="nm">0</span><=nc<n <span class="kw">and</span> g[nr][nc]==<span class="nm">1</span> <span class="kw">and not</span> vis[nr][nc]: <span class="mt">dfs</span>(nr,nc)
+        <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(m):
+            <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(n):
+                <span class="kw">if</span> g[r][c]==<span class="nm">1</span> <span class="kw">and not</span> vis[r][c]: <span class="mt">dfs</span>(r,c); cnt+=<span class="nm">1</span>
+        <span class="kw">return</span> cnt
+
+    <span class="kw">if</span> <span class="mt">count_islands</span>(grid) != <span class="nm">1</span>: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(m):
+        <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(n):
+            <span class="kw">if</span> grid[r][c] == <span class="nm">1</span>:
+                grid[r][c] = <span class="nm">0</span>
+                <span class="kw">if</span> <span class="mt">count_islands</span>(grid) != <span class="nm">1</span>: <span class="kw">return</span> <span class="nm">1</span>
+                grid[r][c] = <span class="nm">1</span>
+    <span class="kw">return</span> <span class="nm">2</span>  <span class="cm"># always possible in 2 days</span></pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP D ═══════ -->
+<div class="section-heading">Group D — Paths &amp; Connectivity</div>
+
+<!-- P9 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">BFS</span>
+        <span class="badge topic">Dijkstra</span>
+    </div>
+    <h3>#743 — Network Delay Time</h3>
+    <p>Given a directed graph with weighted edges (times), a source node k, and n nodes, find the time for all nodes to receive a signal from k. Return -1 if impossible.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Single-source shortest paths from k. Use Dijkstra with a min-heap. The answer is the maximum of all shortest distances from k. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">NetworkDelayTime</span>(<span class="kw">int</span>[][] times, <span class="kw">int</span> n, <span class="kw">int</span> k) {
+    <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">List</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> t <span class="kw">in</span> times) {
+        <span class="kw">if</span>(!adj.<span class="mt">ContainsKey</span>(t[<span class="nm">0</span>])) adj[t[<span class="nm">0</span>]]=<span class="kw">new</span>();
+        adj[t[<span class="nm">0</span>]].<span class="mt">Add</span>((t[<span class="nm">1</span>],t[<span class="nm">2</span>]));
+    }
+    <span class="kw">var</span> dist = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">1</span>,n).<span class="mt">ToDictionary</span>(i=&gt;i,_=&gt;<span class="kw">int</span>.MaxValue);
+    dist[k]=<span class="nm">0</span>;
+    <span class="kw">var</span> pq = <span class="kw">new</span> <span class="tp">PriorityQueue</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>),<span class="kw">int</span>&gt;(); pq.<span class="mt">Enqueue</span>((<span class="nm">0</span>,k),<span class="nm">0</span>);
+    <span class="kw">while</span>(pq.Count&gt;<span class="nm">0</span>) {
+        <span class="kw">var</span>(d,u)=pq.<span class="mt">Dequeue</span>(); <span class="kw">if</span>(d&gt;dist[u]) <span class="kw">continue</span>;
+        <span class="kw">foreach</span>(<span class="kw">var</span>(v,w) <span class="kw">in</span> adj.<span class="mt">GetValueOrDefault</span>(u,<span class="kw">new</span>())) {
+            <span class="kw">int</span> nd=d+w; <span class="kw">if</span>(nd&lt;dist[v]){dist[v]=nd; pq.<span class="mt">Enqueue</span>((nd,v),nd);}
+        }
+    }
+    <span class="kw">int</span> ans=dist.<span class="mt">Values</span>().<span class="mt">Max</span>();
+    <span class="kw">return</span> ans==<span class="kw">int</span>.MaxValue?-<span class="nm">1</span>:ans;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> heapq
+<span class="kw">def</span> <span class="mt">networkDelayTime</span>(times, n, k):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u,v,w <span class="kw">in</span> times: adj[u].<span class="mt">append</span>((v,w))
+    dist = {i: <span class="mt">float</span>(<span class="st">'inf'</span>) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>,n+<span class="nm">1</span>)}; dist[k] = <span class="nm">0</span>
+    heap = [(<span class="nm">0</span>, k)]
+    <span class="kw">while</span> heap:
+        d, u = heapq.<span class="mt">heappop</span>(heap)
+        <span class="kw">if</span> d > dist[u]: <span class="kw">continue</span>
+        <span class="kw">for</span> v, w <span class="kw">in</span> adj[u]:
+            <span class="kw">if</span> dist[u] + w < dist[v]: dist[v] = dist[u]+w; heapq.<span class="mt">heappush</span>(heap,(dist[v],v))
+    ans = <span class="mt">max</span>(dist.<span class="mt">values</span>())
+    <span class="kw">return</span> ans <span class="kw">if</span> ans < <span class="mt">float</span>(<span class="st">'inf'</span>) <span class="kw">else</span> -<span class="nm">1</span></pre></div>
+    </div>
+</div>
+
+<!-- P10 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Euler Path</span>
+        <span class="badge topic">Directed Graph</span>
+    </div>
+    <h3>#2097 — Valid Arrangement of Pairs</h3>
+    <p>Given pairs [start, end], arrange them so that each pair's end equals the next pair's start. Return any valid arrangement.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Each pair is a directed edge. We need an Euler path: a path using every edge exactly once. Find the start node (out-degree − in-degree = 1, or any node if it's a circuit). Run Hierholzer's algorithm. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span>[][] <span class="mt">ValidArrangement</span>(<span class="kw">int</span>[][] pairs) {
+    <span class="kw">var</span> adj    = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">var</span> indeg  = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;();
+    <span class="kw">var</span> outdeg = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span>(<span class="kw">var</span> p <span class="kw">in</span> pairs) {
+        <span class="kw">if</span>(!adj.<span class="mt">ContainsKey</span>(p[<span class="nm">0</span>])) adj[p[<span class="nm">0</span>]]=<span class="kw">new</span>();
+        adj[p[<span class="nm">0</span>]].<span class="mt">Push</span>(p[<span class="nm">1</span>]);
+        outdeg[p[<span class="nm">0</span>]]=outdeg.<span class="mt">GetValueOrDefault</span>(p[<span class="nm">0</span>])+<span class="nm">1</span>;
+        indeg[p[<span class="nm">1</span>]]=indeg.<span class="mt">GetValueOrDefault</span>(p[<span class="nm">1</span>])+<span class="nm">1</span>;
+    }
+    <span class="kw">int</span> start=pairs[<span class="nm">0</span>][<span class="nm">0</span>];
+    <span class="kw">foreach</span>(<span class="kw">var</span> node <span class="kw">in</span> adj.Keys)
+        <span class="kw">if</span>(outdeg.<span class="mt">GetValueOrDefault</span>(node)-indeg.<span class="mt">GetValueOrDefault</span>(node)==<span class="nm">1</span>){start=node;<span class="kw">break</span>;}
+    <span class="kw">var</span> res=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(); <span class="kw">var</span> stk=<span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;(); stk.<span class="mt">Push</span>(start);
+    <span class="kw">while</span>(stk.Count&gt;<span class="nm">0</span>){
+        <span class="kw">while</span>(adj.<span class="mt">TryGetValue</span>(stk.<span class="mt">Peek</span>(),<span class="kw">out var</span> nb)&amp;&amp;nb.Count&gt;<span class="nm">0</span>) stk.<span class="mt">Push</span>(nb.<span class="mt">Pop</span>());
+        res.<span class="mt">Add</span>(stk.<span class="mt">Pop</span>());
+    }
+    res.<span class="mt">Reverse</span>();
+    <span class="kw">return</span> <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,res.Count-<span class="nm">1</span>).<span class="mt">Select</span>(i=&gt;<span class="kw">new</span>[]{res[i],res[i+<span class="nm">1</span>]}).<span class="mt">ToArray</span>();
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">validArrangement</span>(pairs):
+    adj = defaultdict(<span class="tp">list</span>)
+    indeg = defaultdict(<span class="kw">int</span>); outdeg = defaultdict(<span class="kw">int</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> pairs:
+        adj[u].<span class="mt">append</span>(v); outdeg[u] += <span class="nm">1</span>; indeg[v] += <span class="nm">1</span>
+    <span class="cm"># Find start: out-in=1, else any node</span>
+    start = pairs[<span class="nm">0</span>][<span class="nm">0</span>]
+    <span class="kw">for</span> node <span class="kw">in</span> adj:
+        <span class="kw">if</span> outdeg[node] - indeg[node] == <span class="nm">1</span>: start = node; <span class="kw">break</span>
+    result = []; stack = [start]
+    <span class="kw">while</span> stack:
+        <span class="kw">while</span> adj[stack[-<span class="nm">1</span>]]: stack.<span class="mt">append</span>(adj[stack[-<span class="nm">1</span>]].<span class="mt">pop</span>())
+        result.<span class="mt">append</span>(stack.<span class="mt">pop</span>())
+    result.<span class="mt">reverse</span>()
+    <span class="kw">return</span> [[result[i], result[i+<span class="nm">1</span>]] <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(result)-<span class="nm">1</span>)]</pre></div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15C Complete</button>
+<div class="toast" id="toast">✅ Module 15C complete! Module 15 — Advanced Graphs fully mastered!</div>
+    <script>var MODULE_ID = 'm15c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

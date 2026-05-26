@@ -1,0 +1,551 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7E — B-Trees</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
+    <h1>Module 7 — Part E</h1>
+    <div class="tagline">B-Trees — The Data Structure That Powers Every Database</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Why MySQL, PostgreSQL, and SQLite all use B+ trees for indexes — disk I/O minimization</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part H of Module 6/7</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m07a_avl_trees.html">AVL Trees</a><br>
+    ✅ <strong>Part B</strong> — <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
+    ✅ <strong>Part C</strong> — <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
+    ✅ <strong>Part D</strong> — <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
+    ▶ <strong>Part E</strong> — <em>You are here</em> — B-Trees<br>
+    ⬜ <strong>Part F</strong> — <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
+    <a href="../phase5/m08a_hashing.html">Module 8 &mdash; Hashing &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 7E</h2>
+    <ol>
+        <li>The Analogy — Library Card Catalog <span>— Fat nodes = fewer trips to the stacks</span></li>
+        <li>The Problem B-Trees Solve <span>— Disk I/O cost model vs. RAM</span></li>
+        <li>Visual Walkthrough <span>— B-tree of order 3, insert with node splitting</span></li>
+        <li>Formal Definitions <span>— Order t, key bounds, height guarantee</span></li>
+        <li>Complete C# Implementation <span>— B-tree search and insert with node splitting</span></li>
+        <li>Complete Python Implementation <span>— Same logic, Python style</span></li>
+        <li>Complexity Analysis <span>— O(log_t n) I/Os, why t matters</span></li>
+        <li>Real-World Usage <span>— MySQL InnoDB, PostgreSQL, SQLite, NTFS</span></li>
+        <li>Common Mistakes <span>— B-tree vs. B+ tree, split on insert vs. delete</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: Library Card Catalog</div>
+
+<p>Before digital catalogs, libraries used physical card catalogs — drawers organized alphabetically. Each drawer held many cards (not just one). To find a book, you went to the right drawer, found the right divider tab, then scanned a few cards. The key insight: <strong>each drawer lookup is expensive (physical trip), but looking through the cards within a drawer is cheap (sequential scan).</strong></p>
+
+<p>A B-tree works exactly this way. Each "node" is like a drawer — it holds <em>multiple</em> keys and pointers. Instead of one comparison per node (like a BST), you do many comparisons within a node but make far fewer node-to-node jumps. Since each jump is a disk read (4KB–16KB page), fewer jumps means dramatically fewer I/O operations.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Problem B-Trees Solve</div>
+
+<p>When data doesn't fit in RAM, it lives on disk. Disk reads are 10,000× slower than RAM access (magnetic HDD: ~5ms seek; SSD: ~0.1ms; RAM: ~100ns). A BST or Red-Black tree with 1 billion records has height ~30. Each "node visit" is a random disk read → <strong>30 disk reads per lookup</strong>. Unacceptable for a database serving thousands of queries per second.</p>
+
+<p>A B-tree with branching factor t=1000 packs 999 keys per node. The same 1 billion records fit in a tree of height:</p>
+<p style="text-align:center; font-size:1.1em;"> h = ⌈log₁₀₀₀(10⁹)⌉ = ⌈3⌉ = <strong>3 levels</strong> → <strong>3 disk reads</strong></p>
+
+<p>This is why every database uses B-trees (or B+ trees) for indexes.</p>
+
+<div class="note">
+    <strong>📌 B-tree vs B+ tree:</strong><br>
+    <strong>B-tree:</strong> Keys AND data stored in all nodes (internal + leaves).<br>
+    <strong>B+ tree:</strong> Keys in internal nodes serve only as routing guides. All actual data stored ONLY in leaf nodes. Leaves are linked as a doubly-linked list for efficient range scans.<br>
+    <strong>MySQL InnoDB, PostgreSQL, SQLite all use B+ trees</strong> because the leaf-linked-list makes range queries (BETWEEN, ORDER BY) trivially efficient.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Visual Walkthrough: B-Tree of Minimum Degree t=2</div>
+
+<div class="diagram">B-TREE PROPERTIES (minimum degree t):
+  • Every node has at most   2t - 1  keys  (max 2t children)
+  • Every non-root node has at least t - 1  keys  (min t children)
+  • The root has at least 1 key (min 2 children if non-leaf)
+  • All leaves are at the same depth
+
+For t=2: each node holds 1 to 3 keys, 2 to 4 children.
+
+═══════════════════════════════════════════════════════════
+
+INSERTING [10, 20, 30, 40, 50] into an empty B-tree (t=2, max 3 keys/node):
+
+After inserting 10, 20, 30:
+  [10 | 20 | 30]   ← root is full (3 keys = 2t-1 = 3)
+
+Inserting 40 — root is full → SPLIT first:
+  Step 1: Find median = 20 (middle key, index t-1 = 1)
+  Step 2: Split into two nodes: [10] and [30, 40]
+  Step 3: Push median 20 up to new root
+  Result:
+           [20]
+          /    \
+       [10]   [30]
+
+Then insert 40:
+           [20]
+          /    \
+       [10]   [30 | 40]
+
+Insert 50 — right child has room (2 keys < 3 max):
+           [20]
+          /    \
+       [10]   [30 | 40 | 50]   ← full again
+
+═══════════════════════════════════════════════════════════
+
+SEARCH for 35 in the above tree:
+  Start at root [20]:
+    35 > 20 → go right child
+  At node [30 | 40 | 50]:
+    30 ≤ 35 < 40 → 35 is between 30 and 40 → not found
+  (leaf node, no more children) → KEY NOT FOUND</div>
+
+<h3>B+ Tree Leaf Linkage</h3>
+<div class="diagram">B+ TREE difference: all data is in leaf nodes, linked left-to-right:
+
+                      [20 | 40]           ← internal (routing only)
+                    /     |      \
+               [10|15] [20|30] [40|50]   ← leaves store actual data
+                  ↔       ↔       ↔      ← doubly-linked for range scans
+
+RANGE QUERY: "Find all keys between 15 and 40"
+  Step 1: Find leaf containing 15 → [10|15], O(log_t n)
+  Step 2: Scan linked list rightward: 15, 20, 30, 40 → DONE
+  No tree traversal needed for the range — just follow the list!</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Formal Definitions</div>
+
+<ul>
+    <li><strong>Minimum degree t (≥ 2):</strong> The fundamental parameter. Every non-root node has between t-1 and 2t-1 keys. Every internal node has between t and 2t children.</li>
+    <li><strong>Order (sometimes called k or m):</strong> Different books define "order" differently. Some define order = max number of children (= 2t). Others define order = min number of children. Always clarify which definition is being used.</li>
+    <li><strong>Height guarantee:</strong> For n keys, h ≤ log_t((n+1)/2). With t=1000 and n=10⁹: h ≤ log₁₀₀₀(500,000,000) ≈ 3.</li>
+    <li><strong>Split on full node:</strong> When inserting, if a node reaches 2t-1 keys, it's split: the median key is pushed to the parent, the node splits into two nodes each with t-1 keys.</li>
+    <li><strong>Proactive splitting:</strong> Split full nodes top-down on the way DOWN during insert (not bottom-up). This avoids needing to traverse back up.</li>
+</ul>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Complete C# Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">public class</span> <span class="tp">BTreeNode</span>
+{
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;         Keys     = <span class="kw">new</span>();
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">BTreeNode</span>&gt;  Children = <span class="kw">new</span>();
+    <span class="kw">public bool</span>              IsLeaf   = <span class="kw">true</span>;
+}
+
+<span class="kw">public class</span> <span class="tp">BTree</span>
+{
+    <span class="kw">private readonly int</span> T;   <span class="cm">// Minimum degree</span>
+    <span class="kw">private</span> <span class="tp">BTreeNode</span> Root;
+
+    <span class="kw">public</span> <span class="mt">BTree</span>(<span class="kw">int</span> t)
+    {
+        T    = t;
+        Root = <span class="kw">new</span> <span class="tp">BTreeNode</span>();
+    }
+
+    <span class="cm">// ── SEARCH ────────────────────────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">Search</span>(<span class="kw">int</span> key)
+        => <span class="mt">SearchNode</span>(Root, key);
+
+    <span class="kw">private bool</span> <span class="mt">SearchNode</span>(<span class="tp">BTreeNode</span> node, <span class="kw">int</span> key)
+    {
+        <span class="kw">int</span> i = <span class="nm">0</span>;
+        <span class="cm">// Find the first key >= search key</span>
+        <span class="kw">while</span> (i &lt; node.Keys.Count &amp;&amp; key &gt; node.Keys[i]) i++;
+
+        <span class="kw">if</span> (i &lt; node.Keys.Count &amp;&amp; key == node.Keys[i]) <span class="kw">return true</span>;  <span class="cm">// Found!</span>
+        <span class="kw">if</span> (node.IsLeaf) <span class="kw">return false</span>;   <span class="cm">// Leaf: not found</span>
+        <span class="kw">return</span> <span class="mt">SearchNode</span>(node.Children[i], key);  <span class="cm">// Recurse into correct child</span>
+    }
+
+    <span class="cm">// ── INSERT ────────────────────────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">int</span> key)
+    {
+        <span class="kw">if</span> (Root.Keys.Count == <span class="nm">2</span> * T - <span class="nm">1</span>)  <span class="cm">// Root is full → grow the tree</span>
+        {
+            <span class="kw">var</span> newRoot = <span class="kw">new</span> <span class="tp">BTreeNode</span> { IsLeaf = <span class="kw">false</span> };
+            newRoot.Children.<span class="mt">Add</span>(Root);
+            Root = newRoot;
+            <span class="mt">SplitChild</span>(newRoot, <span class="nm">0</span>);  <span class="cm">// Split the old root</span>
+        }
+        <span class="mt">InsertNonFull</span>(Root, key);
+    }
+
+    <span class="cm">// Insert into a node that is guaranteed NOT full</span>
+    <span class="kw">private void</span> <span class="mt">InsertNonFull</span>(<span class="tp">BTreeNode</span> node, <span class="kw">int</span> key)
+    {
+        <span class="kw">int</span> i = node.Keys.Count - <span class="nm">1</span>;
+
+        <span class="kw">if</span> (node.IsLeaf)
+        {
+            <span class="cm">// Insert into sorted position in leaf</span>
+            node.Keys.<span class="mt">Add</span>(<span class="nm">0</span>);  <span class="cm">// Make room</span>
+            <span class="kw">while</span> (i &gt;= <span class="nm">0</span> &amp;&amp; key &lt; node.Keys[i])
+            {
+                node.Keys[i + <span class="nm">1</span>] = node.Keys[i];
+                i--;
+            }
+            node.Keys[i + <span class="nm">1</span>] = key;
+        }
+        <span class="kw">else</span>
+        {
+            <span class="cm">// Find the correct child</span>
+            <span class="kw">while</span> (i &gt;= <span class="nm">0</span> &amp;&amp; key &lt; node.Keys[i]) i--;
+            i++;  <span class="cm">// i = index of the child to recurse into</span>
+
+            <span class="kw">if</span> (node.Children[i].Keys.Count == <span class="nm">2</span> * T - <span class="nm">1</span>)
+            {
+                <span class="mt">SplitChild</span>(node, i);   <span class="cm">// Proactively split full child</span>
+                <span class="kw">if</span> (key &gt; node.Keys[i]) i++;
+            }
+            <span class="mt">InsertNonFull</span>(node.Children[i], key);
+        }
+    }
+
+    <span class="cm">// Split child at index childIdx of parent</span>
+    <span class="kw">private void</span> <span class="mt">SplitChild</span>(<span class="tp">BTreeNode</span> parent, <span class="kw">int</span> childIdx)
+    {
+        <span class="tp">BTreeNode</span> full  = parent.Children[childIdx];
+        <span class="tp">BTreeNode</span> right = <span class="kw">new</span> <span class="tp">BTreeNode</span> { IsLeaf = full.IsLeaf };
+
+        <span class="kw">int</span> mid = T - <span class="nm">1</span>;   <span class="cm">// Index of median key in full node</span>
+
+        <span class="cm">// Right half of full.Keys (after median) → new right node</span>
+        right.Keys.<span class="mt">AddRange</span>(full.Keys.<span class="mt">GetRange</span>(T, T - <span class="nm">1</span>));
+        <span class="kw">if</span> (!full.IsLeaf)
+            right.Children.<span class="mt">AddRange</span>(full.Children.<span class="mt">GetRange</span>(T, T));
+
+        <span class="cm">// Promote median key to parent</span>
+        parent.Keys.<span class="mt">Insert</span>(childIdx, full.Keys[mid]);
+        parent.Children.<span class="mt">Insert</span>(childIdx + <span class="nm">1</span>, right);
+
+        <span class="cm">// Truncate full node to left half (keys before median)</span>
+        full.Keys.<span class="mt">RemoveRange</span>(mid, T);
+        <span class="kw">if</span> (!full.IsLeaf)
+            full.Children.<span class="mt">RemoveRange</span>(T, T);
+    }
+
+    <span class="cm">// ── PRINT tree (BFS level by level) ──────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Print</span>()
+    {
+        <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="tp">BTreeNode</span> node, <span class="kw">int</span> level)&gt;();
+        queue.<span class="mt">Enqueue</span>((Root, <span class="nm">0</span>));
+        <span class="kw">int</span> currentLevel = <span class="nm">0</span>;
+        <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">var</span> (node, level) = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span> (level &gt; currentLevel) { <span class="tp">Console</span>.<span class="mt">WriteLine</span>(); currentLevel = level; }
+            <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="st">"["</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">"|"</span>, node.Keys) + <span class="st">"] "</span>);
+            <span class="kw">foreach</span> (<span class="kw">var</span> child <span class="kw">in</span> node.Children) queue.<span class="mt">Enqueue</span>((child, level + <span class="nm">1</span>));
+        }
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>();
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> bt = <span class="kw">new</span> <span class="tp">BTree</span>(<span class="nm">2</span>);  <span class="cm">// t=2: each node holds 1..3 keys</span>
+        <span class="kw">foreach</span> (<span class="kw">int</span> k <span class="kw">in</span> <span class="kw">new</span>[] { <span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">12</span>, <span class="nm">30</span>, <span class="nm">7</span>, <span class="nm">17</span> })
+            bt.<span class="mt">Insert</span>(k);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"B-Tree (t=2) after inserting [10,20,5,6,12,30,7,17]:"</span>);
+        bt.<span class="mt">Print</span>();
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Search 6:  "</span> + bt.<span class="mt">Search</span>(<span class="nm">6</span>));   <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Search 15: "</span> + bt.<span class="mt">Search</span>(<span class="nm">15</span>));  <span class="cm">// False</span>
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+   B-Tree (t=2) after inserting [10,20,5,6,12,30,7,17]:
+   [6|12]
+   [5] [7|10] [17|20|30]
+   Search 6:  True
+   Search 15: False
+   ──────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Complete Python Implementation</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List, Optional
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+
+
+<span class="kw">class</span> <span class="tp">BTreeNode</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, is_leaf: bool = <span class="kw">True</span>):
+        self.keys:     List[<span class="kw">int</span>]           = []
+        self.children: List[<span class="st">'BTreeNode'</span>]   = []
+        self.is_leaf:  bool                  = is_leaf
+
+
+<span class="kw">class</span> <span class="tp">BTree</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, t: <span class="kw">int</span>):
+        self.t    = t               <span class="cm"># Minimum degree</span>
+        self.root = <span class="tp">BTreeNode</span>()
+
+    <span class="kw">def</span> <span class="mt">search</span>(self, key: <span class="kw">int</span>) -> bool:
+        <span class="kw">return</span> self.<span class="mt">_search</span>(self.root, key)
+
+    <span class="kw">def</span> <span class="mt">_search</span>(self, node: <span class="tp">BTreeNode</span>, key: <span class="kw">int</span>) -> bool:
+        i = <span class="nm">0</span>
+        <span class="kw">while</span> i &lt; <span class="mt">len</span>(node.keys) <span class="kw">and</span> key &gt; node.keys[i]: i += <span class="nm">1</span>
+        <span class="kw">if</span> i &lt; <span class="mt">len</span>(node.keys) <span class="kw">and</span> key == node.keys[i]: <span class="kw">return True</span>
+        <span class="kw">if</span> node.is_leaf: <span class="kw">return False</span>
+        <span class="kw">return</span> self.<span class="mt">_search</span>(node.children[i], key)
+
+    <span class="kw">def</span> <span class="mt">insert</span>(self, key: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        <span class="kw">if</span> <span class="mt">len</span>(self.root.keys) == <span class="nm">2</span> * self.t - <span class="nm">1</span>:
+            new_root = <span class="tp">BTreeNode</span>(is_leaf=<span class="kw">False</span>)
+            new_root.children.<span class="mt">append</span>(self.root)
+            self.root = new_root
+            self.<span class="mt">_split_child</span>(new_root, <span class="nm">0</span>)
+        self.<span class="mt">_insert_non_full</span>(self.root, key)
+
+    <span class="kw">def</span> <span class="mt">_insert_non_full</span>(self, node: <span class="tp">BTreeNode</span>, key: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        i = <span class="mt">len</span>(node.keys) - <span class="nm">1</span>
+        <span class="kw">if</span> node.is_leaf:
+            node.keys.<span class="mt">append</span>(<span class="nm">0</span>)   <span class="cm"># Make room</span>
+            <span class="kw">while</span> i &gt;= <span class="nm">0</span> <span class="kw">and</span> key &lt; node.keys[i]:
+                node.keys[i + <span class="nm">1</span>] = node.keys[i]
+                i -= <span class="nm">1</span>
+            node.keys[i + <span class="nm">1</span>] = key
+        <span class="kw">else</span>:
+            <span class="kw">while</span> i &gt;= <span class="nm">0</span> <span class="kw">and</span> key &lt; node.keys[i]: i -= <span class="nm">1</span>
+            i += <span class="nm">1</span>
+            <span class="kw">if</span> <span class="mt">len</span>(node.children[i].keys) == <span class="nm">2</span> * self.t - <span class="nm">1</span>:
+                self.<span class="mt">_split_child</span>(node, i)
+                <span class="kw">if</span> key &gt; node.keys[i]: i += <span class="nm">1</span>
+            self.<span class="mt">_insert_non_full</span>(node.children[i], key)
+
+    <span class="kw">def</span> <span class="mt">_split_child</span>(self, parent: <span class="tp">BTreeNode</span>, idx: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        t    = self.t
+        full  = parent.children[idx]
+        right = <span class="tp">BTreeNode</span>(is_leaf=full.is_leaf)
+        mid   = t - <span class="nm">1</span>
+
+        right.keys = full.keys[t:]
+        <span class="kw">if not</span> full.is_leaf:
+            right.children = full.children[t:]
+
+        parent.keys.<span class="mt">insert</span>(idx, full.keys[mid])
+        parent.children.<span class="mt">insert</span>(idx + <span class="nm">1</span>, right)
+
+        full.keys     = full.keys[:mid]
+        <span class="kw">if not</span> full.is_leaf:
+            full.children = full.children[:t]
+
+    <span class="kw">def</span> <span class="mt">print_tree</span>(self) -> <span class="kw">None</span>:
+        q = deque([(self.root, <span class="nm">0</span>)])
+        cur_level = <span class="nm">0</span>
+        <span class="kw">while</span> q:
+            node, level = q.<span class="mt">popleft</span>()
+            <span class="kw">if</span> level &gt; cur_level: <span class="mt">print</span>(); cur_level = level
+            <span class="mt">print</span>(<span class="st">"["</span> + <span class="st">"|"</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, node.keys)) + <span class="st">"]"</span>, end=<span class="st">" "</span>)
+            <span class="kw">for</span> ch <span class="kw">in</span> node.children: q.<span class="mt">append</span>((ch, level + <span class="nm">1</span>))
+        <span class="mt">print</span>()
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    bt = <span class="tp">BTree</span>(t=<span class="nm">2</span>)
+    <span class="kw">for</span> k <span class="kw">in</span> [<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">12</span>, <span class="nm">30</span>, <span class="nm">7</span>, <span class="nm">17</span>]:
+        bt.<span class="mt">insert</span>(k)
+    <span class="mt">print</span>(<span class="st">"B-Tree (t=2):"</span>)
+    bt.<span class="mt">print_tree</span>()
+    <span class="mt">print</span>(<span class="st">"search 6:"</span>,  bt.<span class="mt">search</span>(<span class="nm">6</span>))    <span class="cm"># True</span>
+    <span class="mt">print</span>(<span class="st">"search 15:"</span>, bt.<span class="mt">search</span>(<span class="nm">15</span>))   <span class="cm"># False</span>
+
+<span class="cm"># Output:
+# B-Tree (t=2):
+# [6|12]
+# [5] [7|10] [17|20|30]
+# search 6: True
+# search 15: False</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Time (disk I/Os)</th><th>Time (comparisons)</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Search</td><td class="g">O(log_t n)</td><td class="g">O(t × log_t n)</td><td>Each node: binary search over t keys</td></tr>
+        <tr><td>Insert</td><td class="g">O(log_t n)</td><td class="g">O(t × log_t n)</td><td>At most one split per level</td></tr>
+        <tr><td>Delete</td><td class="g">O(log_t n)</td><td class="g">O(t × log_t n)</td><td>May merge/rotate nodes</td></tr>
+        <tr><td>Height</td><td class="g">O(log_t n)</td><td>—</td><td>≤ log_t((n+1)/2)</td></tr>
+        <tr><td>t=2 (2-3-4 tree)</td><td>—</td><td>—</td><td>1-3 keys, 2-4 children per node</td></tr>
+        <tr><td>t=1000 (database)</td><td>—</td><td>—</td><td>999-1999 keys per node, 3 I/Os for 10⁹ records</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
+
+<div class="realworld">
+    <strong>🌍 MySQL InnoDB — B+ Tree Clustered Index</strong><br>
+    InnoDB's primary key index is a <em>clustered B+ tree</em> — leaf nodes contain the actual row data (not just pointers). Secondary indexes are non-clustered B+ trees whose leaves contain the primary key value. A typical MySQL B+ tree page is 16KB, holding ~1000 keys per page. A table with 1 billion rows needs only 3-4 levels → 3-4 page reads per lookup.
+</div>
+
+<div class="realworld">
+    <strong>🌍 PostgreSQL — B-Tree Indexes</strong><br>
+    PostgreSQL uses a variant of B+ trees for all its standard indexes (CREATE INDEX). The default page size is 8KB. Unlike MySQL's clustered index, PostgreSQL's heap storage is separate from the index, so all indexes are non-clustered. The B+ tree stores (key, tuple pointer) pairs in leaf pages.
+</div>
+
+<div class="realworld">
+    <strong>🌍 NTFS, HFS+ — File System Metadata</strong><br>
+    File systems use B-trees to store directory entries and file metadata. NTFS's Master File Table (MFT) uses B-tree indices for directory lookups. Finding a file in a directory with 100,000 entries takes O(log t 100000) ≈ a few I/Os, not O(100000) sequential scan.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Common Mistakes</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 1 — Confusing B-tree with B+ tree:</strong> A B-tree stores data in all nodes (internal + leaf). A B+ tree stores data ONLY in leaf nodes; internal nodes have copies of keys for routing. B+ trees support faster range queries because leaves are linked. When someone says "database B-tree index" they almost always mean B+ tree.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 2 — Using wrong split index:</strong> The median key in a full node (2t-1 keys) is at index t-1 (0-based). It's pushed UP to the parent. The left node keeps keys[0..t-2] (t-1 keys) and the right node gets keys[t..2t-2] (t-1 keys). Off-by-one errors here cause nodes to have too many or too few keys.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 3 — Forgetting to split children pointers during node split:</strong> When splitting a non-leaf node, you must also split the Children list: left keeps children[0..t-1] (t children) and right gets children[t..2t-1] (t children). Forgetting to split children leaves the tree structurally inconsistent.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 4 — Treating B-tree as a 2-3 tree:</strong> A 2-3 tree is a B-tree with t=2 (nodes have 1 or 2 keys; 2 or 3 children). But B-trees generalize to any t ≥ 2. Don't assume all B-trees have the 2-3 structure — database B+ trees typically use t=500 or higher.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. A B-tree with minimum degree t=3 has what minimum and maximum number of keys per internal node?</div>
+    <div class="quiz-meta">💡 Rules: non-root nodes have at least t-1 and at most 2t-1 keys.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Minimum: 2 keys (t-1 = 3-1 = 2). Maximum: 5 keys (2t-1 = 2×3-1 = 5).</strong><br>
+        This means internal nodes have 3 to 6 children (between t and 2t). The root can have as few as 1 key (with 2 children) if the tree has more than one node.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. Why does a B-tree with t=1000 outperform a Red-Black tree for a disk-based database index?</div>
+    <div class="quiz-meta">💡 Count the number of disk reads (node accesses) for 10⁹ records in each structure.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Red-Black tree:</strong> height ≤ 2 log₂(10⁹+1) ≈ 60. Each node access = 1 disk read → ~60 disk reads per lookup. At ~5ms per HDD read → 300ms per query.<br>
+        <strong>B-tree (t=1000):</strong> height ≤ log₁₀₀₀(5×10⁸) ≈ 3. Each node = 1 disk page (16KB, ~1000 keys) → ~3 disk reads per lookup → ~15ms per query.<br>
+        The B-tree is 20× faster because each disk read brings in 1000 keys (a full page), amortizing the I/O cost across 1000 comparisons done in fast RAM.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. What is the key difference between a B-tree and a B+ tree? Which is better for range queries?</div>
+    <div class="quiz-meta">💡 Think about where data is stored in each, and what a range query needs to do.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>B-tree:</strong> Data (actual records or pointers to records) stored in ALL nodes — both internal and leaf nodes.<br>
+        <strong>B+ tree:</strong> Internal nodes store ONLY keys (routing guides). Actual data stored ONLY in leaf nodes. Leaf nodes are linked in a doubly-linked list.<br>
+        <strong>B+ tree is better for range queries:</strong> Once you find the start of the range (one O(log_t n) search), you can scan forward through the leaf linked list without any tree traversal. A B-tree range query requires an in-order tree traversal, which is more complex and involves revisiting internal nodes.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. When inserting into a B-tree, what causes a "split" and what happens during the split?</div>
+    <div class="quiz-meta">💡 What condition triggers a split? Which key moves up to the parent?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        A split is triggered when a node is <strong>full</strong> — it already has 2t-1 keys and we need to insert another.<br>
+        During split:<br>
+        1. The <strong>median key</strong> (at index t-1) is promoted up to the parent node.<br>
+        2. The full node becomes the <strong>left child</strong> with keys[0..t-2] (t-1 keys).<br>
+        3. A new <strong>right child</strong> is created with keys[t..2t-2] (t-1 keys).<br>
+        4. If the node is non-leaf, children[0..t-1] go to left, children[t..2t-1] go to right.<br>
+        The parent gains one key and one additional child. If the parent was also full, it must be split too (proactive splitting avoids this by pre-splitting on the way down).
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. Why is proactive splitting (split on the way DOWN) preferred over bottom-up splitting (split on the way UP)?</div>
+    <div class="quiz-meta">💡 Think about how many passes through the tree each approach needs.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Bottom-up splitting</strong> (insert at leaf, then propagate splits upward if needed) requires keeping a stack of the path from root to leaf, then possibly traversing back up for cascading splits. This means re-reading nodes that were already read → extra disk I/Os.<br>
+        <strong>Proactive (top-down) splitting:</strong> On the way DOWN, whenever you encounter a full node, split it preemptively. By the time you reach the leaf, you're guaranteed the leaf's parent is not full, so no upward cascade is needed. This is a single-pass operation — no stack needed, no re-reads. The implementation in this module uses proactive splitting.
+    </div>
+</div>
+
+<br>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 7E Complete</button>
+<div class="toast" id="toast">✅ Module 7E marked complete!</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 7E Complete!</strong><br><br>
+    You now understand: why databases use B-trees, the t-1 to 2t-1 key bounds, insert with proactive splitting,
+    B-tree vs B+ tree (leaf linked-list for range queries), and why large t minimizes disk I/Os.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m07d_trie.html">Module 7D — Trie (Prefix Tree)</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m07f_lca.html">Module 7F — LCA &amp; Binary Lifting</a>
+</div>
+    <script>var MODULE_ID = 'm07e';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

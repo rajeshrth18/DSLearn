@@ -1,0 +1,489 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 17D — Phase 9 Mixed Practice | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 17 — Part D</h1>
+    <div class="tagline">Phase 9 Mixed Practice — 10 Curated LeetCode Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Bit Manipulation · Math · Geometry · Strings · Advanced Graphs</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3–4 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 10 Problems</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Module 17 (complete):</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m17a_bit_manipulation.html">Bit Manipulation</a><br>
+    ✅ <strong>Part B</strong> — <a href="m17b_advanced_math.html">Advanced Math</a><br>
+    ✅ <strong>Part C</strong> — <a href="m17c_geometry.html">Computational Geometry</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Phase 9 Mixed Practice<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
+    <a href="../phase10/m18a_patterns1.html">Module 18 &mdash; Patterns I &rarr;</a>
+</div>
+
+<!-- ═══════ GROUP A: Bit Manipulation ═══════ -->
+<div class="section-heading">Group A — Bit Manipulation (3 Problems)</div>
+
+<div class="group-label">Problem 1 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#137 — Single Number II</span>
+        <span class="diff diff-m">Medium</span>
+    </div>
+    <p>Every element appears <strong>3 times</strong> except one element which appears exactly once. Find the single element in O(n) time and O(1) space.</p>
+    <p><code>nums = [2,2,3,2]</code> → <code>3</code></p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h137')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's137')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h137">Track bits that have appeared once (<code>ones</code>) and twice (<code>twos</code>). Update both with each new number so that thrice-seen bits vanish.</div>
+    <div class="sol-box" id="s137">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">SingleNumber</span>(<span class="kw">int</span>[] nums) {
+    <span class="kw">int</span> ones = <span class="nm">0</span>, twos = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> nums) {
+        ones = (ones ^ n) &amp; ~twos;
+        twos = (twos ^ n) &amp; ~ones;
+    }
+    <span class="kw">return</span> ones; <span class="cm">// bits seen exactly once</span>
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">singleNumber</span>(nums):
+    ones = twos = <span class="nm">0</span>
+    <span class="kw">for</span> n <span class="kw">in</span> nums:
+        ones = (ones ^ n) & ~twos
+        twos = (twos ^ n) & ~ones
+    <span class="kw">return</span> ones</pre></div>
+    </div>
+</div>
+
+<div class="group-label">Problem 2 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#338 — Counting Bits</span>
+        <span class="diff diff-m">Easy</span>
+    </div>
+    <p>Return an array <code>ans</code> of length <code>n+1</code> where <code>ans[i]</code> = number of 1s in binary representation of <code>i</code>. O(n) time and space, no built-in popcount per element.</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h338')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's338')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h338"><code>i >> 1</code> has the same bits as <code>i</code> except the last bit. So <code>dp[i] = dp[i >> 1] + (i & 1)</code>.</div>
+    <div class="sol-box" id="s338">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span>[] <span class="mt">CountBits</span>(<span class="kw">int</span> n) {
+    <span class="kw">var</span> dp = <span class="kw">new int</span>[n + <span class="nm">1</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++) dp[i] = dp[i >> <span class="nm">1</span>] + (i &amp; <span class="nm">1</span>);
+    <span class="kw">return</span> dp;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">countBits</span>(n):
+    dp = [<span class="nm">0</span>] * (n+<span class="nm">1</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>): dp[i] = dp[i>><span class="nm">1</span>] + (i&<span class="nm">1</span>)
+    <span class="kw">return</span> dp</pre></div>
+    </div>
+</div>
+
+<div class="group-label">Problem 3 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#371 — Sum of Two Integers</span>
+        <span class="diff diff-m">Medium</span>
+    </div>
+    <p>Calculate <code>a + b</code> without using <code>+</code> or <code>-</code> operators.</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h371')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's371')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h371">XOR = sum without carry. AND shifted left = carry. Repeat until carry = 0. In Python, mask to 32 bits to handle two's complement negatives.</div>
+    <div class="sol-box" id="s371">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">GetSum</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">while</span> (b != <span class="nm">0</span>) { <span class="kw">int</span> c = (a &amp; b) &lt;&lt; <span class="nm">1</span>; a ^= b; b = c; }
+    <span class="kw">return</span> a;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">getSum</span>(a, b):
+    MASK = <span class="nm">0xFFFFFFFF</span>; MAX = <span class="nm">0x7FFFFFFF</span>
+    <span class="kw">while</span> b & MASK:
+        carry = ((a & b) &lt;&lt; <span class="nm">1</span>) & MASK
+        a = (a ^ b) & MASK; b = carry
+    <span class="kw">return</span> a <span class="kw">if</span> a &lt;= MAX <span class="kw">else</span> ~(a ^ MASK)</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP B: Advanced Math ═══════ -->
+<div class="section-heading">Group B — Advanced Math (3 Problems)</div>
+
+<div class="group-label">Problem 4 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#96 — Unique Binary Search Trees</span>
+        <span class="diff diff-m">Medium</span>
+    </div>
+    <p>Given <code>n</code>, return the number of structurally unique BSTs which have exactly <code>n</code> nodes. (Answer = Catalan number C<sub>n</sub>.)</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h96')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's96')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h96">For each root r in [1..n], left subtree uses r-1 nodes, right uses n-r. <code>dp[n] = Σ dp[i] * dp[n-1-i]</code> for i in 0..n-1.</div>
+    <div class="sol-box" id="s96">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">NumTrees</span>(<span class="kw">int</span> n) {
+    <span class="kw">var</span> dp = <span class="kw">new long</span>[n + <span class="nm">1</span>]; dp[<span class="nm">0</span>] = dp[<span class="nm">1</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i &lt;= n; i++)
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; i; j++) dp[i] += dp[j] * dp[i - <span class="nm">1</span> - j];
+    <span class="kw">return</span> (<span class="kw">int</span>)dp[n];
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">numTrees</span>(n):
+    dp = [<span class="nm">0</span>] * (n+<span class="nm">1</span>); dp[<span class="nm">0</span>] = dp[<span class="nm">1</span>] = <span class="nm">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, n+<span class="nm">1</span>):
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(i): dp[i] += dp[j] * dp[i-<span class="nm">1</span>-j]
+    <span class="kw">return</span> dp[n]</pre></div>
+    </div>
+</div>
+
+<div class="group-label">Problem 5 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#50 — Pow(x, n)</span>
+        <span class="diff diff-m">Medium</span>
+    </div>
+    <p>Implement <code>pow(x, n)</code> where <code>n</code> can be negative. Must be O(log n).</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h50')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's50')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h50">Binary exponentiation: if n is even, <code>pow(x,n) = pow(x*x, n/2)</code>. If odd, <code>x * pow(x, n-1)</code>. Handle n&lt;0: <code>pow(1/x, -n)</code>.</div>
+    <div class="sol-box" id="s50">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public double</span> <span class="mt">MyPow</span>(<span class="kw">double</span> x, <span class="kw">int</span> n) {
+    <span class="kw">long</span> N = n;
+    <span class="kw">if</span> (N &lt; <span class="nm">0</span>) { x = <span class="nm">1</span> / x; N = -N; }
+    <span class="kw">double</span> res = <span class="nm">1</span>;
+    <span class="kw">while</span> (N > <span class="nm">0</span>) {
+        <span class="kw">if</span> ((N &amp; <span class="nm">1</span>) == <span class="nm">1</span>) res *= x;
+        x *= x; N >>= <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">myPow</span>(x, n):
+    <span class="kw">if</span> n &lt; <span class="nm">0</span>: x, n = <span class="nm">1</span>/x, -n
+    res = <span class="nm">1</span>
+    <span class="kw">while</span> n:
+        <span class="kw">if</span> n & <span class="nm">1</span>: res *= x
+        x *= x; n >>= <span class="nm">1</span>
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<div class="group-label">Problem 6 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#1201 — Ugly Number III</span>
+        <span class="diff diff-h">Hard</span>
+    </div>
+    <p>Given integers <code>a, b, c</code>, find the <code>n</code>-th positive integer divisible by <code>a</code>, <code>b</code>, or <code>c</code>. (Constraints: a,b,c ≤ 10^9, n ≤ 10^9)</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h1201')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's1201')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h1201">Binary search on X. Count ugly numbers ≤ X using inclusion-exclusion: X/a + X/b + X/c - X/lcm(a,b) - X/lcm(b,c) - X/lcm(a,c) + X/lcm(a,b,c). lcm(a,b) = a/gcd(a,b)*b.</div>
+    <div class="sol-box" id="s1201">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">NthUglyNumber</span>(<span class="kw">int</span> n, <span class="kw">long</span> a, <span class="kw">long</span> b, <span class="kw">long</span> c) {
+    <span class="kw">long</span> <span class="mt">Gcd</span>(<span class="kw">long</span> x, <span class="kw">long</span> y) =&gt; y==<span class="nm">0</span>?x:<span class="mt">Gcd</span>(y,x%y);
+    <span class="kw">long</span> <span class="mt">Lcm</span>(<span class="kw">long</span> x, <span class="kw">long</span> y) =&gt; x/<span class="mt">Gcd</span>(x,y)*y;
+    <span class="kw">long</span> ab=<span class="mt">Lcm</span>(a,b), bc=<span class="mt">Lcm</span>(b,c), ac=<span class="mt">Lcm</span>(a,c), abc=<span class="mt">Lcm</span>(ab,c);
+    <span class="kw">long</span> <span class="mt">Count</span>(<span class="kw">long</span> x) =&gt; x/a+x/b+x/c-x/ab-x/bc-x/ac+x/abc;
+    <span class="kw">long</span> lo=<span class="nm">1</span>, hi=<span class="nm">2_000_000_000L</span>;
+    <span class="kw">while</span>(lo&lt;hi){<span class="kw">long</span> mid=(lo+hi)/<span class="nm">2</span>;<span class="kw">if</span>(<span class="mt">Count</span>(mid)&gt;=n)hi=mid;<span class="kw">else</span>lo=mid+<span class="nm">1</span>;}
+    <span class="kw">return</span> (<span class="kw">int</span>)lo;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> math <span class="kw">import</span> gcd
+
+<span class="kw">def</span> <span class="mt">nthUglyNumber</span>(n, a, b, c):
+    <span class="kw">def</span> <span class="mt">lcm</span>(x, y): <span class="kw">return</span> x // <span class="mt">gcd</span>(x, y) * y
+    ab = <span class="mt">lcm</span>(a, b); bc = <span class="mt">lcm</span>(b, c); ac = <span class="mt">lcm</span>(a, c)
+    abc = <span class="mt">lcm</span>(ab, c)
+    <span class="kw">def</span> <span class="mt">count</span>(x):
+        <span class="kw">return</span> x//a + x//b + x//c - x//ab - x//bc - x//ac + x//abc
+    lo, hi = <span class="nm">1</span>, <span class="nm">2</span>*<span class="nm">10</span>**<span class="nm">9</span>
+    <span class="kw">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="nm">2</span>
+        <span class="kw">if</span> <span class="mt">count</span>(mid) >= n: hi = mid
+        <span class="kw">else</span>: lo = mid + <span class="nm">1</span>
+    <span class="kw">return</span> lo</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP C: Geometry ═══════ -->
+<div class="section-heading">Group C — Geometry (2 Problems)</div>
+
+<div class="group-label">Problem 7 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#587 — Erect the Fence</span>
+        <span class="diff diff-h">Hard</span>
+    </div>
+    <p>Given coordinates of trees, find all trees on the convex hull perimeter (including collinear points on edges). Return the convex hull tree indices.</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h587')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's587')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h587">Monotone chain convex hull. Include collinear points on hull edges: when building, pop only when cross product is strictly NEGATIVE (not &lt;= 0 as usual). Use a set to track all hull points.</div>
+    <div class="sol-box" id="s587">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span>[][] <span class="mt">OuterTrees</span>(<span class="kw">int</span>[][] trees) {
+    <span class="tp">Array</span>.<span class="mt">Sort</span>(trees,(a,b)=&gt;a[<span class="nm">0</span>]==b[<span class="nm">0</span>]?a[<span class="nm">1</span>]-b[<span class="nm">1</span>]:a[<span class="nm">0</span>]-b[<span class="nm">0</span>]);
+    <span class="kw">int</span> n=trees.Length;
+    <span class="kw">long</span> <span class="mt">Cross</span>(<span class="kw">int</span>[] O,<span class="kw">int</span>[] A,<span class="kw">int</span>[] B)=&gt;
+        (<span class="kw">long</span>)(A[<span class="nm">0</span>]-O[<span class="nm">0</span>])*(B[<span class="nm">1</span>]-O[<span class="nm">1</span>])-(<span class="kw">long</span>)(A[<span class="nm">1</span>]-O[<span class="nm">1</span>])*(B[<span class="nm">0</span>]-O[<span class="nm">0</span>]);
+    <span class="kw">var</span> h=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>[]&gt;();
+    <span class="kw">foreach</span>(<span class="kw">var</span> p <span class="kw">in</span> trees){<span class="kw">while</span>(h.Count&gt;=<span class="nm">2</span>&amp;&amp;<span class="mt">Cross</span>(h[^<span class="nm">2</span>],h[^<span class="nm">1</span>],p)&lt;<span class="nm">0</span>)h.<span class="mt">RemoveAt</span>(h.Count-<span class="nm">1</span>);h.<span class="mt">Add</span>(p);}
+    <span class="kw">int</span> low=h.Count;
+    <span class="kw">for</span>(<span class="kw">int</span> i=n-<span class="nm">2</span>;i&gt;=<span class="nm">0</span>;i--){<span class="kw">while</span>(h.Count&gt;low&amp;&amp;<span class="mt">Cross</span>(h[^<span class="nm">2</span>],h[^<span class="nm">1</span>],trees[i])&lt;<span class="nm">0</span>)h.<span class="mt">RemoveAt</span>(h.Count-<span class="nm">1</span>);h.<span class="mt">Add</span>(trees[i]);}
+    <span class="kw">return</span> h.<span class="mt">DistinctBy</span>(p =&gt; (p[<span class="nm">0</span>],p[<span class="nm">1</span>])).<span class="mt">ToArray</span>();
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">outerTrees</span>(trees):
+    pts = <span class="mt">sorted</span>(<span class="mt">map</span>(<span class="mt">tuple</span>, trees))
+    <span class="kw">def</span> <span class="mt">cross</span>(O, A, B):
+        <span class="kw">return</span> (A[<span class="nm">0</span>]-O[<span class="nm">0</span>])*(B[<span class="nm">1</span>]-O[<span class="nm">1</span>]) - (A[<span class="nm">1</span>]-O[<span class="nm">1</span>])*(B[<span class="nm">0</span>]-O[<span class="nm">0</span>])
+    hull = []
+    <span class="kw">for</span> p <span class="kw">in</span> pts + pts[-<span class="nm">2</span>::-<span class="nm">1</span>]:  <span class="cm"># lower + upper</span>
+        <span class="kw">while</span> <span class="mt">len</span>(hull) >= <span class="nm">2</span> <span class="kw">and</span> <span class="mt">cross</span>(hull[-<span class="nm">2</span>], hull[-<span class="nm">1</span>], p) &lt; <span class="nm">0</span>:  <span class="cm"># strict < keeps collinear</span>
+            hull.<span class="mt">pop</span>()
+        hull.<span class="mt">append</span>(p)
+    <span class="kw">return</span> <span class="mt">list</span>(<span class="mt">map</span>(<span class="mt">list</span>, <span class="mt">set</span>(hull)))</pre></div>
+    </div>
+</div>
+
+<div class="group-label">Problem 8 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#149 — Max Points on a Line</span>
+        <span class="diff diff-h">Hard</span>
+    </div>
+    <p>Given <code>n</code> points, find the maximum number of points that lie on the same straight line. Return the count.</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h149')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's149')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h149">For each anchor point P[i], hash slopes as reduced fractions (dy/gcd, dx/gcd) to group collinear points. Handle vertical lines, duplicates separately. O(n²) total.</div>
+    <div class="sol-box" id="s149">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">MaxPoints</span>(<span class="kw">int</span>[][] pts) {
+    <span class="kw">int</span> n=pts.Length; <span class="kw">if</span>(n&lt;=<span class="nm">2</span>) <span class="kw">return</span> n; <span class="kw">int</span> ans=<span class="nm">1</span>;
+    <span class="kw">long</span> <span class="mt">Gcd</span>(<span class="kw">long</span> x,<span class="kw">long</span> y)=&gt;y==<span class="nm">0</span>?x:<span class="mt">Gcd</span>(y,x%y);
+    <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n;i++) {
+        <span class="kw">var</span> cnt=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;(<span class="kw">long</span>,<span class="kw">long</span>),<span class="kw">int</span>&gt;(); <span class="kw">int</span> dup=<span class="nm">1</span>;
+        <span class="kw">for</span>(<span class="kw">int</span> j=i+<span class="nm">1</span>;j&lt;n;j++) {
+            <span class="kw">long</span> dx=pts[j][<span class="nm">0</span>]-pts[i][<span class="nm">0</span>], dy=pts[j][<span class="nm">1</span>]-pts[i][<span class="nm">1</span>];
+            <span class="kw">if</span>(dx==<span class="nm">0</span>&amp;&amp;dy==<span class="nm">0</span>){dup++;<span class="kw">continue</span>;}
+            <span class="kw">long</span> g=<span class="mt">Gcd</span>(<span class="tp">Math</span>.<span class="mt">Abs</span>(dx),<span class="tp">Math</span>.<span class="mt">Abs</span>(dy)); dx/=g; dy/=g;
+            <span class="kw">if</span>(dx&lt;<span class="nm">0</span>){dx=-dx;dy=-dy;}<span class="kw">else if</span>(dx==<span class="nm">0</span>)dy=<span class="tp">Math</span>.<span class="mt">Abs</span>(dy);
+            cnt[(dx,dy)]=cnt.<span class="mt">GetValueOrDefault</span>((dx,dy))+<span class="nm">1</span>;
+        }
+        ans=<span class="tp">Math</span>.<span class="mt">Max</span>(ans,(cnt.Count&gt;<span class="nm">0</span>?cnt.Values.<span class="mt">Max</span>():<span class="nm">0</span>)+dup);
+    }
+    <span class="kw">return</span> ans;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> math <span class="kw">import</span> gcd
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+<span class="kw">def</span> <span class="mt">maxPoints</span>(points):
+    n = <span class="mt">len</span>(points)
+    <span class="kw">if</span> n &lt;= <span class="nm">2</span>: <span class="kw">return</span> n
+    ans = <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        cnt = defaultdict(<span class="kw">lambda</span>: <span class="nm">0</span>)
+        dup = <span class="nm">1</span>
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(i+<span class="nm">1</span>, n):
+            dx = points[j][<span class="nm">0</span>] - points[i][<span class="nm">0</span>]
+            dy = points[j][<span class="nm">1</span>] - points[i][<span class="nm">1</span>]
+            <span class="kw">if</span> dx == <span class="nm">0</span> <span class="kw">and</span> dy == <span class="nm">0</span>: dup += <span class="nm">1</span>; <span class="kw">continue</span>
+            g = <span class="mt">gcd</span>(<span class="mt">abs</span>(dx), <span class="mt">abs</span>(dy))
+            dx //= g; dy //= g
+            <span class="kw">if</span> dx &lt; <span class="nm">0</span>: dx, dy = -dx, -dy  <span class="cm"># normalize sign</span>
+            <span class="kw">elif</span> dx == <span class="nm">0</span>: dy = <span class="mt">abs</span>(dy)
+            cnt[(dx,dy)] += <span class="nm">1</span>
+        best = <span class="mt">max</span>(cnt.values(), default=<span class="nm">0</span>)
+        ans = <span class="mt">max</span>(ans, best + dup)
+    <span class="kw">return</span> ans</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP D: Advanced Graphs + Strings ═══════ -->
+<div class="section-heading">Group D — Advanced Graphs &amp; Strings (2 Problems)</div>
+
+<div class="group-label">Problem 9 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#847 — Shortest Path Visiting All Nodes</span>
+        <span class="diff diff-h">Hard</span>
+    </div>
+    <p>An undirected connected graph of <code>n</code> nodes. Return the length of the shortest path that visits every node. You may start and stop at any node, revisit nodes and reuse edges.</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h847')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's847')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h847">BFS with state = (currentNode, visitedMask). Start BFS from ALL nodes simultaneously (all nodes with their single-node mask). The first time a state with full mask is reached, that's the answer.</div>
+    <div class="sol-box" id="s847">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">ShortestPathLength</span>(<span class="kw">int</span>[][] graph) {
+    <span class="kw">int</span> n=graph.Length, full=(<span class="nm">1</span>&lt;&lt;n)-<span class="nm">1</span>;
+    <span class="kw">var</span> vis=<span class="kw">new</span> <span class="tp">HashSet</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span> nd,<span class="kw">int</span> mask,<span class="kw">int</span> dist)&gt;();
+    <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n;i++){vis.<span class="mt">Add</span>((i,<span class="nm">1</span>&lt;&lt;i));q.<span class="mt">Enqueue</span>((i,<span class="nm">1</span>&lt;&lt;i,<span class="nm">0</span>));}
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>) {
+        <span class="kw">var</span>(node,mask,dist)=q.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span>(<span class="kw">var</span> nb <span class="kw">in</span> graph[node]) {
+            <span class="kw">int</span> nm=mask|(<span class="nm">1</span>&lt;&lt;nb);
+            <span class="kw">if</span>(nm==full) <span class="kw">return</span> dist+<span class="nm">1</span>;
+            <span class="kw">if</span>(vis.<span class="mt">Add</span>((nb,nm))) q.<span class="mt">Enqueue</span>((nb,nm,dist+<span class="nm">1</span>));
+        }
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">shortestPathLength</span>(graph):
+    n = <span class="mt">len</span>(graph); full = (<span class="nm">1</span>&lt;&lt;n)-<span class="nm">1</span>
+    <span class="kw">if</span> full == <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
+    vis = <span class="mt">set</span>()
+    q = deque()
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        state = (i, <span class="nm">1</span>&lt;&lt;i)
+        vis.<span class="mt">add</span>(state); q.<span class="mt">append</span>((i, <span class="nm">1</span>&lt;&lt;i, <span class="nm">0</span>))
+    <span class="kw">while</span> q:
+        node, mask, dist = q.<span class="mt">popleft</span>()
+        <span class="kw">for</span> nb <span class="kw">in</span> graph[node]:
+            nm = mask | (<span class="nm">1</span>&lt;&lt;nb)
+            <span class="kw">if</span> nm == full: <span class="kw">return</span> dist+<span class="nm">1</span>
+            <span class="kw">if</span> (nb, nm) <span class="kw">not in</span> vis:
+                vis.<span class="mt">add</span>((nb, nm)); q.<span class="mt">append</span>((nb, nm, dist+<span class="nm">1</span>))
+    <span class="kw">return</span> -<span class="nm">1</span></pre></div>
+    </div>
+</div>
+
+<div class="group-label">Problem 10 of 10</div>
+<div class="problem-card">
+    <div class="prob-header">
+        <span class="prob-num">#1044 — Longest Duplicate Substring</span>
+        <span class="diff diff-h">Hard</span>
+    </div>
+    <p>Given a string <code>s</code>, return the longest substring that occurs at least twice. If no such substring exists, return empty string.</p>
+    <div class="toggle-row">
+        <button class="hint-btn" onclick="toggleBox(this, 'h1044')">💡 Hint</button>
+        <button class="sol-btn" onclick="toggleBox(this, 's1044')">📋 Solution</button>
+    </div>
+    <div class="hint-box" id="h1044">Binary search on length L. For each L, check if any substring of length L appears twice using rolling hash (Rabin-Karp). If a duplicate exists, try longer; else shorter.</div>
+    <div class="sol-box" id="s1044">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">LongestDupSubstring</span>(<span class="kw">string</span> s) {
+    <span class="kw">int</span> n=s.Length; <span class="kw">const long</span> MOD=<span class="nm">1_000_000_007</span>, BASE=<span class="nm">31</span>;
+    <span class="kw">string</span> <span class="mt">Check</span>(<span class="kw">int</span> L) {
+        <span class="kw">long</span> pw=<span class="nm">1</span>; <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;L-<span class="nm">1</span>;i++)pw=pw*BASE%MOD;
+        <span class="kw">long</span> h=<span class="nm">0</span>; <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;L;i++)h=(h*BASE+(s[i]-<span class="st">'a'</span>+<span class="nm">1</span>))%MOD;
+        <span class="kw">var</span> seen=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">long</span>,<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;{{h,<span class="kw">new</span>{<span class="nm">0</span>}}};
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">1</span>;i&lt;=n-L;i++){
+            h=(h-(s[i-<span class="nm">1</span>]-<span class="st">'a'</span>+<span class="nm">1</span>)*pw%MOD+MOD)*BASE%MOD;
+            h=(h+(s[i+L-<span class="nm">1</span>]-<span class="st">'a'</span>+<span class="nm">1</span>))%MOD;
+            <span class="kw">if</span>(seen.<span class="mt">TryGetValue</span>(h,<span class="kw">out var</span> lst))
+                <span class="kw">foreach</span>(<span class="kw">var</span> j <span class="kw">in</span> lst)
+                    <span class="kw">if</span>(s.<span class="mt">Substring</span>(i,L)==s.<span class="mt">Substring</span>(j,L))<span class="kw">return</span> s.<span class="mt">Substring</span>(i,L);
+            seen.<span class="mt">TryAdd</span>(h,<span class="kw">new</span>());seen[h].<span class="mt">Add</span>(i);
+        }
+        <span class="kw">return null</span>;
+    }
+    <span class="kw">int</span> lo=<span class="nm">1</span>,hi=n-<span class="nm">1</span>; <span class="kw">string</span> ans=<span class="st">""</span>;
+    <span class="kw">while</span>(lo&lt;=hi){<span class="kw">int</span> mid=(lo+hi)/<span class="nm">2</span>;<span class="kw">var</span> r=<span class="mt">Check</span>(mid);<span class="kw">if</span>(r!=<span class="kw">null</span>){ans=r;lo=mid+<span class="nm">1</span>;}else hi=mid-<span class="nm">1</span>;}
+    <span class="kw">return</span> ans;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">longestDupSubstring</span>(s):
+    n = <span class="mt">len</span>(s); A = [<span class="mt">ord</span>(c) - <span class="mt">ord</span>(<span class="st">'a'</span>) <span class="kw">for</span> c <span class="kw">in</span> s]
+    MOD, BASE = (<span class="nm">1</span>&lt;&lt;<span class="nm">61</span>)-<span class="nm">1</span>, <span class="nm">31</span>
+
+    <span class="kw">def</span> <span class="mt">has_dup</span>(L):
+        h = <span class="nm">0</span>; pw = <span class="mt">pow</span>(BASE, L, MOD)
+        seen = {}
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(L): h = (h * BASE + A[i]) % MOD
+        seen[h] = [<span class="nm">0</span>]
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n-L+<span class="nm">1</span>):
+            h = (h * BASE - A[i-<span class="nm">1</span>] * pw + A[i+L-<span class="nm">1</span>]) % MOD
+            <span class="kw">if</span> h <span class="kw">in</span> seen:
+                cur = s[i:i+L]
+                <span class="kw">if</span> <span class="mt">any</span>(s[j:j+L] == cur <span class="kw">for</span> j <span class="kw">in</span> seen[h]): <span class="kw">return</span> cur
+                seen[h].<span class="mt">append</span>(i)
+            <span class="kw">else</span>: seen[h] = [i]
+        <span class="kw">return</span> <span class="st">''</span>
+
+    lo, hi, ans = <span class="nm">1</span>, n-<span class="nm">1</span>, <span class="st">''</span>
+    <span class="kw">while</span> lo &lt;= hi:
+        mid = (lo + hi) // <span class="nm">2</span>
+        cand = <span class="mt">has_dup</span>(mid)
+        <span class="kw">if</span> cand: ans = cand; lo = mid + <span class="nm">1</span>
+        <span class="kw">else</span>: hi = mid - <span class="nm">1</span>
+    <span class="kw">return</span> ans</pre></div>
+    </div>
+</div>
+
+<hr>
+<h3>Phase 9 Complete! — What You've Mastered</h3>
+<ul>
+    <li><strong>Module 15</strong> — Advanced Graphs: Tarjan bridges, SCC (Kosaraju/Tarjan), Euler paths, Dijkstra/Bellman-Ford</li>
+    <li><strong>Module 16</strong> — String Algorithms: KMP, Z-Function, Rabin-Karp, Aho-Corasick, Suffix Arrays</li>
+    <li><strong>Module 17</strong> — Bit Manipulation, Advanced Math (CRT, Catalan, modular inverse), Computational Geometry</li>
+</ul>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17D Complete — Phase 9 Done!</button>
+<div class="toast" id="toast">🎉 Phase 9 complete! On to Phase 10!</div>
+    <script>var MODULE_ID = 'm17d';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

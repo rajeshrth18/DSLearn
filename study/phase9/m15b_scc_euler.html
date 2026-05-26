@@ -1,0 +1,484 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15B — SCC &amp; Euler Paths | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part B</h1>
+    <div class="tagline">Strongly Connected Components &amp; Euler Paths</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Kosaraju's Algorithm · Tarjan's SCC · Hierholzer's Algorithm · LeetCode #332 #753</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 15</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Module 15 — Advanced Graph Theory:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_advanced_graphs.html">Articulation Points &amp; Bridges</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — SCC &amp; Euler Paths<br>
+    ⬜ <strong>Part C</strong> — <a href="m15c_graph_practice.html">Graph Practice: 10 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
+    <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Strongly Connected Components <span>— What SCCs are and why they matter</span></li>
+        <li>Section 2 — Kosaraju's Algorithm <span>— Two-pass DFS, O(V+E)</span></li>
+        <li>Section 3 — Tarjan's SCC Algorithm <span>— One-pass DFS with stack</span></li>
+        <li>Section 4 — The Condensation Graph <span>— DAG of SCCs</span></li>
+        <li>Section 5 — Euler Paths &amp; Circuits <span>— Traversing every edge exactly once</span></li>
+        <li>Section 6 — Hierholzer's Algorithm <span>— O(E) Euler circuit construction</span></li>
+        <li>Section 7 — LeetCode Applications <span>— #332, #753, #2097</span></li>
+        <li>Section 8 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Strongly Connected Components</div>
+
+<p>In a <strong>directed</strong> graph, a <strong>Strongly Connected Component (SCC)</strong> is a maximal set of vertices such that every vertex in the set is reachable from every other vertex in the set.</p>
+
+<div class="diagram">EXAMPLE DIRECTED GRAPH:
+   0 → 1 → 2 → 3
+   ↑   ↓       ↓
+   └── 4       5 → 6
+               ↑
+               7
+
+SCCs:
+  {0, 1, 4} — 0→1→4→0 forms a cycle; all reachable from each other
+  {2}        — can reach 3,5,6 but nothing reaches back to 2
+  {3}        — isolated in its reach
+  {5, 7}     — 5→7? No... only {5} and {7} if no cycle
+  
+CORRECTED EXAMPLE (with cycles):
+  0 ⇄ 1 (bidirectional), 1→2→3→1 (triangle), 4 standalone
+  
+  SCC1 = {0, 1}   (0↔1)
+  SCC2 = {1, 2, 3} (1→2→3→1)
+  
+CONDENSATION: Replace each SCC with a single node.
+  The result is ALWAYS a DAG (directed acyclic graph).
+  This is the "meta-graph" or "condensation graph."
+  
+WHY SCCS MATTER:
+  - 2-SAT problem solutions
+  - Deadlock detection (circular dependencies)
+  - Compiler optimization (code motion)
+  - Web page ranking (PageRank groups SCCs)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Kosaraju's Algorithm</div>
+
+<div class="diagram">KOSARAJU'S ALGORITHM — Two DFS passes:
+
+PASS 1: Run DFS on ORIGINAL graph. Push nodes to stack in FINISH order.
+  (The last node to finish = the "source" SCC in condensation.)
+
+PASS 2: Transpose the graph (reverse all edges). 
+  Pop nodes from stack. For each unvisited node, run DFS on TRANSPOSE graph.
+  Each DFS tree in pass 2 = one SCC.
+
+WHY THIS WORKS:
+  The finish-order in pass 1 ensures we visit "source" SCCs first.
+  In the transposed graph, a DFS from a source SCC node can ONLY reach
+  nodes within the same SCC (edges to other SCCs are reversed).
+
+EXAMPLE:
+  Graph: 0→1→2→0, 1→3, 3→4→3 (3,4 form a cycle)
+
+  Pass 1 finish order (DFS from 0): [2, 0, 4, 3, 1] (stack top = 1 = last finished)
+  Wait — actual finish: depends on adjacency. Generally:
+    DFS: 0→1→2→0(visited)→3→4→3(visited), finish 4,3, back to 1, finish 1, finish 0, done
+    Stack bottom-to-top: [2, 4, 3, 1, 0]
+  
+  Pass 2 on TRANSPOSE (pop from stack = 0 first):
+    DFS from 0: can reach 0,1,2 in transpose → SCC1 = {0,1,2}
+    DFS from 3: can reach 3,4 → SCC2 = {3,4}
+
+COMPLEXITY: O(V + E) — two DFS passes</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">KosarajuSCC</span>
+{
+    <span class="kw">private int</span> n;
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj, radj;
+
+    <span class="kw">public</span> <span class="tp">KosarajuSCC</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">this</span>.n = n;
+        adj  = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+        radj = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+    }
+
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v) { adj[u].<span class="mt">Add</span>(v); radj[v].<span class="mt">Add</span>(u); }
+
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">FindSCCs</span>()
+    {
+        <span class="cm">// Pass 1: DFS on original, fill stack by finish time</span>
+        <span class="kw">bool</span>[] visited = <span class="kw">new bool</span>[n];
+        <span class="kw">var</span> stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+            <span class="kw">if</span> (!visited[i]) <span class="mt">Dfs1</span>(i, visited, stack);
+
+        <span class="cm">// Pass 2: DFS on transposed graph in stack order</span>
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(visited, <span class="kw">false</span>);
+        <span class="kw">var</span> sccs = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;();
+        <span class="kw">while</span> (stack.Count > <span class="nm">0</span>)
+        {
+            <span class="kw">int</span> v = stack.<span class="mt">Pop</span>();
+            <span class="kw">if</span> (!visited[v])
+            {
+                <span class="kw">var</span> scc = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+                <span class="mt">Dfs2</span>(v, visited, scc);
+                sccs.<span class="mt">Add</span>(scc);
+            }
+        }
+        <span class="kw">return</span> sccs;
+    }
+
+    <span class="kw">private void</span> <span class="mt">Dfs1</span>(<span class="kw">int</span> u, <span class="kw">bool</span>[] vis, <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack)
+    {
+        vis[u] = <span class="kw">true</span>;
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u]) <span class="kw">if</span> (!vis[v]) <span class="mt">Dfs1</span>(v, vis, stack);
+        stack.<span class="mt">Push</span>(u);  <span class="cm">// Push AFTER visiting all children</span>
+    }
+
+    <span class="kw">private void</span> <span class="mt">Dfs2</span>(<span class="kw">int</span> u, <span class="kw">bool</span>[] vis, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; scc)
+    {
+        vis[u] = <span class="kw">true</span>; scc.<span class="mt">Add</span>(u);
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> radj[u]) <span class="kw">if</span> (!vis[v]) <span class="mt">Dfs2</span>(v, vis, scc);
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">import</span> sys; sys.setrecursionlimit(<span class="nm">10</span>**<span class="nm">5</span>)
+
+<span class="kw">def</span> <span class="mt">kosaraju_scc</span>(n, edges):
+    adj  = defaultdict(<span class="tp">list</span>)
+    radj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> edges: adj[u].<span class="mt">append</span>(v); radj[v].<span class="mt">append</span>(u)
+
+    visited = [<span class="kw">False</span>] * n; order = []
+
+    <span class="kw">def</span> <span class="mt">dfs1</span>(u):
+        visited[u] = <span class="kw">True</span>
+        <span class="kw">for</span> v <span class="kw">in</span> adj[u]:
+            <span class="kw">if not</span> visited[v]: <span class="mt">dfs1</span>(v)
+        order.<span class="mt">append</span>(u)
+
+    <span class="kw">def</span> <span class="mt">dfs2</span>(u, scc):
+        visited[u] = <span class="kw">True</span>; scc.<span class="mt">append</span>(u)
+        <span class="kw">for</span> v <span class="kw">in</span> radj[u]:
+            <span class="kw">if not</span> visited[v]: <span class="mt">dfs2</span>(v, scc)
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if not</span> visited[i]: <span class="mt">dfs1</span>(i)
+
+    visited = [<span class="kw">False</span>] * n; sccs = []
+    <span class="kw">for</span> u <span class="kw">in</span> <span class="mt">reversed</span>(order):
+        <span class="kw">if not</span> visited[u]:
+            scc = []; <span class="mt">dfs2</span>(u, scc); sccs.<span class="mt">append</span>(scc)
+    <span class="kw">return</span> sccs</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Tarjan's SCC Algorithm (One-Pass)</div>
+
+<p>Tarjan's SCC uses the same <code>disc[]</code> and <code>low[]</code> arrays as the bridge algorithm, plus an explicit stack of nodes. When we detect that a node is an SCC root (<code>low[u] == disc[u]</code>), we pop everything off the stack until (and including) <code>u</code> — that's one SCC.</p>
+
+<div class="diagram">TARJAN'S SCC KEY IDEA:
+  A node u is an SCC ROOT if low[u] == disc[u].
+  Meaning: no back edge from u's subtree reaches ABOVE u.
+  When u finishes and low[u] == disc[u], pop the stack until u → that's one SCC.
+
+  Stack tracks "nodes potentially in the current SCC."
+  onStack[] prevents counting a node in multiple SCCs via cross edges.
+
+  low[u] = min(
+    disc[u],
+    low[v] for unvisited tree children v,
+    disc[w] for w in stack (NOT just any back edge — only if w is onStack!)
+  )
+  
+  If w is NOT on stack → w belongs to a completed SCC → don't update low[u] from it.</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">TarjanSCC</span>
+{
+    <span class="kw">private int</span> n, timer = <span class="nm">0</span>;
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj;
+    <span class="kw">private int</span>[] disc, low, sccId;
+    <span class="kw">private bool</span>[] onStack;
+    <span class="kw">private</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt; stack;
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; sccs;
+
+    <span class="kw">public</span> <span class="tp">TarjanSCC</span>(<span class="kw">int</span> n) {
+        <span class="kw">this</span>.n = n;
+        adj  = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">Select</span>(_ => <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;()).<span class="mt">ToArray</span>();
+        disc = <span class="kw">new int</span>[n]; low = <span class="kw">new int</span>[n]; sccId = <span class="kw">new int</span>[n];
+        onStack = <span class="kw">new bool</span>[n]; stack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">int</span>&gt;();
+        sccs = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;();
+        <span class="tp">Array</span>.<span class="mt">Fill</span>(disc, -<span class="nm">1</span>);
+    }
+    <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v) => adj[u].<span class="mt">Add</span>(v);
+
+    <span class="kw">public</span> (<span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; SCCs, <span class="kw">int</span>[] SccId) <span class="mt">FindSCCs</span>()
+    {
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) <span class="kw">if</span> (disc[i] == -<span class="nm">1</span>) <span class="mt">Dfs</span>(i);
+        <span class="kw">return</span> (sccs, sccId);
+    }
+
+    <span class="kw">private void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> u)
+    {
+        disc[u] = low[u] = timer++;
+        stack.<span class="mt">Push</span>(u); onStack[u] = <span class="kw">true</span>;
+
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> adj[u])
+        {
+            <span class="kw">if</span> (disc[v] == -<span class="nm">1</span>)
+            {
+                <span class="mt">Dfs</span>(v);
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], low[v]);
+            }
+            <span class="kw">else if</span> (onStack[v])
+                low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], disc[v]);
+        }
+
+        <span class="kw">if</span> (low[u] == disc[u])   <span class="cm">// u is an SCC root</span>
+        {
+            <span class="kw">var</span> scc = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+            <span class="kw">while</span> (<span class="kw">true</span>)
+            {
+                <span class="kw">int</span> w = stack.<span class="mt">Pop</span>(); onStack[w] = <span class="kw">false</span>;
+                scc.<span class="mt">Add</span>(w); sccId[w] = sccs.Count;
+                <span class="kw">if</span> (w == u) <span class="kw">break</span>;
+            }
+            sccs.<span class="mt">Add</span>(scc);
+        }
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">tarjan_scc</span>(n, edges):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> edges: adj[u].<span class="mt">append</span>(v)
+
+    disc = [-<span class="nm">1</span>] * n; low = [<span class="nm">0</span>] * n
+    on_stack = [<span class="kw">False</span>] * n; stack = []; timer = [<span class="nm">0</span>]; sccs = []
+
+    <span class="kw">def</span> <span class="mt">dfs</span>(u):
+        disc[u] = low[u] = timer[<span class="nm">0</span>]; timer[<span class="nm">0</span>] += <span class="nm">1</span>
+        stack.<span class="mt">append</span>(u); on_stack[u] = <span class="kw">True</span>
+        <span class="kw">for</span> v <span class="kw">in</span> adj[u]:
+            <span class="kw">if</span> disc[v] == -<span class="nm">1</span>: <span class="mt">dfs</span>(v); low[u] = <span class="mt">min</span>(low[u], low[v])
+            <span class="kw">elif</span> on_stack[v]: low[u] = <span class="mt">min</span>(low[u], disc[v])
+        <span class="kw">if</span> low[u] == disc[u]:
+            scc = []
+            <span class="kw">while True</span>:
+                w = stack.<span class="mt">pop</span>(); on_stack[w] = <span class="kw">False</span>; scc.<span class="mt">append</span>(w)
+                <span class="kw">if</span> w == u: <span class="kw">break</span>
+            sccs.<span class="mt">append</span>(scc)
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> disc[i] == -<span class="nm">1</span>: <span class="mt">dfs</span>(i)
+    <span class="kw">return</span> sccs</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Euler Paths &amp; Circuits</div>
+
+<div class="diagram">DEFINITIONS:
+  Euler CIRCUIT: A closed walk that visits every EDGE exactly once (starts = ends).
+  Euler PATH:    A walk that visits every EDGE exactly once (may start ≠ end).
+
+  EXISTENCE CONDITIONS:
+
+  UNDIRECTED GRAPH:
+    Euler Circuit exists iff:  graph is connected AND all vertices have EVEN degree.
+    Euler Path exists iff:     graph is connected AND exactly 2 vertices have ODD degree.
+                               (Start at one odd-degree vertex, end at the other.)
+
+  DIRECTED GRAPH:
+    Euler Circuit exists iff:  graph is strongly connected AND in-degree == out-degree for ALL vertices.
+    Euler Path exists iff:     graph is connected AND:
+      - Exactly one vertex with (out-degree - in-degree = 1)  [start]
+      - Exactly one vertex with (in-degree - out-degree = 1)  [end]
+      - All other vertices have in-degree == out-degree
+
+FAMOUS EXAMPLE: Königsberg Bridge Problem (1736, Euler)
+  7 bridges over Pregel River. Can you cross each bridge exactly once?
+  NO — 4 land masses all have odd degree. No Euler path exists.
+
+HIERHOLZER'S ALGORITHM: Find Euler circuit/path in O(E).
+  1. Start at a valid node (odd-degree for path, any for circuit).
+  2. Follow edges (using a stack), deleting used edges.
+  3. When stuck (no more edges from current node), output it.
+  4. Backtrack to last node with unused edges, continue.
+  Result: reversed output = Euler path/circuit.</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Hierholzer's Algorithm — Directed graph Euler path</span>
+<span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; <span class="mt">FindItinerary</span>(<span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; tickets)
+{
+    <span class="cm">// LeetCode #332 — tickets are edges, airports are nodes</span>
+    <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">SortedList</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> t <span class="kw">in</span> tickets)
+    {
+        <span class="kw">if</span> (!adj.<span class="mt">ContainsKey</span>(t[<span class="nm">0</span>])) adj[t[<span class="nm">0</span>]] = <span class="kw">new</span> <span class="tp">SortedList</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;(<span class="kw">new</span> <span class="tp">DupKeyComparer</span>());
+        adj[t[<span class="nm">0</span>]].<span class="mt">Add</span>(t[<span class="nm">1</span>], <span class="nm">0</span>);
+    }
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">LinkedList</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">var</span> stk = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="kw">string</span>&gt;();
+    stk.<span class="mt">Push</span>(<span class="st">"JFK"</span>);
+    <span class="kw">while</span> (stk.Count > <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> top = stk.<span class="mt">Peek</span>();
+        <span class="kw">if</span> (adj.<span class="mt">ContainsKey</span>(top) &amp;&amp; adj[top].Count > <span class="nm">0</span>)
+        {
+            <span class="kw">string</span> next = adj[top].<span class="mt">Keys</span>[<span class="nm">0</span>];
+            adj[top].<span class="mt">RemoveAt</span>(<span class="nm">0</span>);
+            stk.<span class="mt">Push</span>(next);
+        }
+        <span class="kw">else</span>
+        {
+            result.<span class="mt">AddFirst</span>(stk.<span class="mt">Pop</span>());  <span class="cm">// prepend to result when stuck</span>
+        }
+    }
+    <span class="kw">return</span> result.<span class="mt">ToList</span>();
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> heapq
+<span class="cm"># LeetCode #332 — Reconstruct Itinerary (Euler path in directed graph)</span>
+<span class="kw">def</span> <span class="mt">findItinerary</span>(tickets):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> <span class="mt">sorted</span>(tickets, reverse=<span class="kw">True</span>):  <span class="cm"># sort reverse for pop from back</span>
+        adj[u].<span class="mt">append</span>(v)
+
+    result = []; stack = [<span class="st">"JFK"</span>]
+    <span class="kw">while</span> stack:
+        top = stack[-<span class="nm">1</span>]
+        <span class="kw">if</span> adj[top]:
+            stack.<span class="mt">append</span>(adj[top].<span class="mt">pop</span>())  <span class="cm"># take next (smallest, was sorted reverse)</span>
+        <span class="kw">else</span>:
+            result.<span class="mt">append</span>(stack.<span class="mt">pop</span>())    <span class="cm"># stuck: add to result</span>
+    <span class="kw">return</span> result[::-<span class="nm">1</span>]                    <span class="cm"># reverse = correct order</span>
+
+<span class="cm"># Using heapq for guaranteed lexicographic order:</span>
+<span class="kw">def</span> <span class="mt">findItinerary_heap</span>(tickets):
+    adj = defaultdict(<span class="tp">list</span>)
+    <span class="kw">for</span> u, v <span class="kw">in</span> tickets: heapq.<span class="mt">heappush</span>(adj[u], v)
+    result = []; stack = [<span class="st">"JFK"</span>]
+    <span class="kw">while</span> stack:
+        <span class="kw">while</span> adj[stack[-<span class="nm">1</span>]]:
+            stack.<span class="mt">append</span>(heapq.<span class="mt">heappop</span>(adj[stack[-<span class="nm">1</span>]]))
+        result.<span class="mt">append</span>(stack.<span class="mt">pop</span>())
+    <span class="kw">return</span> result[::-<span class="nm">1</span>]</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — LeetCode Applications</div>
+
+<table>
+    <thead>
+        <tr><th>Problem</th><th>Graph Type</th><th>Algorithm</th><th>Key Insight</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>#332 Reconstruct Itinerary</td><td>Directed multigraph</td><td>Hierholzer (Euler path)</td><td class="g">Sort neighbors, use stack</td></tr>
+        <tr><td>#753 Cracking the Safe</td><td>De Bruijn graph</td><td>Hierholzer (Euler circuit)</td><td class="g">Nodes = (n-1)-char strings</td></tr>
+        <tr><td>#2097 Valid Arrangement of Pairs</td><td>Directed graph</td><td>Euler path (start = out-in=1)</td><td class="g">Find start node by degree</td></tr>
+        <tr><td>#684 Redundant Connection</td><td>Undirected</td><td>Union-Find (not SCC)</td><td class="o">Find the cycle-forming edge</td></tr>
+        <tr><td>#1557 Min Vertices to Reach All Nodes</td><td>Directed DAG</td><td>SCC condensation</td><td class="g">Nodes with in-degree=0 in DAG</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Euler Paths in Real Life:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Mail/garbage truck routing</strong> — traverse every street exactly once (Chinese Postman Problem)</li>
+        <li><strong>DNA sequencing</strong> — De Bruijn graphs + Euler paths reconstruct genome sequences</li>
+        <li><strong>Circuit board testing</strong> — testing probes traverse every connection once</li>
+        <li><strong>Lock combinations (LeetCode #753)</strong> — De Bruijn sequences visit every k-length combination</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: What is the condensation graph, and why is it always a DAG?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The <strong>condensation graph</strong> (or "meta-graph") is formed by replacing each SCC with a single supernode and drawing directed edges between supernodes when there's an edge between the SCCs in the original graph. It is always a DAG because: if two different SCCs had a cycle between them (SCC A → SCC B → SCC A), then all nodes in both SCCs would be in the same SCC by definition (every node can reach every other). Since SCCs are <em>maximal</em>, no two distinct SCCs can have a cycle between them. The condensation DAG is fundamental for topological sort of the original graph's strongly connected structure.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: In Kosaraju's algorithm, why do we reverse all edges for the second DFS pass?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">In the first DFS (original graph), we compute a finish-time ordering. The node that finishes LAST is in a "source SCC" — an SCC with no incoming edges from other SCCs in the condensation graph. In the second pass (reversed graph), starting a DFS from this source SCC node: in the reversed graph, the old "source" becomes a "sink" — edges that used to leave the SCC now point INTO the SCC in the reversed graph. So a DFS from the source node in the reversed graph stays trapped within the same SCC. This is why the second-pass DFS trees are exactly the SCCs.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: In Tarjan's SCC algorithm, why do we only update <code>low[u]</code> with <code>disc[v]</code> (not <code>low[v]</code>) for neighbors already on the stack?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">When v is already visited AND on the stack, the edge (u,v) is a back edge or cross edge within the current "open" DFS branch. We use <code>disc[v]</code> (not <code>low[v]</code>) because we want to know if u can reach v via this edge — v's discovery time tells us where v "is" in the DFS tree. Using <code>low[v]</code> here would be wrong: if v can reach some ancestor w via its own back edges, that doesn't mean u should inherit that reach (u might not be in the same SCC as v). The <code>disc[v]</code> update only propagates reachability along the actual edge (u→v), while the <code>low[v]</code> update (for unvisited v) propagates reachability through the DFS subtree.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: How do you determine if an Euler path exists in a directed graph, and where does it start?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For a directed graph to have an Euler path: (1) The graph must be weakly connected (connected if you ignore edge directions). (2) Exactly one vertex has out-degree − in-degree = 1 (this is the start). (3) Exactly one vertex has in-degree − out-degree = 1 (this is the end). (4) All other vertices have equal in-degree and out-degree. If ALL vertices have equal in/out degree AND the graph is strongly connected, it has an Euler CIRCUIT. To find the start node for an Euler path: find the unique vertex with out-degree − in-degree = 1. If no such vertex (circuit case), start anywhere. LeetCode #2097 uses exactly this: find start, then run Hierholzer's.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: Why does Hierholzer's algorithm use a stack and prepend to result (or reverse at end)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The algorithm works by following edges until stuck, then "outputting" the stuck node. When you get stuck at node v (no more edges), v should be the LAST node in the path up to that point. But you might backtrack to an earlier node and find more edges, extending the path further. The trick: nodes are added to result when stuck (post-order). The result built this way is the Euler path in REVERSE. Reversing at the end gives the correct order. The stack holds the current DFS path; when we pop (stuck), we prepend to the result list. This is equivalent to a recursive DFS where you output the current node AFTER all its neighbors are visited — a topological post-order for Euler paths.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15B Complete</button>
+<div class="toast" id="toast">✅ Module 15B marked complete! SCC &amp; Euler mastered!</div>
+    <script>var MODULE_ID = 'm15b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

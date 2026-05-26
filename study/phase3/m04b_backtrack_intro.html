@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4B — Backtracking Preview | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700;transition:all .2s}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+.toc{background:#fff;border-radius:12px;padding:22px 28px;margin:24px 0;border:1px solid #e0e0e0}
+.toc h2{font-size:1em;text-transform:uppercase;letter-spacing:2px;color:#7d3c98;margin-bottom:14px}
+.toc ol{padding-left:20px}.toc li{font-size:.9em;padding:4px 0;color:#444}.toc li span{color:#888;font-size:.88em}
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+h4{font-size:1em;color:#6c3483;margin:18px 0 8px;font-weight:700}
+p{margin:0 0 14px;color:#444}
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;transition:all .2s;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+.diagram{background:#1e1e1e;color:#4ec9b0;font-family:'Courier New',monospace;font-size:.86em;padding:20px 24px;border-radius:10px;border-left:4px solid #4ec9b0;margin:18px 0;overflow-x:auto;white-space:pre}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.warning{background:#fde8e8;border-left:4px solid #e74c3c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.realworld{background:#eaf4fb;border-left:4px solid #2980b9;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong,.warning strong,.realworld strong{display:block;margin-bottom:4px}
+table.cmplx{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88em}
+table.cmplx th{background:#2c3e50;color:#9cdcfe;padding:10px 14px;text-align:left}
+table.cmplx td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
+table.cmplx tr:nth-child(even) td{background:#f8f9fa}
+.qg{color:#27ae60;font-weight:700}.qo{color:#d68910;font-weight:700}.qr{color:#c0392b;font-weight:700}
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 20px;margin:14px 0}
+.quiz-q{font-weight:600;color:#2c3e50;margin-bottom:8px}
+.quiz-btn{background:#9b59b6;color:#fff;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:.84em;margin-top:6px}
+.quiz-a{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:10px;font-size:.9em;display:none}
+.quiz-a .ans-label{color:#27ae60;font-weight:700;margin-bottom:6px}
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+ul.content-list{padding-left:20px;margin-bottom:14px}
+ul.content-list li{padding:4px 0;color:#444}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 4 › Part B</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 4 — Part B</h1>
+  <div class="tagline">Backtracking Preview — Try, Fail, Undo, Try Again</div>
+  <div class="badges">
+    <span>⏱ Estimated: 1.5 Hours</span><span>🎯 Intermediate</span><span>💻 C# &amp; Python</span><span>📐 Phase 3 · Module 4B</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 4 — Recursion:</strong><br>
+  ✅ <strong>Part A</strong> — <a href="m04a_recursion.html">Recursion Fundamentals</a><br>
+  ▶ <strong>Part B</strong> — <em>You are here</em> — Backtracking Preview<br>
+  ⬜ <strong>Part C</strong> — <a href="m04c_recursion_practice.html">Practice: 12 Problems</a><br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase2/m03a_stacks.html">&larr; Module 3 &mdash; Stacks &amp; Queues</a>
+    <a href="../phase3/m05a_basic_sorts.html">Module 5 &mdash; Sorting &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="toc">
+  <h2>📚 Contents — Module 4B</h2>
+  <ol>
+    <li>What Is Backtracking? <span>— The decision tree metaphor</span></li>
+    <li>The Template: Choose → Explore → Unchoose <span>— The universal pattern</span></li>
+    <li>Example: Subset Generation <span>— All subsets of [1,2,3]</span></li>
+    <li>Example: Permutations <span>— All orderings of [1,2,3]</span></li>
+    <li>Example: Maze Solver <span>— Navigate a grid with backtracking</span></li>
+    <li>Pruning — Making Backtracking Faster <span>— Cut dead branches early</span></li>
+    <li>Complexity of Backtracking <span>— Why it can be exponential</span></li>
+    <li>Practice Questions</li>
+  </ol>
+</div>
+
+<h2 class="sec">Section 1 — What Is Backtracking?</h2>
+
+<h3>1.1 The Maze Analogy</h3>
+<p>Imagine navigating a maze. You start at the entrance. At each intersection you choose a direction. If you hit a dead end, you <strong>backtrack</strong> — walk back to the last intersection and try a different direction. You repeat this until you find the exit or confirm no exit exists.</p>
+<p><strong>Backtracking is a systematic way to try all possibilities by building solutions incrementally and abandoning (backtracking from) paths that cannot lead to a valid solution.</strong></p>
+
+<div class="note"><strong>📝 Backtracking vs Brute Force</strong>Brute force generates ALL possible solutions and then checks each. Backtracking is smarter — it checks validity <em>while building</em> and stops early when it detects a dead end. This is called <strong>pruning</strong>.</div>
+
+<h3>1.2 Where Backtracking Is Used</h3>
+<ul class="content-list">
+  <li>🧩 Solving Sudoku puzzles</li>
+  <li>♛ Placing N-Queens on a chessboard</li>
+  <li>🗺️ Finding all paths through a maze</li>
+  <li>📦 Generating all subsets and permutations</li>
+  <li>🎯 Crossword puzzle generation</li>
+  <li>🤖 Game tree search (chess, tic-tac-toe)</li>
+</ul>
+
+<h2 class="sec">Section 2 — The Universal Backtracking Template</h2>
+
+<h3>2.1 The Three-Step Pattern: Choose → Explore → Unchoose</h3>
+<p>Every backtracking solution follows this exact structure. Memorise it:</p>
+
+<div class="diagram">
+  function backtrack(state, choices):
+  ┌─────────────────────────────────────────────┐
+  │  IF state is a valid complete solution:      │
+  │      record/print/return the solution        │
+  │      return                                  │
+  │                                              │
+  │  FOR EACH choice in available choices:       │
+  │      1. CHOOSE: apply the choice to state    │
+  │      2. EXPLORE: recurse with new state      │
+  │      3. UNCHOOSE: undo the choice (backtrack)│
+  └─────────────────────────────────────────────┘
+  
+  Key insight: Step 3 (Unchoose) restores state exactly
+  as it was before step 1 — this is what makes it "back"tracking
+</div>
+
+<div class="tip"><strong>💡 The Unchoose Step Is Critical</strong>After exploring a choice, you MUST undo it. If you don't, the state carries "pollution" from previous paths into future paths, giving wrong results. This undo step is what distinguishes backtracking from regular DFS.</div>
+
+<h2 class="sec">Section 3 — Example: Generating All Subsets</h2>
+
+<h3>3.1 Understanding the Problem</h3>
+<p>Given [1, 2, 3], find all subsets: [], [1], [2], [3], [1,2], [1,3], [2,3], [1,2,3].<br>There are 2ⁿ subsets for n elements. At each position, we make a binary choice: <em>include or exclude</em>.</p>
+
+<div class="diagram">
+  Decision Tree for [1, 2, 3]:
+  
+                         []
+                   /            \
+             [1]                []
+            /   \             /    \
+        [1,2]  [1]          [2]    []
+        /  \   / \          / \    / \
+    [1,2,3][1,2][1,3][1] [2,3][2][3] []
+    
+  Left branch = INCLUDE the number
+  Right branch = EXCLUDE the number
+  Leaf nodes = complete subsets (8 total = 2^3)
+</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ─── Generate All Subsets using Backtracking ─────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">SubsetGenerator</span>
+{
+    <span class="kw">static</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; _results = <span class="kw">new</span>();
+
+    <span class="kw">static void</span> <span class="mt">GenerateSubsets</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> start, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; current)
+    {
+        <span class="cm">// Every state (at any point) IS a valid subset — record it</span>
+        _results.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(current));  <span class="cm">// copy current list</span>
+
+        <span class="cm">// Try including each remaining number</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = start; i &lt; nums.<span class="tp">Length</span>; i++)
+        {
+            <span class="cm">// 1. CHOOSE: add nums[i] to current subset</span>
+            current.<span class="mt">Add</span>(nums[i]);
+
+            <span class="cm">// 2. EXPLORE: recurse with next index</span>
+            <span class="mt">GenerateSubsets</span>(nums, i + <span class="nm">1</span>, current);
+
+            <span class="cm">// 3. UNCHOOSE: remove nums[i] (backtrack)</span>
+            current.<span class="mt">RemoveAt</span>(current.<span class="tp">Count</span> - <span class="nm">1</span>);
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] nums = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span> };
+        <span class="mt">GenerateSubsets</span>(nums, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;());
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Total subsets: {_results.Count}"</span>);  <span class="cm">// 8 = 2^3</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> subset <span class="kw">in</span> _results)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"["</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, subset) + <span class="st">"]"</span>);
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────────────────
+   Total subsets: 8
+   []
+   [1]
+   [1, 2]
+   [1, 2, 3]
+   [1, 3]
+   [2]
+   [2, 3]
+   [3]
+   ─────────────────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Generate All Subsets using Backtracking ─────────────────────────────────</span>
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">generate_subsets</span>(nums: List[<span class="tp">int</span>]) -&gt; List[List[<span class="tp">int</span>]]:
+    results = []
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>(start: <span class="tp">int</span>, current: List[<span class="tp">int</span>]):
+        <span class="cm"># Every state is a valid subset — record it</span>
+        results.<span class="mt">append</span>(current[:])   <span class="cm"># copy current list</span>
+
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(start, <span class="mt">len</span>(nums)):
+            current.<span class="mt">append</span>(nums[i])         <span class="cm"># 1. CHOOSE</span>
+            backtrack(i + <span class="nm">1</span>, current)         <span class="cm"># 2. EXPLORE</span>
+            current.<span class="mt">pop</span>()                     <span class="cm"># 3. UNCHOOSE</span>
+
+    backtrack(<span class="nm">0</span>, [])
+    <span class="kw">return</span> results
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    result = generate_subsets([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+    <span class="mt">print</span>(<span class="st">f"Total subsets: {len(result)}"</span>)  <span class="cm"># 8</span>
+    <span class="kw">for</span> subset <span class="kw">in</span> result:
+        <span class="mt">print</span>(subset)</pre>
+</div>
+
+<h2 class="sec">Section 4 — Example: Generating All Permutations</h2>
+
+<h3>4.1 The Problem</h3>
+<p>A permutation is an ordered arrangement. [1,2,3] has 3! = 6 permutations: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1].</p>
+<p>Strategy: at each position, try placing each unused number. Mark it as used, recurse, then unmark (backtrack).</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ─── Generate All Permutations using Backtracking ────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">PermutationGenerator</span>
+{
+    <span class="kw">static</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; _results = <span class="kw">new</span>();
+
+    <span class="kw">static void</span> <span class="mt">Permute</span>(<span class="kw">int</span>[] nums, <span class="kw">bool</span>[] used, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; current)
+    {
+        <span class="cm">// BASE CASE: used all numbers → complete permutation</span>
+        <span class="kw">if</span> (current.<span class="tp">Count</span> == nums.<span class="tp">Length</span>)
+        {
+            _results.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(current));
+            <span class="kw">return</span>;
+        }
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.<span class="tp">Length</span>; i++)
+        {
+            <span class="kw">if</span> (used[i]) <span class="kw">continue</span>;  <span class="cm">// skip already-used numbers</span>
+
+            <span class="cm">// 1. CHOOSE</span>
+            used[i] = <span class="kw">true</span>;
+            current.<span class="mt">Add</span>(nums[i]);
+
+            <span class="cm">// 2. EXPLORE</span>
+            <span class="mt">Permute</span>(nums, used, current);
+
+            <span class="cm">// 3. UNCHOOSE (backtrack)</span>
+            used[i] = <span class="kw">false</span>;
+            current.<span class="mt">RemoveAt</span>(current.<span class="tp">Count</span> - <span class="nm">1</span>);
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] nums = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span> };
+        <span class="mt">Permute</span>(nums, <span class="kw">new bool</span>[nums.<span class="tp">Length</span>], <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;());
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Total permutations: {_results.Count}"</span>);  <span class="cm">// 6 = 3!</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> perm <span class="kw">in</span> _results)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"["</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, perm) + <span class="st">"]"</span>);
+    }
+}
+
+<span class="cm">/* Output:
+   Total permutations: 6
+   [1, 2, 3]  [1, 3, 2]  [2, 1, 3]  [2, 3, 1]  [3, 1, 2]  [3, 2, 1] */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">permutations</span>(nums: List[<span class="tp">int</span>]) -&gt; List[List[<span class="tp">int</span>]]:
+    results = []
+    used = [<span class="kw">False</span>] * <span class="mt">len</span>(nums)
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>(current: List[<span class="tp">int</span>]):
+        <span class="kw">if</span> <span class="mt">len</span>(current) == <span class="mt">len</span>(nums):
+            results.<span class="mt">append</span>(current[:])
+            <span class="kw">return</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums)):
+            <span class="kw">if</span> used[i]: <span class="kw">continue</span>
+            used[i] = <span class="kw">True</span>              <span class="cm"># CHOOSE</span>
+            current.<span class="mt">append</span>(nums[i])
+            backtrack(current)             <span class="cm"># EXPLORE</span>
+            used[i] = <span class="kw">False</span>             <span class="cm"># UNCHOOSE</span>
+            current.<span class="mt">pop</span>()
+
+    backtrack([])
+    <span class="kw">return</span> results
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    result = permutations([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+    <span class="mt">print</span>(<span class="st">f"Total: {len(result)}"</span>)  <span class="cm"># 6</span>
+    <span class="kw">for</span> p <span class="kw">in</span> result: <span class="mt">print</span>(p)</pre>
+</div>
+
+<h2 class="sec">Section 5 — Example: Maze Solver</h2>
+
+<h3>5.1 The Problem</h3>
+<p>Navigate a grid from top-left (0,0) to bottom-right. Cells are either open (0) or walls (1). Find a path if one exists.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ─── Maze Solver using Backtracking ──────────────────────────────────────────
+// 0 = open path, 1 = wall, 2 = solution path (marked)</span>
+
+<span class="kw">class</span> <span class="tp">MazeSolver</span>
+{
+    <span class="kw">static bool</span> <span class="mt">Solve</span>(<span class="kw">int</span>[,] maze, <span class="kw">int</span> row, <span class="kw">int</span> col, <span class="tp">List</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; path)
+    {
+        <span class="kw">int</span> rows = maze.<span class="mt">GetLength</span>(<span class="nm">0</span>), cols = maze.<span class="mt">GetLength</span>(<span class="nm">1</span>);
+
+        <span class="cm">// BASE CASE: out of bounds or wall</span>
+        <span class="kw">if</span> (row &lt; <span class="nm">0</span> || row &gt;= rows || col &lt; <span class="nm">0</span> || col &gt;= cols) <span class="kw">return false</span>;
+        <span class="kw">if</span> (maze[row, col] == <span class="nm">1</span> || maze[row, col] == <span class="nm">2</span>) <span class="kw">return false</span>;
+
+        <span class="cm">// GOAL: reached bottom-right</span>
+        <span class="kw">if</span> (row == rows - <span class="nm">1</span> &amp;&amp; col == cols - <span class="nm">1</span>)
+        {
+            path.<span class="mt">Add</span>((row, col));
+            <span class="kw">return true</span>;
+        }
+
+        <span class="cm">// 1. CHOOSE: mark cell as visited</span>
+        maze[row, col] = <span class="nm">2</span>;
+        path.<span class="mt">Add</span>((row, col));
+
+        <span class="cm">// 2. EXPLORE: try all 4 directions</span>
+        <span class="kw">if</span> (<span class="mt">Solve</span>(maze, row+<span class="nm">1</span>, col, path) || <span class="cm">// down</span>
+            <span class="mt">Solve</span>(maze, row-<span class="nm">1</span>, col, path) || <span class="cm">// up</span>
+            <span class="mt">Solve</span>(maze, row, col+<span class="nm">1</span>, path) || <span class="cm">// right</span>
+            <span class="mt">Solve</span>(maze, row, col-<span class="nm">1</span>, path))   <span class="cm">// left</span>
+            <span class="kw">return true</span>;
+
+        <span class="cm">// 3. UNCHOOSE: dead end, unmark cell (backtrack)</span>
+        maze[row, col] = <span class="nm">0</span>;
+        path.<span class="mt">RemoveAt</span>(path.<span class="tp">Count</span> - <span class="nm">1</span>);
+        <span class="kw">return false</span>;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[,] maze = {
+            { <span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span> },
+            { <span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span> },
+            { <span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span> },
+            { <span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span> }
+        };
+
+        <span class="kw">var</span> path = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+        <span class="kw">bool</span> found = <span class="mt">Solve</span>(maze, <span class="nm">0</span>, <span class="nm">0</span>, path);
+
+        <span class="kw">if</span> (found)
+        {
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Path found:"</span>);
+            <span class="kw">foreach</span> (<span class="kw">var</span> (r,c) <span class="kw">in</span> path)
+                <span class="tp">Console</span>.<span class="mt">Write</span>($<span class="st">"({r},{c}) → "</span>);
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"EXIT"</span>);
+        }
+        <span class="kw">else</span> <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"No path exists"</span>);
+    }
+}
+
+<span class="cm">/* Output:
+   Path found:
+   (0,0) → (0,1) → (1,1) → (2,1) → (2,2) → (2,3) → (3,3) → EXIT */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List, Tuple, Optional
+
+<span class="kw">def</span> <span class="mt">solve_maze</span>(maze: List[List[<span class="tp">int</span>]]) -&gt; Optional[List[Tuple[<span class="tp">int</span>,<span class="tp">int</span>]]]:
+    rows, cols = <span class="mt">len</span>(maze), <span class="mt">len</span>(maze[<span class="nm">0</span>])
+    path = []
+
+    <span class="kw">def</span> <span class="mt">solve</span>(r: <span class="tp">int</span>, c: <span class="tp">int</span>) -&gt; <span class="tp">bool</span>:
+        <span class="kw">if not</span> (<span class="nm">0</span> &lt;= r &lt; rows <span class="kw">and</span> <span class="nm">0</span> &lt;= c &lt; cols): <span class="kw">return False</span>
+        <span class="kw">if</span> maze[r][c] != <span class="nm">0</span>: <span class="kw">return False</span>
+        <span class="kw">if</span> r == rows-<span class="nm">1</span> <span class="kw">and</span> c == cols-<span class="nm">1</span>:
+            path.<span class="mt">append</span>((r, c)); <span class="kw">return True</span>
+
+        maze[r][c] = <span class="nm">2</span>                  <span class="cm"># CHOOSE: mark visited</span>
+        path.<span class="mt">append</span>((r, c))
+
+        <span class="kw">if</span> (solve(r+<span class="nm">1</span>,c) <span class="kw">or</span> solve(r-<span class="nm">1</span>,c) <span class="kw">or</span>
+            solve(r,c+<span class="nm">1</span>) <span class="kw">or</span> solve(r,c-<span class="nm">1</span>)):
+            <span class="kw">return True</span>
+
+        maze[r][c] = <span class="nm">0</span>                  <span class="cm"># UNCHOOSE: backtrack</span>
+        path.<span class="mt">pop</span>()
+        <span class="kw">return False</span>
+
+    <span class="kw">return</span> path <span class="kw">if</span> solve(<span class="nm">0</span>, <span class="nm">0</span>) <span class="kw">else None</span>
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    maze = [[<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span>],[<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">1</span>,<span class="nm">0</span>],[<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">0</span>],[<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">0</span>]]
+    result = solve_maze(maze)
+    <span class="kw">if</span> result:
+        <span class="mt">print</span>(<span class="st">"Path:"</span>, <span class="st">" → "</span>.join(<span class="mt">str</span>(p) <span class="kw">for</span> p <span class="kw">in</span> result))</pre>
+</div>
+
+<h2 class="sec">Section 6 — Pruning: Making Backtracking Faster</h2>
+<p>Pruning means stopping early when you know a branch cannot lead to a valid solution. This can drastically reduce the search space from millions of paths to thousands.</p>
+
+<div class="note"><strong>📝 Pruning Example</strong>In N-Queens: before placing a queen, check if the position conflicts with any already-placed queen. If yes, skip this position immediately (prune) without exploring the subtree. N-Queens without pruning tries 4^8 ≈ 65,000 states. With pruning: only 92 valid arrangements needed to check.</div>
+
+<h2 class="sec">Section 7 — Complexity</h2>
+<table class="cmplx">
+  <thead><tr><th>Problem</th><th>Time</th><th>Space</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Subsets of n elements</td><td class="qr">O(2ⁿ)</td><td class="qo">O(n)</td><td>2 choices per element</td></tr>
+    <tr><td>Permutations of n elements</td><td class="qr">O(n!)</td><td class="qo">O(n)</td><td>n choices, then n-1, then n-2...</td></tr>
+    <tr><td>N-Queens (8x8)</td><td class="qo">O(n!)</td><td class="qo">O(n)</td><td>Pruning makes it much faster in practice</td></tr>
+    <tr><td>Maze (r×c grid)</td><td class="qr">O(4^(r×c))</td><td class="qo">O(r×c)</td><td>4 directions per cell; visited marking prevents re-visits</td></tr>
+  </tbody>
+</table>
+
+<div class="realworld">
+<strong>🌍 Backtracking in Real Systems</strong>
+<ul style="padding-left:18px;margin-top:6px">
+  <li>Compilers use backtracking in regex matching and parsing</li>
+  <li>Constraint-satisfaction problems (CSP) in AI use backtracking</li>
+  <li>SAT solvers (used in chip design, security) are sophisticated backtracking algorithms</li>
+  <li>Puzzle games like Sudoku solvers use backtracking</li>
+</ul>
+</div>
+
+<h2 class="sec">Section 8 — Practice Questions</h2>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q1: What are the three steps in the universal backtracking template?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Choose → Explore → Unchoose</div>
+    <p>Choose: apply a decision to the current state. Explore: recursively continue from the new state. Unchoose: undo the decision to restore state for the next option.</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q2: How many subsets does a set of n=4 elements have? What about n=10?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ n=4: 2⁴ = 16 subsets. n=10: 2¹⁰ = 1,024 subsets.</div>
+    <p>Each element is either included or excluded → 2 choices per element → 2ⁿ total subsets. This is why backtracking solutions for subsets are O(2ⁿ).</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q3: What is "pruning" in backtracking and why is it important?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Early termination of invalid branches</div>
+    <p>Pruning checks whether a partial solution can <em>possibly</em> lead to a valid complete solution. If not, the entire subtree is skipped without exploring it. This converts exponential worst-case into much more practical run times.</p>
+  </div>
+</div>
+
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">You've learned the backtracking template, subsets, permutations, and maze solving. Full backtracking coverage (N-Queens, Sudoku) is in Phase 9 Module 17.</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="m04c_recursion_practice.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part C — Practice: 12 Problems →</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm04b';
+(function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='✅ Completed!';b.disabled=true;showToast('✅ Module 4B marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='✅ Completed!';b.disabled=true;}}})();
+function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
+function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
+applyLang();
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='⚠️ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Answer':'💡 Show Answer';}
+let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

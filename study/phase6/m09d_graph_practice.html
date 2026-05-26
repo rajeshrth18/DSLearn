@@ -1,0 +1,925 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 9D — Graph Practice Problems | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 9 — Part D</h1>
+    <div class="tagline">Graph Practice Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">12 problems: BFS, DFS, cycle detection, topological sort, flood fill, and graph construction</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Mixed Difficulty</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 12 Problems</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 9 — Graph Fundamentals:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m09a_graph_theory.html">Graph Theory &amp; Representations</a><br>
+    ✅ <strong>Part B</strong> — <a href="m09b_bfs.html">Breadth-First Search (BFS)</a><br>
+    ✅ <strong>Part C</strong> — <a href="m09c_dfs.html">Depth-First Search (DFS)</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Practice: 12 Problems<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase5/m08a_hashing.html">&larr; Module 8 &mdash; Hashing</a>
+    <a href="../phase6/m10a_dijkstra.html">Module 10 &mdash; Advanced Graphs &rarr;</a>
+</div>
+
+<div class="section-heading">Problems Overview</div>
+<ul>
+    <li><strong>P1–P3:</strong> BFS fundamentals (traversal, shortest path, level tracking)</li>
+    <li><strong>P4–P6:</strong> DFS fundamentals (cycle detection, topo sort, connected components)</li>
+    <li><strong>P7–P9:</strong> Grid problems (islands, flood fill, shortest grid path)</li>
+    <li><strong>P10–P12:</strong> Classic interview problems (clone graph, word ladder, course schedule)</li>
+</ul>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════ P1 -->
+<div class="section-heading">BFS Problems</div>
+
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P1</span>
+        <span class="prob-title">BFS Level Order — Return level-by-level groups</span>
+        <span class="diff-badge diff-easy">Easy</span>
+    </div>
+    <p class="prob-desc">Given a graph as an adjacency list and a start vertex, return the vertices grouped by BFS level. Level 0 = [start], Level 1 = [direct neighbors], etc.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        graph = {A:[B,C], B:[A,D,E], C:[A,F], D:[B], E:[B], F:[C]}, start = "A"
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        [[A], [B, C], [D, E, F]]
+    </div>
+    <div class="hint"><strong>Hint:</strong> Track level by processing queue size at start of each level iteration.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Standard BFS with level grouping. At the start of each iteration, check how many nodes are currently in the queue — that is the count for the current level. Dequeue exactly that many nodes, add to the current level's list, and enqueue their unvisited neighbors. Each iteration of the outer while-loop processes one complete level.</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V) for queue and visited set</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">LevelOrder</span>(
+    <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; graph, <span class="kw">string</span> start)
+{
+    <span class="kw">var</span> result  = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt; { start };
+    <span class="kw">var</span> queue   = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">string</span>&gt;();
+    queue.<span class="mt">Enqueue</span>(start);
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> levelSize = queue.Count;  <span class="cm">// # nodes at current level</span>
+        <span class="kw">var</span> level = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; levelSize; i++)
+        {
+            <span class="kw">string</span> u = queue.<span class="mt">Dequeue</span>();
+            level.<span class="mt">Add</span>(u);
+            <span class="kw">foreach</span> (<span class="kw">var</span> v <span class="kw">in</span> graph.GetValueOrDefault(u, <span class="kw">new</span>()))
+                <span class="kw">if</span> (visited.<span class="mt">Add</span>(v)) queue.<span class="mt">Enqueue</span>(v);
+        }
+        result.<span class="mt">Add</span>(level);
+    }
+    <span class="kw">return</span> result;
+    <span class="cm">// Output: [[A], [B, C], [D, E, F]]</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">level_order</span>(graph, start):
+    result, visited = [], {start}
+    queue = deque([start])
+    <span class="kw">while</span> queue:
+        level_size = <span class="mt">len</span>(queue)
+        level = []
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(level_size):
+            u = queue.<span class="mt">popleft</span>()
+            level.<span class="mt">append</span>(u)
+            <span class="kw">for</span> v <span class="kw">in</span> graph.get(u, []):
+                <span class="kw">if</span> v <span class="kw">not in</span> visited:
+                    visited.<span class="mt">add</span>(v)
+                    queue.<span class="mt">append</span>(v)
+        result.<span class="mt">append</span>(level)
+    <span class="kw">return</span> result
+<span class="cm"># Output: [['A'], ['B', 'C'], ['D', 'E', 'F']]</span></pre>
+        </div>
+    </div>
+</div>
+
+<!-- P2 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P2</span>
+        <span class="prob-title">Shortest Path — BFS with path reconstruction</span>
+        <span class="diff-badge diff-easy">Easy</span>
+    </div>
+    <p class="prob-desc">Given an unweighted undirected graph and two vertices, return the shortest path between them as a list of vertices. Return an empty list if no path exists.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        graph = {1:[2,3], 2:[1,4], 3:[1,4], 4:[2,3,5], 5:[4]}, start=1, end=5
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        [1, 2, 4, 5]  or  [1, 3, 4, 5]  (both valid — length 4)
+    </div>
+    <div class="hint"><strong>Hint:</strong> Use a parent dictionary to track how each vertex was reached. Reconstruct by tracing parents backward from end to start.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Run BFS from start. For each vertex discovered, record its parent (the vertex that discovered it). When BFS reaches the end vertex, trace parent pointers from end back to start, building the path in reverse, then reverse it. If BFS exhausts without finding end, return empty list. The parent dictionary doubles as the visited set.</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V) for parent map and queue</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">ShortestPath</span>(
+    <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; graph, <span class="kw">int</span> start, <span class="kw">int</span> end)
+{
+    <span class="kw">if</span> (start == end) <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { start };
+    <span class="kw">var</span> parent = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; { [start] = -<span class="nm">1</span> };  <span class="cm">// -1 = no parent</span>
+    <span class="kw">var</span> queue  = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+    queue.<span class="mt">Enqueue</span>(start);
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">int</span> u = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> graph.GetValueOrDefault(u, <span class="kw">new</span>()))
+        {
+            <span class="kw">if</span> (parent.<span class="mt">ContainsKey</span>(v)) <span class="kw">continue</span>;
+            parent[v] = u;
+            <span class="kw">if</span> (v == end)
+            {
+                <span class="kw">var</span> path = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+                <span class="kw">for</span> (<span class="kw">int</span> cur = end; cur != -<span class="nm">1</span>; cur = parent[cur])
+                    path.<span class="mt">Insert</span>(<span class="nm">0</span>, cur);
+                <span class="kw">return</span> path;
+            }
+            queue.<span class="mt">Enqueue</span>(v);
+        }
+    }
+    <span class="kw">return new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();  <span class="cm">// unreachable</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">shortest_path</span>(graph, start, end):
+    <span class="kw">if</span> start == end: <span class="kw">return</span> [start]
+    parent = {start: <span class="kw">None</span>}
+    queue  = deque([start])
+    <span class="kw">while</span> queue:
+        u = queue.<span class="mt">popleft</span>()
+        <span class="kw">for</span> v <span class="kw">in</span> graph.get(u, []):
+            <span class="kw">if</span> v <span class="kw">in</span> parent: <span class="kw">continue</span>
+            parent[v] = u
+            <span class="kw">if</span> v == end:
+                path, cur = [], end
+                <span class="kw">while</span> cur <span class="kw">is not None</span>:
+                    path.<span class="mt">append</span>(cur); cur = parent[cur]
+                <span class="kw">return</span> path[::-<span class="nm">1</span>]
+            queue.<span class="mt">append</span>(v)
+    <span class="kw">return</span> []</pre>
+        </div>
+    </div>
+</div>
+
+<!-- P3 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P3</span>
+        <span class="prob-title">Rotting Oranges — Multi-source BFS</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">A grid contains fresh oranges (1), rotten oranges (2), and empty cells (0). Every minute, any fresh orange adjacent (4-directional) to a rotten orange also becomes rotten. Return the minimum number of minutes until all oranges are rotten, or -1 if impossible.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        [[2,1,1],[1,1,0],[0,1,1]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        4
+    </div>
+    <div class="hint"><strong>Hint:</strong> Multi-source BFS — enqueue ALL rotten oranges simultaneously at the start, then spread level by level. Count levels = minutes elapsed.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> This is a classic multi-source BFS. First, scan the grid to enqueue all initially rotten oranges and count total fresh oranges. Run BFS — each level represents one minute of rotting. When BFS ends, check if any fresh oranges remain. If fresh count > 0, return -1 (isolated fresh oranges that can never rot). Otherwise return the number of levels processed (minutes elapsed). The "level count" tracks elapsed time.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) for the queue</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static int</span> <span class="mt">OrangesRotting</span>(<span class="kw">int</span>[][] grid)
+{
+    <span class="kw">int</span> rows = grid.Length, cols = grid[<span class="nm">0</span>].Length, fresh = <span class="nm">0</span>, minutes = <span class="nm">0</span>;
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt;();
+    (<span class="kw">int</span> dr, <span class="kw">int</span> dc)[] dirs = { (-<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">0</span>,-<span class="nm">1</span>), (<span class="nm">0</span>,<span class="nm">1</span>) };
+
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; rows; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; cols; c++)
+        {
+            <span class="kw">if</span> (grid[r][c] == <span class="nm">2</span>) queue.<span class="mt">Enqueue</span>((r, c));  <span class="cm">// all rotten = sources</span>
+            <span class="kw">if</span> (grid[r][c] == <span class="nm">1</span>) fresh++;
+        }
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span> &amp;&amp; fresh &gt; <span class="nm">0</span>)
+    {
+        minutes++;
+        <span class="kw">int</span> size = queue.Count;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; size; i++)
+        {
+            <span class="kw">var</span> (r, c) = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">foreach</span> (<span class="kw">var</span> (dr, dc) <span class="kw">in</span> dirs)
+            {
+                <span class="kw">int</span> nr = r+dr, nc = c+dc;
+                <span class="kw">if</span> (nr &lt; <span class="nm">0</span> || nr &gt;= rows || nc &lt; <span class="nm">0</span> || nc &gt;= cols || grid[nr][nc] != <span class="nm">1</span>) <span class="kw">continue</span>;
+                grid[nr][nc] = <span class="nm">2</span>;  <span class="cm">// rot the fresh orange</span>
+                fresh--;
+                queue.<span class="mt">Enqueue</span>((nr, nc));
+            }
+        }
+    }
+    <span class="kw">return</span> fresh == <span class="nm">0</span> ? minutes : -<span class="nm">1</span>;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">oranges_rotting</span>(grid):
+    rows, cols = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>])
+    queue, fresh = deque(), <span class="nm">0</span>
+    <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows):
+        <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols):
+            <span class="kw">if</span> grid[r][c] == <span class="nm">2</span>: queue.<span class="mt">append</span>((r, c))
+            <span class="kw">elif</span> grid[r][c] == <span class="nm">1</span>: fresh += <span class="nm">1</span>
+    minutes, dirs = <span class="nm">0</span>, [(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,-<span class="nm">1</span>),(<span class="nm">0</span>,<span class="nm">1</span>)]
+    <span class="kw">while</span> queue <span class="kw">and</span> fresh > <span class="nm">0</span>:
+        minutes += <span class="nm">1</span>
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(queue)):
+            r, c = queue.<span class="mt">popleft</span>()
+            <span class="kw">for</span> dr, dc <span class="kw">in</span> dirs:
+                nr, nc = r+dr, c+dc
+                <span class="kw">if</span> <span class="nm">0</span> <= nr < rows <span class="kw">and</span> <span class="nm">0</span> <= nc < cols <span class="kw">and</span> grid[nr][nc] == <span class="nm">1</span>:
+                    grid[nr][nc] = <span class="nm">2</span>; fresh -= <span class="nm">1</span>; queue.<span class="mt">append</span>((nr, nc))
+    <span class="kw">return</span> minutes <span class="kw">if</span> fresh == <span class="nm">0</span> <span class="kw">else</span> -<span class="nm">1</span></pre>
+        </div>
+    </div>
+</div>
+
+<hr>
+<!-- ══════════════════════════════════════════════════════════════ DFS -->
+<div class="section-heading">DFS Problems</div>
+
+<!-- P4 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P4</span>
+        <span class="prob-title">Detect Cycle in Undirected Graph</span>
+        <span class="diff-badge diff-easy">Easy</span>
+    </div>
+    <p class="prob-desc">Given an undirected graph as an adjacency list, return true if the graph contains a cycle, false otherwise.</p>
+    <div class="io-box">
+        <div class="lbl">Input 1</div>
+        {1:[2,3], 2:[1,3], 3:[1,2]}  →  true  (triangle: 1-2-3-1)
+    </div>
+    <div class="io-box">
+        <div class="lbl">Input 2</div>
+        {1:[2], 2:[1,3], 3:[2]}  →  false  (path: 1-2-3)
+    </div>
+    <div class="hint"><strong>Hint:</strong> DFS back edge = cycle. If a neighbor is visited AND is not our direct parent, we found a cycle.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Run DFS from each unvisited vertex (handles disconnected graphs). Pass the parent vertex to each DFS call. For each neighbor, if it's unvisited, recurse. If it's visited and is NOT our parent, we found a back edge — a cycle exists. The "not parent" condition is crucial because undirected edges appear as A→B and B→A; the B→A direction should not falsely report a cycle.</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V) for visited set and recursion stack</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static bool</span> <span class="mt">HasCycle</span>(<span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; graph)
+{
+    <span class="kw">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">bool</span> <span class="mt">Dfs</span>(<span class="kw">int</span> v, <span class="kw">int</span> parent)
+    {
+        visited.<span class="mt">Add</span>(v);
+        <span class="kw">foreach</span> (<span class="kw">int</span> nb <span class="kw">in</span> graph.GetValueOrDefault(v, <span class="kw">new</span>()))
+        {
+            <span class="kw">if</span> (!visited.<span class="mt">Contains</span>(nb)) { <span class="kw">if</span> (<span class="mt">Dfs</span>(nb, v)) <span class="kw">return true</span>; }
+            <span class="kw">else if</span> (nb != parent) <span class="kw">return true</span>;  <span class="cm">// back edge = cycle</span>
+        }
+        <span class="kw">return false</span>;
+    }
+    <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> graph.Keys)
+        <span class="kw">if</span> (!visited.<span class="mt">Contains</span>(v) &amp;&amp; <span class="mt">Dfs</span>(v, -<span class="nm">1</span>)) <span class="kw">return true</span>;
+    <span class="kw">return false</span>;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">def</span> <span class="mt">has_cycle</span>(graph):
+    visited = <span class="mt">set</span>()
+    <span class="kw">def</span> <span class="mt">dfs</span>(v, parent):
+        visited.<span class="mt">add</span>(v)
+        <span class="kw">for</span> nb <span class="kw">in</span> graph.get(v, []):
+            <span class="kw">if</span> nb <span class="kw">not in</span> visited:
+                <span class="kw">if</span> <span class="mt">dfs</span>(nb, v): <span class="kw">return True</span>
+            <span class="kw">elif</span> nb != parent: <span class="kw">return True</span>
+        <span class="kw">return False</span>
+    <span class="kw">return any</span>(<span class="mt">dfs</span>(v, <span class="kw">None</span>) <span class="kw">for</span> v <span class="kw">in</span> graph <span class="kw">if</span> v <span class="kw">not in</span> visited)</pre>
+        </div>
+    </div>
+</div>
+
+<!-- P5 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P5</span>
+        <span class="prob-title">Course Schedule — Can you finish all courses?</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">There are <code>n</code> courses (0 to n-1). Given a list of prerequisites [a, b] meaning "b must be taken before a", determine if it's possible to finish all courses.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        n=4, prerequisites=[[1,0],[2,0],[3,1],[3,2]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        true  (order: 0→1→2→3  or  0→2→1→3)
+    </div>
+    <div class="hint"><strong>Hint:</strong> This is cycle detection in a directed graph. If the prerequisite graph has a cycle, it's impossible to finish all courses.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Build a directed graph where edge b→a means "take b before a". Then detect if this directed graph has a cycle using three-color DFS (WHITE/GRAY/BLACK). If any cycle exists, return false (impossible). No cycle = DAG = valid schedule exists. The three-color approach is required for directed graphs — the undirected "parent check" approach doesn't work here because edges are directional.</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) where V = n courses, E = prerequisites.Length &nbsp;|&nbsp; <strong>Space:</strong> O(V + E) for the graph + O(V) for color array</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs)
+{
+    <span class="kw">var</span> adj   = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+    <span class="kw">var</span> color = <span class="kw">new int</span>[n];  <span class="cm">// 0=white, 1=gray, 2=black</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> prereqs) adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]);  <span class="cm">// b→a edge</span>
+
+    <span class="kw">bool</span> <span class="mt">Dfs</span>(<span class="kw">int</span> v)
+    {
+        color[v] = <span class="nm">1</span>;  <span class="cm">// gray</span>
+        <span class="kw">foreach</span> (<span class="kw">int</span> nb <span class="kw">in</span> adj[v])
+        {
+            <span class="kw">if</span> (color[nb] == <span class="nm">1</span>) <span class="kw">return true</span>;   <span class="cm">// back edge = cycle</span>
+            <span class="kw">if</span> (color[nb] == <span class="nm">0</span> &amp;&amp; <span class="mt">Dfs</span>(nb)) <span class="kw">return true</span>;
+        }
+        color[v] = <span class="nm">2</span>;  <span class="cm">// black</span>
+        <span class="kw">return false</span>;
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+        <span class="kw">if</span> (color[i] == <span class="nm">0</span> &amp;&amp; <span class="mt">Dfs</span>(i)) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">def</span> <span class="mt">can_finish</span>(n, prereqs):
+    adj = [[] <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
+    <span class="kw">for</span> a, b <span class="kw">in</span> prereqs: adj[b].<span class="mt">append</span>(a)
+    color = [<span class="nm">0</span>] * n  <span class="cm"># 0=white, 1=gray, 2=black</span>
+    <span class="kw">def</span> <span class="mt">dfs</span>(v):
+        color[v] = <span class="nm">1</span>
+        <span class="kw">for</span> nb <span class="kw">in</span> adj[v]:
+            <span class="kw">if</span> color[nb] == <span class="nm">1</span>: <span class="kw">return True</span>
+            <span class="kw">if</span> color[nb] == <span class="nm">0</span> <span class="kw">and</span> <span class="mt">dfs</span>(nb): <span class="kw">return True</span>
+        color[v] = <span class="nm">2</span>
+        <span class="kw">return False</span>
+    <span class="kw">return not any</span>(<span class="mt">dfs</span>(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n) <span class="kw">if</span> color[i] == <span class="nm">0</span>)</pre>
+        </div>
+    </div>
+</div>
+
+<!-- P6 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P6</span>
+        <span class="prob-title">Course Schedule II — Return topological order</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">Same setup as P5, but instead of just returning true/false, return the order in which courses should be taken. Return an empty array if impossible.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        n=4, prerequisites=[[1,0],[2,0],[3,1],[3,2]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        [0, 1, 2, 3]  or  [0, 2, 1, 3]  (any valid topological order)
+    </div>
+    <div class="hint"><strong>Hint:</strong> Extend P5 — use DFS post-order. When a vertex is fully processed (all neighbors done), add it to the result. Reverse at end. Stop and return [] if cycle detected.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Extend the three-color DFS from P5. After processing all neighbors of a vertex (setting it to BLACK), append it to the result list (post-order). If we detect a cycle at any point, set a flag and stop. After all DFS calls, if no cycle, reverse the result list for correct topological order. This combines cycle detection and topological sort in one DFS pass.</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V + E)</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static int</span>[] <span class="mt">FindOrder</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs)
+{
+    <span class="kw">var</span> adj    = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+    <span class="kw">var</span> color  = <span class="kw">new int</span>[n];
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">bool</span> hasCycle = <span class="kw">false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> prereqs) adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]);
+
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> v)
+    {
+        <span class="kw">if</span> (hasCycle) <span class="kw">return</span>;
+        color[v] = <span class="nm">1</span>;
+        <span class="kw">foreach</span> (<span class="kw">int</span> nb <span class="kw">in</span> adj[v])
+        {
+            <span class="kw">if</span> (color[nb] == <span class="nm">1</span>) { hasCycle = <span class="kw">true</span>; <span class="kw">return</span>; }
+            <span class="kw">if</span> (color[nb] == <span class="nm">0</span>) <span class="mt">Dfs</span>(nb);
+        }
+        color[v] = <span class="nm">2</span>;
+        result.<span class="mt">Add</span>(v);  <span class="cm">// post-order</span>
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+        <span class="kw">if</span> (color[i] == <span class="nm">0</span>) <span class="mt">Dfs</span>(i);
+    <span class="kw">if</span> (hasCycle) <span class="kw">return</span> <span class="tp">Array</span>.<span class="mt">Empty</span>&lt;<span class="kw">int</span>&gt;();
+    result.<span class="mt">Reverse</span>();
+    <span class="kw">return</span> result.<span class="mt">ToArray</span>();
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">def</span> <span class="mt">find_order</span>(n, prereqs):
+    adj    = [[] <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
+    <span class="kw">for</span> a, b <span class="kw">in</span> prereqs: adj[b].<span class="mt">append</span>(a)
+    color, result, cycle = [<span class="nm">0</span>]*n, [], [<span class="kw">False</span>]
+    <span class="kw">def</span> <span class="mt">dfs</span>(v):
+        <span class="kw">if</span> cycle[<span class="nm">0</span>]: <span class="kw">return</span>
+        color[v] = <span class="nm">1</span>
+        <span class="kw">for</span> nb <span class="kw">in</span> adj[v]:
+            <span class="kw">if</span> color[nb] == <span class="nm">1</span>: cycle[<span class="nm">0</span>] = <span class="kw">True</span>; <span class="kw">return</span>
+            <span class="kw">if</span> color[nb] == <span class="nm">0</span>: <span class="mt">dfs</span>(nb)
+        color[v] = <span class="nm">2</span>
+        result.<span class="mt">append</span>(v)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> color[i] == <span class="nm">0</span>: <span class="mt">dfs</span>(i)
+    <span class="kw">return</span> [] <span class="kw">if</span> cycle[<span class="nm">0</span>] <span class="kw">else</span> result[::-<span class="nm">1</span>]</pre>
+        </div>
+    </div>
+</div>
+
+<hr>
+<div class="section-heading">Grid Problems</div>
+
+<!-- P7 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P7</span>
+        <span class="prob-title">Number of Islands — Count connected land regions</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">Given a 2D grid of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and formed by connecting adjacent lands horizontally or vertically.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        [["1","1","0","0"],["1","1","0","0"],["0","0","1","0"],["0","0","0","1"]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        3
+    </div>
+    <div class="hint"><strong>Hint:</strong> DFS flood fill. Each time you find '1', increment count and DFS-flood-fill the entire island (marking all connected '1's as visited).</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Iterate through every cell. When a '1' is found, increment the island count, then run DFS (flood fill) to mark all connected '1' cells as '2' (visited). DFS checks all 4 directions, marks valid '1' cells as '2', and recursively continues. After the DFS call, the entire island is marked. Continue scanning — next unvisited '1' is a new island.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) — each cell visited at most twice (once in scan, once in flood fill) &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) recursion stack worst case</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static int</span> <span class="mt">NumIslands</span>(<span class="kw">char</span>[][] grid)
+{
+    <span class="kw">int</span> count = <span class="nm">0</span>;
+    <span class="kw">void</span> <span class="mt">Fill</span>(<span class="kw">int</span> r, <span class="kw">int</span> c)
+    {
+        <span class="kw">if</span> (r &lt; <span class="nm">0</span> || r &gt;= grid.Length || c &lt; <span class="nm">0</span> || c &gt;= grid[<span class="nm">0</span>].Length || grid[r][c] != <span class="st">'1'</span>) <span class="kw">return</span>;
+        grid[r][c] = <span class="st">'2'</span>;
+        <span class="mt">Fill</span>(r-<span class="nm">1</span>,c); <span class="mt">Fill</span>(r+<span class="nm">1</span>,c); <span class="mt">Fill</span>(r,c-<span class="nm">1</span>); <span class="mt">Fill</span>(r,c+<span class="nm">1</span>);
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; grid.Length; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; grid[r].Length; c++)
+            <span class="kw">if</span> (grid[r][c] == <span class="st">'1'</span>) { count++; <span class="mt">Fill</span>(r, c); }
+    <span class="kw">return</span> count;  <span class="cm">// 3</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">def</span> <span class="mt">num_islands</span>(grid):
+    rows, cols, count = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>]), <span class="nm">0</span>
+    <span class="kw">def</span> <span class="mt">fill</span>(r, c):
+        <span class="kw">if not</span> (<span class="nm">0</span><=r<rows <span class="kw">and</span> <span class="nm">0</span><=c<cols) <span class="kw">or</span> grid[r][c]!= <span class="st">'1'</span>: <span class="kw">return</span>
+        grid[r][c] = <span class="st">'2'</span>
+        <span class="mt">fill</span>(r-<span class="nm">1</span>,c); <span class="mt">fill</span>(r+<span class="nm">1</span>,c); <span class="mt">fill</span>(r,c-<span class="nm">1</span>); <span class="mt">fill</span>(r,c+<span class="nm">1</span>)
+    <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows):
+        <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols):
+            <span class="kw">if</span> grid[r][c] == <span class="st">'1'</span>: count += <span class="nm">1</span>; <span class="mt">fill</span>(r, c)
+    <span class="kw">return</span> count  <span class="cm"># 3</span></pre>
+        </div>
+    </div>
+</div>
+
+<!-- P8 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P8</span>
+        <span class="prob-title">Max Area of Island</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">Same grid format as P7 but with integers (0/1). Find the maximum area (cell count) of any island. Return 0 if no islands exist.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        [[1,1,0,0],[0,1,0,0],[0,0,1,1],[0,0,0,1]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        3  (island at top-left: cells (0,0),(0,1),(1,1))
+    </div>
+    <div class="hint"><strong>Hint:</strong> Extend flood fill — return the size of each island from the recursive DFS. Take the max across all islands.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Same as Number of Islands, but the flood-fill DFS returns an integer — the area of the island it fills. Each recursive call returns 1 (for the current cell) plus the sum of areas returned by the four directional recursions. The main loop tracks the maximum area seen. Mark visited cells as 0 (or a separate value) to avoid revisiting.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) recursion stack</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static int</span> <span class="mt">MaxAreaOfIsland</span>(<span class="kw">int</span>[][] grid)
+{
+    <span class="kw">int</span> maxArea = <span class="nm">0</span>;
+    <span class="kw">int</span> <span class="mt">Fill</span>(<span class="kw">int</span> r, <span class="kw">int</span> c)
+    {
+        <span class="kw">if</span> (r &lt; <span class="nm">0</span> || r &gt;= grid.Length || c &lt; <span class="nm">0</span> || c &gt;= grid[<span class="nm">0</span>].Length || grid[r][c] != <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        grid[r][c] = <span class="nm">2</span>;  <span class="cm">// mark visited</span>
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">Fill</span>(r-<span class="nm">1</span>,c) + <span class="mt">Fill</span>(r+<span class="nm">1</span>,c) + <span class="mt">Fill</span>(r,c-<span class="nm">1</span>) + <span class="mt">Fill</span>(r,c+<span class="nm">1</span>);
+    }
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; grid.Length; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; grid[r].Length; c++)
+            <span class="kw">if</span> (grid[r][c] == <span class="nm">1</span>) maxArea = <span class="tp">Math</span>.<span class="mt">Max</span>(maxArea, <span class="mt">Fill</span>(r, c));
+    <span class="kw">return</span> maxArea;  <span class="cm">// 3</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">def</span> <span class="mt">max_area_of_island</span>(grid):
+    rows, cols = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>])
+    <span class="kw">def</span> <span class="mt">fill</span>(r, c):
+        <span class="kw">if not</span> (<span class="nm">0</span><=r<rows <span class="kw">and</span> <span class="nm">0</span><=c<cols) <span class="kw">or</span> grid[r][c] != <span class="nm">1</span>: <span class="kw">return</span> <span class="nm">0</span>
+        grid[r][c] = <span class="nm">2</span>
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">fill</span>(r-<span class="nm">1</span>,c) + <span class="mt">fill</span>(r+<span class="nm">1</span>,c) + <span class="mt">fill</span>(r,c-<span class="nm">1</span>) + <span class="mt">fill</span>(r,c+<span class="nm">1</span>)
+    <span class="kw">return</span> <span class="mt">max</span>((<span class="mt">fill</span>(r,c) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols) <span class="kw">if</span> grid[r][c]==<span class="nm">1</span>), default=<span class="nm">0</span>)</pre>
+        </div>
+    </div>
+</div>
+
+<!-- P9 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P9</span>
+        <span class="prob-title">Walls and Gates — BFS to fill distances</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">A grid has: -1 (wall/obstacle), 0 (gate), INF (2^31-1, empty room). Fill each empty room with the distance to the nearest gate. If unreachable, leave as INF.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        [[INF,-1,0,INF],[INF,INF,INF,-1],[INF,-1,INF,-1],[0,-1,INF,INF]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        [[3,-1,0,1],[2,2,1,-1],[1,-1,2,-1],[0,-1,3,4]]
+    </div>
+    <div class="hint"><strong>Hint:</strong> Multi-source BFS starting from all gates simultaneously. BFS naturally fills minimum distances level by level.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Multi-source BFS starting from all gate cells (value = 0) simultaneously. Enqueue all gates at the start. BFS spreads outward level by level. For each empty room (INF) reached, set its value to the current BFS level (distance from nearest gate). Walls (-1) and already-filled rooms are skipped. Because BFS is level-by-level, the first time each room is reached is always the minimum distance. This is more efficient than running BFS from each gate separately.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) — multi-source BFS visits each cell once &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols)</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static void</span> <span class="mt">WallsAndGates</span>(<span class="kw">int</span>[][] rooms)
+{
+    <span class="kw">const int</span> INF = <span class="kw">int</span>.MaxValue;
+    <span class="kw">int</span> rows = rooms.Length, cols = rooms[<span class="nm">0</span>].Length;
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt;();
+    (<span class="kw">int</span> dr, <span class="kw">int</span> dc)[] dirs = { (-<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">0</span>,-<span class="nm">1</span>), (<span class="nm">0</span>,<span class="nm">1</span>) };
+
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; rows; r++)
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; cols; c++)
+            <span class="kw">if</span> (rooms[r][c] == <span class="nm">0</span>) queue.<span class="mt">Enqueue</span>((r, c));
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> (r, c) = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span> (<span class="kw">var</span> (dr, dc) <span class="kw">in</span> dirs)
+        {
+            <span class="kw">int</span> nr = r+dr, nc = c+dc;
+            <span class="kw">if</span> (nr &lt; <span class="nm">0</span> || nr &gt;= rows || nc &lt; <span class="nm">0</span> || nc &gt;= cols || rooms[nr][nc] != INF) <span class="kw">continue</span>;
+            rooms[nr][nc] = rooms[r][c] + <span class="nm">1</span>;  <span class="cm">// distance = parent + 1</span>
+            queue.<span class="mt">Enqueue</span>((nr, nc));
+        }
+    }
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">walls_and_gates</span>(rooms):
+    INF = <span class="nm">2</span>**<span class="nm">31</span> - <span class="nm">1</span>
+    rows, cols = <span class="mt">len</span>(rooms), <span class="mt">len</span>(rooms[<span class="nm">0</span>])
+    queue = deque((r,c) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols) <span class="kw">if</span> rooms[r][c]==<span class="nm">0</span>)
+    dirs = [(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,-<span class="nm">1</span>),(<span class="nm">0</span>,<span class="nm">1</span>)]
+    <span class="kw">while</span> queue:
+        r, c = queue.<span class="mt">popleft</span>()
+        <span class="kw">for</span> dr, dc <span class="kw">in</span> dirs:
+            nr, nc = r+dr, c+dc
+            <span class="kw">if</span> <span class="nm">0</span><=nr<rows <span class="kw">and</span> <span class="nm">0</span><=nc<cols <span class="kw">and</span> rooms[nr][nc]==INF:
+                rooms[nr][nc] = rooms[r][c] + <span class="nm">1</span>
+                queue.<span class="mt">append</span>((nr, nc))</pre>
+        </div>
+    </div>
+</div>
+
+<hr>
+<div class="section-heading">Classic Interview Problems</div>
+
+<!-- P10 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P10</span>
+        <span class="prob-title">Clone Graph — Deep copy of a graph</span>
+        <span class="diff-badge diff-med">Medium</span>
+    </div>
+    <p class="prob-desc">Given a reference to a node in a connected undirected graph, return a deep copy of the graph. Each node contains a value and a list of neighbors.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        Node(1, neighbors=[Node(2), Node(4)]) → (graph: 1-2-3-4-1 cycle)
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        A new graph with same structure but all new node objects
+    </div>
+    <div class="hint"><strong>Hint:</strong> Use a HashMap to map original nodes to their clones. BFS/DFS traversal — when creating neighbors, check the map first to avoid creating duplicates.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Use BFS with a dictionary mapping each original node to its clone. Start by creating a clone of the source node. For each node dequeued, iterate over its neighbors. If a neighbor hasn't been cloned yet, create its clone and enqueue it. Either way, add the clone of the neighbor to the current node's cloned neighbors list. The dictionary ensures each node is cloned exactly once, preventing infinite loops in cyclic graphs.</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) — each node and edge processed once &nbsp;|&nbsp; <strong>Space:</strong> O(V) for the clone map and queue</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public class</span> <span class="tp">Node</span> {
+    <span class="kw">public int</span> val;
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Node</span>&gt; neighbors;
+    <span class="kw">public</span> <span class="mt">Node</span>(<span class="kw">int</span> v) { val = v; neighbors = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">Node</span>&gt;(); }
+}
+
+<span class="kw">public static</span> <span class="tp">Node</span>? <span class="mt">CloneGraph</span>(<span class="tp">Node</span>? node)
+{
+    <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return null</span>;
+    <span class="kw">var</span> clones = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">Node</span>, <span class="tp">Node</span>&gt;();
+    <span class="kw">var</span> queue  = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">Node</span>&gt;();
+    clones[node] = <span class="kw">new</span> <span class="tp">Node</span>(node.val);
+    queue.<span class="mt">Enqueue</span>(node);
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="tp">Node</span> curr = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">foreach</span> (<span class="tp">Node</span> nb <span class="kw">in</span> curr.neighbors)
+        {
+            <span class="kw">if</span> (!clones.<span class="mt">ContainsKey</span>(nb))
+            {
+                clones[nb] = <span class="kw">new</span> <span class="tp">Node</span>(nb.val);  <span class="cm">// clone new node</span>
+                queue.<span class="mt">Enqueue</span>(nb);
+            }
+            clones[curr].neighbors.<span class="mt">Add</span>(clones[nb]);  <span class="cm">// wire up neighbor</span>
+        }
+    }
+    <span class="kw">return</span> clones[node];
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">class</span> <span class="tp">Node</span>:
+    <span class="kw">def</span> __init__(<span class="tp">self</span>, val=<span class="nm">0</span>, neighbors=<span class="kw">None</span>):
+        <span class="tp">self</span>.val = val
+        <span class="tp">self</span>.neighbors = neighbors <span class="kw">or</span> []
+
+<span class="kw">def</span> <span class="mt">clone_graph</span>(node):
+    <span class="kw">if not</span> node: <span class="kw">return None</span>
+    clones = {node: <span class="tp">Node</span>(node.val)}
+    queue  = deque([node])
+    <span class="kw">while</span> queue:
+        curr = queue.<span class="mt">popleft</span>()
+        <span class="kw">for</span> nb <span class="kw">in</span> curr.neighbors:
+            <span class="kw">if</span> nb <span class="kw">not in</span> clones:
+                clones[nb] = <span class="tp">Node</span>(nb.val)
+                queue.<span class="mt">append</span>(nb)
+            clones[curr].neighbors.<span class="mt">append</span>(clones[nb])
+    <span class="kw">return</span> clones[node]</pre>
+        </div>
+    </div>
+</div>
+
+<!-- P11 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P11</span>
+        <span class="prob-title">Word Ladder — Transform one word to another</span>
+        <span class="diff-badge diff-hard">Hard</span>
+    </div>
+    <p class="prob-desc">Given a begin word, end word, and word list, find the minimum number of steps to transform beginWord into endWord, changing only one letter at a time. Each intermediate word must be in the word list.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        beginWord="hit", endWord="cog", wordList=["hot","dot","dog","lot","log","cog"]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        5  (hit→hot→dot→dog→cog)
+    </div>
+    <div class="hint"><strong>Hint:</strong> Model as BFS on an implicit graph — two words are "neighbors" if they differ by exactly one character. BFS finds the minimum transformation steps.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> BFS on an implicit word graph. Each word is a vertex; two words are connected if they differ by exactly one letter. Put wordList into a HashSet for O(1) lookups. Start BFS from beginWord with distance 1. At each step, try changing each position of the current word to each of 26 letters — if the result is in the word set, enqueue it. Remove words from the set when visited to avoid revisiting. If endWord is reached, return its distance. The key insight: don't pre-build the adjacency list — generate neighbors on-the-fly.</div>
+        <div class="complexity"><strong>Time:</strong> O(M² × N) where M = word length, N = wordList size — for each of N words, we try M positions × 26 letters = O(26M) = O(M) neighbors, each requiring O(M) string construction &nbsp;|&nbsp; <strong>Space:</strong> O(M × N)</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static int</span> <span class="mt">LadderLength</span>(<span class="kw">string</span> beginWord, <span class="kw">string</span> endWord, <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; wordList)
+{
+    <span class="kw">var</span> wordSet = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt;(wordList);
+    <span class="kw">if</span> (!wordSet.<span class="mt">Contains</span>(endWord)) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">var</span> queue = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">string</span> word, <span class="kw">int</span> dist)&gt;();
+    queue.<span class="mt">Enqueue</span>((beginWord, <span class="nm">1</span>));
+    wordSet.<span class="mt">Remove</span>(beginWord);
+
+    <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+    {
+        <span class="kw">var</span> (word, dist) = queue.<span class="mt">Dequeue</span>();
+        <span class="kw">char</span>[] arr = word.<span class="mt">ToCharArray</span>();
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; arr.Length; i++)
+        {
+            <span class="kw">char</span> orig = arr[i];
+            <span class="kw">for</span> (<span class="kw">char</span> c = <span class="st">'a'</span>; c &lt;= <span class="st">'z'</span>; c++)
+            {
+                arr[i] = c;
+                <span class="kw">string</span> next = <span class="kw">new string</span>(arr);
+                <span class="kw">if</span> (next == endWord) <span class="kw">return</span> dist + <span class="nm">1</span>;
+                <span class="kw">if</span> (wordSet.<span class="mt">Contains</span>(next))
+                {
+                    wordSet.<span class="mt">Remove</span>(next);  <span class="cm">// remove to avoid revisiting</span>
+                    queue.<span class="mt">Enqueue</span>((next, dist + <span class="nm">1</span>));
+                }
+            }
+            arr[i] = orig;  <span class="cm">// restore original character</span>
+        }
+    }
+    <span class="kw">return</span> <span class="nm">0</span>;  <span class="cm">// not reachable</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">import</span> string
+
+<span class="kw">def</span> <span class="mt">ladder_length</span>(begin_word, end_word, word_list):
+    word_set = <span class="mt">set</span>(word_list)
+    <span class="kw">if</span> end_word <span class="kw">not in</span> word_set: <span class="kw">return</span> <span class="nm">0</span>
+    queue = deque([(begin_word, <span class="nm">1</span>)])
+    word_set.<span class="mt">discard</span>(begin_word)
+    <span class="kw">while</span> queue:
+        word, dist = queue.<span class="mt">popleft</span>()
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(word)):
+            <span class="kw">for</span> c <span class="kw">in</span> string.ascii_lowercase:
+                nw = word[:i] + c + word[i+<span class="nm">1</span>:]
+                <span class="kw">if</span> nw == end_word: <span class="kw">return</span> dist + <span class="nm">1</span>
+                <span class="kw">if</span> nw <span class="kw">in</span> word_set:
+                    word_set.<span class="mt">remove</span>(nw)
+                    queue.<span class="mt">append</span>((nw, dist+<span class="nm">1</span>))
+    <span class="kw">return</span> <span class="nm">0</span></pre>
+        </div>
+    </div>
+</div>
+
+<!-- P12 -->
+<div class="prob-card">
+    <div class="prob-header">
+        <span class="prob-num">P12</span>
+        <span class="prob-title">Pacific Atlantic Water Flow</span>
+        <span class="diff-badge diff-hard">Hard</span>
+    </div>
+    <p class="prob-desc">A rectangular grid represents terrain heights. Rain water can flow from a cell to an adjacent cell if the adjacent cell's height is ≤ current cell's height. The Pacific Ocean borders the top/left edges; Atlantic borders the bottom/right edges. Find all cells from which water can flow to BOTH oceans.</p>
+    <div class="io-box">
+        <div class="lbl">Input</div>
+        heights=[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
+    </div>
+    <div class="io-box">
+        <div class="lbl">Expected Output</div>
+        [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
+    </div>
+    <div class="hint"><strong>Hint:</strong> Reverse-BFS from each ocean's border. Find all cells reachable from Pacific (flowing backward = going uphill). Do same for Atlantic. The answer = intersection of both sets.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+    <div class="sol">
+        <div class="approach"><strong>Approach:</strong> Instead of simulating water flowing from each cell (expensive), reverse the problem: BFS from ocean borders going "uphill." Start multi-source BFS from all Pacific border cells (top row + left column) — expand to any neighbor with height ≥ current (water can flow from neighbor down to current, so neighbor CAN reach this ocean). Do the same starting from all Atlantic border cells (bottom row + right column). The answer is the intersection of cells reachable from both BFS runs. This elegant reversal turns an O(V²) problem into O(V+E).</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) — two BFS passes, each visiting each cell once &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) for the two visited sets</div>
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre><span class="kw">public static</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">PacificAtlantic</span>(<span class="kw">int</span>[][] h)
+{
+    <span class="kw">int</span> rows = h.Length, cols = h[<span class="nm">0</span>].Length;
+    (\<span class="kw">int</span> dr, <span class="kw">int</span> dc)[] dirs = { (-<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">1</span>,<span class="nm">0</span>), (<span class="nm">0</span>,-<span class="nm">1</span>), (<span class="nm">0</span>,<span class="nm">1</span>) };
+
+    <span class="tp">HashSet</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; <span class="mt">Bfs</span>(<span class="tp">IEnumerable</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; seeds)
+    {
+        <span class="kw">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+        <span class="kw">var</span> queue   = <span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;();
+        <span class="kw">foreach</span> (<span class="kw">var</span> s <span class="kw">in</span> seeds) { visited.<span class="mt">Add</span>(s); queue.<span class="mt">Enqueue</span>(s); }
+        <span class="kw">while</span> (queue.Count &gt; <span class="nm">0</span>)
+        {
+            <span class="kw">var</span> (r, c) = queue.<span class="mt">Dequeue</span>();
+            <span class="kw">foreach</span> (<span class="kw">var</span> (dr, dc) <span class="kw">in</span> dirs)
+            {
+                <span class="kw">int</span> nr = r+dr, nc = c+dc;
+                <span class="kw">if</span> (nr&lt;<span class="nm">0</span>||nr&gt;=rows||nc&lt;<span class="nm">0</span>||nc&gt;=cols||visited.<span class="mt">Contains</span>((nr,nc))) <span class="kw">continue</span>;
+                <span class="kw">if</span> (h[nr][nc] &lt; h[r][c]) <span class="kw">continue</span>;  <span class="cm">// can't flow uphill (reverse BFS)</span>
+                visited.<span class="mt">Add</span>((nr,nc)); queue.<span class="mt">Enqueue</span>((nr,nc));
+            }
+        }
+        <span class="kw">return</span> visited;
+    }
+
+    <span class="kw">var</span> pacSeeds = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,rows).<span class="mt">Select</span>(r=&gt;(r,<span class="nm">0</span>))
+                 .<span class="mt">Concat</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,cols).<span class="mt">Select</span>(c=&gt;(<span class="nm">0</span>,c)));
+    <span class="kw">var</span> atlSeeds = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,rows).<span class="mt">Select</span>(r=&gt;(r,cols-<span class="nm">1</span>))
+                 .<span class="mt">Concat</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,cols).<span class="mt">Select</span>(c=&gt;(rows-<span class="nm">1</span>,c)));
+
+    <span class="kw">var</span> pac = <span class="mt">Bfs</span>(pacSeeds);
+    <span class="kw">var</span> atl = <span class="mt">Bfs</span>(atlSeeds);
+    <span class="kw">return</span> pac.<span class="mt">Where</span>(p =&gt; atl.<span class="mt">Contains</span>(p))
+              .<span class="mt">Select</span>(p =&gt; (<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;)<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { p.Item1, p.Item2 })
+              .<span class="mt">ToList</span>();
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+        <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">pacific_atlantic</span>(heights):
+    rows, cols = <span class="mt">len</span>(heights), <span class="mt">len</span>(heights[<span class="nm">0</span>])
+    dirs = [(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,-<span class="nm">1</span>),(<span class="nm">0</span>,<span class="nm">1</span>)]
+
+    <span class="kw">def</span> <span class="mt">bfs</span>(seeds):
+        visited = <span class="mt">set</span>(seeds)
+        queue   = deque(seeds)
+        <span class="kw">while</span> queue:
+            r, c = queue.<span class="mt">popleft</span>()
+            <span class="kw">for</span> dr, dc <span class="kw">in</span> dirs:
+                nr, nc = r+dr, c+dc
+                <span class="kw">if</span> (<span class="nm">0</span><=nr<rows <span class="kw">and</span> <span class="nm">0</span><=nc<cols <span class="kw">and</span>
+                    (nr,nc) <span class="kw">not in</span> visited <span class="kw">and</span> heights[nr][nc] >= heights[r][c]):
+                    visited.<span class="mt">add</span>((nr,nc)); queue.<span class="mt">append</span>((nr,nc))
+        <span class="kw">return</span> visited
+
+    pac_seeds = [(r,<span class="nm">0</span>) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows)] + [(<span class="nm">0</span>,c) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols)]
+    atl_seeds = [(r,cols-<span class="nm">1</span>) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows)] + [(rows-<span class="nm">1</span>,c) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols)]
+    pac, atl  = <span class="mt">bfs</span>(pac_seeds), <span class="mt">bfs</span>(atl_seeds)
+    <span class="kw">return</span> [<span class="mt">list</span>(cell) <span class="kw">for</span> cell <span class="kw">in</span> pac & atl]</pre>
+        </div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 9D Complete</button>
+<div class="toast" id="toast">✅ Module 9D marked complete!</div>
+    <script>var MODULE_ID = 'm09d';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

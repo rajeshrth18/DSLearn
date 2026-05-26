@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15B — Rabin-Karp &amp; Z-Algorithm | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part B</h1>
+    <div class="tagline">Rabin-Karp &amp; Z-Algorithm</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Rolling hashes · Z-array prefix matching · Multiple pattern search</p>
+    <div class="badges">
+        <span>⏱ Estimated: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 15 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Rabin-Karp &amp; Z-Algorithm<br>
+    ⬜ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
+    <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Rabin-Karp: Rolling Hash</div>
+
+<p><strong>Rabin-Karp</strong> uses hashing to speed up pattern matching. Instead of comparing characters
+one by one, it computes a hash of the pattern and slides a <em>rolling window</em> of the same length
+across the text, comparing hashes. Only when hashes match do we verify character-by-character.</p>
+
+<div class="diagram">ROLLING HASH — Text: "abcabc", Pattern: "cab" (m=3)
+
+Hash("cab") = hash_value
+
+Window 1: "abc"  → compute hash → compare with pattern hash
+Window 2: "bca"  → ROLL: subtract 'a', shift, add 'a' (O(1) update!)
+Window 3: "cab"  → ROLL: subtract 'b', shift, add 'b'
+                → hash matches! → verify "cab" == "cab" → FOUND at index 2
+Window 4: "abc"  → roll...
+
+ROLLING FORMULA:
+  hash(s[i+1..i+m]) = (hash(s[i..i+m-1]) - s[i] * base^(m-1)) * base + s[i+m]
+  
+  Using modular arithmetic to prevent overflow:
+  hash = hash * base + char_value  (when building)
+  hash = (hash - leading_char * pow_mod) * base + new_char  (when rolling)</div>
+
+<h3>1.1 — Why Hash? Why Rolling?</h3>
+<ul>
+    <li><strong>Average case O(n + m)</strong>: Hash comparison is O(1), only do O(m) comparison on match</li>
+    <li><strong>Worst case O(n·m)</strong>: If all hash values match (hash collision), we verify each time</li>
+    <li><strong>Ideal for multiple patterns</strong>: Hash all patterns, check each window against the set</li>
+    <li><strong>Rolling</strong>: Update hash in O(1) by removing leading char and adding trailing char</li>
+</ul>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">RabinKarp</span>(<span class="kw">string</span> text, <span class="kw">string</span> pattern)
+{
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">int</span> n = text.Length, m = pattern.Length;
+    <span class="kw">if</span> (m &gt; n) <span class="kw">return</span> result;
+
+    <span class="kw">const long</span> BASE = <span class="nm">31</span>, MOD = <span class="nm">1_000_000_007</span>;
+
+    <span class="cm">// Compute BASE^(m-1) % MOD</span>
+    <span class="kw">long</span> pow = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; m - <span class="nm">1</span>; i++) pow = pow * BASE % MOD;
+
+    <span class="cm">// Hash function: map 'a'→1, 'b'→2, ... (avoid 0 for empty prefix)</span>
+    <span class="kw">static long</span> <span class="mt">CharVal</span>(<span class="kw">char</span> c) =&gt; c - <span class="st">'a'</span> + <span class="nm">1</span>;
+
+    <span class="kw">long</span> patHash = <span class="nm">0</span>, winHash = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; m; i++)
+    {
+        patHash = (patHash * BASE + <span class="mt">CharVal</span>(pattern[i])) % MOD;
+        winHash = (winHash * BASE + <span class="mt">CharVal</span>(text[i])) % MOD;
+    }
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt;= n - m; i++)
+    {
+        <span class="kw">if</span> (winHash == patHash)
+        {
+            <span class="cm">// Verify to avoid false positive (hash collision)</span>
+            <span class="kw">if</span> (text.<span class="mt">Substring</span>(i, m) == pattern)
+                result.<span class="mt">Add</span>(i);
+        }
+        <span class="kw">if</span> (i &lt; n - m)
+        {
+            <span class="cm">// Roll the window: remove leading, add trailing</span>
+            winHash = (winHash - <span class="mt">CharVal</span>(text[i]) * pow % MOD + MOD) % MOD;
+            winHash = (winHash * BASE + <span class="mt">CharVal</span>(text[i + m])) % MOD;
+        }
+    }
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> found = <span class="mt">RabinKarp</span>(<span class="st">"abcabcabc"</span>, <span class="st">"abc"</span>);
+<span class="cm">// Output: [0, 3, 6]</span></pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">rabin_karp</span>(text: <span class="tp">str</span>, pattern: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+    n, m = <span class="mt">len</span>(text), <span class="mt">len</span>(pattern)
+    <span class="kw">if</span> m &gt; n:
+        <span class="kw">return</span> []
+    BASE, MOD = <span class="nm">31</span>, <span class="nm">10</span>**<span class="nm">9</span> + <span class="nm">7</span>
+    char_val = <span class="kw">lambda</span> c: <span class="mt">ord</span>(c) - <span class="mt">ord</span>(<span class="st">'a'</span>) + <span class="nm">1</span>
+
+    <span class="cm"># Compute BASE^(m-1) mod MOD</span>
+    pow_val = pow(BASE, m - <span class="nm">1</span>, MOD)
+
+    pat_hash = win_hash = <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(m):
+        pat_hash = (pat_hash * BASE + <span class="mt">char_val</span>(pattern[i])) % MOD
+        win_hash = (win_hash * BASE + <span class="mt">char_val</span>(text[i])) % MOD
+
+    result = []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n - m + <span class="nm">1</span>):
+        <span class="kw">if</span> win_hash == pat_hash <span class="kw">and</span> text[i:i+m] == pattern:
+            result.<span class="mt">append</span>(i)
+        <span class="kw">if</span> i &lt; n - m:
+            win_hash = (win_hash - <span class="mt">char_val</span>(text[i]) * pow_val) % MOD
+            win_hash = (win_hash * BASE + <span class="mt">char_val</span>(text[i + m])) % MOD
+    <span class="kw">return</span> result
+
+print(<span class="mt">rabin_karp</span>(<span class="st">"abcabcabc"</span>, <span class="st">"abc"</span>))  <span class="cm"># [0, 3, 6]</span></pre>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Z-Algorithm</div>
+
+<p>The <strong>Z-algorithm</strong> computes the <strong>Z-array</strong> for a string <code>s</code>.
+<code>Z[i]</code> = length of the longest substring starting at <code>s[i]</code> that is also a
+prefix of <code>s</code>. By definition, <code>Z[0]</code> is undefined (or the full string length).</p>
+
+<div class="diagram">String: "aabxaab"
+Index:   0 1 2 3 4 5 6
+
+Z[0] = 7 (by convention, entire string)
+Z[1] = 1  → "a" matches prefix "a" (next char 'b' ≠ 'a')
+Z[2] = 0  → "b" ≠ 'a'
+Z[3] = 0  → "x" ≠ 'a'
+Z[4] = 3  → "aab" matches prefix "aab" (s[4..6] = "aab" = s[0..2])
+Z[5] = 1  → "ab" → 'a' matches, 'b' ≠ 'b'... wait "ab" vs prefix "aab" → 'a'='a', 'b'='a'? No → Z[5]=1
+Z[6] = 0  → "b" ≠ 'a'
+
+Z = [7, 1, 0, 0, 3, 1, 0]
+
+Pattern matching trick: concat "pattern#text", compute Z.
+Any Z[i] == len(pattern) at position > len(pattern)+1 → match found!</div>
+
+<h3>2.1 — Building the Z-Array</h3>
+<p>The Z-algorithm maintains a window <code>[l, r]</code> — the rightmost Z-box (a substring that matches
+a prefix). This allows O(n) construction.</p>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">static int</span>[] <span class="mt">BuildZArray</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">int</span> n = s.Length;
+    <span class="kw">int</span>[] z = <span class="kw">new int</span>[n];
+    <span class="kw">int</span> l = <span class="nm">0</span>, r = <span class="nm">0</span>;  <span class="cm">// current Z-box boundaries [l, r]</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; n; i++)
+    {
+        <span class="kw">if</span> (i &lt; r)
+            z[i] = <span class="tp">Math</span>.<span class="mt">Min</span>(r - i, z[i - l]);  <span class="cm">// use known Z-box info</span>
+
+        <span class="kw">while</span> (i + z[i] &lt; n &amp;&amp; s[z[i]] == s[i + z[i]])
+            z[i]++;   <span class="cm">// extend match</span>
+
+        <span class="kw">if</span> (i + z[i] > r)
+        {
+            l = i;
+            r = i + z[i];  <span class="cm">// update rightmost Z-box</span>
+        }
+    }
+    <span class="kw">return</span> z;
+}
+
+<span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">ZSearch</span>(<span class="kw">string</span> text, <span class="kw">string</span> pattern)
+{
+    <span class="kw">string</span> combined = pattern + <span class="st">"$"</span> + text;  <span class="cm">// '$' won't appear in text</span>
+    <span class="kw">int</span>[] z = <span class="mt">BuildZArray</span>(combined);
+    <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">int</span> offset = pattern.Length + <span class="nm">1</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = offset; i &lt; combined.Length; i++)
+        <span class="kw">if</span> (z[i] == pattern.Length)
+            result.<span class="mt">Add</span>(i - offset);
+
+    <span class="kw">return</span> result;
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> hits = <span class="mt">ZSearch</span>(<span class="st">"aabcaabc"</span>, <span class="st">"aabc"</span>);
+<span class="cm">// Output: [0, 4]</span></pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">build_z_array</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+    n = <span class="mt">len</span>(s)
+    z = [<span class="nm">0</span>] * n
+    l = r = <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n):
+        <span class="kw">if</span> i &lt; r:
+            z[i] = <span class="mt">min</span>(r - i, z[i - l])
+        <span class="kw">while</span> i + z[i] &lt; n <span class="kw">and</span> s[z[i]] == s[i + z[i]]:
+            z[i] += <span class="nm">1</span>
+        <span class="kw">if</span> i + z[i] &gt; r:
+            l, r = i, i + z[i]
+    <span class="kw">return</span> z
+
+<span class="kw">def</span> <span class="mt">z_search</span>(text: <span class="tp">str</span>, pattern: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+    combined = pattern + <span class="st">"$"</span> + text
+    z = <span class="mt">build_z_array</span>(combined)
+    m, offset = <span class="mt">len</span>(pattern), <span class="mt">len</span>(pattern) + <span class="nm">1</span>
+    <span class="kw">return</span> [i - offset <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(offset, <span class="mt">len</span>(combined)) <span class="kw">if</span> z[i] == m]
+
+print(<span class="mt">z_search</span>(<span class="st">"aabcaabc"</span>, <span class="st">"aabc"</span>))  <span class="cm"># [0, 4]</span></pre>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Comparison &amp; When to Use Each</div>
+
+<table>
+    <thead><tr><th>Algorithm</th><th>Preprocessing</th><th>Search</th><th>Strengths</th></tr></thead>
+    <tbody>
+        <tr><td>KMP</td><td>O(m)</td><td class="g">O(n)</td><td>Exact matches, deterministic, no collisions</td></tr>
+        <tr><td>Rabin-Karp</td><td>O(m)</td><td>O(n) avg</td><td>Multiple patterns, 2D pattern matching</td></tr>
+        <tr><td>Z-Algorithm</td><td>—</td><td class="g">O(n)</td><td>Prefix matching, simple to implement</td></tr>
+    </tbody>
+</table>
+
+<h3>3.1 — Rabin-Karp for Multiple Patterns</h3>
+<p>Rabin-Karp shines when searching for multiple patterns simultaneously.
+Hash all patterns into a set, then <div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public static</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">MultiPatternSearch</span>(<span class="kw">string</span> text, <span class="kw">string</span>[] patterns)
+{
+    <span class="kw">const long</span> BASE = <span class="nm">31</span>, MOD = <span class="nm">1_000_000_007</span>;
+    <span class="kw">long</span> <span class="mt">CV</span>(<span class="kw">char</span> c) =&gt; c - <span class="st">'a'</span> + <span class="nm">1</span>;
+    <span class="kw">var</span> byLen = patterns.<span class="mt">GroupBy</span>(p =&gt; p.Length).<span class="mt">ToDictionary</span>(
+        g =&gt; g.Key,
+        g =&gt; g.<span class="mt">ToDictionary</span>(
+            p =&gt; { <span class="kw">long</span> h=<span class="nm">0</span>; <span class="kw">foreach</span>(<span class="kw">var</span> c <span class="kw">in</span> p) h=(h*BASE+<span class="mt">CV</span>(c))%MOD; <span class="kw">return</span> h; },
+            p =&gt; p));
+    <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">int</span> n = text.Length;
+    <span class="kw">foreach</span> (<span class="kw">var</span> (m, ph) <span class="kw">in</span> byLen) {
+        <span class="kw">if</span> (m &gt; n) <span class="kw">continue</span>;
+        <span class="kw">long</span> pw=<span class="nm">1</span>; <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;m-<span class="nm">1</span>; i++) pw=pw*BASE%MOD;
+        <span class="kw">long</span> wh=<span class="nm">0</span>; <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;m; i++) wh=(wh*BASE+<span class="mt">CV</span>(text[i]))%MOD;
+        <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;=n-m; i++) {
+            <span class="kw">if</span> (ph.<span class="mt">TryGetValue</span>(wh, <span class="kw">out var</span> p) &amp;&amp; text.<span class="mt">Substring</span>(i,m)==p) {
+                <span class="kw">if</span> (!res.<span class="mt">ContainsKey</span>(p)) res[p]=<span class="kw">new</span>(); res[p].<span class="mt">Add</span>(i);
+            }
+            <span class="kw">if</span> (i&lt;n-m) wh=((wh-<span class="mt">CV</span>(text[i])*pw%MOD+MOD)*BASE+<span class="mt">CV</span>(text[i+m]))%MOD;
+        }
+    }
+    <span class="kw">return</span> res;
+}
+<span class="kw">var</span> r = <span class="mt">MultiPatternSearch</span>(<span class="st">"abcabdabc"</span>, <span class="kw">new</span>[] { <span class="st">"abc"</span>, <span class="st">"abd"</span> });
+<span class="cm">// {"abc": [0, 6], "abd": [3]}</span></pre>
+</div>
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">multi_pattern_search</span>(text: <span class="tp">str</span>, patterns: <span class="tp">list</span>[<span class="tp">str</span>]) -&gt; <span class="tp">dict</span>:
+    <span class="st">"""Find all occurrences of each pattern in text using rolling hashes."""</span>
+    BASE, MOD = <span class="nm">31</span>, <span class="nm">10</span>**<span class="nm">9</span> + <span class="nm">7</span>
+    char_val = <span class="kw">lambda</span> c: <span class="mt">ord</span>(c) - <span class="mt">ord</span>(<span class="st">'a'</span>) + <span class="nm">1</span>
+
+    <span class="cm"># Group patterns by length (only same-length windows share hash windows)</span>
+    <span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+    by_len = defaultdict(<span class="tp">dict</span>)
+    <span class="kw">for</span> p <span class="kw">in</span> patterns:
+        h = <span class="nm">0</span>
+        <span class="kw">for</span> c <span class="kw">in</span> p:
+            h = (h * BASE + <span class="mt">char_val</span>(c)) % MOD
+        by_len[<span class="mt">len</span>(p)][h] = p
+
+    results = defaultdict(<span class="tp">list</span>)
+    n = <span class="mt">len</span>(text)
+
+    <span class="kw">for</span> m, pat_hashes <span class="kw">in</span> by_len.<span class="mt">items</span>():
+        <span class="kw">if</span> m &gt; n:
+            <span class="kw">continue</span>
+        pow_val = pow(BASE, m - <span class="nm">1</span>, MOD)
+        win_hash = <span class="nm">0</span>
+        <span class="kw">for</span> c <span class="kw">in</span> text[:m]:
+            win_hash = (win_hash * BASE + <span class="mt">char_val</span>(c)) % MOD
+
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n - m + <span class="nm">1</span>):
+            <span class="kw">if</span> win_hash <span class="kw">in</span> pat_hashes:
+                p = pat_hashes[win_hash]
+                <span class="kw">if</span> text[i:i+m] == p:
+                    results[p].<span class="mt">append</span>(i)
+            <span class="kw">if</span> i &lt; n - m:
+                win_hash = (win_hash - <span class="mt">char_val</span>(text[i]) * pow_val) % MOD
+                win_hash = (win_hash * BASE + <span class="mt">char_val</span>(text[i+m])) % MOD
+    <span class="kw">return</span> <span class="tp">dict</span>(results)
+
+result = <span class="mt">multi_pattern_search</span>(<span class="st">"abcabdabc"</span>, [<span class="st">"abc"</span>, <span class="st">"abd"</span>])
+<span class="cm"># {'abc': [0, 6], 'abd': [3]}</span></pre>
+</div>
+
+<div class="note">
+    <strong>📌 Key Takeaways:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Rabin-Karp</strong>: Best for multiple pattern search; O(n + Σm) average with a hash set</li>
+        <li><strong>Z-Algorithm</strong>: Simple O(n) prefix matching; useful for "does pattern appear as prefix at each position"</li>
+        <li>Both use the <strong>pattern + separator + text</strong> concatenation trick</li>
+        <li>Choose MOD as a large prime and BASE as a prime to minimize collisions</li>
+    </ul>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15B Complete</button>
+<div class="toast" id="toast">✅ Module 15B complete! Rabin-Karp &amp; Z-Algorithm mastered!</div>
+    <script>var MODULE_ID = 'm15b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

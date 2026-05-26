@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 16B — Classic Bit Problems | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part B</h1>
+    <div class="tagline">Classic Bit Manipulation Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">XOR tricks · Counting bits · Single Number · Missing Number</p>
+    <div class="badges">
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 16 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 16 — Bit Manipulation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m16a_bit_manipulation.html">Bit Operations &amp; Tricks</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Classic Bit Problems<br>
+    ⬜ <strong>Part C</strong> — <a href="m16c_randomized.html">Randomized Algorithms</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
+    <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
+</div>
+
+<!-- ═══════ PROBLEM 1 ═══════ -->
+<div class="section-heading">Problem 1 — Single Number (LC 136)</div>
+
+<div class="problem-card">
+    <div class="prob-title">Single Number</div>
+    <div class="prob-meta">LeetCode 136 &nbsp;|&nbsp; Easy &nbsp;|&nbsp; XOR trick</div>
+    <p>Given a non-empty array where every element appears twice except one, find the one that appears only once. Must run in O(n) time and O(1) space.</p>
+    <p><strong>Key insight:</strong> XOR of a number with itself = 0. XOR with 0 = the number. So XOR all elements — pairs cancel out, leaving the unique one.</p>
+    <p><code>4 ^ 1 ^ 2 ^ 1 ^ 2 = 4</code></p>
+</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">SingleNumber</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> result = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">var</span> n <span class="kw">in</span> nums) result ^= n;
+    <span class="kw">return</span> result;   <span class="cm">// O(n) time, O(1) space</span>
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> functools <span class="kw">import</span> reduce
+<span class="kw">from</span> operator  <span class="kw">import</span> xor
+
+<span class="kw">def</span> <span class="mt">single_number</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">int</span>:
+    <span class="kw">return</span> <span class="mt">reduce</span>(xor, nums)   <span class="cm"># or: result=0; for n in nums: result^=n</span>
+
+print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>, <span class="nm">2</span>]))  <span class="cm"># 4</span></pre>
+</div>
+
+<!-- ═══════ PROBLEM 2 ═══════ -->
+<div class="section-heading">Problem 2 — Single Number II (LC 137)</div>
+
+<div class="problem-card">
+    <div class="prob-title">Single Number II</div>
+    <div class="prob-meta">LeetCode 137 &nbsp;|&nbsp; Medium &nbsp;|&nbsp; Bit counting</div>
+    <p>Every element appears exactly three times except one. Find that unique element in O(n) time and O(1) space.</p>
+    <p><strong>Key insight:</strong> For each bit position, count how many numbers have that bit set. If count % 3 != 0, the unique number has that bit set.</p>
+</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">SingleNumber2</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> result = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> bit = <span class="nm">0</span>; bit &lt; <span class="nm">32</span>; bit++)
+    {
+        <span class="kw">int</span> sum = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">var</span> n <span class="kw">in</span> nums) sum += (n &gt;&gt; bit) &amp; <span class="nm">1</span>;
+        <span class="kw">if</span> (sum % <span class="nm">3</span> != <span class="nm">0</span>) result |= <span class="nm">1</span> &lt;&lt; bit;
+    }
+    <span class="kw">return</span> result;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">single_number2</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">int</span>:
+    result = <span class="nm">0</span>
+    <span class="kw">for</span> bit <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">32</span>):
+        total = <span class="mt">sum</span>((n >> bit) &amp; <span class="nm">1</span> <span class="kw">for</span> n <span class="kw">in</span> nums)
+        <span class="kw">if</span> total % <span class="nm">3</span>:
+            result |= <span class="nm">1</span> << bit
+    <span class="cm"># Handle negative numbers in Python (no 32-bit overflow)</span>
+    <span class="kw">if</span> result >= (<span class="nm">1</span> << <span class="nm">31</span>):
+        result -= (<span class="nm">1</span> << <span class="nm">32</span>)
+    <span class="kw">return</span> result</pre>
+</div>
+
+<!-- ═══════ PROBLEM 3 ═══════ -->
+<div class="section-heading">Problem 3 — Counting Bits (LC 338)</div>
+
+<div class="problem-card">
+    <div class="prob-title">Counting Bits</div>
+    <div class="prob-meta">LeetCode 338 &nbsp;|&nbsp; Easy &nbsp;|&nbsp; DP + Bit</div>
+    <p>Given n, return an array of length n+1 where answer[i] = number of 1-bits in binary representation of i.</p>
+    <p><strong>Key insight:</strong> <code>dp[i] = dp[i >> 1] + (i &amp; 1)</code> — right-shift removes one bit; the LSB tells you if that bit was 1.</p>
+</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span>[] <span class="mt">CountBits</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">int</span>[] dp = <span class="kw">new int</span>[n + <span class="nm">1</span>];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt;= n; i++)
+        dp[i] = dp[i &gt;&gt; <span class="nm">1</span>] + (i &amp; <span class="nm">1</span>);
+    <span class="kw">return</span> dp;   <span class="cm">// O(n) time and space</span>
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">count_bits</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+    dp = [<span class="nm">0</span>] * (n + <span class="nm">1</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n + <span class="nm">1</span>):
+        dp[i] = dp[i >> <span class="nm">1</span>] + (i &amp; <span class="nm">1</span>)
+    <span class="kw">return</span> dp
+
+print(<span class="mt">count_bits</span>(<span class="nm">5</span>))  <span class="cm"># [0, 1, 1, 2, 1, 2]</span></pre>
+</div>
+
+<!-- ═══════ PROBLEM 4 ═══════ -->
+<div class="section-heading">Problem 4 — Missing Number (LC 268)</div>
+
+<div class="problem-card">
+    <div class="prob-title">Missing Number</div>
+    <div class="prob-meta">LeetCode 268 &nbsp;|&nbsp; Easy &nbsp;|&nbsp; XOR or Math</div>
+    <p>Given array [0..n] with one number missing, find the missing number.</p>
+    <p><strong>XOR approach:</strong> XOR indices 0..n with all array values — everything cancels except the missing number.</p>
+    <p><strong>Math approach:</strong> Expected sum = n*(n+1)/2. Missing = expected - actual sum.</p>
+</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">MissingNumber</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> missing = nums.Length;  <span class="cm">// start with XOR of n</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+        missing ^= i ^ nums[i];
+    <span class="kw">return</span> missing;
+}
+
+<span class="cm">// Alternative: Math</span>
+<span class="kw">public int</span> <span class="mt">MissingNumberMath</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> n = nums.Length;
+    <span class="kw">return</span> n * (n + <span class="nm">1</span>) / <span class="nm">2</span> - nums.<span class="mt">Sum</span>();
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">missing_number</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">int</span>:
+    n = <span class="mt">len</span>(nums)
+    <span class="kw">return</span> n * (n + <span class="nm">1</span>) // <span class="nm">2</span> - <span class="mt">sum</span>(nums)
+
+print(<span class="mt">missing_number</span>([<span class="nm">3</span>, <span class="nm">0</span>, <span class="nm">1</span>]))  <span class="cm"># 2</span></pre>
+</div>
+
+<!-- ═══════ PROBLEM 5 ═══════ -->
+<div class="section-heading">Problem 5 — Find Two Non-Repeating Numbers (LC 260)</div>
+
+<div class="problem-card">
+    <div class="prob-title">Single Number III — Two Unique Elements</div>
+    <div class="prob-meta">LeetCode 260 &nbsp;|&nbsp; Medium &nbsp;|&nbsp; XOR partition</div>
+    <p>Every element appears twice except two distinct numbers. Find both in O(n) time and O(1) space.</p>
+    <p><strong>Approach:</strong> XOR all → get xor = a^b. Find any set bit in xor (use <code>xor &amp; -xor</code> to isolate LSB). Partition numbers by that bit → XOR each partition to get a and b.</p>
+</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span>[] <span class="mt">SingleNumber3</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">int</span> xorAll = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">var</span> n <span class="kw">in</span> nums) xorAll ^= n;  <span class="cm">// xorAll = a ^ b</span>
+
+    <span class="kw">int</span> diff = xorAll &amp; (-xorAll);         <span class="cm">// lowest set bit</span>
+    <span class="kw">int</span> a = <span class="nm">0</span>, b = <span class="nm">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">var</span> n <span class="kw">in</span> nums)
+    {
+        <span class="kw">if</span> ((n &amp; diff) == <span class="nm">0</span>) a ^= n;  <span class="cm">// group 0: bit not set</span>
+        <span class="kw">else</span>                   b ^= n;  <span class="cm">// group 1: bit is set</span>
+    }
+    <span class="kw">return new</span>[] { a, b };
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">single_number3</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
+    xor_all = <span class="nm">0</span>
+    <span class="kw">for</span> n <span class="kw">in</span> nums: xor_all ^= n       <span class="cm"># xor_all = a ^ b</span>
+    diff = xor_all &amp; (-xor_all)          <span class="cm"># isolate lowest set bit</span>
+    a = b = <span class="nm">0</span>
+    <span class="kw">for</span> n <span class="kw">in</span> nums:
+        <span class="kw">if</span> n &amp; diff: b ^= n
+        <span class="kw">else</span>:        a ^= n
+    <span class="kw">return</span> [a, b]
+
+print(<span class="mt">single_number3</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">2</span>, <span class="nm">5</span>]))  <span class="cm"># [3, 5]</span></pre>
+</div>
+
+<!-- ═══════ PROBLEM 6 ═══════ -->
+<div class="section-heading">Problem 6 — Reverse Bits (LC 190)</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public uint</span> <span class="mt">ReverseBits</span>(<span class="kw">uint</span> n)
+{
+    <span class="kw">uint</span> result = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">32</span>; i++)
+    {
+        result = (result &lt;&lt; <span class="nm">1</span>) | (n &amp; <span class="nm">1</span>);
+        n &gt;&gt;= <span class="nm">1</span>;
+    }
+    <span class="kw">return</span> result;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">reverse_bits</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    result = <span class="nm">0</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">32</span>):
+        result = (result << <span class="nm">1</span>) | (n &amp; <span class="nm">1</span>)
+        n >>= <span class="nm">1</span>
+    <span class="kw">return</span> result
+
+print(<span class="mt">reverse_bits</span>(<span class="nm">0b00000010100101000001111010011100</span>))
+<span class="cm"># 964176192 = 0b00111001011110000010100101000000</span></pre>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16B Complete</button>
+<div class="toast" id="toast">✅ Module 16B complete! Classic Bit Problems mastered!</div>
+    <script>var MODULE_ID = 'm16b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

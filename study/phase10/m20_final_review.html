@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 20 — Final Review &amp; Cheat Sheet | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 20 — Final Review</h1>
+    <div class="tagline">Complete Cheat Sheet, Pattern Guide &amp; Interview Strategy</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Complexity Tables · Pattern Recognition · Interview Playbook · Study Roadmap</p>
+    <div class="badges">
+        <span>🎓 Course Capstone</span>
+        <span>📋 Reference Sheet</span>
+        <span>💻 C# &amp; Python</span>
+        <span>🏆 Interview Ready</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 10 — Complete Module List:</strong><br><br>
+    ✅ <a href="m12a_advanced_dp.html">Module 12A</a> · <a href="m12b_final_review.html">12B</a> · <a href="m12c_capstone_practice.html">12C</a><br>
+    ✅ <strong>Module 18:</strong> <a href="m18a_patterns1.html">18A — Two Pointers/Sliding Window</a> · <a href="m18b_patterns2.html">18B — Intervals/Top K</a> · <a href="m18c_patterns3.html">18C — Binary Search/Subsets</a><br>
+    ✅ <strong>Module 19:</strong> <a href="m19a_interview_arrays.html">19A — Arrays &amp; Strings</a> · <a href="m19b_interview_trees.html">19B — Trees &amp; Graphs</a> · <a href="m19c_interview_dp.html">19C — DP &amp; Advanced</a><br>
+    ▶ <strong>Module 20</strong> — <em>You are here</em> — Final Review<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase10/m19a_interview_arrays.html">&larr; Module 19 &mdash; Interview Prep</a>
+    <span style="color:#888">(Final Module) &rarr;</span>
+</div>
+
+<!-- ═══════ SECTION 1: DATA STRUCTURE COMPLEXITY ═══════ -->
+<div class="section-heading">1 — Data Structure Complexity Cheat Sheet</div>
+
+<div class="card">
+    <table>
+        <tr><th>Data Structure</th><th>Access</th><th>Search</th><th>Insert</th><th>Delete</th><th>Space</th></tr>
+        <tr><td><strong>Array</strong></td><td class="bg-green">O(1)</td><td>O(n)</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Dynamic Array</strong></td><td class="bg-green">O(1)</td><td>O(n)</td><td>O(1)* amort</td><td>O(n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Linked List</strong></td><td>O(n)</td><td>O(n)</td><td>O(1) head</td><td>O(1) w/ ptr</td><td>O(n)</td></tr>
+        <tr><td><strong>Doubly Linked List</strong></td><td>O(n)</td><td>O(n)</td><td>O(1) head/tail</td><td>O(1) w/ ptr</td><td>O(n)</td></tr>
+        <tr><td><strong>Hash Table</strong></td><td>—</td><td>O(1) avg</td><td>O(1) avg</td><td>O(1) avg</td><td>O(n)</td></tr>
+        <tr><td><strong>BST (balanced)</strong></td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(n)</td></tr>
+        <tr><td><strong>BST (unbalanced)</strong></td><td>O(n)</td><td>O(n)</td><td>O(n)</td><td>O(n)</td><td>O(n)</td></tr>
+        <tr><td><strong>AVL / Red-Black Tree</strong></td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Binary Heap (min/max)</strong></td><td>O(1) peek</td><td>O(n)</td><td>O(log n)</td><td>O(log n)</td><td>O(n)</td></tr>
+        <tr><td><strong>Trie</strong></td><td>O(m)</td><td>O(m)</td><td>O(m)</td><td>O(m)</td><td>O(ALPHABET·n)</td></tr>
+        <tr><td><strong>Stack</strong></td><td>O(n)</td><td>O(n)</td><td>O(1) push</td><td>O(1) pop</td><td>O(n)</td></tr>
+        <tr><td><strong>Queue / Deque</strong></td><td>O(n)</td><td>O(n)</td><td>O(1) enqueue</td><td>O(1) dequeue</td><td>O(n)</td></tr>
+        <tr><td><strong>Graph (adj list)</strong></td><td>—</td><td>O(V+E)</td><td>O(1)</td><td>O(V+E)</td><td>O(V+E)</td></tr>
+        <tr><td><strong>Graph (adj matrix)</strong></td><td>O(1)</td><td>O(V)</td><td>O(1)</td><td>O(1)</td><td>O(V²)</td></tr>
+    </table>
+    <p style="font-size:0.85em;color:#777;">* m = key length for Trie; operations for unbalanced BST can degrade to O(n) in worst case.</p>
+</div>
+
+<!-- ═══════ SECTION 2: ALGORITHM COMPLEXITY ═══════ -->
+<div class="section-heading">2 — Algorithm Complexity Reference</div>
+
+<div class="card">
+    <div class="sub-heading">Sorting Algorithms</div>
+    <table>
+        <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable?</th></tr>
+        <tr><td><strong>Bubble Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+        <tr><td><strong>Selection Sort</strong></td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>No</td></tr>
+        <tr><td><strong>Insertion Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+        <tr><td><strong>Merge Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+        <tr><td><strong>Quick Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>No</td></tr>
+        <tr><td><strong>Heap Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>No</td></tr>
+        <tr><td><strong>Counting Sort</strong></td><td>O(n+k)</td><td>O(n+k)</td><td>O(n+k)</td><td>O(k)</td><td>Yes</td></tr>
+        <tr><td><strong>Radix Sort</strong></td><td>O(nk)</td><td>O(nk)</td><td>O(nk)</td><td>O(n+k)</td><td>Yes</td></tr>
+        <tr><td><strong>Tim Sort</strong></td><td>O(n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+    </table>
+
+    <div class="sub-heading">Graph Algorithms</div>
+    <table>
+        <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Use Case</th></tr>
+        <tr><td><strong>BFS</strong></td><td>O(V+E)</td><td>O(V)</td><td>Shortest path (unweighted), level-order</td></tr>
+        <tr><td><strong>DFS</strong></td><td>O(V+E)</td><td>O(V)</td><td>Cycle detection, topological sort, connected components</td></tr>
+        <tr><td><strong>Dijkstra</strong></td><td>O((V+E) log V)</td><td>O(V)</td><td>Shortest path (non-negative weights)</td></tr>
+        <tr><td><strong>Bellman-Ford</strong></td><td>O(V·E)</td><td>O(V)</td><td>Shortest path (negative weights), detect negative cycles</td></tr>
+        <tr><td><strong>Floyd-Warshall</strong></td><td>O(V³)</td><td>O(V²)</td><td>All-pairs shortest path</td></tr>
+        <tr><td><strong>Prim's MST</strong></td><td>O(E log V)</td><td>O(V)</td><td>Minimum Spanning Tree (dense graphs)</td></tr>
+        <tr><td><strong>Kruskal's MST</strong></td><td>O(E log E)</td><td>O(V)</td><td>Minimum Spanning Tree (sparse graphs)</td></tr>
+        <tr><td><strong>Topological Sort</strong></td><td>O(V+E)</td><td>O(V)</td><td>DAG ordering, course schedule</td></tr>
+        <tr><td><strong>Union-Find</strong></td><td>O(α(n)) ≈ O(1)</td><td>O(V)</td><td>Connected components, cycle detection</td></tr>
+        <tr><td><strong>Tarjan's SCC</strong></td><td>O(V+E)</td><td>O(V)</td><td>Strongly connected components</td></tr>
+    </table>
+
+    <div class="sub-heading">Search &amp; Other Algorithms</div>
+    <table>
+        <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Notes</th></tr>
+        <tr><td><strong>Linear Search</strong></td><td>O(n)</td><td>O(1)</td><td>Unsorted data</td></tr>
+        <tr><td><strong>Binary Search</strong></td><td>O(log n)</td><td>O(1)</td><td>Sorted array required</td></tr>
+        <tr><td><strong>KMP String Search</strong></td><td>O(n+m)</td><td>O(m)</td><td>Pattern matching</td></tr>
+        <tr><td><strong>Rabin-Karp</strong></td><td>O(n+m) avg</td><td>O(1)</td><td>Rolling hash pattern matching</td></tr>
+        <tr><td><strong>Quick Select</strong></td><td>O(n) avg</td><td>O(1)</td><td>Kth smallest/largest element</td></tr>
+    </table>
+</div>
+
+<!-- ═══════ SECTION 3: PATTERN RECOGNITION GUIDE ═══════ -->
+<div class="section-heading">3 — Pattern Recognition Guide</div>
+
+<p>The key to acing technical interviews is recognizing which pattern applies. Use these trigger keywords:</p>
+
+<div class="pattern-grid">
+    <div class="pattern-card">
+        <h4>Two Pointers</h4>
+        <div class="trigger">Keywords: "sorted array", "pair sum", "in-place", "no extra space"</div>
+        <div class="algo">→ Opposite ends, fast/slow pointers, Floyd's cycle</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Sliding Window</h4>
+        <div class="trigger">Keywords: "subarray", "substring", "contiguous", "at most k distinct"</div>
+        <div class="algo">→ Fixed size: deque; Variable: expand+shrink with condition</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Binary Search</h4>
+        <div class="trigger">Keywords: "sorted", "rotated", "minimum", "feasible", "log n"</div>
+        <div class="algo">→ Classic, rotated array, search on answer space</div>
+    </div>
+    <div class="pattern-card">
+        <h4>BFS</h4>
+        <div class="trigger">Keywords: "shortest path", "minimum steps", "level order", "nearest"</div>
+        <div class="algo">→ Queue + visited set; multi-source BFS from all seeds</div>
+    </div>
+    <div class="pattern-card">
+        <h4>DFS / Backtracking</h4>
+        <div class="trigger">Keywords: "all combinations", "all paths", "explore", "permutations"</div>
+        <div class="algo">→ Recursive DFS; backtrack by undoing choice before returning</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Dynamic Programming</h4>
+        <div class="trigger">Keywords: "count ways", "max/min value", "optimal", "can we achieve"</div>
+        <div class="algo">→ 1D: Fibonacci-like; 2D: LCS/Edit Distance; define state carefully</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Heap / Priority Queue</h4>
+        <div class="trigger">Keywords: "top K", "K closest", "median", "merge K sorted"</div>
+        <div class="algo">→ Min-heap for top-K largest; max-heap for top-K smallest</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Hash Map / Set</h4>
+        <div class="trigger">Keywords: "two sum", "frequency", "duplicate", "group", "anagram"</div>
+        <div class="algo">→ O(1) lookup; count chars with Counter; group by key</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Intervals</h4>
+        <div class="trigger">Keywords: "merge intervals", "overlap", "meeting rooms", "schedule"</div>
+        <div class="algo">→ Sort by start; merge if overlap; heap of end times for rooms</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Tree DP</h4>
+        <div class="trigger">Keywords: "tree", "nodes", "subtree", "path sum", "diameter"</div>
+        <div class="algo">→ Post-order DFS; return value for parent; track global max</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Monotonic Stack</h4>
+        <div class="trigger">Keywords: "next greater/smaller", "largest rectangle", "temperatures"</div>
+        <div class="algo">→ Maintain increasing/decreasing stack; pop when invariant breaks</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Union-Find</h4>
+        <div class="trigger">Keywords: "connected components", "groups", "redundant connection"</div>
+        <div class="algo">→ Path compression + union by rank → near O(1) operations</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Trie</h4>
+        <div class="trigger">Keywords: "prefix", "dictionary words", "autocomplete", "word search II"</div>
+        <div class="algo">→ Build trie; DFS/BFS on trie nodes matching chars</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Cyclic Sort</h4>
+        <div class="trigger">Keywords: "1 to n", "missing numbers", "find duplicate", "numbers in range"</div>
+        <div class="algo">→ Place each number at its index; scan for mismatches</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Topological Sort</h4>
+        <div class="trigger">Keywords: "dependencies", "course schedule", "build order", "prerequisites"</div>
+        <div class="algo">→ Kahn's BFS (in-degree 0) or DFS post-order on DAG</div>
+    </div>
+    <div class="pattern-card">
+        <h4>Greedy</h4>
+        <div class="trigger">Keywords: "minimum cost", "maximum meetings", "activity selection"</div>
+        <div class="algo">→ Local optimal choice → global optimal; prove no counter-example</div>
+    </div>
+</div>
+
+<!-- ═══════ SECTION 4: COMPLEXITY QUICK RULES ═══════ -->
+<div class="section-heading">4 — Big-O Quick Rules &amp; Interview Targets</div>
+
+<div class="card">
+    <div class="sub-heading">Input Size → Expected Complexity</div>
+    <table>
+        <tr><th>Input Size n</th><th>Acceptable Complexities</th><th>Avoid</th></tr>
+        <tr><td>n ≤ 10</td><td>O(n!), O(2ⁿ) — brute force OK</td><td>—</td></tr>
+        <tr><td>n ≤ 20–25</td><td>O(2ⁿ), O(n·2ⁿ) — DP with bitmask</td><td>O(n!)</td></tr>
+        <tr><td>n ≤ 100</td><td>O(n³), O(n²·log n)</td><td>O(2ⁿ)</td></tr>
+        <tr><td>n ≤ 1,000</td><td>O(n²)</td><td>O(n³)</td></tr>
+        <tr><td>n ≤ 10,000</td><td>O(n·√n), O(n²) borderline</td><td>O(n²) risky</td></tr>
+        <tr><td>n ≤ 100,000</td><td>O(n·log n)</td><td>O(n²)</td></tr>
+        <tr><td>n ≤ 1,000,000+</td><td>O(n), O(n·log n)</td><td>O(n·log²·n)</td></tr>
+    </table>
+
+    <div class="sub-heading">Space Complexity Targets</div>
+    <ul>
+        <li><strong>O(1)</strong> — No extra space (two pointers, in-place operations)</li>
+        <li><strong>O(log n)</strong> — Recursion stack for divide and conquer / binary search</li>
+        <li><strong>O(h)</strong> — Tree recursion stack (h = height; O(log n) balanced, O(n) worst)</li>
+        <li><strong>O(n)</strong> — HashMap, visited set, result array</li>
+        <li><strong>O(n²)</strong> — 2D DP table (optimize to O(n) with rolling array when possible)</li>
+    </ul>
+</div>
+
+<!-- ═══════ SECTION 5: DP DECISION GUIDE ═══════ -->
+<div class="section-heading">5 — Dynamic Programming Decision Guide</div>
+
+<div class="card">
+    <div class="sub-heading">Is it DP?</div>
+    <ul>
+        <li><strong>Optimal substructure</strong>: optimal solution contains optimal solutions to subproblems</li>
+        <li><strong>Overlapping subproblems</strong>: same subproblems solved multiple times in naive recursion</li>
+        <li><strong>Asking for</strong>: max/min value, count of ways, true/false feasibility</li>
+    </ul>
+
+    <div class="sub-heading">DP Design Steps</div>
+    <ol style="margin: 8px 0 14px 28px;">
+        <li><strong>Define state</strong>: what does dp[i] or dp[i][j] represent?</li>
+        <li><strong>Transition</strong>: how do we go from smaller subproblems to larger?</li>
+        <li><strong>Base cases</strong>: what are the smallest subproblems with known values?</li>
+        <li><strong>Order of computation</strong>: ensure subproblems computed before they're needed</li>
+        <li><strong>Optimize space</strong>: can we reduce to O(n) or O(1) by observing dependencies?</li>
+    </ol>
+
+    <div class="sub-heading">Common DP Patterns</div>
+    <table>
+        <tr><th>Pattern</th><th>Prototype Problem</th><th>Recurrence</th></tr>
+        <tr><td>Linear (1D)</td><td>Climbing Stairs, House Robber</td><td>dp[i] = f(dp[i-1], dp[i-2])</td></tr>
+        <tr><td>Unbounded Knapsack</td><td>Coin Change, Combination Sum IV</td><td>dp[w] = min/max over coins, iterate forward</td></tr>
+        <tr><td>0/1 Knapsack</td><td>Partition Equal Subset, Target Sum</td><td>dp[w] from high to low (backward)</td></tr>
+        <tr><td>String 2D DP</td><td>LCS, Edit Distance</td><td>dp[i][j] based on char match</td></tr>
+        <tr><td>Interval DP</td><td>Burst Balloons, Matrix Chain</td><td>dp[l][r] built from smaller intervals</td></tr>
+        <tr><td>Tree DP</td><td>House Robber III, Diameter</td><td>Post-order: return (rob, no-rob) pair</td></tr>
+        <tr><td>Bitmask DP</td><td>TSP, Minimum XOR Sum</td><td>dp[mask][i] for subsets</td></tr>
+    </table>
+</div>
+
+<!-- ═══════ SECTION 6: INTERVIEW STRATEGY ═══════ -->
+<div class="section-heading">6 — Interview Strategy &amp; Playbook</div>
+
+<div class="card">
+    <div class="sub-heading">The 5-Step Problem-Solving Framework</div>
+    <ol style="margin: 8px 0 16px 28px;">
+        <li><strong>Understand</strong> (2–3 min): Clarify constraints, examples, edge cases. Ask: "What are the input/output types?" "Can values be negative?" "How large is n?"</li>
+        <li><strong>Examples</strong> (1–2 min): Walk through provided examples. Create your own edge cases (empty input, single element, all same values, sorted/reverse sorted).</li>
+        <li><strong>Approach</strong> (3–5 min): Explain brute force first, then optimize. Name the pattern: "This looks like a sliding window problem because…". State time/space complexity before coding.</li>
+        <li><strong>Code</strong> (15–20 min): Write clean code. Use meaningful variable names. Talk through your logic as you code. Handle edge cases explicitly.</li>
+        <li><strong>Test</strong> (3–5 min): Trace through your code with examples. Check edge cases. Verify complexity.</li>
+    </ol>
+
+    <div class="sub-heading">Communication Tips</div>
+    <div class="tip-box">
+        <ul>
+            <li>Think out loud — interviewers want to see your reasoning process</li>
+            <li>Say "I'm considering a [pattern] approach because [reason]"</li>
+            <li>When stuck: "Let me try a simpler subproblem first" or "What if the input were size 1?"</li>
+            <li>Before coding: "Let me explain my approach and get your feedback"</li>
+            <li>After coding: "Let me trace through this with the example to verify"</li>
+        </ul>
+    </div>
+
+    <div class="sub-heading">Common Interview Mistakes</div>
+    <div class="warn-box">
+        <ul>
+            <li><strong>Jumping to code immediately</strong> — always clarify first, think second, code third</li>
+            <li><strong>Not handling edge cases</strong> — null/empty input, single element, duplicates</li>
+            <li><strong>Off-by-one errors</strong> — double-check loop bounds and array indices</li>
+            <li><strong>Ignoring the follow-up</strong> — "Can you optimize space?" is often the real question</li>
+            <li><strong>Silent coding</strong> — explain what you're doing at each step</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ═══════ SECTION 7: COMPANY-SPECIFIC PREP ═══════ -->
+<div class="section-heading">7 — Company-Specific Focus Areas</div>
+
+<div class="card">
+    <table>
+        <tr><th>Company Type</th><th>Most Tested Topics</th><th>Difficulty Focus</th></tr>
+        <tr><td><strong>FAANG (Meta, Google, Amazon)</strong></td><td>Arrays, Strings, Trees, Graphs, DP, System Design</td><td>Medium–Hard, optimize everything</td></tr>
+        <tr><td><strong>Amazon specifically</strong></td><td>Trees, Graphs, BFS/DFS, String manipulation, OOP</td><td>Medium; LP + coding rounds</td></tr>
+        <tr><td><strong>Google specifically</strong></td><td>Algorithms, Graph theory, Mathematical reasoning, DP</td><td>Hard; complexity proofs</td></tr>
+        <tr><td><strong>Meta/Facebook</strong></td><td>Arrays, Dynamic Programming, Trees, Recursion</td><td>Medium–Hard; clean code</td></tr>
+        <tr><td><strong>Microsoft</strong></td><td>OOP, Trees, Sorting, Arrays, String parsing</td><td>Medium; behavioral + coding</td></tr>
+        <tr><td><strong>Startups</strong></td><td>Practical problems, full-stack thinking, optimization</td><td>Easy–Medium; pragmatic solutions</td></tr>
+        <tr><td><strong>Finance / HFT</strong></td><td>Arrays, Math, Bit manipulation, Low-level optimization</td><td>Hard; performance focus</td></tr>
+    </table>
+
+    <div class="sub-heading">LeetCode Study Order Recommendation</div>
+    <div class="phase-row">
+        <span class="phase-badge">Week 1–2: Arrays &amp; Strings (Easy)</span>
+        <span class="phase-badge">Week 3: Linked Lists</span>
+        <span class="phase-badge">Week 4: Stacks &amp; Queues</span>
+        <span class="phase-badge">Week 5–6: Trees &amp; BST</span>
+        <span class="phase-badge">Week 7: Graphs BFS/DFS</span>
+        <span class="phase-badge">Week 8–9: DP 1D → 2D</span>
+        <span class="phase-badge">Week 10: Heap, Trie</span>
+        <span class="phase-badge">Week 11–12: Hard problems + Mock interviews</span>
+    </div>
+</div>
+
+<!-- ═══════ SECTION 8: MUST-KNOW ALGORITHMS ═══════ -->
+<div class="section-heading">8 — Must-Know Code Snippets</div>
+
+<div class="card">
+    <div class="sub-heading">Union-Find with Path Compression</div>
+    <p>Essential for connected components, Kruskal's MST, number of islands variants.</p>
+    <pre class="python" style="margin:10px 0 18px;"><span class="kw">class</span> <span class="tp">UnionFind</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, n): self.parent = <span class="mt">list</span>(<span class="mt">range</span>(n)); self.rank = [<span class="nm">0</span>]*n
+    <span class="kw">def</span> <span class="mt">find</span>(self, x):
+        <span class="kw">if</span> self.parent[x] != x: self.parent[x] = self.<span class="mt">find</span>(self.parent[x])
+        <span class="kw">return</span> self.parent[x]
+    <span class="kw">def</span> <span class="mt">union</span>(self, x, y):
+        px, py = self.<span class="mt">find</span>(x), self.<span class="mt">find</span>(y)
+        <span class="kw">if</span> px == py: <span class="kw">return False</span>
+        <span class="kw">if</span> self.rank[px] &lt; self.rank[py]: px, py = py, px
+        self.parent[py] = px
+        <span class="kw">if</span> self.rank[px] == self.rank[py]: self.rank[px] += <span class="nm">1</span>
+        <span class="kw">return True</span></pre>
+
+    <div class="sub-heading">Binary Search Template</div>
+    <p>Universal template that handles all variants. Adjust the condition and what lo/hi represent.</p>
+    <pre class="python" style="margin:10px 0 18px;"><span class="cm"># Find leftmost position where condition(mid) is True</span>
+<span class="kw">def</span> <span class="mt">binary_search</span>(arr, target):
+    lo, hi = <span class="nm">0</span>, <span class="mt">len</span>(arr) - <span class="nm">1</span>
+    <span class="kw">while</span> lo &lt;= hi:
+        mid = lo + (hi - lo) // <span class="nm">2</span>  <span class="cm"># avoids overflow</span>
+        <span class="kw">if</span> arr[mid] == target: <span class="kw">return</span> mid
+        <span class="kw">elif</span> arr[mid] &lt; target: lo = mid + <span class="nm">1</span>
+        <span class="kw">else</span>: hi = mid - <span class="nm">1</span>
+    <span class="kw">return</span> -<span class="nm">1</span>
+
+<span class="cm"># Binary search on answer space (find min feasible)</span>
+<span class="kw">def</span> <span class="mt">search_on_answer</span>(lo, hi, feasible):
+    <span class="kw">while</span> lo &lt; hi:
+        mid = (lo + hi) // <span class="nm">2</span>
+        <span class="kw">if</span> <span class="mt">feasible</span>(mid): hi = mid
+        <span class="kw">else</span>: lo = mid + <span class="nm">1</span>
+    <span class="kw">return</span> lo</pre>
+
+    <div class="sub-heading">Monotonic Stack</div>
+    <pre class="python" style="margin:10px 0 18px;"><span class="cm"># Next Greater Element</span>
+<span class="kw">def</span> <span class="mt">nextGreater</span>(nums):
+    res = [-<span class="nm">1</span>] * <span class="mt">len</span>(nums); stack = []
+    <span class="kw">for</span> i, n <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
+        <span class="kw">while</span> stack <span class="kw">and</span> nums[stack[-<span class="nm">1</span>]] &lt; n:
+            res[stack.<span class="mt">pop</span>()] = n
+        stack.<span class="mt">append</span>(i)
+    <span class="kw">return</span> res</pre>
+
+    <div class="sub-heading">Graph BFS with Shortest Path</div>
+    <pre class="python" style="margin:10px 0 18px;"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">def</span> <span class="mt">bfs_shortest</span>(graph, src, dst):
+    q = deque([(src, <span class="nm">0</span>)]); visited = {src}
+    <span class="kw">while</span> q:
+        node, dist = q.<span class="mt">popleft</span>()
+        <span class="kw">if</span> node == dst: <span class="kw">return</span> dist
+        <span class="kw">for</span> nb <span class="kw">in</span> graph[node]:
+            <span class="kw">if</span> nb <span class="kw">not in</span> visited: visited.<span class="mt">add</span>(nb); q.<span class="mt">append</span>((nb, dist+<span class="nm">1</span>))
+    <span class="kw">return</span> -<span class="nm">1</span></pre>
+
+    <div class="sub-heading">Backtracking Template</div>
+    <pre class="python" style="margin:10px 0 18px;"><span class="kw">def</span> <span class="mt">backtrack</span>(candidates, target):
+    result = []
+    <span class="kw">def</span> <span class="mt">bt</span>(start, path, remaining):
+        <span class="kw">if</span> remaining == <span class="nm">0</span>: result.<span class="mt">append</span>(path[:]); <span class="kw">return</span>
+        <span class="kw">if</span> remaining &lt; <span class="nm">0</span>: <span class="kw">return</span>  <span class="cm"># pruning</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(start, <span class="mt">len</span>(candidates)):
+            <span class="cm"># Optional dedup: if i > start and candidates[i] == candidates[i-1]: continue</span>
+            path.<span class="mt">append</span>(candidates[i])
+            <span class="mt">bt</span>(i+<span class="nm">1</span>, path, remaining-candidates[i])  <span class="cm"># i or i+1 depending on reuse</span>
+            path.<span class="mt">pop</span>()
+    <span class="mt">bt</span>(<span class="nm">0</span>, [], target)
+    <span class="kw">return</span> result</pre>
+</div>
+
+<!-- ═══════ SECTION 9: COMPLETE COURSE ROADMAP ═══════ -->
+<div class="section-heading">9 — Complete Course Roadmap</div>
+
+<div class="card">
+    <table>
+        <tr><th>Phase</th><th>Topic</th><th>Key Concepts</th></tr>
+        <tr><td><strong>Phase 1</strong></td><td>Foundations</td><td>Big-O, Arrays, Strings, Lists</td></tr>
+        <tr><td><strong>Phase 2</strong></td><td>Linear Data Structures</td><td>Linked Lists, Stacks, Queues, Recursion</td></tr>
+        <tr><td><strong>Phase 3</strong></td><td>Hash Tables &amp; Trees</td><td>Hash Maps, BST, Tree Traversals</td></tr>
+        <tr><td><strong>Phase 4</strong></td><td>Heaps &amp; Tries</td><td>Binary Heap, Priority Queue, Prefix Trees</td></tr>
+        <tr><td><strong>Phase 5</strong></td><td>Graphs</td><td>BFS, DFS, Representation</td></tr>
+        <tr><td><strong>Phase 6</strong></td><td>Dynamic Programming</td><td>1D DP, 2D DP, Memoization</td></tr>
+        <tr><td><strong>Phase 7</strong></td><td>Sorting &amp; Searching</td><td>All sorts, Binary Search, Quickselect</td></tr>
+        <tr><td><strong>Phase 8</strong></td><td>Backtracking &amp; Bit Math</td><td>N-Queens, Subsets, Bit operations</td></tr>
+        <tr><td><strong>Phase 9</strong></td><td>Advanced Algorithms</td><td>Advanced Graphs, KMP/Z-Algorithm, Math tricks</td></tr>
+        <tr><td><strong>Phase 10</strong></td><td>Interview Mastery</td><td>Patterns, Top 50 Problems, Final Review</td></tr>
+    </table>
+
+    <div class="success-box">
+        <strong>🎓 You have completed all 10 phases!</strong><br>
+        You've covered every major data structure and algorithm needed for software engineering interviews. The next step is daily practice: solve 2–3 problems per day, review patterns you struggle with, and do mock interviews.
+    </div>
+</div>
+
+<div class="finish-banner">
+    <h2>🏆 Course Complete!</h2>
+    <p>You've mastered Data Structures &amp; Algorithms from the ground up — Big-O all the way to advanced interview patterns. Go build something great.</p>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 20 Complete — Course Finished!</button>
+<div class="toast" id="toast">🏆 Course complete! You did it! All modules finished!</div>
+    <script>var MODULE_ID = 'm20';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

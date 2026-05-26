@@ -1,0 +1,895 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4A — Recursion Fundamentals | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}
+.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.nav-box a:hover{text-decoration:underline}
+/* Lang Toggle */
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700;transition:all .2s}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+/* ToC */
+.toc{background:#fff;border-radius:12px;padding:22px 28px;margin:24px 0;border:1px solid #e0e0e0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.toc h2{font-size:1em;text-transform:uppercase;letter-spacing:2px;color:#7d3c98;margin-bottom:14px}
+.toc ol{padding-left:20px}
+.toc li{font-size:.9em;padding:4px 0;color:#444}
+.toc li span{color:#888;font-size:.88em}
+/* Headings */
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+h4{font-size:1em;color:#6c3483;margin:18px 0 8px;font-weight:700}
+p{margin:0 0 14px;color:#444}
+/* Code blocks */
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;transition:all .2s;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px 22px 22px 22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+/* Diagram */
+.diagram{background:#1e1e1e;color:#4ec9b0;font-family:'Courier New',monospace;font-size:.86em;padding:20px 24px;border-radius:10px;border-left:4px solid #4ec9b0;margin:18px 0;overflow-x:auto;white-space:pre}
+/* Special boxes */
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.warning{background:#fde8e8;border-left:4px solid #e74c3c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.realworld{background:#eaf4fb;border-left:4px solid #2980b9;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong,.warning strong,.realworld strong{display:block;margin-bottom:4px}
+/* Complexity table */
+table.cmplx{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88em}
+table.cmplx th{background:#2c3e50;color:#9cdcfe;padding:10px 14px;text-align:left}
+table.cmplx td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
+table.cmplx tr:nth-child(even) td{background:#f8f9fa}
+.qg{color:#27ae60;font-weight:700}.qo{color:#d68910;font-weight:700}.qr{color:#c0392b;font-weight:700}
+/* Quiz */
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 20px;margin:14px 0}
+.quiz-q{font-weight:600;color:#2c3e50;margin-bottom:8px}
+.quiz-btn{background:#9b59b6;color:#fff;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:.84em;margin-top:6px}
+.quiz-a{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:10px;font-size:.9em;display:none}
+.quiz-a .ans-label{color:#27ae60;font-weight:700;margin-bottom:6px}
+/* Mark complete */
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(155,89,182,.5)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;transform:none;cursor:default}
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.toast.show{opacity:1}
+/* Breadcrumb */
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 4 › Part A</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 4 — Part A</h1>
+  <div class="tagline">Recursion Fundamentals — The Art of a Function Calling Itself</div>
+  <div class="badges">
+    <span>⏱ Estimated: 2.5 Hours</span>
+    <span>🎯 Intermediate</span>
+    <span>💻 C# &amp; Python</span>
+    <span>📐 Phase 3 · Module 4A</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 4 — Recursion:</strong><br>
+  ▶ <strong>Part A</strong> — <em>You are here</em> — Recursion Fundamentals<br>
+  ⬜ <strong>Part B</strong> — <a href="m04b_backtrack_intro.html">Backtracking Preview</a><br>
+  ⬜ <strong>Part C</strong> — <a href="m04c_recursion_practice.html">Practice: 12 Problems</a><br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase2/m03a_stacks.html">&larr; Module 3 &mdash; Stacks &amp; Queues</a>
+    <a href="../phase3/m05a_basic_sorts.html">Module 5 &mdash; Sorting &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="toc">
+  <h2>📚 Contents — Module 4A</h2>
+  <ol>
+    <li>What Is Recursion? <span>— The mirror in the mirror</span></li>
+    <li>The Two Rules: Base Case &amp; Recursive Case <span>— Without these, chaos</span></li>
+    <li>The Call Stack Visualised <span>— What happens inside memory</span></li>
+    <li>Classic Examples: Factorial, Fibonacci, Power <span>— Full runnable programs</span></li>
+    <li>Recursion Patterns <span>— Direct, indirect, tail, tree recursion</span></li>
+    <li>Recursion vs Iteration <span>— When to use which</span></li>
+    <li>Common Mistakes &amp; Stack Overflow <span>— How to avoid crashing</span></li>
+    <li>Real-World Usage <span>— Where recursion lives in production</span></li>
+    <li>Complexity Analysis <span>— Time and space for recursive algorithms</span></li>
+    <li>Practice Questions <span>— Test your understanding</span></li>
+  </ol>
+</div>
+
+<!-- ═══ SECTION 1 ═══ -->
+<h2 class="sec">Section 1 — What Is Recursion?</h2>
+
+<h3>1.1 The Everyday Analogy</h3>
+<p>Imagine you're standing between two mirrors facing each other. You see a reflection of yourself, inside which is another reflection, inside which is another — going on seemingly forever. <strong>Recursion is exactly this idea applied to programming</strong>: a function that calls <em>itself</em> as part of its own solution.</p>
+
+<p>Another analogy: you're in a huge dark library looking for a book. You don't know which shelf it's on. So you ask the librarian. The librarian says "I don't know, ask the librarian on the next floor." That librarian says the same thing, until eventually someone on the top floor says "Yes, it's here!" — and that answer travels back down to you. Each floor is a <em>recursive call</em>, and the top floor that actually has the answer is the <em>base case</em>.</p>
+
+<div class="note"><strong>📝 Simple Definition</strong>Recursion is when a function solves a problem by solving a <em>smaller version of the same problem</em> and combining results. It keeps breaking the problem down until it reaches a version small enough to answer directly.</div>
+
+<h3>1.2 The Formal Definition</h3>
+<p>A <strong>recursive function</strong> is a function that calls itself directly or indirectly. Every recursive function has two parts:</p>
+<ul style="padding-left:20px;margin-bottom:14px">
+  <li style="padding:4px 0"><strong>Base Case</strong> — the condition where the function stops calling itself and returns a direct answer</li>
+  <li style="padding:4px 0"><strong>Recursive Case</strong> — the condition where the function calls itself with a <em>simpler or smaller</em> input</li>
+</ul>
+<p>Without the base case, the function would call itself forever — causing a <strong>StackOverflowException</strong> (in C#) or <strong>RecursionError</strong> (in Python).</p>
+
+<!-- ═══ SECTION 2 ═══ -->
+<h2 class="sec">Section 2 — The Two Rules: Base Case &amp; Recursive Case</h2>
+
+<h3>2.1 Think of Russian Dolls (Matryoshka)</h3>
+<p>A Russian nesting doll contains a smaller doll, which contains a smaller doll, and so on. The smallest doll (which cannot be opened further) is the <strong>base case</strong>. Every other doll is the <strong>recursive case</strong>.</p>
+
+<div class="diagram">
+  countDown(5):
+  ┌──────────────────────────────────────────────────────┐
+  │  countDown(5) → prints 5, then calls countDown(4)    │
+  │    countDown(4) → prints 4, then calls countDown(3)  │
+  │      countDown(3) → prints 3, then calls countDown(2)│
+  │        countDown(2) → prints 2, then calls countDown(1)│
+  │          countDown(1) → prints 1, then calls countDown(0)│
+  │            countDown(0) → BASE CASE: returns (stop!) │
+  │          ← returns to countDown(1)                   │
+  │        ← returns to countDown(2)                     │
+  │      ← returns to countDown(3)                       │
+  │    ← returns to countDown(4)                         │
+  │  ← returns to countDown(5)                           │
+  └──────────────────────────────────────────────────────┘
+  Output: 5 4 3 2 1
+</div>
+
+<h3>2.2 Countdown — First Complete Program</h3>
+<p>Let's write the countdown example completely. Notice every line is commented so nothing is a mystery:</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── CountDown using Recursion ───────────────────────────────────────────────
+// Demonstrates: base case, recursive case, call stack unwinding</span>
+
+<span class="kw">class</span> <span class="tp">RecursionDemo</span>
+{
+    <span class="cm">// Counts down from n to 1, then prints "Blastoff!"</span>
+    <span class="kw">static void</span> <span class="mt">CountDown</span>(<span class="kw">int</span> n)
+    {
+        <span class="cm">// BASE CASE: when n reaches 0, we stop recursing</span>
+        <span class="kw">if</span> (n &lt;= <span class="nm">0</span>)
+        {
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"🚀 Blastoff!"</span>);
+            <span class="kw">return</span>;  <span class="cm">// essential — without this, we'd recurse forever</span>
+        }
+
+        <span class="cm">// WORK: do some work at this level</span>
+        <span class="tp">Console</span>.<span class="mt">Write</span>(n + <span class="st">" "</span>);
+
+        <span class="cm">// RECURSIVE CASE: call ourselves with a SMALLER input (n-1)</span>
+        <span class="mt">CountDown</span>(n - <span class="nm">1</span>);  <span class="cm">// n decreases → guaranteed to reach base case</span>
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"--- CountDown from 5 ---"</span>);
+        <span class="mt">CountDown</span>(<span class="nm">5</span>);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\n--- CountDown from 3 ---"</span>);
+        <span class="mt">CountDown</span>(<span class="nm">3</span>);
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────────────────
+   --- CountDown from 5 ---
+   5 4 3 2 1 🚀 Blastoff!
+
+   --- CountDown from 3 ---
+   3 2 1 🚀 Blastoff!
+   ─────────────────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── CountDown using Recursion ───────────────────────────────────────────────
+# Demonstrates: base case, recursive case, call stack unwinding</span>
+
+<span class="kw">def</span> <span class="mt">count_down</span>(n):
+    <span class="st">"""Counts down from n to 1, then prints Blastoff!"""</span>
+
+    <span class="cm"># BASE CASE: when n reaches 0, we stop recursing</span>
+    <span class="kw">if</span> n &lt;= <span class="nm">0</span>:
+        <span class="mt">print</span>(<span class="st">"🚀 Blastoff!"</span>)
+        <span class="kw">return</span>  <span class="cm"># essential — without this, we'd recurse forever</span>
+
+    <span class="cm"># WORK: do some work at this level</span>
+    <span class="mt">print</span>(n, end=<span class="st">" "</span>)
+
+    <span class="cm"># RECURSIVE CASE: call ourselves with a SMALLER input (n-1)</span>
+    count_down(n - <span class="nm">1</span>)  <span class="cm"># n decreases → guaranteed to reach base case</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(<span class="st">"--- CountDown from 5 ---"</span>)
+    count_down(<span class="nm">5</span>)
+
+    <span class="mt">print</span>(<span class="st">"\n--- CountDown from 3 ---"</span>)
+    count_down(<span class="nm">3</span>)
+
+<span class="cm">"""
+── Output ────────────────────────────────────────────────────────────────────
+--- CountDown from 5 ---
+5 4 3 2 1 🚀 Blastoff!
+
+--- CountDown from 3 ---
+3 2 1 🚀 Blastoff!
+──────────────────────────────────────────────────────────────────────────── """</span></pre>
+</div>
+
+<!-- ═══ SECTION 3 ═══ -->
+<h2 class="sec">Section 3 — The Call Stack Visualised</h2>
+
+<h3>3.1 What Is the Call Stack?</h3>
+<p>Every time a function is called, your computer creates a <strong>stack frame</strong> in memory — a little box that holds the function's local variables, parameters, and a "return address" (where to go back to when done). These boxes are stacked on top of each other. When the function returns, its box is removed (popped) from the stack.</p>
+
+<div class="diagram">
+  Factorial(4) — Call Stack Growth and Unwinding:
+
+  GROWING (pushing frames):                UNWINDING (popping frames):
+  ┌─────────────────┐                      ┌─────────────────┐
+  │ Factorial(1)=1  │ ← base case!         │                 │
+  ├─────────────────┤                      ├─────────────────┤
+  │ Factorial(2)    │                      │ Factorial(2)=2  │ ← 2*1=2
+  ├─────────────────┤                      ├─────────────────┤
+  │ Factorial(3)    │                      │ Factorial(3)=6  │ ← 3*2=6
+  ├─────────────────┤                      ├─────────────────┤
+  │ Factorial(4)    │                      │ Factorial(4)=24 │ ← 4*6=24
+  └─────────────────┘                      └─────────────────┘
+   Stack is FULL                            Stack UNWINDS, answers bubble up
+</div>
+
+<p>Key insight: each recursive call <strong>pauses</strong> until the call it made returns. Results travel back up like a chain reaction.</p>
+
+<!-- ═══ SECTION 4 ═══ -->
+<h2 class="sec">Section 4 — Classic Examples: Factorial, Fibonacci, Power</h2>
+
+<h3>4.1 Factorial — n!</h3>
+<p>Factorial of n (written n!) means: multiply all integers from 1 to n.<br>Example: 5! = 5 × 4 × 3 × 2 × 1 = 120</p>
+<p>The recursive insight: <strong>n! = n × (n-1)!</strong> — the factorial of n is n times the factorial of n-1. The base case: 0! = 1 (by definition).</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Factorial — Complete Program ─────────────────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">FactorialDemo</span>
+{
+    <span class="cm">/// &lt;summary&gt;Returns n! (n factorial) using recursion.&lt;/summary&gt;
+    /// &lt;param name="n"&gt;Non-negative integer&lt;/param&gt;</span>
+    <span class="kw">static long</span> <span class="mt">Factorial</span>(<span class="kw">int</span> n)
+    {
+        <span class="cm">// BASE CASE: 0! = 1 and 1! = 1</span>
+        <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">1</span>;
+
+        <span class="cm">// RECURSIVE CASE: n! = n × (n-1)!
+        // Example: Factorial(5) = 5 × Factorial(4)</span>
+        <span class="kw">return</span> n * <span class="mt">Factorial</span>(n - <span class="nm">1</span>);
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="cm">// Test several values</span>
+        <span class="kw">int</span>[] tests = { <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">10</span>, <span class="nm">15</span> };
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"n       n!"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"─────────────────"</span>);
+
+        <span class="kw">foreach</span> (<span class="kw">var</span> n <span class="kw">in</span> tests)
+        {
+            <span class="kw">long</span> result = <span class="mt">Factorial</span>(n);
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Factorial({n,2}) = {result,12}"</span>);
+        }
+
+        <span class="cm">// Visual trace for Factorial(4)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\nTrace: Factorial(4)"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"= 4 × Factorial(3)"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"= 4 × 3 × Factorial(2)"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"= 4 × 3 × 2 × Factorial(1)"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"= 4 × 3 × 2 × 1  (base case)"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"= 24"</span>);
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────────────────
+   n       n!
+   ─────────────────
+   Factorial( 0) =            1
+   Factorial( 1) =            1
+   Factorial( 5) =          120
+   Factorial(10) =      3628800
+   Factorial(15) = 1307674368000
+
+   Trace: Factorial(4)
+   = 4 × Factorial(3)
+   = 4 × 3 × Factorial(2)
+   = 4 × 3 × 2 × Factorial(1)
+   = 4 × 3 × 2 × 1  (base case)
+   = 24
+   ─────────────────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Factorial — Complete Program ─────────────────────────────────────────────</span>
+
+<span class="kw">def</span> <span class="mt">factorial</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="st">"""Returns n! (n factorial) using recursion.
+    
+    Args:
+        n: Non-negative integer
+    Returns:
+        n factorial
+    """</span>
+    <span class="cm"># BASE CASE: 0! = 1 and 1! = 1</span>
+    <span class="kw">if</span> n &lt;= <span class="nm">1</span>:
+        <span class="kw">return</span> <span class="nm">1</span>
+
+    <span class="cm"># RECURSIVE CASE: n! = n × (n-1)!
+    # Example: factorial(5) = 5 × factorial(4)</span>
+    <span class="kw">return</span> n * factorial(n - <span class="nm">1</span>)
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    tests = [<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">10</span>, <span class="nm">15</span>]
+
+    <span class="mt">print</span>(<span class="st">"n       n!"</span>)
+    <span class="mt">print</span>(<span class="st">"─────────────────"</span>)
+
+    <span class="kw">for</span> n <span class="kw">in</span> tests:
+        result = factorial(n)
+        <span class="mt">print</span>(<span class="st">f"factorial({n:2}) = {result:12}"</span>)
+
+    <span class="cm"># Visual trace</span>
+    <span class="mt">print</span>(<span class="st">"\nTrace: factorial(4)"</span>)
+    <span class="mt">print</span>(<span class="st">"= 4 × factorial(3)"</span>)
+    <span class="mt">print</span>(<span class="st">"= 4 × 3 × factorial(2)"</span>)
+    <span class="mt">print</span>(<span class="st">"= 4 × 3 × 2 × factorial(1)"</span>)
+    <span class="mt">print</span>(<span class="st">"= 4 × 3 × 2 × 1  (base case)"</span>)
+    <span class="mt">print</span>(<span class="st">"= 24"</span>)
+
+<span class="cm">"""
+── Output ────────────────────────────────────────────────────────────────────
+n       n!
+─────────────────
+factorial( 0) =            1
+factorial( 1) =            1
+factorial( 5) =          120
+factorial(10) =      3628800
+factorial(15) = 1307674368000
+
+Trace: factorial(4)
+= 4 × factorial(3)
+= 4 × 3 × factorial(2)
+= 4 × 3 × 2 × factorial(1)
+= 4 × 3 × 2 × 1  (base case)
+= 24
+──────────────────────────────────────────────────────────────────────────── """</span></pre>
+</div>
+
+<h3>4.2 Fibonacci — The Golden Sequence</h3>
+<p>The Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21... Each number is the sum of the two before it.<br>
+Rule: <strong>F(n) = F(n-1) + F(n-2)</strong>, with base cases F(0)=0, F(1)=1.</p>
+
+<div class="warning"><strong>⚠️ The Naive Fibonacci Problem</strong>The simple recursive Fibonacci makes enormous numbers of duplicate calls. Fibonacci(40) makes over 300 million calls! This is O(2ⁿ) time complexity — exponential. We will fix this with memoization (see Phase 8 DP). For now, understand the recursive structure.</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ─── Fibonacci: Naive Recursive vs Memoized ────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">FibonacciDemo</span>
+{
+    <span class="cm">// Naive: exponential time O(2^n) — illustrates the recursive tree</span>
+    <span class="kw">static long</span> <span class="mt">FibNaive</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">if</span> (n &lt;= <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;  <span class="cm">// base case 1</span>
+        <span class="kw">if</span> (n == <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">1</span>;  <span class="cm">// base case 2</span>
+        <span class="kw">return</span> <span class="mt">FibNaive</span>(n - <span class="nm">1</span>) + <span class="mt">FibNaive</span>(n - <span class="nm">2</span>);  <span class="cm">// recursive case</span>
+    }
+
+    <span class="cm">// Memoized: O(n) time — cache results to avoid duplicate work</span>
+    <span class="kw">static</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">long</span>&gt; _memo = <span class="kw">new</span>();
+    <span class="kw">static long</span> <span class="mt">FibMemo</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">if</span> (n &lt;= <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">if</span> (n == <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">1</span>;
+        <span class="kw">if</span> (_memo.<span class="mt">TryGetValue</span>(n, <span class="kw">out long</span> cached)) <span class="kw">return</span> cached;
+        _memo[n] = <span class="mt">FibMemo</span>(n - <span class="nm">1</span>) + <span class="mt">FibMemo</span>(n - <span class="nm">2</span>);
+        <span class="kw">return</span> _memo[n];
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"First 15 Fibonacci numbers:"</span>);
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">15</span>; i++)
+            <span class="tp">Console</span>.<span class="mt">Write</span>(<span class="mt">FibNaive</span>(i) + <span class="st">" "</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>();
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"\nWith memoization — Fib(50):"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">FibMemo</span>(<span class="nm">50</span>));  <span class="cm">// fast! naive would take hours</span>
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────────────────
+   First 15 Fibonacci numbers:
+   0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+   
+   With memoization — Fib(50):
+   12586269025
+   ─────────────────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Fibonacci: Naive Recursive vs Memoized ────────────────────────────────</span>
+<span class="kw">from</span> functools <span class="kw">import</span> lru_cache
+
+<span class="cm"># Naive: exponential time O(2^n) — illustrates the recursive tree</span>
+<span class="kw">def</span> <span class="mt">fib_naive</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> n &lt;= <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>   <span class="cm"># base case 1</span>
+    <span class="kw">if</span> n == <span class="nm">1</span>: <span class="kw">return</span> <span class="nm">1</span>   <span class="cm"># base case 2</span>
+    <span class="kw">return</span> fib_naive(n - <span class="nm">1</span>) + fib_naive(n - <span class="nm">2</span>)  <span class="cm"># recursive case</span>
+
+<span class="cm"># Memoized with Python's @lru_cache decorator: O(n) time</span>
+<span class="tp">@lru_cache</span>(maxsize=<span class="kw">None</span>)
+<span class="kw">def</span> <span class="mt">fib_memo</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> n &lt;= <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">if</span> n == <span class="nm">1</span>: <span class="kw">return</span> <span class="nm">1</span>
+    <span class="kw">return</span> fib_memo(n - <span class="nm">1</span>) + fib_memo(n - <span class="nm">2</span>)
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(<span class="st">"First 15 Fibonacci numbers:"</span>)
+    <span class="mt">print</span>(*[fib_naive(i) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">15</span>)])
+
+    <span class="mt">print</span>(<span class="st">"\nWith memoization — fib(50):"</span>)
+    <span class="mt">print</span>(fib_memo(<span class="nm">50</span>))   <span class="cm"># fast! naive would take forever</span>
+
+<span class="cm">"""
+── Output ────────────────────────────────────────────────────────────────────
+First 15 Fibonacci numbers:
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+
+With memoization — fib(50):
+12586269025
+──────────────────────────────────────────────────────────────────────────── """</span></pre>
+</div>
+
+<h3>4.3 Power Function — Fast Exponentiation</h3>
+<p>Calculate x<sup>n</sup>. Naive approach: multiply x by itself n times — O(n). Recursive approach using <strong>divide and conquer</strong>: x<sup>n</sup> = x<sup>n/2</sup> × x<sup>n/2</sup> — O(log n)!</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Fast Power (Exponentiation by Squaring) ─────────────────────────────────
+// Instead of: 2^8 = 2*2*2*2*2*2*2*2 (8 multiplications)
+// We do:      2^8 = (2^4)^2 = ((2^2)^2)^2 (3 multiplications!)
+// Time: O(log n)  Space: O(log n) call stack</span>
+
+<span class="kw">class</span> <span class="tp">PowerDemo</span>
+{
+    <span class="kw">static double</span> <span class="mt">Power</span>(<span class="kw">double</span> x, <span class="kw">int</span> n)
+    {
+        <span class="cm">// BASE CASE: anything to the power 0 is 1</span>
+        <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">1</span>;
+
+        <span class="cm">// Handle negative exponent: x^(-n) = 1 / x^n</span>
+        <span class="kw">if</span> (n &lt; <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">1.0</span> / <span class="mt">Power</span>(x, -n);
+
+        <span class="cm">// RECURSIVE CASE: compute half-power once and reuse</span>
+        <span class="kw">double</span> halfPower = <span class="mt">Power</span>(x, n / <span class="nm">2</span>);  <span class="cm">// only ONE recursive call</span>
+
+        <span class="kw">if</span> (n % <span class="nm">2</span> == <span class="nm">0</span>)
+            <span class="kw">return</span> halfPower * halfPower;        <span class="cm">// even: x^n = (x^(n/2))^2</span>
+        <span class="kw">else</span>
+            <span class="kw">return</span> x * halfPower * halfPower;    <span class="cm">// odd: x^n = x * (x^(n/2))^2</span>
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"2^10  = {Power(2, 10)}"</span>);   <span class="cm">// 1024</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"3^5   = {Power(3, 5)}"</span>);    <span class="cm">// 243</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"2^-3  = {Power(2, -3)}"</span>);   <span class="cm">// 0.125</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"10^0  = {Power(10, 0)}"</span>);   <span class="cm">// 1</span>
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────────────────
+   2^10  = 1024
+   3^5   = 243
+   2^-3  = 0.125
+   10^0  = 1
+   ─────────────────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Fast Power (Exponentiation by Squaring) ─────────────────────────────────</span>
+
+<span class="kw">def</span> <span class="mt">power</span>(x: <span class="tp">float</span>, n: <span class="tp">int</span>) -&gt; <span class="tp">float</span>:
+    <span class="st">"""Fast exponentiation: x^n in O(log n) time."""</span>
+
+    <span class="cm"># BASE CASE: anything to the power 0 is 1</span>
+    <span class="kw">if</span> n == <span class="nm">0</span>:
+        <span class="kw">return</span> <span class="nm">1</span>
+
+    <span class="cm"># Handle negative exponent</span>
+    <span class="kw">if</span> n &lt; <span class="nm">0</span>:
+        <span class="kw">return</span> <span class="nm">1.0</span> / power(x, -n)
+
+    <span class="cm"># Compute half-power once and reuse</span>
+    half_power = power(x, n // <span class="nm">2</span>)
+
+    <span class="kw">if</span> n % <span class="nm">2</span> == <span class="nm">0</span>:
+        <span class="kw">return</span> half_power * half_power         <span class="cm"># even</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> x * half_power * half_power     <span class="cm"># odd</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(<span class="st">f"2^10  = {power(2, 10)}"</span>)    <span class="cm"># 1024.0</span>
+    <span class="mt">print</span>(<span class="st">f"3^5   = {power(3, 5)}"</span>)     <span class="cm"># 243.0</span>
+    <span class="mt">print</span>(<span class="st">f"2^-3  = {power(2, -3)}"</span>)    <span class="cm"># 0.125</span>
+    <span class="mt">print</span>(<span class="st">f"10^0  = {power(10, 0)}"</span>)    <span class="cm"># 1</span></pre>
+</div>
+
+<!-- ═══ SECTION 5 ═══ -->
+<h2 class="sec">Section 5 — Recursion Patterns</h2>
+
+<h3>5.1 Direct vs Indirect Recursion</h3>
+<p><strong>Direct recursion</strong>: Function A calls itself. All examples above are direct.<br>
+<strong>Indirect (mutual) recursion</strong>: Function A calls B, and B calls A. Example: isEven/isOdd.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Indirect (Mutual) Recursion ─────────────────────────────────────────────
+// isEven calls isOdd; isOdd calls isEven</span>
+
+<span class="kw">class</span> <span class="tp">MutualRecursion</span>
+{
+    <span class="kw">static bool</span> <span class="mt">IsEven</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return true</span>;   <span class="cm">// base case</span>
+        <span class="kw">if</span> (n &lt; <span class="nm">0</span>) n = -n;          <span class="cm">// handle negatives</span>
+        <span class="kw">return</span> <span class="mt">IsOdd</span>(n - <span class="nm">1</span>);        <span class="cm">// calls IsOdd!</span>
+    }
+
+    <span class="kw">static bool</span> <span class="mt">IsOdd</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return false</span>;  <span class="cm">// base case</span>
+        <span class="kw">if</span> (n &lt; <span class="nm">0</span>) n = -n;
+        <span class="kw">return</span> <span class="mt">IsEven</span>(n - <span class="nm">1</span>);       <span class="cm">// calls IsEven!</span>
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"IsEven(4) = {IsEven(4)}"</span>);  <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"IsOdd(7)  = {IsOdd(7)}"</span>);   <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"IsEven(3) = {IsEven(3)}"</span>);  <span class="cm">// False</span>
+    }
+}
+
+<span class="cm">/* Output:
+   IsEven(4) = True
+   IsOdd(7)  = True
+   IsEven(3) = False */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Indirect (Mutual) Recursion ─────────────────────────────────────────────</span>
+
+<span class="kw">def</span> <span class="mt">is_even</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">bool</span>:
+    <span class="kw">if</span> n &lt; <span class="nm">0</span>: n = -n
+    <span class="kw">if</span> n == <span class="nm">0</span>: <span class="kw">return True</span>
+    <span class="kw">return</span> is_odd(n - <span class="nm">1</span>)   <span class="cm"># calls is_odd!</span>
+
+<span class="kw">def</span> <span class="mt">is_odd</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">bool</span>:
+    <span class="kw">if</span> n &lt; <span class="nm">0</span>: n = -n
+    <span class="kw">if</span> n == <span class="nm">0</span>: <span class="kw">return False</span>
+    <span class="kw">return</span> is_even(n - <span class="nm">1</span>)  <span class="cm"># calls is_even!</span>
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(<span class="st">f"is_even(4) = {is_even(4)}"</span>)  <span class="cm"># True</span>
+    <span class="mt">print</span>(<span class="st">f"is_odd(7)  = {is_odd(7)}"</span>)   <span class="cm"># True</span>
+    <span class="mt">print</span>(<span class="st">f"is_even(3) = {is_even(3)}"</span>)  <span class="cm"># False</span></pre>
+</div>
+
+<h3>5.2 Tail Recursion</h3>
+<p>A recursive call is <strong>tail recursive</strong> when it is the <em>very last operation</em> in the function — nothing is done after the recursive call returns. Some languages/compilers can optimise tail recursion into a loop, eliminating stack frame growth.</p>
+
+<div class="tip"><strong>💡 C# and Tail Recursion</strong>C# does not automatically optimise tail recursion (unlike functional languages like F# or Haskell). For deep recursion in C#, prefer iterative solutions or use a manual stack to avoid StackOverflowException. Python also has a default recursion limit of 1000.</div>
+
+<!-- ═══ SECTION 6 ═══ -->
+<h2 class="sec">Section 6 — Recursion vs Iteration</h2>
+
+<h3>6.1 When to Use Recursion</h3>
+<table class="cmplx">
+  <thead><tr><th>Situation</th><th>Use Recursion?</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td>Tree/Graph traversals</td><td class="qg">✅ Yes</td><td>Natural structure matches recursion</td></tr>
+    <tr><td>Divide &amp; Conquer algorithms</td><td class="qg">✅ Yes</td><td>Problem splits cleanly into sub-problems</td></tr>
+    <tr><td>Backtracking (N-Queens, Sudoku)</td><td class="qg">✅ Yes</td><td>Need to explore then undo choices</td></tr>
+    <tr><td>Simple loops (sum of array)</td><td class="qr">❌ No</td><td>Iteration is simpler and more efficient</td></tr>
+    <tr><td>Very deep recursion (n&gt;10,000)</td><td class="qr">❌ No</td><td>Stack overflow risk — use iterative</td></tr>
+    <tr><td>Fibonacci (performance critical)</td><td class="qo">⚠️ Only with memo</td><td>Naive is O(2ⁿ), memoized is O(n)</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══ SECTION 7 ═══ -->
+<h2 class="sec">Section 7 — Common Mistakes</h2>
+
+<div class="warning">
+<strong>⚠️ Mistake 1: Missing Base Case</strong>
+<div class="code-block lang-cs"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// WRONG — no base case → infinite recursion → StackOverflowException</span>
+<span class="kw">static int</span> <span class="mt">BadFactorial</span>(<span class="kw">int</span> n) {
+    <span class="kw">return</span> n * <span class="mt">BadFactorial</span>(n - <span class="nm">1</span>);  <span class="cm">// never stops!</span>
+}</pre></div>
+<div class="code-block lang-py" style="display:none"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># WRONG — no base case → infinite recursion → RecursionError</span>
+<span class="kw">def</span> bad_factorial(n):
+    <span class="kw">return</span> n * bad_factorial(n - <span class="nm">1</span>)  <span class="cm"># never stops!</span></pre></div>
+</div>
+
+<div class="warning">
+<strong>⚠️ Mistake 2: Not Moving Toward Base Case</strong>
+<div class="code-block lang-cs"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// WRONG — n+1 goes AWAY from base case n==0 → infinite recursion</span>
+<span class="kw">static int</span> <span class="mt">WrongRecursion</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">return</span> <span class="mt">WrongRecursion</span>(n + <span class="nm">1</span>);  <span class="cm">// should be n-1!</span>
+}</pre></div>
+<div class="code-block lang-py" style="display:none"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># WRONG — n+1 goes AWAY from base case n==0</span>
+<span class="kw">def</span> wrong_recursion(n):
+    <span class="kw">if</span> n == <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> wrong_recursion(n + <span class="nm">1</span>)  <span class="cm"># should be n-1!</span></pre></div>
+</div>
+
+<!-- ═══ SECTION 8 ═══ -->
+<h2 class="sec">Section 8 — Real-World Usage</h2>
+
+<div class="realworld">
+<strong>🌍 Where Recursion Lives in Real Software</strong>
+<ul style="padding-left:18px;margin-top:8px">
+  <li style="padding:3px 0"><strong>File System traversal</strong> — Windows Explorer, Linux <code>find</code> command: a folder contains folders recursively</li>
+  <li style="padding:3px 0"><strong>XML/HTML/JSON parsing</strong> — nested tags call the same parser recursively</li>
+  <li style="padding:3px 0"><strong>Git diff</strong> — comparing directory trees is recursive</li>
+  <li style="padding:3px 0"><strong>Compilers</strong> — parsing expressions like <code>a + (b * (c - d))</code> uses recursive descent parsers</li>
+  <li style="padding:3px 0"><strong>React/Angular rendering</strong> — the component tree is traversed recursively</li>
+  <li style="padding:3px 0"><strong>Database query plans</strong> — SQL WITH RECURSIVE for hierarchical data</li>
+</ul>
+</div>
+
+<!-- ═══ SECTION 9 ═══ -->
+<h2 class="sec">Section 9 — Complexity Analysis</h2>
+
+<table class="cmplx">
+  <thead><tr><th>Algorithm</th><th>Time</th><th>Space (Stack)</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Factorial(n)</td><td class="qo">O(n)</td><td class="qo">O(n)</td><td>n recursive calls, each O(1) work</td></tr>
+    <tr><td>Fibonacci naive</td><td class="qr">O(2ⁿ)</td><td class="qo">O(n)</td><td>Exponential — avoid without memoization</td></tr>
+    <tr><td>Fibonacci memoized</td><td class="qo">O(n)</td><td class="qo">O(n)</td><td>Each subproblem computed once</td></tr>
+    <tr><td>Power(x, n)</td><td class="qg">O(log n)</td><td class="qg">O(log n)</td><td>Halves problem each call</td></tr>
+    <tr><td>Binary Search (recursive)</td><td class="qg">O(log n)</td><td class="qg">O(log n)</td><td>Halves array each call</td></tr>
+    <tr><td>Merge Sort</td><td class="qo">O(n log n)</td><td class="qo">O(n)</td><td>Splits then merges — Phase 3</td></tr>
+  </tbody>
+</table>
+
+<div class="note"><strong>📝 Space Complexity Note</strong>Every recursive call adds a stack frame. Deep recursion uses O(depth) space. Factorial(10000) would use ~10,000 stack frames — potentially causing a stack overflow. For such cases, convert to iteration.</div>
+
+<!-- ═══ SECTION 10 ═══ -->
+<h2 class="sec">Section 10 — Practice Questions</h2>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q1: Write a recursive function to compute the sum of digits of a number. E.g. sumDigits(123) = 6.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Answer:</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">static int</span> <span class="mt">SumDigits</span>(<span class="kw">int</span> n)
+{
+    n = Math.<span class="mt">Abs</span>(n);             <span class="cm">// handle negatives</span>
+    <span class="kw">if</span> (n &lt; <span class="nm">10</span>) <span class="kw">return</span> n;        <span class="cm">// base case: single digit</span>
+    <span class="kw">return</span> (n % <span class="nm">10</span>) + <span class="mt">SumDigits</span>(n / <span class="nm">10</span>);  <span class="cm">// last digit + sum of rest</span>
+}
+<span class="cm">// SumDigits(123) = 3 + SumDigits(12) = 3 + 2 + SumDigits(1) = 3+2+1 = 6</span></pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">sum_digits</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    n = <span class="mt">abs</span>(n)
+    <span class="kw">if</span> n &lt; <span class="nm">10</span>: <span class="kw">return</span> n          <span class="cm"># base case</span>
+    <span class="kw">return</span> (n % <span class="nm">10</span>) + sum_digits(n // <span class="nm">10</span>)
+<span class="cm"># sum_digits(123) = 3 + sum_digits(12) = 3 + 2 + sum_digits(1) = 6</span></pre></div></div>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q2: Write a recursive function to check if a string is a palindrome (reads same forward and backward). E.g. "racecar" → true.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Answer:</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">static bool</span> <span class="mt">IsPalindrome</span>(<span class="kw">string</span> s, <span class="kw">int</span> left = <span class="nm">0</span>, <span class="kw">int</span> right = -<span class="nm">1</span>)
+{
+    <span class="kw">if</span> (right == -<span class="nm">1</span>) right = s.<span class="mt">Length</span> - <span class="nm">1</span>;
+    <span class="kw">if</span> (left &gt;= right) <span class="kw">return true</span>;   <span class="cm">// base case: pointers crossed</span>
+    <span class="kw">if</span> (s[left] != s[right]) <span class="kw">return false</span>; <span class="cm">// mismatch</span>
+    <span class="kw">return</span> <span class="mt">IsPalindrome</span>(s, left + <span class="nm">1</span>, right - <span class="nm">1</span>); <span class="cm">// check inner string</span>
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">is_palindrome</span>(s: <span class="tp">str</span>, left: <span class="tp">int</span> = <span class="nm">0</span>, right: <span class="tp">int</span> = -<span class="nm">1</span>) -&gt; <span class="tp">bool</span>:
+    <span class="kw">if</span> right == -<span class="nm">1</span>: right = <span class="mt">len</span>(s) - <span class="nm">1</span>
+    <span class="kw">if</span> left &gt;= right: <span class="kw">return True</span>        <span class="cm"># base case</span>
+    <span class="kw">if</span> s[left] != s[right]: <span class="kw">return False</span>  <span class="cm"># mismatch</span>
+    <span class="kw">return</span> is_palindrome(s, left + <span class="nm">1</span>, right - <span class="nm">1</span>)</pre></div></div>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q3: What is the output? <code>Mystery(4)</code> where <code>Mystery(n)</code> prints n, then calls <code>Mystery(n/2)</code> while n &gt; 0.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Answer: 4 2 1</div>
+    <p>Mystery(4) prints 4, calls Mystery(2). Mystery(2) prints 2, calls Mystery(1). Mystery(1) prints 1, calls Mystery(0). Mystery(0): 0 &gt; 0 is false, so returns. Each call halves n — this is O(log n).</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q4: Write a recursive function to find the GCD (Greatest Common Divisor) of two numbers. GCD(12, 8) = 4.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Euclidean Algorithm:</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">static int</span> <span class="mt">GCD</span>(<span class="kw">int</span> a, <span class="kw">int</span> b)
+{
+    <span class="kw">if</span> (b == <span class="nm">0</span>) <span class="kw">return</span> a;     <span class="cm">// base case: GCD(a, 0) = a</span>
+    <span class="kw">return</span> <span class="mt">GCD</span>(b, a % b);      <span class="cm">// GCD(a,b) = GCD(b, a mod b)</span>
+}
+<span class="cm">// GCD(12,8) → GCD(8,4) → GCD(4,0) → 4</span></pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">gcd</span>(a: <span class="tp">int</span>, b: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> b == <span class="nm">0</span>: <span class="kw">return</span> a     <span class="cm"># base case</span>
+    <span class="kw">return</span> gcd(b, a % b)    <span class="cm"># Euclidean step</span>
+<span class="cm"># gcd(12,8) → gcd(8,4) → gcd(4,0) → 4</span></pre></div></div>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q5: Trace the call stack for Factorial(3). How many total function calls are made?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ 4 calls total (Factorial(3), Factorial(2), Factorial(1), base case returns)</div>
+    <div class="diagram" style="font-size:.82em;margin:8px 0">Factorial(3) calls Factorial(2) calls Factorial(1) → returns 1
+← Factorial(1) = 1
+← Factorial(2) = 2×1 = 2
+← Factorial(3) = 3×2 = 6    [4 frames on call stack at peak depth]</div>
+  </div>
+</div>
+
+<!-- ═══ MARK COMPLETE ═══ -->
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">You've covered: recursion fundamentals, call stack, base case, classic examples, patterns, and complexity. Mark this lesson complete when you're ready to move on.</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="m04b_backtrack_intro.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part B — Backtracking Preview →</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm04a';
+
+// Auto-mark as in-progress on first visit
+(function(){
+    const key = 'dslearn_' + MODULE_ID;
+    if (!localStorage.getItem(key)) localStorage.setItem(key, 'p');
+})();
+
+// Mark complete
+function markComplete(){
+    localStorage.setItem('dslearn_' + MODULE_ID, 'c');
+    const btn = document.getElementById('mark-btn');
+    btn.textContent = '✅ Completed!';
+    btn.disabled = true;
+    showToast('✅ Module 4A marked as complete!');
+}
+
+// Check if already complete
+(function(){
+    if(localStorage.getItem('dslearn_' + MODULE_ID) === 'c'){
+        const btn = document.getElementById('mark-btn');
+        if(btn){ btn.textContent = '✅ Completed!'; btn.disabled = true; }
+    }
+})();
+
+// Language toggle
+function applyLang(){
+    const lang = localStorage.getItem('dslearn_lang') || 'cs';
+    document.querySelectorAll('.lang-cs').forEach(el => el.style.display = lang==='cs' ? '' : 'none');
+    document.querySelectorAll('.lang-py').forEach(el => el.style.display = lang==='py' ? '' : 'none');
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-lang') === lang));
+}
+function setLang(lang){
+    localStorage.setItem('dslearn_lang', lang);
+    applyLang();
+}
+applyLang();
+
+// Copy to clipboard
+function copyCode(btn){
+    const pre = btn.parentElement.querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent).then(()=>{
+        btn.textContent='✅ Copied!';
+        setTimeout(()=>btn.textContent='📋 Copy', 2000);
+    }).catch(()=>{
+        btn.textContent='⚠️ Failed';
+        setTimeout(()=>btn.textContent='📋 Copy', 2000);
+    });
+}
+
+// Quiz toggle
+function toggleAnswer(btn){
+    const ans = btn.nextElementSibling;
+    const hidden = ans.style.display === 'none' || !ans.style.display;
+    ans.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? '🙈 Hide Answer' : '💡 Show Answer';
+}
+
+// Toast
+let _tt;
+function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(_tt);
+    _tt = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

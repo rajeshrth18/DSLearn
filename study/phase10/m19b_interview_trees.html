@@ -1,0 +1,676 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 19B — Interview: Trees &amp; Graphs | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 19 — Part B</h1>
+    <div class="tagline">Top Interview Problems — Trees &amp; Graphs</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">15 Essential Problems · BFS/DFS · Tree Traversals · Graph Algorithms · FAANG Frequency</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🔥 FAANG Prep</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 19</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 10 — Module 19 — Top 50 Interview Problems:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m19a_interview_arrays.html">Arrays &amp; Strings (15 Problems)</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Trees &amp; Graphs (15 Problems)<br>
+    ⬜ <strong>Part C</strong> — <a href="m19c_interview_dp.html">DP &amp; Advanced (20 Problems)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase10/m18a_patterns1.html">&larr; Module 18 &mdash; Patterns I</a>
+    <a href="../phase10/m20_final_review.html">Module 20 &mdash; Final Review &rarr;</a>
+</div>
+
+<!-- ═══════ GROUP A: Binary Tree Fundamentals ═══════ -->
+<div class="section-heading">Group A — Binary Tree Fundamentals</div>
+
+<!-- Problem 1 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#1</span>
+        <span class="problem-title">Invert Binary Tree</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #226</span>
+    </div>
+    <p>Invert a binary tree (swap left and right children at every node).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS / BFS</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Recursively swap left and right children. Base case: null → return null. Recurse on both subtrees first, then swap.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">TreeNode</span> <span class="mt">InvertTree</span>(<span class="tp">TreeNode</span> root) {
+    <span class="kw">if</span> (root == <span class="kw">null</span>) <span class="kw">return null</span>;
+    (root.left, root.right) = (<span class="mt">InvertTree</span>(root.right), <span class="mt">InvertTree</span>(root.left));
+    <span class="kw">return</span> root;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">invertTree</span>(root):
+    <span class="kw">if not</span> root: <span class="kw">return None</span>
+    root.left, root.right = <span class="mt">invertTree</span>(root.right), <span class="mt">invertTree</span>(root.left)
+    <span class="kw">return</span> root</pre></div>
+    </div>
+</div>
+
+<!-- Problem 2 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#2</span>
+        <span class="problem-title">Maximum Depth of Binary Tree</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #104</span>
+    </div>
+    <p>Find the maximum depth (number of nodes along the longest root-to-leaf path).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box"><code>depth(node) = 1 + max(depth(left), depth(right))</code>. Base case: null → 0.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">MaxDepth</span>(<span class="tp">TreeNode</span> root) =&gt;
+    root == <span class="kw">null</span> ? <span class="nm">0</span> : <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="mt">MaxDepth</span>(root.left), <span class="mt">MaxDepth</span>(root.right));</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">maxDepth</span>(root):
+    <span class="kw">if not</span> root: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(<span class="mt">maxDepth</span>(root.left), <span class="mt">maxDepth</span>(root.right))</pre></div>
+    </div>
+</div>
+
+<!-- Problem 3 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#3</span>
+        <span class="problem-title">Diameter of Binary Tree</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #543</span>
+    </div>
+    <p>Find the length of the longest path between any two nodes (the path may not pass through the root).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS with global state</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">At each node, the diameter passing through it = depth(left) + depth(right). Track global max. Return max depth (not diameter) up the recursion.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">DiameterOfBinaryTree</span>(<span class="tp">TreeNode</span> root) {
+    <span class="kw">int</span> best=<span class="nm">0</span>;
+    <span class="kw">int</span> <span class="mt">Dfs</span>(<span class="tp">TreeNode</span> n){
+        <span class="kw">if</span>(n==<span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> L=<span class="mt">Dfs</span>(n.left), R=<span class="mt">Dfs</span>(n.right);
+        best=<span class="tp">Math</span>.<span class="mt">Max</span>(best,L+R);
+        <span class="kw">return</span> <span class="nm">1</span>+<span class="tp">Math</span>.<span class="mt">Max</span>(L,R);
+    }
+    <span class="mt">Dfs</span>(root); <span class="kw">return</span> best;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">diameterOfBinaryTree</span>(root):
+    best = [<span class="nm">0</span>]
+    <span class="kw">def</span> <span class="mt">dfs</span>(node):
+        <span class="kw">if not</span> node: <span class="kw">return</span> <span class="nm">0</span>
+        L, R = <span class="mt">dfs</span>(node.left), <span class="mt">dfs</span>(node.right)
+        best[<span class="nm">0</span>] = <span class="mt">max</span>(best[<span class="nm">0</span>], L+R)
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(L, R)
+    <span class="mt">dfs</span>(root); <span class="kw">return</span> best[<span class="nm">0</span>]</pre></div>
+    </div>
+</div>
+
+<!-- Problem 4 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#4</span>
+        <span class="problem-title">Balanced Binary Tree</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #110</span>
+    </div>
+    <p>Determine if a binary tree is height-balanced (heights of subtrees differ by at most 1).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS, early termination</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Return -1 (sentinel) from DFS if subtree is unbalanced. Otherwise return height. Check both subtrees: if either returns -1, propagate -1 up. Otherwise check if |left - right| > 1.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public bool</span> <span class="mt">IsBalanced</span>(<span class="tp">TreeNode</span> root) {
+    <span class="kw">int</span> <span class="mt">Dfs</span>(<span class="tp">TreeNode</span> n){
+        <span class="kw">if</span>(n==<span class="kw">null</span>) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> L=<span class="mt">Dfs</span>(n.left), R=<span class="mt">Dfs</span>(n.right);
+        <span class="kw">if</span>(L==-<span class="nm">1</span>||R==-<span class="nm">1</span>||<span class="tp">Math</span>.<span class="mt">Abs</span>(L-R)&gt;<span class="nm">1</span>) <span class="kw">return</span> -<span class="nm">1</span>;
+        <span class="kw">return</span> <span class="nm">1</span>+<span class="tp">Math</span>.<span class="mt">Max</span>(L,R);
+    }
+    <span class="kw">return</span> <span class="mt">Dfs</span>(root)!=-<span class="nm">1</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">isBalanced</span>(root):
+    <span class="kw">def</span> <span class="mt">dfs</span>(node):
+        <span class="kw">if not</span> node: <span class="kw">return</span> <span class="nm">0</span>
+        L, R = <span class="mt">dfs</span>(node.left), <span class="mt">dfs</span>(node.right)
+        <span class="kw">if</span> L == -<span class="nm">1</span> <span class="kw">or</span> R == -<span class="nm">1</span> <span class="kw">or</span> <span class="mt">abs</span>(L-R) > <span class="nm">1</span>: <span class="kw">return</span> -<span class="nm">1</span>
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(L, R)
+    <span class="kw">return</span> <span class="mt">dfs</span>(root) != -<span class="nm">1</span></pre></div>
+    </div>
+</div>
+
+<!-- Problem 5 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#5</span>
+        <span class="problem-title">Same Tree</span>
+        <span class="diff-easy">Easy</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #100</span>
+    </div>
+    <p>Given the roots of two binary trees, check if they are the same.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Two trees are the same iff their roots have the same value and their left subtrees are the same and their right subtrees are the same.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public bool</span> <span class="mt">IsSameTree</span>(<span class="tp">TreeNode</span> p, <span class="tp">TreeNode</span> q) {
+    <span class="kw">if</span>(p==<span class="kw">null</span>&amp;&amp;q==<span class="kw">null</span>) <span class="kw">return true</span>;
+    <span class="kw">if</span>(p==<span class="kw">null</span>||q==<span class="kw">null</span>||p.val!=q.val) <span class="kw">return false</span>;
+    <span class="kw">return</span> <span class="mt">IsSameTree</span>(p.left,q.left)&amp;&amp;<span class="mt">IsSameTree</span>(p.right,q.right);
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">isSameTree</span>(p, q):
+    <span class="kw">if not</span> p <span class="kw">and not</span> q: <span class="kw">return True</span>
+    <span class="kw">if not</span> p <span class="kw">or not</span> q <span class="kw">or</span> p.val != q.val: <span class="kw">return False</span>
+    <span class="kw">return</span> <span class="mt">isSameTree</span>(p.left,q.left) <span class="kw">and</span> <span class="mt">isSameTree</span>(p.right,q.right)</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP B: BST Problems ═══════ -->
+<div class="section-heading">Group B — BST &amp; Level Order</div>
+
+<!-- Problem 6 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#6</span>
+        <span class="problem-title">Lowest Common Ancestor of BST</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #235</span>
+    </div>
+    <p>Find the lowest common ancestor (LCA) of two nodes in a BST.</p>
+    <div class="complexity-row"><span>Time: O(h)</span><span>Space: O(1)</span><span>Pattern: BST property</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">BST: if both p and q are less than current node, go left. If both greater, go right. Otherwise, current is the LCA (they split here, or one of them equals current).</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">TreeNode</span> <span class="mt">LowestCommonAncestor</span>(<span class="tp">TreeNode</span> root, <span class="tp">TreeNode</span> p, <span class="tp">TreeNode</span> q) {
+    <span class="kw">while</span>(root!=<span class="kw">null</span>){
+        <span class="kw">if</span>(p.val&lt;root.val&amp;&amp;q.val&lt;root.val) root=root.left;
+        <span class="kw">else if</span>(p.val&gt;root.val&amp;&amp;q.val&gt;root.val) root=root.right;
+        <span class="kw">else return</span> root;
+    }
+    <span class="kw">return null</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">lowestCommonAncestor</span>(root, p, q):
+    <span class="kw">while</span> root:
+        <span class="kw">if</span> p.val &lt; root.val <span class="kw">and</span> q.val &lt; root.val: root = root.left
+        <span class="kw">elif</span> p.val > root.val <span class="kw">and</span> q.val > root.val: root = root.right
+        <span class="kw">else</span>: <span class="kw">return</span> root</pre></div>
+    </div>
+</div>
+
+<!-- Problem 7 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#7</span>
+        <span class="problem-title">Binary Tree Level Order Traversal</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #102</span>
+    </div>
+    <p>Return the level-order traversal of a binary tree (left to right, level by level).</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: BFS with queue</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">BFS with a queue. At the start of each level, snapshot the current queue size. Process exactly that many nodes, add their children to the queue. Collect each level's values as a group.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">LevelOrder</span>(<span class="tp">TreeNode</span> root) {
+    <span class="kw">var</span> res=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt;();
+    <span class="kw">if</span>(root==<span class="kw">null</span>) <span class="kw">return</span> res;
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;(); q.<span class="mt">Enqueue</span>(root);
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>){
+        <span class="kw">var</span> level=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(); <span class="kw">int</span> sz=q.Count;
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;sz;i++){
+            <span class="kw">var</span> n=q.<span class="mt">Dequeue</span>(); level.<span class="mt">Add</span>(n.val);
+            <span class="kw">if</span>(n.left!=<span class="kw">null</span>)q.<span class="mt">Enqueue</span>(n.left);
+            <span class="kw">if</span>(n.right!=<span class="kw">null</span>)q.<span class="mt">Enqueue</span>(n.right);
+        }
+        res.<span class="mt">Add</span>(level);
+    }
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">def</span> <span class="mt">levelOrder</span>(root):
+    <span class="kw">if not</span> root: <span class="kw">return</span> []
+    q = deque([root]); res = []
+    <span class="kw">while</span> q:
+        level = []
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(q)):
+            node = q.<span class="mt">popleft</span>(); level.<span class="mt">append</span>(node.val)
+            <span class="kw">if</span> node.left: q.<span class="mt">append</span>(node.left)
+            <span class="kw">if</span> node.right: q.<span class="mt">append</span>(node.right)
+        res.<span class="mt">append</span>(level)
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- Problem 8 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#8</span>
+        <span class="problem-title">Validate Binary Search Tree</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #98</span>
+    </div>
+    <p>Determine if a binary tree is a valid BST.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS with bounds</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Pass min and max bounds down the recursion. Every node must satisfy <code>min < node.val < max</code>. Going left: update max to node.val. Going right: update min to node.val.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public bool</span> <span class="mt">IsValidBST</span>(<span class="tp">TreeNode</span> root) {
+    <span class="kw">bool</span> <span class="mt">Valid</span>(<span class="tp">TreeNode</span> n, <span class="kw">long</span> lo, <span class="kw">long</span> hi){
+        <span class="kw">if</span>(n==<span class="kw">null</span>) <span class="kw">return true</span>;
+        <span class="kw">if</span>(n.val&lt;=lo||n.val&gt;=hi) <span class="kw">return false</span>;
+        <span class="kw">return</span> <span class="mt">Valid</span>(n.left,lo,n.val)&amp;&amp;<span class="mt">Valid</span>(n.right,n.val,hi);
+    }
+    <span class="kw">return</span> <span class="mt">Valid</span>(root,<span class="kw">long</span>.MinValue,<span class="kw">long</span>.MaxValue);
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">isValidBST</span>(root):
+    <span class="kw">def</span> <span class="mt">valid</span>(node, lo, hi):
+        <span class="kw">if not</span> node: <span class="kw">return True</span>
+        <span class="kw">if not</span> lo &lt; node.val &lt; hi: <span class="kw">return False</span>
+        <span class="kw">return</span> <span class="mt">valid</span>(node.left, lo, node.val) <span class="kw">and</span> <span class="mt">valid</span>(node.right, node.val, hi)
+    <span class="kw">return</span> <span class="mt">valid</span>(root, <span class="mt">float</span>(<span class="st">'-inf'</span>), <span class="mt">float</span>(<span class="st">'inf'</span>))</pre></div>
+    </div>
+</div>
+
+<!-- Problem 9 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#9</span>
+        <span class="problem-title">Kth Smallest Element in BST</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #230</span>
+    </div>
+    <p>Find the kth smallest element in a BST.</p>
+    <div class="complexity-row"><span>Time: O(h+k)</span><span>Space: O(h)</span><span>Pattern: Inorder traversal</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Inorder traversal of BST gives elements in sorted order. Use an iterative inorder with a counter — stop when you've visited k nodes.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">KthSmallest</span>(<span class="tp">TreeNode</span> root, <span class="kw">int</span> k) {
+    <span class="kw">var</span> stack=<span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="tp">TreeNode</span>&gt;(); <span class="kw">var</span> node=root;
+    <span class="kw">while</span>(stack.Count&gt;<span class="nm">0</span>||node!=<span class="kw">null</span>){
+        <span class="kw">while</span>(node!=<span class="kw">null</span>){stack.<span class="mt">Push</span>(node);node=node.left;}
+        node=stack.<span class="mt">Pop</span>(); <span class="kw">if</span>(--k==<span class="nm">0</span>) <span class="kw">return</span> node.val;
+        node=node.right;
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">kthSmallest</span>(root, k):
+    stack = []; node = root
+    <span class="kw">while</span> stack <span class="kw">or</span> node:
+        <span class="kw">while</span> node: stack.<span class="mt">append</span>(node); node = node.left
+        node = stack.<span class="mt">pop</span>(); k -= <span class="nm">1</span>
+        <span class="kw">if</span> k == <span class="nm">0</span>: <span class="kw">return</span> node.val
+        node = node.right</pre></div>
+    </div>
+</div>
+
+<!-- Problem 10 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#10</span>
+        <span class="problem-title">Binary Tree Right Side View</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #199</span>
+    </div>
+    <p>Given a binary tree, return the values of nodes visible when the tree is viewed from the right side.</p>
+    <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: BFS, last in level</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">BFS level order. For each level, the rightmost node is the visible one. Collect the last element of each BFS level.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">RightSideView</span>(<span class="tp">TreeNode</span> root) {
+    <span class="kw">var</span> res=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(); <span class="kw">if</span>(root==<span class="kw">null</span>) <span class="kw">return</span> res;
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt;(); q.<span class="mt">Enqueue</span>(root);
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>){
+        <span class="kw">int</span> sz=q.Count;
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;sz;i++){
+            <span class="kw">var</span> n=q.<span class="mt">Dequeue</span>();
+            <span class="kw">if</span>(i==sz-<span class="nm">1</span>) res.<span class="mt">Add</span>(n.val);
+            <span class="kw">if</span>(n.left!=<span class="kw">null</span>)q.<span class="mt">Enqueue</span>(n.left);
+            <span class="kw">if</span>(n.right!=<span class="kw">null</span>)q.<span class="mt">Enqueue</span>(n.right);
+        }
+    }
+    <span class="kw">return</span> res;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">def</span> <span class="mt">rightSideView</span>(root):
+    <span class="kw">if not</span> root: <span class="kw">return</span> []
+    q = deque([root]); res = []
+    <span class="kw">while</span> q:
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(q)):
+            node = q.<span class="mt">popleft</span>()
+            <span class="kw">if</span> i == <span class="mt">len</span>(q): res.<span class="mt">append</span>(node.val)  <span class="cm"># last in level</span>
+            <span class="kw">if</span> node.left: q.<span class="mt">append</span>(node.left)
+            <span class="kw">if</span> node.right: q.<span class="mt">append</span>(node.right)
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP C: Graph Problems ═══════ -->
+<div class="section-heading">Group C — Graph Problems</div>
+
+<!-- Problem 11 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#11</span>
+        <span class="problem-title">Number of Islands</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #200 · Classic BFS/DFS</span>
+    </div>
+    <p>Count the number of islands (groups of connected '1's) in a 2D grid.</p>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: DFS flood fill</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">For each unvisited '1', increment count and flood-fill (DFS or BFS) to mark all connected '1's as visited (change to '0' or use a visited set).</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">NumIslands</span>(<span class="kw">char</span>[][] grid) {
+    <span class="kw">int</span> count=<span class="nm">0</span>, m=grid.Length, n=grid[<span class="nm">0</span>].Length;
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> r, <span class="kw">int</span> c){
+        <span class="kw">if</span>(r&lt;<span class="nm">0</span>||r&gt;=m||c&lt;<span class="nm">0</span>||c&gt;=n||grid[r][c]!=<span class="st">'1'</span>) <span class="kw">return</span>;
+        grid[r][c]=<span class="st">'0'</span>;
+        <span class="mt">Dfs</span>(r+<span class="nm">1</span>,c);<span class="mt">Dfs</span>(r-<span class="nm">1</span>,c);<span class="mt">Dfs</span>(r,c+<span class="nm">1</span>);<span class="mt">Dfs</span>(r,c-<span class="nm">1</span>);
+    }
+    <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;m;r++)
+        <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;n;c++)
+            <span class="kw">if</span>(grid[r][c]==<span class="st">'1'</span>){<span class="mt">Dfs</span>(r,c);count++;}
+    <span class="kw">return</span> count;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">numIslands</span>(grid):
+    count = <span class="nm">0</span>
+    <span class="kw">def</span> <span class="mt">dfs</span>(r, c):
+        <span class="kw">if</span> r&lt;<span class="nm">0</span> <span class="kw">or</span> r>=<span class="mt">len</span>(grid) <span class="kw">or</span> c&lt;<span class="nm">0</span> <span class="kw">or</span> c>=<span class="mt">len</span>(grid[<span class="nm">0</span>]) <span class="kw">or</span> grid[r][c]!=<span class="st">'1'</span>: <span class="kw">return</span>
+        grid[r][c] = <span class="st">'0'</span>
+        <span class="kw">for</span> dr, dc <span class="kw">in</span> [(<span class="nm">1</span>,<span class="nm">0</span>),(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">0</span>,-<span class="nm">1</span>)]: <span class="mt">dfs</span>(r+dr, c+dc)
+    <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(grid)):
+        <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(grid[<span class="nm">0</span>])):
+            <span class="kw">if</span> grid[r][c]==<span class="st">'1'</span>: <span class="mt">dfs</span>(r,c); count+=<span class="nm">1</span>
+    <span class="kw">return</span> count</pre></div>
+    </div>
+</div>
+
+<!-- Problem 12 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#12</span>
+        <span class="problem-title">Clone Graph</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #133</span>
+    </div>
+    <p>Deep clone an undirected graph given a reference to one of its nodes.</p>
+    <div class="complexity-row"><span>Time: O(V+E)</span><span>Space: O(V)</span><span>Pattern: BFS/DFS + HashMap</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Use a hashmap from original node to cloned node. BFS/DFS the graph. When visiting a neighbor, if not cloned yet, create clone. Always use the clone from the map to avoid duplicates.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">Node</span> <span class="mt">CloneGraph</span>(<span class="tp">Node</span> node) {
+    <span class="kw">if</span>(node==<span class="kw">null</span>) <span class="kw">return null</span>;
+    <span class="kw">var</span> clones=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">Node</span>,<span class="tp">Node</span>&gt;();
+    <span class="tp">Node</span> <span class="mt">Dfs</span>(<span class="tp">Node</span> n){
+        <span class="kw">if</span>(clones.<span class="mt">TryGetValue</span>(n,<span class="kw">out var</span> c)) <span class="kw">return</span> c;
+        <span class="kw">var</span> clone=<span class="kw">new</span> <span class="tp">Node</span>(n.val); clones[n]=clone;
+        <span class="kw">foreach</span>(<span class="kw">var</span> nb <span class="kw">in</span> n.neighbors) clone.neighbors.<span class="mt">Add</span>(<span class="mt">Dfs</span>(nb));
+        <span class="kw">return</span> clone;
+    }
+    <span class="kw">return</span> <span class="mt">Dfs</span>(node);
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">cloneGraph</span>(node):
+    <span class="kw">if not</span> node: <span class="kw">return None</span>
+    clones = {}
+    <span class="kw">def</span> <span class="mt">dfs</span>(n):
+        <span class="kw">if</span> n <span class="kw">in</span> clones: <span class="kw">return</span> clones[n]
+        clone = Node(n.val); clones[n] = clone
+        <span class="kw">for</span> nb <span class="kw">in</span> n.neighbors: clone.neighbors.<span class="mt">append</span>(<span class="mt">dfs</span>(nb))
+        <span class="kw">return</span> clone
+    <span class="kw">return</span> <span class="mt">dfs</span>(node)</pre></div>
+    </div>
+</div>
+
+<!-- Problem 13 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#13</span>
+        <span class="problem-title">Course Schedule (Cycle Detection)</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #207</span>
+    </div>
+    <p>There are n courses. Given prerequisites, determine if it's possible to finish all courses.</p>
+    <div class="complexity-row"><span>Time: O(V+E)</span><span>Space: O(V+E)</span><span>Pattern: Topological Sort / Cycle Detection</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Build a directed graph. Check for cycles using DFS with 3-color marking: white (unvisited), gray (in current path), black (fully processed). If you reach a gray node, there's a cycle.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs) {
+    <span class="kw">var</span> adj=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
+    <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n;i++) adj[i]=<span class="kw">new</span>();
+    <span class="kw">foreach</span>(<span class="kw">var</span> p <span class="kw">in</span> prereqs) adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]);
+    <span class="kw">int</span>[] state=<span class="kw">new int</span>[n]; <span class="cm">// 0=white,1=gray,2=black</span>
+    <span class="kw">bool</span> <span class="mt">Dfs</span>(<span class="kw">int</span> v){
+        <span class="kw">if</span>(state[v]==<span class="nm">1</span>) <span class="kw">return false</span>;
+        <span class="kw">if</span>(state[v]==<span class="nm">2</span>) <span class="kw">return true</span>;
+        state[v]=<span class="nm">1</span>;
+        <span class="kw">foreach</span>(<span class="kw">int</span> nb <span class="kw">in</span> adj[v]) <span class="kw">if</span>(!<span class="mt">Dfs</span>(nb)) <span class="kw">return false</span>;
+        state[v]=<span class="nm">2</span>; <span class="kw">return true</span>;
+    }
+    <span class="kw">for</span>(<span class="kw">int</span> v=<span class="nm">0</span>;v&lt;n;v++) <span class="kw">if</span>(!<span class="mt">Dfs</span>(v)) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">def</span> <span class="mt">canFinish</span>(numCourses, prerequisites):
+    adj = <span class="mt">defaultdict</span>(<span class="mt">list</span>)
+    <span class="kw">for</span> a, b <span class="kw">in</span> prerequisites: adj[b].<span class="mt">append</span>(a)
+    state = [<span class="nm">0</span>] * numCourses  <span class="cm"># 0=white, 1=gray, 2=black</span>
+    <span class="kw">def</span> <span class="mt">dfs</span>(v):
+        <span class="kw">if</span> state[v] == <span class="nm">1</span>: <span class="kw">return False</span>  <span class="cm"># cycle!</span>
+        <span class="kw">if</span> state[v] == <span class="nm">2</span>: <span class="kw">return True</span>
+        state[v] = <span class="nm">1</span>
+        <span class="kw">if not</span> <span class="mt">all</span>(<span class="mt">dfs</span>(nb) <span class="kw">for</span> nb <span class="kw">in</span> adj[v]): <span class="kw">return False</span>
+        state[v] = <span class="nm">2</span>; <span class="kw">return True</span>
+    <span class="kw">return</span> <span class="mt">all</span>(<span class="mt">dfs</span>(v) <span class="kw">for</span> v <span class="kw">in</span> <span class="mt">range</span>(numCourses))</pre></div>
+    </div>
+</div>
+
+<!-- Problem 14 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#14</span>
+        <span class="problem-title">Pacific Atlantic Water Flow</span>
+        <span class="diff-medium">Medium</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #417</span>
+    </div>
+    <p>Find all cells where water can flow to both the Pacific and Atlantic oceans.</p>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: Multi-source BFS from both oceans</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Reverse the problem: instead of flowing from cell to ocean (downhill), BFS/DFS from ocean edges uphill. Cells reachable from both Pacific edges and Atlantic edges are the answer.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">PacificAtlantic</span>(<span class="kw">int</span>[][] heights) {
+    <span class="kw">int</span> m=heights.Length, n=heights[<span class="nm">0</span>].Length;
+    <span class="kw">int</span>[] dr={<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">1</span>,-<span class="nm">1</span>}, dc={<span class="nm">1</span>,-<span class="nm">1</span>,<span class="nm">0</span>,<span class="nm">0</span>};
+    <span class="tp">HashSet</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; <span class="mt">Bfs</span>(<span class="tp">IEnumerable</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; seeds){
+        <span class="kw">var</span> vis=<span class="kw">new</span> <span class="tp">HashSet</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;(seeds);
+        <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt;(seeds);
+        <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>){
+            <span class="kw">var</span>(r,c)=q.<span class="mt">Dequeue</span>();
+            <span class="kw">for</span>(<span class="kw">int</span> d=<span class="nm">0</span>;d&lt;<span class="nm">4</span>;d++){
+                <span class="kw">int</span> nr=r+dr[d],nc=c+dc[d];
+                <span class="kw">if</span>(nr&gt;=<span class="nm">0</span>&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=<span class="nm">0</span>&amp;&amp;nc&lt;n&amp;&amp;vis.<span class="mt">Add</span>((nr,nc))&amp;&amp;heights[nr][nc]&gt;=heights[r][c])
+                    q.<span class="mt">Enqueue</span>((nr,nc));
+            }
+        }
+        <span class="kw">return</span> vis;
+    }
+    <span class="kw">var</span> pac=<span class="mt">Bfs</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,m).<span class="mt">Select</span>(r=&gt;(r,<span class="nm">0</span>)).<span class="mt">Concat</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,n).<span class="mt">Select</span>(c=&gt;(<span class="nm">0</span>,c))));
+    <span class="kw">var</span> atl=<span class="mt">Bfs</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,m).<span class="mt">Select</span>(r=&gt;(r,n-<span class="nm">1</span>)).<span class="mt">Concat</span>(<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,n).<span class="mt">Select</span>(c=&gt;(m-<span class="nm">1</span>,c))));
+    <span class="kw">return</span> pac.<span class="mt">Intersect</span>(atl).<span class="mt">Select</span>(p=&gt;(<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;)<span class="kw">new</span>[]{p.Item1,p.Item2}).<span class="mt">ToList</span>();
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">def</span> <span class="mt">pacificAtlantic</span>(heights):
+    m, n = <span class="mt">len</span>(heights), <span class="mt">len</span>(heights[<span class="nm">0</span>])
+    <span class="kw">def</span> <span class="mt">bfs</span>(seeds):
+        vis = <span class="mt">set</span>(seeds); q = deque(seeds)
+        <span class="kw">while</span> q:
+            r, c = q.<span class="mt">popleft</span>()
+            <span class="kw">for</span> dr, dc <span class="kw">in</span> [(<span class="nm">1</span>,<span class="nm">0</span>),(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">0</span>,-<span class="nm">1</span>)]:
+                nr, nc = r+dr, c+dc
+                <span class="kw">if</span> <span class="nm">0</span>&lt;=nr&lt;m <span class="kw">and</span> <span class="nm">0</span>&lt;=nc&lt;n <span class="kw">and</span> (nr,nc) <span class="kw">not in</span> vis <span class="kw">and</span> heights[nr][nc]>=heights[r][c]:
+                    vis.<span class="mt">add</span>((nr,nc)); q.<span class="mt">append</span>((nr,nc))
+        <span class="kw">return</span> vis
+    pac = <span class="mt">bfs</span>([(r,<span class="nm">0</span>) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(m)] + [(<span class="nm">0</span>,c) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(n)])
+    atl = <span class="mt">bfs</span>([(r,n-<span class="nm">1</span>) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(m)] + [(m-<span class="nm">1</span>,c) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(n)])
+    <span class="kw">return</span> [<span class="mt">list</span>(p) <span class="kw">for</span> p <span class="kw">in</span> pac &amp; atl]</pre></div>
+    </div>
+</div>
+
+<!-- Problem 15 -->
+<div class="problem-card">
+    <div class="problem-header">
+        <span class="problem-num">#15</span>
+        <span class="problem-title">Word Ladder</span>
+        <span class="diff-hard">Hard</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #127</span>
+    </div>
+    <p>Find the minimum number of steps to transform <code>beginWord</code> to <code>endWord</code>, changing one letter at a time, where each intermediate word must exist in the word list.</p>
+    <div class="complexity-row"><span>Time: O(M²·N)</span><span>Space: O(M²·N)</span><span>Pattern: BFS shortest path</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">BFS from beginWord. Neighbors of a word = all words differing by exactly one letter. Use pattern hashing: "hot" → ["*ot", "h*t", "ho*"]. Group words by pattern for fast neighbor lookup.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">LadderLength</span>(<span class="kw">string</span> beginWord, <span class="kw">string</span> endWord, <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; wordList) {
+    <span class="kw">var</span> wordSet=<span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt;(wordList);
+    <span class="kw">if</span>(!wordSet.<span class="mt">Contains</span>(endWord)) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">var</span> adj=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>,<span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">foreach</span>(<span class="kw">var</span> w <span class="kw">in</span> wordSet)
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;w.Length;i++){
+            <span class="kw">var</span> p=w[..i]+<span class="st">"*"</span>+w[(i+<span class="nm">1</span>)..];
+            <span class="kw">if</span>(!adj.<span class="mt">ContainsKey</span>(p)) adj[p]=<span class="kw">new</span>();
+            adj[p].<span class="mt">Add</span>(w);
+        }
+    <span class="kw">var</span> q=<span class="kw">new</span> <span class="tp">Queue</span>&lt;(<span class="kw">string</span>,<span class="kw">int</span>)&gt;(); q.<span class="mt">Enqueue</span>((beginWord,<span class="nm">1</span>));
+    <span class="kw">var</span> vis=<span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt;{beginWord};
+    <span class="kw">while</span>(q.Count&gt;<span class="nm">0</span>){
+        <span class="kw">var</span>(word,steps)=q.<span class="mt">Dequeue</span>();
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;word.Length;i++){
+            <span class="kw">var</span> pat=word[..i]+<span class="st">"*"</span>+word[(i+<span class="nm">1</span>)..];
+            <span class="kw">foreach</span>(<span class="kw">var</span> nb <span class="kw">in</span> adj.<span class="mt">GetValueOrDefault</span>(pat,<span class="kw">new</span>())) {
+                <span class="kw">if</span>(nb==endWord) <span class="kw">return</span> steps+<span class="nm">1</span>;
+                <span class="kw">if</span>(vis.<span class="mt">Add</span>(nb)) q.<span class="mt">Enqueue</span>((nb,steps+<span class="nm">1</span>));
+            }
+        }
+    }
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque, defaultdict
+<span class="kw">def</span> <span class="mt">ladderLength</span>(beginWord, endWord, wordList):
+    wordSet = <span class="mt">set</span>(wordList)
+    <span class="kw">if</span> endWord <span class="kw">not in</span> wordSet: <span class="kw">return</span> <span class="nm">0</span>
+    adj = <span class="mt">defaultdict</span>(<span class="mt">list</span>)
+    <span class="kw">for</span> w <span class="kw">in</span> wordSet:
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(w)):
+            adj[w[:i]+<span class="st">'*'</span>+w[i+<span class="nm">1</span>:]].<span class="mt">append</span>(w)
+    q = deque([(beginWord, <span class="nm">1</span>)]); vis = {beginWord}
+    <span class="kw">while</span> q:
+        word, steps = q.<span class="mt">popleft</span>()
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(word)):
+            <span class="kw">for</span> nb <span class="kw">in</span> adj[word[:i]+<span class="st">'*'</span>+word[i+<span class="nm">1</span>:]]:
+                <span class="kw">if</span> nb == endWord: <span class="kw">return</span> steps+<span class="nm">1</span>
+                <span class="kw">if</span> nb <span class="kw">not in</span> vis: vis.<span class="mt">add</span>(nb); q.<span class="mt">append</span>((nb, steps+<span class="nm">1</span>))
+    <span class="kw">return</span> <span class="nm">0</span></pre></div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 19B Complete</button>
+<div class="toast" id="toast">✅ Module 19B complete! Trees &amp; Graphs mastered!</div>
+    <script>var MODULE_ID = 'm19b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6B — Binary Search Trees</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
+    <h1>Module 6 — Part B</h1>
+    <div class="tagline">Binary Search Trees — Ordered Structure with O(log n) Operations</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The golden rule: left &lt; root &lt; right — enforced at every node, enabling logarithmic search</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part B of Module 6</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 6 — Binary Trees:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m06a_binary_trees.html">Binary Trees &amp; Traversals</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Binary Search Trees<br>
+    ⬜ <strong>Part C</strong> — <a href="m06c_trees_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase3/m05a_basic_sorts.html">&larr; Module 5 &mdash; Sorting</a>
+    <a href="../phase4/m07a_avl_trees.html">Module 7 &mdash; Advanced Trees &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 6B</h2>
+    <ol>
+        <li>The Analogy — The Phone Book Principle <span>— Why ordering unlocks speed</span></li>
+        <li>The Problem BST Solves <span>— Sorted search without re-sorting</span></li>
+        <li>Visual Walkthrough <span>— Insert, search, delete step-by-step</span></li>
+        <li>Formal BST Property &amp; Balance <span>— The invariant and its fragility</span></li>
+        <li>Complete C# Implementation <span>— Full BST&lt;T&gt; with all operations</span></li>
+        <li>Complete Python Implementation <span>— Same logic, Python idioms</span></li>
+        <li>Complexity Analysis <span>— Why O(log n) can become O(n)</span></li>
+        <li>Real-World Usage <span>— SortedSet&lt;T&gt;, SortedDictionary&lt;T,V&gt; in .NET</span></li>
+        <li>Common Mistakes <span>— Delete node, duplicate keys, balanced vs unbalanced</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: The Phone Book Principle</div>
+
+<p>Open a phone book (or think of a sorted list). Looking for "Smith"? You don't start from "A" — you
+open somewhere in the middle. If you land on "Miller" you know Smith is to the right. You go halfway
+into the right half. Land on "Robinson" — Smith is still right. Three jumps and you're there.</p>
+
+<p>That's a BST. <strong>At every node, you make a binary decision: go left (smaller) or go right (larger).</strong>
+Each decision eliminates roughly half the remaining tree. With 1,000,000 entries and a balanced tree,
+you reach any value in at most 20 comparisons (log₂ 1,000,000 ≈ 20).</p>
+
+<p>But here's the catch: this only works if the tree stays <em>balanced</em>. If you insert 1, 2, 3, 4, 5
+in order, the "tree" degenerates into a linked list — every number goes to the right, and search is
+back to O(n). This is why AVL trees and Red-Black trees exist (Module 6D/6E).</p>
+
+<div class="tip">
+    <strong>💡 The BST Invariant:</strong> For every node N in a BST:
+    <ul style="margin-top:8px;">
+        <li>ALL values in the left subtree of N are <strong>strictly less than</strong> N.Value</li>
+        <li>ALL values in the right subtree of N are <strong>strictly greater than</strong> N.Value</li>
+        <li>Both left and right subtrees are themselves valid BSTs (recursive definition)</li>
+    </ul>
+    Consequence: <strong>inorder traversal of a BST always produces sorted order</strong>.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Problem BST Solves</div>
+
+<p>Suppose you need a data structure that supports all three at O(log n):</p>
+<ul>
+    <li><strong>Insert</strong> a value</li>
+    <li><strong>Search</strong> for a value (does it exist?)</li>
+    <li><strong>Delete</strong> a value</li>
+    <li><strong>Enumerate in sorted order</strong> (inorder traversal)</li>
+    <li><strong>Find min/max</strong> (leftmost/rightmost node)</li>
+    <li><strong>Find predecessor/successor</strong> (next smaller / next larger)</li>
+</ul>
+
+<p>Sorted arrays give you O(log n) search but O(n) insert/delete (shifting). Linked lists give you O(1) insert but O(n) search. A balanced BST gives all of the above at O(log n) — that's the sweet spot.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Visual Walkthrough</div>
+
+<h3>3.1 — BST Insert</h3>
+<div class="diagram">INSERT sequence: 50, 30, 70, 20, 40, 60, 80
+
+Insert 50 → root:    50
+
+Insert 30 → 30 < 50, go left:
+                     50
+                    /
+                   30
+
+Insert 70 → 70 > 50, go right:
+                     50
+                    /  \
+                   30   70
+
+Insert 20 → 20<50→left, 20<30→left:
+                     50
+                    /  \
+                   30   70
+                  /
+                 20
+
+Insert 40 → 40<50→left, 40>30→right:
+                     50
+                    /  \
+                   30   70
+                  / \
+                 20  40
+
+Insert 60 → 60>50→right, 60<70→left:
+                     50
+                    /  \
+                   30   70
+                  / \  /
+                 20 40 60
+
+Insert 80 → 80>50→right, 80>70→right:
+                     50
+                    /  \
+                   30   70
+                  / \  /  \
+                 20 40 60  80
+
+Final BST — height 2, balanced!
+Inorder: 20, 30, 40, 50, 60, 70, 80  (sorted!)</div>
+
+<h3>3.2 — BST Search</h3>
+<div class="diagram">SEARCH for 40 in the above tree:
+
+Start at root (50): 40 < 50 → go LEFT
+At node (30): 40 > 30 → go RIGHT
+At node (40): 40 == 40 → FOUND! ✓  (3 comparisons)
+
+SEARCH for 35 (not in tree):
+Start at root (50): 35 < 50 → go LEFT
+At node (30): 35 > 30 → go RIGHT
+At node (40): 35 < 40 → go LEFT
+At node (null): reached null → NOT FOUND  (4 comparisons)</div>
+
+<h3>3.3 — BST Delete (the hardest operation)</h3>
+<div class="diagram">DELETE has THREE cases:
+
+CASE 1 — Leaf node (no children): simply remove it.
+  Delete 20: just set parent.Left = null
+                     50
+                    /  \
+                   30   70
+                    \  /  \
+                    40 60  80
+
+CASE 2 — One child: replace node with its child.
+  Delete 30 (has only right child 40):
+  Set 50.Left = 40
+                     50
+                    /  \
+                   40   70
+                       /  \
+                      60   80
+
+CASE 3 — Two children: find INORDER SUCCESSOR (smallest value in right subtree),
+  copy its value to this node, then delete the successor.
+
+  Delete 50 (has two children 30 and 70):
+  1. Find inorder successor of 50: smallest in right subtree = 60
+  2. Copy 60 into node that had 50
+  3. Delete 60 from right subtree (it's a leaf)
+
+  BEFORE delete:          AFTER delete:
+       50                     60
+      /  \                   /  \
+     30   70                30   70
+         /  \                   /  \
+        60   80               (-)   80
+
+  Why inorder successor? Because it's the smallest value GREATER than 50,
+  so copying it maintains the BST property for BOTH sides.</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Formal BST Property &amp; Balance</div>
+
+<div class="diagram">BST PROPERTY — verified at every node:
+
+     50           ← ALL left subtree values < 50 < ALL right subtree values
+    /  \
+   30   70        ← ALL left of 30 < 30; ALL right of 30 > 30
+  / \  /  \          ALL left of 70 < 70; ALL right of 70 > 70
+ 20 40 60  80
+
+CHECK: is 40 in the right position?
+  It's in the left subtree of 50 → must be < 50  ✓ (40 < 50)
+  It's in the right subtree of 30 → must be > 30  ✓ (40 > 30)
+
+DEGENERATE BST — inserting 1,2,3,4,5 in order:
+   1
+    \
+     2
+      \
+       3
+        \
+         4
+          \
+           5
+  Height = n-1 = 4, search = O(n) — this is a linked list!</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Complete C# Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="cm">// ── BST Node ─────────────────────────────────────────────────────</span>
+<span class="kw">public class</span> <span class="tp">BSTNode</span>
+{
+    <span class="kw">public int</span> Value;
+    <span class="kw">public</span> <span class="tp">BSTNode</span>? Left, Right;
+    <span class="kw">public</span> <span class="mt">BSTNode</span>(<span class="kw">int</span> val) { Value = val; }
+}
+
+<span class="cm">// ── Binary Search Tree ────────────────────────────────────────────</span>
+<span class="kw">public class</span> <span class="tp">BST</span>
+{
+    <span class="kw">public</span> <span class="tp">BSTNode</span>? Root;
+
+    <span class="cm">// ── INSERT: O(h) average, O(log n) balanced ──────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">int</span> val) => Root = <span class="mt">InsertRec</span>(Root, val);
+
+    <span class="kw">private</span> <span class="tp">BSTNode</span> <span class="mt">InsertRec</span>(<span class="tp">BSTNode</span>? node, <span class="kw">int</span> val)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return new</span> <span class="tp">BSTNode</span>(val); <span class="cm">// Found empty spot</span>
+        <span class="kw">if</span> (val &lt; node.Value)
+            node.Left  = <span class="mt">InsertRec</span>(node.Left,  val);  <span class="cm">// Go left</span>
+        <span class="kw">else if</span> (val &gt; node.Value)
+            node.Right = <span class="mt">InsertRec</span>(node.Right, val);  <span class="cm">// Go right</span>
+        <span class="cm">// If val == node.Value: duplicate, ignore (common policy)</span>
+        <span class="kw">return</span> node;
+    }
+
+    <span class="cm">// ── SEARCH: O(h) — returns node or null ──────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">Contains</span>(<span class="kw">int</span> val) => <span class="mt">Search</span>(Root, val) != <span class="kw">null</span>;
+
+    <span class="kw">private</span> <span class="tp">BSTNode</span>? <span class="mt">Search</span>(<span class="tp">BSTNode</span>? node, <span class="kw">int</span> val)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span> || node.Value == val) <span class="kw">return</span> node;
+        <span class="kw">return</span> val &lt; node.Value
+            ? <span class="mt">Search</span>(node.Left,  val)   <span class="cm">// Go left</span>
+            : <span class="mt">Search</span>(node.Right, val);  <span class="cm">// Go right</span>
+    }
+
+    <span class="cm">// ── DELETE: O(h) — three cases ──────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Delete</span>(<span class="kw">int</span> val) => Root = <span class="mt">DeleteRec</span>(Root, val);
+
+    <span class="kw">private</span> <span class="tp">BSTNode</span>? <span class="mt">DeleteRec</span>(<span class="tp">BSTNode</span>? node, <span class="kw">int</span> val)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return null</span>;  <span class="cm">// Value not found</span>
+
+        <span class="kw">if</span> (val &lt; node.Value)
+        {
+            node.Left = <span class="mt">DeleteRec</span>(node.Left, val);   <span class="cm">// Go left</span>
+        }
+        <span class="kw">else if</span> (val &gt; node.Value)
+        {
+            node.Right = <span class="mt">DeleteRec</span>(node.Right, val);  <span class="cm">// Go right</span>
+        }
+        <span class="kw">else</span>  <span class="cm">// Found the node to delete</span>
+        {
+            <span class="cm">// Case 1: Leaf node (no children)</span>
+            <span class="kw">if</span> (node.Left == <span class="kw">null</span> &amp;&amp; node.Right == <span class="kw">null</span>) <span class="kw">return null</span>;
+
+            <span class="cm">// Case 2a: Only right child</span>
+            <span class="kw">if</span> (node.Left == <span class="kw">null</span>)  <span class="kw">return</span> node.Right;
+
+            <span class="cm">// Case 2b: Only left child</span>
+            <span class="kw">if</span> (node.Right == <span class="kw">null</span>) <span class="kw">return</span> node.Left;
+
+            <span class="cm">// Case 3: Two children — find inorder successor (min of right subtree)</span>
+            <span class="kw">int</span> successorVal = <span class="mt">FindMin</span>(node.Right);        <span class="cm">// Smallest in right subtree</span>
+            node.Value = successorVal;                       <span class="cm">// Copy successor value here</span>
+            node.Right = <span class="mt">DeleteRec</span>(node.Right, successorVal); <span class="cm">// Delete the successor</span>
+        }
+        <span class="kw">return</span> node;
+    }
+
+    <span class="cm">// ── MIN / MAX ────────────────────────────────────────────────</span>
+    <span class="kw">public int</span> <span class="mt">FindMin</span>(<span class="tp">BSTNode</span>? node)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Tree is empty"</span>);
+        <span class="kw">while</span> (node.Left != <span class="kw">null</span>) node = node.Left;  <span class="cm">// Go leftmost</span>
+        <span class="kw">return</span> node.Value;
+    }
+
+    <span class="kw">public int</span> <span class="mt">FindMax</span>()
+    {
+        <span class="kw">if</span> (Root == <span class="kw">null</span>) <span class="kw">throw new</span> <span class="tp">InvalidOperationException</span>(<span class="st">"Tree is empty"</span>);
+        <span class="kw">var</span> node = Root;
+        <span class="kw">while</span> (node.Right != <span class="kw">null</span>) node = node.Right;  <span class="cm">// Go rightmost</span>
+        <span class="kw">return</span> node.Value;
+    }
+
+    <span class="cm">// ── INORDER (sorted output) ──────────────────────────────────</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">InorderSorted</span>()
+    {
+        <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="mt">InorderRec</span>(Root, result);
+        <span class="kw">return</span> result;
+    }
+
+    <span class="kw">private void</span> <span class="mt">InorderRec</span>(<span class="tp">BSTNode</span>? node, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; result)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span>;
+        <span class="mt">InorderRec</span>(node.Left,  result);
+        result.<span class="mt">Add</span>(node.Value);
+        <span class="mt">InorderRec</span>(node.Right, result);
+    }
+
+    <span class="cm">// ── VALIDATE: is this tree a valid BST? ─────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">IsValidBST</span>() =>
+        <span class="mt">IsValid</span>(Root, <span class="kw">int</span>.MinValue, <span class="kw">int</span>.MaxValue);
+
+    <span class="kw">private bool</span> <span class="mt">IsValid</span>(<span class="tp">BSTNode</span>? node, <span class="kw">int</span> min, <span class="kw">int</span> max)
+    {
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return true</span>;                   <span class="cm">// Empty is valid</span>
+        <span class="kw">if</span> (node.Value &lt;= min || node.Value &gt;= max) <span class="kw">return false</span>; <span class="cm">// Violates bounds</span>
+        <span class="kw">return</span> <span class="mt">IsValid</span>(node.Left,  min, node.Value) &amp;&amp;   <span class="cm">// Left must be < current</span>
+               <span class="mt">IsValid</span>(node.Right, node.Value, max);      <span class="cm">// Right must be > current</span>
+    }
+
+    <span class="cm">// ── HEIGHT ───────────────────────────────────────────────────</span>
+    <span class="kw">public int</span> <span class="mt">Height</span>(<span class="tp">BSTNode</span>? n) =>
+        n == <span class="kw">null</span> ? -<span class="nm">1</span> : <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="mt">Height</span>(n.Left), <span class="mt">Height</span>(n.Right));
+}
+
+<span class="cm">// ── Main ──────────────────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> bst = <span class="kw">new</span> <span class="tp">BST</span>();
+
+        <span class="cm">// Insert values — building a balanced tree</span>
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> <span class="kw">new</span>[] { <span class="nm">50</span>, <span class="nm">30</span>, <span class="nm">70</span>, <span class="nm">20</span>, <span class="nm">40</span>, <span class="nm">60</span>, <span class="nm">80</span> })
+            bst.<span class="mt">Insert</span>(v);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Sorted output: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, bst.<span class="mt">InorderSorted</span>()));
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Contains 40:   {bst.Contains(40)}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Contains 55:   {bst.Contains(55)}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Min: {bst.FindMin(bst.Root)}, Max: {bst.FindMax()}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Height: {bst.Height(bst.Root)}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Valid BST: {bst.IsValidBST()}"</span>);
+
+        <span class="cm">// Delete operations — test all three cases</span>
+        bst.<span class="mt">Delete</span>(<span class="nm">20</span>);  <span class="cm">// Case 1: leaf</span>
+        bst.<span class="mt">Delete</span>(<span class="nm">70</span>);  <span class="cm">// Case 3: two children (successor = 80)</span>
+        bst.<span class="mt">Delete</span>(<span class="nm">30</span>);  <span class="cm">// Case 2: one child (40)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"After deletes: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, bst.<span class="mt">InorderSorted</span>()));
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+   Sorted output: 20, 30, 40, 50, 60, 70, 80
+   Contains 40:   True
+   Contains 55:   False
+   Min: 20, Max: 80
+   Height: 2
+   Valid BST: True
+   After deletes: 40, 50, 60, 80
+   ──────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Complete Python Implementation</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> Optional, List
+
+<span class="cm"># ── BST Node ─────────────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">BSTNode</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, val: <span class="kw">int</span>):
+        self.val = val
+        self.left:  Optional[<span class="st">'BSTNode'</span>] = <span class="kw">None</span>
+        self.right: Optional[<span class="st">'BSTNode'</span>] = <span class="kw">None</span>
+
+<span class="cm"># ── Binary Search Tree ────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">BST</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        self.root: Optional[<span class="tp">BSTNode</span>] = <span class="kw">None</span>
+
+    <span class="cm"># ── INSERT ───────────────────────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">insert</span>(self, val: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        self.root = self.<span class="mt">_insert</span>(self.root, val)
+
+    <span class="kw">def</span> <span class="mt">_insert</span>(self, node: Optional[<span class="tp">BSTNode</span>], val: <span class="kw">int</span>) -> <span class="tp">BSTNode</span>:
+        <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span> <span class="tp">BSTNode</span>(val)  <span class="cm"># Found empty slot</span>
+        <span class="kw">if</span> val &lt; node.val:
+            node.left  = self.<span class="mt">_insert</span>(node.left,  val)   <span class="cm"># Go left</span>
+        <span class="kw">elif</span> val &gt; node.val:
+            node.right = self.<span class="mt">_insert</span>(node.right, val)   <span class="cm"># Go right</span>
+        <span class="cm"># If val == node.val: duplicate, ignore</span>
+        <span class="kw">return</span> node
+
+    <span class="cm"># ── SEARCH ───────────────────────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">contains</span>(self, val: <span class="kw">int</span>) -> <span class="kw">bool</span>:
+        node = self.root
+        <span class="kw">while</span> node:
+            <span class="kw">if</span>   val == node.val: <span class="kw">return True</span>
+            <span class="kw">elif</span> val &lt;  node.val: node = node.left
+            <span class="kw">else</span>:                 node = node.right
+        <span class="kw">return False</span>
+
+    <span class="cm"># ── DELETE (three cases) ─────────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">delete</span>(self, val: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        self.root = self.<span class="mt">_delete</span>(self.root, val)
+
+    <span class="kw">def</span> <span class="mt">_delete</span>(self, node: Optional[<span class="tp">BSTNode</span>], val: <span class="kw">int</span>) -> Optional[<span class="tp">BSTNode</span>]:
+        <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return None</span>             <span class="cm"># Not found</span>
+
+        <span class="kw">if</span>   val &lt; node.val:
+            node.left  = self.<span class="mt">_delete</span>(node.left,  val)
+        <span class="kw">elif</span> val &gt; node.val:
+            node.right = self.<span class="mt">_delete</span>(node.right, val)
+        <span class="kw">else</span>:                                       <span class="cm"># Found node</span>
+            <span class="kw">if not</span> node.left  <span class="kw">and not</span> node.right:  <span class="cm"># Case 1: leaf</span>
+                <span class="kw">return None</span>
+            <span class="kw">if not</span> node.left:  <span class="kw">return</span> node.right  <span class="cm"># Case 2a: only right child</span>
+            <span class="kw">if not</span> node.right: <span class="kw">return</span> node.left   <span class="cm"># Case 2b: only left child</span>
+            <span class="cm"># Case 3: two children — find inorder successor</span>
+            successor = self.<span class="mt">_find_min</span>(node.right)
+            node.val   = successor.val               <span class="cm"># Copy successor value</span>
+            node.right = self.<span class="mt">_delete</span>(node.right, successor.val)
+        <span class="kw">return</span> node
+
+    <span class="cm"># ── MIN / MAX ────────────────────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">_find_min</span>(self, node: <span class="tp">BSTNode</span>) -> <span class="tp">BSTNode</span>:
+        <span class="kw">while</span> node.left: node = node.left          <span class="cm"># Leftmost = minimum</span>
+        <span class="kw">return</span> node
+
+    <span class="kw">def</span> <span class="mt">find_min</span>(self) -> <span class="kw">int</span>:
+        <span class="kw">if not</span> self.root: <span class="kw">raise</span> <span class="tp">ValueError</span>(<span class="st">"Tree is empty"</span>)
+        <span class="kw">return</span> self.<span class="mt">_find_min</span>(self.root).val
+
+    <span class="kw">def</span> <span class="mt">find_max</span>(self) -> <span class="kw">int</span>:
+        <span class="kw">if not</span> self.root: <span class="kw">raise</span> <span class="tp">ValueError</span>(<span class="st">"Tree is empty"</span>)
+        node = self.root
+        <span class="kw">while</span> node.right: node = node.right        <span class="cm"># Rightmost = maximum</span>
+        <span class="kw">return</span> node.val
+
+    <span class="cm"># ── INORDER (sorted output) ──────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">inorder_sorted</span>(self) -> List[<span class="kw">int</span>]:
+        result: List[<span class="kw">int</span>] = []
+        self.<span class="mt">_inorder</span>(self.root, result)
+        <span class="kw">return</span> result
+
+    <span class="kw">def</span> <span class="mt">_inorder</span>(self, node: Optional[<span class="tp">BSTNode</span>], result: List[<span class="kw">int</span>]) -> <span class="kw">None</span>:
+        <span class="kw">if not</span> node: <span class="kw">return</span>
+        self.<span class="mt">_inorder</span>(node.left,  result)
+        result.<span class="mt">append</span>(node.val)
+        self.<span class="mt">_inorder</span>(node.right, result)
+
+    <span class="cm"># ── VALIDATE ─────────────────────────────────────────────────</span>
+    <span class="kw">def</span> <span class="mt">is_valid_bst</span>(self) -> <span class="kw">bool</span>:
+        <span class="kw">def</span> <span class="mt">valid</span>(node, lo, hi):
+            <span class="kw">if not</span> node: <span class="kw">return True</span>
+            <span class="kw">if not</span> (lo &lt; node.val &lt; hi): <span class="kw">return False</span>
+            <span class="kw">return</span> <span class="mt">valid</span>(node.left, lo, node.val) <span class="kw">and</span> <span class="mt">valid</span>(node.right, node.val, hi)
+        <span class="kw">return</span> <span class="mt">valid</span>(self.root, <span class="mt">float</span>(<span class="st">'-inf'</span>), <span class="mt">float</span>(<span class="st">'inf'</span>))
+
+    <span class="kw">def</span> <span class="mt">height</span>(self, node: Optional[<span class="tp">BSTNode</span>] = <span class="kw">None</span>) -> <span class="kw">int</span>:
+        node = node <span class="kw">if</span> node <span class="kw">is not None</span> <span class="kw">else</span> self.root
+        <span class="kw">if not</span> node: <span class="kw">return</span> -<span class="nm">1</span>
+        <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(self.<span class="mt">height</span>(node.left), self.<span class="mt">height</span>(node.right))
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    bst = <span class="tp">BST</span>()
+    <span class="kw">for</span> v <span class="kw">in</span> [<span class="nm">50</span>, <span class="nm">30</span>, <span class="nm">70</span>, <span class="nm">20</span>, <span class="nm">40</span>, <span class="nm">60</span>, <span class="nm">80</span>]:
+        bst.<span class="mt">insert</span>(v)
+
+    <span class="mt">print</span>(<span class="st">"Sorted output:"</span>, bst.<span class="mt">inorder_sorted</span>())
+    <span class="mt">print</span>(<span class="st">"Contains 40:  "</span>, bst.<span class="mt">contains</span>(<span class="nm">40</span>))
+    <span class="mt">print</span>(<span class="st">"Contains 55:  "</span>, bst.<span class="mt">contains</span>(<span class="nm">55</span>))
+    <span class="mt">print</span>(<span class="st">"Min:"</span>, bst.<span class="mt">find_min</span>(), <span class="st">" Max:"</span>, bst.<span class="mt">find_max</span>())
+    <span class="mt">print</span>(<span class="st">"Height:       "</span>, bst.<span class="mt">height</span>())
+    <span class="mt">print</span>(<span class="st">"Valid BST:    "</span>, bst.<span class="mt">is_valid_bst</span>())
+
+    bst.<span class="mt">delete</span>(<span class="nm">20</span>)  <span class="cm"># Case 1: leaf</span>
+    bst.<span class="mt">delete</span>(<span class="nm">70</span>)  <span class="cm"># Case 3: two children</span>
+    bst.<span class="mt">delete</span>(<span class="nm">30</span>)  <span class="cm"># Case 2: one child</span>
+    <span class="mt">print</span>(<span class="st">"After deletes:"</span>, bst.<span class="mt">inorder_sorted</span>())
+
+<span class="cm"># Output:
+# Sorted output: [20, 30, 40, 50, 60, 70, 80]
+# Contains 40:   True
+# Contains 55:   False
+# Min: 20  Max: 80
+# Height:        2
+# Valid BST:     True
+# After deletes: [40, 50, 60, 80]</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Balanced (h=log n)</th><th>Degenerate (h=n)</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Search</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>Follow one path from root; path length = h</td></tr>
+        <tr><td>Insert</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>Search for correct position, then link</td></tr>
+        <tr><td>Delete</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>Search for node, then find successor if needed</td></tr>
+        <tr><td>Find min/max</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>Traverse to leftmost/rightmost</td></tr>
+        <tr><td>Inorder traversal</td><td class="g">O(n)</td><td class="g">O(n)</td><td>Must visit all n nodes regardless</td></tr>
+        <tr><td>Space (BST structure)</td><td class="g">O(n)</td><td class="g">O(n)</td><td>One node per element</td></tr>
+    </tbody>
+</table>
+
+<div class="warning">
+    <strong>⚠️ The Degenerate Case:</strong> Inserting already-sorted data (1, 2, 3, ..., n) into a plain BST creates a right-skewed tree of height n. All operations degrade to O(n) — the same as a linked list, but with double the memory (two pointers per node instead of one). This is why plain BSTs are almost never used in production — use <strong>SortedSet&lt;T&gt;</strong> or <strong>SortedDictionary&lt;T,V&gt;</strong> in C# (backed by a Red-Black tree), or Python's <code>sortedcontainers.SortedList</code>.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
+
+<div class="realworld">
+    <strong>🌍 .NET — SortedSet&lt;T&gt; and SortedDictionary&lt;TKey,TValue&gt;</strong><br>
+    C#'s <code>SortedSet&lt;T&gt;</code> and <code>SortedDictionary&lt;TKey,TValue&gt;</code> are both backed by
+    a <strong>Red-Black tree</strong> (a self-balancing BST). They give you O(log n) insert/delete/search
+    AND always-sorted iteration.<br>
+    Use <code>SortedSet</code> when you need unique elements in sorted order (e.g., leaderboard, scheduling events by time).
+    Use <code>SortedDictionary</code> for key-value pairs sorted by key (e.g., ordered index, range queries by date).
+</div>
+
+<div class="realworld">
+    <strong>🌍 Database Indexes (MySQL, PostgreSQL) — Sorted index lookups</strong><br>
+    When you run <code>SELECT * FROM orders WHERE date BETWEEN '2024-01-01' AND '2024-12-31'</code>,
+    the database uses a tree index (B-Tree variant — Module 6H) that is conceptually a BST.
+    It finds the first date in O(log n) comparisons, then scans forward. Without the index, every query is O(n) full table scan.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Common Mistakes</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 1 — Forgetting to return the modified node in recursive insert/delete:</strong>
+    The pattern <code>node.Left = InsertRec(node.Left, val)</code> is critical — you must reassign
+    the child pointer to whatever the recursive call returns. Forgetting this causes the insert to have
+    no effect on the actual tree.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 2 — Validating BST incorrectly:</strong> The naive check
+    "left.Value &lt; node.Value &lt; right.Value" is <em>wrong</em>. It doesn't check that ALL values in
+    the subtree satisfy the constraint. Example: root=10, left=5, left.right=15 passes the naive check
+    but 15 &gt; 10 violates the BST property. Always pass min/max bounds down recursively.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 3 — Using ==  comparison with Delete finding the wrong node:</strong>
+    After deleting a node with two children by copying the successor's value, you must delete the
+    successor from the <em>right</em> subtree specifically. Don't call <code>Delete(val)</code> from root —
+    the value might appear higher in the tree and delete the wrong node.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 4 — Using plain BST in production:</strong>
+    A plain BST is vulnerable to sorted input. In interview problems, always mention "in practice, we'd
+    use a self-balancing BST (AVL or Red-Black) or C#'s SortedSet/SortedDictionary" to show you understand
+    the limitation.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. You insert the values 10, 5, 15, 3, 7, 12, 20 into an empty BST. What is the inorder traversal output?</div>
+    <div class="quiz-meta">💡 Inorder on a BST always produces sorted order.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>3, 5, 7, 10, 12, 15, 20</strong> — Inorder traversal (Left → Root → Right) on a BST always yields values in ascending sorted order. This is the defining property of BSTs — the BST invariant guarantees left subtree &lt; root &lt; right subtree at every level, so inorder naturally produces sorted output.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. In the tree from Q1, how many comparisons are needed to confirm that 6 is NOT in the tree?</div>
+    <div class="quiz-meta">💡 Trace the search path: which nodes do you visit?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>3 comparisons</strong>: Start at 10 (6 &lt; 10, go left) → visit 5 (6 &gt; 5, go right) → visit 7 (6 &lt; 7, go left) → null (not found). You compared against 10, 5, and 7 — three nodes.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. You delete the root (10) from the tree in Q1. Which value becomes the new root, and why?</div>
+    <div class="quiz-meta">💡 Delete Case 3: two children. Find the inorder successor.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>12</strong> becomes the new root. Delete with two children: find the <em>inorder successor</em> — the smallest value in the right subtree. The right subtree of 10 is rooted at 15, and its smallest value is 12. Copy 12 to the root, then delete 12 from the right subtree (12 is a leaf, so just remove it). Result: root = 12, right subtree = {15, 20}, left subtree = {5, 3, 7} unchanged.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. What is the height of a perfectly balanced BST with 15 nodes?</div>
+    <div class="quiz-meta">💡 Use h = floor(log₂ n).</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Height = 3</strong>. For n = 15: h = ⌊log₂(15)⌋ = ⌊3.9⌋ = 3. A perfect binary tree with height 3 has 2⁴ - 1 = 15 nodes. Alternatively: level 0 = 1, level 1 = 2, level 2 = 4, level 3 = 8. Total = 15 nodes, height = 3.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. You're given a BST and asked to find the kth smallest element. What is the optimal approach and its time complexity?</div>
+    <div class="quiz-meta">💡 Which traversal produces elements in sorted order?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Inorder traversal, stop at the kth node. O(h + k) time.</strong> — Inorder traversal visits nodes in ascending order. Keep a counter; when it reaches k, return that node's value. You don't need to complete the full traversal. For a balanced BST, h = O(log n) and k ≤ n, so worst case is O(n) but average is much better. Space: O(h) for the recursive stack (or O(1) with iterative + Morris traversal).
+    </div>
+</div>
+
+<br>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 6B Complete</button>
+<div class="toast" id="toast">✅ Module 6B marked complete!</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 6B Complete!</strong><br><br>
+    You now understand: BST insert/search/delete (all three cases), BST validation, inorder = sorted,
+    degenerate trees and why plain BSTs need self-balancing in production.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m06a_binary_trees.html">Part A — Binary Trees</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m06c_trees_practice.html">Part C — Practice: 15 Problems</a>
+</div>
+    <script>var MODULE_ID = 'm06b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

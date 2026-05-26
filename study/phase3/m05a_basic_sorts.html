@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5A — O(n²) Sorting Algorithms | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+.toc{background:#fff;border-radius:12px;padding:22px 28px;margin:24px 0;border:1px solid #e0e0e0}
+.toc h2{font-size:1em;text-transform:uppercase;letter-spacing:2px;color:#7d3c98;margin-bottom:14px}
+.toc ol{padding-left:20px}.toc li{font-size:.9em;padding:4px 0;color:#444}.toc li span{color:#888;font-size:.88em}
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+p{margin:0 0 14px;color:#444}
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+.diagram{background:#1e1e1e;color:#4ec9b0;font-family:'Courier New',monospace;font-size:.86em;padding:20px 24px;border-radius:10px;border-left:4px solid #4ec9b0;margin:18px 0;overflow-x:auto;white-space:pre}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.warning{background:#fde8e8;border-left:4px solid #e74c3c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.realworld{background:#eaf4fb;border-left:4px solid #2980b9;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong,.warning strong,.realworld strong{display:block;margin-bottom:4px}
+table.cmplx{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88em}
+table.cmplx th{background:#2c3e50;color:#9cdcfe;padding:10px 14px;text-align:left}
+table.cmplx td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
+table.cmplx tr:nth-child(even) td{background:#f8f9fa}
+.qg{color:#27ae60;font-weight:700}.qo{color:#d68910;font-weight:700}.qr{color:#c0392b;font-weight:700}
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 20px;margin:14px 0}
+.quiz-q{font-weight:600;color:#2c3e50;margin-bottom:8px}
+.quiz-btn{background:#9b59b6;color:#fff;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:.84em}
+.quiz-a{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:10px;display:none}
+.quiz-a .ans-label{color:#27ae60;font-weight:700;margin-bottom:6px}
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 5 › Part A</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 5 — Part A</h1>
+  <div class="tagline">O(n²) Sorting Algorithms — Bubble, Selection, Insertion</div>
+  <div class="badges">
+    <span>⏱ Estimated: 2 Hours</span><span>🎯 Beginner-Intermediate</span><span>💻 C# &amp; Python</span><span>📐 Phase 3 · Module 5A</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 5 — Sorting Algorithms:</strong><br>
+  ▶ <strong>Part A</strong> — <em>You are here</em> — O(n²) Sorts<br>
+  ⬜ <strong>Part B</strong> — <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
+  ⬜ <strong>Part C</strong> — <a href="m05c_linear_sorts.html">Linear Sorts (Counting, Radix, Bucket)</a><br>
+  ⬜ <strong>Part D</strong> — <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
+  ⬜ <strong>Part E</strong> — <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
+    <a href="../phase4/m06a_binary_trees.html">Module 6 &mdash; Binary Trees &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="toc">
+  <h2>📚 Contents — Module 5A</h2>
+  <ol>
+    <li>Why Learn O(n²) Sorts? <span>— Foundation + interview staples</span></li>
+    <li>Bubble Sort <span>— Repeatedly bubble largest to end</span></li>
+    <li>Selection Sort <span>— Find minimum, place it in order</span></li>
+    <li>Insertion Sort <span>— Build sorted array one element at a time</span></li>
+    <li>Stability, In-place, and Adaptive <span>— Algorithm properties</span></li>
+    <li>Comparison &amp; When to Use Each <span>— Complexity table</span></li>
+    <li>Practice Questions</li>
+  </ol>
+</div>
+
+<h2 class="sec">Section 1 — Why Learn O(n²) Sorts?</h2>
+<p>You might wonder: if there are O(n log n) algorithms, why learn O(n²)? Three reasons:</p>
+<ul style="padding-left:20px;margin-bottom:14px">
+  <li style="padding:4px 0"><strong>Interviews</strong>: Every coding interview expects you to know these</li>
+  <li style="padding:4px 0"><strong>Small data</strong>: For n ≤ 50, O(n²) algorithms are fast enough and simpler</li>
+  <li style="padding:4px 0"><strong>Insertion sort advantage</strong>: For nearly-sorted data, insertion sort is O(n) — even faster than merge sort!</li>
+</ul>
+
+<h2 class="sec">Section 2 — Bubble Sort</h2>
+
+<h3>2.1 The Analogy — Bubbles Rising</h3>
+<p>Imagine a glass of carbonated water. Heavy bubbles stay at the bottom; light bubbles rise to the top. In bubble sort, in each pass through the array, the <strong>largest unsorted element "bubbles up"</strong> to its final position at the end — just like bubbles rising.</p>
+
+<h3>2.2 How It Works</h3>
+<p>Compare adjacent pairs. If the left is bigger than the right, swap them. After one full pass, the largest element is at the end. Repeat for the remaining unsorted portion.</p>
+
+<div class="diagram">
+  Array: [64, 34, 25, 12, 22, 11, 90]
+  
+  Pass 1: Compare and swap adjacent pairs:
+  [64,34] → swap → [34,64,25,12,22,11,90]
+  [64,25] → swap → [34,25,64,12,22,11,90]
+  [64,12] → swap → [34,25,12,64,22,11,90]
+  [64,22] → swap → [34,25,12,22,64,11,90]
+  [64,11] → swap → [34,25,12,22,11,64,90]
+  [64,90] → ok   → [34,25,12,22,11,64,90]  ← 90 bubbled to end ✓
+  
+  Pass 2: [25,12,22,11,34,64,|90]  ← 64 settles ✓
+  Pass 3: [12,22,11,25,34,|64,90]
+  ... continue until fully sorted</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Bubble Sort — Complete Implementation ────────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">BubbleSort</span>
+{
+    <span class="cm">/// Sorts array in ascending order using bubble sort.
+    /// Time: O(n²) worst/avg, O(n) best (already sorted with optimization)
+    /// Space: O(1) — in-place
+    /// Stable: Yes — equal elements maintain their relative order</span>
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr)
+    {
+        <span class="kw">int</span> n = arr.<span class="tp">Length</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n - <span class="nm">1</span>; i++)
+        {
+            <span class="kw">bool</span> swapped = <span class="kw">false</span>;  <span class="cm">// optimization: detect early termination</span>
+
+            <span class="cm">// After pass i, the last i elements are already in place</span>
+            <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; n - <span class="nm">1</span> - i; j++)
+            {
+                <span class="cm">// Compare adjacent elements</span>
+                <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="nm">1</span>])
+                {
+                    <span class="cm">// Swap them</span>
+                    (<span class="kw">int</span> tmp, arr[j], arr[j+<span class="nm">1</span>]) = (arr[j], arr[j+<span class="nm">1</span>], arr[j]);
+                    swapped = <span class="kw">true</span>;
+                }
+            }
+
+            <span class="cm">// If no swaps occurred, array is already sorted</span>
+            <span class="kw">if</span> (!swapped) <span class="kw">break</span>;
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr1 = { <span class="nm">64</span>, <span class="nm">34</span>, <span class="nm">25</span>, <span class="nm">12</span>, <span class="nm">22</span>, <span class="nm">11</span>, <span class="nm">90</span> };
+        <span class="mt">Sort</span>(arr1);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Sorted: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr1));
+        <span class="cm">// Sorted: 11, 12, 22, 25, 34, 64, 90</span>
+
+        <span class="cm">// Test: already sorted (best case — should be O(n))</span>
+        <span class="kw">int</span>[] arr2 = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span> };
+        <span class="mt">Sort</span>(arr2);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Already sorted: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr2));
+
+        <span class="cm">// Test: reverse sorted (worst case)</span>
+        <span class="kw">int</span>[] arr3 = { <span class="nm">5</span>, <span class="nm">4</span>, <span class="nm">3</span>, <span class="nm">2</span>, <span class="nm">1</span> };
+        <span class="mt">Sort</span>(arr3);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Reversed: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr3));
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────────────────
+   Sorted: 11, 12, 22, 25, 34, 64, 90
+   Already sorted: 1, 2, 3, 4, 5
+   Reversed: 1, 2, 3, 4, 5
+   ─────────────────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ─── Bubble Sort — Complete Implementation ────────────────────────────────────</span>
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">bubble_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    <span class="st">"""Sorts array in ascending order using bubble sort.
+    Modifies in-place and returns the array.
+    Time: O(n²) worst, O(n) best | Space: O(1) | Stable: Yes
+    """</span>
+    n = <span class="mt">len</span>(arr)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n - <span class="nm">1</span>):
+        swapped = <span class="kw">False</span>   <span class="cm"># early termination optimisation</span>
+
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(n - <span class="nm">1</span> - i):
+            <span class="kw">if</span> arr[j] > arr[j + <span class="nm">1</span>]:
+                arr[j], arr[j+<span class="nm">1</span>] = arr[j+<span class="nm">1</span>], arr[j]  <span class="cm"># swap</span>
+                swapped = <span class="kw">True</span>
+
+        <span class="kw">if not</span> swapped:
+            <span class="kw">break</span>   <span class="cm"># already sorted</span>
+
+    <span class="kw">return</span> arr
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(bubble_sort([<span class="nm">64</span>,<span class="nm">34</span>,<span class="nm">25</span>,<span class="nm">12</span>,<span class="nm">22</span>,<span class="nm">11</span>,<span class="nm">90</span>]))  <span class="cm"># [11,12,22,25,34,64,90]</span>
+    <span class="mt">print</span>(bubble_sort([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>]))             <span class="cm"># already sorted: [1,2,3,4,5]</span>
+    <span class="mt">print</span>(bubble_sort([<span class="nm">5</span>,<span class="nm">4</span>,<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">1</span>]))             <span class="cm"># reversed: [1,2,3,4,5]</span></pre>
+</div>
+
+<h2 class="sec">Section 3 — Selection Sort</h2>
+
+<h3>3.1 The Analogy — Pick the Smallest Card</h3>
+<p>Imagine sorting a hand of playing cards. You look through all your cards, find the smallest one, and move it to the far left. Then look through the remaining cards, find the smallest, move it second from left. Repeat until done. That's selection sort.</p>
+
+<h3>3.2 How It Works</h3>
+<p>Divide the array into sorted (left) and unsorted (right) portions. In each pass, <strong>find the minimum element in the unsorted portion and swap it</strong> into the sorted portion.</p>
+
+<div class="diagram">
+  Array: [29, 10, 14, 37, 13]
+  
+  Pass 1: Find min in [29,10,14,37,13] → 10 at index 1. Swap with index 0.
+          [10 | 29, 14, 37, 13]  ← 10 sorted
+  
+  Pass 2: Find min in [29,14,37,13] → 13 at index 4. Swap with index 1.
+          [10, 13 | 29, 37, 14]  ← 13 sorted
+  
+  Pass 3: Find min in [29,37,14] → 14 at index 4. Swap with index 2.
+          [10, 13, 14 | 37, 29]
+  
+  Pass 4: Find min in [37,29] → 29. Swap.
+          [10, 13, 14, 29, 37]  ← fully sorted!
+</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Selection Sort — Complete Implementation ─────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">SelectionSort</span>
+{
+    <span class="cm">/// Sorts array using selection sort.
+    /// Time: O(n²) always — makes exactly n*(n-1)/2 comparisons regardless
+    /// Space: O(1) — in-place
+    /// Stable: No — a swap can change relative order of equal elements
+    /// Key advantage: makes at most n-1 SWAPS (minimizes writes — good for SSDs)</span>
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr)
+    {
+        <span class="kw">int</span> n = arr.<span class="tp">Length</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n - <span class="nm">1</span>; i++)
+        {
+            <span class="cm">// Find the minimum element in arr[i..n-1]</span>
+            <span class="kw">int</span> minIndex = i;
+            <span class="kw">for</span> (<span class="kw">int</span> j = i + <span class="nm">1</span>; j &lt; n; j++)
+            {
+                <span class="kw">if</span> (arr[j] &lt; arr[minIndex])
+                    minIndex = j;
+            }
+
+            <span class="cm">// Swap minimum element with the first unsorted element</span>
+            <span class="kw">if</span> (minIndex != i)
+                (arr[i], arr[minIndex]) = (arr[minIndex], arr[i]);
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr = { <span class="nm">29</span>, <span class="nm">10</span>, <span class="nm">14</span>, <span class="nm">37</span>, <span class="nm">13</span> };
+        <span class="mt">Sort</span>(arr);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));  <span class="cm">// 10, 13, 14, 29, 37</span>
+
+        <span class="kw">int</span>[] arr2 = { <span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span> };
+        <span class="mt">Sort</span>(arr2);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr2));  <span class="cm">// 1, 2, 3, 5, 5, 5</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">selection_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    <span class="st">"""Selection sort: find minimum, place in sorted section.
+    Time: O(n²) always | Space: O(1) | Stable: No
+    Advantage: minimises number of swaps (at most n-1)
+    """</span>
+    n = <span class="mt">len</span>(arr)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n - <span class="nm">1</span>):
+        min_idx = i
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(i + <span class="nm">1</span>, n):
+            <span class="kw">if</span> arr[j] &lt; arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    <span class="kw">return</span> arr
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(selection_sort([<span class="nm">29</span>,<span class="nm">10</span>,<span class="nm">14</span>,<span class="nm">37</span>,<span class="nm">13</span>]))  <span class="cm"># [10,13,14,29,37]</span>
+    <span class="mt">print</span>(selection_sort([<span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>]))    <span class="cm"># [1,2,3,5,5,5]</span></pre>
+</div>
+
+<h2 class="sec">Section 4 — Insertion Sort</h2>
+
+<h3>4.1 The Analogy — Sorting Playing Cards in Your Hand</h3>
+<p>Think of picking up playing cards one at a time. As you pick each new card, you slide it into the correct position among the cards already in your hand. You don't reshuffle everything — you just find where the new card belongs and insert it there. That's exactly insertion sort.</p>
+
+<h3>4.2 How It Works</h3>
+<p>Start with one element (sorted). For each new element, shift all larger sorted elements one position right to make space, then insert the new element in the gap.</p>
+
+<div class="diagram">
+  Array: [12, 11, 13, 5, 6]
+  
+  Step 1: [12] — single element, sorted
+  Step 2: key=11. Compare with 12: 11<12, shift 12 right. Insert 11.
+          [11, 12, 13, 5, 6]
+  Step 3: key=13. Compare with 12: 13>12, no shift. Insert in place.
+          [11, 12, 13, 5, 6]
+  Step 4: key=5. Shift 13,12,11 right. Insert 5 at front.
+          [5, 11, 12, 13, 6]
+  Step 5: key=6. Shift 13,12,11 right. Insert 6.
+          [5, 6, 11, 12, 13]  ← sorted!
+</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Insertion Sort — Complete Implementation ─────────────────────────────────</span>
+
+<span class="kw">class</span> <span class="tp">InsertionSort</span>
+{
+    <span class="cm">/// Time: O(n²) worst, O(n) best (nearly sorted!)
+    /// Space: O(1) — in-place
+    /// Stable: Yes
+    /// BEST USE CASE: nearly-sorted data — real world this is common!</span>
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr)
+    {
+        <span class="kw">int</span> n = arr.<span class="tp">Length</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">1</span>; i &lt; n; i++)
+        {
+            <span class="kw">int</span> key = arr[i];     <span class="cm">// element to insert</span>
+            <span class="kw">int</span> j = i - <span class="nm">1</span>;       <span class="cm">// start comparing from left of key</span>
+
+            <span class="cm">// Shift elements greater than key one position to the right</span>
+            <span class="kw">while</span> (j &gt;= <span class="nm">0</span> &amp;&amp; arr[j] &gt; key)
+            {
+                arr[j + <span class="nm">1</span>] = arr[j];  <span class="cm">// shift right</span>
+                j--;
+            }
+
+            <span class="cm">// Insert key in its correct position</span>
+            arr[j + <span class="nm">1</span>] = key;
+        }
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr1 = { <span class="nm">12</span>, <span class="nm">11</span>, <span class="nm">13</span>, <span class="nm">5</span>, <span class="nm">6</span> };
+        <span class="mt">Sort</span>(arr1);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr1));  <span class="cm">// 5, 6, 11, 12, 13</span>
+
+        <span class="cm">// Nearly sorted: insertion sort shines!</span>
+        <span class="kw">int</span>[] arr2 = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">5</span>, <span class="nm">4</span> };  <span class="cm">// only 1 swap needed</span>
+        <span class="mt">Sort</span>(arr2);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr2));  <span class="cm">// 1, 2, 3, 4, 5</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">insertion_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    <span class="st">"""Insertion sort: insert each element into sorted position.
+    Time: O(n²) worst, O(n) best | Space: O(1) | Stable: Yes
+    Best for: nearly-sorted data
+    """</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(arr)):
+        key = arr[i]
+        j = i - <span class="nm">1</span>
+        <span class="kw">while</span> j >= <span class="nm">0</span> <span class="kw">and</span> arr[j] > key:
+            arr[j + <span class="nm">1</span>] = arr[j]  <span class="cm"># shift right</span>
+            j -= <span class="nm">1</span>
+        arr[j + <span class="nm">1</span>] = key         <span class="cm"># insert</span>
+    <span class="kw">return</span> arr
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(insertion_sort([<span class="nm">12</span>,<span class="nm">11</span>,<span class="nm">13</span>,<span class="nm">5</span>,<span class="nm">6</span>]))  <span class="cm"># [5,6,11,12,13]</span>
+    <span class="mt">print</span>(insertion_sort([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">5</span>,<span class="nm">4</span>]))   <span class="cm"># [1,2,3,4,5]</span></pre>
+</div>
+
+<h2 class="sec">Section 5 — Algorithm Properties Explained</h2>
+
+<h3>5.1 Stability</h3>
+<p>A sorting algorithm is <strong>stable</strong> if equal elements maintain their original relative order after sorting. This matters when sorting objects with multiple fields (e.g., sort students by grade, keeping same-grade students in alphabetical order).</p>
+
+<div class="note"><strong>📝 Stable vs Unstable</strong>Bubble Sort: ✅ Stable — equal elements never swap (only strictly greater triggers swap). Insertion Sort: ✅ Stable — shifts only when strictly greater. Selection Sort: ❌ Unstable — a distant swap can displace equal elements.</div>
+
+<h3>5.2 In-place</h3>
+<p>An algorithm is <strong>in-place</strong> if it uses O(1) extra memory (besides the input array). All three O(n²) sorts are in-place. Merge Sort (next module) is NOT in-place — it needs O(n) extra space.</p>
+
+<h3>5.3 Adaptive</h3>
+<p>An algorithm is <strong>adaptive</strong> if it performs better on partially sorted data. Insertion sort is adaptive — on nearly sorted input, it approaches O(n). Bubble sort with the swapped flag is also adaptive. Selection sort is NOT adaptive — always O(n²).</p>
+
+<h2 class="sec">Section 6 — Complexity Comparison</h2>
+
+<table class="cmplx">
+  <thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th><th>Adaptive</th></tr></thead>
+  <tbody>
+    <tr><td>Bubble Sort</td><td class="qg">O(n)</td><td class="qr">O(n²)</td><td class="qr">O(n²)</td><td class="qg">O(1)</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+    <tr><td>Selection Sort</td><td class="qr">O(n²)</td><td class="qr">O(n²)</td><td class="qr">O(n²)</td><td class="qg">O(1)</td><td>❌ No</td><td>❌ No</td></tr>
+    <tr><td>Insertion Sort</td><td class="qg">O(n)</td><td class="qr">O(n²)</td><td class="qr">O(n²)</td><td class="qg">O(1)</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+  </tbody>
+</table>
+
+<h3>6.1 When to Use Which</h3>
+<table class="cmplx">
+  <thead><tr><th>Situation</th><th>Best Choice</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td>Very small arrays (n &lt; 20)</td><td>Any — preference: Insertion</td><td>Overhead of complex algorithms not worth it</td></tr>
+    <tr><td>Nearly sorted data</td><td>Insertion Sort</td><td>O(n) on nearly sorted!</td></tr>
+    <tr><td>Minimise swaps (write-heavy)</td><td>Selection Sort</td><td>At most n-1 swaps</td></tr>
+    <tr><td>Teaching sorting concepts</td><td>Bubble Sort</td><td>Most intuitive to visualise</td></tr>
+    <tr><td>Large random data</td><td>None of these</td><td>Use Merge Sort or Quick Sort (next module)</td></tr>
+  </tbody>
+</table>
+
+<div class="realworld">
+<strong>🌍 Real-World Use</strong>
+Java's Arrays.sort() and Python's sorted() use TimSort — a hybrid of Merge Sort and Insertion Sort. When the chunk size is small (≤32 elements), TimSort uses Insertion Sort because it's faster on small/nearly-sorted data. So insertion sort IS used in production!
+</div>
+
+<h2 class="sec">Section 7 — Practice Questions</h2>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q1: How many comparisons does bubble sort make for an array of n=5 elements in the worst case?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ n*(n-1)/2 = 5*4/2 = 10 comparisons</div>
+    <p>Pass 1: 4 comparisons. Pass 2: 3. Pass 3: 2. Pass 4: 1. Total: 4+3+2+1 = 10. This is O(n²).</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q2: Trace insertion sort on [5, 3, 1, 4, 2]. Show the array after each pass.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Step-by-step trace:</div>
+    <p>Start: [5, 3, 1, 4, 2]<br>
+    i=1, key=3: shift 5 right → [3, 5, 1, 4, 2]<br>
+    i=2, key=1: shift 5,3 right → [1, 3, 5, 4, 2]<br>
+    i=3, key=4: shift 5 right → [1, 3, 4, 5, 2]<br>
+    i=4, key=2: shift 5,4,3 right → [1, 2, 3, 4, 5]</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q3: Which O(n²) sort is NOT stable and why does that matter?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Selection Sort is not stable</div>
+    <p>Selection sort swaps the current element with the minimum element found, which could be far away. This can change the relative order of equal elements. Example: [3a, 3b, 1] → after pass 1, 1 and 3a swap → [1, 3b, 3a]. The two 3s changed order. This matters when sorting objects where equal keys should maintain original order (e.g., sorting by last name then by first name).</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q4: Write a function to sort an array using insertion sort in DESCENDING order.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Change the comparison from &gt; to &lt;</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">static void</span> <span class="mt">InsertionSortDesc</span>(<span class="kw">int</span>[] arr) {
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">1</span>; i&lt;arr.<span class="tp">Length</span>; i++) {
+        <span class="kw">int</span> key=arr[i], j=i-<span class="nm">1</span>;
+        <span class="kw">while</span> (j&gt;=<span class="nm">0</span> &amp;&amp; arr[j] &lt; key) {  <span class="cm">// changed > to < for descending</span>
+            arr[j+<span class="nm">1</span>]=arr[j]; j--;
+        }
+        arr[j+<span class="nm">1</span>]=key;
+    }
+}
+<span class="cm">// Result: [13, 12, 11, 6, 5] for input [12,11,13,5,6]</span></pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">insertion_sort_desc</span>(arr):
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(arr)):
+        key, j = arr[i], i-<span class="nm">1</span>
+        <span class="kw">while</span> j >= <span class="nm">0</span> <span class="kw">and</span> arr[j] &lt; key:  <span class="cm"># changed > to < for descending</span>
+            arr[j+<span class="nm">1</span>] = arr[j]; j -= <span class="nm">1</span>
+        arr[j+<span class="nm">1</span>] = key
+    <span class="kw">return</span> arr
+<span class="cm"># insertion_sort_desc([12,11,13,5,6]) → [13,12,11,6,5]</span></pre></div></div>
+  </div>
+</div>
+
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">You've mastered Bubble, Selection, and Insertion Sort with full analysis. Next up: the efficient O(n log n) algorithms!</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="m05b_efficient_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part B — Merge Sort &amp; Quick Sort →</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm05a';
+(function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='✅ Completed!';b.disabled=true;showToast('✅ Module 5A marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='✅ Completed!';b.disabled=true;}}})();
+function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
+function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
+applyLang();
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='⚠️ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Answer':'💡 Show Answer';}
+let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

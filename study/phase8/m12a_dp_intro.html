@@ -1,0 +1,482 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 12A — DP Intro: Memoization vs Tabulation | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
+    <h1>Module 12 — Part A</h1>
+    <div class="tagline">Dynamic Programming: Introduction</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Memoization vs Tabulation — The Two Faces of DP</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 12</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — DP Introduction<br>
+    ⬜ <strong>Part B</strong> — <a href="m12b_dp_1d.html">1D DP: Coin Change, LIS, Fibonacci</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m12c_dp_2d.html">2D DP: Knapsack, LCS, Edit Distance</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase7/m11a_segment_trees.html">&larr; Module 11 &mdash; Segment Trees &amp; More</a>
+    <a href="../phase8/m13a_greedy.html">Module 13 &mdash; Greedy Algorithms &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — What is Dynamic Programming? <span>— Optimal substructure + overlapping subproblems</span></li>
+        <li>Section 2 — The Fibonacci Problem <span>— Naive vs memoization vs tabulation</span></li>
+        <li>Section 3 — Top-Down: Memoization <span>— Recursive with cache</span></li>
+        <li>Section 4 — Bottom-Up: Tabulation <span>— Iterative DP table</span></li>
+        <li>Section 5 — Space Optimization <span>— Reduce O(n) to O(1)</span></li>
+        <li>Section 6 — DP Problem Recognition <span>— When to use DP?</span></li>
+        <li>Section 7 — Framework: 4 Steps to Any DP Problem <span>— Define state, recurrence, base, order</span></li>
+        <li>Section 8 — LeetCode Walkthroughs <span>— #70 Climbing Stairs, #198 House Robber</span></li>
+        <li>Section 9 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is Dynamic Programming?</div>
+
+<p><strong>Dynamic Programming (DP)</strong> is an algorithmic technique that solves complex problems 
+by breaking them down into simpler subproblems, solving each subproblem only once, and 
+storing their solutions to avoid redundant work.</p>
+
+<p>DP applies when a problem has two properties:</p>
+<ol>
+    <li><strong>Optimal Substructure:</strong> The optimal solution to the whole problem can be constructed from optimal solutions to subproblems.</li>
+    <li><strong>Overlapping Subproblems:</strong> The same subproblems are solved multiple times in a naive recursive approach.</li>
+</ol>
+
+<div class="note">
+    <strong>📌 DP vs Divide &amp; Conquer:</strong> Both break problems into subproblems. The difference:
+    D&amp;C subproblems are independent (merge sort: left and right halves don't share work).
+    DP subproblems overlap — the same sub-computation appears many times. That's when caching pays off.
+</div>
+
+<table>
+    <thead><tr><th>Technique</th><th>Subproblems</th><th>Example</th></tr></thead>
+    <tbody>
+        <tr><td>Divide &amp; Conquer</td><td>Independent, non-overlapping</td><td>Merge Sort, Binary Search</td></tr>
+        <tr><td>Dynamic Programming</td><td>Overlapping, shared</td><td>Fibonacci, Shortest Path</td></tr>
+        <tr><td>Greedy</td><td>No subproblems — local choice</td><td>Dijkstra, Interval Scheduling</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Fibonacci Problem: Naive vs DP</div>
+
+<p>Fibonacci: F(n) = F(n-1) + F(n-2), with F(0)=0, F(1)=1.</p>
+
+<div class="diagram">NAIVE RECURSION — Exponential O(2^n):
+
+fib(5)
+├── fib(4)
+│   ├── fib(3)
+│   │   ├── fib(2)
+│   │   │   ├── fib(1)  ← leaf
+│   │   │   └── fib(0)  ← leaf
+│   │   └── fib(1)      ← DUPLICATE
+│   └── fib(2)           ← DUPLICATE
+│       ├── fib(1)
+│       └── fib(0)
+└── fib(3)               ← DUPLICATE
+    ├── fib(2)
+    │   ├── fib(1)
+    │   └── fib(0)
+    └── fib(1)
+
+fib(3) computed 2 times, fib(2) computed 3 times, fib(1) computed 5 times...
+Total calls for fib(n): O(2^n)</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Top-Down: Memoization</div>
+
+<p>Keep the recursive structure, but cache results in a dictionary/array. 
+Before computing, check the cache. After computing, store in cache.</p>
+
+<div class="diagram">MEMOIZED RECURSION — O(n) time, O(n) space:
+
+First call to fib(5):
+  fib(5) → cache miss → compute fib(4) + fib(3)
+    fib(4) → cache miss → compute fib(3) + fib(2)
+      fib(3) → cache miss → compute fib(2) + fib(1)
+        fib(2) → cache miss → compute fib(1) + fib(0) = 1
+        cache[2] = 1
+      fib(3) = 1 + 1 = 2, cache[3] = 2
+      fib(2) → CACHE HIT → return 1
+    fib(4) = 2 + 1 = 3, cache[4] = 3
+    fib(3) → CACHE HIT → return 2
+  fib(5) = 3 + 2 = 5, cache[5] = 5
+
+Total unique computations: n (one per distinct subproblem)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">FibMemo</span>
+{
+    <span class="kw">private</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">long</span>&gt; memo = <span class="kw">new</span>();
+
+    <span class="kw">public long</span> <span class="mt">Fib</span>(<span class="kw">int</span> n)
+    {
+        <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+        <span class="kw">if</span> (memo.<span class="mt">TryGetValue</span>(n, <span class="kw">out long</span> cached)) <span class="kw">return</span> cached;
+        <span class="kw">return</span> memo[n] = <span class="mt">Fib</span>(n-<span class="nm">1</span>) + <span class="mt">Fib</span>(n-<span class="nm">2</span>);
+    }
+}
+
+<span class="cm">// C# 8+ with array memo (faster than Dictionary):</span>
+<span class="kw">public long</span> <span class="mt">FibMemoArray</span>(<span class="kw">int</span> n, <span class="kw">long</span>[] dp = <span class="kw">null</span>)
+{
+    dp ??= <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(-<span class="nm">1L</span>, n+<span class="nm">1</span>).<span class="mt">ToArray</span>();
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">if</span> (dp[n] != -<span class="nm">1</span>) <span class="kw">return</span> dp[n];
+    <span class="kw">return</span> dp[n] = <span class="mt">FibMemoArray</span>(n-<span class="nm">1</span>, dp) + <span class="mt">FibMemoArray</span>(n-<span class="nm">2</span>, dp);
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> functools <span class="kw">import</span> lru_cache
+
+<span class="cm"># Method 1: @lru_cache — Python's built-in memoization decorator</span>
+@lru_cache(maxsize=<span class="kw">None</span>)
+<span class="kw">def</span> <span class="mt">fib</span>(n):
+    <span class="kw">if</span> n &lt;= <span class="nm">1</span>: <span class="kw">return</span> n
+    <span class="kw">return</span> <span class="mt">fib</span>(n-<span class="nm">1</span>) + <span class="mt">fib</span>(n-<span class="nm">2</span>)
+
+<span class="cm"># Method 2: Manual memo dict</span>
+<span class="kw">def</span> <span class="mt">fib_memo</span>(n, memo={}):
+    <span class="kw">if</span> n &lt;= <span class="nm">1</span>: <span class="kw">return</span> n
+    <span class="kw">if</span> n <span class="kw">not in</span> memo:
+        memo[n] = <span class="mt">fib_memo</span>(n-<span class="nm">1</span>, memo) + <span class="mt">fib_memo</span>(n-<span class="nm">2</span>, memo)
+    <span class="kw">return</span> memo[n]
+
+<span class="cm"># Python recursion limit: sys.setrecursionlimit(10**6) for large n</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Bottom-Up: Tabulation</div>
+
+<p>Instead of recursing top-down and caching, <strong>build the table bottom-up</strong> 
+iteratively. Start from the base cases, fill the table in the correct order until you 
+reach the desired answer.</p>
+
+<div class="diagram">TABULATION — O(n) time, O(n) space:
+
+n = 6
+dp[0] = 0   (base case)
+dp[1] = 1   (base case)
+dp[2] = dp[1] + dp[0] = 1
+dp[3] = dp[2] + dp[1] = 2
+dp[4] = dp[3] + dp[2] = 3
+dp[5] = dp[4] + dp[3] = 5
+dp[6] = dp[5] + dp[4] = 8
+
+Table:
+index:  0  1  2  3  4  5  6
+dp[]:   0  1  1  2  3  5  8
+         ↑  ↑  ← computed from previous two</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public long</span> <span class="mt">FibTabulation</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">long</span>[] dp = <span class="kw">new long</span>[n + <span class="nm">1</span>];
+    dp[<span class="nm">0</span>] = <span class="nm">0</span>; dp[<span class="nm">1</span>] = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i &lt;= n; i++)
+        dp[i] = dp[i-<span class="nm">1</span>] + dp[i-<span class="nm">2</span>];
+    <span class="kw">return</span> dp[n];
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">fib_tab</span>(n):
+    <span class="kw">if</span> n &lt;= <span class="nm">1</span>: <span class="kw">return</span> n
+    dp = [<span class="nm">0</span>] * (n + <span class="nm">1</span>)
+    dp[<span class="nm">1</span>] = <span class="nm">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, n + <span class="nm">1</span>):
+        dp[i] = dp[i-<span class="nm">1</span>] + dp[i-<span class="nm">2</span>]
+    <span class="kw">return</span> dp[n]</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Space Optimization</div>
+
+<p>Many DP problems only need the last few values — not the entire table. 
+For Fibonacci, dp[i] only depends on dp[i-1] and dp[i-2], so we only need 2 variables.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public long</span> <span class="mt">FibSpaceOpt</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">long</span> prev2 = <span class="nm">0</span>, prev1 = <span class="nm">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i &lt;= n; i++)
+    {
+        <span class="kw">long</span> cur = prev1 + prev2;
+        prev2 = prev1; prev1 = cur;
+    }
+    <span class="kw">return</span> prev1;  <span class="cm">// O(1) space!</span>
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">fib_opt</span>(n):
+    <span class="kw">if</span> n &lt;= <span class="nm">1</span>: <span class="kw">return</span> n
+    a, b = <span class="nm">0</span>, <span class="nm">1</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, n + <span class="nm">1</span>):
+        a, b = b, a + b
+    <span class="kw">return</span> b  <span class="cm"># O(1) space</span></pre>
+</div>
+
+<table>
+    <thead><tr><th>Approach</th><th>Time</th><th>Space</th><th>Notes</th></tr></thead>
+    <tbody>
+        <tr><td>Naive recursion</td><td class="r">O(2^n)</td><td class="r">O(n) stack</td><td>Exponential — unusable for n &gt; 40</td></tr>
+        <tr><td>Memoization (top-down)</td><td class="g">O(n)</td><td class="o">O(n) cache + stack</td><td>Recursive, natural for some problems</td></tr>
+        <tr><td>Tabulation (bottom-up)</td><td class="g">O(n)</td><td class="o">O(n) table</td><td>Iterative, no stack overflow risk</td></tr>
+        <tr><td>Space-optimized tabulation</td><td class="g">O(n)</td><td class="g">O(1)</td><td>Best when only last k values needed</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — DP Problem Recognition</div>
+
+<p>Ask yourself these questions to identify if a problem is solvable with DP:</p>
+
+<div class="diagram">DP RECOGNITION CHECKLIST
+
+✅ "Optimization" language: maximum, minimum, longest, shortest, count ways, best
+✅ "Can I solve this by making a sequence of choices?"
+✅ "Does the problem decompose into smaller versions of itself?"
+✅ "Are there only polynomially many distinct subproblems?" (not exponential)
+✅ "Does solving subproblems help? (are they reused?)"
+
+🚫 NOT DP if:
+  - Subproblems are completely independent (use D&C or simple recursion)
+  - Problem is a simple greedy (one pass, no lookahead)
+  - Problem requires tracking exponentially many states
+
+COMMON DP PATTERNS:
+  1. Linear sequences: dp[i] = f(dp[i-1], dp[i-2], ...)
+     → Fibonacci, Climbing Stairs, House Robber, Jump Game
+
+  2. Subsequences: dp[i][j] = f(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+     → LCS, Edit Distance, LIS, Knapsack
+
+  3. Partition: dp[i] = max/min over all splits dp[j] + dp[i-j+1]
+     → Matrix Chain Multiplication, Burst Balloons
+
+  4. Trees/graphs: dp on subtrees, states per node
+     → Max Independent Set on Tree, Diameter
+
+  5. Bitmask DP: dp[mask] = state for subset "mask"
+     → Traveling Salesman, Matching</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Framework: 4 Steps to Any DP Problem</div>
+
+<p>Every DP solution follows this four-step framework:</p>
+
+<div class="diagram">THE 4-STEP DP FRAMEWORK
+
+Step 1: DEFINE THE STATE
+  What does dp[i] represent? (Or dp[i][j] for 2D)
+  Be precise: dp[i] = "the answer for the subproblem on input i"
+  Example: dp[i] = "max profit from houses 0..i, given we can't rob adjacent houses"
+
+Step 2: WRITE THE RECURRENCE
+  Express dp[i] in terms of previously computed values.
+  Example: dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+    → Either skip house i (take dp[i-1]) or rob it (dp[i-2] + nums[i])
+
+Step 3: IDENTIFY BASE CASES
+  What are the smallest subproblems we can answer directly (without recursion)?
+  Example: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+
+Step 4: DETERMINE COMPUTATION ORDER
+  Bottom-up: which order to fill the table?
+  (Ensure that when we compute dp[i], all values dp[i] depends on are already computed.)
+  Example: left to right i=2..n</div>
+
+<div class="tip">
+    <strong>💡 Interview Strategy:</strong> Always state the 4 steps explicitly before coding. 
+    Say: "Let dp[i] be... The recurrence is... Base cases are... I'll fill the table left to right." 
+    This shows structured thinking even before writing a single line of code.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — LeetCode Walkthroughs</div>
+
+<h3>LeetCode #70 — Climbing Stairs (Easy)</h3>
+<p><em>You can climb 1 or 2 steps at a time. How many distinct ways to reach step n?</em></p>
+
+<div class="diagram">APPLY THE 4-STEP FRAMEWORK:
+
+State: dp[i] = number of ways to reach step i
+Recurrence: dp[i] = dp[i-1] + dp[i-2]
+  (from step i-1, take 1 step) OR (from step i-2, take 2 steps)
+Base: dp[1] = 1, dp[2] = 2
+Order: i = 3 to n
+
+n=5: dp = [_, 1, 2, 3, 5, 8]
+  dp[3] = dp[2]+dp[1] = 3
+  dp[4] = dp[3]+dp[2] = 5
+  dp[5] = dp[4]+dp[3] = 8 ways  ✓
+
+This is EXACTLY Fibonacci! (with different base cases)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">ClimbStairs</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="nm">2</span>) <span class="kw">return</span> n;
+    <span class="kw">int</span> prev2 = <span class="nm">1</span>, prev1 = <span class="nm">2</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">3</span>; i &lt;= n; i++)
+    {
+        <span class="kw">int</span> cur = prev1 + prev2;
+        prev2 = prev1; prev1 = cur;
+    }
+    <span class="kw">return</span> prev1;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">climbStairs</span>(n):
+    <span class="kw">if</span> n &lt;= <span class="nm">2</span>: <span class="kw">return</span> n
+    a, b = <span class="nm">1</span>, <span class="nm">2</span>
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">3</span>, n+<span class="nm">1</span>): a, b = b, a+b
+    <span class="kw">return</span> b</pre>
+</div>
+
+<h3>LeetCode #198 — House Robber (Medium)</h3>
+<p><em>Rob houses to maximize money. Cannot rob two adjacent houses.</em></p>
+
+<div class="diagram">APPLY THE 4-STEP FRAMEWORK:
+
+State: dp[i] = max money from houses 0..i
+Recurrence: dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+  - dp[i-1]: skip house i, best from 0..i-1
+  - dp[i-2]+nums[i]: rob house i, can't use house i-1, best from 0..i-2
+Base: dp[0] = nums[0], dp[1] = max(nums[0], nums[1])
+Order: i = 2 to n-1
+
+nums = [2, 7, 9, 3, 1]
+dp[0] = 2
+dp[1] = max(2, 7) = 7
+dp[2] = max(dp[1], dp[0]+9) = max(7, 11) = 11
+dp[3] = max(dp[2], dp[1]+3) = max(11, 10) = 11
+dp[4] = max(dp[3], dp[2]+1) = max(11, 12) = 12  ✓ (rob houses 0,2,4: 2+9+1=12)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">Rob</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="kw">if</span> (nums.Length == <span class="nm">1</span>) <span class="kw">return</span> nums[<span class="nm">0</span>];
+    <span class="kw">int</span> prev2 = nums[<span class="nm">0</span>], prev1 = <span class="tp">Math</span>.<span class="mt">Max</span>(nums[<span class="nm">0</span>], nums[<span class="nm">1</span>]);
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">2</span>; i &lt; nums.Length; i++)
+    {
+        <span class="kw">int</span> cur = <span class="tp">Math</span>.<span class="mt">Max</span>(prev1, prev2 + nums[i]);
+        prev2 = prev1; prev1 = cur;
+    }
+    <span class="kw">return</span> prev1;
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">rob</span>(nums):
+    <span class="kw">if not</span> nums: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">if</span> <span class="mt">len</span>(nums) == <span class="nm">1</span>: <span class="kw">return</span> nums[<span class="nm">0</span>]
+    a, b = nums[<span class="nm">0</span>], <span class="mt">max</span>(nums[<span class="nm">0</span>], nums[<span class="nm">1</span>])
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, <span class="mt">len</span>(nums)):
+        a, b = b, <span class="mt">max</span>(b, a + nums[i])
+    <span class="kw">return</span> b</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: What are the two essential properties a problem must have for DP to apply?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer"><strong>1. Optimal Substructure:</strong> The optimal solution of the problem can be built from optimal solutions to its subproblems. Example: The shortest path from A to C via B = shortest path A→B + shortest path B→C. <strong>2. Overlapping Subproblems:</strong> The same subproblems are re-encountered multiple times during recursion. Example: fib(3) is needed to compute both fib(4) and fib(5). Without overlap, caching doesn't help — that's why Merge Sort doesn't benefit from memoization (its subproblems don't overlap).</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: What are the pros and cons of memoization (top-down) vs tabulation (bottom-up)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer"><strong>Memoization (top-down):</strong> Pros: natural recursive structure, only computes subproblems that are actually needed (lazy evaluation), easier to implement for some problems (trees). Cons: recursive call stack overhead, risk of stack overflow for large n (Python default recursion limit ~1000), slightly slower due to function call overhead + dictionary lookups. <strong>Tabulation (bottom-up):</strong> Pros: no recursion overhead, no stack overflow risk, easier space optimization (sliding window over table), typically faster in practice. Cons: must carefully determine fill order, always computes ALL subproblems even if not needed. <em>In interviews: tabulation is generally preferred for linear/grid problems; memoization for tree/graph problems.</em></div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: In House Robber, why is dp[i-2] + nums[i] the correct recurrence (not dp[i-1] + nums[i])?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">If we rob house i, we cannot rob house i-1 (adjacent restriction). So we must look at the best solution ending at house i-2 or earlier. dp[i-2] already represents the maximum we can earn from houses 0..i-2 (which is the best we can do without using house i-1). Using dp[i-1] would mean we might have robbed house i-1 in that solution, which would make robbing house i illegal. Note: dp[i-2] includes the possibility of NOT robbing house i-2 either — it's the maximum over all valid choices in the range 0..i-2.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: How do you determine the correct "fill order" for a bottom-up DP table?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Look at the recurrence: dp[i] depends on which previous values? Those values must be filled before dp[i]. For 1D DP: if dp[i] depends on dp[i-1], dp[i-2], fill left to right (i=2 to n). For 2D DP (e.g., dp[i][j] = f(dp[i-1][j], dp[i][j-1])): fill row by row, left to right. For interval DP (dp[i][j] depends on dp[i][k] and dp[k+1][j] for i≤k&lt;j): fill by increasing length of interval. The key rule: draw a dependency arrow from dp[i] to each value it depends on. Fill in topological order of those dependencies.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: When should you use space optimization in DP, and what's the general technique?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Use space optimization when dp[i] depends only on the last k rows/values (k is small and constant), and you don't need to reconstruct the actual path/solution. The technique: instead of keeping the full dp[0..n] array, keep only dp[i-1] (and dp[i-2] if needed) as separate variables. For 2D DP where dp[i][j] depends on dp[i-1][*], you only need to keep two rows (current and previous), reducing space from O(n*m) to O(m). Caveat: if you need to reconstruct the path (e.g., actual subsequence, not just length), you CANNOT space-optimize — you need the full table for backtracking.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 12A Complete</button>
+<div class="toast" id="toast">✅ Module 12A marked complete!</div>
+    <script>var MODULE_ID = 'm12a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

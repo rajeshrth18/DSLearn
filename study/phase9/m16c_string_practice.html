@@ -1,0 +1,565 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 16C — String Practice | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part C</h1>
+    <div class="tagline">String Algorithm Practice — 10 Curated Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">KMP · Z-Function · Rabin-Karp · Trie · Palindromes · Anagrams</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 16</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Module 16:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m16a_string_algorithms.html">KMP, Z-Function &amp; Rabin-Karp</a><br>
+    ✅ <strong>Part B</strong> — <a href="m16b_aho_corasick.html">Aho-Corasick &amp; Suffix Arrays</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Practice: 10 Problems<br>
+    ⬜ <strong>Module 17</strong> — <a href="m17a_bit_manipulation.html">Bit Manipulation &amp; Math</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
+    <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
+</div>
+
+<div class="note">
+    <strong>📝 How to Use:</strong> Attempt each problem independently (15+ min) before reading the hint. Write your solution before viewing the code. Problems progress from medium to hard within each group.
+</div>
+
+<!-- ═══════ GROUP A ═══════ -->
+<div class="section-heading">Group A — Pattern Matching</div>
+
+<!-- P1 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge easy">Easy</span>
+        <span class="badge topic">KMP</span>
+    </div>
+    <h3>#28 — Find the Index of First Occurrence in a String</h3>
+    <p>Given strings <code>haystack</code> and <code>needle</code>, return the index of the first occurrence of <code>needle</code> in <code>haystack</code>, or -1 if not present.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Classic KMP application. Build the failure function (LPS array) from needle, then scan haystack. When a mismatch occurs at position j in needle, fall back to lps[j-1] instead of restarting.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">StrStr</span>(<span class="kw">string</span> haystack, <span class="kw">string</span> needle)
+{
+    <span class="kw">if</span> (needle.Length == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">int</span> n = haystack.Length, m = needle.Length;
+    <span class="kw">int</span>[] lps = <span class="kw">new int</span>[m];
+    <span class="kw">int</span> len = <span class="nm">0</span>, k = <span class="nm">1</span>;
+    <span class="kw">while</span> (k &lt; m) {
+        <span class="kw">if</span> (needle[k] == needle[len]) lps[k++] = ++len;
+        <span class="kw">else if</span> (len > <span class="nm">0</span>) len = lps[len - <span class="nm">1</span>];
+        <span class="kw">else</span> lps[k++] = <span class="nm">0</span>;
+    }
+    <span class="kw">int</span> i = <span class="nm">0</span>, j = <span class="nm">0</span>;
+    <span class="kw">while</span> (i &lt; n) {
+        <span class="kw">if</span> (haystack[i] == needle[j]) { i++; j++; }
+        <span class="kw">if</span> (j == m) <span class="kw">return</span> i - m;
+        <span class="kw">else if</span> (i &lt; n &amp;&amp; haystack[i] != needle[j])
+            j = j > <span class="nm">0</span> ? lps[j - <span class="nm">1</span>] : (i++ >= <span class="nm">0</span> ? <span class="nm">0</span> : <span class="nm">0</span>);
+    }
+    <span class="kw">return</span> -<span class="nm">1</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">strStr</span>(haystack, needle):
+    <span class="kw">if not</span> needle: <span class="kw">return</span> <span class="nm">0</span>
+    m = <span class="mt">len</span>(needle); lps = [<span class="nm">0</span>]*m; ln = <span class="nm">0</span>; k = <span class="nm">1</span>
+    <span class="kw">while</span> k &lt; m:
+        <span class="kw">if</span> needle[k]==needle[ln]: lps[k]=ln+<span class="nm">1</span>; ln+=<span class="nm">1</span>; k+=<span class="nm">1</span>
+        <span class="kw">elif</span> ln: ln=lps[ln-<span class="nm">1</span>]
+        <span class="kw">else</span>: k+=<span class="nm">1</span>
+    i=j=<span class="nm">0</span>; n=<span class="mt">len</span>(haystack)
+    <span class="kw">while</span> i&lt;n:
+        <span class="kw">if</span> haystack[i]==needle[j]: i+=<span class="nm">1</span>; j+=<span class="nm">1</span>
+        <span class="kw">if</span> j==m: <span class="kw">return</span> i-m
+        <span class="kw">elif</span> i&lt;n <span class="kw">and</span> haystack[i]!=needle[j]:
+            <span class="kw">if</span> j: j=lps[j-<span class="nm">1</span>]
+            <span class="kw">else</span>: i+=<span class="nm">1</span>
+    <span class="kw">return</span> -<span class="nm">1</span></pre></div>
+    </div>
+</div>
+
+<!-- P2 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge easy">Easy</span>
+        <span class="badge topic">Z-Function</span>
+        <span class="badge topic">KMP</span>
+    </div>
+    <h3>#459 — Repeated Substring Pattern</h3>
+    <p>Given a string <code>s</code>, return true if it can be constructed by taking a substring and appending multiple copies of it.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Two approaches: (1) KMP: build lps array; if lps[n-1] > 0 and n % (n - lps[n-1]) == 0, return true. (2) String trick: s is repeated iff s appears in (s+s)[1:-1].</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">RepeatedSubstringPattern</span>(<span class="kw">string</span> s)
+{
+    <span class="cm">// KMP approach: check if period divides n</span>
+    <span class="kw">int</span> n = s.Length;
+    <span class="kw">int</span>[] lps = <span class="kw">new int</span>[n];
+    <span class="kw">int</span> len = <span class="nm">0</span>, i = <span class="nm">1</span>;
+    <span class="kw">while</span> (i &lt; n) {
+        <span class="kw">if</span> (s[i] == s[len]) lps[i++] = ++len;
+        <span class="kw">else if</span> (len > <span class="nm">0</span>) len = lps[len - <span class="nm">1</span>];
+        <span class="kw">else</span> lps[i++] = <span class="nm">0</span>;
+    }
+    <span class="kw">int</span> period = n - lps[n - <span class="nm">1</span>];
+    <span class="kw">return</span> lps[n - <span class="nm">1</span>] > <span class="nm">0</span> &amp;&amp; n % period == <span class="nm">0</span>;
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">repeatedSubstringPattern</span>(s):
+    <span class="kw">return</span> s <span class="kw">in</span> (s+s)[<span class="nm">1</span>:-<span class="nm">1</span>]  <span class="cm"># elegant O(n) trick</span></pre></div>
+    </div>
+</div>
+
+<!-- P3 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">KMP</span>
+        <span class="badge topic">String</span>
+    </div>
+    <h3>#1392 — Longest Happy Prefix</h3>
+    <p>A "happy prefix" is a prefix of string s that is also a suffix (but not the whole string). Return the longest such prefix, or "" if none.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">The KMP failure function (LPS array) directly gives this answer. lps[n-1] = length of the longest proper prefix that is also a suffix. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">LongestPrefix</span>(<span class="kw">string</span> s) {
+    <span class="kw">int</span> n = s.Length; <span class="kw">int</span>[] lps = <span class="kw">new int</span>[n];
+    <span class="kw">int</span> ln = <span class="nm">0</span>, i = <span class="nm">1</span>;
+    <span class="kw">while</span> (i &lt; n) {
+        <span class="kw">if</span> (s[i] == s[ln]) { lps[i++] = ++ln; }
+        <span class="kw">else if</span> (ln &gt; <span class="nm">0</span>)  { ln = lps[ln-<span class="nm">1</span>]; }
+        <span class="kw">else</span>               { i++; }
+    }
+    <span class="kw">return</span> s.<span class="mt">Substring</span>(<span class="nm">0</span>, lps[n-<span class="nm">1</span>]);  <span class="cm">// "" if lps[n-1]==0</span>
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">longestPrefix</span>(s):
+    n = <span class="mt">len</span>(s); lps = [<span class="nm">0</span>]*n; ln=<span class="nm">0</span>; i=<span class="nm">1</span>
+    <span class="kw">while</span> i&lt;n:
+        <span class="kw">if</span> s[i]==s[ln]: lps[i]=ln+<span class="nm">1</span>; ln+=<span class="nm">1</span>; i+=<span class="nm">1</span>
+        <span class="kw">elif</span> ln: ln=lps[ln-<span class="nm">1</span>]
+        <span class="kw">else</span>: i+=<span class="nm">1</span>
+    <span class="kw">return</span> s[:lps[-<span class="nm">1</span>]]  <span class="cm"># "" if lps[-1]==0</span></pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP B ═══════ -->
+<div class="section-heading">Group B — Substrings &amp; Palindromes</div>
+
+<!-- P4 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">Sliding Window</span>
+        <span class="badge topic">Hash Map</span>
+    </div>
+    <h3>#438 — Find All Anagrams in a String</h3>
+    <p>Given strings <code>s</code> and <code>p</code>, return all start indices of p's anagrams in s.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Use a sliding window of size len(p). Maintain a frequency count of the window. An anagram exists when the window's frequency matches p's frequency. Track a "matches" counter to avoid full frequency comparison each step.</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">FindAnagrams</span>(<span class="kw">string</span> s, <span class="kw">string</span> p)
+{
+    <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">if</span> (s.Length &lt; p.Length) <span class="kw">return</span> res;
+    <span class="kw">int</span>[] need = <span class="kw">new int</span>[<span class="nm">26</span>], win = <span class="kw">new int</span>[<span class="nm">26</span>];
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> p) need[c - <span class="st">'a'</span>]++;
+    <span class="kw">int</span> m = p.Length;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; m; i++) win[s[i] - <span class="st">'a'</span>]++;
+    <span class="kw">if</span> (<span class="mt">ArrayEqual</span>(win, need)) res.<span class="mt">Add</span>(<span class="nm">0</span>);
+    <span class="kw">for</span> (<span class="kw">int</span> i = m; i &lt; s.Length; i++) {
+        win[s[i] - <span class="st">'a'</span>]++;
+        win[s[i - m] - <span class="st">'a'</span>]--;
+        <span class="kw">if</span> (<span class="mt">ArrayEqual</span>(win, need)) res.<span class="mt">Add</span>(i - m + <span class="nm">1</span>);
+    }
+    <span class="kw">return</span> res;
+}
+<span class="kw">bool</span> <span class="mt">ArrayEqual</span>(<span class="kw">int</span>[] a, <span class="kw">int</span>[] b) { <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;<span class="nm">26</span>;i++) <span class="kw">if</span>(a[i]!=b[i]) <span class="kw">return false</span>; <span class="kw">return true</span>; }</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">def</span> <span class="mt">findAnagrams</span>(s, p):
+    m = <span class="mt">len</span>(p); need = <span class="tp">Counter</span>(p); win = <span class="tp">Counter</span>(s[:m]); res = []
+    <span class="kw">if</span> win == need: res.<span class="mt">append</span>(<span class="nm">0</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(m, <span class="mt">len</span>(s)):
+        win[s[i]] += <span class="nm">1</span>; win[s[i-m]] -= <span class="nm">1</span>
+        <span class="kw">if</span> win[s[i-m]] == <span class="nm">0</span>: <span class="kw">del</span> win[s[i-m]]
+        <span class="kw">if</span> win == need: res.<span class="mt">append</span>(i-m+<span class="nm">1</span>)
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- P5 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge med">Medium</span>
+        <span class="badge topic">Manacher</span>
+        <span class="badge topic">Palindrome</span>
+    </div>
+    <h3>#5 — Longest Palindromic Substring</h3>
+    <p>Given string <code>s</code>, return the longest palindromic substring.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Manacher's algorithm finds all palindromes in O(n) using a "mirror" trick similar to KMP/Z-function. For competitive use: expand-around-center is O(n²) but simpler and often fast enough. O(n) Manacher: transform s to "#a#b#a#", <span class="lang-label lang-cs">C# (Manacher O(n))</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">LongestPalindrome</span>(<span class="kw">string</span> s) {
+    <span class="cm">// Transform: "#a#b#a#"</span>
+    <span class="kw">var</span> sb = <span class="kw">new</span> System.Text.<span class="tp">StringBuilder</span>(<span class="st">"#"</span>);
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) { sb.<span class="mt">Append</span>(c); sb.<span class="mt">Append</span>(<span class="st">'#'</span>); }
+    <span class="kw">string</span> t = sb.<span class="mt">ToString</span>(); <span class="kw">int</span> n = t.Length;
+    <span class="kw">int</span>[] p = <span class="kw">new int</span>[n]; <span class="kw">int</span> c = <span class="nm">0</span>, r = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (i &lt; r) p[i] = <span class="tp">Math</span>.<span class="mt">Min</span>(r-i, p[<span class="nm">2</span>*c-i]);
+        <span class="kw">while</span> (i-p[i]-<span class="nm">1</span> &gt;= <span class="nm">0</span> &amp;&amp; i+p[i]+<span class="nm">1</span> &lt; n &amp;&amp; t[i-p[i]-<span class="nm">1</span>]==t[i+p[i]+<span class="nm">1</span>]) p[i]++;
+        <span class="kw">if</span> (i+p[i] &gt; r) { c=i; r=i+p[i]; }
+    }
+    <span class="kw">int</span> maxLen=p.<span class="mt">Max</span>(), center=<span class="tp">Array</span>.<span class="mt">IndexOf</span>(p, maxLen);
+    <span class="kw">int</span> start=(center-maxLen)/<span class="nm">2</span>;
+    <span class="kw">return</span> s.<span class="mt">Substring</span>(start, maxLen);
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python (Manacher O(n))</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">longestPalindrome</span>(s):
+    <span class="cm"># Transform: insert '#' between chars and at boundaries</span>
+    t = <span class="st">'#'</span> + <span class="st">'#'</span>.<span class="mt">join</span>(s) + <span class="st">'#'</span>
+    n = <span class="mt">len</span>(t); p = [<span class="nm">0</span>] * n
+    c = r = <span class="nm">0</span>  <span class="cm"># center and right boundary of rightmost palindrome</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        mirror = <span class="nm">2</span>*c - i
+        <span class="kw">if</span> i &lt; r: p[i] = <span class="mt">min</span>(r-i, p[mirror])
+        <span class="cm"># Try to expand palindrome centered at i</span>
+        <span class="kw">while</span> i-p[i]-<span class="nm">1</span> >= <span class="nm">0</span> <span class="kw">and</span> i+p[i]+<span class="nm">1</span> &lt; n <span class="kw">and</span> t[i-p[i]-<span class="nm">1</span>]==t[i+p[i]+<span class="nm">1</span>]:
+            p[i] += <span class="nm">1</span>
+        <span class="kw">if</span> i+p[i] > r: c, r = i, i+p[i]
+    <span class="cm"># Find the maximum palindrome length</span>
+    max_len, center = <span class="mt">max</span>((p[i], i) <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n))
+    start = (center - max_len) // <span class="nm">2</span>
+    <span class="kw">return</span> s[start : start + max_len]</pre></div>
+    </div>
+</div>
+
+<!-- P6 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Palindrome</span>
+        <span class="badge topic">DP</span>
+    </div>
+    <h3>#132 — Palindrome Partitioning II</h3>
+    <p>Given string <code>s</code>, return the minimum number of cuts needed to partition <code>s</code> into palindromes.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">DP: dp[i] = min cuts for s[0..i]. For each i, try all j ≤ i where s[j..i] is a palindrome: dp[i] = min(dp[j-1] + 1). Pre-compute isPalin[j][i] in O(n²). Start with dp[i] = i (max cuts = one char each). <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public int</span> <span class="mt">MinCut</span>(<span class="kw">string</span> s) {
+    <span class="kw">int</span> n = s.Length;
+    <span class="kw">bool</span>[,] isP = <span class="kw">new bool</span>[n, n];
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;n; i++) isP[i,i] = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> len=<span class="nm">2</span>; len&lt;=n; len++)
+        <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;=n-len; i++) {
+            <span class="kw">int</span> j=i+len-<span class="nm">1</span>;
+            isP[i,j] = s[i]==s[j] &amp;&amp; (len==<span class="nm">2</span> || isP[i+<span class="nm">1</span>,j-<span class="nm">1</span>]);
+        }
+    <span class="kw">int</span>[] dp = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,n).<span class="mt">ToArray</span>();
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">1</span>; i&lt;n; i++) {
+        <span class="kw">if</span>(isP[<span class="nm">0</span>,i]) { dp[i]=<span class="nm">0</span>; <span class="kw">continue</span>; }
+        <span class="kw">for</span> (<span class="kw">int</span> j=<span class="nm">1</span>; j&lt;=i; j++)
+            <span class="kw">if</span>(isP[j,i]) dp[i] = <span class="tp">Math</span>.<span class="mt">Min</span>(dp[i], dp[j-<span class="nm">1</span>]+<span class="nm">1</span>);
+    }
+    <span class="kw">return</span> dp[n-<span class="nm">1</span>];
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">minCut</span>(s):
+    n = <span class="mt">len</span>(s)
+    <span class="cm"># is_p[i][j] = True if s[i..j] is palindrome</span>
+    is_p = [[<span class="kw">False</span>]*n <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n): is_p[i][i] = <span class="kw">True</span>
+    <span class="kw">for</span> length <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span>, n+<span class="nm">1</span>):
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n-length+<span class="nm">1</span>):
+            j = i+length-<span class="nm">1</span>
+            is_p[i][j] = s[i]==s[j] <span class="kw">and</span> (length==<span class="nm">2</span> <span class="kw">or</span> is_p[i+<span class="nm">1</span>][j-<span class="nm">1</span>])
+    dp = <span class="mt">list</span>(<span class="mt">range</span>(n))  <span class="cm"># dp[i] = min cuts for s[0..i]</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n):
+        <span class="kw">if</span> is_p[<span class="nm">0</span>][i]: dp[i] = <span class="nm">0</span>; <span class="kw">continue</span>
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, i+<span class="nm">1</span>):
+            <span class="kw">if</span> is_p[j][i]: dp[i] = <span class="mt">min</span>(dp[i], dp[j-<span class="nm">1</span>]+<span class="nm">1</span>)
+    <span class="kw">return</span> dp[n-<span class="nm">1</span>]</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP C ═══════ -->
+<div class="section-heading">Group C — Trie &amp; Rolling Hash</div>
+
+<!-- P7 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Trie</span>
+        <span class="badge topic">Backtracking</span>
+    </div>
+    <h3>#212 — Word Search II</h3>
+    <p>Given a board of characters and a list of words, return all words found in the board (adjacent horizontal/vertical cells). Each cell used at most once per word.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Build a Trie from all words. DFS/backtrack from each cell, following the trie. When you reach a word-end node, add it to results and mark that trie node (to avoid duplicates). Prune branches where the current prefix matches no trie node. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">class</span> <span class="tp">TN</span> { <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="tp">TN</span>&gt; ch=<span class="kw">new</span>(); <span class="kw">public string</span> word; }
+<span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; <span class="mt">FindWords</span>(<span class="kw">char</span>[][] board, <span class="kw">string</span>[] words) {
+    <span class="kw">var</span> root=<span class="kw">new</span> <span class="tp">TN</span>();
+    <span class="kw">foreach</span>(<span class="kw">var</span> w <span class="kw">in</span> words) {
+        <span class="kw">var</span> n=root;
+        <span class="kw">foreach</span>(<span class="kw">char</span> c <span class="kw">in</span> w){<span class="kw">if</span>(!n.ch.<span class="mt">ContainsKey</span>(c))n.ch[c]=<span class="kw">new</span> <span class="tp">TN</span>();n=n.ch[c];}
+        n.word=w;
+    }
+    <span class="kw">int</span> m=board.Length,nc=board[<span class="nm">0</span>].Length; <span class="kw">var</span> res=<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+    <span class="kw">void</span> <span class="mt">Dfs</span>(<span class="kw">int</span> r,<span class="kw">int</span> c,<span class="tp">TN</span> node) {
+        <span class="kw">char</span> ch=board[r][c]; <span class="kw">if</span>(ch==<span class="st">'#'</span>||!node.ch.<span class="mt">ContainsKey</span>(ch)) <span class="kw">return</span>;
+        <span class="kw">var</span> nxt=node.ch[ch];
+        <span class="kw">if</span>(nxt.word!=<span class="kw">null</span>){res.<span class="mt">Add</span>(nxt.word);nxt.word=<span class="kw">null</span>;}
+        board[r][c]=<span class="st">'#'</span>;
+        <span class="kw">foreach</span>(<span class="kw">var</span>(dr,dc) <span class="kw">in</span> <span class="kw">new</span>[]{(<span class="nm">1</span>,<span class="nm">0</span>),(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">0</span>,-<span class="nm">1</span>)}) {
+            <span class="kw">int</span> nr=r+dr,ncc=c+dc;
+            <span class="kw">if</span>(nr&gt;=<span class="nm">0</span>&amp;&amp;nr&lt;m&amp;&amp;ncc&gt;=<span class="nm">0</span>&amp;&amp;ncc&lt;nc) <span class="mt">Dfs</span>(nr,ncc,nxt);
+        }
+        board[r][c]=ch;
+        <span class="kw">if</span>(nxt.ch.Count==<span class="nm">0</span>&amp;&amp;nxt.word==<span class="kw">null</span>) node.ch.<span class="mt">Remove</span>(ch);
+    }
+    <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;m;r++) <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;nc;c++) <span class="mt">Dfs</span>(r,c,root);
+    <span class="kw">return</span> res;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">findWords</span>(board, words):
+    <span class="cm"># Build trie</span>
+    trie = {}
+    <span class="kw">for</span> w <span class="kw">in</span> words:
+        node = trie
+        <span class="kw">for</span> c <span class="kw">in</span> w: node = node.<span class="mt">setdefault</span>(c, {})
+        node[<span class="st">'$'</span>] = w  <span class="cm"># store word at terminal node</span>
+
+    m, n, res = <span class="mt">len</span>(board), <span class="mt">len</span>(board[<span class="nm">0</span>]), []
+
+    <span class="kw">def</span> <span class="mt">dfs</span>(r, c, node):
+        ch = board[r][c]
+        <span class="kw">if</span> ch <span class="kw">not in</span> node: <span class="kw">return</span>
+        nxt = node[ch]
+        <span class="kw">if</span> <span class="st">'$'</span> <span class="kw">in</span> nxt: res.<span class="mt">append</span>(nxt.<span class="mt">pop</span>(<span class="st">'$'</span>))  <span class="cm"># found, pop to avoid dup</span>
+        board[r][c] = <span class="st">'#'</span>  <span class="cm"># mark visited</span>
+        <span class="kw">for</span> dr, dc <span class="kw">in</span> [(<span class="nm">1</span>,<span class="nm">0</span>),(-<span class="nm">1</span>,<span class="nm">0</span>),(<span class="nm">0</span>,<span class="nm">1</span>),(<span class="nm">0</span>,-<span class="nm">1</span>)]:
+            nr, nc = r+dr, c+dc
+            <span class="kw">if</span> <span class="nm">0</span><=nr&lt;m <span class="kw">and</span> <span class="nm">0</span><=nc&lt;n: <span class="mt">dfs</span>(nr, nc, nxt)
+        board[r][c] = ch  <span class="cm"># restore</span>
+        <span class="kw">if not</span> nxt: <span class="kw">del</span> node[ch]  <span class="cm"># prune dead trie nodes</span>
+
+    <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(m):
+        <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(n): <span class="mt">dfs</span>(r, c, trie)
+    <span class="kw">return</span> res</pre></div>
+    </div>
+</div>
+
+<!-- P8 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Rolling Hash</span>
+        <span class="badge topic">Binary Search</span>
+    </div>
+    <h3>#1044 — Longest Duplicate Substring</h3>
+    <p>Given string <code>s</code>, return the longest substring that appears at least twice. If none, return "".</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Binary search on the length L. For each L, use Rabin-Karp rolling hash to check if any substring of length L appears twice (store hashes in a set). If duplicate found, try longer; else shorter. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">LongestDupSubstring</span>(<span class="kw">string</span> s) {
+    <span class="kw">int</span> n=s.Length; <span class="kw">const long</span> MOD=<span class="nm">1_000_000_007</span>, BASE=<span class="nm">131</span>;
+    <span class="kw">string</span> <span class="mt">Check</span>(<span class="kw">int</span> L) {
+        <span class="kw">long</span> pw=<span class="nm">1</span>; <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;L-<span class="nm">1</span>;i++) pw=pw*BASE%MOD;
+        <span class="kw">long</span> h=<span class="nm">0</span>; <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;L;i++) h=(h*BASE+s[i])%MOD;
+        <span class="kw">var</span> seen=<span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">long</span>,<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt;{{h,<span class="kw">new</span>{<span class="nm">0</span>}}};
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">1</span>;i&lt;=n-L;i++) {
+            h=(h-s[i-<span class="nm">1</span>]*pw%MOD+MOD)*BASE%MOD; h=(h+s[i+L-<span class="nm">1</span>])%MOD;
+            <span class="kw">if</span>(seen.<span class="mt">TryGetValue</span>(h,<span class="kw">out var</span> lst))
+                <span class="kw">foreach</span>(<span class="kw">var</span> j <span class="kw">in</span> lst)
+                    <span class="kw">if</span>(s.<span class="mt">Substring</span>(i,L)==s.<span class="mt">Substring</span>(j,L)) <span class="kw">return</span> s.<span class="mt">Substring</span>(i,L);
+            seen.<span class="mt">TryAdd</span>(h,<span class="kw">new</span>()); seen[h].<span class="mt">Add</span>(i);
+        }
+        <span class="kw">return null</span>;
+    }
+    <span class="kw">int</span> lo=<span class="nm">1</span>,hi=n-<span class="nm">1</span>; <span class="kw">string</span> ans=<span class="st">""</span>;
+    <span class="kw">while</span>(lo&lt;=hi) { <span class="kw">int</span> mid=(lo+hi)/<span class="nm">2</span>; <span class="kw">var</span> r=<span class="mt">Check</span>(mid); <span class="kw">if</span>(r!=<span class="kw">null</span>){ans=r;lo=mid+<span class="nm">1</span>;}else hi=mid-<span class="nm">1</span>; }
+    <span class="kw">return</span> ans;
+}</pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">longestDupSubstring</span>(s):
+    n = <span class="mt">len</span>(s); MOD = (<span class="nm">1</span>&lt;&lt;<span class="nm">61</span>)-<span class="nm">1</span>; BASE = <span class="nm">131</span>
+
+    <span class="kw">def</span> <span class="mt">check</span>(L):
+        h = <span class="nm">0</span>; power = <span class="mt">pow</span>(BASE, L, MOD)
+        seen = {}
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(L): h = (h * BASE + <span class="mt">ord</span>(s[i])) % MOD
+        seen[h] = [<span class="nm">0</span>]
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n-L+<span class="nm">1</span>):
+            h = (h * BASE - <span class="mt">ord</span>(s[i-<span class="nm">1</span>]) * power + <span class="mt">ord</span>(s[i+L-<span class="nm">1</span>])) % MOD
+            <span class="kw">if</span> h <span class="kw">in</span> seen:
+                <span class="kw">for</span> j <span class="kw">in</span> seen[h]:
+                    <span class="kw">if</span> s[i:i+L] == s[j:j+L]: <span class="kw">return</span> i  <span class="cm"># verify</span>
+                seen[h].<span class="mt">append</span>(i)
+            <span class="kw">else</span>: seen[h] = [i]
+        <span class="kw">return</span> -<span class="nm">1</span>
+
+    lo, hi, ans = <span class="nm">1</span>, n-<span class="nm">1</span>, <span class="nm">0</span>; start = <span class="nm">0</span>
+    <span class="kw">while</span> lo &lt;= hi:
+        mid = (lo+hi)//<span class="nm">2</span>; idx = <span class="mt">check</span>(mid)
+        <span class="kw">if</span> idx >= <span class="nm">0</span>: ans = mid; start = idx; lo = mid+<span class="nm">1</span>
+        <span class="kw">else</span>: hi = mid-<span class="nm">1</span>
+    <span class="kw">return</span> s[start:start+ans]</pre></div>
+    </div>
+</div>
+
+<!-- ═══════ GROUP D ═══════ -->
+<div class="section-heading">Group D — Advanced Challenges</div>
+
+<!-- P9 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">Two Pointers</span>
+        <span class="badge topic">Sliding Window</span>
+    </div>
+    <h3>#76 — Minimum Window Substring</h3>
+    <p>Given strings <code>s</code> and <code>t</code>, return the minimum window substring of <code>s</code> that contains all characters of <code>t</code>. If none, return "".</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Sliding window: expand right until all chars of t are covered. Then shrink from left while still covered. Track the minimum window. Use a `need` counter dict and a `formed` count (how many chars are currently satisfied) to check coverage in O(1).</div>
+    <div class="sol-box">
+        <span class="lang-label lang-cs">C#</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public string</span> <span class="mt">MinWindow</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
+{
+    <span class="kw">var</span> need = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> t) { need[c] = need.<span class="mt">GetValueOrDefault</span>(c) + <span class="nm">1</span>; }
+    <span class="kw">int</span> have = <span class="nm">0</span>, required = need.Count, l = <span class="nm">0</span>, minLen = <span class="kw">int</span>.MaxValue, minL = <span class="nm">0</span>;
+    <span class="kw">var</span> win = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; s.Length; r++) {
+        <span class="kw">char</span> c = s[r]; win[c] = win.<span class="mt">GetValueOrDefault</span>(c) + <span class="nm">1</span>;
+        <span class="kw">if</span> (need.<span class="mt">ContainsKey</span>(c) &amp;&amp; win[c] == need[c]) have++;
+        <span class="kw">while</span> (have == required) {
+            <span class="kw">if</span> (r - l + <span class="nm">1</span> &lt; minLen) { minLen = r - l + <span class="nm">1</span>; minL = l; }
+            <span class="kw">char</span> lc = s[l++]; win[lc]--;
+            <span class="kw">if</span> (need.<span class="mt">ContainsKey</span>(lc) &amp;&amp; win[lc] &lt; need[lc]) have--;
+        }
+    }
+    <span class="kw">return</span> minLen == <span class="kw">int</span>.MaxValue ? <span class="st">""</span> : s.<span class="mt">Substring</span>(minL, minLen);
+}</pre></div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">def</span> <span class="mt">minWindow</span>(s, t):
+    need = <span class="tp">Counter</span>(t); win = {}; have = required = <span class="mt">len</span>(need)
+    l = <span class="nm">0</span>; ans = <span class="st">""</span>
+    <span class="kw">for</span> r, c <span class="kw">in</span> <span class="mt">enumerate</span>(s):
+        win[c] = win.<span class="mt">get</span>(c,<span class="nm">0</span>) + <span class="nm">1</span>
+        <span class="kw">if</span> c <span class="kw">in</span> need <span class="kw">and</span> win[c] == need[c]: have -= <span class="nm">1</span>
+        <span class="kw">while</span> have == <span class="nm">0</span>:
+            <span class="kw">if not</span> ans <span class="kw">or</span> r-l+<span class="nm">1</span> &lt; <span class="mt">len</span>(ans): ans = s[l:r+<span class="nm">1</span>]
+            lc = s[l]; win[lc] -= <span class="nm">1</span>; l += <span class="nm">1</span>
+            <span class="kw">if</span> lc <span class="kw">in</span> need <span class="kw">and</span> win[lc] &lt; need[lc]: have += <span class="nm">1</span>
+    <span class="kw">return</span> ans</pre></div>
+    </div>
+</div>
+
+<!-- P10 -->
+<div class="problem-card">
+    <div class="meta">
+        <span class="badge hard">Hard</span>
+        <span class="badge topic">KMP</span>
+        <span class="badge topic">String Construction</span>
+    </div>
+    <h3>#214 — Shortest Palindrome</h3>
+    <p>Given string <code>s</code>, find the shortest palindrome you can form by adding characters in front of <code>s</code>.</p>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">We need to find the longest palindromic prefix of s. Once we know it (length k), we prepend the reverse of s[k:] to s. To find the longest palindromic prefix: form the string s + "#" + reverse(s), compute KMP failure function. <span class="lang-label lang-cs">C#</span>
+        <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">public string</span> <span class="mt">ShortestPalindrome</span>(<span class="kw">string</span> s) {
+    <span class="kw">if</span> (s.Length == <span class="nm">0</span>) <span class="kw">return</span> s;
+    <span class="kw">string</span> combined = s + <span class="st">"#"</span> + <span class="kw">new string</span>(s.<span class="mt">Reverse</span>().<span class="mt">ToArray</span>());
+    <span class="kw">int</span> n = combined.Length; <span class="kw">int</span>[] lps = <span class="kw">new int</span>[n];
+    <span class="kw">int</span> ln=<span class="nm">0</span>, i=<span class="nm">1</span>;
+    <span class="kw">while</span> (i &lt; n) {
+        <span class="kw">if</span> (combined[i]==combined[ln]) { lps[i++]=++ln; }
+        <span class="kw">else if</span> (ln &gt; <span class="nm">0</span>)              { ln=lps[ln-<span class="nm">1</span>]; }
+        <span class="kw">else</span>                           { i++; }
+    }
+    <span class="kw">int</span> k=lps[n-<span class="nm">1</span>];  <span class="cm">// length of longest palindromic prefix</span>
+    <span class="kw">return</span> <span class="kw">new string</span>(s.<span class="mt">Substring</span>(k).<span class="mt">Reverse</span>().<span class="mt">ToArray</span>()) + s;
+}
+<span class="cm">// "aacecaaa" → k=7, prepend reverse("a") → "aaacecaaa"</span></pre>
+        </div>
+        <span class="lang-label lang-py">Python</span>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">shortestPalindrome</span>(s):
+    <span class="kw">if not</span> s: <span class="kw">return</span> s
+    combined = s + <span class="st">'#'</span> + s[::-<span class="nm">1</span>]  <span class="cm"># '#' prevents cross-match</span>
+    n = <span class="mt">len</span>(combined); lps = [<span class="nm">0</span>]*n; ln = <span class="nm">0</span>; i = <span class="nm">1</span>
+    <span class="kw">while</span> i &lt; n:
+        <span class="kw">if</span> combined[i] == combined[ln]: lps[i] = ln+<span class="nm">1</span>; ln+=<span class="nm">1</span>; i+=<span class="nm">1</span>
+        <span class="kw">elif</span> ln: ln = lps[ln-<span class="nm">1</span>]
+        <span class="kw">else</span>: i += <span class="nm">1</span>
+    k = lps[-<span class="nm">1</span>]  <span class="cm"># length of longest palindromic prefix</span>
+    <span class="kw">return</span> s[k:][::-<span class="nm">1</span>] + s  <span class="cm"># prepend reverse of non-palindromic suffix</span>
+<span class="cm"># "aacecaaa" → k=7, prepend "a"[::-1] → "aaacecaaa"</span></pre></div>
+    </div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16C Complete</button>
+<div class="toast" id="toast">✅ Module 16C complete! Module 16 — String Algorithms fully mastered!</div>
+    <script>var MODULE_ID = 'm16c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

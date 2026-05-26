@@ -1,0 +1,705 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 11A — Segment Trees | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 7</div>
+    <h1>Module 11 — Part A</h1>
+    <div class="tagline">Segment Trees — Range Queries &amp; Point Updates</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Answer range sum/min/max queries and handle updates — both in O(log n)</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 11</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 7 — Advanced Data Structures:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Segment Trees<br>
+    ⬜ <strong>Part B</strong> — <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m11c_union_find.html">Disjoint Set Union</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m11e_skip_lists.html">Skip Lists</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m11f_kdtrees.html">K-D Trees</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase6/m10a_dijkstra.html">&larr; Module 10 &mdash; Advanced Graphs</a>
+    <a href="../phase8/m12a_dp_intro.html">Module 12 &mdash; Dynamic Programming &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — The Range Query Problem <span>— Why we need more than a prefix sum</span></li>
+        <li>Section 2 — Segment Tree Structure <span>— How the tree maps to an array</span></li>
+        <li>Section 3 — Build: O(n) <span>— Constructing the tree bottom-up</span></li>
+        <li>Section 4 — Range Query: O(log n) <span>— Sum, min, max in logarithmic time</span></li>
+        <li>Section 5 — Point Update: O(log n) <span>— Propagating changes up the tree</span></li>
+        <li>Section 6 — Range Update with Lazy Propagation <span>— Deferring updates</span></li>
+        <li>Section 7 — Full C# &amp; Python Implementations <span>— Production-ready code</span></li>
+        <li>Section 8 — LeetCode Walkthroughs <span>— #307, #315, #218</span></li>
+        <li>Section 9 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Range Query Problem</div>
+
+<p>Suppose you have an array of numbers and you need to repeatedly:</p>
+<ul>
+    <li><strong>Query:</strong> "What is the sum (or min, or max) of elements from index L to R?"</li>
+    <li><strong>Update:</strong> "Change the value at index i to v."</li>
+</ul>
+<p>How efficiently can you answer these two operations?</p>
+
+<table>
+    <thead><tr><th>Approach</th><th>Build</th><th>Query</th><th>Update</th><th>Space</th></tr></thead>
+    <tbody>
+        <tr><td>Brute force (iterate)</td><td class="g">O(1)</td><td class="r">O(n)</td><td class="g">O(1)</td><td class="g">O(1)</td></tr>
+        <tr><td>Prefix sum array</td><td class="g">O(n)</td><td class="g">O(1)</td><td class="r">O(n) rebuild</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Segment Tree</strong></td><td class="o"><strong>O(n)</strong></td><td class="g"><strong>O(log n)</strong></td><td class="g"><strong>O(log n)</strong></td><td class="o"><strong>O(n)</strong></td></tr>
+        <tr><td>Fenwick Tree (BIT)</td><td class="g">O(n)</td><td class="g">O(log n)</td><td class="g">O(log n)</td><td class="g">O(n)</td></tr>
+        <tr><td>Sparse Table</td><td class="o">O(n log n)</td><td class="g">O(1)</td><td class="r">Not supported</td><td class="o">O(n log n)</td></tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 When to use Segment Tree:</strong> You need BOTH efficient range queries AND point (or range) updates. 
+    If updates are rare, use prefix sums. If no updates at all, use Sparse Table for O(1) queries. 
+    If only prefix sums matter, use a Fenwick Tree (simpler code).
+</div>
+
+<div class="realworld">
+    <strong>🌍 Real-World Applications:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Database engines</strong> — Range aggregate queries (SUM, MIN, MAX) with row updates</li>
+        <li><strong>Competitive programming</strong> — The single most-used advanced data structure in ICPC</li>
+        <li><strong>Gaming</strong> — Tracking score ranges, health bars across ranges of game entities</li>
+        <li><strong>Finance</strong> — Stock price range queries (highest/lowest in a date range) with daily updates</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Segment Tree Structure</div>
+
+<p>A Segment Tree is a <strong>binary tree</strong> where each node stores the aggregate (sum/min/max) of a 
+<strong>contiguous subarray</strong> (a "segment"). The root covers the entire array [0, n-1]. 
+Each internal node splits its range in half.</p>
+
+<div class="diagram">ARRAY:  [2, 4, 3, 1, 6, 7, 2, 5]    (indices 0–7)
+
+SEGMENT TREE (SUM):
+
+                    [0,7]: 30
+                   /              \
+          [0,3]: 10              [4,7]: 20
+          /       \              /       \
+      [0,1]:6  [2,3]:4     [4,5]:13   [6,7]:7
+      /    \    /    \      /    \     /    \
+   [0]:2 [1]:4 [2]:3 [3]:1 [4]:6 [5]:7 [6]:2 [7]:5
+
+STORAGE (1-indexed array): 
+  Node 1 = root = [0,7]
+  Node 2 = left child  of 1 = [0,3]
+  Node 3 = right child of 1 = [4,7]
+  ...
+  Node k: left child = 2k, right child = 2k+1, parent = k/2
+
+Array representation (1-indexed, size 4n):
+  tree[1]=30  tree[2]=10  tree[3]=20  tree[4]=6  tree[5]=4  tree[6]=13  tree[7]=7
+  tree[8]=2   tree[9]=4   tree[10]=3  tree[11]=1  tree[12]=6  tree[13]=7  tree[14]=2  tree[15]=5</div>
+
+<div class="note">
+    <strong>📐 Array Size:</strong> The tree is stored in an array of size <strong>4×n</strong>. 
+    This ensures enough space even for non-power-of-2 sizes. Alternatively, size 2×(next power of 2) works, 
+    but 4n is the safe universal choice for any n.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Build: O(n)</div>
+
+<p>Build the segment tree by recursively computing aggregate values from leaves (individual elements) 
+upward to the root. Each internal node = combine(left child, right child).</p>
+
+<div class="diagram">BUILD WALKTHROUGH — Array [2, 4, 3, 1]
+
+build(node=1, start=0, end=3):
+  build(2, 0, 1):
+    build(4, 0, 0): tree[4] = arr[0] = 2  (leaf)
+    build(5, 1, 1): tree[5] = arr[1] = 4  (leaf)
+    tree[2] = tree[4] + tree[5] = 6
+  build(3, 2, 3):
+    build(6, 2, 2): tree[6] = arr[2] = 3  (leaf)
+    build(7, 3, 3): tree[7] = arr[3] = 1  (leaf)
+    tree[3] = tree[6] + tree[7] = 4
+  tree[1] = tree[2] + tree[3] = 10
+
+Final tree array: [_, 10, 6, 4, 2, 4, 3, 1]  (index 0 unused)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">void</span> <span class="mt">Build</span>(<span class="kw">int</span> node, <span class="kw">int</span> start, <span class="kw">int</span> end)
+{
+    <span class="kw">if</span> (start == end)
+    {
+        tree[node] = arr[start];    <span class="cm">// leaf node = array element</span>
+        <span class="kw">return</span>;
+    }
+    <span class="kw">int</span> mid = (start + end) / <span class="nm">2</span>;
+    <span class="mt">Build</span>(<span class="nm">2</span> * node,     start, mid);   <span class="cm">// build left subtree</span>
+    <span class="mt">Build</span>(<span class="nm">2</span> * node + <span class="nm">1</span>, mid+<span class="nm">1</span>, end); <span class="cm">// build right subtree</span>
+    tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>];  <span class="cm">// combine children</span>
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">build</span>(node, start, end):
+    <span class="kw">if</span> start == end:
+        tree[node] = arr[start]   <span class="cm"># leaf node = array element</span>
+        <span class="kw">return</span>
+    mid = (start + end) // <span class="nm">2</span>
+    <span class="mt">build</span>(<span class="nm">2</span>*node,   start, mid)    <span class="cm"># build left subtree</span>
+    <span class="mt">build</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end)  <span class="cm"># build right subtree</span>
+    tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>]  <span class="cm"># combine children</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Range Query: O(log n)</div>
+
+<p>To query sum/min/max of range [L, R], recursively check each node:</p>
+<ul>
+    <li><strong>No overlap</strong>: node's range is completely outside [L,R] → return identity (0 for sum, ∞ for min, -∞ for max)</li>
+    <li><strong>Total overlap</strong>: node's range is completely inside [L,R] → return this node's value</li>
+    <li><strong>Partial overlap</strong>: split and query both children, combine results</li>
+</ul>
+
+<div class="diagram">QUERY [1, 5] on array [2, 4, 3, 1, 6, 7, 2, 5] (sum = 4+3+1+6+7 = 21)
+
+query(1, [0,7], L=1, R=5):  PARTIAL → recurse
+  query(2, [0,3], L=1, R=5):  PARTIAL → recurse
+    query(4, [0,1], L=1, R=5):  PARTIAL → recurse
+      query(8, [0,0], L=1, R=5):  NO OVERLAP → return 0  (0 < 1)
+      query(9, [1,1], L=1, R=5):  TOTAL → return 4
+    return 0 + 4 = 4
+    query(5, [2,3], L=1, R=5):  TOTAL → return 4
+  return 4 + 4 = 8
+  query(3, [4,7], L=1, R=5):  PARTIAL → recurse
+    query(6, [4,5], L=1, R=5):  TOTAL → return 13
+    query(7, [6,7], L=1, R=5):  NO OVERLAP → return 0  (6 > 5)
+  return 13 + 0 = 13
+return 8 + 13 = 21  ✓</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">int</span> <span class="mt">Query</span>(<span class="kw">int</span> node, <span class="kw">int</span> start, <span class="kw">int</span> end, <span class="kw">int</span> l, <span class="kw">int</span> r)
+{
+    <span class="kw">if</span> (r &lt; start || end &lt; l) <span class="kw">return</span> <span class="nm">0</span>;          <span class="cm">// no overlap → identity for sum</span>
+    <span class="kw">if</span> (l &lt;= start &amp;&amp; end &lt;= r) <span class="kw">return</span> tree[node];   <span class="cm">// total overlap</span>
+    <span class="kw">int</span> mid = (start + end) / <span class="nm">2</span>;
+    <span class="kw">int</span> left  = <span class="mt">Query</span>(<span class="nm">2</span>*node,   start, mid,  l, r);
+    <span class="kw">int</span> right = <span class="mt">Query</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, l, r);
+    <span class="kw">return</span> left + right;   <span class="cm">// combine: use Math.Min for min-query, Math.Max for max-query</span>
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">query</span>(node, start, end, l, r):
+    <span class="kw">if</span> r &lt; start <span class="kw">or</span> end &lt; l: <span class="kw">return</span> <span class="nm">0</span>           <span class="cm"># no overlap → identity for sum</span>
+    <span class="kw">if</span> l &lt;= start <span class="kw">and</span> end &lt;= r: <span class="kw">return</span> tree[node]  <span class="cm"># total overlap</span>
+    mid   = (start + end) // <span class="nm">2</span>
+    left  = <span class="mt">query</span>(<span class="nm">2</span>*node,   start, mid,  l, r)
+    right = <span class="mt">query</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, l, r)
+    <span class="kw">return</span> left + right   <span class="cm"># use min/max for other query types</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Point Update: O(log n)</div>
+
+<p>When <code>arr[i]</code> changes by <code>delta</code>, all ancestor nodes in the tree must be updated.
+Walk down to the leaf, update it, and propagate the change back up.</p>
+
+<div class="diagram">POINT UPDATE — Change arr[3] from 1 to 5 (delta = +4)
+
+update(1, [0,7], idx=3, delta=4):
+  mid=3 → go right: update(3, [4,7], idx=3, delta=4)? No, 3 < 4, go left
+  mid=1 → go right: update(2, [0,3], idx=3, delta=4)
+    mid=1 → go right: update(5, [2,3], idx=3, delta=4)
+      mid=2 → go right: update(11, [3,3], idx=3, delta=4)
+        LEAF: tree[11] += 4   (1 → 5)
+      tree[5] = tree[10] + tree[11] = 3 + 5 = 8
+    tree[2] = tree[4] + tree[5] = 6 + 8 = 14
+  tree[1] = tree[2] + tree[3] = 14 + 20 = 34</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">void</span> <span class="mt">Update</span>(<span class="kw">int</span> node, <span class="kw">int</span> start, <span class="kw">int</span> end, <span class="kw">int</span> idx, <span class="kw">int</span> delta)
+{
+    <span class="kw">if</span> (start == end)
+    {
+        arr[idx]   += delta;         <span class="cm">// update original array</span>
+        tree[node] += delta;         <span class="cm">// update leaf</span>
+        <span class="kw">return</span>;
+    }
+    <span class="kw">int</span> mid = (start + end) / <span class="nm">2</span>;
+    <span class="kw">if</span> (idx &lt;= mid) <span class="mt">Update</span>(<span class="nm">2</span>*node,   start, mid,  idx, delta);
+    <span class="kw">else</span>            <span class="mt">Update</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, idx, delta);
+    tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>];  <span class="cm">// recompute from children</span>
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">update</span>(node, start, end, idx, delta):
+    <span class="kw">if</span> start == end:
+        arr[idx]    += delta   <span class="cm"># update original array</span>
+        tree[node]  += delta   <span class="cm"># update leaf</span>
+        <span class="kw">return</span>
+    mid = (start + end) // <span class="nm">2</span>
+    <span class="kw">if</span> idx &lt;= mid: <span class="mt">update</span>(<span class="nm">2</span>*node,   start, mid,  idx, delta)
+    <span class="kw">else</span>:          <span class="mt">update</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, idx, delta)
+    tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>]  <span class="cm"># recompute from children</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Range Update with Lazy Propagation</div>
+
+<p>A naive range update (e.g., "add 3 to all elements from index 2 to 7") would require O(n) 
+point updates. <strong>Lazy propagation</strong> defers updates — store the pending update in a 
+<code>lazy[]</code> array and apply it only when a node is actually visited.</p>
+
+<div class="diagram">LAZY PROPAGATION CONCEPT
+
+lazy[node] = "pending value to add to ALL elements in this node's range"
+
+RANGE UPDATE: add val to all elements in [l, r]
+
+  If total overlap: tree[node] += val * (end - start + 1)  (sum: add to each)
+                    lazy[node] += val                        (defer to children)
+  If partial: PUSH DOWN lazy first, then recurse
+
+PUSH DOWN (propagate lazy to children):
+  If lazy[node] != 0:
+    Apply lazy[node] to both children (update tree[] and lazy[])
+    Reset lazy[node] = 0
+
+Result: each operation is still O(log n) amortized — the "lazy" deferred work 
+        is bounded because each node is pushed down at most once per query.</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Lazy segment tree — range add + range sum</span>
+<span class="kw">void</span> <span class="mt">PushDown</span>(<span class="kw">int</span> node, <span class="kw">int</span> start, <span class="kw">int</span> end)
+{
+    <span class="kw">if</span> (lazy[node] == <span class="nm">0</span>) <span class="kw">return</span>;
+    <span class="kw">int</span> mid = (start + end) / <span class="nm">2</span>;
+    <span class="kw">int</span> lc = <span class="nm">2</span>*node, rc = <span class="nm">2</span>*node+<span class="nm">1</span>;
+    <span class="cm">// Apply pending update to both children</span>
+    tree[lc] += lazy[node] * (mid - start + <span class="nm">1</span>);
+    lazy[lc] += lazy[node];
+    tree[rc] += lazy[node] * (end - mid);
+    lazy[rc] += lazy[node];
+    lazy[node] = <span class="nm">0</span>;    <span class="cm">// clear</span>
+}
+
+<span class="kw">void</span> <span class="mt">RangeUpdate</span>(<span class="kw">int</span> node, <span class="kw">int</span> start, <span class="kw">int</span> end, <span class="kw">int</span> l, <span class="kw">int</span> r, <span class="kw">int</span> val)
+{
+    <span class="kw">if</span> (r &lt; start || end &lt; l) <span class="kw">return</span>;
+    <span class="kw">if</span> (l &lt;= start &amp;&amp; end &lt;= r)
+    {
+        tree[node] += val * (end - start + <span class="nm">1</span>);   <span class="cm">// total overlap</span>
+        lazy[node] += val;
+        <span class="kw">return</span>;
+    }
+    <span class="mt">PushDown</span>(node, start, end);          <span class="cm">// must push before recursing</span>
+    <span class="kw">int</span> mid = (start + end) / <span class="nm">2</span>;
+    <span class="mt">RangeUpdate</span>(<span class="nm">2</span>*node,   start, mid,  l, r, val);
+    <span class="mt">RangeUpdate</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, l, r, val);
+    tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>];
+}
+
+<span class="kw">long</span> <span class="mt">LazyQuery</span>(<span class="kw">int</span> node, <span class="kw">int</span> start, <span class="kw">int</span> end, <span class="kw">int</span> l, <span class="kw">int</span> r)
+{
+    <span class="kw">if</span> (r &lt; start || end &lt; l) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">if</span> (l &lt;= start &amp;&amp; end &lt;= r) <span class="kw">return</span> tree[node];
+    <span class="mt">PushDown</span>(node, start, end);          <span class="cm">// push before reading children</span>
+    <span class="kw">int</span> mid = (start + end) / <span class="nm">2</span>;
+    <span class="kw">return</span> <span class="mt">LazyQuery</span>(<span class="nm">2</span>*node, start, mid, l, r) + <span class="mt">LazyQuery</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, l, r);
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Lazy segment tree — range add + range sum</span>
+<span class="kw">def</span> <span class="mt">push_down</span>(node, start, end):
+    <span class="kw">if</span> lazy[node] == <span class="nm">0</span>: <span class="kw">return</span>
+    mid = (start + end) // <span class="nm">2</span>
+    lc, rc = <span class="nm">2</span>*node, <span class="nm">2</span>*node+<span class="nm">1</span>
+    tree[lc] += lazy[node] * (mid - start + <span class="nm">1</span>); lazy[lc] += lazy[node]
+    tree[rc] += lazy[node] * (end - mid);          lazy[rc] += lazy[node]
+    lazy[node] = <span class="nm">0</span>   <span class="cm"># clear</span>
+
+<span class="kw">def</span> <span class="mt">range_update</span>(node, start, end, l, r, val):
+    <span class="kw">if</span> r &lt; start <span class="kw">or</span> end &lt; l: <span class="kw">return</span>
+    <span class="kw">if</span> l &lt;= start <span class="kw">and</span> end &lt;= r:
+        tree[node] += val * (end - start + <span class="nm">1</span>)   <span class="cm"># total overlap</span>
+        lazy[node] += val; <span class="kw">return</span>
+    <span class="mt">push_down</span>(node, start, end)   <span class="cm"># must push before recursing</span>
+    mid = (start + end) // <span class="nm">2</span>
+    <span class="mt">range_update</span>(<span class="nm">2</span>*node,   start, mid,  l, r, val)
+    <span class="mt">range_update</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, l, r, val)
+    tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>]
+
+<span class="kw">def</span> <span class="mt">lazy_query</span>(node, start, end, l, r):
+    <span class="kw">if</span> r &lt; start <span class="kw">or</span> end &lt; l: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">if</span> l &lt;= start <span class="kw">and</span> end &lt;= r: <span class="kw">return</span> tree[node]
+    <span class="mt">push_down</span>(node, start, end)   <span class="cm"># push before reading children</span>
+    mid = (start + end) // <span class="nm">2</span>
+    <span class="kw">return</span> <span class="mt">lazy_query</span>(<span class="nm">2</span>*node, start, mid, l, r) + <span class="mt">lazy_query</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, mid+<span class="nm">1</span>, end, l, r)</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Full C# &amp; Python Implementations</div>
+
+<h3>7.1 — Sum Segment Tree (Point Update + Range Query)</h3>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">SegmentTree</span>
+{
+    <span class="kw">private readonly int</span> n;
+    <span class="kw">private readonly int</span>[] tree;   <span class="cm">// 1-indexed, size 4n</span>
+    <span class="kw">private readonly int</span>[] arr;
+
+    <span class="kw">public</span> <span class="mt">SegmentTree</span>(<span class="kw">int</span>[] nums)
+    {
+        n    = nums.Length;
+        arr  = (<span class="kw">int</span>[])nums.<span class="mt">Clone</span>();
+        tree = <span class="kw">new int</span>[<span class="nm">4</span> * n];
+        <span class="mt">Build</span>(<span class="nm">1</span>, <span class="nm">0</span>, n - <span class="nm">1</span>);
+    }
+
+    <span class="kw">private void</span> <span class="mt">Build</span>(<span class="kw">int</span> node, <span class="kw">int</span> s, <span class="kw">int</span> e)
+    {
+        <span class="kw">if</span> (s == e) { tree[node] = arr[s]; <span class="kw">return</span>; }
+        <span class="kw">int</span> m = (s + e) / <span class="nm">2</span>;
+        <span class="mt">Build</span>(<span class="nm">2</span>*node, s, m);
+        <span class="mt">Build</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, m+<span class="nm">1</span>, e);
+        tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>];
+    }
+
+    <span class="cm">/// Update arr[idx] to newVal — O(log n)</span>
+    <span class="kw">public void</span> <span class="mt">Update</span>(<span class="kw">int</span> idx, <span class="kw">int</span> newVal)
+    {
+        <span class="kw">int</span> delta = newVal - arr[idx];
+        arr[idx] = newVal;
+        <span class="mt">UpdateHelper</span>(<span class="nm">1</span>, <span class="nm">0</span>, n-<span class="nm">1</span>, idx, delta);
+    }
+
+    <span class="kw">private void</span> <span class="mt">UpdateHelper</span>(<span class="kw">int</span> node, <span class="kw">int</span> s, <span class="kw">int</span> e, <span class="kw">int</span> idx, <span class="kw">int</span> delta)
+    {
+        <span class="kw">if</span> (s == e) { tree[node] += delta; <span class="kw">return</span>; }
+        <span class="kw">int</span> m = (s + e) / <span class="nm">2</span>;
+        <span class="kw">if</span> (idx &lt;= m) <span class="mt">UpdateHelper</span>(<span class="nm">2</span>*node,   s,   m, idx, delta);
+        <span class="kw">else</span>          <span class="mt">UpdateHelper</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, m+<span class="nm">1</span>, e, idx, delta);
+        tree[node] = tree[<span class="nm">2</span>*node] + tree[<span class="nm">2</span>*node+<span class="nm">1</span>];
+    }
+
+    <span class="cm">/// Sum of arr[l..r] — O(log n)</span>
+    <span class="kw">public int</span> <span class="mt">RangeSum</span>(<span class="kw">int</span> l, <span class="kw">int</span> r) => <span class="mt">QueryHelper</span>(<span class="nm">1</span>, <span class="nm">0</span>, n-<span class="nm">1</span>, l, r);
+
+    <span class="kw">private int</span> <span class="mt">QueryHelper</span>(<span class="kw">int</span> node, <span class="kw">int</span> s, <span class="kw">int</span> e, <span class="kw">int</span> l, <span class="kw">int</span> r)
+    {
+        <span class="kw">if</span> (r &lt; s || e &lt; l) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">if</span> (l &lt;= s &amp;&amp; e &lt;= r) <span class="kw">return</span> tree[node];
+        <span class="kw">int</span> m = (s + e) / <span class="nm">2</span>;
+        <span class="kw">return</span> <span class="mt">QueryHelper</span>(<span class="nm">2</span>*node, s, m, l, r)
+             + <span class="mt">QueryHelper</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, m+<span class="nm">1</span>, e, l, r);
+    }
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> st = <span class="kw">new</span> <span class="tp">SegmentTree</span>(<span class="kw">new int</span>[] {<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">6</span>,<span class="nm">7</span>,<span class="nm">2</span>,<span class="nm">5</span>});
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(st.<span class="mt">RangeSum</span>(<span class="nm">1</span>, <span class="nm">5</span>));   <span class="cm">// 21  (4+3+1+6+7)</span>
+st.<span class="mt">Update</span>(<span class="nm">3</span>, <span class="nm">5</span>);                         <span class="cm">// change index 3 from 1 to 5</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(st.<span class="mt">RangeSum</span>(<span class="nm">1</span>, <span class="nm">5</span>));   <span class="cm">// 25  (4+3+5+6+7)</span></pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">class</span> <span class="tp">SegmentTree</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, nums):
+        self.n = <span class="mt">len</span>(nums)
+        self.arr = nums[:]
+        self.tree = [<span class="nm">0</span>] * (<span class="nm">4</span> * self.n)
+        self.<span class="mt">_build</span>(<span class="nm">1</span>, <span class="nm">0</span>, self.n - <span class="nm">1</span>)
+
+    <span class="kw">def</span> <span class="mt">_build</span>(self, node, s, e):
+        <span class="kw">if</span> s == e: self.tree[node] = self.arr[s]; <span class="kw">return</span>
+        m = (s + e) // <span class="nm">2</span>
+        self.<span class="mt">_build</span>(<span class="nm">2</span>*node, s, m)
+        self.<span class="mt">_build</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, m+<span class="nm">1</span>, e)
+        self.tree[node] = self.tree[<span class="nm">2</span>*node] + self.tree[<span class="nm">2</span>*node+<span class="nm">1</span>]
+
+    <span class="kw">def</span> <span class="mt">update</span>(self, idx, new_val):
+        delta = new_val - self.arr[idx]; self.arr[idx] = new_val
+        self.<span class="mt">_update</span>(<span class="nm">1</span>, <span class="nm">0</span>, self.n-<span class="nm">1</span>, idx, delta)
+
+    <span class="kw">def</span> <span class="mt">_update</span>(self, node, s, e, idx, delta):
+        <span class="kw">if</span> s == e: self.tree[node] += delta; <span class="kw">return</span>
+        m = (s + e) // <span class="nm">2</span>
+        <span class="kw">if</span> idx <= m: self.<span class="mt">_update</span>(<span class="nm">2</span>*node, s, m, idx, delta)
+        <span class="kw">else</span>:        self.<span class="mt">_update</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, m+<span class="nm">1</span>, e, idx, delta)
+        self.tree[node] = self.tree[<span class="nm">2</span>*node] + self.tree[<span class="nm">2</span>*node+<span class="nm">1</span>]
+
+    <span class="kw">def</span> <span class="mt">range_sum</span>(self, l, r): <span class="kw">return</span> self.<span class="mt">_query</span>(<span class="nm">1</span>, <span class="nm">0</span>, self.n-<span class="nm">1</span>, l, r)
+
+    <span class="kw">def</span> <span class="mt">_query</span>(self, node, s, e, l, r):
+        <span class="kw">if</span> r < s <span class="kw">or</span> e < l: <span class="kw">return</span> <span class="nm">0</span>
+        <span class="kw">if</span> l <= s <span class="kw">and</span> e <= r: <span class="kw">return</span> self.tree[node]
+        m = (s + e) // <span class="nm">2</span>
+        <span class="kw">return</span> self.<span class="mt">_query</span>(<span class="nm">2</span>*node, s, m, l, r) + self.<span class="mt">_query</span>(<span class="nm">2</span>*node+<span class="nm">1</span>, m+<span class="nm">1</span>, e, l, r)
+
+<span class="cm"># Usage</span>
+st = <span class="tp">SegmentTree</span>([<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">6</span>,<span class="nm">7</span>,<span class="nm">2</span>,<span class="nm">5</span>])
+<span class="mt">print</span>(st.<span class="mt">range_sum</span>(<span class="nm">1</span>, <span class="nm">5</span>))  <span class="cm"># 21</span>
+st.<span class="mt">update</span>(<span class="nm">3</span>, <span class="nm">5</span>)
+<span class="mt">print</span>(st.<span class="mt">range_sum</span>(<span class="nm">1</span>, <span class="nm">5</span>))  <span class="cm"># 25</span></pre>
+</div>
+
+<h3>7.2 — Min/Max Segment Tree (change the combine function)</h3>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Change tree[node] = Math.Min(tree[2*node], tree[2*node+1]) everywhere
+// Identity for no-overlap: return int.MaxValue  (for min query)
+// Identity for no-overlap: return int.MinValue  (for max query)</span>
+<span class="kw">public class</span> <span class="tp">MinSegTree</span>
+{
+    <span class="kw">private int</span>[] tree;
+    <span class="kw">private int</span> n;
+    <span class="kw">public</span> <span class="mt">MinSegTree</span>(<span class="kw">int</span>[] nums) { n=nums.Length; tree=<span class="kw">new int</span>[<span class="nm">4</span>*n]; <span class="mt">Build</span>(<span class="nm">1</span>,<span class="nm">0</span>,n-<span class="nm">1</span>,nums); }
+    <span class="kw">void</span> <span class="mt">Build</span>(<span class="kw">int</span> nd,<span class="kw">int</span> s,<span class="kw">int</span> e,<span class="kw">int</span>[] a) {
+        <span class="kw">if</span>(s==e){tree[nd]=a[s];<span class="kw">return</span>;}
+        <span class="kw">int</span> m=(s+e)/<span class="nm">2</span>; <span class="mt">Build</span>(<span class="nm">2</span>*nd,s,m,a); <span class="mt">Build</span>(<span class="nm">2</span>*nd+<span class="nm">1</span>,m+<span class="nm">1</span>,e,a);
+        tree[nd]=<span class="tp">Math</span>.<span class="mt">Min</span>(tree[<span class="nm">2</span>*nd],tree[<span class="nm">2</span>*nd+<span class="nm">1</span>]);
+    }
+    <span class="kw">public int</span> <span class="mt">RangeMin</span>(<span class="kw">int</span> l,<span class="kw">int</span> r) => <span class="mt">Q</span>(<span class="nm">1</span>,<span class="nm">0</span>,n-<span class="nm">1</span>,l,r);
+    <span class="kw">int</span> <span class="mt">Q</span>(<span class="kw">int</span> nd,<span class="kw">int</span> s,<span class="kw">int</span> e,<span class="kw">int</span> l,<span class="kw">int</span> r) {
+        <span class="kw">if</span>(r&lt;s||e&lt;l) <span class="kw">return</span> <span class="kw">int</span>.MaxValue;   <span class="cm">// identity for min</span>
+        <span class="kw">if</span>(l&lt;=s&amp;&amp;e&lt;=r) <span class="kw">return</span> tree[nd];
+        <span class="kw">int</span> m=(s+e)/<span class="nm">2</span>;
+        <span class="kw">return</span> <span class="tp">Math</span>.<span class="mt">Min</span>(<span class="mt">Q</span>(<span class="nm">2</span>*nd,s,m,l,r),<span class="mt">Q</span>(<span class="nm">2</span>*nd+<span class="nm">1</span>,m+<span class="nm">1</span>,e,l,r));
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Change combine to min/max and identity accordingly</span>
+<span class="kw">class</span> <span class="tp">MinSegTree</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, nums):
+        self.n = <span class="mt">len</span>(nums)
+        self.tree = [<span class="mt">float</span>(<span class="st">'inf'</span>)] * (<span class="nm">4</span> * self.n)
+        self.<span class="mt">_build</span>(<span class="nm">1</span>, <span class="nm">0</span>, self.n - <span class="nm">1</span>, nums)
+
+    <span class="kw">def</span> <span class="mt">_build</span>(self, nd, s, e, a):
+        <span class="kw">if</span> s == e: self.tree[nd] = a[s]; <span class="kw">return</span>
+        m = (s + e) // <span class="nm">2</span>
+        self.<span class="mt">_build</span>(<span class="nm">2</span>*nd, s, m, a); self.<span class="mt">_build</span>(<span class="nm">2</span>*nd+<span class="nm">1</span>, m+<span class="nm">1</span>, e, a)
+        self.tree[nd] = <span class="mt">min</span>(self.tree[<span class="nm">2</span>*nd], self.tree[<span class="nm">2</span>*nd+<span class="nm">1</span>])
+
+    <span class="kw">def</span> <span class="mt">range_min</span>(self, l, r): <span class="kw">return</span> self.<span class="mt">_q</span>(<span class="nm">1</span>, <span class="nm">0</span>, self.n-<span class="nm">1</span>, l, r)
+
+    <span class="kw">def</span> <span class="mt">_q</span>(self, nd, s, e, l, r):
+        <span class="kw">if</span> r &lt; s <span class="kw">or</span> e &lt; l: <span class="kw">return</span> <span class="mt">float</span>(<span class="st">'inf'</span>)   <span class="cm"># identity for min</span>
+        <span class="kw">if</span> l &lt;= s <span class="kw">and</span> e &lt;= r: <span class="kw">return</span> self.tree[nd]
+        m = (s + e) // <span class="nm">2</span>
+        <span class="kw">return</span> <span class="mt">min</span>(self.<span class="mt">_q</span>(<span class="nm">2</span>*nd, s, m, l, r), self.<span class="mt">_q</span>(<span class="nm">2</span>*nd+<span class="nm">1</span>, m+<span class="nm">1</span>, e, l, r))</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — LeetCode Walkthroughs</div>
+
+<h3>LeetCode #307 — Range Sum Query — Mutable (Medium)</h3>
+<p><em>Given an array, support two operations: update(index, val) and sumRange(left, right).</em></p>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">NumArray</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">SegmentTree</span> st;
+    <span class="kw">public</span> <span class="mt">NumArray</span>(<span class="kw">int</span>[] nums) => st = <span class="kw">new</span> <span class="tp">SegmentTree</span>(nums);
+    <span class="kw">public void</span> <span class="mt">Update</span>(<span class="kw">int</span> index, <span class="kw">int</span> val) => st.<span class="mt">Update</span>(index, val);
+    <span class="kw">public int</span> <span class="mt">SumRange</span>(<span class="kw">int</span> left, <span class="kw">int</span> right) => st.<span class="mt">RangeSum</span>(left, right);
+}
+<span class="cm">// Time: O(log n) per operation. Space: O(n).
+// This is literally just wrapping the SegmentTree class from Section 7!</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">class</span> <span class="tp">NumArray</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, nums: list):
+        self.st = <span class="tp">SegmentTree</span>(nums)
+
+    <span class="kw">def</span> <span class="mt">update</span>(self, index: <span class="tp">int</span>, val: <span class="tp">int</span>):
+        self.st.<span class="mt">update</span>(index, val)
+
+    <span class="kw">def</span> <span class="mt">sum_range</span>(self, left: <span class="tp">int</span>, right: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+        <span class="kw">return</span> self.st.<span class="mt">range_sum</span>(left, right)
+
+<span class="cm"># Time: O(log n) per operation. Space: O(n).
+# This is literally just wrapping the SegmentTree class from Section 7!</span></pre>
+</div>
+
+<h3>LeetCode #218 — The Skyline Problem (Hard)</h3>
+<p><em>Given the locations and heights of all buildings, return the skyline outline.</em></p>
+<div class="note">
+    <strong>📝 Approach:</strong> Coordinate compress the x-values. Use a segment tree to track the maximum height 
+    over any x-range, sweeping from left to right with building start/end events. 
+    At each event, query max height, compare with previous — if different, it's a key point.
+    <br><br>
+    This problem showcases the segment tree's power for "max over a range" queries with dynamic updates, 
+    but the full implementation is complex (50+ lines). The structure of the solution is:
+    <code>events → sort → sweep with max-segtree → detect height changes → output key points</code>.
+</div>
+
+<h3>LeetCode #315 — Count of Smaller Numbers After Self (Hard)</h3>
+<p><em>For each element, count how many elements to its right are smaller.</em></p>
+<div class="note">
+    <strong>📝 Approach:</strong> Coordinate compress values to range [0, n-1]. Process array right to left. 
+    For each element at position i with compressed value v: query segment tree for sum in [0, v-1] (count of smaller values seen so far), then update position v. 
+    Time: O(n log n). This is a classic "merge sort tree" or "BIT" problem, but segment tree on compressed coordinates also works.
+</div>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">CountSmaller</span>(<span class="kw">int</span>[] nums)
+{
+    <span class="cm">// Coordinate compress</span>
+    <span class="kw">var</span> sorted = nums.<span class="mt">Distinct</span>().<span class="mt">OrderBy</span>(x => x).<span class="mt">ToArray</span>();
+    <span class="kw">var</span> rank = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;();
+    <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;sorted.Length;i++) rank[sorted[i]]=i+<span class="nm">1</span>;  <span class="cm">// 1-indexed</span>
+    <span class="kw">int</span> m = sorted.Length;
+    <span class="kw">int</span>[] tree = <span class="kw">new int</span>[m+<span class="nm">1</span>];  <span class="cm">// BIT (Fenwick) is cleaner here</span>
+
+    <span class="kw">void</span> <span class="mt">Add</span>(<span class="kw">int</span> i) { <span class="kw">for</span>;(<span class="kw">int</span> j=i;j&lt;=m;j+=j&amp;(-j)) tree[j]++; }
+    <span class="kw">int</span>  <span class="mt">Sum</span>(<span class="kw">int</span> i) { <span class="kw">int</span> s=<span class="nm">0</span>; <span class="kw">for</span>(<span class="kw">int</span> j=i;j><span class="nm">0</span>;j-=j&amp;(-j)) s+=tree[j]; <span class="kw">return</span> s; }
+
+    <span class="kw">var</span> res = <span class="kw">new int</span>[nums.Length];
+    <span class="kw">for</span>(<span class="kw">int</span> i=nums.Length-<span class="nm">1</span>;i&gt;=<span class="nm">0</span>;i--)
+    {
+        res[i] = <span class="mt">Sum</span>(rank[nums[i]] - <span class="nm">1</span>);  <span class="cm">// count smaller to right</span>
+        <span class="mt">Add</span>(rank[nums[i]]);
+    }
+    <span class="kw">return</span> res;
+}
+<span class="cm">// Note: Using Fenwick Tree here — simpler for this specific pattern.
+// Time: O(n log n)  Space: O(n)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">count_smaller</span>(nums: list) -&gt; list:
+    <span class="cm"># Coordinate compress</span>
+    sorted_u = <span class="mt">sorted</span>(<span class="mt">set</span>(nums))
+    rank = {v: i+<span class="nm">1</span> <span class="kw">for</span> i, v <span class="kw">in</span> <span class="mt">enumerate</span>(sorted_u)}  <span class="cm"># 1-indexed</span>
+    m = <span class="mt">len</span>(sorted_u)
+    tree = [<span class="nm">0</span>] * (m + <span class="nm">1</span>)
+
+    <span class="kw">def</span> <span class="mt">add</span>(i):
+        <span class="kw">while</span> i &lt;= m: tree[i] += <span class="nm">1</span>; i += i &amp; (-i)
+
+    <span class="kw">def</span> <span class="mt">prefix_sum</span>(i):
+        s = <span class="nm">0</span>
+        <span class="kw">while</span> i &gt; <span class="nm">0</span>: s += tree[i]; i -= i &amp; (-i)
+        <span class="kw">return</span> s
+
+    res = [<span class="nm">0</span>] * <span class="mt">len</span>(nums)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums) - <span class="nm">1</span>, -<span class="nm">1</span>, -<span class="nm">1</span>):
+        res[i] = <span class="mt">prefix_sum</span>(rank[nums[i]] - <span class="nm">1</span>)  <span class="cm"># count smaller to right</span>
+        <span class="mt">add</span>(rank[nums[i]])
+    <span class="kw">return</span> res
+<span class="cm"># Note: Using Fenwick Tree here — simpler for this specific pattern.
+# Time: O(n log n)  Space: O(n)</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: Why is the segment tree array sized 4n and not 2n or 2×(next power of 2)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For a power-of-2 sized array, 2n nodes suffice. But for arbitrary n, the tree can be "unbalanced" at the last level — some branches go one level deeper than others. In the worst case this requires up to 4n nodes. For example, n=3: the left subtree has range [0,1] (2 leaves) and the right has [2,2] (1 leaf), so the tree has 7 nodes = ~2.3n, but for n=5 you can get close to 4n. Using 4n is the universal safe upper bound. Using 2×(next power of 2) is equivalent but requires computing the next power of 2.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: What's the key insight of lazy propagation? Why is it still O(log n) per operation?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Without lazy propagation, a range update on [L,R] could require updating O(n) leaves individually, making it O(n). Lazy propagation says: "when I have total overlap, record the pending update in the lazy array and update only this node's aggregate, DON'T recurse to children yet." The children will be updated lazily when they are actually visited. Since each node is visited at most O(log n) times per query (due to the O(log n) segments that cover any range), the total work per operation remains O(log n) amortized.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: How would you adapt the segment tree for a MINIMUM query instead of SUM?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Two changes: (1) In build/update: <code>tree[node] = Math.Min(tree[2*node], tree[2*node+1])</code> instead of addition. (2) In query: return <code>int.MaxValue</code> (identity for min) for the no-overlap case instead of 0 (identity for sum). The structural logic of build/query/update is identical — only the "combine" operation and identity value change. This is why segment trees are so versatile — they implement a "monoid" over the combine operation.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: When would you choose a Fenwick Tree (BIT) over a Segment Tree?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Choose Fenwick Tree when: (1) You only need prefix queries (not arbitrary [L,R] ranges — though you can compute range sum as prefixSum(R) - prefixSum(L-1)), (2) The operation must be invertible (sum is invertible via subtraction; min is NOT), (3) You want simpler, shorter code with better cache performance. Choose Segment Tree when: (1) You need range min/max (not invertible, can't use Fenwick), (2) You need range updates with lazy propagation, (3) You need to store complex information per node (e.g., count + sum both), (4) You need segment-level queries that aren't decomposable into prefix queries.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: What does "coordinate compression" mean and why is it needed with segment trees?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Coordinate compression maps a sparse set of values to a dense range [0, m-1] where m is the number of distinct values. For example, [100, 50000, 3, 99999] → [1, 2, 0, 3] after compression. It's needed when values can be up to 10^9 but there are only n ≤ 10^5 distinct values — you can't create a segment tree over index 0 to 10^9 (too much memory). Instead, compress to [0, n-1] and build a tree of size 4n. The compressed index is just the rank of each value in the sorted unique list. Binary search is used to look up the compressed index in O(log n).</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 11A Complete</button>
+<div class="toast" id="toast">✅ Module 11A marked complete!</div>
+    <script>var MODULE_ID = 'm11a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

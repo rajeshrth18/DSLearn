@@ -1,0 +1,608 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7B — Red-Black Trees</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
+    <h1>Module 7 — Part B</h1>
+    <div class="tagline">Red-Black Trees — The Industry Standard Self-Balancing BST</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">5 properties. 3 insertion cases. Powers SortedSet&lt;T&gt;, std::map, and Java's TreeMap</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part E of Module 6/7</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m07a_avl_trees.html">AVL Trees</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Red-Black Trees<br>
+    ⬜ <strong>Part C</strong> — <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m07e_btrees.html">B-Trees</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
+    <a href="../phase5/m08a_hashing.html">Module 8 &mdash; Hashing &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 7B</h2>
+    <ol>
+        <li>The Analogy — Traffic Light Rules <span>— Why 5 simple rules keep balance</span></li>
+        <li>The Problem RB Trees Solve <span>— O(1) amortized rotations vs. AVL</span></li>
+        <li>Visual Walkthrough <span>— Insert cases: recolor and rotate</span></li>
+        <li>The 5 Red-Black Properties <span>— The invariant explained</span></li>
+        <li>Complete C# Implementation <span>— Full RB tree with insert</span></li>
+        <li>Complete Python Implementation <span>— Same logic, Python idioms</span></li>
+        <li>Complexity Analysis <span>— O(log n) with O(1) amortized rotations</span></li>
+        <li>Real-World Usage <span>— .NET SortedSet, C++ std::map, Java TreeMap</span></li>
+        <li>Common Mistakes <span>— Color assignments, null sentinel nodes</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: Traffic Light Rules</div>
+
+<p>Imagine a city with a strict rule: every road that leads to a destination must have no more than 2 red lights in a row. If you install a new traffic light and create 3 consecutive reds, you must flip some lights to green to restore the rule. Only a small, local adjustment is needed — not a city-wide re-plan.</p>
+
+<p>A Red-Black tree works on the same principle. Every node is colored RED or BLACK. Five strict rules define which color configurations are allowed. When you insert a new node (always RED initially), you may violate a rule locally. But the fix is always <strong>local</strong> — at most a few recolorings and at most 2 rotations per insert.</p>
+
+<p>The beauty of Red-Black trees over AVL: <strong>fewer rotations per insert/delete</strong>. While AVL may perform O(log n) rotations up the tree, Red-Black trees need at most 2 rotations per insert and at most 3 per delete. The trade-off: Red-Black trees allow slightly more imbalance, so searches are marginally slower.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The 5 Red-Black Properties</div>
+
+<div class="note">
+    <strong>📌 The 5 Red-Black Invariants — ALL must hold at all times:</strong><br><br>
+    <strong>1.</strong> Every node is either RED or BLACK.<br>
+    <strong>2.</strong> The root is always BLACK.<br>
+    <strong>3.</strong> Every null leaf (NIL sentinel) is BLACK.<br>
+    <strong>4.</strong> If a node is RED, both its children must be BLACK. (No two consecutive RED nodes on any path.)<br>
+    <strong>5.</strong> For every node, all paths from that node to its descendant null leaves contain the same number of BLACK nodes (the "black height").
+</div>
+
+<p><strong>Why these 5 rules guarantee O(log n) height?</strong> From rule 5, every root-to-leaf path has the same number of BLACK nodes (black height bh). From rule 4, at most every other node can be RED. So the total height h ≤ 2 × bh. And bh ≥ ⌊h/2⌋. Since the tree must have 2^bh − 1 internal BLACK nodes, bh ≥ log₂(n+1)/2, giving h ≤ 2log₂(n+1).</p>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Visual Walkthrough: Insert Cases</div>
+
+<h3>Setup: Every new node is inserted as RED</h3>
+<p>Why RED? Because inserting a RED node never violates property 5 (black height stays the same). It may violate property 4 (two consecutive reds). We then fix property 4 violations using the 3 cases below.</p>
+
+<div class="diagram">NOTATION: (R)=RED node, [B]=BLACK node, [NIL]=black null sentinel
+
+INSERT CASE 1 — Uncle is RED (Recolor only, no rotation):
+Parent is RED and Uncle is RED → recolor Parent and Uncle to BLACK,
+Grandparent to RED, then recurse up with Grandparent as new "current".
+
+BEFORE:           AFTER:
+      [G]               (G)      ← G becomes RED (then check G's parent)
+      / \              / \
+    (P) (U)   →      [P] [U]    ← P and U become BLACK
+    /                /
+  (Z)              (Z)           ← Z stays RED, no violation here
+
+═══════════════════════════════════════════════════════
+
+INSERT CASE 2 — Uncle is BLACK, Current is INNER child (LR or RL shape):
+Parent is RED, Uncle is BLACK, and the new node is the "inner" child
+(parent.left and new node is parent.right = LR case; or mirror).
+FIX: Rotate to convert to Case 3 shape, then apply Case 3.
+
+BEFORE:            AFTER Case 2 rotation (left rotate on P):
+      [G]                [G]
+      / \                / \
+    (P) [U]   →        (Z) [U]     ← Z is now outer child (Case 3!)
+      \                /
+      (Z)            (P)
+
+═══════════════════════════════════════════════════════
+
+INSERT CASE 3 — Uncle is BLACK, Current is OUTER child (LL or RR shape):
+Parent is RED, Uncle is BLACK, new node is OUTER child.
+FIX: Rotate grandparent toward uncle, swap colors of parent and grandparent.
+
+BEFORE:              AFTER Case 3 (right rotate on G):
+      [G]                  (P)       ← P gets G's black color
+      / \                 /   \
+    (P) [U]   →         (Z)   [G]   ← G becomes RED
+    /                           \
+  (Z)                           [U]
+
+Result: All 5 properties restored!</div>
+
+<h3>Summary of 3 Insert Fixup Cases</h3>
+<table>
+    <thead><tr><th>Case</th><th>Uncle color</th><th>Node position</th><th>Fix</th></tr></thead>
+    <tbody>
+        <tr><td>Case 1</td><td class="rb-r">RED</td><td>Either</td><td>Recolor parent+uncle→BLACK, grandparent→RED. Recurse up.</td></tr>
+        <tr><td>Case 2</td><td class="rb-b">BLACK</td><td>Inner child (LR/RL)</td><td>Rotate parent → converts to Case 3</td></tr>
+        <tr><td>Case 3</td><td class="rb-b">BLACK</td><td>Outer child (LL/RR)</td><td>Rotate grandparent, swap colors parent↔grandparent</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Formal Definitions</div>
+
+<ul>
+    <li><strong>Black height (bh):</strong> the number of BLACK nodes on any path from a node to a descendant null leaf (not counting the node itself, but counting the null leaf). All paths from a given node must have the same bh.</li>
+    <li><strong>NIL sentinel:</strong> A shared BLACK dummy node used as all leaf (null) pointers. Simplifies code by eliminating null checks for color.</li>
+    <li><strong>Height guarantee:</strong> h ≤ 2 log₂(n+1) where n is the number of internal nodes.</li>
+    <li><strong>Rotation cost per insert:</strong> At most 2 (AVL can need O(log n) rotations)</li>
+    <li><strong>Rotation cost per delete:</strong> At most 3</li>
+</ul>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Complete C# Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="kw">public enum</span> <span class="tp">Color</span> { <span class="nm">Red</span>, <span class="nm">Black</span> }
+
+<span class="kw">public class</span> <span class="tp">RBNode</span>
+{
+    <span class="kw">public int</span>     Value;
+    <span class="kw">public</span>  <span class="tp">Color</span>  Color;
+    <span class="kw">public</span>  <span class="tp">RBNode</span>? Left, Right, Parent;
+
+    <span class="kw">public</span> <span class="mt">RBNode</span>(<span class="kw">int</span> val, <span class="tp">Color</span> color) { Value = val; Color = color; }
+}
+
+<span class="kw">public class</span> <span class="tp">RedBlackTree</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">RBNode</span> NIL;   <span class="cm">// Sentinel — represents all null leaves</span>
+    <span class="kw">private</span> <span class="tp">RBNode</span> Root;
+
+    <span class="kw">public</span> <span class="mt">RedBlackTree</span>()
+    {
+        NIL  = <span class="kw">new</span> <span class="tp">RBNode</span>(<span class="nm">0</span>, <span class="tp">Color</span>.Black);   <span class="cm">// Sentinel: always BLACK</span>
+        Root = NIL;
+    }
+
+    <span class="cm">// ── LEFT ROTATION ────────────────────────────────────────────</span>
+    <span class="kw">private void</span> <span class="mt">RotateLeft</span>(<span class="tp">RBNode</span> x)
+    {
+        <span class="tp">RBNode</span> y = x.Right!;
+        x.Right = y.Left;
+        <span class="kw">if</span> (y.Left != NIL) y.Left.Parent = x;
+
+        y.Parent = x.Parent;
+        <span class="kw">if</span>      (x.Parent == <span class="kw">null</span>)         Root    = y;
+        <span class="kw">else if</span> (x == x.Parent.Left)       x.Parent.Left  = y;
+        <span class="kw">else</span>                               x.Parent.Right = y;
+
+        y.Left   = x;
+        x.Parent = y;
+    }
+
+    <span class="cm">// ── RIGHT ROTATION ───────────────────────────────────────────</span>
+    <span class="kw">private void</span> <span class="mt">RotateRight</span>(<span class="tp">RBNode</span> x)
+    {
+        <span class="tp">RBNode</span> y = x.Left!;
+        x.Left = y.Right;
+        <span class="kw">if</span> (y.Right != NIL) y.Right.Parent = x;
+
+        y.Parent = x.Parent;
+        <span class="kw">if</span>      (x.Parent == <span class="kw">null</span>)        Root           = y;
+        <span class="kw">else if</span> (x == x.Parent.Right)      x.Parent.Right = y;
+        <span class="kw">else</span>                               x.Parent.Left  = y;
+
+        y.Right  = x;
+        x.Parent = y;
+    }
+
+    <span class="cm">// ── INSERT ───────────────────────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">int</span> val)
+    {
+        <span class="kw">var</span> z = <span class="kw">new</span> <span class="tp">RBNode</span>(val, <span class="tp">Color</span>.Red) { Left = NIL, Right = NIL };
+
+        <span class="cm">// Standard BST insert</span>
+        <span class="tp">RBNode</span>? parent = <span class="kw">null</span>;
+        <span class="tp">RBNode</span>  curr   = Root;
+        <span class="kw">while</span> (curr != NIL)
+        {
+            parent = curr;
+            <span class="kw">if</span>      (val &lt; curr.Value) curr = curr.Left!;
+            <span class="kw">else if</span> (val &gt; curr.Value) curr = curr.Right!;
+            <span class="kw">else return</span>;  <span class="cm">// Duplicate</span>
+        }
+
+        z.Parent = parent;
+        <span class="kw">if</span>      (parent == <span class="kw">null</span>)       Root          = z;
+        <span class="kw">else if</span> (val &lt; parent.Value) parent.Left  = z;
+        <span class="kw">else</span>                          parent.Right = z;
+
+        <span class="kw">if</span> (z.Parent == <span class="kw">null</span>) { Root.Color = <span class="tp">Color</span>.Black; <span class="kw">return</span>; }
+        <span class="kw">if</span> (z.Parent.Parent == <span class="kw">null</span>) <span class="kw">return</span>;
+
+        <span class="mt">InsertFixup</span>(z);
+    }
+
+    <span class="cm">// ── INSERT FIXUP — restore RB properties ─────────────────────</span>
+    <span class="kw">private void</span> <span class="mt">InsertFixup</span>(<span class="tp">RBNode</span> z)
+    {
+        <span class="kw">while</span> (z.Parent?.Color == <span class="tp">Color</span>.Red)  <span class="cm">// Violation: two consecutive reds</span>
+        {
+            <span class="kw">if</span> (z.Parent == z.Parent.Parent!.Left)  <span class="cm">// Parent is LEFT child of grandparent</span>
+            {
+                <span class="tp">RBNode</span> uncle = z.Parent.Parent.Right!;
+
+                <span class="kw">if</span> (uncle.Color == <span class="tp">Color</span>.Red)       <span class="cm">// Case 1: Uncle is RED — recolor</span>
+                {
+                    z.Parent.Color         = <span class="tp">Color</span>.Black;
+                    uncle.Color            = <span class="tp">Color</span>.Black;
+                    z.Parent.Parent.Color  = <span class="tp">Color</span>.Red;
+                    z = z.Parent.Parent;
+                }
+                <span class="kw">else</span>
+                {
+                    <span class="kw">if</span> (z == z.Parent.Right)           <span class="cm">// Case 2: Inner child — rotate to Case 3</span>
+                    {
+                        z = z.Parent;
+                        <span class="mt">RotateLeft</span>(z);
+                    }
+                    <span class="cm">// Case 3: Outer child — rotate grandparent, swap colors</span>
+                    z.Parent!.Color        = <span class="tp">Color</span>.Black;
+                    z.Parent.Parent!.Color = <span class="tp">Color</span>.Red;
+                    <span class="mt">RotateRight</span>(z.Parent.Parent!);
+                }
+            }
+            <span class="kw">else</span>   <span class="cm">// Symmetric: parent is RIGHT child of grandparent</span>
+            {
+                <span class="tp">RBNode</span> uncle = z.Parent.Parent!.Left!;
+
+                <span class="kw">if</span> (uncle.Color == <span class="tp">Color</span>.Red)       <span class="cm">// Case 1 (mirror)</span>
+                {
+                    z.Parent.Color        = <span class="tp">Color</span>.Black;
+                    uncle.Color           = <span class="tp">Color</span>.Black;
+                    z.Parent.Parent.Color = <span class="tp">Color</span>.Red;
+                    z = z.Parent.Parent;
+                }
+                <span class="kw">else</span>
+                {
+                    <span class="kw">if</span> (z == z.Parent.Left)            <span class="cm">// Case 2 (mirror)</span>
+                    {
+                        z = z.Parent;
+                        <span class="mt">RotateRight</span>(z);
+                    }
+                    z.Parent!.Color        = <span class="tp">Color</span>.Black;  <span class="cm">// Case 3 (mirror)</span>
+                    z.Parent.Parent!.Color = <span class="tp">Color</span>.Red;
+                    <span class="mt">RotateLeft</span>(z.Parent.Parent!);
+                }
+            }
+        }
+        Root.Color = <span class="tp">Color</span>.Black;  <span class="cm">// Property 2: root always BLACK</span>
+    }
+
+    <span class="cm">// ── CONTAINS ─────────────────────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">Contains</span>(<span class="kw">int</span> val)
+    {
+        <span class="kw">var</span> n = Root;
+        <span class="kw">while</span> (n != NIL &amp;&amp; n != <span class="kw">null</span>)
+        {
+            <span class="kw">if</span>      (val == n.Value) <span class="kw">return true</span>;
+            <span class="kw">else if</span> (val &lt;  n.Value) n = n.Left!;
+            <span class="kw">else</span>                     n = n.Right!;
+        }
+        <span class="kw">return false</span>;
+    }
+
+    <span class="kw">public</span> <span class="tp">Color</span> <span class="mt">RootColor</span>() => Root.Color;
+}
+
+<span class="cm">// ── Main ──────────────────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> rbt = <span class="kw">new</span> <span class="tp">RedBlackTree</span>();
+        <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> <span class="kw">new</span>[] { <span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">15</span>, <span class="nm">25</span>, <span class="nm">5</span> })
+            rbt.<span class="mt">Insert</span>(v);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Root color (must be Black): {rbt.RootColor()}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Contains 15: {rbt.Contains(15)}"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Contains 99: {rbt.Contains(99)}"</span>);
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+   Root color (must be Black): Black
+   Contains 15: True
+   Contains 99: False
+   ──────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Complete Python Implementation</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> enum <span class="kw">import</span> Enum
+<span class="kw">from</span> typing <span class="kw">import</span> Optional
+
+<span class="kw">class</span> <span class="tp">Color</span>(Enum):
+    RED   = <span class="st">"RED"</span>
+    BLACK = <span class="st">"BLACK"</span>
+
+<span class="kw">class</span> <span class="tp">RBNode</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, val: <span class="kw">int</span>, color: <span class="tp">Color</span> = <span class="tp">Color</span>.RED):
+        self.val    = val
+        self.color  = color
+        self.left:   Optional[<span class="st">'RBNode'</span>] = <span class="kw">None</span>
+        self.right:  Optional[<span class="st">'RBNode'</span>] = <span class="kw">None</span>
+        self.parent: Optional[<span class="st">'RBNode'</span>] = <span class="kw">None</span>
+
+<span class="kw">class</span> <span class="tp">RedBlackTree</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        self.NIL  = <span class="tp">RBNode</span>(<span class="nm">0</span>, <span class="tp">Color</span>.BLACK)  <span class="cm"># Sentinel node</span>
+        self.root = self.NIL
+
+    <span class="kw">def</span> <span class="mt">_rotate_left</span>(self, x: <span class="tp">RBNode</span>) -> <span class="kw">None</span>:
+        y = x.right
+        x.right = y.left
+        <span class="kw">if</span> y.left != self.NIL: y.left.parent = x
+
+        y.parent = x.parent
+        <span class="kw">if</span>   x.parent <span class="kw">is None</span>:       self.root      = y
+        <span class="kw">elif</span> x == x.parent.left:      x.parent.left  = y
+        <span class="kw">else</span>:                          x.parent.right = y
+
+        y.left   = x
+        x.parent = y
+
+    <span class="kw">def</span> <span class="mt">_rotate_right</span>(self, x: <span class="tp">RBNode</span>) -> <span class="kw">None</span>:
+        y = x.left
+        x.left = y.right
+        <span class="kw">if</span> y.right != self.NIL: y.right.parent = x
+
+        y.parent = x.parent
+        <span class="kw">if</span>   x.parent <span class="kw">is None</span>:       self.root      = y
+        <span class="kw">elif</span> x == x.parent.right:     x.parent.right = y
+        <span class="kw">else</span>:                          x.parent.left  = y
+
+        y.right  = x
+        x.parent = y
+
+    <span class="kw">def</span> <span class="mt">insert</span>(self, val: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        z = <span class="tp">RBNode</span>(val)
+        z.left = z.right = self.NIL
+
+        <span class="cm"># Standard BST insert</span>
+        parent, curr = <span class="kw">None</span>, self.root
+        <span class="kw">while</span> curr != self.NIL:
+            parent = curr
+            <span class="kw">if</span>   val &lt; curr.val: curr = curr.left
+            <span class="kw">elif</span> val &gt; curr.val: curr = curr.right
+            <span class="kw">else</span>: <span class="kw">return</span>          <span class="cm"># Duplicate</span>
+
+        z.parent = parent
+        <span class="kw">if</span>   parent <span class="kw">is None</span>:    self.root      = z
+        <span class="kw">elif</span> val &lt; parent.val:  parent.left    = z
+        <span class="kw">else</span>:                    parent.right   = z
+
+        <span class="kw">if</span> z.parent <span class="kw">is None</span>:
+            z.color = <span class="tp">Color</span>.BLACK; <span class="kw">return</span>
+        <span class="kw">if</span> z.parent.parent <span class="kw">is None</span>: <span class="kw">return</span>
+
+        self.<span class="mt">_insert_fixup</span>(z)
+
+    <span class="kw">def</span> <span class="mt">_insert_fixup</span>(self, z: <span class="tp">RBNode</span>) -> <span class="kw">None</span>:
+        <span class="kw">while</span> z.parent <span class="kw">and</span> z.parent.color == <span class="tp">Color</span>.RED:
+            <span class="kw">if</span> z.parent == z.parent.parent.left:
+                uncle = z.parent.parent.right
+                <span class="kw">if</span> uncle.color == <span class="tp">Color</span>.RED:      <span class="cm"># Case 1: uncle RED</span>
+                    z.parent.color         = <span class="tp">Color</span>.BLACK
+                    uncle.color            = <span class="tp">Color</span>.BLACK
+                    z.parent.parent.color  = <span class="tp">Color</span>.RED
+                    z = z.parent.parent
+                <span class="kw">else</span>:
+                    <span class="kw">if</span> z == z.parent.right:        <span class="cm"># Case 2: inner child</span>
+                        z = z.parent
+                        self.<span class="mt">_rotate_left</span>(z)
+                    z.parent.color         = <span class="tp">Color</span>.BLACK   <span class="cm"># Case 3</span>
+                    z.parent.parent.color  = <span class="tp">Color</span>.RED
+                    self.<span class="mt">_rotate_right</span>(z.parent.parent)
+            <span class="kw">else</span>:
+                uncle = z.parent.parent.left
+                <span class="kw">if</span> uncle.color == <span class="tp">Color</span>.RED:      <span class="cm"># Case 1 (mirror)</span>
+                    z.parent.color         = <span class="tp">Color</span>.BLACK
+                    uncle.color            = <span class="tp">Color</span>.BLACK
+                    z.parent.parent.color  = <span class="tp">Color</span>.RED
+                    z = z.parent.parent
+                <span class="kw">else</span>:
+                    <span class="kw">if</span> z == z.parent.left:         <span class="cm"># Case 2 (mirror)</span>
+                        z = z.parent
+                        self.<span class="mt">_rotate_right</span>(z)
+                    z.parent.color         = <span class="tp">Color</span>.BLACK   <span class="cm"># Case 3 (mirror)</span>
+                    z.parent.parent.color  = <span class="tp">Color</span>.RED
+                    self.<span class="mt">_rotate_left</span>(z.parent.parent)
+        self.root.color = <span class="tp">Color</span>.BLACK
+
+    <span class="kw">def</span> <span class="mt">contains</span>(self, val: <span class="kw">int</span>) -> <span class="kw">bool</span>:
+        n = self.root
+        <span class="kw">while</span> n != self.NIL:
+            <span class="kw">if</span>   val == n.val: <span class="kw">return True</span>
+            <span class="kw">elif</span> val &lt;  n.val: n = n.left
+            <span class="kw">else</span>:              n = n.right
+        <span class="kw">return False</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    rbt = <span class="tp">RedBlackTree</span>()
+    <span class="kw">for</span> v <span class="kw">in</span> [<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">15</span>, <span class="nm">25</span>, <span class="nm">5</span>]:
+        rbt.<span class="mt">insert</span>(v)
+    <span class="mt">print</span>(<span class="st">"Root color:"</span>, rbt.root.color)        <span class="cm"># BLACK</span>
+    <span class="mt">print</span>(<span class="st">"Contains 15:"</span>, rbt.<span class="mt">contains</span>(<span class="nm">15</span>))   <span class="cm"># True</span>
+    <span class="mt">print</span>(<span class="st">"Contains 99:"</span>, rbt.<span class="mt">contains</span>(<span class="nm">99</span>))   <span class="cm"># False</span>
+
+<span class="cm"># Output:
+# Root color: Color.BLACK
+# Contains 15: True
+# Contains 99: False</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Red-Black Tree</th><th>AVL Tree</th><th>Plain BST (worst)</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Search</td><td class="g">O(log n)</td><td class="g">O(log n) ★faster★</td><td class="r">O(n)</td></tr>
+        <tr><td>Insert</td><td class="g">O(log n)</td><td class="g">O(log n)</td><td class="r">O(n)</td></tr>
+        <tr><td>Delete</td><td class="g">O(log n)</td><td class="g">O(log n)</td><td class="r">O(n)</td></tr>
+        <tr><td>Rotations/insert</td><td class="g">≤ 2 (amortized O(1))</td><td class="o">O(log n)</td><td>—</td></tr>
+        <tr><td>Rotations/delete</td><td class="g">≤ 3</td><td class="o">O(log n)</td><td>—</td></tr>
+        <tr><td>Max height</td><td class="o">2 log₂(n+1)</td><td class="g">1.44 log₂(n+2)</td><td class="r">n-1</td></tr>
+        <tr><td>Space</td><td class="o">O(n) + color bit</td><td class="o">O(n) + height int</td><td class="g">O(n)</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
+
+<div class="realworld">
+    <strong>🌍 C# — SortedSet&lt;T&gt; and SortedDictionary&lt;TKey,TValue&gt;</strong><br>
+    Both are backed by a Red-Black tree in .NET. <code>SortedSet&lt;T&gt;</code> gives O(log n) Add/Remove/Contains and O(n) ordered enumeration. The Red-Black tree backing means inserts/deletes are fast even with millions of elements in mixed patterns.
+</div>
+
+<div class="realworld">
+    <strong>🌍 C++ std::map / std::set</strong><br>
+    The C++ STL's <code>map</code> and <code>set</code> containers are implemented as Red-Black trees in all major implementations (GCC libstdc++, MSVC, Clang libc++). Inserting 10M elements into <code>std::map</code> gives O(n log n) total time with at most 2 rotations per insert.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Java TreeMap / TreeSet</strong><br>
+    Java's <code>TreeMap</code> and <code>TreeSet</code> are backed by a Red-Black tree. They provide O(log n) <code>put()</code>, <code>get()</code>, <code>remove()</code>, plus in-order iteration. The <code>subMap()</code>, <code>headMap()</code>, and <code>tailMap()</code> operations return views on the underlying tree — powerful for range queries.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Linux Kernel — CFS Scheduler</strong><br>
+    The Completely Fair Scheduler (CFS) in the Linux kernel uses a Red-Black tree to track runnable processes, keyed by their virtual runtime. The process with the smallest virtual runtime (leftmost node) is always next to run. O(log n) insert/delete and O(1) find-min (cached leftmost node).
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Common Mistakes</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 1 — Not handling the NIL sentinel correctly:</strong> All null pointers in an RB tree should point to the NIL sentinel (which is BLACK). If you mix null and NIL, property 3 checks fail silently and rotations produce incorrect parent pointers. Use a single shared NIL object for the entire tree.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 2 — Forgetting to set root to BLACK after fixup:</strong> After InsertFixup, the while loop may leave the root as RED (if the inserted node bubbled up to root). Always add <code>Root.Color = Black</code> at the very end of InsertFixup.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 3 — Case 2 forgetting to update z before Case 3:</strong> In Case 2 (inner child), after rotating, <code>z</code> is now the parent (it moved UP). You must update <code>z = z.Parent</code> BEFORE the rotation so that Case 3 sees the correct node as "z" (the outer child after the rotation).
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 4 — Confusing parent pointer updates in rotation:</strong> When rotating, you must update: (1) y's parent pointer, (2) the grandparent's child pointer (was x, now y), (3) T2's parent pointer (was y, now x). Missing any one of these breaks the tree structure.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. What are the 5 Red-Black tree properties? Give them from memory.</div>
+    <div class="quiz-meta">💡 Think: node colors, root, leaves, consecutive reds, black height.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        1. Every node is RED or BLACK.<br>
+        2. The root is BLACK.<br>
+        3. Every null leaf (NIL) is BLACK.<br>
+        4. If a node is RED, both its children are BLACK (no two consecutive REDs on any path).<br>
+        5. Every path from any node to any descendant null leaf has the same number of BLACK nodes (constant black-height).
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. You insert a new node and its parent is RED and its uncle is RED. What happens?</div>
+    <div class="quiz-meta">💡 Which fixup case is this? Does it require a rotation?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Case 1: Recolor only, no rotation.</strong> Set parent and uncle to BLACK, set grandparent to RED. Then repeat the fixup check with grandparent as the new "current" node — the RED grandparent may itself now violate property 4 with its own parent. This propagation continues up at most O(log n) levels.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. Why is a Red-Black tree preferred over AVL for std::map in C++?</div>
+    <div class="quiz-meta">💡 Think about typical usage patterns: many inserts/deletes vs. many reads.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        Red-Black trees perform at most 2 rotations per insert and 3 per delete, while AVL trees may require O(log n) rotations per insert. For workloads with many inserts and deletions (like map/set in general-purpose code), the lower rotation cost per modification gives Red-Black trees better practical performance. AVL would be better if the tree is built once and then only searched.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. After a Red-Black tree insert fixup, why do we always set <code>root.color = BLACK</code> at the end?</div>
+    <div class="quiz-meta">💡 What can happen to the root's color during Case 1 propagation?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        During Case 1 fixup, the grandparent is recolored RED and becomes the new "current" node. If this propagation reaches the root, the root ends up RED (violating property 2). Setting <code>root.color = BLACK</code> after the while loop always restores property 2 and does NOT violate property 5 — making the root BLACK only ADDS to the black-height on every path (increasing it by 1), keeping black-heights equal.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. What is the maximum height of a Red-Black tree with 15 nodes?</div>
+    <div class="quiz-meta">💡 Use h ≤ 2 log₂(n+1). Compute for n=15.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>At most 8.</strong> Formula: h ≤ 2 × log₂(15+1) = 2 × log₂(16) = 2 × 4 = 8. In practice, a Red-Black tree with 15 nodes would typically have height 4-5. Compare with AVL: h ≤ ⌊1.44 × log₂(17)⌋ = ⌊1.44 × 4⌋ = 5. So for the same n, AVL's maximum height is strictly lower than Red-Black's.
+    </div>
+</div>
+
+<br>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 7B Complete</button>
+<div class="toast" id="toast">✅ Module 7B marked complete!</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 7B Complete!</strong><br><br>
+    You now understand: the 5 RB properties, why they guarantee O(log n), the 3 insert fixup cases (recolor,
+    LR/RL, LL/RR rotations), and why Red-Black trees are the industry standard for mutable sorted collections.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m07a_avl_trees.html">Module 7A — AVL Trees</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m07c_heaps.html">Module 7C — Heaps &amp; PriorityQueue&lt;T&gt;</a>
+</div>
+    <script>var MODULE_ID = 'm07b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

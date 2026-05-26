@@ -1,0 +1,553 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7D — Trie (Prefix Tree)</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
+    <h1>Module 7 — Part D</h1>
+    <div class="tagline">Trie (Prefix Tree) — The Data Structure Behind Autocomplete</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Insert, Search, StartsWith, Autocomplete — O(L) per operation regardless of dictionary size</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part G of Module 6/7</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m07a_avl_trees.html">AVL Trees</a><br>
+    ✅ <strong>Part B</strong> — <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
+    ✅ <strong>Part C</strong> — <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Trie (Prefix Tree)<br>
+    ⬜ <strong>Part E</strong> — <a href="m07e_btrees.html">B-Trees</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
+    <a href="../phase5/m08a_hashing.html">Module 8 &mdash; Hashing &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 7D</h2>
+    <ol>
+        <li>The Analogy — Filing Cabinet by Letter <span>— Shared prefixes = shared paths</span></li>
+        <li>The Problem Tries Solve <span>— O(L) prefix operations regardless of n</span></li>
+        <li>Visual Walkthrough <span>— Building a trie, insert and search paths</span></li>
+        <li>Formal Definitions <span>— TrieNode, IsEnd flag, prefix path</span></li>
+        <li>Complete C# Implementation <span>— Insert, Search, StartsWith, GetAllWords, Autocomplete</span></li>
+        <li>Complete Python Implementation <span>— Same operations with defaultdict</span></li>
+        <li>Complexity Analysis <span>— O(L) operations, O(ALPHABET × N × L) space</span></li>
+        <li>Real-World Usage <span>— Autocomplete, spell checker, IP routing</span></li>
+        <li>Common Mistakes <span>— IsEnd flag, shared prefix nodes, delete</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: Filing Cabinet by Letter</div>
+
+<p>Imagine a filing cabinet where the first drawer contains all files starting with 'A', 'B', ... 'Z'. Inside the 'A' drawer are subdrawers for each second letter. Inside "AP" is a subdrawer for each third letter: "APA", "APB", ... "APP", "APR" (which would contain the file "APRIL"). The key insight: every file that starts with "AP" shares the same first two drawers. The path from root to a node IS the prefix.</p>
+
+<p>This is a Trie (pronounced "try", from re<em>trie</em>val). Shared prefixes share nodes. If you have 10,000 words starting with "pre", they all share the same 3-node path through root → 'p' → 'r' → 'e'.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Problem Tries Solve</div>
+
+<p>Given a dictionary of n words, support:</p>
+<ul>
+    <li><strong>Insert word:</strong> Add a word to the dictionary</li>
+    <li><strong>Search word:</strong> Does the dictionary contain exactly this word?</li>
+    <li><strong>StartsWith prefix:</strong> Does any word in the dictionary start with this prefix?</li>
+    <li><strong>Autocomplete:</strong> Return all words starting with a given prefix</li>
+</ul>
+
+<table>
+    <thead><tr><th>Operation</th><th>HashSet&lt;string&gt;</th><th>Trie</th></tr></thead>
+    <tbody>
+        <tr><td>Insert word</td><td class="g">O(L)</td><td class="g">O(L)</td></tr>
+        <tr><td>Search word</td><td class="g">O(L)</td><td class="g">O(L)</td></tr>
+        <tr><td>StartsWith prefix</td><td class="r">O(n × L)</td><td class="g">O(L)</td></tr>
+        <tr><td>Autocomplete k results</td><td class="r">O(n × L)</td><td class="g">O(L + k)</td></tr>
+        <tr><td>Space</td><td class="g">O(n × L)</td><td class="o">O(ALPHABET × n × L) worst case</td></tr>
+    </tbody>
+</table>
+
+<p>The Trie completely dominates for prefix-based queries. The trade-off is higher space usage — each node may have up to 26 children (for lowercase a–z), but in practice most nodes have only 1–3 children.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Visual Walkthrough</div>
+
+<div class="diagram">INSERTING: "cat", "car", "card", "care", "bat"
+
+After inserting "cat":
+  root
+    └─ c
+         └─ a
+              └─ t [END]
+
+After inserting "car":
+  root
+    └─ c
+         └─ a
+              ├─ t [END]   ← "cat"
+              └─ r [END]   ← "car"
+
+After inserting "card":
+  root
+    └─ c
+         └─ a
+              ├─ t [END]
+              └─ r [END]   ← "car" (isEnd=true here)
+                   └─ d [END]  ← "card"
+
+After inserting "care":
+  root
+    └─ c
+         └─ a
+              ├─ t [END]
+              └─ r [END]
+                   ├─ d [END]
+                   └─ e [END]
+
+After inserting "bat":
+  root
+    ├─ c
+    │    └─ a
+    │         ├─ t [END]
+    │         └─ r [END]
+    │              ├─ d [END]
+    │              └─ e [END]
+    └─ b
+         └─ a
+              └─ t [END]
+
+KEY OBSERVATIONS:
+  • "cat" and "car" share the path root→c→a (2 nodes shared)
+  • "car", "card", "care" share root→c→a→r (3 nodes shared)
+  • The [END] marker (isEnd=true) is what distinguishes "car" from just being a prefix of "card"
+  • "bat" starts a completely separate branch
+
+SEARCH "car": follow root→c→a→r → found, isEnd=true → EXISTS ✓
+SEARCH "ca":  follow root→c→a → found, isEnd=false → NOT a word (but IS a prefix!)
+STARTSWITH "car": follow root→c→a→r → found → has prefix ✓</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Formal Definitions</div>
+
+<ul>
+    <li><strong>TrieNode:</strong> Contains a dictionary/array of children (one per alphabet character) and a boolean <code>IsEnd</code> flag marking whether the path to this node forms a complete word.</li>
+    <li><strong>Prefix path:</strong> The sequence of characters on the path from root to a node. The root represents the empty string.</li>
+    <li><strong>IsEnd flag:</strong> A node can be both an end-of-word AND an internal node (e.g., "car" is a word AND a prefix of "card").</li>
+    <li><strong>L:</strong> Length of the word or prefix being processed. All insert/search/startsWith operations are O(L) regardless of how many words are stored.</li>
+    <li><strong>Alphabet size (σ):</strong> Typically 26 for lowercase English. Each node holds up to σ children. Can use a Dictionary for sparse alphabets.</li>
+</ul>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Complete C# Implementation</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Text;
+
+<span class="cm">// ── Trie Node ─────────────────────────────────────────────────────</span>
+<span class="kw">public class</span> <span class="tp">TrieNode</span>
+{
+    <span class="kw">public</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="tp">TrieNode</span>&gt; Children = <span class="kw">new</span>();
+    <span class="kw">public bool</span> IsEnd = <span class="kw">false</span>;
+    <span class="kw">public int</span>  WordCount = <span class="nm">0</span>;   <span class="cm">// Optional: how many times this word was inserted</span>
+}
+
+<span class="cm">// ── Trie ──────────────────────────────────────────────────────────</span>
+<span class="kw">public class</span> <span class="tp">Trie</span>
+{
+    <span class="kw">private readonly</span> <span class="tp">TrieNode</span> Root = <span class="kw">new</span>();
+
+    <span class="cm">// ── INSERT ────────────────────────────────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> node = Root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> word)
+        {
+            <span class="kw">if</span> (!node.Children.<span class="mt">ContainsKey</span>(c))
+                node.Children[c] = <span class="kw">new</span> <span class="tp">TrieNode</span>();
+            node = node.Children[c];
+        }
+        node.IsEnd = <span class="kw">true</span>;
+        node.WordCount++;
+    }
+
+    <span class="cm">// ── SEARCH — exact word match ─────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">Search</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">var</span> node = <span class="mt">FindNode</span>(word);
+        <span class="kw">return</span> node != <span class="kw">null</span> &amp;&amp; node.IsEnd;
+    }
+
+    <span class="cm">// ── STARTSWITH — any word begins with this prefix? ────────────</span>
+    <span class="kw">public bool</span> <span class="mt">StartsWith</span>(<span class="kw">string</span> prefix)
+        => <span class="mt">FindNode</span>(prefix) != <span class="kw">null</span>;
+
+    <span class="cm">// ── Helper: walk to the node at end of prefix ─────────────────</span>
+    <span class="kw">private</span> <span class="tp">TrieNode</span>? <span class="mt">FindNode</span>(<span class="kw">string</span> prefix)
+    {
+        <span class="kw">var</span> node = Root;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> prefix)
+        {
+            <span class="kw">if</span> (!node.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out</span> node!)) <span class="kw">return null</span>;
+        }
+        <span class="kw">return</span> node;
+    }
+
+    <span class="cm">// ── GET ALL WORDS starting with prefix (autocomplete) ─────────</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; <span class="mt">Autocomplete</span>(<span class="kw">string</span> prefix)
+    {
+        <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+        <span class="kw">var</span> node = <span class="mt">FindNode</span>(prefix);
+        <span class="kw">if</span> (node == <span class="kw">null</span>) <span class="kw">return</span> results;
+
+        <span class="kw">var</span> sb = <span class="kw">new</span> <span class="tp">StringBuilder</span>(prefix);
+        <span class="mt">DFS</span>(node, sb, results);
+        <span class="kw">return</span> results;
+    }
+
+    <span class="kw">private void</span> <span class="mt">DFS</span>(<span class="tp">TrieNode</span> node, <span class="tp">StringBuilder</span> sb, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; results)
+    {
+        <span class="kw">if</span> (node.IsEnd) results.<span class="mt">Add</span>(sb.<span class="mt">ToString</span>());
+        <span class="kw">foreach</span> (<span class="kw">var</span> (ch, child) <span class="kw">in</span> node.Children)
+        {
+            sb.<span class="mt">Append</span>(ch);
+            <span class="mt">DFS</span>(child, sb, results);
+            sb.<span class="mt">Remove</span>(sb.Length - <span class="nm">1</span>, <span class="nm">1</span>);  <span class="cm">// Backtrack</span>
+        }
+    }
+
+    <span class="cm">// ── GET ALL WORDS in the entire trie ──────────────────────────</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; <span class="mt">GetAllWords</span>() => <span class="mt">Autocomplete</span>(<span class="st">""</span>);
+
+    <span class="cm">// ── DELETE a word (if it exists) ──────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">Delete</span>(<span class="kw">string</span> word)
+    {
+        <span class="kw">return</span> <span class="mt">DeleteHelper</span>(Root, word, <span class="nm">0</span>);
+    }
+
+    <span class="kw">private bool</span> <span class="mt">DeleteHelper</span>(<span class="tp">TrieNode</span> node, <span class="kw">string</span> word, <span class="kw">int</span> depth)
+    {
+        <span class="kw">if</span> (depth == word.Length)
+        {
+            <span class="kw">if</span> (!node.IsEnd) <span class="kw">return false</span>;  <span class="cm">// Word not in trie</span>
+            node.IsEnd = <span class="kw">false</span>;
+            <span class="kw">return</span> node.Children.Count == <span class="nm">0</span>;  <span class="cm">// Can we delete this node?</span>
+        }
+        <span class="kw">char</span> c = word[depth];
+        <span class="kw">if</span> (!node.Children.<span class="mt">TryGetValue</span>(c, <span class="kw">out var</span> child)) <span class="kw">return false</span>;
+
+        <span class="kw">bool</span> shouldDelete = <span class="mt">DeleteHelper</span>(child, word, depth + <span class="nm">1</span>);
+        <span class="kw">if</span> (shouldDelete) node.Children.<span class="mt">Remove</span>(c);  <span class="cm">// Remove child if leaf and not end</span>
+        <span class="kw">return</span> shouldDelete &amp;&amp; !node.IsEnd &amp;&amp; node.Children.Count == <span class="nm">0</span>;
+    }
+}
+
+<span class="cm">// ── Main ──────────────────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> trie = <span class="kw">new</span> <span class="tp">Trie</span>();
+        <span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> <span class="kw">new</span>[] { <span class="st">"cat"</span>, <span class="st">"car"</span>, <span class="st">"card"</span>, <span class="st">"care"</span>, <span class="st">"bat"</span>, <span class="st">"ball"</span> })
+            trie.<span class="mt">Insert</span>(w);
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Search 'car':     "</span>  + trie.<span class="mt">Search</span>(<span class="st">"car"</span>));     <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Search 'ca':      "</span>  + trie.<span class="mt">Search</span>(<span class="st">"ca"</span>));      <span class="cm">// False (prefix only)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"StartsWith 'car': "</span>  + trie.<span class="mt">StartsWith</span>(<span class="st">"car"</span>)); <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"StartsWith 'xyz': "</span>  + trie.<span class="mt">StartsWith</span>(<span class="st">"xyz"</span>)); <span class="cm">// False</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Autocomplete 'car': "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, trie.<span class="mt">Autocomplete</span>(<span class="st">"car"</span>)));
+        <span class="cm">// car, card, care</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"All words: "</span>          + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, trie.<span class="mt">GetAllWords</span>()));
+
+        trie.<span class="mt">Delete</span>(<span class="st">"car"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"After delete 'car', Search 'car': "</span> + trie.<span class="mt">Search</span>(<span class="st">"car"</span>));  <span class="cm">// False</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"After delete 'car', Search 'card': "</span> + trie.<span class="mt">Search</span>(<span class="st">"card"</span>)); <span class="cm">// True</span>
+    }
+}
+
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+   Search 'car':     True
+   Search 'ca':      False
+   StartsWith 'car': True
+   StartsWith 'xyz': False
+   Autocomplete 'car': car, card, care
+   All words: cat, car, card, care, bat, ball
+   After delete 'car', Search 'car': False
+   After delete 'car', Search 'card': True
+   ──────────────────────────────────────────────────────────────── */</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Complete Python Implementation</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">from</span> typing <span class="kw">import</span> List, Optional
+
+
+<span class="kw">class</span> <span class="tp">TrieNode</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        <span class="cm"># defaultdict auto-creates missing children</span>
+        self.children: dict = {}
+        self.is_end: bool = <span class="kw">False</span>
+        self.word_count: int = <span class="nm">0</span>
+
+
+<span class="kw">class</span> <span class="tp">Trie</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        self.root = <span class="tp">TrieNode</span>()
+
+    <span class="kw">def</span> <span class="mt">insert</span>(self, word: str) -> <span class="kw">None</span>:
+        node = self.root
+        <span class="kw">for</span> ch <span class="kw">in</span> word:
+            <span class="kw">if</span> ch <span class="kw">not in</span> node.children:
+                node.children[ch] = <span class="tp">TrieNode</span>()
+            node = node.children[ch]
+        node.is_end = <span class="kw">True</span>
+        node.word_count += <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">search</span>(self, word: str) -> bool:
+        node = self.<span class="mt">_find_node</span>(word)
+        <span class="kw">return</span> node <span class="kw">is not None and</span> node.is_end
+
+    <span class="kw">def</span> <span class="mt">starts_with</span>(self, prefix: str) -> bool:
+        <span class="kw">return</span> self.<span class="mt">_find_node</span>(prefix) <span class="kw">is not None</span>
+
+    <span class="kw">def</span> <span class="mt">_find_node</span>(self, prefix: str) -> Optional[<span class="tp">TrieNode</span>]:
+        node = self.root
+        <span class="kw">for</span> ch <span class="kw">in</span> prefix:
+            <span class="kw">if</span> ch <span class="kw">not in</span> node.children:
+                <span class="kw">return None</span>
+            node = node.children[ch]
+        <span class="kw">return</span> node
+
+    <span class="kw">def</span> <span class="mt">autocomplete</span>(self, prefix: str) -> List[str]:
+        results: List[str] = []
+        node = self.<span class="mt">_find_node</span>(prefix)
+        <span class="kw">if</span> node <span class="kw">is None</span>: <span class="kw">return</span> results
+        self.<span class="mt">_dfs</span>(node, list(prefix), results)
+        <span class="kw">return</span> results
+
+    <span class="kw">def</span> <span class="mt">_dfs</span>(self, node: <span class="tp">TrieNode</span>, path: List[str], results: List[str]) -> <span class="kw">None</span>:
+        <span class="kw">if</span> node.is_end:
+            results.<span class="mt">append</span>(<span class="st">""</span>.<span class="mt">join</span>(path))
+        <span class="kw">for</span> ch, child <span class="kw">in</span> node.children.<span class="mt">items</span>():
+            path.<span class="mt">append</span>(ch)
+            self.<span class="mt">_dfs</span>(child, path, results)
+            path.<span class="mt">pop</span>()             <span class="cm"># Backtrack</span>
+
+    <span class="kw">def</span> <span class="mt">get_all_words</span>(self) -> List[str]:
+        <span class="kw">return</span> self.<span class="mt">autocomplete</span>(<span class="st">""</span>)
+
+    <span class="kw">def</span> <span class="mt">delete</span>(self, word: str) -> bool:
+        <span class="kw">return</span> self.<span class="mt">_delete</span>(self.root, word, <span class="nm">0</span>)
+
+    <span class="kw">def</span> <span class="mt">_delete</span>(self, node: <span class="tp">TrieNode</span>, word: str, depth: int) -> bool:
+        <span class="kw">if</span> depth == <span class="mt">len</span>(word):
+            <span class="kw">if not</span> node.is_end: <span class="kw">return False</span>
+            node.is_end = <span class="kw">False</span>
+            <span class="kw">return len</span>(node.children) == <span class="nm">0</span>  <span class="cm"># True = safe to remove this node</span>
+        ch = word[depth]
+        <span class="kw">if</span> ch <span class="kw">not in</span> node.children: <span class="kw">return False</span>
+        should_delete = self.<span class="mt">_delete</span>(node.children[ch], word, depth + <span class="nm">1</span>)
+        <span class="kw">if</span> should_delete:
+            <span class="kw">del</span> node.children[ch]
+        <span class="kw">return</span> should_delete <span class="kw">and not</span> node.is_end <span class="kw">and len</span>(node.children) == <span class="nm">0</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    t = <span class="tp">Trie</span>()
+    <span class="kw">for</span> w <span class="kw">in</span> [<span class="st">"cat"</span>, <span class="st">"car"</span>, <span class="st">"card"</span>, <span class="st">"care"</span>, <span class="st">"bat"</span>, <span class="st">"ball"</span>]:
+        t.<span class="mt">insert</span>(w)
+
+    <span class="mt">print</span>(<span class="st">"search 'car':"</span>,      t.<span class="mt">search</span>(<span class="st">"car"</span>))       <span class="cm"># True</span>
+    <span class="mt">print</span>(<span class="st">"search 'ca':"</span>,       t.<span class="mt">search</span>(<span class="st">"ca"</span>))        <span class="cm"># False</span>
+    <span class="mt">print</span>(<span class="st">"starts_with 'car':"</span>, t.<span class="mt">starts_with</span>(<span class="st">"car"</span>))  <span class="cm"># True</span>
+    <span class="mt">print</span>(<span class="st">"autocomplete 'car':"</span>, t.<span class="mt">autocomplete</span>(<span class="st">"car"</span>)) <span class="cm"># ['car', 'card', 'care']</span>
+    <span class="mt">print</span>(<span class="st">"all words:"</span>,          t.<span class="mt">get_all_words</span>())      <span class="cm"># all 6 words</span>
+    t.<span class="mt">delete</span>(<span class="st">"car"</span>)
+    <span class="mt">print</span>(<span class="st">"after delete 'car', search 'car':"</span>,  t.<span class="mt">search</span>(<span class="st">"car"</span>))   <span class="cm"># False</span>
+    <span class="mt">print</span>(<span class="st">"after delete 'car', search 'card':"</span>, t.<span class="mt">search</span>(<span class="st">"card"</span>))  <span class="cm"># True</span>
+
+<span class="cm"># Output:
+# search 'car': True
+# search 'ca': False
+# starts_with 'car': True
+# autocomplete 'car': ['car', 'card', 'care']
+# all words: ['cat', 'car', 'card', 'care', 'bat', 'ball']
+# after delete 'car', search 'car': False
+# after delete 'car', search 'card': True</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Time</th><th>Space</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Insert word</td><td class="g">O(L)</td><td>O(L × σ) worst</td><td>L = word length, σ = alphabet size</td></tr>
+        <tr><td>Search word</td><td class="g">O(L)</td><td>O(1)</td><td>Walk down L nodes</td></tr>
+        <tr><td>StartsWith prefix</td><td class="g">O(L)</td><td>O(1)</td><td>Walk down L nodes, no end check</td></tr>
+        <tr><td>Autocomplete (k results)</td><td class="g">O(L + total chars in results)</td><td>O(output)</td><td>DFS from prefix node</td></tr>
+        <tr><td>Delete word</td><td class="g">O(L)</td><td>O(L) stack</td><td>Recursive, prunes empty branches</td></tr>
+        <tr><td>Total space (n words)</td><td>—</td><td class="o">O(n × L × σ) worst case</td><td>O(n × L) in practice with shared prefixes</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
+
+<div class="realworld">
+    <strong>🌍 Search Engine Autocomplete</strong><br>
+    Google's search bar shows suggestions as you type. A trie stores millions of common queries. Each keystroke extends the prefix by one character — the trie walk takes O(L) to reach the prefix node, then a BFS/DFS returns the top-k most popular completions. In practice, each trie node also stores the top-k results cached so completions are returned in O(1) after the O(L) prefix walk.
+</div>
+
+<div class="realworld">
+    <strong>🌍 Spell Checker / Dictionary Lookup</strong><br>
+    IDEs like Visual Studio and editors like VS Code use trie-based structures for code completion. The dictionary is loaded into a trie at startup. As you type identifiers, the autocomplete engine walks the trie to find all symbols matching the current prefix. The O(L) lookup is independent of how many symbols are in the dictionary.
+</div>
+
+<div class="realworld">
+    <strong>🌍 IP Routing Tables (Longest Prefix Match)</strong><br>
+    Network routers use binary tries (Patricia trees) to match IP addresses to routing rules. A destination IP is a 32-bit binary string. The router finds the most specific matching rule via "longest prefix match" — walking the trie bit-by-bit until the deepest matching node. This is O(32) = O(1) regardless of routing table size!
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Common Mistakes</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 1 — Not setting IsEnd flag on insert:</strong> After walking all characters, you must mark the final node with <code>isEnd = true</code>. Without this, searching for the exact word returns false even though the characters are in the trie. "car" without IsEnd means only "card" and "care" exist, not "car" itself.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 2 — Confusing Search and StartsWith:</strong> <code>Search("ca")</code> should return false if only "cat" is in the trie (because "ca" is a prefix, not a complete word). <code>StartsWith("ca")</code> returns true. The only difference is whether you check <code>node.IsEnd</code> at the end. Always check IsEnd for Search, never for StartsWith.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 3 — Delete breaks existing longer words:</strong> When deleting "car", you must NOT delete the 'r' node if "card" or "care" still exist as children. The correct delete algorithm only removes nodes that are (a) not IsEnd and (b) have no children. This is why recursive delete checks <code>node.Children.Count == 0</code> before recommending node removal.
+</div>
+
+<div class="warning">
+    <strong>⚠️ Mistake 4 — Using array[26] instead of Dictionary for sparse alphabets:</strong> If your alphabet includes uppercase, digits, punctuation, or Unicode characters, a fixed array[26] won't work. Always use a Dictionary/HashMap for general-purpose tries unless you know the alphabet is exactly lowercase a–z and memory efficiency is critical.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. After inserting "apple", "app", and "application" into an empty trie, how many nodes total exist (including root)?</div>
+    <div class="quiz-meta">💡 Count shared prefix nodes carefully. All three words share "app".</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>12 nodes total</strong> (including root).<br>
+        Shared path: root → 'a' → 'p' → 'p' = 3 nodes (plus root = 4)<br>
+        "app" ends at the 3rd 'p' node (IsEnd=true)<br>
+        "apple" adds: 'l' → 'e' = 2 more nodes<br>
+        "application" adds: 'l' (shared? No — "apple" uses 'l' but then 'e', while "application" uses 'l'→'i'...) <br>
+        Wait — "appl" is shared! "apple"=a-p-p-l-e, "application"=a-p-p-l-i-c-a-t-i-o-n<br>
+        Shared: root,a,p,p,l (5 nodes). "apple" adds 'e' (1). "application" adds i,c,a,t,i,o,n (7).<br>
+        "app" is a prefix of "apple" and "application", so no extra nodes needed — just mark the 3rd 'p' as IsEnd.<br>
+        Total: 5 shared + 1 ('e') + 7 ('i','c','a','t','i','o','n') = 13... Actually:<br>
+        root + a + p + p + l (IsEnd for "app" is at 3rd node; "apple" and "application" share through 'l') = root + 4 = 5.<br>
+        Then 'e' for apple (1), 'i','c','a','t','i','o','n' for application (7) = <strong>5 + 1 + 7 = 13 nodes</strong>.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. Why is a Trie better than a HashSet for the "StartsWith" (prefix search) operation?</div>
+    <div class="quiz-meta">💡 Think about what a HashSet has to do to find all words with a given prefix.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        A HashSet has O(1) exact lookup but O(n × L) prefix search — you'd have to iterate over all n words and check if each starts with the prefix (O(L) per word). A Trie's prefix search is O(L) — just walk L nodes down from the root. This is independent of how many words are stored. For autocomplete over 10 million words, the Trie is millions of times faster than a HashSet iteration.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. You delete the word "car" from a trie that also contains "card". What happens to the 'r' node?</div>
+    <div class="quiz-meta">💡 Should the 'r' node be removed from memory? Why or why not?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        The 'r' node should <strong>NOT</strong> be removed. It still serves as a prefix node for "card". Only the <code>IsEnd</code> flag on the 'r' node is set to false (indicating "car" is no longer a complete word). The 'r' node remains in the trie because its child 'd' (for "card") still exists. Only nodes that are (1) not IsEnd and (2) have zero children can be safely removed.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. How does a trie compare to a sorted array (binary search) for word lookup?</div>
+    <div class="quiz-meta">💡 Compare O(L) vs. O(L log n) for search; consider how each handles prefix queries.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        <strong>Exact search:</strong> Trie O(L) vs. Sorted array O(L × log n). Trie wins for large n.<br>
+        <strong>Prefix search:</strong> Trie O(L) (walk to prefix node, done) vs. Sorted array O(L × log n) (binary search to find range start) + O(k) to enumerate k results.<br>
+        <strong>Space:</strong> Trie uses more space due to child pointers, but shares prefix nodes. Sorted array is compact.<br>
+        <strong>Insert:</strong> Trie O(L) vs. Sorted array O(n) (shift elements). Trie wins heavily for dynamic dictionaries.<br>
+        Overall: Trie wins for prefix queries and dynamic data; sorted arrays win for static data with cache-friendly sequential access.
+    </div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. What modification to a TrieNode would let you implement a word frequency counter (count how many times each word was inserted)?</div>
+    <div class="quiz-meta">💡 Which node stores word-level information? What field do you add?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">
+        Add an integer field <code>WordCount</code> (or <code>count</code>) to TrieNode. During <code>Insert</code>, after walking all characters to the end node, increment <code>node.WordCount++</code> in addition to setting <code>node.IsEnd = true</code>. The <code>Search</code> operation can then return <code>node.WordCount</code> instead of just a boolean. A count of 0 means not present; count ≥ 1 means present (and the count itself gives frequency). The C# implementation in this module already includes this field.
+    </div>
+</div>
+
+<br>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 7D Complete</button>
+<div class="toast" id="toast">✅ Module 7D marked complete!</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 7D Complete!</strong><br><br>
+    You now understand: trie structure, shared prefix nodes, insert/search/startsWith/autocomplete all in O(L),
+    recursive delete with branch pruning, and C#/Python implementations.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m07c_heaps.html">Module 7C — Heaps &amp; PriorityQueue&lt;T&gt;</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m07e_btrees.html">Module 7E — B-Trees</a>
+</div>
+    <script>var MODULE_ID = 'm07d';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

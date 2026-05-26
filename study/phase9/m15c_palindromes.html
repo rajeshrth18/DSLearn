@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15C — Manacher's Algorithm | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part C</h1>
+    <div class="tagline">Manacher's Algorithm — Palindromes in O(n)</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Find all palindromic substrings in linear time · P-array · Mirror property</p>
+    <div class="badges">
+        <span>⏱ Estimated: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 15 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ✅ <strong>Part B</strong> — <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Manacher's (Palindromes)<br>
+    ⬜ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
+    <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Palindrome Review</div>
+
+<p>A <strong>palindrome</strong> reads the same forwards and backwards. Finding the
+<strong>longest palindromic substring</strong> is a classic interview problem.</p>
+
+<ul>
+    <li><strong>Odd-length palindromes</strong>: centered at a single character (e.g., "racecar" centered at 'e')</li>
+    <li><strong>Even-length palindromes</strong>: centered between two characters (e.g., "abba" centered between 'b' and 'b')</li>
+</ul>
+
+<h3>1.1 — Expand Around Center: O(n²) Approach</h3>
+<p>For each center (n odd-centers + n-1 even-centers), expand outward while characters match.
+Simple but O(n²).</p>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">static string</span> <span class="mt">LongestPalindromeExpand</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">int</span> n = s.Length, start = <span class="nm">0</span>, maxLen = <span class="nm">1</span>;
+
+    <span class="kw">void</span> <span class="mt">Expand</span>(<span class="kw">int</span> l, <span class="kw">int</span> r)
+    {
+        <span class="kw">while</span> (l &gt;= <span class="nm">0</span> &amp;&amp; r &lt; n &amp;&amp; s[l] == s[r]) { l--; r++; }
+        <span class="kw">if</span> (r - l - <span class="nm">1</span> &gt; maxLen) { maxLen = r - l - <span class="nm">1</span>; start = l + <span class="nm">1</span>; }
+    }
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="mt">Expand</span>(i, i);     <span class="cm">// odd-length</span>
+        <span class="mt">Expand</span>(i, i + <span class="nm">1</span>); <span class="cm">// even-length</span>
+    }
+    <span class="kw">return</span> s.<span class="mt">Substring</span>(start, maxLen);
+}</pre>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Manacher's Algorithm: O(n)</div>
+
+<p>Manacher's algorithm preprocesses the string by inserting a separator character <code>#</code>
+between every character (and at both ends). This transforms the problem: all palindromes become
+odd-length in the new string, eliminating the even/odd case split.</p>
+
+<div class="diagram">Transform "abba" → "#a#b#b#a#"
+Index:      0 1 2 3 4 5 6 7 8
+
+P[i] = radius of palindrome centered at i (in transformed string)
+
+P = [0, 1, 0, 1, 4, 1, 0, 1, 0]
+        ↑       ↑
+      "a"     "abba" — P[4]=4 means 4 chars on each side match
+
+Extract original: center=4, P[4]=4 → original palindrome starts at (4-4)/2 = 0, length P[4]=4 → "abba"</div>
+
+<div class="tip">
+    <strong>💡 The Mirror Trick:</strong> Manacher maintains a "rightmost palindrome" boundary [c, r].
+    For position i inside this boundary, we know P[i] ≥ P[mirror(i)] where mirror = 2*c - i.
+    This avoids re-expanding palindromes we've already computed.
+</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">static string</span> <span class="mt">LongestPalindromeManacher</span>(<span class="kw">string</span> s)
+{
+    <span class="cm">// Transform: "abc" → "#a#b#c#"</span>
+    <span class="kw">var</span> t = <span class="kw">new</span> <span class="tp">System</span>.<span class="tp">Text</span>.<span class="tp">StringBuilder</span>(<span class="st">"#"</span>);
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s) { t.<span class="mt">Append</span>(c); t.<span class="mt">Append</span>(<span class="st">'#'</span>); }
+    <span class="kw">string</span> T = t.<span class="mt">ToString</span>();
+    <span class="kw">int</span> n = T.Length;
+    <span class="kw">int</span>[] P = <span class="kw">new int</span>[n];
+    <span class="kw">int</span> c = <span class="nm">0</span>, r = <span class="nm">0</span>;  <span class="cm">// center and right boundary of rightmost palindrome</span>
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+    {
+        <span class="kw">int</span> mirror = <span class="nm">2</span> * c - i;
+        <span class="kw">if</span> (i &lt; r)
+            P[i] = <span class="tp">Math</span>.<span class="mt">Min</span>(r - i, P[mirror]);
+
+        <span class="cm">// Try to expand beyond known boundary</span>
+        <span class="kw">while</span> (i - P[i] - <span class="nm">1</span> &gt;= <span class="nm">0</span> &amp;&amp; i + P[i] + <span class="nm">1</span> &lt; n &amp;&amp; T[i - P[i] - <span class="nm">1</span>] == T[i + P[i] + <span class="nm">1</span>])
+            P[i]++;
+
+        <span class="kw">if</span> (i + P[i] &gt; r)
+        {
+            c = i;
+            r = i + P[i];
+        }
+    }
+
+    <span class="cm">// Find maximum P[i]</span>
+    <span class="kw">int</span> maxLen = <span class="nm">0</span>, center = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++)
+        <span class="kw">if</span> (P[i] &gt; maxLen) { maxLen = P[i]; center = i; }
+
+    <span class="kw">int</span> start = (center - maxLen) / <span class="nm">2</span>;
+    <span class="kw">return</span> s.<span class="mt">Substring</span>(start, maxLen);
+}
+<span class="cm">// "babad" → "bab" or "aba"   "cbbd" → "bb"</span></pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">longest_palindrome_manacher</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
+    T = <span class="st">'#'</span> + <span class="st">'#'</span>.<span class="mt">join</span>(s) + <span class="st">'#'</span>
+    n = <span class="mt">len</span>(T)
+    P = [<span class="nm">0</span>] * n
+    c = r = <span class="nm">0</span>
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        mirror = <span class="nm">2</span> * c - i
+        <span class="kw">if</span> i &lt; r:
+            P[i] = <span class="mt">min</span>(r - i, P[mirror])
+        <span class="kw">while</span> (i - P[i] - <span class="nm">1</span> &gt;= <span class="nm">0</span> <span class="kw">and</span> i + P[i] + <span class="nm">1</span> &lt; n
+               <span class="kw">and</span> T[i - P[i] - <span class="nm">1</span>] == T[i + P[i] + <span class="nm">1</span>]):
+            P[i] += <span class="nm">1</span>
+        <span class="kw">if</span> i + P[i] &gt; r:
+            c, r = i, i + P[i]
+
+    max_len = <span class="mt">max</span>(P)
+    center = P.<span class="mt">index</span>(max_len)
+    start = (center - max_len) // <span class="nm">2</span>
+    <span class="kw">return</span> s[start : start + max_len]
+
+print(<span class="mt">longest_palindrome_manacher</span>(<span class="st">"babad"</span>))   <span class="cm"># "bab"</span>
+print(<span class="mt">longest_palindrome_manacher</span>(<span class="st">"cbbd"</span>))    <span class="cm"># "bb"</span></pre>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Count All Palindromic Substrings</div>
+
+<p>Using the P array, we can also count all palindromic substrings in O(n).
+Each <code>P[i]</code> contributes <code>⌈P[i]/2⌉ + (1 if T[i]!='#')</code> palindromes... but the
+simplest way: each position i contributes <code>(P[i] + 1) / 2</code> palindromes from the original string.</p>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">count_palindromic_substrings</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">int</span>:
+    T = <span class="st">'#'</span> + <span class="st">'#'</span>.<span class="mt">join</span>(s) + <span class="st">'#'</span>
+    n = <span class="mt">len</span>(T)
+    P = [<span class="nm">0</span>] * n
+    c = r = <span class="nm">0</span>
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        mirror = <span class="nm">2</span> * c - i
+        <span class="kw">if</span> i &lt; r:
+            P[i] = <span class="mt">min</span>(r - i, P[mirror])
+        <span class="kw">while</span> (i - P[i] - <span class="nm">1</span> &gt;= <span class="nm">0</span> <span class="kw">and</span> i + P[i] + <span class="nm">1</span> &lt; n
+               <span class="kw">and</span> T[i - P[i] - <span class="nm">1</span>] == T[i + P[i] + <span class="nm">1</span>]):
+            P[i] += <span class="nm">1</span>
+        <span class="kw">if</span> i + P[i] &gt; r:
+            c, r = i, i + P[i]
+
+    <span class="cm"># Each P[i] counts palindromes: (P[i]+1)//2 palindromes contributed</span>
+    <span class="kw">return</span> <span class="mt">sum</span>((p + <span class="nm">1</span>) // <span class="nm">2</span> <span class="kw">for</span> p <span class="kw">in</span> P)
+
+print(<span class="mt">count_palindromic_substrings</span>(<span class="st">"abc"</span>))   <span class="cm"># 3</span>
+print(<span class="mt">count_palindromic_substrings</span>(<span class="st">"aaa"</span>))   <span class="cm"># 6</span></pre>
+</div>
+
+<div class="note">
+    <strong>📌 Key Takeaways:</strong>
+    <ul style="margin-top:8px;">
+        <li>Transform with <code>#</code> separators unifies odd/even palindromes — all become odd-length</li>
+        <li>Manacher's maintains [c, r] — the rightmost palindrome — to reuse computed radii</li>
+        <li>Time: <strong>O(n)</strong>; Space: <strong>O(n)</strong> for the P array and transformed string</li>
+        <li>Expand-around-center is simpler but O(n²); use Manacher for competitive programming</li>
+    </ul>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15C Complete</button>
+<div class="toast" id="toast">✅ Module 15C complete! Manacher's Algorithm mastered!</div>
+    <script>var MODULE_ID = 'm15c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

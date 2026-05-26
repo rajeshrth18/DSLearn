@@ -1,50 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 3D — Monotonic Stack &amp; Queue</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
-        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
-        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
-        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
-        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
-        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
-        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
-        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
-        .toc ol { margin-left: 20px; }
-        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
-        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
-        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
-        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
-        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
-        p { margin: 10px 0 14px 0; font-size: 1em; }
-        ul, ol { margin: 10px 0 14px 28px; }
-        li { margin: 7px 0; }
-        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
-        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
-        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
-        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
-        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .note strong { color: #e67e22; }
-        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .tip strong { color: #16a085; }
-        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .warning strong { color: #c0392b; }
-        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .realworld strong { color: #1a5276; }
-        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
-        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
-        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
-        tbody tr:nth-child(even) { background: #f8f9fa; }
-        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
-        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
-        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
-        .nav-box strong { color: #1a5276; }
-        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-    </style>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
@@ -62,13 +22,17 @@
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 3 Navigation:</strong><br><br>
+    <strong>📂 Module 3 — Stacks &amp; Queues:</strong><br><br>
     ✅ <strong>Part A</strong> — <a href="m03a_stacks.html">Stacks</a><br>
     ✅ <strong>Part B</strong> — <a href="m03b_queues.html">Queues &amp; Deque</a><br>
     ✅ <strong>Part C</strong> — <a href="m03c_priority_queue.html">Priority Queue</a><br>
     ▶ <strong>Part D</strong> — <em>You are here</em> — Monotonic Stack &amp; Queue<br>
     ⬜ <strong>Part E</strong> — <a href="m03e_practice.html">Practice: 15 Problems</a><br>
     🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase2/m02a_singly_ll.html">&larr; Module 2 &mdash; Linked Lists</a>
+    <a href="../phase3/m04a_recursion.html">Module 4 &mdash; Recursion &rarr;</a>
 </div>
 
 <div class="toc">
@@ -187,6 +151,10 @@ End: remaining in stack have no greater element → result = -1
 
 FINAL: result = [4, 2, 4, -1, -1]</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span>[] <span class="mt">NextGreaterElement</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> n = nums.Length;
@@ -211,6 +179,21 @@ FINAL: result = [4, 2, 4, -1, -1]</div>
 
 <span class="cm">// [2,1,2,4,3] → [4,2,4,-1,-1]
 // [1,3,2,4]   → [3,4,4,-1]</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">next_greater_element</span>(nums: list) -&gt; list:
+    n      = <span class="mt">len</span>(nums)
+    result = [-<span class="nm">1</span>] * n
+    stack  = []   <span class="cm"># decreasing stack of indices</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">while</span> stack <span class="kw">and</span> nums[stack[-<span class="nm">1</span>]] &lt; nums[i]:
+            result[stack.<span class="mt">pop</span>()] = nums[i]
+        stack.<span class="mt">append</span>(i)
+    <span class="kw">return</span> result</pre>
+</div>
 
 <hr>
 
@@ -221,6 +204,10 @@ FINAL: result = [4, 2, 4, -1, -1]</div>
 Use a <strong>monotonically increasing</strong> stack — the top of the stack when you push
 element <code>i</code> is the previous smaller element for <code>i</code>.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span>[] <span class="mt">PreviousSmallerElement</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> n = nums.Length;
@@ -247,6 +234,22 @@ element <code>i</code> is the previous smaller element for <code>i</code>.</p>
 //   PSE of index 2 (val=2):  1  (index 1, val=1)
 //   PSE of index 3 (val=4):  2  (index 2, val=2)
 //   PSE of index 4 (val=3):  2  (index 2, val=2)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">previous_smaller_element</span>(nums: list) -&gt; list:
+    n      = <span class="mt">len</span>(nums)
+    result = [-<span class="nm">1</span>] * n
+    stack  = []   <span class="cm"># increasing stack of indices</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">while</span> stack <span class="kw">and</span> nums[stack[-<span class="nm">1</span>]] &gt;= nums[i]:
+            stack.<span class="mt">pop</span>()
+        result[i] = nums[stack[-<span class="nm">1</span>]] <span class="kw">if</span> stack <span class="kw">else</span> -<span class="nm">1</span>
+        stack.<span class="mt">append</span>(i)
+    <span class="kw">return</span> result</pre>
+</div>
 
 <hr>
 
@@ -257,6 +260,10 @@ element <code>i</code> is the previous smaller element for <code>i</code>.</p>
 element might be in the beginning. The trick: <strong>process the array twice</strong> by looping
 from 0 to 2n-1 using modulo, but only record results in the first pass (indices 0..n-1).</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span>[] <span class="mt">NextGreaterElements</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> n = nums.Length;
@@ -279,6 +286,22 @@ from 0 to 2n-1 using modulo, but only record results in the first pass (indices 
 //   Index 0 (val=1): next greater is 2 (index 1)
 //   Index 1 (val=2): no greater element in the whole array → -1
 //   Index 2 (val=1): wraps around, next greater is 2 (index 1)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">next_greater_elements</span>(nums: list) -&gt; list:
+    n      = <span class="mt">len</span>(nums)
+    result = [-<span class="nm">1</span>] * n
+    stack  = []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">2</span> * n):        <span class="cm"># loop twice for circular</span>
+        idx = i % n
+        <span class="kw">while</span> stack <span class="kw">and</span> nums[stack[-<span class="nm">1</span>]] &lt; nums[idx]:
+            result[stack.<span class="mt">pop</span>()] = nums[idx]
+        <span class="kw">if</span> i &lt; n: stack.<span class="mt">append</span>(idx)  <span class="cm"># only push in first pass</span>
+    <span class="kw">return</span> result</pre>
+</div>
 
 <hr>
 
@@ -307,6 +330,10 @@ End: stack=[6,7] → result[6]=0, result[7]=0
 
 RESULT: [1, 1, 4, 2, 1, 1, 0, 0]</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span>[] <span class="mt">DailyTemperatures</span>(<span class="kw">int</span>[] temps)
 {
     <span class="kw">int</span>[] result = <span class="kw">new int</span>[temps.Length];
@@ -325,6 +352,22 @@ RESULT: [1, 1, 4, 2, 1, 1, 0, 0]</div>
 }
 
 <span class="cm">// [73,74,75,71,69,72,76,73] → [1,1,4,2,1,1,0,0]</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">daily_temperatures</span>(temps: list) -&gt; list:
+    n      = <span class="mt">len</span>(temps)
+    result = [<span class="nm">0</span>] * n
+    stack  = []   <span class="cm"># decreasing stack of indices</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">while</span> stack <span class="kw">and</span> temps[stack[-<span class="nm">1</span>]] &lt; temps[i]:
+            j = stack.<span class="mt">pop</span>()
+            result[j] = i - j     <span class="cm"># days to wait</span>
+        stack.<span class="mt">append</span>(i)
+    <span class="kw">return</span> result</pre>
+</div>
 
 <hr>
 
@@ -370,6 +413,10 @@ End: pop 5. Left=4. Width=6-4-1=1. Area=3*1=3.
 
 MAX AREA = 10</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span> <span class="mt">LargestRectangleArea</span>(<span class="kw">int</span>[] heights)
 {
     <span class="kw">int</span> n = heights.Length;
@@ -397,6 +444,23 @@ MAX AREA = 10</div>
 <span class="cm">// [2,1,5,6,2,3] → 10
 // [2,4]         → 4
 // [1]           → 1</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">largest_rectangle_area</span>(heights: list) -&gt; <span class="tp">int</span>:
+    stack  = []
+    result = <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(heights) + <span class="nm">1</span>):   <span class="cm"># +1 to flush remaining</span>
+        h = heights[i] <span class="kw">if</span> i &lt; <span class="mt">len</span>(heights) <span class="kw">else</span> <span class="nm">0</span>
+        <span class="kw">while</span> stack <span class="kw">and</span> heights[stack[-<span class="nm">1</span>]] &gt; h:
+            height = heights[stack.<span class="mt">pop</span>()]
+            width  = i <span class="kw">if not</span> stack <span class="kw">else</span> i - stack[-<span class="nm">1</span>] - <span class="nm">1</span>
+            result = <span class="mt">max</span>(result, height * width)
+        stack.<span class="mt">append</span>(i)
+    <span class="kw">return</span> result</pre>
+</div>
 
 <hr>
 
@@ -428,6 +492,10 @@ APPROACH:
     - New water height = min(current, new_top) - bottom
     - Width = current_index - new_top_index - 1</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span> <span class="mt">Trap</span>(<span class="kw">int</span>[] height)
 {
     <span class="kw">int</span> water = <span class="nm">0</span>;
@@ -452,6 +520,22 @@ APPROACH:
 
 <span class="cm">// [0,1,0,2,1,0,1,3,2,1,2,1] → 6
 // [4,2,0,3,2,5]              → 9</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">trap</span>(height: list) -&gt; <span class="tp">int</span>:
+    stack, water = [], <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(height)):
+        <span class="kw">while</span> stack <span class="kw">and</span> height[stack[-<span class="nm">1</span>]] &lt; height[i]:
+            bottom = height[stack.<span class="mt">pop</span>()]
+            <span class="kw">if</span> <span class="kw">not</span> stack: <span class="kw">break</span>
+            bounded = <span class="mt">min</span>(height[stack[-<span class="nm">1</span>]], height[i]) - bottom
+            water  += bounded * (i - stack[-<span class="nm">1</span>] - <span class="nm">1</span>)
+        stack.<span class="mt">append</span>(i)
+    <span class="kw">return</span> water</pre>
+</div>
 
 <hr>
 
@@ -480,6 +564,10 @@ i=7 v=7:  7>6→remove 6. dq=[7]       Window[5..7]: max=nums[7]=7
 
 RESULT: [3, 3, 5, 5, 6, 7]</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public static int</span>[] <span class="mt">MaxSlidingWindow</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">int</span> n = nums.Length;
@@ -509,6 +597,23 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
 
 <span class="cm">// [1,3,-1,-3,5,3,6,7], k=3 → [3,3,5,5,6,7]
 // [1], k=1                  → [1]</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">def</span> <span class="mt">max_sliding_window</span>(nums: list, k: <span class="tp">int</span>) -&gt; list:
+    dq, result = <span class="mt">deque</span>(), []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums)):
+        <span class="kw">while</span> dq <span class="kw">and</span> nums[dq[-<span class="nm">1</span>]] &lt;= nums[i]:
+            dq.<span class="mt">pop</span>()                      <span class="cm"># remove smaller from back</span>
+        dq.<span class="mt">append</span>(i)
+        <span class="kw">if</span> dq[<span class="nm">0</span>] &lt; i - k + <span class="nm">1</span>: dq.<span class="mt">popleft</span>()  <span class="cm"># out-of-window</span>
+        <span class="kw">if</span> i &gt;= k - <span class="nm">1</span>: result.<span class="mt">append</span>(nums[dq[<span class="nm">0</span>]])
+    <span class="kw">return</span> result</pre>
+</div>
 
 <hr>
 
@@ -559,5 +664,6 @@ RESULT: [3, 3, 5, 5, 6, 7]</div>
     ▶ <strong>Next:</strong> <a href="m03e_practice.html">Part E — Practice Problems</a>
 </div>
 
+    <script src="../dsa.js"></script>
 </body>
 </html>

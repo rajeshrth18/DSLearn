@@ -1,0 +1,606 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5B — Merge Sort & Quick Sort | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+.toc{background:#fff;border-radius:12px;padding:22px 28px;margin:24px 0;border:1px solid #e0e0e0}
+.toc h2{font-size:1em;text-transform:uppercase;letter-spacing:2px;color:#7d3c98;margin-bottom:14px}
+.toc ol{padding-left:20px}.toc li{font-size:.9em;padding:4px 0;color:#444}.toc li span{color:#888;font-size:.88em}
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+p{margin:0 0 14px;color:#444}
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+.diagram{background:#1e1e1e;color:#4ec9b0;font-family:'Courier New',monospace;font-size:.86em;padding:20px 24px;border-radius:10px;border-left:4px solid #4ec9b0;margin:18px 0;overflow-x:auto;white-space:pre}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.warning{background:#fde8e8;border-left:4px solid #e74c3c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.realworld{background:#eaf4fb;border-left:4px solid #2980b9;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong,.warning strong,.realworld strong{display:block;margin-bottom:4px}
+table.cmplx{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88em}
+table.cmplx th{background:#2c3e50;color:#9cdcfe;padding:10px 14px;text-align:left}
+table.cmplx td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
+table.cmplx tr:nth-child(even) td{background:#f8f9fa}
+.qg{color:#27ae60;font-weight:700}.qo{color:#d68910;font-weight:700}.qr{color:#c0392b;font-weight:700}
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 20px;margin:14px 0}
+.quiz-q{font-weight:600;color:#2c3e50;margin-bottom:8px}
+.quiz-btn{background:#9b59b6;color:#fff;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:.84em}
+.quiz-a{background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:10px;display:none}
+.quiz-a .ans-label{color:#27ae60;font-weight:700;margin-bottom:6px}
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 5 › Part B</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 5 — Part B</h1>
+  <div class="tagline">Merge Sort &amp; Quick Sort — The Efficient O(n log n) Algorithms</div>
+  <div class="badges">
+    <span>⏱ Estimated: 2.5 Hours</span><span>🎯 Intermediate</span><span>💻 C# &amp; Python</span><span>📐 Phase 3 · Module 5B</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 5 — Sorting Algorithms:</strong><br>
+  ✅ <strong>Part A</strong> — <a href="m05a_basic_sorts.html">O(n²) Sorts</a><br>
+  ▶ <strong>Part B</strong> — <em>You are here</em> — Merge Sort &amp; Quick Sort<br>
+  ⬜ <strong>Part C</strong> — <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
+  ⬜ <strong>Part D</strong> — <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
+  ⬜ <strong>Part E</strong> — <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
+    <a href="../phase4/m06a_binary_trees.html">Module 6 &mdash; Binary Trees &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="toc">
+  <h2>📚 Contents — Module 5B</h2>
+  <ol>
+    <li>Divide and Conquer Strategy <span>— The foundation of efficient sorting</span></li>
+    <li>Merge Sort — Full Explanation <span>— Split, sort, merge</span></li>
+    <li>Merge Sort Implementation <span>— Complete C# and Python code</span></li>
+    <li>Quick Sort — Full Explanation <span>— Pivot, partition, recurse</span></li>
+    <li>Quick Sort Implementation <span>— Complete C# and Python code</span></li>
+    <li>Pivot Strategies <span>— Random pivot, median-of-three</span></li>
+    <li>Merge Sort vs Quick Sort <span>— Detailed comparison</span></li>
+    <li>Practice Questions</li>
+  </ol>
+</div>
+
+<h2 class="sec">Section 1 — Divide and Conquer</h2>
+<p>Both merge sort and quick sort use the <strong>divide and conquer</strong> strategy:</p>
+<ol style="padding-left:20px;margin-bottom:14px">
+  <li style="padding:4px 0"><strong>Divide</strong>: Split the problem into smaller sub-problems</li>
+  <li style="padding:4px 0"><strong>Conquer</strong>: Solve each sub-problem recursively</li>
+  <li style="padding:4px 0"><strong>Combine</strong>: Merge the solutions</li>
+</ol>
+<p>Why does this give O(n log n)? Because we split n elements into log₂(n) levels, and each level does O(n) total work.</p>
+
+<div class="diagram">
+  n=8 elements split into log₂(8)=3 levels:
+  
+  Level 0: [38,27,43,3,9,82,10,1]    ← n=8 work
+  Level 1: [38,27,43,3] [9,82,10,1]  ← n=8 total work
+  Level 2: [38,27][43,3][9,82][10,1] ← n=8 total work
+  Level 3: individual elements        ← base cases
+  
+  Total: 3 levels × n work each = n log n = 8 × 3 = 24 operations
+  Compare to O(n²): 8² = 64 operations
+</div>
+
+<h2 class="sec">Section 2 — Merge Sort Deep Dive</h2>
+
+<h3>2.1 The Analogy — Merging Two Sorted Stacks of Papers</h3>
+<p>Imagine you have two sorted stacks of numbered papers. To merge them into one sorted stack: look at the top of each stack, take the smaller one, place it on the result stack. Repeat until both stacks are empty. This merge operation is O(n).</p>
+<p>Merge sort works by recursively splitting the array until each piece has 1 element (trivially sorted), then merging sorted pieces back together.</p>
+
+<div class="diagram">
+  Merge Sort Trace: [38, 27, 43, 3]
+  
+  Split:
+  [38, 27, 43, 3]
+  ├── [38, 27]
+  │   ├── [38]   (sorted)
+  │   └── [27]   (sorted)
+  └── [43, 3]
+      ├── [43]   (sorted)
+      └── [3]    (sorted)
+  
+  Merge:
+  [27] + [38] → merge → [27, 38]
+  [3]  + [43] → merge → [3, 43]
+  [27,38] + [3,43] → merge → [3, 27, 38, 43]  ✓
+</div>
+
+<h3>2.2 Complete Merge Sort Implementation</h3>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Merge Sort — Complete Implementation ─────────────────────────────────────
+// Time:  O(n log n) — all cases (best/avg/worst identical)
+// Space: O(n) — needs auxiliary array for merging
+// Stable: Yes — equal elements keep their relative order</span>
+
+<span class="kw">class</span> <span class="tp">MergeSort</span>
+{
+    <span class="cm">/// Main sort function — divides array in half recursively</span>
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> right)
+    {
+        <span class="cm">// BASE CASE: subarray of 0 or 1 element is already sorted</span>
+        <span class="kw">if</span> (left &gt;= right) <span class="kw">return</span>;
+
+        <span class="kw">int</span> mid = left + (right - left) / <span class="nm">2</span>;  <span class="cm">// avoid int overflow</span>
+
+        <span class="mt">Sort</span>(arr, left, mid);        <span class="cm">// sort left half</span>
+        <span class="mt">Sort</span>(arr, mid + <span class="nm">1</span>, right);  <span class="cm">// sort right half</span>
+        <span class="mt">Merge</span>(arr, left, mid, right); <span class="cm">// merge both halves</span>
+    }
+
+    <span class="cm">/// Merges arr[left..mid] and arr[mid+1..right] (both sorted)</span>
+    <span class="kw">static void</span> <span class="mt">Merge</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> mid, <span class="kw">int</span> right)
+    {
+        <span class="kw">int</span> n1 = mid - left + <span class="nm">1</span>;
+        <span class="kw">int</span> n2 = right - mid;
+
+        <span class="cm">// Create temp arrays for left and right halves</span>
+        <span class="kw">int</span>[] L = <span class="kw">new int</span>[n1];
+        <span class="kw">int</span>[] R = <span class="kw">new int</span>[n2];
+
+        <span class="cm">// Copy data to temp arrays</span>
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n1; i++) L[i] = arr[left + i];
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nm">0</span>; j &lt; n2; j++) R[j] = arr[mid + <span class="nm">1</span> + j];
+
+        <span class="kw">int</span> ii = <span class="nm">0</span>, jj = <span class="nm">0</span>, k = left;
+
+        <span class="cm">// Merge L and R back into arr in sorted order</span>
+        <span class="kw">while</span> (ii &lt; n1 &amp;&amp; jj &lt; n2)
+        {
+            <span class="kw">if</span> (L[ii] &lt;= R[jj])  <span class="cm">// &lt;= makes it stable</span>
+                arr[k++] = L[ii++];
+            <span class="kw">else</span>
+                arr[k++] = R[jj++];
+        }
+
+        <span class="cm">// Copy remaining elements</span>
+        <span class="kw">while</span> (ii &lt; n1) arr[k++] = L[ii++];
+        <span class="kw">while</span> (jj &lt; n2) arr[k++] = R[jj++];
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr = { <span class="nm">38</span>, <span class="nm">27</span>, <span class="nm">43</span>, <span class="nm">3</span>, <span class="nm">9</span>, <span class="nm">82</span>, <span class="nm">10</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Before: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));
+        <span class="mt">Sort</span>(arr, <span class="nm">0</span>, arr.<span class="tp">Length</span> - <span class="nm">1</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"After:  "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));
+        <span class="cm">// After: 3, 9, 10, 27, 38, 43, 82</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="cm"># ─── Merge Sort — Complete Implementation ─────────────────────────────────────</span>
+
+<span class="kw">def</span> <span class="mt">merge_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    <span class="st">"""Merge sort: split, sort halves, merge.
+    Time: O(n log n) all cases | Space: O(n) | Stable: Yes
+    """</span>
+    <span class="kw">if</span> <span class="mt">len</span>(arr) &lt;= <span class="nm">1</span>:
+        <span class="kw">return</span> arr    <span class="cm"># base case: already sorted</span>
+
+    mid = <span class="mt">len</span>(arr) // <span class="nm">2</span>
+    left  = merge_sort(arr[:mid])    <span class="cm"># sort left half</span>
+    right = merge_sort(arr[mid:])    <span class="cm"># sort right half</span>
+    <span class="kw">return</span> merge(left, right)         <span class="cm"># merge and return</span>
+
+
+<span class="kw">def</span> <span class="mt">merge</span>(L: List[<span class="tp">int</span>], R: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    <span class="st">"""Merges two sorted lists into one sorted list."""</span>
+    result, i, j = [], <span class="nm">0</span>, <span class="nm">0</span>
+
+    <span class="kw">while</span> i &lt; <span class="mt">len</span>(L) <span class="kw">and</span> j &lt; <span class="mt">len</span>(R):
+        <span class="kw">if</span> L[i] &lt;= R[j]:   <span class="cm"># &lt;= for stability</span>
+            result.<span class="mt">append</span>(L[i]); i += <span class="nm">1</span>
+        <span class="kw">else</span>:
+            result.<span class="mt">append</span>(R[j]); j += <span class="nm">1</span>
+
+    result.<span class="mt">extend</span>(L[i:])
+    result.<span class="mt">extend</span>(R[j:])
+    <span class="kw">return</span> result
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    arr = [<span class="nm">38</span>, <span class="nm">27</span>, <span class="nm">43</span>, <span class="nm">3</span>, <span class="nm">9</span>, <span class="nm">82</span>, <span class="nm">10</span>]
+    <span class="mt">print</span>(<span class="st">"Before:"</span>, arr)
+    sorted_arr = merge_sort(arr)
+    <span class="mt">print</span>(<span class="st">"After: "</span>, sorted_arr)  <span class="cm"># [3, 9, 10, 27, 38, 43, 82]</span></pre>
+</div>
+
+<h2 class="sec">Section 3 — Merge Sort Counting Inversions (Bonus)</h2>
+<p>An <strong>inversion</strong> is a pair (i,j) where i &lt; j but arr[i] &gt; arr[j]. Counting inversions measures "how unsorted" an array is. Merge sort can count inversions in O(n log n) — a beautiful application!</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Count Inversions using Modified Merge Sort ───────────────────────────────
+// An inversion is a pair where arr[i] > arr[j] but i < j
+// Example: [3,1,2] has 2 inversions: (3,1) and (3,2)</span>
+
+<span class="kw">class</span> <span class="tp">InversionCount</span>
+{
+    <span class="kw">static long</span> <span class="mt">MergeSortCount</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> right)
+    {
+        <span class="kw">if</span> (left &gt;= right) <span class="kw">return</span> <span class="nm">0</span>;
+        <span class="kw">int</span> mid = (left + right) / <span class="nm">2</span>;
+        <span class="kw">long</span> count = <span class="nm">0</span>;
+        count += <span class="mt">MergeSortCount</span>(arr, left, mid);
+        count += <span class="mt">MergeSortCount</span>(arr, mid+<span class="nm">1</span>, right);
+        count += <span class="mt">MergeAndCount</span>(arr, left, mid, right);
+        <span class="kw">return</span> count;
+    }
+
+    <span class="kw">static long</span> <span class="mt">MergeAndCount</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> mid, <span class="kw">int</span> right)
+    {
+        <span class="kw">int</span> n1=mid-left+<span class="nm">1</span>, n2=right-mid;
+        <span class="kw">int</span>[] L=<span class="kw">new int</span>[n1], R=<span class="kw">new int</span>[n2];
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n1;i++) L[i]=arr[left+i];
+        <span class="kw">for</span>(<span class="kw">int</span> j=<span class="nm">0</span>;j&lt;n2;j++) R[j]=arr[mid+<span class="nm">1</span>+j];
+        <span class="kw">int</span> ii=<span class="nm">0</span>,jj=<span class="nm">0</span>,k=left; <span class="kw">long</span> inv=<span class="nm">0</span>;
+        <span class="kw">while</span>(ii&lt;n1 &amp;&amp; jj&lt;n2) {
+            <span class="kw">if</span>(L[ii]&lt;=R[jj]) arr[k++]=L[ii++];
+            <span class="kw">else</span> { inv+=n1-ii; arr[k++]=R[jj++]; } <span class="cm">// all remaining L elements form inversions!</span>
+        }
+        <span class="kw">while</span>(ii&lt;n1) arr[k++]=L[ii++];
+        <span class="kw">while</span>(jj&lt;n2) arr[k++]=R[jj++];
+        <span class="kw">return</span> inv;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] arr = { <span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">2</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Inversions: "</span> + <span class="mt">MergeSortCount</span>(arr, <span class="nm">0</span>, arr.<span class="tp">Length</span>-<span class="nm">1</span>)); <span class="cm">// 2</span>
+        <span class="kw">int</span>[] arr2 = { <span class="nm">7</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">1</span>,<span class="nm">3</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Inversions: "</span> + <span class="mt">MergeSortCount</span>(arr2, <span class="nm">0</span>, arr2.<span class="tp">Length</span>-<span class="nm">1</span>)); <span class="cm">// 7</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List, Tuple
+
+<span class="kw">def</span> <span class="mt">count_inversions</span>(arr: List[<span class="tp">int</span>]) -&gt; Tuple[List[<span class="tp">int</span>], <span class="tp">int</span>]:
+    <span class="kw">if</span> <span class="mt">len</span>(arr) &lt;= <span class="nm">1</span>: <span class="kw">return</span> arr, <span class="nm">0</span>
+    mid = <span class="mt">len</span>(arr) // <span class="nm">2</span>
+    left, left_inv  = count_inversions(arr[:mid])
+    right, right_inv = count_inversions(arr[mid:])
+    merged, split_inv = merge_count(left, right)
+    <span class="kw">return</span> merged, left_inv + right_inv + split_inv
+
+<span class="kw">def</span> <span class="mt">merge_count</span>(L, R):
+    result, i, j, inv = [], <span class="nm">0</span>, <span class="nm">0</span>, <span class="nm">0</span>
+    <span class="kw">while</span> i &lt; <span class="mt">len</span>(L) <span class="kw">and</span> j &lt; <span class="mt">len</span>(R):
+        <span class="kw">if</span> L[i] &lt;= R[j]: result.<span class="mt">append</span>(L[i]); i+=<span class="nm">1</span>
+        <span class="kw">else</span>: inv += <span class="mt">len</span>(L)-i; result.<span class="mt">append</span>(R[j]); j+=<span class="nm">1</span>
+    result.<span class="mt">extend</span>(L[i:]); result.<span class="mt">extend</span>(R[j:])
+    <span class="kw">return</span> result, inv
+
+_, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">2</span>])
+<span class="mt">print</span>(<span class="st">f"Inversions: {inv}"</span>)  <span class="cm"># 2</span></pre>
+</div>
+
+<h2 class="sec">Section 4 — Quick Sort Deep Dive</h2>
+
+<h3>4.1 The Analogy — Sorting a Line of People by Height</h3>
+<p>Pick one person (the <strong>pivot</strong>). Ask everyone shorter to stand on the left and everyone taller to stand on the right. Now the pivot is in the perfect final position! Repeat this process for the left group and right group separately. This is quick sort.</p>
+
+<h3>4.2 The Partition Step</h3>
+<p>The key operation in quick sort is <strong>partition</strong>: rearrange the array so all elements less than the pivot come before it, and all greater elements come after it. After partitioning, the pivot is in its final sorted position.</p>
+
+<div class="diagram">
+  Quick Sort Trace: [10, 80, 30, 90, 40, 50, 70]
+  Pivot: 70 (last element)
+  
+  Partition step (Lomuto scheme):
+  i=-1, scan left to right:
+  10 < 70? Yes → i=0, arr=[10, 80, 30, 90, 40, 50, 70]
+  80 < 70? No  → skip
+  30 < 70? Yes → i=1, swap 30↔80 → [10, 30, 80, 90, 40, 50, 70]
+  90 < 70? No  → skip
+  40 < 70? Yes → i=2, swap 40↔80 → [10, 30, 40, 90, 80, 50, 70]
+  50 < 70? Yes → i=3, swap 50↔90 → [10, 30, 40, 50, 80, 90, 70]
+  Place pivot: swap arr[i+1] ↔ pivot → [10, 30, 40, 50, 70, 90, 80]
+                                                       ↑
+                                              70 is in FINAL POSITION!
+  
+  Recurse on [10,30,40,50] and [90,80]
+</div>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── Quick Sort — Complete Implementation (Lomuto Partition) ──────────────────
+// Time:  O(n log n) avg, O(n²) worst (when array already sorted + bad pivot)
+// Space: O(log n) avg — call stack
+// Stable: No
+// In-place: Yes</span>
+
+<span class="kw">class</span> <span class="tp">QuickSort</span>
+{
+    <span class="kw">static</span> <span class="tp">Random</span> _rng = <span class="kw">new</span> <span class="tp">Random</span>();
+
+    <span class="cm">/// Main sort function</span>
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> low, <span class="kw">int</span> high)
+    {
+        <span class="kw">if</span> (low &lt; high)
+        {
+            <span class="cm">// Partition: place pivot in correct position</span>
+            <span class="kw">int</span> pivotIndex = <span class="mt">Partition</span>(arr, low, high);
+
+            <span class="mt">Sort</span>(arr, low, pivotIndex - <span class="nm">1</span>);  <span class="cm">// sort elements before pivot</span>
+            <span class="mt">Sort</span>(arr, pivotIndex + <span class="nm">1</span>, high); <span class="cm">// sort elements after pivot</span>
+        }
+    }
+
+    <span class="cm">/// Lomuto partition: uses last element as pivot
+    /// Returns the final position of the pivot</span>
+    <span class="kw">static int</span> <span class="mt">Partition</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> low, <span class="kw">int</span> high)
+    {
+        <span class="cm">// Randomise pivot to avoid worst case on sorted arrays</span>
+        <span class="kw">int</span> randomIdx = _rng.<span class="mt">Next</span>(low, high + <span class="nm">1</span>);
+        (arr[randomIdx], arr[high]) = (arr[high], arr[randomIdx]); <span class="cm">// swap random with last</span>
+
+        <span class="kw">int</span> pivot = arr[high];
+        <span class="kw">int</span> i = low - <span class="nm">1</span>;  <span class="cm">// index of last element smaller than pivot</span>
+
+        <span class="kw">for</span> (<span class="kw">int</span> j = low; j &lt; high; j++)
+        {
+            <span class="kw">if</span> (arr[j] &lt;= pivot)
+            {
+                i++;
+                (arr[i], arr[j]) = (arr[j], arr[i]);  <span class="cm">// swap</span>
+            }
+        }
+
+        <span class="cm">// Place pivot in its final position</span>
+        (arr[i + <span class="nm">1</span>], arr[high]) = (arr[high], arr[i + <span class="nm">1</span>]);
+        <span class="kw">return</span> i + <span class="nm">1</span>;
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr = { <span class="nm">10</span>, <span class="nm">80</span>, <span class="nm">30</span>, <span class="nm">90</span>, <span class="nm">40</span>, <span class="nm">50</span>, <span class="nm">70</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Before: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));
+        <span class="mt">Sort</span>(arr, <span class="nm">0</span>, arr.<span class="tp">Length</span> - <span class="nm">1</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"After:  "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr));
+        <span class="cm">// After: 10, 30, 40, 50, 70, 80, 90</span>
+
+        <span class="cm">// Test with duplicates</span>
+        <span class="kw">int</span>[] arr2 = { <span class="nm">3</span>, <span class="nm">6</span>, <span class="nm">8</span>, <span class="nm">10</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span> };
+        <span class="mt">Sort</span>(arr2, <span class="nm">0</span>, arr2.<span class="tp">Length</span> - <span class="nm">1</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"Duplicates: "</span> + <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr2));
+        <span class="cm">// Duplicates: 1, 1, 2, 3, 6, 8, 10</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">import</span> random
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="cm"># ─── Quick Sort — Complete Implementation ─────────────────────────────────────</span>
+
+<span class="kw">def</span> <span class="mt">quick_sort</span>(arr: List[<span class="tp">int</span>], low: <span class="tp">int</span>, high: <span class="tp">int</span>) -&gt; <span class="kw">None</span>:
+    <span class="st">"""Quick sort in-place. Call with quick_sort(arr, 0, len(arr)-1)
+    Time: O(n log n) avg, O(n²) worst | Space: O(log n) | Stable: No
+    """</span>
+    <span class="kw">if</span> low &lt; high:
+        pivot_idx = partition(arr, low, high)
+        quick_sort(arr, low, pivot_idx - <span class="nm">1</span>)
+        quick_sort(arr, pivot_idx + <span class="nm">1</span>, high)
+
+
+<span class="kw">def</span> <span class="mt">partition</span>(arr: List[<span class="tp">int</span>], low: <span class="tp">int</span>, high: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="cm"># Randomise pivot to avoid worst case</span>
+    rand_idx = random.<span class="mt">randint</span>(low, high)
+    arr[rand_idx], arr[high] = arr[high], arr[rand_idx]
+
+    pivot = arr[high]
+    i = low - <span class="nm">1</span>
+
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(low, high):
+        <span class="kw">if</span> arr[j] &lt;= pivot:
+            i += <span class="nm">1</span>
+            arr[i], arr[j] = arr[j], arr[i]
+
+    arr[i+<span class="nm">1</span>], arr[high] = arr[high], arr[i+<span class="nm">1</span>]
+    <span class="kw">return</span> i + <span class="nm">1</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    arr = [<span class="nm">10</span>, <span class="nm">80</span>, <span class="nm">30</span>, <span class="nm">90</span>, <span class="nm">40</span>, <span class="nm">50</span>, <span class="nm">70</span>]
+    <span class="mt">print</span>(<span class="st">"Before:"</span>, arr)
+    quick_sort(arr, <span class="nm">0</span>, <span class="mt">len</span>(arr)-<span class="nm">1</span>)
+    <span class="mt">print</span>(<span class="st">"After: "</span>, arr)  <span class="cm"># [10,30,40,50,70,80,90]</span></pre>
+</div>
+
+<h2 class="sec">Section 5 — 3-Way Quick Sort (Dutch National Flag)</h2>
+<p>When the array has many duplicate elements, standard quick sort degrades because all duplicates end up in one partition. The <strong>3-way partition</strong> creates three regions: &lt;pivot, =pivot, &gt;pivot. Elements equal to the pivot are already in their final positions.</p>
+
+<div class="code-block lang-cs">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+
+<span class="cm">// ─── 3-Way Quick Sort (Dutch National Flag) ───────────────────────────────────
+// Handles arrays with many duplicates efficiently: O(n) for all-equal arrays</span>
+
+<span class="kw">class</span> <span class="tp">ThreeWayQS</span>
+{
+    <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> lo, <span class="kw">int</span> hi)
+    {
+        <span class="kw">if</span> (lo &gt;= hi) <span class="kw">return</span>;
+
+        <span class="kw">int</span> pivot = arr[lo];
+        <span class="kw">int</span> lt = lo;    <span class="cm">// arr[lo..lt-1] < pivot</span>
+        <span class="kw">int</span> gt = hi;    <span class="cm">// arr[gt+1..hi] > pivot</span>
+        <span class="kw">int</span> i  = lo;    <span class="cm">// current element</span>
+
+        <span class="kw">while</span> (i &lt;= gt)
+        {
+            <span class="kw">if</span>      (arr[i] &lt; pivot) (arr[lt++], arr[i++]) = (arr[i], arr[lt]);
+            <span class="kw">else if</span> (arr[i] &gt; pivot) (arr[i], arr[gt--]) = (arr[gt], arr[i]);
+            <span class="kw">else</span>                     i++;
+        }
+        <span class="cm">// arr[lo..lt-1] < pivot, arr[lt..gt] == pivot, arr[gt+1..hi] > pivot</span>
+
+        <span class="mt">Sort</span>(arr, lo, lt - <span class="nm">1</span>);  <span class="cm">// sort less-than part</span>
+        <span class="mt">Sort</span>(arr, gt + <span class="nm">1</span>, hi);  <span class="cm">// sort greater-than part</span>
+        <span class="cm">// skip equal part — already in final positions!</span>
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">int</span>[] arr = { <span class="nm">5</span>,<span class="nm">3</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">5</span>,<span class="nm">4</span> };
+        <span class="mt">Sort</span>(arr, <span class="nm">0</span>, arr.<span class="tp">Length</span>-<span class="nm">1</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, arr)); <span class="cm">// 1,2,3,3,4,5,5,5,5</span>
+    }
+}</pre>
+</div>
+
+<div class="code-block lang-py" style="display:none">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="mt">three_way_qs</span>(arr: List[<span class="tp">int</span>], lo: <span class="tp">int</span>, hi: <span class="tp">int</span>) -&gt; <span class="kw">None</span>:
+    <span class="kw">if</span> lo >= hi: <span class="kw">return</span>
+    pivot = arr[lo]
+    lt, i, gt = lo, lo, hi
+    <span class="kw">while</span> i &lt;= gt:
+        <span class="kw">if</span>   arr[i] &lt; pivot: arr[lt], arr[i] = arr[i], arr[lt]; lt+=<span class="nm">1</span>; i+=<span class="nm">1</span>
+        <span class="kw">elif</span> arr[i] > pivot: arr[i], arr[gt] = arr[gt], arr[i]; gt-=<span class="nm">1</span>
+        <span class="kw">else</span>: i+=<span class="nm">1</span>
+    three_way_qs(arr, lo, lt-<span class="nm">1</span>)
+    three_way_qs(arr, gt+<span class="nm">1</span>, hi)
+
+arr = [<span class="nm">5</span>,<span class="nm">3</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">3</span>,<span class="nm">2</span>,<span class="nm">5</span>,<span class="nm">4</span>]
+three_way_qs(arr, <span class="nm">0</span>, <span class="mt">len</span>(arr)-<span class="nm">1</span>)
+<span class="mt">print</span>(arr)  <span class="cm"># [1,2,3,3,4,5,5,5,5]</span></pre>
+</div>
+
+<h2 class="sec">Section 6 — Merge Sort vs Quick Sort</h2>
+
+<table class="cmplx">
+  <thead><tr><th>Property</th><th>Merge Sort</th><th>Quick Sort</th></tr></thead>
+  <tbody>
+    <tr><td>Best Time</td><td class="qo">O(n log n)</td><td class="qg">O(n log n)</td></tr>
+    <tr><td>Average Time</td><td class="qo">O(n log n)</td><td class="qo">O(n log n)</td></tr>
+    <tr><td>Worst Time</td><td class="qo">O(n log n)</td><td class="qr">O(n²) without random pivot</td></tr>
+    <tr><td>Space</td><td class="qr">O(n) — extra array needed</td><td class="qg">O(log n) — just call stack</td></tr>
+    <tr><td>Stable</td><td>✅ Yes</td><td>❌ No</td></tr>
+    <tr><td>Cache performance</td><td class="qo">Fair</td><td class="qg">Excellent — sequential access</td></tr>
+    <tr><td>Best for</td><td>Linked lists, stable needed</td><td>Arrays in memory, fastest avg</td></tr>
+  </tbody>
+</table>
+
+<div class="tip"><strong>💡 Real-World Choice</strong>Quick sort is typically faster in practice for in-memory arrays (better cache locality). Merge sort is preferred when: sorting linked lists (no random access), need stable sort, sorting external data (disk/database). Python's sorted() uses TimSort (merge + insertion). Java's Arrays.sort() for objects uses TimSort; for primitives uses dual-pivot quick sort.</div>
+
+<div class="warning"><strong>⚠️ Quick Sort Worst Case</strong>If you always pick the first or last element as pivot, and the array is already sorted, quick sort degrades to O(n²). Solution: use random pivot or median-of-three (middle element of arr[first], arr[mid], arr[last]).</div>
+
+<h2 class="sec">Section 7 — Practice Questions</h2>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q1: What is the space complexity of recursive merge sort? Why?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ O(n) space total</div>
+    <p>Two reasons: (1) The merge step creates temporary arrays totaling O(n) at each level. (2) The call stack goes O(log n) deep. The dominant term is O(n) from the temp arrays. This is the main disadvantage of merge sort over quick sort.</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q2: After one partition step with pivot=5 on [3,8,1,5,9,2,7], what does the array look like?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Elements &lt;5 on left, 5 in middle, elements &gt;5 on right</div>
+    <p>One possible result: [3, 1, 2, 5, 9, 8, 7]. The exact arrangement of elements within each group may vary by implementation, but 5 is always at its final sorted position (index 3 for this array). 5 never moves again.</p>
+  </div>
+</div>
+
+<div class="quiz">
+  <div class="quiz-q">❓ Q3: Merge sort on [2, 4, 1, 6, 3]: trace the merge steps showing how the sorted array is built bottom-up.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+  <div class="quiz-a">
+    <div class="ans-label">✅ Bottom-up merge trace:</div>
+    <p>Split: [2,4,1,6,3] → [2,4] [1,6,3]<br>
+    [2,4] → [2] [4] → merge → [2,4]<br>
+    [1,6,3] → [1] [6,3] → [6] [3] → merge → [3,6] → merge [1]+[3,6] → [1,3,6]<br>
+    Final merge: [2,4] + [1,3,6] → [1,2,3,4,6]</p>
+  </div>
+</div>
+
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">Outstanding! You've mastered Merge Sort and Quick Sort — the workhorses of efficient sorting. These appear in nearly every technical interview.</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="m05c_linear_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part C — Linear Sorts (Counting, Radix, Bucket) →</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm05b';
+(function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='✅ Completed!';b.disabled=true;showToast('✅ Module 5B marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='✅ Completed!';b.disabled=true;}}})();
+function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
+function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
+applyLang();
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='⚠️ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Answer':'💡 Show Answer';}
+let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

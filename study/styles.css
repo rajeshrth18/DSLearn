@@ -1,0 +1,394 @@
+/* ============================================================
+   DSLearn — Shared Stylesheet
+   Covers phases 1-2, 4-10 (navy/blue theme)
+   Phase 3 (purple theme) keeps its own inline styles
+   ============================================================ */
+
+/* ── Reset ──────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Body ───────────────────────────────────────────────── */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.8;
+    color: #2c2c2c;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    background: #f5f6fa;
+}
+
+/* ── Cover ──────────────────────────────────────────────── */
+.cover {
+    text-align: center;
+    padding: 70px 30px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    border-radius: 16px;
+    margin-bottom: 50px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.cover .module-label {
+    font-size: 0.9em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 14px;
+}
+.cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
+.cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
+.cover .badges span {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin: 4px;
+}
+
+/* ── Nav Box ────────────────────────────────────────────── */
+.nav-box {
+    background: #f0f4ff;
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    padding: 18px 24px;
+    margin: 30px 0;
+    font-size: 0.95em;
+}
+.nav-box strong { color: #1a5276; }
+.nav-box a { color: #2980b9; text-decoration: none; font-weight: 600; }
+.nav-box a:hover { text-decoration: underline; }
+
+/* ── Table of Contents ──────────────────────────────────── */
+.toc {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 45px;
+    border: 1px solid #dee2e6;
+}
+.toc h2 {
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    background: none;
+    padding: 0;
+    border: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.toc ol { margin-left: 20px; }
+.toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
+.toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
+
+/* ── Section Headings ───────────────────────────────────── */
+.section-heading {
+    font-size: 1.75em;
+    color: #ffffff;
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    padding: 14px 24px;
+    border-radius: 10px;
+    margin: 45px 0 18px 0;
+}
+
+/* ── Headings ───────────────────────────────────────────── */
+h3 {
+    font-size: 1.3em;
+    color: #2980b9;
+    margin: 32px 0 12px 0;
+    padding-left: 14px;
+    border-left: 4px solid #2980b9;
+}
+h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
+
+/* ── Body Text ──────────────────────────────────────────── */
+p { margin: 10px 0 14px 0; font-size: 1em; color: #333; }
+ul, ol { margin: 10px 0 14px 28px; }
+li { margin: 7px 0; }
+
+/* ── Inline Code ────────────────────────────────────────── */
+code {
+    background: #f0f0f0;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.88em;
+    color: #c0392b;
+}
+
+/* ── Code Blocks ────────────────────────────────────────── */
+.code-block { position: relative; margin: 12px 0 18px 0; }
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #aaa;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 0.78em;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 1;
+    transition: background 0.2s, color 0.2s;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.25); color: #fff; }
+
+pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.87em;
+    line-height: 1.65;
+    border-left: 5px solid #3498db;
+    tab-size: 4;
+}
+pre.python { border-left-color: #f39c12; }
+
+/* ── Standalone pre (no .code-block wrapper) ────────────── */
+div > pre, p + pre, h3 + pre, h4 + pre, .note pre, .tip pre, .warning pre, .realworld pre {
+    margin: 16px 0 24px 0;
+}
+
+/* ── Syntax Highlighting ────────────────────────────────── */
+.kw  { color: #569cd6; }
+.cm  { color: #6a9955; }
+.st  { color: #ce9178; }
+.nm  { color: #b5cea8; }
+.tp  { color: #4ec9b0; }
+.mt  { color: #dcdcaa; }
+
+/* ── Diagram ────────────────────────────────────────────── */
+.diagram {
+    background: #0d1117;
+    color: #58a6ff;
+    padding: 22px;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.88em;
+    line-height: 1.7;
+    margin: 16px 0 24px 0;
+    border-left: 5px solid #e74c3c;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+/* ── Callout Boxes ──────────────────────────────────────── */
+.note    { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.tip     { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.note strong     { color: #e67e22; }
+.tip strong      { color: #16a085; }
+.warning strong  { color: #c0392b; }
+.realworld strong { color: #1a5276; }
+
+/* ── Tables ─────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
+thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
+tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
+tbody tr:nth-child(even) { background: #f8f9fa; }
+
+/* ── Color Utilities ────────────────────────────────────── */
+.g { color: #27ae60; font-weight: 700; }
+.o { color: #e67e22; font-weight: 700; }
+.r { color: #e74c3c; font-weight: 700; }
+
+/* ── HR ─────────────────────────────────────────────────── */
+hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
+
+/* ── Module Prev/Next Navigation ────────────────────────── */
+.module-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 10px 18px;
+    margin: 16px 0 24px 0;
+    font-size: 0.9em;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.module-nav a { color: #3730a3; text-decoration: none; font-weight: 600; }
+.module-nav a:hover { text-decoration: underline; }
+
+/* ── Language Labels (Phase 4-10) ───────────────────────── */
+.lang-label {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-bottom: 5px;
+    margin-top: 8px;
+}
+.lang-cs { background: #dbeafe; color: #1e40af; }
+.lang-py { background: #fef3c7; color: #92400e; }
+
+/* ── Language Tab Toggle (added by dsa.js) ──────────────── */
+.lang-tabs-wrapper { margin: 16px 0 4px 0; }
+.lang-tabs-btns {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+}
+.tab-btn {
+    background: #2d2d2d;
+    color: #888;
+    border: 1px solid #444;
+    border-bottom: none;
+    padding: 6px 18px;
+    font-size: 0.82em;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: background 0.15s, color 0.15s;
+    letter-spacing: 0.5px;
+}
+.tab-btn:hover { color: #ccc; background: #383838; }
+.tab-btn.active { background: #1e1e1e; color: #fff; }
+.tab-btn[data-lang="cs"].active { border-top: 3px solid #3498db; color: #9cdcfe; }
+.tab-btn[data-lang="py"].active { border-top: 3px solid #f39c12; color: #f39c12; }
+.lang-tabs-wrapper .lang-label { display: none !important; }
+.lang-tabs-wrapper .code-block { margin-top: 0; }
+.lang-tabs-wrapper .code-block pre { border-radius: 0 10px 10px 10px; }
+
+/* ── Practice Problem Cards ─────────────────────────────── */
+.prob-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 22px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.prob-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.prob-num {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: #2980b9;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-weight: 700;
+    font-size: 0.9em;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+.prob-title { font-size: 1.15em; font-weight: 700; color: #1a252f; }
+.prob-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78em;
+    font-weight: 600;
+}
+.tag-easy   { background: #d5f5e3; color: #1e8449; }
+.tag-medium { background: #fdebd0; color: #935116; }
+.tag-hard   { background: #fadbd8; color: #922b21; }
+.tag-algo   { background: #eaf0fb; color: #1a5276; }
+.prob-desc  { color: #444; font-size: 0.96em; margin-bottom: 10px; }
+.prob-ex {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.87em;
+    color: #2c3e50;
+    margin: 10px 0;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+/* ── Solution Toggle ────────────────────────────────────── */
+.sol-btn {
+    display: block;
+    background: #2980b9;
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+.sol-btn:hover { background: #1a6fa0; }
+.sol { display: none; margin-top: 14px; }
+.approach {
+    background: #fff8e1;
+    border-left: 5px solid #f39c12;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0 0;
+    font-size: 0.95em;
+}
+.approach strong { color: #e67e22; }
+.complexity {
+    font-size: 0.84em;
+    color: #555;
+    margin: 0 0 14px;
+    padding: 5px 14px 8px;
+    background: #fffdf0;
+    border-left: 5px solid #f5a623;
+    border-radius: 0 0 8px 8px;
+}
+.complexity strong { color: #2c3e50; font-weight: 700; }
+
+/* ── Mark Complete ──────────────────────────────────────── */
+.mark-btn {
+    display: block;
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 30px;
+    font-size: 1.05em;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 50px auto 0;
+    box-shadow: 0 4px 14px rgba(39,174,96,0.4);
+    transition: all 0.2s;
+}
+.mark-btn:hover { background: linear-gradient(135deg, #2ecc71, #27ae60); transform: translateY(-2px); }
+.mark-btn:disabled { background: #ccc; box-shadow: none; transform: none; cursor: default; }
+
+/* ── Toast Notification ─────────────────────────────────── */
+.toast {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #27ae60;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 0.95em;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: opacity 0.3s;
+}
+
+/* ── Print ──────────────────────────────────────────────── */
+@media print {
+    body { padding: 20px; }
+    pre, .diagram { white-space: pre-wrap; }
+    .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

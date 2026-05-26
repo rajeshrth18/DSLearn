@@ -1,0 +1,810 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8B — Dictionary, HashSet &amp; LRU Cache</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 5</div>
+    <h1>Module 8 — Part B</h1>
+    <div class="tagline">Dictionary, HashSet &amp; LRU Cache</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The hash-based collections you use every day — and the patterns that make them shine in interviews</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part B of Module 8</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 8 — Hashing:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m08a_hashing.html">Hash Functions &amp; Collisions</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Dictionary, HashSet &amp; LRU Cache<br>
+    ⬜ <strong>Part C</strong> — <a href="m08c_bloom_filters.html">Bloom Filters</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m08d_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase4/m07a_avl_trees.html">&larr; Module 7 &mdash; Advanced Trees</a>
+    <a href="../phase6/m09a_graph_theory.html">Module 9 &mdash; Graph Basics &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 8B</h2>
+    <ol>
+        <li>Dictionary&lt;TKey,TValue&gt; — The Workhorse <span>— Full API, all patterns</span></li>
+        <li>HashSet&lt;T&gt; — Uniqueness &amp; Set Operations <span>— Union, Intersect, Except</span></li>
+        <li>SortedDictionary vs SortedList <span>— When order matters</span></li>
+        <li>ConcurrentDictionary — Thread Safety <span>— Atomic GetOrAdd, AddOrUpdate</span></li>
+        <li>Python dict &amp; set <span>— Insertion-ordered, set algebra</span></li>
+        <li>The Two-Sum Pattern <span>— Most common hash interview template</span></li>
+        <li>The Frequency Count Pattern <span>— Group Anagrams, Top-K</span></li>
+        <li>LRU Cache — LinkedList + Dictionary <span>— O(1) get &amp; put</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Dictionary&lt;TKey,TValue&gt; — The Workhorse</div>
+
+<p><code>Dictionary&lt;TKey,TValue&gt;</code> is .NET's built-in hash table. It is the most-used collection in C# after arrays. Under the hood it uses open addressing with linear probing (since .NET 6+, changed from chaining for better cache performance).</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="cm">// ── Creation ─────────────────────────────────────</span>
+        <span class="kw">var</span> scores = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+        <span class="kw">var</span> prebuilt = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;
+        {
+            [<span class="st">"Alice"</span>] = <span class="nm">95</span>, [<span class="st">"Bob"</span>] = <span class="nm">87</span>, [<span class="st">"Carol"</span>] = <span class="nm">91</span>
+        };
+
+        <span class="cm">// ── Add / Update ─────────────────────────────────</span>
+        scores[<span class="st">"Dave"</span>] = <span class="nm">88</span>;          <span class="cm">// Add new key</span>
+        scores[<span class="st">"Dave"</span>] = <span class="nm">92</span>;          <span class="cm">// Update existing key</span>
+        scores.<span class="mt">Add</span>(<span class="st">"Eve"</span>, <span class="nm">79</span>);         <span class="cm">// Add (throws if key exists)</span>
+        scores.<span class="mt">TryAdd</span>(<span class="st">"Eve"</span>, <span class="nm">80</span>);      <span class="cm">// Add only if not present (safe)</span>
+
+        <span class="cm">// ── Safe Lookup ──────────────────────────────────</span>
+        <span class="kw">if</span> (scores.<span class="mt">TryGetValue</span>(<span class="st">"Dave"</span>, <span class="kw">out int</span> val))
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Dave: {val}"</span>);  <span class="cm">// Dave: 92</span>
+
+        <span class="cm">// ── GetValueOrDefault (no throw) ─────────────────</span>
+        <span class="kw">int</span> frank = scores.<span class="mt">GetValueOrDefault</span>(<span class="st">"Frank"</span>, <span class="nm">0</span>);  <span class="cm">// 0 (not found)</span>
+
+        <span class="cm">// ── Increment safely (count pattern) ────────────</span>
+        <span class="kw">string</span>[] words = { <span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span> };
+        <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+        <span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> words)
+            freq[w] = freq.<span class="mt">GetValueOrDefault</span>(w) + <span class="nm">1</span>;
+        <span class="cm">// freq = { "the":3, "fox":1, "cat":1 }</span>
+
+        <span class="cm">// ── Remove &amp; ContainsKey ─────────────────────────</span>
+        scores.<span class="mt">Remove</span>(<span class="st">"Eve"</span>);
+        <span class="kw">bool</span> hasAlice = prebuilt.<span class="mt">ContainsKey</span>(<span class="st">"Alice"</span>);  <span class="cm">// true</span>
+
+        <span class="cm">// ── Iteration ────────────────────────────────────</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> kvp <span class="kw">in</span> prebuilt)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"{kvp.Key}: {kvp.Value}"</span>);
+
+        <span class="kw">foreach</span> (<span class="kw">var</span> (key, score) <span class="kw">in</span> prebuilt)  <span class="cm">// Deconstruct</span>
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"{key} scored {score}"</span>);
+
+        <span class="cm">// ── LINQ on Dictionary ───────────────────────────</span>
+        <span class="kw">var</span> topScorer = prebuilt.<span class="mt">MaxBy</span>(kvp =&gt; kvp.Value);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Top: {topScorer.Key} = {topScorer.Value}"</span>);
+
+        <span class="kw">var</span> highScorers = prebuilt
+            .<span class="mt">Where</span>(kvp =&gt; kvp.Value &gt;= <span class="nm">90</span>)
+            .<span class="mt">Select</span>(kvp =&gt; kvp.Key)
+            .<span class="mt">ToList</span>();
+        <span class="cm">// highScorers = ["Alice", "Carol"]</span>
+
+        <span class="cm">/* ── Output ──
+        Dave: 92
+        Alice: 95
+        Bob: 87
+        Carol: 91
+        Alice scored 95
+        Bob scored 87
+        Carol scored 91
+        Top: Alice = 95
+        */</span>
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># ── dict basics ─────────────────────────────────────────</span>
+scores = {}
+prebuilt = {<span class="st">"Alice"</span>: <span class="nm">95</span>, <span class="st">"Bob"</span>: <span class="nm">87</span>, <span class="st">"Carol"</span>: <span class="nm">91</span>}
+
+<span class="cm"># Add / Update</span>
+scores[<span class="st">"Dave"</span>] = <span class="nm">88</span>              <span class="cm"># add new key</span>
+scores[<span class="st">"Dave"</span>] = <span class="nm">92</span>              <span class="cm"># update existing key</span>
+scores.<span class="mt">setdefault</span>(<span class="st">"Eve"</span>, <span class="nm">79</span>)     <span class="cm"># add only if absent (safe)</span>
+
+<span class="cm"># Safe lookup — no KeyError</span>
+val = scores.<span class="mt">get</span>(<span class="st">"Frank"</span>, <span class="nm">0</span>)      <span class="cm"># 0 (not found)</span>
+
+<span class="cm"># Increment pattern (word frequency)</span>
+words = [<span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span>]
+freq = {}
+<span class="kw">for</span> w <span class="kw">in</span> words:
+    freq[w] = freq.<span class="mt">get</span>(w, <span class="nm">0</span>) + <span class="nm">1</span>
+<span class="cm"># freq = {"the": 3, "fox": 1, "cat": 1}</span>
+
+<span class="cm"># Remove</span>
+scores.<span class="mt">pop</span>(<span class="st">"Eve"</span>, <span class="kw">None</span>)            <span class="cm"># no-throw remove</span>
+has_alice = <span class="st">"Alice"</span> <span class="kw">in</span> prebuilt    <span class="cm"># True</span>
+
+<span class="cm"># Iteration</span>
+<span class="kw">for</span> key, v <span class="kw">in</span> prebuilt.<span class="mt">items</span>():
+    <span class="mt">print</span>(f<span class="st">"{key}: {v}"</span>)
+
+<span class="cm"># max by value</span>
+top_scorer = <span class="mt">max</span>(prebuilt, key=prebuilt.get)
+<span class="mt">print</span>(f<span class="st">"Top: {top_scorer} = {prebuilt[top_scorer]}"</span>)
+
+high_scorers = [k <span class="kw">for</span> k, v <span class="kw">in</span> prebuilt.<span class="mt">items</span>() <span class="kw">if</span> v &gt;= <span class="nm">90</span>]
+<span class="cm"># ["Alice", "Carol"]
+
+# Output:
+# Alice: 95
+# Bob: 87
+# Carol: 91
+# Top: Alice = 95</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — HashSet&lt;T&gt; — Uniqueness &amp; Set Operations</div>
+
+<p><code>HashSet&lt;T&gt;</code> is a hash table that stores only keys — no values. Its primary use: membership testing in O(1), and set algebra (union, intersection, difference). Every element is unique; duplicates are silently ignored.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> setA = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span> };
+        <span class="kw">var</span> setB = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span> };
+
+        <span class="cm">// ── Membership (O(1)) ────────────────────────────</span>
+        <span class="kw">bool</span> has3 = setA.<span class="mt">Contains</span>(<span class="nm">3</span>);   <span class="cm">// true</span>
+        setA.<span class="mt">Add</span>(<span class="nm">3</span>);                     <span class="cm">// false — already exists</span>
+
+        <span class="cm">// ── Set Algebra (modifies setA in-place) ─────────</span>
+        <span class="kw">var</span> union  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(setA); union.<span class="mt">UnionWith</span>(setB);
+        <span class="cm">// union = {1,2,3,4,5,6,7}</span>
+
+        <span class="kw">var</span> inter  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(setA); inter.<span class="mt">IntersectWith</span>(setB);
+        <span class="cm">// inter = {3,4,5}</span>
+
+        <span class="kw">var</span> diff   = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(setA); diff.<span class="mt">ExceptWith</span>(setB);
+        <span class="cm">// diff  = {1,2}  (elements in A but not B)</span>
+
+        <span class="kw">var</span> symDiff = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(setA); symDiff.<span class="mt">SymmetricExceptWith</span>(setB);
+        <span class="cm">// symDiff = {1,2,6,7}  (in A or B, but not both)</span>
+
+        <span class="cm">// ── Subset / Superset Checks ─────────────────────</span>
+        <span class="kw">var</span> small = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">3</span>, <span class="nm">4</span> };
+        <span class="kw">bool</span> isSub = small.<span class="mt">IsSubsetOf</span>(setA);       <span class="cm">// true (3,4 are in setA)</span>
+        <span class="kw">bool</span> isSuper = setA.<span class="mt">IsSupersetOf</span>(small);   <span class="cm">// true</span>
+        <span class="kw">bool</span> disjoint = setA.<span class="mt">Overlaps</span>(<span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">8</span>, <span class="nm">9</span> });  <span class="cm">// false</span>
+
+        <span class="cm">// ── Classic pattern: deduplicate an array ────────</span>
+        <span class="kw">int</span>[] nums = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">3</span>, <span class="nm">4</span> };
+        <span class="kw">var</span> unique = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(nums);  <span class="cm">// {1,2,3,4}</span>
+
+        <span class="cm">// ── Classic pattern: check duplicates O(n) ──────</span>
+        <span class="kw">static bool</span> <span class="mt">HasDuplicate</span>(<span class="kw">int</span>[] arr)
+        {
+            <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
+            <span class="kw">foreach</span> (<span class="kw">var</span> x <span class="kw">in</span> arr)
+                <span class="kw">if</span> (!seen.<span class="mt">Add</span>(x)) <span class="kw">return true</span>;  <span class="cm">// Add returns false if dup</span>
+            <span class="kw">return false</span>;
+        }
+
+        <span class="cm">/* ── Output ──
+        (No direct output — demonstrates operations above)
+        */</span>
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+set_a = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>}
+set_b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span>}
+
+<span class="cm"># Membership O(1)</span>
+has3 = <span class="nm">3</span> <span class="kw">in</span> set_a               <span class="cm"># True</span>
+set_a.<span class="mt">add</span>(<span class="nm">3</span>)                      <span class="cm"># no-op — already exists</span>
+
+<span class="cm"># Set algebra</span>
+union    = set_a | set_b           <span class="cm"># {1,2,3,4,5,6,7}</span>
+inter    = set_a &amp; set_b           <span class="cm"># {3,4,5}</span>
+diff     = set_a - set_b           <span class="cm"># {1,2}</span>
+sym_diff = set_a ^ set_b           <span class="cm"># {1,2,6,7}</span>
+
+<span class="cm"># Subset / superset checks</span>
+small    = {<span class="nm">3</span>, <span class="nm">4</span>}
+is_sub   = small.<span class="mt">issubset</span>(set_a)  <span class="cm"># True</span>
+is_super = set_a.<span class="mt">issuperset</span>(small) <span class="cm"># True</span>
+disjoint = set_a.<span class="mt">isdisjoint</span>({<span class="nm">8</span>, <span class="nm">9</span>}) <span class="cm"># True (no overlap)</span>
+
+<span class="cm"># Deduplicate array</span>
+nums   = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">3</span>, <span class="nm">4</span>]
+unique = <span class="mt">set</span>(nums)                 <span class="cm"># {1,2,3,4}</span>
+
+<span class="cm"># Check duplicates O(n)</span>
+<span class="kw">def</span> <span class="mt">has_duplicate</span>(arr):
+    seen = <span class="mt">set</span>()
+    <span class="kw">for</span> x <span class="kw">in</span> arr:
+        <span class="kw">if</span> x <span class="kw">in</span> seen: <span class="kw">return True</span>
+        seen.<span class="mt">add</span>(x)
+    <span class="kw">return False</span>
+
+<span class="cm"># frozenset — immutable, hashable (can be used as dict key)</span>
+fs = <span class="mt">frozenset</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+
+<span class="cm"># Output: (no direct output — demonstrates operations above)</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — SortedDictionary vs SortedList</div>
+
+<p>When you need keys in sorted order, .NET offers two choices — both using Red-Black Trees internally, not hash tables:</p>
+
+<table>
+    <thead>
+        <tr><th>Feature</th><th>SortedDictionary&lt;K,V&gt;</th><th>SortedList&lt;K,V&gt;</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Underlying structure</td><td>Red-Black Tree</td><td>Two sorted arrays</td></tr>
+        <tr><td>Lookup by key</td><td class="g">O(log n)</td><td class="g">O(log n) binary search</td></tr>
+        <tr><td>Insert / Delete</td><td class="g">O(log n)</td><td class="r">O(n) — array shift</td></tr>
+        <tr><td>Index access (by position)</td><td class="r">Not supported</td><td class="g">O(1)</td></tr>
+        <tr><td>Memory</td><td class="r">Higher (tree nodes)</td><td class="g">Lower (arrays)</td></tr>
+        <tr><td>Best for</td><td>Frequent inserts/deletes</td><td>Mostly read, sorted index access</td></tr>
+    </tbody>
+</table>
+
+<div class="tip">
+    <strong>💡 When to choose:</strong> If you frequently add/remove keys from a sorted collection, use <code>SortedDictionary</code>. If the collection is built once and mostly read (and you need positional access), use <code>SortedList</code>. Neither is a hash table — they live in O(log n) land, not O(1).
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — ConcurrentDictionary — Thread Safety</div>
+
+<p><code>Dictionary&lt;TKey,TValue&gt;</code> is <strong>not thread-safe</strong>. Concurrent reads are safe, but concurrent writes corrupt the internal state. For multi-threaded code, use <code>ConcurrentDictionary&lt;TKey,TValue&gt;</code>, which provides atomic operations without requiring external locks.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System.Collections.Concurrent;
+
+<span class="kw">var</span> cache = <span class="kw">new</span> <span class="tp">ConcurrentDictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+
+<span class="cm">// GetOrAdd — atomic "get if present, compute and add if absent"</span>
+<span class="kw">int</span> v1 = cache.<span class="mt">GetOrAdd</span>(<span class="st">"x"</span>, key =&gt; <span class="nm">42</span>);  <span class="cm">// adds and returns 42</span>
+<span class="kw">int</span> v2 = cache.<span class="mt">GetOrAdd</span>(<span class="st">"x"</span>, key =&gt; <span class="nm">99</span>);  <span class="cm">// returns 42 (already existed)</span>
+
+<span class="cm">// AddOrUpdate — atomic "add if absent, update if present"</span>
+cache.<span class="mt">AddOrUpdate</span>(
+    key:          <span class="st">"counter"</span>,
+    addValue:     <span class="nm">1</span>,                    <span class="cm">// initial value if new</span>
+    updateValueFactory: (k, old) =&gt; old + <span class="nm">1</span>  <span class="cm">// increment if exists</span>
+);
+
+<span class="cm">// TryUpdate — atomic compare-and-swap</span>
+cache.<span class="mt">TryUpdate</span>(<span class="st">"x"</span>, newValue: <span class="nm">100</span>, comparisonValue: <span class="nm">42</span>);
+<span class="cm">// Only updates if current value == 42 (prevents lost updates)</span>
+
+<span class="cm">// Thread-safe word frequency counter (parallel)</span>
+<span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">ConcurrentDictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+<span class="kw">string</span>[] words = { <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">"b"</span> };
+<span class="tp">Parallel</span>.<span class="mt">ForEach</span>(words, w =&gt;
+    freq.<span class="mt">AddOrUpdate</span>(w, <span class="nm">1</span>, (_, old) =&gt; old + <span class="nm">1</span>)
+);
+<span class="cm">// Safe even with multiple threads writing simultaneously</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">from</span> threading <span class="kw">import</span> Lock
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">import</span> threading
+
+<span class="cm"># Python dict is NOT thread-safe for read-modify-write. Use Lock.</span>
+cache = {}
+lock  = Lock()
+
+<span class="cm"># GetOrAdd equivalent — atomic "get if present, add if absent"</span>
+<span class="kw">def</span> <span class="mt">get_or_add</span>(d, key, factory):
+    <span class="kw">with</span> lock:
+        <span class="kw">if</span> key <span class="kw">not in</span> d: d[key] = <span class="mt">factory</span>(key)
+        <span class="kw">return</span> d[key]
+
+v1 = <span class="mt">get_or_add</span>(cache, <span class="st">"x"</span>, <span class="kw">lambda</span> k: <span class="nm">42</span>)  <span class="cm"># adds 42</span>
+v2 = <span class="mt">get_or_add</span>(cache, <span class="st">"x"</span>, <span class="kw">lambda</span> k: <span class="nm">99</span>)  <span class="cm"># returns 42 (already exists)</span>
+
+<span class="cm"># AddOrUpdate equivalent — atomic increment</span>
+freq = defaultdict(<span class="kw">int</span>)
+<span class="kw">def</span> <span class="mt">increment</span>(key):
+    <span class="kw">with</span> lock: freq[key] += <span class="nm">1</span>
+
+<span class="cm"># Thread-safe word frequency (parallel)</span>
+words = [<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>]
+ts = [threading.<span class="tp">Thread</span>(target=increment, args=(w,)) <span class="kw">for</span> w <span class="kw">in</span> words]
+<span class="kw">for</span> t <span class="kw">in</span> ts: t.<span class="mt">start</span>()
+<span class="kw">for</span> t <span class="kw">in</span> ts: t.<span class="mt">join</span>()
+<span class="cm"># freq = {"a": 3, "b": 2, "c": 1}</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Python dict &amp; set</div>
+
+<p>Python's <code>dict</code> is a hash table (open addressing with pseudorandom probing). Since Python 3.7, it also preserves <strong>insertion order</strong>. Python's <code>set</code> is the equivalent of <code>HashSet&lt;T&gt;</code>.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre><span class="cm">// C# equivalents of Python's advanced collection helpers</span>
+<span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+<span class="kw">using</span> System.Collections.Immutable;
+
+<span class="cm">// defaultdict equivalent — GetValueOrDefault + auto-init</span>
+<span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+<span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> <span class="kw">new</span>[] { <span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span> })
+    freq[w] = freq.<span class="mt">GetValueOrDefault</span>(w) + <span class="nm">1</span>;
+<span class="cm">// freq = { "the":3, "fox":1, "cat":1 }</span>
+
+<span class="cm">// Counter equivalent — LINQ GroupBy</span>
+<span class="kw">var</span> words = <span class="kw">new</span>[] { <span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span> };
+<span class="kw">var</span> counter = words.<span class="mt">GroupBy</span>(w =&gt; w).<span class="mt">ToDictionary</span>(g =&gt; g.Key, g =&gt; g.<span class="mt">Count</span>());
+
+<span class="cm">// most_common(2) equivalent</span>
+<span class="kw">var</span> top2 = counter.<span class="mt">OrderByDescending</span>(kv =&gt; kv.Value).<span class="mt">Take</span>(<span class="nm">2</span>).<span class="mt">ToList</span>();
+<span class="cm">// [("the",3), ("fox",1)]</span>
+
+<span class="cm">// OrderedDict — Dictionary preserves insertion order since .NET 5+</span>
+<span class="kw">var</span> ordered = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+ordered[<span class="st">"first"</span>]  = <span class="nm">1</span>; ordered[<span class="st">"second"</span>] = <span class="nm">2</span>; ordered[<span class="st">"third"</span>]  = <span class="nm">3</span>;
+<span class="cm">// Iterates in insertion order: first, second, third</span>
+
+<span class="cm">// frozenset equivalent — ImmutableHashSet (System.Collections.Immutable)</span>
+<span class="kw">var</span> frozen = <span class="tp">ImmutableHashSet</span>.<span class="mt">Create</span>(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>);
+<span class="kw">bool</span> has2  = frozen.<span class="mt">Contains</span>(<span class="nm">2</span>);   <span class="cm">// true — immutable, safe for dict keys</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, Counter, OrderedDict
+
+<span class="cm"># ── dict basics ─────────────────────────────────────────</span>
+scores = {<span class="st">"Alice"</span>: <span class="nm">95</span>, <span class="st">"Bob"</span>: <span class="nm">87</span>}
+scores[<span class="st">"Carol"</span>] = <span class="nm">91</span>       <span class="cm"># add</span>
+scores[<span class="st">"Alice"</span>] = <span class="nm">97</span>       <span class="cm"># update</span>
+val = scores.<span class="mt">get</span>(<span class="st">"Dave"</span>, <span class="nm">0</span>) <span class="cm"># safe lookup, default=0</span>
+del scores[<span class="st">"Bob"</span>]           <span class="cm"># remove</span>
+
+<span class="cm"># Iteration</span>
+<span class="kw">for</span> k, v <span class="kw">in</span> scores.<span class="mt">items</span>():
+    <span class="mt">print</span>(f<span class="st">"{k}: {v}"</span>)
+
+<span class="cm"># ── defaultdict — never KeyError ────────────────────────</span>
+freq = defaultdict(<span class="kw">int</span>)       <span class="cm"># default value = 0</span>
+<span class="kw">for</span> w <span class="kw">in</span> [<span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>]:
+    freq[w] += <span class="nm">1</span>              <span class="cm"># no KeyError on first access</span>
+
+<span class="cm"># ── Counter — frequency counting in one line ────────────</span>
+words = [<span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span>]
+cnt = Counter(words)           <span class="cm"># Counter({"the":3, "fox":1, "cat":1})</span>
+top2 = cnt.<span class="mt">most_common</span>(<span class="nm">2</span>)    <span class="cm"># [("the",3), ("fox",1)]</span>
+
+<span class="cm"># ── set operations ───────────────────────────────────────</span>
+a = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>}
+b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>}
+<span class="mt">print</span>(a | b)   <span class="cm"># union:        {1,2,3,4,5,6}</span>
+<span class="mt">print</span>(a & b)   <span class="cm"># intersection: {3,4}</span>
+<span class="mt">print</span>(a - b)   <span class="cm"># difference:   {1,2}</span>
+<span class="mt">print</span>(a ^ b)   <span class="cm"># sym. diff:    {1,2,5,6}</span>
+
+<span class="cm"># frozenset — immutable, hashable (can be dict key)</span>
+fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(scores)   <span class="cm"># {'Alice': 97, 'Carol': 91}</span>
+    <span class="mt">print</span>(top2)     <span class="cm"># [('the', 3), ('fox', 1)]</span>
+
+    <span class="cm"># Output:</span>
+    <span class="cm"># Alice: 97</span>
+    <span class="cm"># Carol: 91</span>
+    <span class="cm"># {'Alice': 97, 'Carol': 91}</span>
+    <span class="cm"># [('the', 3), ('fox', 1)]</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — The Two-Sum Pattern</div>
+
+<p>The most fundamental hash table interview pattern: replace an O(n²) nested-loop search with O(n) by storing "what we've seen" in a hash map. For each element, check if its complement already exists in the map.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Two Sum — return indices of two numbers that add to target</span>
+<span class="cm">// O(n) time, O(n) space</span>
+<span class="kw">static int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
+{
+    <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();  <span class="cm">// value → index</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
+    {
+        <span class="kw">int</span> complement = target - nums[i];
+        <span class="kw">if</span> (seen.<span class="mt">TryGetValue</span>(complement, <span class="kw">out int</span> j))
+            <span class="kw">return new</span>[] { j, i };  <span class="cm">// found! complement was at index j</span>
+        seen[nums[i]] = i;
+    }
+    <span class="kw">return</span> <span class="tp">Array</span>.<span class="mt">Empty</span>&lt;<span class="kw">int</span>&gt;();
+}
+
+<span class="cm">// Two Sum II — sorted array variant (two pointers, O(1) space)</span>
+<span class="kw">static int</span>[] <span class="mt">TwoSumSorted</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
+{
+    <span class="kw">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
+    <span class="kw">while</span> (lo &lt; hi)
+    {
+        <span class="kw">int</span> sum = nums[lo] + nums[hi];
+        <span class="kw">if</span>      (sum == target) <span class="kw">return new</span>[] { lo + <span class="nm">1</span>, hi + <span class="nm">1</span> };
+        <span class="kw">else if</span> (sum &lt;  target) lo++;
+        <span class="kw">else</span>                    hi--;
+    }
+    <span class="kw">return</span> <span class="tp">Array</span>.<span class="mt">Empty</span>&lt;<span class="kw">int</span>&gt;();
+}
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> result = <span class="mt">TwoSum</span>(<span class="kw">new</span>[] { <span class="nm">2</span>, <span class="nm">7</span>, <span class="nm">11</span>, <span class="nm">15</span> }, <span class="nm">9</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"[{result[0]}, {result[1]}]"</span>);  <span class="cm">// [0, 1]</span>
+
+        <span class="cm">/* ── Output ──
+        [0, 1]
+        */</span>
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Two Sum — O(n) time, O(n) space</span>
+<span class="kw">def</span> <span class="mt">two_sum</span>(nums, target):
+    seen = {}                       <span class="cm"># value → index</span>
+    <span class="kw">for</span> i, x <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
+        complement = target - x
+        <span class="kw">if</span> complement <span class="kw">in</span> seen:
+            <span class="kw">return</span> [seen[complement], i]
+        seen[x] = i
+    <span class="kw">return</span> []
+
+<span class="cm"># Two Sum II — sorted array variant (two pointers, O(1) space)</span>
+<span class="kw">def</span> <span class="mt">two_sum_sorted</span>(nums, target):
+    lo, hi = <span class="nm">0</span>, <span class="mt">len</span>(nums) - <span class="nm">1</span>
+    <span class="kw">while</span> lo &lt; hi:
+        s = nums[lo] + nums[hi]
+        <span class="kw">if</span>   s == target: <span class="kw">return</span> [lo + <span class="nm">1</span>, hi + <span class="nm">1</span>]
+        <span class="kw">elif</span> s &lt;  target: lo += <span class="nm">1</span>
+        <span class="kw">else</span>:             hi -= <span class="nm">1</span>
+    <span class="kw">return</span> []
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="mt">print</span>(<span class="mt">two_sum</span>([<span class="nm">2</span>, <span class="nm">7</span>, <span class="nm">11</span>, <span class="nm">15</span>], <span class="nm">9</span>))   <span class="cm"># [0, 1]</span>
+    <span class="cm"># Output:
+    # [0, 1]</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — The Frequency Count Pattern</div>
+
+<p>Count occurrences of each element to solve grouping and top-k problems. This covers a huge class of interview questions: Group Anagrams, Top K Frequent Elements, Valid Anagram, and more.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.Linq;
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="cm">// Group Anagrams — ["eat","tea","tan","ate","nat","bat"]</span>
+    <span class="cm">// → [["eat","tea","ate"], ["tan","nat"], ["bat"]]</span>
+    <span class="kw">static</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">GroupAnagrams</span>(<span class="kw">string</span>[] strs)
+    {
+        <span class="kw">var</span> groups = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
+        <span class="kw">foreach</span> (<span class="kw">var</span> s <span class="kw">in</span> strs)
+        {
+            <span class="cm">// Key = sorted characters (anagrams share the same sorted form)</span>
+            <span class="kw">char</span>[] chars = s.<span class="mt">ToCharArray</span>();
+            <span class="tp">Array</span>.<span class="mt">Sort</span>(chars);
+            <span class="kw">string</span> key = <span class="kw">new</span> <span class="kw">string</span>(chars);
+
+            <span class="kw">if</span> (!groups.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> list))
+                groups[key] = list = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+            list.<span class="mt">Add</span>(s);
+        }
+        <span class="kw">return</span> groups.Values.<span class="mt">Cast</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt;().<span class="mt">ToList</span>();
+    }
+
+    <span class="cm">// Top K Frequent Elements</span>
+    <span class="kw">static int</span>[] <span class="mt">TopKFrequent</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
+    {
+        <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
+        <span class="kw">foreach</span> (<span class="kw">var</span> n <span class="kw">in</span> nums)
+            freq[n] = freq.<span class="mt">GetValueOrDefault</span>(n) + <span class="nm">1</span>;
+
+        <span class="kw">return</span> freq
+            .<span class="mt">OrderByDescending</span>(kvp =&gt; kvp.Value)
+            .<span class="mt">Take</span>(k)
+            .<span class="mt">Select</span>(kvp =&gt; kvp.Key)
+            .<span class="mt">ToArray</span>();
+    }
+
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> groups = <span class="mt">GroupAnagrams</span>(<span class="kw">new</span>[] { <span class="st">"eat"</span>, <span class="st">"tea"</span>, <span class="st">"tan"</span>, <span class="st">"ate"</span>, <span class="st">"nat"</span>, <span class="st">"bat"</span> });
+        <span class="kw">foreach</span> (<span class="kw">var</span> g <span class="kw">in</span> groups)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>, g));
+
+        <span class="kw">var</span> top = <span class="mt">TopKFrequent</span>(<span class="kw">new</span>[] { <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span> }, <span class="nm">2</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>, top));
+
+        <span class="cm">/* ── Output ──
+        eat,tea,ate
+        tan,nat
+        bat
+        1,2
+        */</span>
+    }
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">from</span> collections <span class="kw">import</span> Counter, defaultdict
+
+<span class="cm"># Group Anagrams</span>
+<span class="kw">def</span> <span class="mt">group_anagrams</span>(strs):
+    groups = defaultdict(<span class="mt">list</span>)
+    <span class="kw">for</span> s <span class="kw">in</span> strs:
+        key = <span class="st">""</span>.<span class="mt">join</span>(<span class="mt">sorted</span>(s))   <span class="cm"># sorted chars = canonical anagram key</span>
+        groups[key].<span class="mt">append</span>(s)
+    <span class="kw">return</span> <span class="mt">list</span>(groups.<span class="mt">values</span>())
+
+<span class="cm"># Top K Frequent Elements — Counter.most_common is O(n log k)</span>
+<span class="kw">def</span> <span class="mt">top_k_frequent</span>(nums, k):
+    <span class="kw">return</span> [x <span class="kw">for</span> x, _ <span class="kw">in</span> Counter(nums).<span class="mt">most_common</span>(k)]
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    groups = <span class="mt">group_anagrams</span>([<span class="st">"eat"</span>, <span class="st">"tea"</span>, <span class="st">"tan"</span>, <span class="st">"ate"</span>, <span class="st">"nat"</span>, <span class="st">"bat"</span>])
+    <span class="kw">for</span> g <span class="kw">in</span> groups:
+        <span class="mt">print</span>(<span class="st">","</span>.<span class="mt">join</span>(g))
+    <span class="mt">print</span>(<span class="st">","</span>.<span class="mt">join</span>(<span class="mt">map</span>(<span class="mt">str</span>, <span class="mt">top_k_frequent</span>([<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span>], <span class="nm">2</span>))))
+    <span class="cm"># Output:
+    # eat,tea,ate
+    # tan,nat
+    # bat
+    # 1,2</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — LRU Cache: LinkedList + Dictionary</div>
+
+<p>The LRU (Least Recently Used) Cache is the most famous hash table interview problem. It combines a <code>Dictionary</code> for O(1) lookup with a <code>LinkedList</code> for O(1) eviction order maintenance. Both languages below implement the same O(1) get and O(1) put.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">public class</span> <span class="tp">LRUCache</span>
+{
+    <span class="kw">private readonly int</span> _cap;
+    <span class="kw">private readonly</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">LinkedListNode</span>&lt;(<span class="kw">int</span> key, <span class="kw">int</span> val)&gt;&gt; _map;
+    <span class="kw">private readonly</span> <span class="tp">LinkedList</span>&lt;(<span class="kw">int</span> key, <span class="kw">int</span> val)&gt; _list;
+
+    <span class="kw">public</span> <span class="mt">LRUCache</span>(<span class="kw">int</span> capacity)
+    {
+        _cap  = capacity;
+        _map  = <span class="kw">new</span>();
+        _list = <span class="kw">new</span>();
+    }
+
+    <span class="kw">public int</span> <span class="mt">Get</span>(<span class="kw">int</span> key)
+    {
+        <span class="kw">if</span> (!_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> node)) <span class="kw">return</span> -<span class="nm">1</span>;
+        _list.<span class="mt">Remove</span>(node);       <span class="cm">// O(1) — have the node reference</span>
+        _list.<span class="mt">AddFirst</span>(node);     <span class="cm">// Move to front (most recently used)</span>
+        <span class="kw">return</span> node.Value.val;
+    }
+
+    <span class="kw">public void</span> <span class="mt">Put</span>(<span class="kw">int</span> key, <span class="kw">int</span> value)
+    {
+        <span class="kw">if</span> (_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> existing))
+        {
+            _list.<span class="mt">Remove</span>(existing);   <span class="cm">// Remove old node</span>
+            _map.<span class="mt">Remove</span>(key);
+        }
+        <span class="kw">else if</span> (_list.Count == _cap)
+        {
+            <span class="kw">var</span> lru = _list.Last!;         <span class="cm">// Evict least recently used</span>
+            _map.<span class="mt">Remove</span>(lru.Value.key);
+            _list.<span class="mt">RemoveLast</span>();
+        }
+        <span class="kw">var</span> node = _list.<span class="mt">AddFirst</span>((key, value));
+        _map[key] = node;
+    }
+}
+
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> lru = <span class="kw">new</span> <span class="tp">LRUCache</span>(<span class="nm">3</span>);
+        lru.<span class="mt">Put</span>(<span class="nm">1</span>, <span class="nm">10</span>); lru.<span class="mt">Put</span>(<span class="nm">2</span>, <span class="nm">20</span>); lru.<span class="mt">Put</span>(<span class="nm">3</span>, <span class="nm">30</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">1</span>));   <span class="cm">// 10 — moves key 1 to front</span>
+        lru.<span class="mt">Put</span>(<span class="nm">4</span>, <span class="nm">40</span>);                   <span class="cm">// evicts key 2 (LRU)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">2</span>));   <span class="cm">// -1 (evicted)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">3</span>));   <span class="cm">// 30</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">4</span>));   <span class="cm">// 40</span>
+
+        <span class="cm">/* ── Output ──
+        10
+        -1
+        30
+        40
+        */</span>
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> OrderedDict
+
+<span class="kw">class</span> <span class="tp">LRUCache</span>:
+    <span class="st">"""Python LRU Cache using OrderedDict (move_to_end = O(1))"""</span>
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="tp">self</span>, capacity: <span class="kw">int</span>):
+        <span class="tp">self</span>._cap  = capacity
+        <span class="tp">self</span>._cache = OrderedDict()  <span class="cm"># maintains insertion order</span>
+
+    <span class="kw">def</span> <span class="mt">get</span>(<span class="tp">self</span>, key: <span class="kw">int</span>) -> <span class="kw">int</span>:
+        <span class="kw">if</span> key <span class="kw">not in</span> <span class="tp">self</span>._cache:
+            <span class="kw">return</span> -<span class="nm">1</span>
+        <span class="tp">self</span>._cache.<span class="mt">move_to_end</span>(key)  <span class="cm"># O(1) — mark as most recently used</span>
+        <span class="kw">return</span> <span class="tp">self</span>._cache[key]
+
+    <span class="kw">def</span> <span class="mt">put</span>(<span class="tp">self</span>, key: <span class="kw">int</span>, value: <span class="kw">int</span>) -> <span class="kw">None</span>:
+        <span class="kw">if</span> key <span class="kw">in</span> <span class="tp">self</span>._cache:
+            <span class="tp">self</span>._cache.<span class="mt">move_to_end</span>(key)
+        <span class="tp">self</span>._cache[key] = value
+        <span class="kw">if</span> <span class="mt">len</span>(<span class="tp">self</span>._cache) > <span class="tp">self</span>._cap:
+            <span class="tp">self</span>._cache.<span class="mt">popitem</span>(last=<span class="kw">False</span>)  <span class="cm"># evict oldest (front)</span>
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    lru = <span class="tp">LRUCache</span>(<span class="nm">3</span>)
+    lru.<span class="mt">put</span>(<span class="nm">1</span>, <span class="nm">10</span>); lru.<span class="mt">put</span>(<span class="nm">2</span>, <span class="nm">20</span>); lru.<span class="mt">put</span>(<span class="nm">3</span>, <span class="nm">30</span>)
+    <span class="mt">print</span>(lru.<span class="mt">get</span>(<span class="nm">1</span>))  <span class="cm"># 10</span>
+    lru.<span class="mt">put</span>(<span class="nm">4</span>, <span class="nm">40</span>)     <span class="cm"># evicts key 2</span>
+    <span class="mt">print</span>(lru.<span class="mt">get</span>(<span class="nm">2</span>))  <span class="cm"># -1 (evicted)</span>
+    <span class="mt">print</span>(lru.<span class="mt">get</span>(<span class="nm">4</span>))  <span class="cm"># 40</span>
+
+    <span class="cm"># Output:</span>
+    <span class="cm"># 10</span>
+    <span class="cm"># -1</span>
+    <span class="cm"># 40</span></pre>
+</div>
+
+<div class="realworld">
+    <strong>🌍 Real-World — LRU Everywhere:</strong> Browser tab history, CPU L1/L2 caches, database buffer pools (PostgreSQL, MySQL), operating system page replacement, CDN edge caches — all use LRU or a variant of it. LeetCode problem #146 (LRU Cache) is one of the most frequently asked in system design interviews at FAANG companies.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. You call <code>dict[key] = value</code> when the key already exists. What happens, and how does it differ from <code>dict.Add(key, value)</code>?</div>
+    <div class="quiz-meta">Hint: One throws, one doesn't.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">The indexer <code>dict[key] = value</code> is an <strong>upsert</strong> — it adds the key if absent, or silently updates the value if the key already exists. <code>dict.Add(key, value)</code> throws <code>ArgumentException</code> if the key already exists. Use <code>Add</code> when you want to ensure you're only inserting new keys (fail-fast). Use the indexer when you want to set a value regardless.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. Why does <code>HashSet&lt;T&gt;.Add()</code> return a <code>bool</code>? How is this useful?</div>
+    <div class="quiz-meta">Hint: It returns false when the element already exists.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a"><code>Add()</code> returns <code>true</code> if the element was newly inserted, <code>false</code> if it was already present. This lets you detect duplicates in a single operation: <code>if (!seen.Add(x)) return true; // duplicate found</code>. It replaces the two-step pattern of <code>Contains() + Add()</code> with a single O(1) call, both checking membership and inserting atomically.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. In the LRU cache implementation, why do we store the full <code>(key, value)</code> tuple in the LinkedList nodes instead of just the value?</div>
+    <div class="quiz-meta">Hint: Think about what happens during eviction.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">During eviction, we remove the <em>last</em> node from the LinkedList (the LRU item). We then need to remove that same key from the Dictionary. If the node only stored the value, we would not know which key to delete from the Dictionary — we'd have to search for it (O(n)). By storing the key in the node, we can do <code>map.Remove(lruNode.Value.key)</code> in O(1) without any search.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. <code>GroupAnagrams</code> uses a sorted string as the dictionary key. What is the time complexity of the full algorithm for n strings each of length k?</div>
+    <div class="quiz-meta">Hint: Count the sorting cost per string.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">For each of the n strings, we sort its k characters: O(k log k) per sort. Total: <strong>O(n · k log k)</strong>. The dictionary operations are O(k) per string (to hash a key of length k), adding O(nk) which is dominated by the sort. Space: O(nk) for all keys + values.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. When should you choose <code>ConcurrentDictionary</code> over <code>Dictionary</code> with a <code>lock</code>?</div>
+    <div class="quiz-meta">Hint: Think about fine-grained vs. coarse-grained locking.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a"><code>ConcurrentDictionary</code> uses <strong>stripe-based locking</strong> — it divides the internal array into segments, each with its own lock. Multiple threads can write to different segments simultaneously. A manual <code>lock</code> around a <code>Dictionary</code> uses a single, coarse-grained lock that serialises ALL threads. Choose <code>ConcurrentDictionary</code> when: (1) you have high concurrency with many threads, (2) writes are common, and (3) you need atomic compound operations like <code>GetOrAdd</code>. Use a manual lock when you need atomicity across multiple dictionary operations as a unit (e.g., read-then-write logic that must be atomic).</div>
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 8B Complete!</strong><br><br>
+    You now know: Dictionary&lt;K,V&gt; full API, HashSet set operations, ConcurrentDictionary atomic ops,
+    Python dict/set/Counter/defaultdict, Two-Sum pattern, Frequency Count pattern, and LRU Cache implementation.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m08a_hashing.html">Module 8A — Hash Functions &amp; Collisions</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m08c_bloom_filters.html">Module 8C — Bloom Filters</a>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+<div class="toast" id="toast">✅ Module 8B marked complete!</div>
+    <script>var MODULE_ID = 'm08b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

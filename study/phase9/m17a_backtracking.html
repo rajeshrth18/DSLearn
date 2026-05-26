@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 17A — N-Queens &amp; Sudoku | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 17 — Part A</h1>
+    <div class="tagline">Backtracking — N-Queens &amp; Sudoku Solver</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Constraint satisfaction · Pruning · The backtracking template</p>
+    <div class="badges">
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 17 of 17</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 17 — Backtracking:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — N-Queens &amp; Sudoku Solver<br>
+    ⬜ <strong>Part B</strong> — <a href="m17b_backtracking2.html">Permutations &amp; Combinations</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m17c_practice.html">Practice Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
+    <a href="../phase10/m18a_patterns1.html">Module 18 &mdash; Patterns I &rarr;</a>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Backtracking Template</div>
+
+<p>Backtracking is a systematic approach to explore all possible configurations of a solution by building
+candidates incrementally and <strong>abandoning (pruning) candidates that cannot lead to a valid solution</strong>.</p>
+
+<div class="diagram">Backtracking Template:
+
+  solve(state):
+    if isGoal(state):
+      record/return solution
+      return
+
+    for each choice in candidates(state):
+      if isValid(state, choice):
+        apply(state, choice)      ← make move
+        solve(state)               ← recurse
+        undo(state, choice)        ← BACKTRACK (undo move)
+
+Key insight: "Undo" restores state — backtracking explores a tree
+of partial solutions, pruning entire subtrees early.</div>
+
+<div class="tip">
+    <strong>💡 Pruning is the key to performance.</strong> Without pruning, backtracking is brute-force O(n!).
+    Good constraint checking prunes orders of magnitude of the search space.
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — N-Queens (LC 51, 52)</div>
+
+<p>Place N queens on an N×N chessboard so no two queens attack each other (no shared row, column, or diagonal).</p>
+<p><strong>Strategy:</strong> Place one queen per row. Track used columns and diagonals with sets for O(1) constraint checks.</p>
+
+<div class="diagram">4-Queens partial solution trace:
+
+Row 0: try col 0 → blocked, col 1 → ok → place Q
+  Row 1: try col 0,1,2 → all attacked by diagonals → backtrack
+Row 0: try col 1 → blocked, col 2 → ok → place Q
+  ...
+
+Two solutions exist for N=4:
+  . Q . .    . . Q .
+  . . . Q    Q . . .
+  Q . . .    . . . Q
+  . . Q .    . Q . .</div>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">SolveNQueens</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt;();
+    <span class="kw">var</span> cols  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
+    <span class="kw">var</span> diag1 = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();  <span class="cm">// row - col (top-left diagonals)</span>
+    <span class="kw">var</span> diag2 = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();  <span class="cm">// row + col (top-right diagonals)</span>
+    <span class="kw">var</span> board = <span class="kw">new</span> <span class="kw">char</span>[n][];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) board[i] = <span class="kw">new string</span>(<span class="st">'.'</span>, n).<span class="mt">ToCharArray</span>();
+
+    <span class="kw">void</span> <span class="mt">Backtrack</span>(<span class="kw">int</span> row)
+    {
+        <span class="kw">if</span> (row == n) { results.<span class="mt">Add</span>(board.<span class="mt">Select</span>(r =&gt; <span class="kw">new string</span>(r)).<span class="mt">ToList</span>()); <span class="kw">return</span>; }
+        <span class="kw">for</span> (<span class="kw">int</span> col = <span class="nm">0</span>; col &lt; n; col++)
+        {
+            <span class="kw">if</span> (cols.<span class="mt">Contains</span>(col) || diag1.<span class="mt">Contains</span>(row-col) || diag2.<span class="mt">Contains</span>(row+col)) <span class="kw">continue</span>;
+            board[row][col] = <span class="st">'Q'</span>;
+            cols.<span class="mt">Add</span>(col); diag1.<span class="mt">Add</span>(row-col); diag2.<span class="mt">Add</span>(row+col);
+            <span class="mt">Backtrack</span>(row + <span class="nm">1</span>);
+            board[row][col] = <span class="st">'.'</span>;
+            cols.<span class="mt">Remove</span>(col); diag1.<span class="mt">Remove</span>(row-col); diag2.<span class="mt">Remove</span>(row+col);
+        }
+    }
+    <span class="mt">Backtrack</span>(<span class="nm">0</span>);
+    <span class="kw">return</span> results;
+}
+
+<span class="cm">// LC 52: just count solutions — same code but increment a counter</span></pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">solve_n_queens</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">str</span>]]:
+    results = []
+    cols = <span class="mt">set</span>()
+    diag1 = <span class="mt">set</span>()   <span class="cm"># row - col</span>
+    diag2 = <span class="mt">set</span>()   <span class="cm"># row + col</span>
+    queens = []      <span class="cm"># queens[row] = col</span>
+
+    <span class="kw">def</span> <span class="mt">backtrack</span>(row: <span class="tp">int</span>):
+        <span class="kw">if</span> row == n:
+            board = []
+            <span class="kw">for</span> c <span class="kw">in</span> queens:
+                row_str = <span class="st">'.'</span> * c + <span class="st">'Q'</span> + <span class="st">'.'</span> * (n - c - <span class="nm">1</span>)
+                board.<span class="mt">append</span>(row_str)
+            results.<span class="mt">append</span>(board)
+            <span class="kw">return</span>
+        <span class="kw">for</span> col <span class="kw">in</span> <span class="mt">range</span>(n):
+            <span class="kw">if</span> col <span class="kw">in</span> cols <span class="kw">or</span> row-col <span class="kw">in</span> diag1 <span class="kw">or</span> row+col <span class="kw">in</span> diag2:
+                <span class="kw">continue</span>
+            cols.<span class="mt">add</span>(col); diag1.<span class="mt">add</span>(row-col); diag2.<span class="mt">add</span>(row+col)
+            queens.<span class="mt">append</span>(col)
+            <span class="mt">backtrack</span>(row + <span class="nm">1</span>)
+            cols.<span class="mt">discard</span>(col); diag1.<span class="mt">discard</span>(row-col); diag2.<span class="mt">discard</span>(row+col)
+            queens.<span class="mt">pop</span>()
+
+    <span class="mt">backtrack</span>(<span class="nm">0</span>)
+    <span class="kw">return</span> results
+
+print(<span class="mt">len</span>(<span class="mt">solve_n_queens</span>(<span class="nm">4</span>)))  <span class="cm"># 2 solutions</span></pre>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Sudoku Solver (LC 37)</div>
+
+<p>Fill a 9×9 Sudoku grid so each row, column, and 3×3 box contains 1–9 exactly once.</p>
+<p><strong>Strategy:</strong> Find empty cells one by one. Try digits 1–9; check row/col/box constraints. If valid, recurse. If recursion fails, backtrack.</p>
+
+<div class="lang-label lang-cs">C#</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public void</span> <span class="mt">SolveSudoku</span>(<span class="kw">char</span>[][] board)
+{
+    <span class="mt">Solve</span>(board);
+}
+
+<span class="kw">private bool</span> <span class="mt">Solve</span>(<span class="kw">char</span>[][] board)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> r = <span class="nm">0</span>; r &lt; <span class="nm">9</span>; r++)
+    <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; <span class="nm">9</span>; c++)
+    {
+        <span class="kw">if</span> (board[r][c] != <span class="st">'.'</span>) <span class="kw">continue</span>;
+        <span class="kw">for</span> (<span class="kw">char</span> d = <span class="st">'1'</span>; d &lt;= <span class="st">'9'</span>; d++)
+        {
+            <span class="kw">if</span> (!<span class="mt">IsValid</span>(board, r, c, d)) <span class="kw">continue</span>;
+            board[r][c] = d;
+            <span class="kw">if</span> (<span class="mt">Solve</span>(board)) <span class="kw">return true</span>;
+            board[r][c] = <span class="st">'.'</span>;   <span class="cm">// backtrack</span>
+        }
+        <span class="kw">return false</span>;  <span class="cm">// no digit worked → dead end</span>
+    }
+    <span class="kw">return true</span>;  <span class="cm">// all cells filled</span>
+}
+
+<span class="kw">private bool</span> <span class="mt">IsValid</span>(<span class="kw">char</span>[][] board, <span class="kw">int</span> row, <span class="kw">int</span> col, <span class="kw">char</span> d)
+{
+    <span class="kw">int</span> boxRow = (row / <span class="nm">3</span>) * <span class="nm">3</span>, boxCol = (col / <span class="nm">3</span>) * <span class="nm">3</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">9</span>; i++)
+    {
+        <span class="kw">if</span> (board[row][i] == d) <span class="kw">return false</span>;
+        <span class="kw">if</span> (board[i][col] == d) <span class="kw">return false</span>;
+        <span class="kw">if</span> (board[boxRow + i/<span class="nm">3</span>][boxCol + i%<span class="nm">3</span>] == d) <span class="kw">return false</span>;
+    }
+    <span class="kw">return true</span>;
+}</pre>
+</div>
+
+<div class="lang-label lang-py">Python</div>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">solve_sudoku</span>(board: <span class="tp">list</span>[<span class="tp">list</span>[<span class="tp">str</span>]]) -&gt; <span class="tp">None</span>:
+
+    <span class="kw">def</span> <span class="mt">is_valid</span>(r: <span class="tp">int</span>, c: <span class="tp">int</span>, d: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
+        box_r, box_c = (r // <span class="nm">3</span>) * <span class="nm">3</span>, (c // <span class="nm">3</span>) * <span class="nm">3</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">9</span>):
+            <span class="kw">if</span> board[r][i] == d: <span class="kw">return</span> <span class="kw">False</span>
+            <span class="kw">if</span> board[i][c] == d: <span class="kw">return</span> <span class="kw">False</span>
+            <span class="kw">if</span> board[box_r + i//<span class="nm">3</span>][box_c + i%<span class="nm">3</span>] == d: <span class="kw">return</span> <span class="kw">False</span>
+        <span class="kw">return</span> <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="mt">solve</span>() -&gt; <span class="tp">bool</span>:
+        <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">9</span>):
+            <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">9</span>):
+                <span class="kw">if</span> board[r][c] != <span class="st">'.'</span>: <span class="kw">continue</span>
+                <span class="kw">for</span> d <span class="kw">in</span> <span class="st">'123456789'</span>:
+                    <span class="kw">if not</span> <span class="mt">is_valid</span>(r, c, d): <span class="kw">continue</span>
+                    board[r][c] = d
+                    <span class="kw">if</span> <span class="mt">solve</span>(): <span class="kw">return</span> <span class="kw">True</span>
+                    board[r][c] = <span class="st">'.'</span>   <span class="cm"># backtrack</span>
+                <span class="kw">return</span> <span class="kw">False</span>   <span class="cm"># no digit worked</span>
+        <span class="kw">return</span> <span class="kw">True</span>   <span class="cm"># all filled</span>
+
+    <span class="mt">solve</span>()</pre>
+</div>
+
+<div class="note">
+    <strong>📌 Optimization:</strong> Instead of scanning the board linearly, collect all empty cells upfront.
+    Further optimizations include constraint propagation (AC-3) and "minimum remaining values" heuristic —
+    fill the cell with fewest valid digits first. For interviews, the simple recursive version is sufficient.
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17A Complete</button>
+<div class="toast" id="toast">✅ Module 17A complete! N-Queens &amp; Sudoku mastered!</div>
+    <script>var MODULE_ID = 'm17a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

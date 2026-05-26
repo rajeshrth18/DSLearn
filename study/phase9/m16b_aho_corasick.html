@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 16B — Aho-Corasick & Suffix Arrays | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part B</h1>
+    <div class="tagline">Aho-Corasick Automaton &amp; Suffix Arrays</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Multi-Pattern Search · Failure Links · Suffix Array SA-IS · LCP Array</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 16</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 9 — Module 16 — String Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m16a_string_algorithms.html">KMP, Z-Function &amp; Rabin-Karp</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Aho-Corasick &amp; Suffix Arrays<br>
+    ⬜ <strong>Part C</strong> — <a href="m16c_string_practice.html">String Practice: 10 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
+    <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — Multi-Pattern Search Problem <span>— Why KMP alone doesn't scale</span></li>
+        <li>Section 2 — Aho-Corasick: Trie + Failure Links <span>— Building the automaton</span></li>
+        <li>Section 3 — Aho-Corasick: Search &amp; Output Links <span>— Full implementation</span></li>
+        <li>Section 4 — Suffix Arrays <span>— Construction and LCP array</span></li>
+        <li>Section 5 — Suffix Array Applications <span>— Longest common substring, etc.</span></li>
+        <li>Section 6 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Multi-Pattern Problem</div>
+
+<p>KMP and Z-function solve <em>one pattern</em> in O(n+m). But what if you have <strong>k patterns</strong> and one large text? Running KMP for each pattern costs O(k×n + Σm), which is too slow when k is large (e.g., antivirus with 10,000 signatures scanning a 100MB file).</p>
+
+<div class="diagram">PROBLEM: Find all occurrences of any pattern from set P = {p1, p2, ..., pk} in text T.
+
+NAIVE approach: Run KMP k times.
+  Time: O(k×n + Σm)   → O(10000 × 10^8) = 10^12 operations. Way too slow.
+
+BETTER: Build a combined automaton once from ALL patterns.
+  Then scan the text ONCE to find all matches of all patterns.
+  Time: O(Σm + n + output_size)  ← scan text only once!
+
+This is the Aho-Corasick algorithm (1975):
+  1. Build a Trie from all patterns
+  2. Add "failure links" (like KMP failure function, but on the trie)
+  3. Optionally add "output links" to collect all matching patterns at each position
+  4. Scan text: follow trie transitions + failure links</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Building the Aho-Corasick Automaton</div>
+
+<h3>Step 1: Build the Trie</h3>
+<p>Insert all patterns into a trie. Each path from root to a marked node represents a pattern.</p>
+
+<h3>Step 2: Compute Failure Links</h3>
+<p>The <strong>failure link</strong> of node v is the longest proper suffix of the string represented by v that is also a prefix of some pattern in the trie (i.e., is a node in the trie).</p>
+
+<div class="diagram">TRIE + FAILURE LINKS for patterns: {"he", "she", "his", "hers"}
+
+         root
+        /    \
+       h       s
+       |       |
+       e*      h
+       |       |
+       r       e*
+       |
+       s*
+
+(*) = end of pattern
+
+FAILURE LINKS (computed via BFS):
+  Intuition: fail[v] = where to "fall back" if the next character doesn't match
+  
+  fail[root] = root  (by definition)
+  fail[h]    = root  ('h' has no shorter prefix that's a trie node)
+  fail[s]    = root
+  fail[he]   = root  (suffix "e" is NOT a trie prefix)
+  fail[sh]   = h     (suffix "h" IS a trie node!)
+  fail[she]  = he    (suffix "he" IS a trie node → she's fail = he)
+  fail[her]  = root
+  fail[his]  = s     (suffix "s" IS a trie node)
+  fail[hers] = s
+
+SEARCH: Process text character by character.
+  At each position, follow the trie transition.
+  If no transition for current char: follow failure links until you find one (or reach root).
+  At each node, collect patterns that end here (including via output/dict links).</div>
+
+<h3>Step 3: Compute Output Links (Dictionary Links)</h3>
+<p>An <strong>output link</strong> from node v points to the next node on the failure link chain that is a <em>complete pattern</em>. This lets us efficiently collect all patterns that match at any position (since a node may have multiple patterns matching through its failure chain).</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">AhoCorasick</span>
+{
+    <span class="kw">private int</span>[][] next;      <span class="cm">// trie transition table</span>
+    <span class="kw">private int</span>[] fail;        <span class="cm">// failure links</span>
+    <span class="kw">private int</span>[] output;      <span class="cm">// output link (nearest complete pattern ancestor)</span>
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] patterns; <span class="cm">// patterns that end at this node</span>
+    <span class="kw">private int</span> size = <span class="nm">1</span>;
+
+    <span class="kw">public</span> <span class="tp">AhoCorasick</span>(<span class="kw">int</span> maxNodes = <span class="nm">100000</span>, <span class="kw">int</span> sigma = <span class="nm">26</span>)
+    {
+        next = <span class="kw">new int</span>[maxNodes][];
+        fail = <span class="kw">new int</span>[maxNodes];
+        output = <span class="kw">new int</span>[maxNodes];
+        patterns = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[maxNodes];
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; maxNodes; i++) {
+            next[i] = <span class="kw">new int</span>[sigma]; <span class="tp">Array</span>.<span class="mt">Fill</span>(next[i], -<span class="nm">1</span>);
+            output[i] = -<span class="nm">1</span>;
+            patterns[i] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        }
+    }
+
+    <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">string</span> word, <span class="kw">int</span> id)
+    {
+        <span class="kw">int</span> cur = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> word) {
+            <span class="kw">int</span> ch = c - <span class="st">'a'</span>;
+            <span class="kw">if</span> (next[cur][ch] == -<span class="nm">1</span>) next[cur][ch] = size++;
+            cur = next[cur][ch];
+        }
+        patterns[cur].<span class="mt">Add</span>(id);
+    }
+
+    <span class="kw">public void</span> <span class="mt">Build</span>()
+    {
+        <span class="kw">var</span> q = <span class="kw">new</span> <span class="tp">Queue</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="cm">// Initialize: root's children. If child exists → fail=root. Else → link to root.</span>
+        <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; <span class="nm">26</span>; c++) {
+            <span class="kw">if</span> (next[<span class="nm">0</span>][c] != -<span class="nm">1</span>) { fail[next[<span class="nm">0</span>][c]] = <span class="nm">0</span>; q.<span class="mt">Enqueue</span>(next[<span class="nm">0</span>][c]); }
+            <span class="kw">else</span> next[<span class="nm">0</span>][c] = <span class="nm">0</span>;  <span class="cm">// shortcut: undefined transitions at root → root</span>
+        }
+        <span class="kw">while</span> (q.Count > <span class="nm">0</span>) {
+            <span class="kw">int</span> u = q.<span class="mt">Dequeue</span>();
+            <span class="cm">// Merge output: patterns at fail[u] are also reachable from u</span>
+            <span class="kw">if</span> (patterns[fail[u]].Count > <span class="nm">0</span>) output[u] = fail[u];
+            <span class="kw">else</span> output[u] = output[fail[u]];
+
+            <span class="kw">for</span> (<span class="kw">int</span> c = <span class="nm">0</span>; c &lt; <span class="nm">26</span>; c++) {
+                <span class="kw">if</span> (next[u][c] != -<span class="nm">1</span>) {
+                    fail[next[u][c]] = next[fail[u]][c];
+                    q.<span class="mt">Enqueue</span>(next[u][c]);
+                } <span class="kw">else</span> {
+                    next[u][c] = next[fail[u]][c];  <span class="cm">// shortcut: propagate</span>
+                }
+            }
+        }
+    }
+
+    <span class="cm">// Search returns list of (patternId, textPosition) for all matches</span>
+    <span class="kw">public</span> <span class="tp">List</span>&lt;(<span class="kw">int</span> id, <span class="kw">int</span> pos)&gt; <span class="mt">Search</span>(<span class="kw">string</span> text)
+    {
+        <span class="kw">var</span> results = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">int</span>, <span class="kw">int</span>)&gt;();
+        <span class="kw">int</span> cur = <span class="nm">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; text.Length; i++) {
+            cur = next[cur][text[i] - <span class="st">'a'</span>];
+            <span class="kw">int</span> temp = cur;
+            <span class="kw">while</span> (temp > <span class="nm">0</span>) {
+                <span class="kw">foreach</span> (<span class="kw">int</span> id <span class="kw">in</span> patterns[temp]) results.<span class="mt">Add</span>((id, i));
+                temp = output[temp] == -<span class="nm">1</span> ? <span class="nm">0</span> : output[temp];
+                <span class="kw">if</span> (output[temp] == -<span class="nm">1</span>) <span class="kw">break</span>;
+            }
+        }
+        <span class="kw">return</span> results;
+    }
+}</pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
+
+<span class="kw">class</span> <span class="tp">AhoCorasick</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self):
+        self.goto = [{}]   <span class="cm"># trie transitions: goto[node][char] = next_node</span>
+        self.fail = [<span class="nm">0</span>]
+        self.output = [[]]  <span class="cm"># list of pattern indices at each node</span>
+
+    <span class="kw">def</span> <span class="mt">insert</span>(self, word, idx):
+        cur = <span class="nm">0</span>
+        <span class="kw">for</span> c <span class="kw">in</span> word:
+            <span class="kw">if</span> c <span class="kw">not in</span> self.goto[cur]:
+                self.goto[cur][c] = <span class="mt">len</span>(self.goto)
+                self.goto.<span class="mt">append</span>({})
+                self.fail.<span class="mt">append</span>(<span class="nm">0</span>)
+                self.output.<span class="mt">append</span>([])
+            cur = self.goto[cur][c]
+        self.output[cur].<span class="mt">append</span>(idx)
+
+    <span class="kw">def</span> <span class="mt">build</span>(self):
+        q = deque()
+        <span class="cm"># Root's children: fail → root</span>
+        <span class="kw">for</span> c, child <span class="kw">in</span> self.goto[<span class="nm">0</span>].<span class="mt">items</span>():
+            self.fail[child] = <span class="nm">0</span>; q.<span class="mt">append</span>(child)
+        <span class="kw">while</span> q:
+            u = q.<span class="mt">popleft</span>()
+            self.output[u] += self.output[self.fail[u]]  <span class="cm"># inherit patterns via fail</span>
+            <span class="kw">for</span> c, child <span class="kw">in</span> self.goto[u].<span class="mt">items</span>():
+                f = self.fail[u]
+                <span class="kw">while</span> f != <span class="nm">0</span> <span class="kw">and</span> c <span class="kw">not in</span> self.goto[f]: f = self.fail[f]
+                self.fail[child] = self.goto[f].<span class="mt">get</span>(c, <span class="nm">0</span>) <span class="kw">if</span> f != child <span class="kw">else</span> <span class="nm">0</span>
+                q.<span class="mt">append</span>(child)
+
+    <span class="kw">def</span> <span class="mt">search</span>(self, text):
+        <span class="st">"""Returns list of (pattern_idx, end_pos) for all matches."""</span>
+        cur = <span class="nm">0</span>; results = []
+        <span class="kw">for</span> i, c <span class="kw">in</span> <span class="mt">enumerate</span>(text):
+            <span class="kw">while</span> cur != <span class="nm">0</span> <span class="kw">and</span> c <span class="kw">not in</span> self.goto[cur]: cur = self.fail[cur]
+            cur = self.goto[cur].<span class="mt">get</span>(c, <span class="nm">0</span>)
+            <span class="kw">for</span> idx <span class="kw">in</span> self.output[cur]: results.<span class="mt">append</span>((idx, i))
+        <span class="kw">return</span> results
+
+<span class="cm"># Usage:
+# ac = AhoCorasick()
+# for i, p in enumerate(["he","she","his","hers"]): ac.insert(p, i)
+# ac.build()
+# print(ac.search("ushers"))  # → [(0,2),(1,3),(3,5)] — "he","she","hers"</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Suffix Arrays</div>
+
+<p>A <strong>suffix array</strong> SA is an array of all starting positions of suffixes of string s, sorted in lexicographic order. Combined with the <strong>LCP (Longest Common Prefix) array</strong>, suffix arrays can solve many string problems optimally.</p>
+
+<div class="diagram">SUFFIX ARRAY EXAMPLE:
+  String s = "banana"
+  Suffixes:
+    0: "banana"
+    1: "anana"
+    2: "nana"
+    3: "ana"
+    4: "na"
+    5: "a"
+
+  Sorted lexicographically:
+    "a"      → index 5
+    "ana"    → index 3
+    "anana"  → index 1
+    "banana" → index 0
+    "na"     → index 4
+    "nana"   → index 2
+
+  SA = [5, 3, 1, 0, 4, 2]
+
+LCP ARRAY (lcp[i] = LCP of SA[i] and SA[i-1]):
+  lcp[0] = 0  (undefined, set to 0)
+  lcp[1] = 1  ("a" and "ana" share prefix "a")
+  lcp[2] = 3  ("ana" and "anana" share "ana")
+  lcp[3] = 0  ("anana" and "banana" share nothing)
+  lcp[4] = 0  ("banana" and "na")
+  lcp[5] = 2  ("na" and "nana" share "na")
+
+  LCP = [0, 1, 3, 0, 0, 2]
+
+APPLICATIONS:
+  - Count distinct substrings: n*(n+1)/2 - Σlcp[i]
+  - Longest repeated substring: max(lcp)
+  - Longest common substring of two strings: concat s+'#'+t, find max lcp
+    between suffixes from different strings
+  - Pattern matching: binary search in SA in O(m log n)</div>
+
+<h3>O(n log n) Suffix Array Construction</h3>
+<p>The standard competitive programming approach uses doubling: <span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="cm">// O(n log² n) Suffix Array — doubling sort</span>
+<span class="kw">public static int</span>[] <span class="mt">BuildSuffixArray</span>(<span class="kw">string</span> s) {
+    <span class="kw">int</span> n = s.Length;
+    <span class="kw">int</span>[] sa=<span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,n).<span class="mt">ToArray</span>(), rank=s.<span class="mt">Select</span>(c=>(<span class="kw">int</span>)c).<span class="mt">ToArray</span>(), tmp=<span class="kw">new int</span>[n];
+    <span class="kw">for</span> (<span class="kw">int</span> k=<span class="nm">1</span>; k&lt;n; k&lt;&lt;=<span class="nm">1</span>) {
+        <span class="kw">int</span> kk=k;
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(sa,(a,b)=>{
+            <span class="kw">if</span>(rank[a]!=rank[b]) <span class="kw">return</span> rank[a]-rank[b];
+            <span class="kw">return</span> (a+kk&lt;n?rank[a+kk]:-<span class="nm">1</span>)-(b+kk&lt;n?rank[b+kk]:-<span class="nm">1</span>);});
+        tmp[sa[<span class="nm">0</span>]]=<span class="nm">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">1</span>; i&lt;n; i++) {
+            <span class="kw">bool</span> same=rank[sa[i]]==rank[sa[i-<span class="nm">1</span>]]&&
+                (sa[i]+k&lt;n?rank[sa[i]+k]:-<span class="nm">1</span>)==(sa[i-<span class="nm">1</span>]+k&lt;n?rank[sa[i-<span class="nm">1</span>]+k]:-<span class="nm">1</span>);
+            tmp[sa[i]]=tmp[sa[i-<span class="nm">1</span>]]+(same?<span class="nm">0</span>:<span class="nm">1</span>);
+        }
+        <span class="tp">Array</span>.<span class="mt">Copy</span>(tmp,rank,n);
+        <span class="kw">if</span>(rank[sa[n-<span class="nm">1</span>]]==n-<span class="nm">1</span>) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> sa;
+}
+<span class="cm">// Count distinct substrings = n*(n+1)/2 - sum(lcp)</span>
+<span class="kw">public static long</span> <span class="mt">CountDistinct</span>(<span class="kw">string</span> s) {
+    <span class="kw">int</span> n=s.Length; <span class="kw">var</span> sa=<span class="mt">BuildSuffixArray</span>(s); <span class="kw">var</span> lcp=<span class="mt">BuildLcp</span>(s,sa);
+    <span class="kw">return</span> (<span class="kw">long</span>)n*(n+<span class="nm">1</span>)/<span class="nm">2</span>-lcp.<span class="mt">Sum</span>();
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">def</span> <span class="mt">build_suffix_array</span>(s):
+    <span class="st">"""O(n log^2 n) suffix array construction."""</span>
+    n = <span class="mt">len</span>(s)
+    sa = <span class="mt">list</span>(<span class="mt">range</span>(n))
+    rank = [<span class="mt">ord</span>(c) <span class="kw">for</span> c <span class="kw">in</span> s]
+    tmp = [<span class="nm">0</span>] * n
+    k = <span class="nm">1</span>
+    <span class="kw">while</span> k &lt; n:
+        <span class="kw">def</span> <span class="mt">cmp_key</span>(i): <span class="kw">return</span> (rank[i], rank[i+k] <span class="kw">if</span> i+k &lt; n <span class="kw">else</span> -<span class="nm">1</span>)
+        sa.<span class="mt">sort</span>(key=cmp_key)
+        tmp[sa[<span class="nm">0</span>]] = <span class="nm">0</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n):
+            tmp[sa[i]] = tmp[sa[i-<span class="nm">1</span>]] + (<span class="nm">1</span> <span class="kw">if</span> <span class="mt">cmp_key</span>(sa[i]) != <span class="mt">cmp_key</span>(sa[i-<span class="nm">1</span>]) <span class="kw">else</span> <span class="nm">0</span>)
+        rank = tmp[:]
+        <span class="kw">if</span> rank[sa[-<span class="nm">1</span>]] == n-<span class="nm">1</span>: <span class="kw">break</span>
+        k *= <span class="nm">2</span>
+    <span class="kw">return</span> sa
+
+<span class="kw">def</span> <span class="mt">build_lcp_array</span>(s, sa):
+    <span class="st">"""Kasai's algorithm: O(n) LCP array from suffix array."""</span>
+    n = <span class="mt">len</span>(s); rank = [<span class="nm">0</span>] * n; lcp = [<span class="nm">0</span>] * n
+    <span class="kw">for</span> i, v <span class="kw">in</span> <span class="mt">enumerate</span>(sa): rank[v] = i
+    h = <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">if</span> rank[i] > <span class="nm">0</span>:
+            j = sa[rank[i]-<span class="nm">1</span>]
+            <span class="kw">while</span> i+h &lt; n <span class="kw">and</span> j+h &lt; n <span class="kw">and</span> s[i+h] == s[j+h]: h += <span class="nm">1</span>
+            lcp[rank[i]] = h
+            <span class="kw">if</span> h > <span class="nm">0</span>: h -= <span class="nm">1</span>
+    <span class="kw">return</span> lcp
+
+<span class="cm"># Count distinct substrings
+def count_distinct(s):
+    n = len(s); sa = build_suffix_array(s); lcp = build_lcp_array(s, sa)
+    return n*(n+1)//2 - sum(lcp)</span></pre>
+</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Kasai's LCP algorithm — O(n)</span>
+<span class="kw">public int</span>[] <span class="mt">BuildLcp</span>(<span class="kw">string</span> s, <span class="kw">int</span>[] sa)
+{
+    <span class="kw">int</span> n = s.Length;
+    <span class="kw">int</span>[] rank = <span class="kw">new int</span>[n], lcp = <span class="kw">new int</span>[n];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) rank[sa[i]] = i;
+    <span class="kw">int</span> h = <span class="nm">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) {
+        <span class="kw">if</span> (rank[i] > <span class="nm">0</span>) {
+            <span class="kw">int</span> j = sa[rank[i] - <span class="nm">1</span>];
+            <span class="kw">while</span> (i + h &lt; n &amp;&amp; j + h &lt; n &amp;&amp; s[i + h] == s[j + h]) h++;
+            lcp[rank[i]] = h;
+            <span class="kw">if</span> (h > <span class="nm">0</span>) h--;
+        }
+    }
+    <span class="kw">return</span> lcp;
+}</pre>
+</div>
+
+<h3>Pattern Search Using Suffix Array</h3>
+<p>Binary search on the sorted SA: since SA is in lexicographic order, we binary search for the first and last suffix with the given pattern as prefix. Time: O(m log n).</p>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">import</span> bisect
+<span class="kw">def</span> <span class="mt">sa_search</span>(s, sa, pattern):
+    <span class="st">"""Find all occurrences of pattern in s using binary search on SA."""</span>
+    n, m = <span class="mt">len</span>(s), <span class="mt">len</span>(pattern)
+    <span class="cm"># Find leftmost position where suffix >= pattern</span>
+    lo = bisect.<span class="mt">bisect_left</span>(sa, <span class="nm">0</span>, key=<span class="kw">lambda</span> i: s[i:i+m] >= pattern)
+    hi = bisect.<span class="mt">bisect_left</span>(sa, <span class="nm">0</span>, key=<span class="kw">lambda</span> i: s[i:i+m] > pattern)
+    <span class="kw">return</span> <span class="mt">sorted</span>(sa[lo:hi])  <span class="cm"># O(m log n + output)</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Algorithm Summary &amp; LeetCode Map</div>
+
+<table>
+    <thead>
+        <tr><th>Algorithm</th><th>Complexity</th><th>Space</th><th>Key Application</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>Aho-Corasick</strong></td><td class="g">O(Σm + n + output)</td><td>O(Σm × σ)</td><td>Multi-pattern search, spam filters, antivirus</td></tr>
+        <tr><td><strong>Suffix Array</strong></td><td class="g">O(n log n) build</td><td class="g">O(n)</td><td>Repeated substrings, LCS of two strings</td></tr>
+        <tr><td><strong>LCP Array (Kasai)</strong></td><td class="g">O(n)</td><td class="g">O(n)</td><td>Distinct substrings, longest repeat</td></tr>
+        <tr><td><strong>SA Binary Search</strong></td><td class="g">O(m log n)</td><td class="g">O(1)</td><td>Pattern matching without preprocessing text again</td></tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr><th>LeetCode #</th><th>Problem</th><th>Algorithm</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>#1065</td><td>Index Pairs of a String</td><td class="g">Aho-Corasick</td></tr>
+        <tr><td>#212</td><td>Word Search II</td><td class="g">Trie (simplified Aho-Corasick)</td></tr>
+        <tr><td>#1044</td><td>Longest Duplicate Substring</td><td class="g">Suffix Array + LCP</td></tr>
+        <tr><td>#718</td><td>Maximum Length of Repeated Subarray</td><td class="o">Rolling hash or SA</td></tr>
+        <tr><td>#1062</td><td>Longest Repeating Substring</td><td class="g">Binary search + hash / SA+LCP</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Where These Are Used:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Aho-Corasick</strong>: Antivirus software (ClamAV), intrusion detection, genome alignment against multiple probes</li>
+        <li><strong>Suffix Arrays</strong>: Full-text search engines, bioinformatics (BWT/FM-index used in BWA, Bowtie genome aligners), data compression</li>
+        <li><strong>LCP Array</strong>: Find all longest repeated substrings in O(n) after O(n log n) preprocessing — used in plagiarism detection</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: How does the Aho-Corasick failure link differ from the KMP failure function?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">KMP's lps[j] applies to a single pattern: "the longest proper prefix of pattern[0..j] that's also a suffix." Aho-Corasick's failure link at trie node v points to: "the longest proper suffix of the string represented by v that is a valid PREFIX of ANY pattern" (i.e., that corresponds to some node in the trie). KMP has O(m) failure states (one per character). Aho-Corasick has O(Σm) states (one per character across all patterns), but each state has the same "fall back when stuck" semantics. The key conceptual difference: KMP fails within one pattern; Aho-Corasick fails across the entire pattern trie. Both guarantee linear total work via the same amortized argument.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: Why is the goto transition table filled in with shortcuts during BFS in Aho-Corasick?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">In the original trie, many transitions are undefined (e.g., from node "he", if we encounter 'x', there's no 'x' child). Without shortcuts, during search we'd need to follow failure links in a loop until we find a state with the desired transition. By filling undefined transitions during BFS (making them point to wherever we'd end up after following failure links), we create a <strong>complete DFA</strong>: every state has exactly one transition for every character. This eliminates the while loop during search, making the search phase O(n) with zero overhead — just follow one precomputed transition per character. The BFS order ensures parent shortcuts are computed before children.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: What is the LCP array, how is it computed in O(n), and what can you do with it?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">LCP[i] = length of the longest common prefix between suffix SA[i] and suffix SA[i-1] (adjacent in the sorted order). <strong>Kasai's algorithm</strong> computes it in O(n) using a key property: if the LCP of suffixes starting at positions i and j is h, then the LCP of suffixes starting at i+1 and j+1 is at least h-1. We process suffixes in order of their starting position (not SA order), maintaining a running h that only ever increments by 1 or decreases by at most 1, giving O(n) total. With the LCP array you can: (1) count distinct substrings in O(n), (2) find the longest repeated substring in O(n), (3) find the longest common substring of two strings by concatenating them with a separator and finding max LCP between a suffix from each string.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: What is the Burrows-Wheeler Transform and how does it relate to suffix arrays?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The Burrows-Wheeler Transform (BWT) rearranges string characters to cluster similar characters together, enabling better compression. Given string s with sentinel '$' appended, BWT[i] = s[SA[i] - 1] (the character just before the i-th sorted suffix). Since SA gives suffixes in sorted order, BWT can be computed in O(n) from the suffix array. The reverse BWT (BWT inversion) can reconstruct the original string. The FM-index (used in genome aligners like BWA and Bowtie) combines BWT + suffix array to achieve compressed full-text indexing: pattern search uses only O(m) memory-accesses into O(n) space (vs O(n) space for raw SA), enabling alignment of billions of short reads against human genome.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: How would you use Aho-Corasick to solve LeetCode #212 "Word Search II"?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Build an Aho-Corasick automaton (or Trie, which is essentially Aho-Corasick without failure links for this problem) from all words. Then DFS/backtrack through the grid, maintaining the current trie node. At each cell, follow the trie transition for the current character. If the current node represents a complete word, add it to results. Prune if the current trie node has no children (no words extend through this path). Why Aho-Corasick over simple Trie? If multiple words share prefixes (e.g., "ab", "abc"), the automaton merges their prefix states. Why Aho-Corasick over running KMP for each word? The grid DFS builds one path that can match multiple words simultaneously — running all words through the same automaton is O(words × path_length), whereas separate KMPs would be O(|words| × grid_size).</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16B Complete</button>
+<div class="toast" id="toast">✅ Module 16B complete! Aho-Corasick &amp; Suffix Arrays mastered!</div>
+    <script>var MODULE_ID = 'm16b';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

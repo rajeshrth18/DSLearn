@@ -1,0 +1,599 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 11C — Disjoint Set Union | DSA Masterbook</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 7</div>
+    <h1>Module 11 — Part C</h1>
+    <div class="tagline">Disjoint Set Union — Union-Find</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Group elements into sets, merge sets, and answer "same group?" — all nearly O(1)</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 11</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Phase 7 — Advanced Data Structures:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m11a_segment_trees.html">Segment Trees</a><br>
+    ✅ <strong>Part B</strong> — <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Disjoint Set Union<br>
+    ⬜ <strong>Part D</strong> — <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m11e_skip_lists.html">Skip Lists</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m11f_kdtrees.html">K-D Trees</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase6/m10a_dijkstra.html">&larr; Module 10 &mdash; Advanced Graphs</a>
+    <a href="../phase8/m12a_dp_intro.html">Module 12 &mdash; Dynamic Programming &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents</h2>
+    <ol>
+        <li>Section 1 — The Problem: Dynamic Connectivity <span>— When to use DSU</span></li>
+        <li>Section 2 — Naive DSU: parent[] array <span>— Find with chain following, union naively</span></li>
+        <li>Section 3 — Path Compression <span>— Flatten the tree during Find</span></li>
+        <li>Section 4 — Union by Rank / Size <span>— Attach smaller tree under larger</span></li>
+        <li>Section 5 — The Inverse-Ackermann Complexity <span>— Why it's "almost O(1)"</span></li>
+        <li>Section 6 — Full C# &amp; Python Implementations <span>— With extras: count, size, connectivity</span></li>
+        <li>Section 7 — Weighted DSU <span>— Storing edge weights relative to root</span></li>
+        <li>Section 8 — LeetCode Walkthroughs <span>— #684, #547, #990, #1202</span></li>
+        <li>Section 9 — Q&amp;A Review <span>— 5 key questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Problem: Dynamic Connectivity</div>
+
+<p>The <strong>Disjoint Set Union (DSU)</strong>, also called <strong>Union-Find</strong>, solves the 
+<em>dynamic connectivity problem</em>: you have n nodes and you want to:</p>
+<ol>
+    <li><strong>Union(a, b):</strong> Connect node a and node b (merge their sets)</li>
+    <li><strong>Find(a):</strong> Return the "representative" (root) of a's set</li>
+    <li><strong>Connected(a, b):</strong> Return Find(a) == Find(b)</li>
+</ol>
+
+<div class="realworld">
+    <strong>🌍 Real-World Applications:</strong>
+    <ul style="margin-top:8px;">
+        <li><strong>Kruskal's MST:</strong> Use DSU to check if adding an edge creates a cycle — O(E log E) overall</li>
+        <li><strong>Network connectivity:</strong> "Are these two servers in the same connected component?"</li>
+        <li><strong>Percolation:</strong> Physics simulations of fluid flow through grids</li>
+        <li><strong>Image processing:</strong> Connected component labeling — group adjacent pixels of same color</li>
+        <li><strong>Social networks:</strong> "Are these two users in the same friend group?"</li>
+    </ul>
+</div>
+
+<table>
+    <thead><tr><th>Approach</th><th>Find</th><th>Union</th><th>Space</th></tr></thead>
+    <tbody>
+        <tr><td>Naive (array)</td><td class="g">O(1)</td><td class="r">O(n)</td><td class="g">O(n)</td></tr>
+        <tr><td>Naive tree (no opt.)</td><td class="r">O(n)</td><td class="g">O(1)</td><td class="g">O(n)</td></tr>
+        <tr><td>With Path Compression only</td><td class="o">O(log n) amort.</td><td class="g">O(log n)</td><td class="g">O(n)</td></tr>
+        <tr><td>With Union by Rank only</td><td class="o">O(log n) worst</td><td class="g">O(log n)</td><td class="g">O(n)</td></tr>
+        <tr><td><strong>Both PC + Union by Rank</strong></td><td class="g"><strong>O(α(n)) ≈ O(1)</strong></td><td class="g"><strong>O(α(n))</strong></td><td class="g"><strong>O(n)</strong></td></tr>
+    </tbody>
+</table>
+
+<p>Where α(n) is the <strong>inverse Ackermann function</strong> — for all practical values of n (up to the 
+number of atoms in the universe), α(n) ≤ 4. So it's effectively constant time.</p>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Naive DSU: parent[] Array</div>
+
+<p>Each node points to a parent. A node is a <strong>root</strong> if <code>parent[i] == i</code>. 
+All nodes in the same set eventually point (via chain) to the same root.</p>
+
+<div class="diagram">INITIAL STATE: 5 nodes, all separate
+  parent: [0, 1, 2, 3, 4]   (each is its own root)
+
+Union(0, 2): parent[Find(0)] = Find(2)  → parent[0] = 2
+  parent: [2, 1, 2, 3, 4]   component: {0,2}
+
+Union(1, 3): parent[1] = 3
+  parent: [2, 3, 2, 3, 4]   components: {0,2}, {1,3}, {4}
+
+Union(2, 3): parent[Find(2)] = Find(3)  → parent[2] = 3
+  parent: [2, 3, 3, 3, 4]   components: {0,1,2,3}, {4}
+
+Find(0): 0→2→3  (chain of length 2)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Naive DSU — no optimizations</span>
+<span class="kw">int</span>[] parent;
+
+<span class="kw">void</span> <span class="mt">Init</span>(<span class="kw">int</span> n) {
+    parent = <span class="kw">new int</span>[n];
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;n; i++) parent[i] = i;
+}
+
+<span class="kw">int</span> <span class="mt">Find</span>(<span class="kw">int</span> x) {
+    <span class="kw">while</span> (parent[x] != x) x = parent[x];   <span class="cm">// follow chain to root</span>
+    <span class="kw">return</span> x;
+}
+
+<span class="kw">void</span> <span class="mt">Union</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) => parent[<span class="mt">Find</span>(a)] = <span class="mt">Find</span>(b);
+
+<span class="kw">bool</span> <span class="mt">Connected</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) => <span class="mt">Find</span>(a) == <span class="mt">Find</span>(b);</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Naive DSU — no optimizations</span>
+<span class="kw">def</span> <span class="mt">init</span>(n):
+    <span class="kw">global</span> parent
+    parent = <span class="mt">list</span>(<span class="mt">range</span>(n))
+
+<span class="kw">def</span> <span class="mt">find</span>(x):
+    <span class="kw">while</span> parent[x] != x: x = parent[x]   <span class="cm"># follow chain to root</span>
+    <span class="kw">return</span> x
+
+<span class="kw">def</span> <span class="mt">union</span>(a, b): parent[<span class="mt">find</span>(a)] = <span class="mt">find</span>(b)
+
+<span class="kw">def</span> <span class="mt">connected</span>(a, b): <span class="kw">return</span> <span class="mt">find</span>(a) == <span class="mt">find</span>(b)</pre>
+</div>
+
+<div class="warning">
+    <strong>⚠️ Problem without optimizations:</strong> Repeated unions can create a linear chain 
+    (worst case). Then Find(0) in a chain 0→1→2→3→...→n-1 takes O(n). With n operations, 
+    total time becomes O(n²) — no better than brute force.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Path Compression</div>
+
+<p>During a <code>Find(x)</code> call, after traversing the chain to the root, 
+<strong>set every visited node's parent directly to the root</strong>. 
+Future Find calls on these nodes will be O(1).</p>
+
+<div class="diagram">PATH COMPRESSION EXAMPLE
+
+Before (chain):  0 → 2 → 5 → 9 (root)
+
+Find(0):
+  Step 1: Follow chain: 0→2→5→9 (root = 9)
+  Step 2: Compress:
+    parent[0] = 9
+    parent[2] = 9
+    parent[5] = 9  (already 9's child, no change)
+
+After: 0 → 9, 2 → 9, 5 → 9  (all point directly to root!)</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Path compression — recursive (one-pass halving)</span>
+<span class="kw">int</span> <span class="mt">Find</span>(<span class="kw">int</span> x) {
+    <span class="kw">if</span> (parent[x] != x) parent[x] = <span class="mt">Find</span>(parent[x]);   <span class="cm">// recursion + compress</span>
+    <span class="kw">return</span> parent[x];
+}
+
+<span class="cm">// Path compression — iterative (two-pass)</span>
+<span class="kw">int</span> <span class="mt">FindIter</span>(<span class="kw">int</span> x) {
+    <span class="kw">int</span> root = x;
+    <span class="kw">while</span> (parent[root] != root) root = parent[root];  <span class="cm">// find root</span>
+    <span class="kw">while</span> (parent[x] != root) {                         <span class="cm">// compress path</span>
+        <span class="kw">int</span> next = parent[x]; parent[x] = root; x = next;
+    }
+    <span class="kw">return</span> root;
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="cm"># Path compression — recursive (one-pass)</span>
+<span class="kw">def</span> <span class="mt">find</span>(x):
+    <span class="kw">if</span> parent[x] != x: parent[x] = <span class="mt">find</span>(parent[x])   <span class="cm"># recursion + compress</span>
+    <span class="kw">return</span> parent[x]
+
+<span class="cm"># Path compression — iterative (two-pass)</span>
+<span class="kw">def</span> <span class="mt">find_iter</span>(x):
+    root = x
+    <span class="kw">while</span> parent[root] != root: root = parent[root]   <span class="cm"># find root</span>
+    <span class="kw">while</span> parent[x] != root:                           <span class="cm"># compress path</span>
+        parent[x], x = root, parent[x]
+    <span class="kw">return</span> root</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Union by Rank / Size</div>
+
+<p>When merging two trees, always attach the <strong>smaller tree</strong> under the root of the 
+<strong>larger tree</strong>. This keeps the tree height at most O(log n).</p>
+
+<div class="diagram">UNION BY RANK (tree height bound)
+
+rank[i] = upper bound on height of tree rooted at i
+
+Union(a, b):
+  ra = Find(a), rb = Find(b)
+  if ra == rb: return  (already connected)
+  
+  if rank[ra] < rank[rb]: swap ra, rb  (always attach rb under ra)
+  parent[rb] = ra
+  if rank[ra] == rank[rb]: rank[ra]++  (only grows when equal heights merge)
+
+UNION BY SIZE (count of elements):
+
+size[i] = number of nodes in tree rooted at i
+
+Union(a, b):
+  ra = Find(a), rb = Find(b)
+  if ra == rb: return
+  if size[ra] < size[rb]: swap ra, rb
+  parent[rb] = ra
+  size[ra] += size[rb]   (update size of new root)</div>
+
+<div class="tip">
+    <strong>💡 Rank vs Size:</strong> Both achieve O(log n) height bound. "Union by Size" is 
+    often preferred in practice because the size field is useful (you often want to know the 
+    component size). "Union by Rank" has a slightly tighter theoretical bound.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — The Inverse-Ackermann Complexity</div>
+
+<p>With both path compression AND union by rank/size, the amortized cost per operation is 
+<strong>O(α(n))</strong>, the inverse Ackermann function.</p>
+
+<div class="diagram">ACKERMANN FUNCTION grows incredibly fast:
+  A(1,1) = 2
+  A(2,2) = 7
+  A(3,3) = 61
+  A(4,4) = 2^2^2^2^... (a power tower of 65536 twos) ≈ ∞ for practical purposes
+
+INVERSE ACKERMANN α(n) grows incredibly slowly:
+  α(n) ≤ 1   for n ≤ 1
+  α(n) ≤ 2   for n ≤ 3
+  α(n) ≤ 3   for n ≤ 7
+  α(n) ≤ 4   for n ≤ A(4,4) ≈ 10^19728
+
+So for ALL practical n (even 10^18):  α(n) ≤ 4
+
+This means: with both optimizations, DSU is effectively O(1) per operation for any
+real-world input. The proof requires amortized analysis — tracking a "potential function"
+that accounts for the cost of future path compressions amortized over past operations.</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Full C# &amp; Python Implementations</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">DSU</span>
+{
+    <span class="kw">private readonly int</span>[] parent, size;
+    <span class="kw">public int</span> Components { <span class="kw">get</span>; <span class="kw">private set</span>; }
+
+    <span class="kw">public</span> <span class="mt">DSU</span>(<span class="kw">int</span> n)
+    {
+        parent = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>, n).<span class="mt">ToArray</span>();
+        size   = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="nm">1</span>, n).<span class="mt">ToArray</span>();
+        Components = n;
+    }
+
+    <span class="cm">/// Find root with path compression — O(α(n))</span>
+    <span class="kw">public int</span> <span class="mt">Find</span>(<span class="kw">int</span> x)
+    {
+        <span class="kw">if</span> (parent[x] != x) parent[x] = <span class="mt">Find</span>(parent[x]);
+        <span class="kw">return</span> parent[x];
+    }
+
+    <span class="cm">/// Union by size — O(α(n)). Returns false if already connected.</span>
+    <span class="kw">public bool</span> <span class="mt">Union</span>(<span class="kw">int</span> a, <span class="kw">int</span> b)
+    {
+        <span class="kw">int</span> ra = <span class="mt">Find</span>(a), rb = <span class="mt">Find</span>(b);
+        <span class="kw">if</span> (ra == rb) <span class="kw">return false</span>;
+        <span class="kw">if</span> (size[ra] &lt; size[rb]) (ra, rb) = (rb, ra);   <span class="cm">// ra = larger</span>
+        parent[rb] = ra;
+        size[ra]  += size[rb];
+        Components--;
+        <span class="kw">return true</span>;
+    }
+
+    <span class="cm">/// Are a and b in the same component?</span>
+    <span class="kw">public bool</span> <span class="mt">Connected</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) => <span class="mt">Find</span>(a) == <span class="mt">Find</span>(b);
+
+    <span class="cm">/// Size of the component containing x</span>
+    <span class="kw">public int</span> <span class="mt">GetSize</span>(<span class="kw">int</span> x) => size[<span class="mt">Find</span>(x)];
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">var</span> dsu = <span class="kw">new</span> <span class="tp">DSU</span>(<span class="nm">5</span>);
+dsu.<span class="mt">Union</span>(<span class="nm">0</span>, <span class="nm">1</span>);
+dsu.<span class="mt">Union</span>(<span class="nm">1</span>, <span class="nm">2</span>);
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(dsu.<span class="mt">Connected</span>(<span class="nm">0</span>, <span class="nm">2</span>));    <span class="cm">// True</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(dsu.<span class="mt">Connected</span>(<span class="nm">0</span>, <span class="nm">3</span>));    <span class="cm">// False</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(dsu.Components);          <span class="cm">// 3  ({0,1,2}, {3}, {4})</span>
+<span class="tp">Console</span>.<span class="mt">WriteLine</span>(dsu.<span class="mt">GetSize</span>(<span class="nm">0</span>));         <span class="cm">// 3</span></pre>
+</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="kw">class</span> <span class="tp">DSU</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, n):
+        self.parent = <span class="mt">list</span>(<span class="mt">range</span>(n))
+        self.size = [<span class="nm">1</span>] * n
+        self.components = n
+
+    <span class="kw">def</span> <span class="mt">find</span>(self, x):
+        <span class="kw">if</span> self.parent[x] != x:
+            self.parent[x] = self.<span class="mt">find</span>(self.parent[x])  <span class="cm"># path compression</span>
+        <span class="kw">return</span> self.parent[x]
+
+    <span class="kw">def</span> <span class="mt">union</span>(self, a, b):
+        ra, rb = self.<span class="mt">find</span>(a), self.<span class="mt">find</span>(b)
+        <span class="kw">if</span> ra == rb: <span class="kw">return False</span>
+        <span class="kw">if</span> self.size[ra] < self.size[rb]: ra, rb = rb, ra  <span class="cm"># ra = larger</span>
+        self.parent[rb] = ra
+        self.size[ra] += self.size[rb]
+        self.components -= <span class="nm">1</span>
+        <span class="kw">return True</span>
+
+    <span class="kw">def</span> <span class="mt">connected</span>(self, a, b): <span class="kw">return</span> self.<span class="mt">find</span>(a) == self.<span class="mt">find</span>(b)
+    <span class="kw">def</span> <span class="mt">get_size</span>(self, x): <span class="kw">return</span> self.size[self.<span class="mt">find</span>(x)]</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Weighted DSU</div>
+
+<p>A <strong>Weighted DSU</strong> stores a <em>relative weight</em> from each node to its parent. 
+During path compression, the weight is updated to reflect the weight relative to the root directly.</p>
+
+<div class="diagram">USE CASE: "Is there a consistent assignment of values?"
+
+Each edge (a,b) in a graph has a label: val[b] - val[a] = w
+We want to know if the system of equations is consistent (no contradiction).
+
+weight[i] = w(i, root)  — value difference from node i to its component root
+
+Find(x):
+  If x is root: return (x, 0)
+  (root, w) = Find(parent[x])
+  weight[x] += w        ← update weight relative to root (during path compression)
+  parent[x] = root
+  return (root, weight[x])
+
+Union(a, b, w_ab):     ← w_ab = val[b] - val[a]
+  (ra, wa) = Find(a),  (rb, wb) = Find(b)
+  If ra == rb: check wa - wb == w_ab (consistency)
+  parent[ra] = rb
+  weight[ra] = wb - wa + w_ab   ← derived from the equation system</div>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public class</span> <span class="tp">WeightedDSU</span>
+{
+    <span class="kw">private int</span>[] parent, size;
+    <span class="kw">private double</span>[] weight;  <span class="cm">// weight[i] = val[i] / val[root]  (for ratio problems)</span>
+
+    <span class="kw">public</span> <span class="mt">WeightedDSU</span>(<span class="kw">int</span> n) {
+        parent = <span class="tp">Enumerable</span>.<span class="mt">Range</span>(<span class="nm">0</span>,n).<span class="mt">ToArray</span>();
+        size   = <span class="kw">new int</span>[n]; <span class="tp">Array</span>.<span class="mt">Fill</span>(size, <span class="nm">1</span>);
+        weight = <span class="kw">new double</span>[n]; <span class="tp">Array</span>.<span class="mt">Fill</span>(weight, <span class="nm">1.0</span>);
+    }
+
+    <span class="kw">public</span> (<span class="kw">int</span> root, <span class="kw">double</span> w) <span class="mt">Find</span>(<span class="kw">int</span> x) {
+        <span class="kw">if</span> (parent[x] == x) <span class="kw">return</span> (x, <span class="nm">1.0</span>);
+        <span class="kw">var</span> (root, pw) = <span class="mt">Find</span>(parent[x]);
+        weight[x] *= pw;
+        parent[x] = root;
+        <span class="kw">return</span> (root, weight[x]);
+    }
+
+    <span class="kw">public bool</span> <span class="mt">Union</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="kw">double</span> ratio)  <span class="cm">// val[a] / val[b] = ratio</span>
+    {
+        <span class="kw">var</span> (ra, wa) = <span class="mt">Find</span>(a);
+        <span class="kw">var</span> (rb, wb) = <span class="mt">Find</span>(b);
+        <span class="kw">if</span> (ra == rb) <span class="kw">return</span> <span class="kw">true</span>;
+        <span class="kw">if</span> (size[ra] &lt; size[rb]) { (ra,rb)=(rb,ra); (wa,wb)=(wb,wa); ratio=<span class="nm">1.0</span>/ratio; }
+        parent[rb] = ra;
+        weight[rb] = wa / wb / ratio;
+        size[ra] += size[rb];
+        <span class="kw">return</span> <span class="kw">true</span>;
+    }
+}
+<span class="cm">// LeetCode #399 (Evaluate Division) uses this exact technique.</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">class</span> <span class="tp">WeightedDSU</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(self, n):
+        self.parent = <span class="mt">list</span>(<span class="mt">range</span>(n))
+        self.size   = [<span class="nm">1</span>] * n
+        self.weight = [<span class="nm">1.0</span>] * n  <span class="cm"># weight[i] = val[i] / val[root] (ratio problems)</span>
+
+    <span class="kw">def</span> <span class="mt">find</span>(self, x):
+        <span class="kw">if</span> self.parent[x] == x: <span class="kw">return</span> (x, <span class="nm">1.0</span>)
+        root, pw = self.<span class="mt">find</span>(self.parent[x])
+        self.weight[x] *= pw
+        self.parent[x]  = root
+        <span class="kw">return</span> (root, self.weight[x])
+
+    <span class="kw">def</span> <span class="mt">union</span>(self, a, b, ratio):   <span class="cm"># val[a] / val[b] = ratio</span>
+        ra, wa = self.<span class="mt">find</span>(a)
+        rb, wb = self.<span class="mt">find</span>(b)
+        <span class="kw">if</span> ra == rb: <span class="kw">return True</span>
+        <span class="kw">if</span> self.size[ra] &lt; self.size[rb]:
+            ra, rb, wa, wb, ratio = rb, ra, wb, wa, <span class="nm">1.0</span> / ratio
+        self.parent[rb] = ra
+        self.weight[rb] = wa / wb / ratio
+        self.size[ra]  += self.size[rb]
+        <span class="kw">return True</span>
+<span class="cm"># LeetCode #399 (Evaluate Division) uses this exact technique.</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — LeetCode Walkthroughs</div>
+
+<h3>LeetCode #684 — Redundant Connection (Medium)</h3>
+<p><em>Given a tree with one extra edge, find the redundant edge (the one that forms a cycle).</em></p>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span>[] <span class="mt">FindRedundantConnection</span>(<span class="kw">int</span>[][] edges)
+{
+    <span class="kw">var</span> dsu = <span class="kw">new</span> <span class="tp">DSU</span>(edges.Length + <span class="nm">1</span>);
+    <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> edges)
+        <span class="kw">if</span> (!dsu.<span class="mt">Union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>]))   <span class="cm">// Union returns false if already connected</span>
+            <span class="kw">return</span> e;               <span class="cm">// this edge creates a cycle</span>
+    <span class="kw">return</span> <span class="kw">null</span>;
+}
+<span class="cm">// Time: O(n α(n)) ≈ O(n). Classic DSU problem!</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">find_redundant_connection</span>(edges: list) -&gt; list:
+    dsu = <span class="tp">DSU</span>(<span class="mt">len</span>(edges) + <span class="nm">1</span>)
+    <span class="kw">for</span> e <span class="kw">in</span> edges:
+        <span class="kw">if not</span> dsu.<span class="mt">union</span>(e[<span class="nm">0</span>], e[<span class="nm">1</span>]):  <span class="cm"># union returns False if already connected</span>
+            <span class="kw">return</span> e                    <span class="cm"># this edge creates a cycle</span>
+    <span class="kw">return</span> []
+<span class="cm"># Time: O(n α(n)) ≈ O(n). Classic DSU problem!</span></pre>
+</div>
+
+<h3>LeetCode #547 — Number of Provinces (Medium)</h3>
+<p><em>Given an adjacency matrix, count the number of connected components.</em></p>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public int</span> <span class="mt">FindCircleNum</span>(<span class="kw">int</span>[][] isConnected)
+{
+    <span class="kw">int</span> n = isConnected.Length;
+    <span class="kw">var</span> dsu = <span class="kw">new</span> <span class="tp">DSU</span>(n);
+    <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>; i&lt;n; i++)
+        <span class="kw">for</span> (<span class="kw">int</span> j=i+<span class="nm">1</span>; j&lt;n; j++)
+            <span class="kw">if</span> (isConnected[i][j] == <span class="nm">1</span>)
+                dsu.<span class="mt">Union</span>(i, j);
+    <span class="kw">return</span> dsu.Components;   <span class="cm">// DSU tracks component count automatically!</span>
+}</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">find_circle_num</span>(is_connected: list) -&gt; <span class="tp">int</span>:
+    n   = <span class="mt">len</span>(is_connected)
+    dsu = <span class="tp">DSU</span>(n)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(n):
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="mt">range</span>(i + <span class="nm">1</span>, n):
+            <span class="kw">if</span> is_connected[i][j] == <span class="nm">1</span>:
+                dsu.<span class="mt">union</span>(i, j)
+    <span class="kw">return</span> dsu.components   <span class="cm"># DSU tracks component count automatically!</span></pre>
+</div>
+
+<h3>LeetCode #990 — Satisfiability of Equality Equations (Medium)</h3>
+<p><em>Given equations like "a==b" and "a!=b", check if all can be satisfied simultaneously.</em></p>
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">public bool</span> <span class="mt">EquationsPossible</span>(<span class="kw">string</span>[] equations)
+{
+    <span class="kw">var</span> dsu = <span class="kw">new</span> <span class="tp">DSU</span>(<span class="nm">26</span>);
+    <span class="cm">// Pass 1: process all == equations</span>
+    <span class="kw">foreach</span> (<span class="kw">var</span> eq <span class="kw">in</span> equations)
+        <span class="kw">if</span> (eq[<span class="nm">1</span>] == <span class="st">'='</span>)
+            dsu.<span class="mt">Union</span>(eq[<span class="nm">0</span>]-<span class="st">'a'</span>, eq[<span class="nm">3</span>]-<span class="st">'a'</span>);
+    <span class="cm">// Pass 2: check all != equations for contradictions</span>
+    <span class="kw">foreach</span> (<span class="kw">var</span> eq <span class="kw">in</span> equations)
+        <span class="kw">if</span> (eq[<span class="nm">1</span>] == <span class="st">'!'</span> &amp;&amp; dsu.<span class="mt">Connected</span>(eq[<span class="nm">0</span>]-<span class="st">'a'</span>, eq[<span class="nm">3</span>]-<span class="st">'a'</span>))
+            <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}
+<span class="cm">// Key insight: process == first to build groups, then check != against groups.
+// Two-pass approach is the DSU pattern for contradiction detection.</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre class="python">
+<span class="kw">def</span> <span class="mt">equations_possible</span>(equations: list) -&gt; <span class="tp">bool</span>:
+    dsu = <span class="tp">DSU</span>(<span class="nm">26</span>)
+    <span class="cm"># Pass 1: process all == equations</span>
+    <span class="kw">for</span> eq <span class="kw">in</span> equations:
+        <span class="kw">if</span> eq[<span class="nm">1</span>] == <span class="st">'='</span>:
+            dsu.<span class="mt">union</span>(<span class="mt">ord</span>(eq[<span class="nm">0</span>]) - <span class="mt">ord</span>(<span class="st">'a'</span>), <span class="mt">ord</span>(eq[<span class="nm">3</span>]) - <span class="mt">ord</span>(<span class="st">'a'</span>))
+    <span class="cm"># Pass 2: check all != equations for contradictions</span>
+    <span class="kw">for</span> eq <span class="kw">in</span> equations:
+        <span class="kw">if</span> (eq[<span class="nm">1</span>] == <span class="st">'!'</span> <span class="kw">and</span>
+                dsu.<span class="mt">connected</span>(<span class="mt">ord</span>(eq[<span class="nm">0</span>]) - <span class="mt">ord</span>(<span class="st">'a'</span>), <span class="mt">ord</span>(eq[<span class="nm">3</span>]) - <span class="mt">ord</span>(<span class="st">'a'</span>))):
+            <span class="kw">return False</span>
+    <span class="kw">return True</span>
+<span class="cm"># Key insight: process == first to build groups, then check != against groups.
+# Two-pass approach is the DSU pattern for contradiction detection.</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Q&amp;A Review</div>
+
+<div class="quiz-card">
+    <div class="q">Q1: What are the two essential optimizations for DSU, and what complexity does each one alone give?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer"><strong>Path Compression:</strong> During Find(x), set every visited node's parent directly to the root. Alone: amortized O(log n) per operation. <strong>Union by Rank/Size:</strong> When merging, always attach the smaller tree under the larger. Alone: O(log n) worst case per operation (bounded tree height). <strong>Together:</strong> O(α(n)) amortized — inverse Ackermann, effectively constant. The synergy is crucial: neither alone achieves the O(α(n)) bound, but together they do (proved by Tarjan 1975).</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q2: DSU supports Union and Find. How would you add a "split" (undo) operation?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Standard DSU with path compression is irreversible — once you flatten paths, you can't undo it easily. The solution is "Rollback DSU" or "DSU with Undo": don't use path compression (use only union by rank to keep O(log n)), and maintain a stack of (node, old_parent, old_rank) entries for each Union. To undo, pop from the stack and restore the old values. This is used in "offline" divide-and-conquer algorithms where you need to process queries with temporal union/split patterns. The complexity becomes O(log n) per operation instead of O(α(n)).</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q3: In Kruskal's MST algorithm, where exactly does DSU get used?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Kruskal's algorithm: (1) Sort all edges by weight O(E log E). (2) Iterate edges from smallest to largest. (3) For each edge (u, v): if Find(u) != Find(v) — they're in different components — add this edge to MST and Union(u, v). Otherwise, skip it (adding it would create a cycle). DSU makes step 3 O(α(n)) per edge, giving total O(E log E + E α(V)) ≈ O(E log E) for the entire algorithm. Without DSU, detecting cycles would require DFS/BFS: O(V) per edge, giving O(EV) total.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q4: Can you use DSU for directed graphs? What about for bipartite checking?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Standard DSU is for undirected connectivity — it's symmetric (Union(a,b) = Union(b,a)). For directed graphs, you'd need Kosaraju's or Tarjan's SCC algorithm instead. For bipartite checking: yes! Use a "colored DSU" where each node has a color bit. For each edge (u,v), u and v must be in different colors. You can use 2n nodes: node i and node i+n represent "node i in color 0" and "node i in color 1". Union(u, v+n) and Union(u+n, v). If Find(u) == Find(v), the graph is not bipartite.</div>
+</div>
+
+<div class="quiz-card">
+    <div class="q">Q5: What is the "virtual node" technique in DSU and when is it useful?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">A "virtual node" is an extra DSU node that doesn't correspond to any input element, used as a common connector. Example use case: "Find the number of components, plus detect if any component connects to the boundary." Add a virtual node "boundary" and union it with every boundary cell. Now "Is cell X connected to the boundary?" = Connected(X, boundary_node). Another example: "All isolated nodes should be connected to a virtual sink." This avoids special-casing and lets you express complex connectivity conditions as simple DSU operations. LeetCode #130 (Surrounded Regions) uses this: union border O's to a virtual "safe" node, then everything NOT connected to "safe" and still 'O' gets flipped.</div>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 11C Complete</button>
+<div class="toast" id="toast">✅ Module 11C marked complete!</div>
+    <script>var MODULE_ID = 'm11c';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>

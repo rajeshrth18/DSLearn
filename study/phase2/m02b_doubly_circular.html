@@ -1,50 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 2B — Doubly &amp; Circular Linked Lists</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #2c2c2c; max-width: 960px; margin: 0 auto; padding: 40px 20px; background: #ffffff; }
-        .cover { text-align: center; padding: 70px 30px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; border-radius: 16px; margin-bottom: 50px; }
-        .cover .module-label { font-size: 0.95em; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
-        .cover h1 { font-size: 2.6em; margin-bottom: 12px; font-weight: 700; }
-        .cover .tagline { font-size: 1.1em; opacity: 0.85; margin-bottom: 25px; }
-        .cover .badges span { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.85em; margin: 4px; }
-        .toc { background: #f8f9fa; border-radius: 12px; padding: 28px 32px; margin-bottom: 45px; border: 1px solid #dee2e6; }
-        .toc h2 { font-size: 1.2em; color: #2c3e50; margin-bottom: 15px; background: none; padding: 0; border: none; letter-spacing: 1px; text-transform: uppercase; }
-        .toc ol { margin-left: 20px; }
-        .toc li { margin: 8px 0; color: #2980b9; font-size: 0.98em; }
-        .toc li span { color: #666; font-size: 0.88em; margin-left: 6px; }
-        .section-heading { font-size: 1.75em; color: #ffffff; background: linear-gradient(90deg, #e74c3c, #c0392b); padding: 14px 24px; border-radius: 10px; margin: 55px 0 22px 0; }
-        h3 { font-size: 1.3em; color: #2980b9; margin: 32px 0 12px 0; padding-left: 14px; border-left: 4px solid #2980b9; }
-        h4 { font-size: 1.05em; color: #8e44ad; margin: 22px 0 8px 0; }
-        p { margin: 10px 0 14px 0; font-size: 1em; }
-        ul, ol { margin: 10px 0 14px 28px; }
-        li { margin: 7px 0; }
-        code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.88em; color: #c0392b; }
-        pre { background: #1e1e1e; color: #d4d4d4; padding: 22px; border-radius: 10px; overflow-x: auto; margin: 16px 0 24px 0; font-family: 'Courier New', monospace; font-size: 0.91em; line-height: 1.65; border-left: 5px solid #3498db; tab-size: 4; }
-        .kw { color: #569cd6; } .cm { color: #6a9955; } .st { color: #ce9178; } .nm { color: #b5cea8; } .tp { color: #4ec9b0; } .mt { color: #dcdcaa; }
-        .diagram { background: #0d1117; color: #58a6ff; padding: 22px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.7; margin: 16px 0 24px 0; border-left: 5px solid #e74c3c; white-space: pre; overflow-x: auto; }
-        .note { background: #fff8e1; border-left: 5px solid #f39c12; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .note strong { color: #e67e22; }
-        .tip { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .tip strong { color: #16a085; }
-        .warning { background: #fdecea; border-left: 5px solid #e74c3c; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .warning strong { color: #c0392b; }
-        .realworld { background: #eaf0fb; border-left: 5px solid #2980b9; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
-        .realworld strong { color: #1a5276; }
-        table { width: 100%; border-collapse: collapse; margin: 18px 0 26px 0; font-size: 0.95em; }
-        thead th { background: #2c3e50; color: #ffffff; padding: 12px 16px; text-align: left; }
-        tbody td { padding: 11px 16px; border-bottom: 1px solid #ecf0f1; }
-        tbody tr:nth-child(even) { background: #f8f9fa; }
-        .g { color: #27ae60; font-weight: 700; } .o { color: #e67e22; font-weight: 700; } .r { color: #e74c3c; font-weight: 700; }
-        hr { border: none; border-top: 2px dashed #ecf0f1; margin: 42px 0; }
-        .nav-box { background: #f0f4ff; border: 2px solid #3498db; border-radius: 10px; padding: 18px 24px; margin: 30px 0; font-size: 0.95em; }
-        .nav-box strong { color: #1a5276; }
-        @media print { body { padding: 20px; } pre, .diagram { white-space: pre-wrap; } .cover, .section-heading { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-    </style>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
@@ -62,11 +22,16 @@
 </div>
 
 <div class="nav-box">
-    <strong>📂 Module 2 Navigation:</strong><br><br>
+    <strong>📂 Module 2 — Linked Lists:</strong><br><br>
     ✅ <strong>Part A</strong> — <a href="m02a_singly_ll.html">Singly Linked List</a><br>
     ▶ <strong>Part B</strong> — <em>You are here</em> — Doubly &amp; Circular Linked Lists<br>
     ⬜ <strong>Part C</strong> — <a href="m02c_ll_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m02d_floyd.html">Floyd's Cycle Detection</a><br>
     🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase1/m01a_bigO_arrays.html">&larr; Module 1 &mdash; Big O &amp; Arrays</a>
+    <a href="../phase2/m03a_stacks.html">Module 3 &mdash; Stacks &amp; Queues &rarr;</a>
 </div>
 
 <div class="toc">
@@ -137,6 +102,10 @@ DOUBLY — Each node has TWO links (forward AND backward):
 <!-- ═══════ SECTION 2 ═══════ -->
 <div class="section-heading">Section 2 — Doubly Node Class</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">public</span> <span class="tp">T</span> Data;
@@ -150,6 +119,17 @@ DOUBLY — Each node has TWO links (forward AND backward):
         Next = <span class="kw">null</span>;
     }
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">class</span> <span class="tp">DNode</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>, data):
+        <span class="kw">self</span>.data = data
+        <span class="kw">self</span>.prev = <span class="kw">None</span>
+        <span class="kw">self</span>.next = <span class="kw">None</span></pre>
+</div>
 
 <div class="diagram">DOUBLY NODE in Memory
 
@@ -208,6 +188,10 @@ Edge cases:
   If deleting HEAD: no node(20).Prev → skip step 1, update head
   If deleting TAIL: no node(20).Next → skip step 2, update tail</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Delete a specific node reference — O(1)!</span>
 <span class="kw">public</span> <span class="tp">T</span> <span class="mt">RemoveNode</span>(<span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt; node)
 {
@@ -227,12 +211,28 @@ Edge cases:
     Count--;
     <span class="kw">return</span> value;
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">remove_node</span>(<span class="kw">self</span>, node: <span class="tp">DNode</span>):
+    <span class="kw">if</span> node.prev: node.prev.next = node.next
+    <span class="kw">else</span>:         <span class="kw">self</span>.head = node.next   <span class="cm"># removing head</span>
+    <span class="kw">if</span> node.next: node.next.prev = node.prev
+    <span class="kw">else</span>:         <span class="kw">self</span>.tail = node.prev   <span class="cm"># removing tail</span>
+    <span class="kw">self</span>.count -= <span class="nm">1</span></pre>
+</div>
 
 <hr>
 
 <!-- ═══════ SECTION 4 ═══════ -->
 <div class="section-heading">Section 4 — Full DoublyLinkedList&lt;T&gt; Implementation</div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">DoublyLinkedList</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">private</span> <span class="tp">DNode</span>&lt;<span class="tp">T</span>&gt;? head;
@@ -374,6 +374,50 @@ dl.<span class="mt">PrintBackward</span>();  <span class="cm">// 30 ⇄ 20 ⇄ 1
 <span class="tp">DNode</span>&lt;<span class="kw">int</span>&gt;? node20 = dl.<span class="mt">Find</span>(<span class="nm">20</span>);
 dl.<span class="mt">RemoveNode</span>(node20!);  <span class="cm">// O(1) — no traversal!</span>
 dl.<span class="mt">PrintForward</span>();   <span class="cm">// 5 ⇄ 10 ⇄ 30 ⇄ null</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">class</span> <span class="tp">DoublyLinkedList</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>):
+        <span class="kw">self</span>.head = <span class="kw">self</span>.tail = <span class="kw">None</span>; <span class="kw">self</span>.count = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="mt">add_first</span>(<span class="kw">self</span>, data):
+        n = <span class="tp">DNode</span>(data)
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.head: <span class="kw">self</span>.head = <span class="kw">self</span>.tail = n
+        <span class="kw">else</span>: n.next = <span class="kw">self</span>.head; <span class="kw">self</span>.head.prev = n; <span class="kw">self</span>.head = n
+        <span class="kw">self</span>.count += <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">add_last</span>(<span class="kw">self</span>, data):
+        n = <span class="tp">DNode</span>(data)
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.head: <span class="kw">self</span>.head = <span class="kw">self</span>.tail = n
+        <span class="kw">else</span>: <span class="kw">self</span>.tail.next = n; n.prev = <span class="kw">self</span>.tail; <span class="kw">self</span>.tail = n
+        <span class="kw">self</span>.count += <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">remove_first</span>(<span class="kw">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.head: <span class="kw">return</span>
+        <span class="kw">self</span>.<span class="mt">remove_node</span>(<span class="kw">self</span>.head)
+
+    <span class="kw">def</span> <span class="mt">remove_last</span>(<span class="kw">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.tail: <span class="kw">return</span>
+        <span class="kw">self</span>.<span class="mt">remove_node</span>(<span class="kw">self</span>.tail)
+
+    <span class="kw">def</span> <span class="mt">find</span>(<span class="kw">self</span>, data):
+        c = <span class="kw">self</span>.head
+        <span class="kw">while</span> c:
+            <span class="kw">if</span> c.data == data: <span class="kw">return</span> c
+            c = c.next
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="mt">print_forward</span>(<span class="kw">self</span>):
+        c = <span class="kw">self</span>.head
+        <span class="kw">while</span> c: <span class="mt">print</span>(c.data, end=<span class="st">' '</span>); c = c.next; <span class="mt">print</span>()
+
+    <span class="kw">def</span> <span class="mt">print_backward</span>(<span class="kw">self</span>):
+        c = <span class="kw">self</span>.tail
+        <span class="kw">while</span> c: <span class="mt">print</span>(c.data, end=<span class="st">' '</span>); c = c.prev; <span class="mt">print</span>()</pre>
+</div>
 
 <hr>
 
@@ -385,6 +429,10 @@ It is a <strong>doubly linked list</strong> and is the data structure you should
 code rather than rolling your own. Understanding what we built in Section 4 is exactly what lets you
 use this class with confidence.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">using</span> System.Collections.Generic;
 
 <span class="cm">// LinkedList&lt;T&gt; — C#'s built-in doubly linked list</span>
@@ -427,6 +475,27 @@ current = songs.Last;
 <span class="cm">// Contains / Find</span>
 <span class="kw">bool</span> has = songs.<span class="mt">Contains</span>(<span class="st">"Bohemian Rhapsody"</span>);       <span class="cm">// O(n)</span>
 <span class="tp">LinkedListNode</span>&lt;<span class="kw">string</span>&gt;? found = songs.<span class="mt">Find</span>(<span class="st">"Bohemian Rhapsody"</span>); <span class="cm">// O(n)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+
+d = <span class="mt">deque</span>()
+d.<span class="mt">append</span>(<span class="nm">1</span>)          <span class="cm"># add to back  (AddLast)</span>
+d.<span class="mt">appendleft</span>(<span class="nm">0</span>)     <span class="cm"># add to front (AddFirst)</span>
+d.<span class="mt">pop</span>()              <span class="cm"># remove from back</span>
+d.<span class="mt">popleft</span>()          <span class="cm"># remove from front</span>
+d[<span class="nm">0</span>]                 <span class="cm"># peek front  (First.Value)</span>
+d[-<span class="nm">1</span>]                <span class="cm"># peek back   (Last.Value)</span>
+
+<span class="cm"># Forward traversal</span>
+<span class="kw">for</span> item <span class="kw">in</span> d: <span class="mt">print</span>(item)
+
+<span class="cm"># Backward traversal</span>
+<span class="kw">for</span> item <span class="kw">in</span> <span class="mt">reversed</span>(d): <span class="mt">print</span>(item)</pre>
+</div>
 
 <div class="realworld">
     <strong>🌍 Real-World: LRU Cache (Most Common Interview Pattern)</strong><br>
@@ -440,6 +509,10 @@ current = songs.Last;
     This is exactly how browser history, CPU caches, and database buffer pools work.
 </div>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Classic LRU Cache using LinkedList&lt;T&gt; + Dictionary</span>
 <span class="kw">public class</span> <span class="tp">LRUCache</span>&lt;<span class="tp">TKey</span>, <span class="tp">TValue</span>&gt;
 {
@@ -488,6 +561,30 @@ cache.<span class="mt">Put</span>(<span class="nm">3</span>, <span class="st">"C
 cache.<span class="mt">Get</span>(<span class="nm">1</span>);               <span class="cm">// Access Alice → moves to front</span>
 cache.<span class="mt">Put</span>(<span class="nm">4</span>, <span class="st">"Dave"</span>);       <span class="cm">// Evicts Bob (LRU), adds Dave</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(cache.<span class="mt">Get</span>(<span class="nm">2</span>));  <span class="cm">// null — Bob was evicted</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">from</span> collections <span class="kw">import</span> OrderedDict
+
+<span class="kw">class</span> <span class="tp">LRUCache</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>, capacity: <span class="tp">int</span>):
+        <span class="kw">self</span>.cap   = capacity
+        <span class="kw">self</span>.cache = <span class="tp">OrderedDict</span>()   <span class="cm"># preserves insertion order</span>
+
+    <span class="kw">def</span> <span class="mt">get</span>(<span class="kw">self</span>, key):
+        <span class="kw">if</span> key <span class="kw">not in</span> <span class="kw">self</span>.cache: <span class="kw">return</span> -<span class="nm">1</span>
+        <span class="kw">self</span>.cache.<span class="mt">move_to_end</span>(key)   <span class="cm"># mark as most-recently used</span>
+        <span class="kw">return</span> <span class="kw">self</span>.cache[key]
+
+    <span class="kw">def</span> <span class="mt">put</span>(<span class="kw">self</span>, key, value):
+        <span class="kw">if</span> key <span class="kw">in</span> <span class="kw">self</span>.cache:
+            <span class="kw">self</span>.cache.<span class="mt">move_to_end</span>(key)
+        <span class="kw">self</span>.cache[key] = value
+        <span class="kw">if</span> <span class="mt">len</span>(<span class="kw">self</span>.cache) &gt; <span class="kw">self</span>.cap:
+            <span class="kw">self</span>.cache.<span class="mt">popitem</span>(last=<span class="kw">False</span>)  <span class="cm"># evict LRU (oldest)</span></pre>
+</div>
 
 <hr>
 
@@ -522,6 +619,10 @@ CIRCULAR DOUBLY LINKED LIST
 <p>The core difference in implementation: instead of checking for <code>null</code> to detect the end,
 you check whether you've looped back to the <code>head</code>.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">CircularLinkedList</span>&lt;<span class="tp">T</span>&gt;
 {
     <span class="kw">private</span> <span class="tp">Node</span>&lt;<span class="tp">T</span>&gt;? head;
@@ -570,6 +671,32 @@ you check whether you've looped back to the <code>head</code>.</p>
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">"(HEAD)"</span>);
     }
 }</pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">class</span> <span class="tp">CircularLinkedList</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="kw">self</span>):
+        <span class="kw">self</span>.head = <span class="kw">self</span>.tail = <span class="kw">None</span>; <span class="kw">self</span>.count = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="mt">add_last</span>(<span class="kw">self</span>, data):
+        n = <span class="tp">Node</span>(data)
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.head:
+            <span class="kw">self</span>.head = <span class="kw">self</span>.tail = n; n.next = n   <span class="cm"># points to itself</span>
+        <span class="kw">else</span>:
+            n.next = <span class="kw">self</span>.head; <span class="kw">self</span>.tail.next = n; <span class="kw">self</span>.tail = n
+        <span class="kw">self</span>.count += <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">print_all</span>(<span class="kw">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.head: <span class="kw">return</span>
+        current = <span class="kw">self</span>.head
+        <span class="kw">while</span> <span class="kw">True</span>:
+            <span class="mt">print</span>(current.data, end=<span class="st">' '</span>)
+            current = current.next
+            <span class="kw">if</span> current == <span class="kw">self</span>.head: <span class="kw">break</span>   <span class="cm"># completed one cycle</span>
+        <span class="mt">print</span>()</pre>
+</div>
 
 <div class="warning">
     <strong>⚠️ Infinite Loop Danger:</strong> When traversing a circular list, use a <code>do-while</code>
@@ -586,6 +713,10 @@ you check whether you've looped back to the <code>head</code>.</p>
 <p>Operating systems give each process a time slice in a cycle. A circular list is perfect —
 move to <code>next</code> after each slice, wrapping around forever.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">var</span> processes = <span class="kw">new</span> <span class="tp">CircularLinkedList</span>&lt;<span class="kw">string</span>&gt;();
 processes.<span class="mt">AddLast</span>(<span class="st">"Process A"</span>);
 processes.<span class="mt">AddLast</span>(<span class="st">"Process B"</span>);
@@ -599,11 +730,29 @@ processes.<span class="mt">AddLast</span>(<span class="st">"Process C"</span>);
     current = current.Next;
 }
 <span class="cm">// Output: A B C A B C A  (cycles endlessly)</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+cll = <span class="tp">CircularLinkedList</span>()
+<span class="kw">for</span> name <span class="kw">in</span> [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>]:
+    cll.<span class="mt">add_last</span>(name)
+
+current = cll.head
+<span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">7</span>):             <span class="cm"># 7 turns, round-robin</span>
+    <span class="mt">print</span>(<span class="st">f"Turn {i+1}: {current.data}"</span>)
+    current = current.next</pre>
+</div>
 
 <h3>7.2 — Josephus Problem</h3>
 <p>Classic algorithm puzzle: N people stand in a circle. Starting from position 1, every k-th person
 is eliminated. Who is the last survivor? A circular linked list models this perfectly.</p>
 
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="cm">// Josephus Problem — N=6 people, every 3rd person eliminated</span>
 <span class="cm">// People: 1 2 3 4 5 6, k=3 → eliminated: 3,6,4,2,5 → survivor: 1</span>
 <span class="kw">static int</span> <span class="mt">Josephus</span>(<span class="kw">int</span> n, <span class="kw">int</span> k)
@@ -628,6 +777,31 @@ is eliminated. Who is the last survivor? A circular linked list models this perf
 <span class="mt">Josephus</span>(<span class="nm">6</span>, <span class="nm">3</span>);
 <span class="cm">// Eliminated: 3  6  4  2  5</span>
 <span class="cm">// Survivor: 1</span></pre>
+</div>
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
+<pre>
+<span class="kw">def</span> <span class="mt">josephus</span>(n: <span class="tp">int</span>, k: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    cll = <span class="tp">CircularLinkedList</span>()
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n + <span class="nm">1</span>):
+        cll.<span class="mt">add_last</span>(i)
+
+    current = cll.head
+    prev    = cll.tail   <span class="cm"># need prev to remove nodes</span>
+    <span class="kw">while</span> cll.count &gt; <span class="nm">1</span>:
+        <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(k - <span class="nm">1</span>):   <span class="cm"># advance k-1 steps</span>
+            prev    = current
+            current = current.next
+        prev.next = current.next   <span class="cm"># skip (remove) current</span>
+        <span class="kw">if</span> current == cll.head: cll.head = current.next
+        <span class="kw">if</span> current == cll.tail: cll.tail = prev
+        current = prev.next
+        cll.count -= <span class="nm">1</span>
+    <span class="kw">return</span> cll.head.data
+
+<span class="mt">print</span>(<span class="mt">josephus</span>(<span class="nm">7</span>, <span class="nm">3</span>))   <span class="cm"># 4</span></pre>
+</div>
 
 <hr>
 
@@ -670,5 +844,6 @@ is eliminated. Who is the last survivor? A circular linked list models this perf
     ▶ <strong>Next:</strong> <a href="m02c_ll_practice.html">Part C — Practice: 12 Problems</a>
 </div>
 
+    <script src="../dsa.js"></script>
 </body>
 </html>

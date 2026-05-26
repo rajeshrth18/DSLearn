@@ -1,0 +1,670 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4C — Recursion Practice | DSA Masterbook</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
+.cover{text-align:center;padding:60px 30px;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;border-radius:18px;margin-bottom:32px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cover .mod-label{font-size:.8em;letter-spacing:4px;text-transform:uppercase;opacity:.65;margin-bottom:12px}
+.cover h1{font-size:2.4em;margin-bottom:8px;font-weight:800}
+.cover .tagline{font-size:1.05em;opacity:.85;margin-bottom:22px}
+.cover .badges span{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 15px;border-radius:20px;font-size:.84em;margin:3px}
+.nav-box{background:#f0f4ff;border:2px solid #9b59b6;border-radius:12px;padding:16px 22px;margin:24px 0;font-size:.93em;line-height:2}
+.nav-box strong{color:#6c3483}.nav-box a{color:#2980b9;text-decoration:none;font-weight:600}
+.lang-bar{display:flex;align-items:center;gap:10px;background:#2c3e50;padding:8px 16px;border-radius:10px;margin:20px 0}
+.lang-bar span{color:#aaa;font-size:.82em;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.lang-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aaa;padding:4px 16px;border-radius:16px;cursor:pointer;font-size:.82em;font-weight:700;transition:all .2s}
+.lang-btn.active{background:#9b59b6;color:#fff;border-color:#9b59b6}
+h2.sec{font-size:1.4em;color:#fff;background:linear-gradient(90deg,#7d3c98,#9b59b6);padding:12px 22px;border-radius:10px;margin:36px 0 18px}
+h3{font-size:1.15em;color:#2c3e50;border-left:4px solid #9b59b6;padding-left:12px;margin:24px 0 12px}
+p{margin:0 0 14px;color:#444}
+.code-block{position:relative;margin:18px 0}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#aaa;padding:3px 12px;border-radius:14px;cursor:pointer;font-size:.76em;font-weight:600;z-index:1}
+.copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+pre{background:#1e1e1e;color:#d4d4d4;padding:22px;border-radius:10px;border-left:4px solid #9b59b6;font-family:'Courier New',monospace;font-size:.89em;line-height:1.65;overflow-x:auto;margin:0}
+.kw{color:#569cd6}.cm{color:#6a9955}.st{color:#ce9178}.nm{color:#b5cea8}.tp{color:#4ec9b0}.mt{color:#dcdcaa}
+.note{background:#fef9e7;border-left:4px solid #f39c12;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.tip{background:#e8f8f5;border-left:4px solid #1abc9c;padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:.92em}
+.note strong,.tip strong{display:block;margin-bottom:4px}
+.quiz{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 20px;margin:14px 0}
+.quiz-q{font-weight:600;color:#2c3e50;margin-bottom:8px}
+.quiz-meta{font-size:.82em;color:#888;margin-bottom:4px}
+.sol-btn{background:#2980b9;color:#fff;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:.9em;margin-top:6px}
+        .sol-btn:hover { background: #1a6fa0; }
+.sol {background:#f8f9fa;border-radius:8px;padding:12px 16px;margin-top:10px;font-size:.9em;display:none}
+.sol .ans-label{color:#27ae60;font-weight:700;margin-bottom:6px}
+.diff-easy{border-left-color:#27ae60}.diff-med{border-left-color:#d68910}.diff-hard{border-left-color:#e74c3c}
+.complete-section{text-align:center;margin:50px 0 20px;padding:28px;background:#fff;border-radius:16px;border:2px dashed #9b59b6}
+.mark-btn{background:linear-gradient(90deg,#7d3c98,#9b59b6);color:#fff;border:none;padding:14px 40px;border-radius:30px;font-size:1.05em;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(155,89,182,.4)}
+.mark-btn:disabled{background:#ccc;box-shadow:none;cursor:default}
+.toast{position:fixed;bottom:24px;right:24px;background:#2c3e50;color:#fff;padding:12px 22px;border-radius:10px;font-size:.9em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.breadcrumb{font-size:.82em;color:#888;margin-bottom:20px}
+.breadcrumb a{color:#9b59b6;text-decoration:none}
+.badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.78em;font-weight:700;margin-right:6px}
+.b-easy{background:#d5f5e3;color:#1e8449}
+.b-med{background:#fef5cd;color:#9a6700}
+.b-hard{background:#fde8e8;color:#c0392b}
+.approach{background:#f4f0ff;border-left:4px solid #9b59b6;padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0 6px}
+.approach strong{color:#8e44ad}
+.complexity{font-size:.85em;color:#555;margin:0 0 14px;padding:5px 0 8px;border-top:1px dotted #ccc}
+.complexity strong{color:#2c3e50;font-weight:700}
+.module-nav{display:flex;justify-content:space-between;align-items:center;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 18px;margin:16px 0 24px 0;font-size:0.9em;flex-wrap:wrap;gap:8px}
+.module-nav a{color:#3730a3;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> — Phase 3 — Module 4 — Part C</div>
+
+<div class="cover">
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 4 — Part C</h1>
+  <div class="tagline">Recursion Practice — 12 Problems from Beginner to Advanced</div>
+  <div class="badges">
+    <span>⏱ Estimated: 2 Hours</span><span>🎯 Mixed Difficulty</span><span>💻 C# &amp; Python</span><span>📝 Phase 3 — Module 4C</span>
+  </div>
+</div>
+
+<div class="nav-box">
+  <strong>📂 Module 4 — Recursion:</strong><br>
+  ✅ <strong>Part A</strong> — <a href="m04a_recursion.html">Recursion Fundamentals</a><br>
+  ✅ <strong>Part B</strong> — <a href="m04b_backtrack_intro.html">Backtracking Preview</a><br>
+  ▶ <strong>Part C</strong> — <em>You are here</em> — Practice: 12 Problems<br>
+  🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase2/m03a_stacks.html">&larr; Module 3 &mdash; Stacks &amp; Queues</a>
+    <a href="../phase3/m05a_basic_sorts.html">Module 5 &mdash; Sorting &rarr;</a>
+</div>
+
+<div class="lang-bar">
+  <span>Code Language:</span>
+  <button class="lang-btn" data-lang="cs" onclick="setLang('cs')">C#</button>
+  <button class="lang-btn" data-lang="py" onclick="setLang('py')">Python</button>
+</div>
+
+<div class="note"><strong>📌 How to Use This Practice Module</strong>Try each problem yourself before revealing the answer. The problems increase in difficulty. Each answer includes a fully runnable program with explanations. Focus on identifying base case ? recursive case before writing any code.</div>
+
+<h2 class="sec">Easy Problems (1—4) — Warm Up</h2>
+
+<h3>Problem 1 — Sum of Natural Numbers</h3>
+<div class="quiz diff-easy">
+  <div class="quiz-meta"><span class="badge b-easy">Easy</span> Sum 1+2+3+...+n recursively</div>
+  <div class="quiz-q">Write a recursive function <code>SumN(n)</code> that returns 1+2+3+...+n. SumN(5)=15.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Each call reduces n by 1: SumN(n) = n + SumN(n-1). The call stack builds n frames (each holding a pending addition), then unwinds summing them on the way back up. Base case: n &lt;= 0 returns 0.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — n recursive calls &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth of n frames</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P1</span> {
+    <span class="kw">static int</span> <span class="mt">SumN</span>(<span class="kw">int</span> n) {
+        <span class="kw">if</span> (n &lt;= <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;       <span class="cm">// base case</span>
+        <span class="kw">return</span> n + <span class="mt">SumN</span>(n - <span class="nm">1</span>);      <span class="cm">// n + sum of (n-1)</span>
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">SumN</span>(<span class="nm">5</span>));   <span class="cm">// 15</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">SumN</span>(<span class="nm">10</span>));  <span class="cm">// 55</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">SumN</span>(<span class="nm">100</span>)); <span class="cm">// 5050</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">sum_n</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> n &lt;= <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
+    <span class="kw">return</span> n + sum_n(n - <span class="nm">1</span>)
+
+<span class="mt">print</span>(sum_n(<span class="nm">5</span>))   <span class="cm"># 15</span>
+<span class="mt">print</span>(sum_n(<span class="nm">10</span>))  <span class="cm"># 55</span>
+<span class="mt">print</span>(sum_n(<span class="nm">100</span>)) <span class="cm"># 5050</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 2 — Reverse a String</h3>
+<div class="quiz diff-easy">
+  <div class="quiz-meta"><span class="badge b-easy">Easy</span> Reverse string recursively</div>
+  <div class="quiz-q">Write recursive <code>Reverse(s)</code>. Reverse("hello")="olleh".</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Extract the last character and concatenate it with the reverse of the remaining string. Each call peels off one character from the end. Base case: empty or single-character string returns itself unchanged.</div>
+    <div class="complexity"><strong>Time:</strong> O(n&sup2;) — n calls, each doing O(n) string concatenation &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P2</span> {
+    <span class="kw">static string</span> <span class="mt">Reverse</span>(<span class="kw">string</span> s) {
+        <span class="kw">if</span> (s.<span class="tp">Length</span> &lt;= <span class="nm">1</span>) <span class="kw">return</span> s;   <span class="cm">// base case</span>
+        <span class="cm">// last char + reverse of everything except last char</span>
+        <span class="kw">return</span> s[s.<span class="tp">Length</span>-<span class="nm">1</span>] + <span class="mt">Reverse</span>(s.<span class="mt">Substring</span>(<span class="nm">0</span>, s.<span class="tp">Length</span>-<span class="nm">1</span>));
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Reverse</span>(<span class="st">"hello"</span>));    <span class="cm">// olleh</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Reverse</span>(<span class="st">"racecar"</span>));  <span class="cm">// racecar</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Reverse</span>(<span class="st">"abc"</span>));      <span class="cm">// cba</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">def</span> <span class="mt">reverse</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
+    <span class="kw">if</span> <span class="mt">len</span>(s) &lt;= <span class="nm">1</span>: <span class="kw">return</span> s
+    <span class="kw">return</span> s[-<span class="nm">1</span>] + reverse(s[:-<span class="nm">1</span>])  <span class="cm"># last char + reverse of rest</span>
+
+<span class="mt">print</span>(reverse(<span class="st">"hello"</span>))    <span class="cm"># olleh</span>
+<span class="mt">print</span>(reverse(<span class="st">"racecar"</span>))  <span class="cm"># racecar</span>
+<span class="mt">print</span>(reverse(<span class="st">"abc"</span>))      <span class="cm"># cba</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 3 — Count Occurrences</h3>
+<div class="quiz diff-easy">
+  <div class="quiz-meta"><span class="badge b-easy">Easy</span> Count how many times a value appears in array</div>
+  <div class="quiz-q">Write recursive <code>CountOccurrence(arr, target, index)</code> counting how many times target appears in arr.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> At index idx, check if arr[idx] matches target (contributing 1 or 0), then add the count from remaining elements by recursing with idx+1. Like iterating an array, but the call stack drives the loop. Base case: idx past the end returns 0.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — visits every element exactly once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack grows to array length</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P3</span> {
+    <span class="kw">static int</span> <span class="mt">CountOccurrence</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target, <span class="kw">int</span> idx = <span class="nm">0</span>) {
+        <span class="kw">if</span> (idx &gt;= arr.<span class="tp">Length</span>) <span class="kw">return</span> <span class="nm">0</span>;    <span class="cm">// base case: past end</span>
+        <span class="kw">int</span> match = arr[idx] == target ? <span class="nm">1</span> : <span class="nm">0</span>;  <span class="cm">// 1 if match, 0 if not</span>
+        <span class="kw">return</span> match + <span class="mt">CountOccurrence</span>(arr, target, idx + <span class="nm">1</span>);
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] arr = { <span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">4</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">9</span>,<span class="nm">2</span>,<span class="nm">1</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">CountOccurrence</span>(arr, <span class="nm">1</span>));  <span class="cm">// 3</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">CountOccurrence</span>(arr, <span class="nm">9</span>));  <span class="cm">// 1</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">CountOccurrence</span>(arr, <span class="nm">7</span>));  <span class="cm">// 0</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">count_occurrence</span>(arr: List[<span class="tp">int</span>], target: <span class="tp">int</span>, idx: <span class="tp">int</span> = <span class="nm">0</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> idx >= <span class="mt">len</span>(arr): <span class="kw">return</span> <span class="nm">0</span>
+    match = <span class="nm">1</span> <span class="kw">if</span> arr[idx] == target <span class="kw">else</span> <span class="nm">0</span>
+    <span class="kw">return</span> match + count_occurrence(arr, target, idx + <span class="nm">1</span>)
+
+arr = [<span class="nm">3</span>,<span class="nm">1</span>,<span class="nm">4</span>,<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">9</span>,<span class="nm">2</span>,<span class="nm">1</span>]
+<span class="mt">print</span>(count_occurrence(arr, <span class="nm">1</span>))  <span class="cm"># 3</span>
+<span class="mt">print</span>(count_occurrence(arr, <span class="nm">9</span>))  <span class="cm"># 1</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 4 — Array Maximum</h3>
+<div class="quiz diff-easy">
+  <div class="quiz-meta"><span class="badge b-easy">Easy</span> Find maximum element recursively</div>
+  <div class="quiz-q">Write recursive <code>FindMax(arr, n)</code> returning the maximum in array.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> The maximum of n elements = max(arr[n-1], max of first n-1 elements). Each call shrinks the problem by one element. Base case: a single element is trivially the max. On the way back up, each frame returns the larger of the two values it compares.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — n recursive calls, each O(1) work &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P4</span> {
+    <span class="kw">static int</span> <span class="mt">FindMax</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> n) {
+        <span class="kw">if</span> (n == <span class="nm">1</span>) <span class="kw">return</span> arr[<span class="nm">0</span>];   <span class="cm">// base case: single element</span>
+        <span class="kw">int</span> maxRest = <span class="mt">FindMax</span>(arr, n - <span class="nm">1</span>);  <span class="cm">// max of first (n-1) elements</span>
+        <span class="kw">return</span> arr[n-<span class="nm">1</span>] &gt; maxRest ? arr[n-<span class="nm">1</span>] : maxRest;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] arr = { <span class="nm">3</span>,<span class="nm">7</span>,<span class="nm">1</span>,<span class="nm">9</span>,<span class="nm">4</span>,<span class="nm">6</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">FindMax</span>(arr, arr.<span class="tp">Length</span>));  <span class="cm">// 9</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">find_max</span>(arr: List[<span class="tp">int</span>], n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> n == <span class="nm">1</span>: <span class="kw">return</span> arr[<span class="nm">0</span>]
+    max_rest = find_max(arr, n - <span class="nm">1</span>)
+    <span class="kw">return</span> arr[n-<span class="nm">1</span>] <span class="kw">if</span> arr[n-<span class="nm">1</span>] > max_rest <span class="kw">else</span> max_rest
+
+arr = [<span class="nm">3</span>,<span class="nm">7</span>,<span class="nm">1</span>,<span class="nm">9</span>,<span class="nm">4</span>,<span class="nm">6</span>]
+<span class="mt">print</span>(find_max(arr, <span class="mt">len</span>(arr)))  <span class="cm"># 9</span></pre></div></div>
+  </div>
+</div>
+
+<h2 class="sec">Medium Problems (5—8) — Build Confidence</h2>
+
+<h3>Problem 5 — Flatten Nested List</h3>
+<div class="quiz diff-med">
+  <div class="quiz-meta"><span class="badge b-med">Medium</span> Flatten a deeply nested list</div>
+  <div class="quiz-q">Given a nested list like [1,[2,[3,4]],5], write recursive <code>Flatten</code> returning [1,2,3,4,5].</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Iterate over each item. If it is a number, add directly to results. If it is a nested list, recursively flatten it and extend results. The recursion mirrors the nesting structure — the call stack handles any depth automatically without explicit depth tracking.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) — n = total integers across all nesting levels &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(d) — d = maximum nesting depth (call stack)</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">class</span> <span class="tp">P5</span> {
+    <span class="cm">// Uses object to hold either int or List&lt;object&gt;</span>
+    <span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">Flatten</span>(<span class="tp">List</span>&lt;<span class="kw">object</span>&gt; nested) {
+        <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
+        <span class="kw">foreach</span> (<span class="kw">var</span> item <span class="kw">in</span> nested) {
+            <span class="kw">if</span> (item <span class="kw">is int</span> n)
+                result.<span class="mt">Add</span>(n);
+            <span class="kw">else if</span> (item <span class="kw">is</span> <span class="tp">List</span>&lt;<span class="kw">object</span>&gt; subList)
+                result.<span class="mt">AddRange</span>(<span class="mt">Flatten</span>(subList));  <span class="cm">// recursive call!</span>
+        }
+        <span class="kw">return</span> result;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="cm">// Represents [1, [2, [3, 4]], 5]</span>
+        <span class="kw">var</span> nested = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">object</span>&gt; {
+            <span class="nm">1</span>,
+            <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">object</span>&gt; { <span class="nm">2</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">object</span>&gt; { <span class="nm">3</span>, <span class="nm">4</span> } },
+            <span class="nm">5</span>
+        };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, <span class="mt">Flatten</span>(nested)));  <span class="cm">// 1, 2, 3, 4, 5</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> Any, List
+<span class="kw">def</span> <span class="mt">flatten</span>(nested: List[Any]) -&gt; List[<span class="tp">int</span>]:
+    result = []
+    <span class="kw">for</span> item <span class="kw">in</span> nested:
+        <span class="kw">if</span> <span class="mt">isinstance</span>(item, <span class="tp">list</span>):
+            result.<span class="mt">extend</span>(flatten(item))  <span class="cm"># recurse into sub-list</span>
+        <span class="kw">else</span>:
+            result.<span class="mt">append</span>(item)
+    <span class="kw">return</span> result
+
+<span class="mt">print</span>(flatten([<span class="nm">1</span>, [<span class="nm">2</span>, [<span class="nm">3</span>, <span class="nm">4</span>]], <span class="nm">5</span>]))   <span class="cm"># [1, 2, 3, 4, 5]</span>
+<span class="mt">print</span>(flatten([<span class="nm">1</span>, [<span class="nm">2</span>, [<span class="nm">3</span>, [<span class="nm">4</span>, [<span class="nm">5</span>]]]]])) <span class="cm"># [1, 2, 3, 4, 5]</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 6 — Binary Search (Recursive)</h3>
+<div class="quiz diff-med">
+  <div class="quiz-meta"><span class="badge b-med">Medium</span> Classic divide and conquer</div>
+  <div class="quiz-q">Write recursive <code>BinarySearch(arr, target, low, high)</code> returning the index of target or -1.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Compare target to the middle element of [low, high]. If equal, return mid. If target is greater, recurse on [mid+1, high]. If smaller, recurse on [low, mid-1]. Each call eliminates half the remaining candidates. Base case: low &gt; high means target is absent.</div>
+    <div class="complexity"><strong>Time:</strong> O(log n) — search space halves each call &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(log n) — call stack depth equals number of halvings</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P6</span> {
+    <span class="kw">static int</span> <span class="mt">BinarySearch</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> target, <span class="kw">int</span> low, <span class="kw">int</span> high) {
+        <span class="kw">if</span> (low &gt; high) <span class="kw">return</span> -<span class="nm">1</span>;            <span class="cm">// base case: not found</span>
+        <span class="kw">int</span> mid = (low + high) / <span class="nm">2</span>;
+        <span class="kw">if</span> (arr[mid] == target) <span class="kw">return</span> mid;  <span class="cm">// base case: found!</span>
+        <span class="kw">if</span> (arr[mid] &lt; target)
+            <span class="kw">return</span> <span class="mt">BinarySearch</span>(arr, target, mid+<span class="nm">1</span>, high); <span class="cm">// right half</span>
+        <span class="kw">return</span> <span class="mt">BinarySearch</span>(arr, target, low, mid-<span class="nm">1</span>);       <span class="cm">// left half</span>
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] arr = { <span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">5</span>,<span class="nm">7</span>,<span class="nm">9</span>,<span class="nm">11</span>,<span class="nm">13</span>,<span class="nm">15</span> };
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">BinarySearch</span>(arr, <span class="nm">7</span>, <span class="nm">0</span>, arr.<span class="tp">Length</span>-<span class="nm">1</span>));   <span class="cm">// 3</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">BinarySearch</span>(arr, <span class="nm">1</span>, <span class="nm">0</span>, arr.<span class="tp">Length</span>-<span class="nm">1</span>));   <span class="cm">// 0</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">BinarySearch</span>(arr, <span class="nm">10</span>, <span class="nm">0</span>, arr.<span class="tp">Length</span>-<span class="nm">1</span>));  <span class="cm">// -1</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">binary_search</span>(arr: List[<span class="tp">int</span>], target: <span class="tp">int</span>, low: <span class="tp">int</span>, high: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
+    <span class="kw">if</span> low > high: <span class="kw">return</span> -<span class="nm">1</span>
+    mid = (low + high) // <span class="nm">2</span>
+    <span class="kw">if</span> arr[mid] == target: <span class="kw">return</span> mid
+    <span class="kw">if</span> arr[mid] &lt; target: <span class="kw">return</span> binary_search(arr, target, mid+<span class="nm">1</span>, high)
+    <span class="kw">return</span> binary_search(arr, target, low, mid-<span class="nm">1</span>)
+
+arr = [<span class="nm">1</span>,<span class="nm">3</span>,<span class="nm">5</span>,<span class="nm">7</span>,<span class="nm">9</span>,<span class="nm">11</span>,<span class="nm">13</span>,<span class="nm">15</span>]
+<span class="mt">print</span>(binary_search(arr, <span class="nm">7</span>,  <span class="nm">0</span>, <span class="mt">len</span>(arr)-<span class="nm">1</span>))  <span class="cm"># 3</span>
+<span class="mt">print</span>(binary_search(arr, <span class="nm">10</span>, <span class="nm">0</span>, <span class="mt">len</span>(arr)-<span class="nm">1</span>))  <span class="cm"># -1</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 7 — Tower of Hanoi</h3>
+<div class="quiz diff-med">
+  <div class="quiz-meta"><span class="badge b-med">Medium</span> Classic recursive puzzle</div>
+  <div class="quiz-q">The Tower of Hanoi: Move n disks from peg A to peg C using peg B as helper. A disk can never be placed on a smaller disk. Print each move.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Three steps: (1) Move top n-1 disks from source to via-peg (using dest as helper). (2) Move the single largest disk directly from source to dest. (3) Move the n-1 disks from via-peg to dest (using source as helper). This is the only valid solution — total moves = 2^n - 1, proven minimum.</div>
+    <div class="complexity"><strong>Time:</strong> O(2^n) — exactly 2^n - 1 disk moves required &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth equals number of disks</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P7</span> {
+    <span class="kw">static int</span> moveCount = <span class="nm">0</span>;
+    <span class="kw">static void</span> <span class="mt">Hanoi</span>(<span class="kw">int</span> n, <span class="kw">char</span> from, <span class="kw">char</span> to, <span class="kw">char</span> via) {
+        <span class="kw">if</span> (n == <span class="nm">1</span>) {  <span class="cm">// base case: move single disk directly</span>
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Move disk 1 from {from} ? {to}"</span>);
+            moveCount++;
+            <span class="kw">return</span>;
+        }
+        <span class="mt">Hanoi</span>(n-<span class="nm">1</span>, from, via, to);    <span class="cm">// step 1: move (n-1) disks to via</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Move disk {n} from {from} ? {to}"</span>);
+        moveCount++;
+        <span class="mt">Hanoi</span>(n-<span class="nm">1</span>, via, to, from);    <span class="cm">// step 3: move (n-1) disks from via to to</span>
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="mt">Hanoi</span>(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'C'</span>, <span class="st">'B'</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Total moves: {moveCount}"</span>);  <span class="cm">// 7 = 2^3-1</span>
+    }
+}
+<span class="cm">/* Output:
+   Move disk 1 from A ? C
+   Move disk 2 from A ? B
+   Move disk 1 from C ? B
+   Move disk 3 from A ? C
+   Move disk 1 from B ? A
+   Move disk 2 from B ? C
+   Move disk 1 from A ? C
+   Total moves: 7 */</span></pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre>move_count = <span class="nm">0</span>
+<span class="kw">def</span> <span class="mt">hanoi</span>(n: <span class="tp">int</span>, from_peg: <span class="tp">str</span>, to_peg: <span class="tp">str</span>, via_peg: <span class="tp">str</span>):
+    <span class="kw">global</span> move_count
+    <span class="kw">if</span> n == <span class="nm">1</span>:
+        <span class="mt">print</span>(<span class="st">f"Move disk 1 from {from_peg} ? {to_peg}"</span>)
+        move_count += <span class="nm">1</span>; <span class="kw">return</span>
+    hanoi(n-<span class="nm">1</span>, from_peg, via_peg, to_peg)
+    <span class="mt">print</span>(<span class="st">f"Move disk {n} from {from_peg} ? {to_peg}"</span>)
+    move_count += <span class="nm">1</span>
+    hanoi(n-<span class="nm">1</span>, via_peg, to_peg, from_peg)
+
+hanoi(<span class="nm">3</span>, <span class="st">'A'</span>, <span class="st">'C'</span>, <span class="st">'B'</span>)
+<span class="mt">print</span>(<span class="st">f"Total moves: {move_count}"</span>)  <span class="cm"># 7</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 8 — Merge Sort</h3>
+<div class="quiz diff-med">
+  <div class="quiz-meta"><span class="badge b-med">Medium</span> Divide, sort, merge</div>
+  <div class="quiz-q">Implement merge sort recursively. It sorts by splitting array in half, sorting each half, then merging.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Recursively split the array in half until each sub-array has 0 or 1 element (trivially sorted). Then merge sorted pairs: compare front elements of both halves, place the smaller into results, advance that pointer. When one half is exhausted, append the rest. Each merge level does O(n) total work across all merges.</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) — log n recursion levels times O(n) merge work per level &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — temporary arrays during merge</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P8</span> {
+    <span class="kw">static void</span> <span class="mt">MergeSort</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> right) {
+        <span class="kw">if</span> (left &gt;= right) <span class="kw">return</span>;        <span class="cm">// base case: 0 or 1 element</span>
+        <span class="kw">int</span> mid = (left + right) / <span class="nm">2</span>;
+        <span class="mt">MergeSort</span>(arr, left, mid);         <span class="cm">// sort left half</span>
+        <span class="mt">MergeSort</span>(arr, mid + <span class="nm">1</span>, right);   <span class="cm">// sort right half</span>
+        <span class="mt">Merge</span>(arr, left, mid, right);      <span class="cm">// merge sorted halves</span>
+    }
+    <span class="kw">static void</span> <span class="mt">Merge</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> mid, <span class="kw">int</span> right) {
+        <span class="kw">int</span> n1 = mid-left+<span class="nm">1</span>, n2 = right-mid;
+        <span class="kw">int</span>[] L = <span class="kw">new int</span>[n1], R = <span class="kw">new int</span>[n2];
+        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;n1;i++) L[i]=arr[left+i];
+        <span class="kw">for</span>(<span class="kw">int</span> j=<span class="nm">0</span>;j&lt;n2;j++) R[j]=arr[mid+<span class="nm">1</span>+j];
+        <span class="kw">int</span> ii=<span class="nm">0</span>,jj=<span class="nm">0</span>,k=left;
+        <span class="kw">while</span>(ii&lt;n1 &amp;&amp; jj&lt;n2) arr[k++] = L[ii]&lt;=R[jj] ? L[ii++] : R[jj++];
+        <span class="kw">while</span>(ii&lt;n1) arr[k++]=L[ii++];
+        <span class="kw">while</span>(jj&lt;n2) arr[k++]=R[jj++];
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] arr = { <span class="nm">38</span>,<span class="nm">27</span>,<span class="nm">43</span>,<span class="nm">3</span>,<span class="nm">9</span>,<span class="nm">82</span>,<span class="nm">10</span> };
+        <span class="mt">MergeSort</span>(arr, <span class="nm">0</span>, arr.<span class="tp">Length</span>-<span class="nm">1</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" "</span>, arr)); <span class="cm">// 3 9 10 27 38 43 82</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">merge_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    <span class="kw">if</span> <span class="mt">len</span>(arr) &lt;= <span class="nm">1</span>: <span class="kw">return</span> arr          <span class="cm"># base case</span>
+    mid = <span class="mt">len</span>(arr) // <span class="nm">2</span>
+    left  = merge_sort(arr[:mid])            <span class="cm"># sort left</span>
+    right = merge_sort(arr[mid:])            <span class="cm"># sort right</span>
+    <span class="kw">return</span> merge(left, right)               <span class="cm"># merge</span>
+
+<span class="kw">def</span> <span class="mt">merge</span>(L: List[<span class="tp">int</span>], R: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
+    result, i, j = [], <span class="nm">0</span>, <span class="nm">0</span>
+    <span class="kw">while</span> i &lt; <span class="mt">len</span>(L) <span class="kw">and</span> j &lt; <span class="mt">len</span>(R):
+        <span class="kw">if</span> L[i] &lt;= R[j]: result.<span class="mt">append</span>(L[i]); i+=<span class="nm">1</span>
+        <span class="kw">else</span>: result.<span class="mt">append</span>(R[j]); j+=<span class="nm">1</span>
+    result.<span class="mt">extend</span>(L[i:]); result.<span class="mt">extend</span>(R[j:])
+    <span class="kw">return</span> result
+
+<span class="mt">print</span>(merge_sort([<span class="nm">38</span>,<span class="nm">27</span>,<span class="nm">43</span>,<span class="nm">3</span>,<span class="nm">9</span>,<span class="nm">82</span>,<span class="nm">10</span>]))  <span class="cm"># [3,9,10,27,38,43,82]</span></pre></div></div>
+  </div>
+</div>
+
+<h2 class="sec">Hard Problems (9—12) — Challenge Yourself</h2>
+
+<h3>Problem 9 — Generate Balanced Parentheses</h3>
+<div class="quiz diff-hard">
+  <div class="quiz-meta"><span class="badge b-hard">Hard</span> Generate all valid combinations</div>
+  <div class="quiz-q">Given n pairs, generate all valid parentheses combinations. E.g. n=3: ((())) (()()) (()) ()()() ...</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Build the string character by character with two rules: (1) Add an open bracket if open count &lt; n. (2) Add a close bracket only if close count &lt; open count. These constraints guarantee only valid strings are built. When the string reaches length 2n, it is a complete valid combination — add to results.</div>
+    <div class="complexity"><strong>Time:</strong> O(4^n / sqrt(n)) — the n-th Catalan number of valid combinations &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth (n open + n close)</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">class</span> <span class="tp">P9</span> {
+    <span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; <span class="mt">GenerateParens</span>(<span class="kw">int</span> n) {
+        <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();
+        <span class="mt">Backtrack</span>(n, <span class="nm">0</span>, <span class="nm">0</span>, <span class="st">""</span>, result);
+        <span class="kw">return</span> result;
+    }
+    <span class="kw">static void</span> <span class="mt">Backtrack</span>(<span class="kw">int</span> n, <span class="kw">int</span> open, <span class="kw">int</span> close, <span class="kw">string</span> current, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; res) {
+        <span class="kw">if</span> (current.<span class="tp">Length</span> == n*<span class="nm">2</span>) { res.<span class="mt">Add</span>(current); <span class="kw">return</span>; }
+        <span class="kw">if</span> (open &lt; n)    <span class="mt">Backtrack</span>(n, open+<span class="nm">1</span>, close, current+<span class="st">"("</span>, res);
+        <span class="kw">if</span> (close &lt; open) <span class="mt">Backtrack</span>(n, open, close+<span class="nm">1</span>, current+<span class="st">")"</span>, res);
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">var</span> r = <span class="mt">GenerateParens</span>(<span class="nm">3</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">"  "</span>, r));  <span class="cm">// ((()))  (()())  (())()  ()(())  ()()()</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">generate_parens</span>(n: <span class="tp">int</span>) -&gt; List[<span class="tp">str</span>]:
+    result = []
+    <span class="kw">def</span> <span class="mt">backtrack</span>(open_c: <span class="tp">int</span>, close_c: <span class="tp">int</span>, current: <span class="tp">str</span>):
+        <span class="kw">if</span> <span class="mt">len</span>(current) == n*<span class="nm">2</span>: result.<span class="mt">append</span>(current); <span class="kw">return</span>
+        <span class="kw">if</span> open_c &lt; n:      backtrack(open_c+<span class="nm">1</span>, close_c, current+<span class="st">"("</span>)
+        <span class="kw">if</span> close_c &lt; open_c: backtrack(open_c, close_c+<span class="nm">1</span>, current+<span class="st">")"</span>)
+    backtrack(<span class="nm">0</span>, <span class="nm">0</span>, <span class="st">""</span>)
+    <span class="kw">return</span> result
+
+<span class="mt">print</span>(generate_parens(<span class="nm">3</span>))  <span class="cm"># ['((()))', '(()())', '(())()', '()(())', '()()()']</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 10 — Word Search in Grid</h3>
+<div class="quiz diff-hard">
+  <div class="quiz-meta"><span class="badge b-hard">Hard</span> DFS/backtracking on 2D grid</div>
+  <div class="quiz-q">Given a 2D character grid and a word, check if the word can be formed by adjacent (horizontal/vertical) cells, each used only once.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Try starting DFS from every cell. At each step: check bounds and character match, mark cell as # (visited so it cannot be reused in this path), recursively explore all 4 neighbors for the next character, then restore the original character (backtrack). This ensures each cell is used at most once per path without a separate visited set.</div>
+    <div class="complexity"><strong>Time:</strong> O(m*n * 3^L) — m*n start cells, 3 unvisited neighbors per step, L = word length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(L) — call stack depth equals word length</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">class</span> <span class="tp">P10</span> {
+    <span class="kw">static bool</span> <span class="mt">Exist</span>(<span class="kw">char</span>[,] board, <span class="kw">string</span> word) {
+        <span class="kw">int</span> rows = board.<span class="mt">GetLength</span>(<span class="nm">0</span>), cols = board.<span class="mt">GetLength</span>(<span class="nm">1</span>);
+        <span class="kw">for</span>(<span class="kw">int</span> r=<span class="nm">0</span>;r&lt;rows;r++)
+            <span class="kw">for</span>(<span class="kw">int</span> c=<span class="nm">0</span>;c&lt;cols;c++)
+                <span class="kw">if</span>(<span class="mt">DFS</span>(board, word, r, c, <span class="nm">0</span>)) <span class="kw">return true</span>;
+        <span class="kw">return false</span>;
+    }
+    <span class="kw">static bool</span> <span class="mt">DFS</span>(<span class="kw">char</span>[,] b, <span class="kw">string</span> w, <span class="kw">int</span> r, <span class="kw">int</span> c, <span class="kw">int</span> idx) {
+        <span class="kw">if</span> (idx == w.<span class="tp">Length</span>) <span class="kw">return true</span>;  <span class="cm">// found entire word</span>
+        <span class="kw">if</span> (r&lt;<span class="nm">0</span>||r&gt;=b.<span class="mt">GetLength</span>(<span class="nm">0</span>)||c&lt;<span class="nm">0</span>||c&gt;=b.<span class="mt">GetLength</span>(<span class="nm">1</span>)||b[r,c]!=w[idx]) <span class="kw">return false</span>;
+        <span class="kw">char</span> tmp = b[r,c];
+        b[r,c] = <span class="st">'#'</span>;   <span class="cm">// CHOOSE: mark visited</span>
+        <span class="kw">bool</span> found = <span class="mt">DFS</span>(b,w,r+<span class="nm">1</span>,c,idx+<span class="nm">1</span>)||<span class="mt">DFS</span>(b,w,r-<span class="nm">1</span>,c,idx+<span class="nm">1</span>)||
+                      <span class="mt">DFS</span>(b,w,r,c+<span class="nm">1</span>,idx+<span class="nm">1</span>)||<span class="mt">DFS</span>(b,w,r,c-<span class="nm">1</span>,idx+<span class="nm">1</span>);
+        b[r,c] = tmp;   <span class="cm">// UNCHOOSE: restore</span>
+        <span class="kw">return</span> found;
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">char</span>[,] board = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Exist</span>(board, <span class="st">"ABCCED"</span>));  <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Exist</span>(board, <span class="st">"SEE"</span>));     <span class="cm">// True</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="mt">Exist</span>(board, <span class="st">"ABCB"</span>));    <span class="cm">// False</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">exist</span>(board: List[List[<span class="tp">str</span>]], word: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
+    rows, cols = <span class="mt">len</span>(board), <span class="mt">len</span>(board[<span class="nm">0</span>])
+    <span class="kw">def</span> <span class="mt">dfs</span>(r,c,idx):
+        <span class="kw">if</span> idx == <span class="mt">len</span>(word): <span class="kw">return True</span>
+        <span class="kw">if not</span> (<span class="nm">0</span>&lt;=r&lt;rows <span class="kw">and</span> <span class="nm">0</span>&lt;=c&lt;cols) <span class="kw">or</span> board[r][c]!=word[idx]: <span class="kw">return False</span>
+        tmp, board[r][c] = board[r][c], <span class="st">'#'</span>
+        found = dfs(r+<span class="nm">1</span>,c,idx+<span class="nm">1</span>) <span class="kw">or</span> dfs(r-<span class="nm">1</span>,c,idx+<span class="nm">1</span>) <span class="kw">or</span> dfs(r,c+<span class="nm">1</span>,idx+<span class="nm">1</span>) <span class="kw">or</span> dfs(r,c-<span class="nm">1</span>,idx+<span class="nm">1</span>)
+        board[r][c] = tmp
+        <span class="kw">return</span> found
+    <span class="kw">return</span> <span class="mt">any</span>(dfs(r,c,<span class="nm">0</span>) <span class="kw">for</span> r <span class="kw">in</span> <span class="mt">range</span>(rows) <span class="kw">for</span> c <span class="kw">in</span> <span class="mt">range</span>(cols))
+
+board = [[<span class="st">'A'</span>,<span class="st">'B'</span>,<span class="st">'C'</span>,<span class="st">'E'</span>],[<span class="st">'S'</span>,<span class="st">'F'</span>,<span class="st">'C'</span>,<span class="st">'S'</span>],[<span class="st">'A'</span>,<span class="st">'D'</span>,<span class="st">'E'</span>,<span class="st">'E'</span>]]
+<span class="mt">print</span>(exist(board, <span class="st">"ABCCED"</span>))  <span class="cm"># True</span>
+<span class="mt">print</span>(exist(board, <span class="st">"ABCB"</span>))    <span class="cm"># False</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 11 — Phone Number Letter Combinations</h3>
+<div class="quiz diff-hard">
+  <div class="quiz-meta"><span class="badge b-hard">Hard</span> Classic backtracking</div>
+  <div class="quiz-q">Given digits "23", return all letter combinations a phone dial could represent. 2?"abc", 3?"def". Combinations: "ad","ae","af","bd","be","bf","cd","ce","cf".</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Map each digit to its possible letters (phone keypad: 2-&gt;abc, 3-&gt;def, etc). For the current digit at index idx, try each of its letters — append to the current string and recurse for the next digit. When all digits are processed, add the complete combination to results. Systematically generates all combinations without duplicates.</div>
+    <div class="complexity"><strong>Time:</strong> O(4^n * n) — up to 4 letters per digit, building n-length strings &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — call stack depth equals number of digits</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">class</span> <span class="tp">P11</span> {
+    <span class="kw">static</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>,<span class="kw">string</span>&gt; map = <span class="kw">new</span>() {
+        {'2',"abc"},{'3',"def"},{'4',"ghi"},{'5',"jkl"},
+        {'6',"mno"},{'7',"pqrs"},{'8',"tuv"},{'9',"wxyz"}
+    };
+    <span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; result = <span class="kw">new</span>();
+    <span class="kw">static void</span> <span class="mt">Backtrack</span>(<span class="kw">string</span> digits, <span class="kw">int</span> idx, <span class="kw">string</span> current) {
+        <span class="kw">if</span> (idx == digits.<span class="tp">Length</span>) { result.<span class="mt">Add</span>(current); <span class="kw">return</span>; }
+        <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> map[digits[idx]])
+            <span class="mt">Backtrack</span>(digits, idx+<span class="nm">1</span>, current+c);
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="mt">Backtrack</span>(<span class="st">"23"</span>, <span class="nm">0</span>, <span class="st">""</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">" "</span>, result));
+        <span class="cm">// ad ae af bd be bf cd ce cf</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+PHONE = {<span class="st">'2'</span>:<span class="st">'abc'</span>,<span class="st">'3'</span>:<span class="st">'def'</span>,<span class="st">'4'</span>:<span class="st">'ghi'</span>,<span class="st">'5'</span>:<span class="st">'jkl'</span>,
+         <span class="st">'6'</span>:<span class="st">'mno'</span>,<span class="st">'7'</span>:<span class="st">'pqrs'</span>,<span class="st">'8'</span>:<span class="st">'tuv'</span>,<span class="st">'9'</span>:<span class="st">'wxyz'</span>}
+<span class="kw">def</span> <span class="mt">letter_combos</span>(digits: <span class="tp">str</span>) -&gt; List[<span class="tp">str</span>]:
+    <span class="kw">if not</span> digits: <span class="kw">return</span> []
+    result = []
+    <span class="kw">def</span> <span class="mt">backtrack</span>(idx, current):
+        <span class="kw">if</span> idx == <span class="mt">len</span>(digits): result.<span class="mt">append</span>(current); <span class="kw">return</span>
+        <span class="kw">for</span> c <span class="kw">in</span> PHONE[digits[idx]]: backtrack(idx+<span class="nm">1</span>, current+c)
+    backtrack(<span class="nm">0</span>, <span class="st">""</span>)
+    <span class="kw">return</span> result
+
+<span class="mt">print</span>(letter_combos(<span class="st">"23"</span>))  <span class="cm"># ['ad','ae','af','bd','be','bf','cd','ce','cf']</span></pre></div></div>
+  </div>
+</div>
+
+<h3>Problem 12 — Combination Sum</h3>
+<div class="quiz diff-hard">
+  <div class="quiz-meta"><span class="badge b-hard">Hard</span> Find all combinations summing to target</div>
+  <div class="quiz-q">Given candidates=[2,3,6,7] and target=7, find all combinations that sum to target. Numbers can be reused.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
+  <div class="sol">
+    <div class="approach"><strong>Approach:</strong> Sort candidates first (enables pruning). For each candidate from index i onward, add it to the current combination and recurse with the same index i (allows reuse) and a reduced target. When target = 0, record the combination. Since candidates are sorted, stop as soon as a candidate exceeds the remaining target — all further candidates will also exceed it.</div>
+    <div class="complexity"><strong>Time:</strong> O(N^(T/M)) — N=candidates, T=target, M=smallest candidate &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(T/M) — max recursion depth equals target divided by smallest candidate</div>
+    <div class="lang-cs">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">class</span> <span class="tp">P12</span> {
+    <span class="kw">static</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; result = <span class="kw">new</span>();
+    <span class="kw">static void</span> <span class="mt">Backtrack</span>(<span class="kw">int</span>[] cands, <span class="kw">int</span> target, <span class="kw">int</span> start, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; current) {
+        <span class="kw">if</span> (target == <span class="nm">0</span>) { result.<span class="mt">Add</span>(<span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(current)); <span class="kw">return</span>; }
+        <span class="kw">for</span> (<span class="kw">int</span> i=start; i&lt;cands.<span class="tp">Length</span> &amp;&amp; cands[i]&lt;=target; i++) {
+            current.<span class="mt">Add</span>(cands[i]);
+            <span class="mt">Backtrack</span>(cands, target-cands[i], i, current);  <span class="cm">// i (not i+1) allows reuse</span>
+            current.<span class="mt">RemoveAt</span>(current.<span class="tp">Count</span>-<span class="nm">1</span>);
+        }
+    }
+    <span class="kw">static void</span> <span class="mt">Main</span>() {
+        <span class="kw">int</span>[] cands = { <span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">6</span>,<span class="nm">7</span> };
+        <span class="tp">Array</span>.<span class="mt">Sort</span>(cands);
+        <span class="mt">Backtrack</span>(cands, <span class="nm">7</span>, <span class="nm">0</span>, <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;());
+        <span class="kw">foreach</span>(<span class="kw">var</span> combo <span class="kw">in</span> result)
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>,combo));
+        <span class="cm">// 2,2,3  and  7</span>
+    }
+}</pre></div></div>
+    <div class="lang-py" style="display:none">
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+    <pre><span class="kw">from</span> typing <span class="kw">import</span> List
+<span class="kw">def</span> <span class="mt">combo_sum</span>(candidates: List[<span class="tp">int</span>], target: <span class="tp">int</span>) -&gt; List[List[<span class="tp">int</span>]]:
+    candidates.<span class="mt">sort</span>()
+    result = []
+    <span class="kw">def</span> <span class="mt">backtrack</span>(start, current, remaining):
+        <span class="kw">if</span> remaining == <span class="nm">0</span>: result.<span class="mt">append</span>(current[:]); <span class="kw">return</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(start, <span class="mt">len</span>(candidates)):
+            <span class="kw">if</span> candidates[i] > remaining: <span class="kw">break</span>  <span class="cm"># prune</span>
+            current.<span class="mt">append</span>(candidates[i])
+            backtrack(i, current, remaining-candidates[i])
+            current.<span class="mt">pop</span>()
+    backtrack(<span class="nm">0</span>, [], target)
+    <span class="kw">return</span> result
+
+<span class="mt">print</span>(combo_sum([<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">6</span>,<span class="nm">7</span>], <span class="nm">7</span>))  <span class="cm"># [[2,2,3],[7]]</span></pre></div></div>
+  </div>
+</div>
+
+<div class="tip"><strong>💡 Key Takeaway from these 12 Problems</strong>Every recursive problem has the same DNA: identify the base case first, then figure out how to reduce the problem. For backtracking, add the Choose?Explore?Unchoose structure. The rest is pattern matching.</div>
+
+<div class="complete-section">
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">Excellent work! You've completed 12 recursion and backtracking problems — from basic sum to word search in grids. Move on to Module 5 for Sorting Algorithms!</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
+  <div style="margin-top:16px">
+    <a href="m05a_basic_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Module 5A — O(n—) Sorting Algorithms ?</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MODULE_ID = 'm04c';
+(function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='? Completed!';b.disabled=true;showToast('? Module 4C marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='? Completed!';b.disabled=true;}}})();
+function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
+function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
+applyLang();
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='❌ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleSolution(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Solution':'💡 Show Solution';}
+let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

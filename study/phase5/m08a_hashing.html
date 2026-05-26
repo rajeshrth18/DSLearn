@@ -1,0 +1,616 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8A — Hash Functions &amp; Collision Resolution</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="cover">
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 5</div>
+    <h1>Module 8 — Part A</h1>
+    <div class="tagline">Hash Functions &amp; Collision Resolution</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Turn any key into a fixed-size index — and handle when two keys land on the same spot</p>
+    <div class="badges">
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part A of Module 8</span>
+    </div>
+</div>
+
+<div class="nav-box">
+    <strong>📂 Module 8 — Hashing:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Hash Functions &amp; Collisions<br>
+    ⬜ <strong>Part B</strong> — <a href="m08b_collections.html">Dictionary, HashSet &amp; LRU Cache</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m08c_bloom_filters.html">Bloom Filters</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m08d_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
+</div>
+<div class="module-nav">
+    <a href="../phase4/m07a_avl_trees.html">&larr; Module 7 &mdash; Advanced Trees</a>
+    <a href="../phase6/m09a_graph_theory.html">Module 9 &mdash; Graph Basics &rarr;</a>
+</div>
+
+<div class="toc">
+    <h2>📚 Contents — Module 8A</h2>
+    <ol>
+        <li>The Analogy — The Postal Sorting Machine <span>— Why O(1) lookup is possible</span></li>
+        <li>What is Hashing? <span>— Keys to indices</span></li>
+        <li>Properties of a Good Hash Function <span>— Uniform, deterministic, fast</span></li>
+        <li>Common Hash Functions <span>— Division, Polynomial Rolling, DJB2, FNV-1a</span></li>
+        <li>Collision Resolution — Separate Chaining <span>— Linked lists at each bucket</span></li>
+        <li>Collision Resolution — Open Addressing <span>— Linear, Quadratic, Double Hashing</span></li>
+        <li>Load Factor &amp; Rehashing <span>— When and how to resize</span></li>
+        <li>Complete C# Implementation <span>— Custom HashTable&lt;TKey,TValue&gt;</span></li>
+        <li>Complete Python Implementation <span>— Same logic, Python idioms</span></li>
+        <li>Complexity Analysis <span>— O(1) average vs O(n) worst case</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
+    </ol>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: The Postal Sorting Machine</div>
+
+<p>Imagine a massive postal facility that receives millions of letters daily. Rather than searching through every mailbag for a specific recipient, a sorting machine reads the ZIP code and sends each letter directly to the correct bin — in one step, regardless of how many letters exist. The ZIP code <em>is</em> the address of the bin.</p>
+
+<p>A <strong>hash table</strong> works on the same idea. Given any key (a name, an ID, a URL), a hash function computes a <strong>bucket index</strong> directly. Instead of searching O(n) elements, you jump to the exact slot in O(1). The hash function is the sorting machine; the array of buckets is the bin system.</p>
+
+<div class="tip">
+    <strong>💡 The Core Promise:</strong> With a good hash function and a properly sized array, both <strong>insert</strong> and <strong>lookup</strong> run in <strong>O(1) average time</strong> — independent of how many elements are stored. This is the single most important performance guarantee in practical software engineering.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — What is Hashing?</div>
+
+<p>Hashing is the process of mapping a key of arbitrary type and size to a fixed-size integer index. The resulting integer — called the <strong>hash code</strong> — is then mapped into an array index using the modulo operator.</p>
+
+<div class="diagram">HASHING PIPELINE
+
+  Key (any type)  →  Hash Function  →  Hash Code (int)  →  index = code % capacity  →  Array slot
+
+  Example: key = "Alice"
+  ├── hash("Alice") = 92748301   (some large integer)
+  ├── 92748301 % 16  = 13        (capacity = 16)
+  └── Store value at array[13]
+
+  Example: key = "Bob"
+  ├── hash("Bob")   = 47291      (different integer)
+  ├── 47291 % 16    = 11
+  └── Store value at array[11]
+
+  Lookup("Alice"):
+  ├── Recompute: hash("Alice") % 16 = 13
+  └── Return array[13] — found in ONE step!</div>
+
+<h3>2.1 — Anatomy of a Hash Table</h3>
+<ul>
+    <li><strong>Backing Array</strong>: Fixed-size array of buckets (slots).</li>
+    <li><strong>Hash Function</strong>: Converts a key to an integer hash code.</li>
+    <li><strong>Index Mapping</strong>: <code>index = Math.Abs(hashCode) % capacity</code></li>
+    <li><strong>Collision Handler</strong>: Two keys can produce the same index — the strategy for handling this defines the hash table variant.</li>
+    <li><strong>Load Factor</strong>: <code>λ = n / capacity</code> — ratio of stored elements to total buckets. Triggers resize when too high.</li>
+</ul>
+
+<hr>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Properties of a Good Hash Function</div>
+
+<table>
+    <thead>
+        <tr><th>Property</th><th>Meaning</th><th>Why it matters</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>Deterministic</strong></td><td>Same key → always same hash code</td><td>Lookup must reproduce the insertion index</td></tr>
+        <tr><td><strong>Uniform distribution</strong></td><td>Keys spread evenly across all buckets</td><td>Minimises collisions, keeps average O(1)</td></tr>
+        <tr><td><strong>Fast to compute</strong></td><td>O(1) or O(k) where k = key length</td><td>O(1) table ops require O(1) hashing</td></tr>
+        <tr><td><strong>Avalanche effect</strong></td><td>Small key change → large hash change</td><td>Prevents clustering of similar keys</td></tr>
+        <tr><td><strong>Low collision rate</strong></td><td>Distinct keys rarely map to same index</td><td>Collisions degrade performance</td></tr>
+    </tbody>
+</table>
+
+<div class="warning">
+    <strong>⚠️ Not required to be injective:</strong> A hash function does NOT need to produce unique outputs (that would make it a perfect hash function — very rare). Collisions are expected and handled by the collision resolution strategy.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Common Hash Functions</div>
+
+<h3>4.1 — Division Method (Simple, Educational)</h3>
+<p>The simplest approach: <code>h(k) = k % m</code> where <code>m</code> is the table size. Works for integer keys. Choose <code>m</code> to be a prime number far from a power of 2 to avoid clustering.</p>
+
+<h3>4.2 — Polynomial Rolling Hash (Strings)</h3>
+<p>The standard approach for hashing strings. Treats the string as a polynomial evaluated at a chosen base:</p>
+
+<p><code>h(s) = s[0]·p⁰ + s[1]·p¹ + s[2]·p² + ... + s[n-1]·p^(n-1)  mod  m</code></p>
+
+<p>Common choices: <code>p = 31</code> (for lowercase letters), <code>m = 10^9 + 7</code> (large prime).</p>
+
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Polynomial rolling hash for strings (C#)</span>
+<span class="kw">static long</span> <span class="mt">PolyHash</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">const long</span> p = <span class="nm">31</span>, m = <span class="nm">1_000_000_007</span>;
+    <span class="kw">long</span> hash = <span class="nm">0</span>, power = <span class="nm">1</span>;
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+    {
+        hash  = (hash + (c - <span class="st">'a'</span> + <span class="nm">1</span>) * power) % m;
+        power = (power * p) % m;
+    }
+    <span class="kw">return</span> hash;
+}
+<span class="cm">// "abc" → deterministic long in [0, 10^9+6]</span></pre>
+</div>
+
+<h3>4.3 — DJB2 (Practical String Hashing)</h3>
+<p>Created by Dan Bernstein, DJB2 is one of the most cited non-cryptographic hash functions. It uses bit-shifting to mix bits aggressively:</p>
+
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// DJB2 hash function</span>
+<span class="kw">static uint</span> <span class="mt">DJB2</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">uint</span> hash = <span class="nm">5381</span>;
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+        hash = ((hash &lt;&lt; <span class="nm">5</span>) + hash) + c;  <span class="cm">// hash * 33 + c</span>
+    <span class="kw">return</span> hash;
+}
+<span class="cm">// Fast, avalanche effect is good, widely used in practice</span></pre>
+</div>
+
+<h3>4.4 — FNV-1a (Fowler-Noll-Vo)</h3>
+<p>FNV-1a XORs before multiplying, which improves avalanche effect over DJB2:</p>
+
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// FNV-1a 32-bit hash</span>
+<span class="kw">static uint</span> <span class="mt">FNV1a</span>(<span class="kw">string</span> s)
+{
+    <span class="kw">const uint</span> FNV_prime  = <span class="nm">16777619</span>;
+    <span class="kw">const uint</span> FNV_offset = <span class="nm">2166136261</span>;
+    <span class="kw">uint</span> hash = FNV_offset;
+    <span class="kw">foreach</span> (<span class="kw">char</span> c <span class="kw">in</span> s)
+    {
+        hash ^= c;            <span class="cm">// XOR first (FNV-1a key difference)</span>
+        hash *= FNV_prime;
+    }
+    <span class="kw">return</span> hash;
+}</pre>
+</div>
+
+<div class="note">
+    <strong>📝 In Practice — .NET's GetHashCode():</strong> You almost never write your own hash function in production C#. <code>object.GetHashCode()</code> is well-implemented for all built-in types. The important thing is to understand <em>why</em> it works, not to replace it.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Collision Resolution: Separate Chaining</div>
+
+<p>A <strong>collision</strong> occurs when two different keys hash to the same index. <strong>Separate chaining</strong> resolves this by storing all colliding entries in a linked list (or other structure) at that bucket.</p>
+
+<div class="diagram">SEPARATE CHAINING
+
+  Keys: "Alice"→99, "Bob"→77, "Charlie"→42, "Dave"→55
+  Capacity = 7
+
+  hash("Alice")   % 7 = 2
+  hash("Bob")     % 7 = 5
+  hash("Charlie") % 7 = 2   ← COLLISION with "Alice"!
+  hash("Dave")    % 7 = 5   ← COLLISION with "Bob"!
+
+  Bucket Array:
+  [0] → null
+  [1] → null
+  [2] → ["Alice":99] → ["Charlie":42] → null   (chain of length 2)
+  [3] → null
+  [4] → null
+  [5] → ["Bob":77]   → ["Dave":55]   → null   (chain of length 2)
+  [6] → null
+
+  Lookup("Charlie"):
+  1. hash("Charlie") % 7 = 2
+  2. Walk chain at [2]: skip "Alice", find "Charlie" → return 42</div>
+
+<h3>5.1 — Chaining Performance</h3>
+<ul>
+    <li><strong>Average case</strong>: O(1 + λ) where λ = load factor = n/capacity</li>
+    <li><strong>Worst case</strong>: O(n) if all keys hash to the same bucket</li>
+    <li><strong>Best case</strong>: O(1) with perfect distribution</li>
+    <li>Works well at high load factors (λ &gt; 0.7) — just longer chains</li>
+</ul>
+
+<div class="tip">
+    <strong>💡 Java's HashMap</strong> uses separate chaining. When a bucket's chain exceeds 8 elements, it converts the chain to a Red-Black Tree, bringing worst-case per-bucket lookup to O(log n) instead of O(n).
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Collision Resolution: Open Addressing</div>
+
+<p>In open addressing, all elements live directly in the backing array — no linked lists. When a collision occurs, the algorithm <strong>probes</strong> (searches) for the next empty slot according to a defined probing sequence.</p>
+
+<h3>6.1 — Linear Probing</h3>
+<p>On collision at index <code>i</code>, try <code>i+1, i+2, i+3, ...</code> (wrapping around). Simple, cache-friendly, but suffers from <strong>primary clustering</strong> — long runs of occupied slots build up.</p>
+
+<div class="diagram">LINEAR PROBING — Insert sequence: 10, 22, 31, 4, 15  (capacity = 7)
+
+  h(10) = 10 % 7 = 3  → [3] empty → store at [3]
+  h(22) = 22 % 7 = 1  → [1] empty → store at [1]
+  h(31) = 31 % 7 = 3  → [3] TAKEN → probe [4] empty → store at [4]
+  h(4)  = 4  % 7 = 4  → [4] TAKEN → probe [5] empty → store at [5]
+  h(15) = 15 % 7 = 1  → [1] TAKEN → probe [2] empty → store at [2]
+
+  Array: [ _  22  15  10  31   4  _ ]
+           0   1   2   3   4   5  6
+
+  Note: 15 and 22 are adjacent even though they didn't collide with each other.
+  This is PRIMARY CLUSTERING — probes build on each other.</div>
+
+<h3>6.2 — Quadratic Probing</h3>
+<p>On collision at index <code>i</code>, try <code>i+1², i+2², i+3², ...</code>. Reduces primary clustering but can cause <strong>secondary clustering</strong> (all keys with the same initial hash follow the same probe sequence).</p>
+
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Quadratic probing formula</span>
+<span class="cm">// probe(i) = (hash + i*i) % capacity</span>
+<span class="kw">int</span> Probe(<span class="kw">int</span> hash, <span class="kw">int</span> i, <span class="kw">int</span> capacity)
+    =&gt; (hash + i * i) % capacity;</pre>
+</div>
+
+<h3>6.3 — Double Hashing</h3>
+<p>Uses a <em>second</em> hash function to compute the step size. Eliminates both primary and secondary clustering — the best open addressing strategy in practice:</p>
+
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Double hashing — probe(i) = (h1(key) + i * h2(key)) % capacity</span>
+<span class="cm">// h2 must be non-zero and coprime to capacity (use prime capacity)</span>
+<span class="kw">int</span> h1 = <span class="mt">Math</span>.Abs(key.GetHashCode()) % capacity;
+<span class="kw">int</span> h2 = <span class="nm">1</span> + (<span class="mt">Math</span>.Abs(key.GetHashCode()) % (capacity - <span class="nm">1</span>));
+<span class="cm">// probe sequence for collision i: (h1 + i * h2) % capacity</span></pre>
+</div>
+
+<table>
+    <thead>
+        <tr><th>Strategy</th><th>Clustering</th><th>Cache Performance</th><th>Best For</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Linear Probing</td><td class="r">Primary (severe)</td><td class="g">Excellent (sequential)</td><td>Cache-sensitive low-λ</td></tr>
+        <tr><td>Quadratic Probing</td><td class="o">Secondary (mild)</td><td class="o">Good</td><td>General open addressing</td></tr>
+        <tr><td>Double Hashing</td><td class="g">Minimal</td><td class="o">Moderate</td><td>Best distribution</td></tr>
+        <tr><td>Separate Chaining</td><td class="g">None</td><td class="r">Pointer chasing</td><td>High load factors</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Load Factor &amp; Rehashing</div>
+
+<p>The <strong>load factor</strong> λ = n / capacity measures how full the table is. As λ increases, collision probability rises and performance degrades toward O(n).</p>
+
+<div class="diagram">LOAD FACTOR EFFECTS
+
+  λ = 0.1   → Very few collisions, but wastes memory (90% empty)
+  λ = 0.5   → Good balance — low collision probability
+  λ = 0.75  ← .NET Dictionary's default rehash threshold
+  λ = 1.0   → Open addressing fails (no empty slots), chaining degrades to O(n)
+  λ > 1.0   → Only possible with separate chaining
+
+REHASHING PROCESS:
+  1. Allocate new array with ~2× capacity (next prime)
+  2. Re-hash EVERY existing key into new array
+  3. Update capacity, reset count
+  Cost: O(n) amortized — but happens rarely enough that insertion stays O(1) amortized</div>
+
+<div class="note">
+    <strong>📝 .NET Dictionary:</strong> Default load factor = 0.75. Grows by finding the next prime number ≥ 2 × current capacity. The prime size helps the modulo operation distribute keys evenly.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Complete C# Implementation</div>
+
+<p>A hash table using separate chaining with linked lists. Supports generic keys and values, auto-rehash at load factor 0.75.</p>
+
+<span class="lang-label lang-cs">C#</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+
+<span class="kw">public class</span> <span class="tp">HashTable</span>&lt;<span class="tp">TKey</span>, <span class="tp">TValue</span>&gt; <span class="kw">where</span> <span class="tp">TKey</span> : <span class="kw">notnull</span>
+{
+    <span class="kw">private</span> <span class="tp">List</span>&lt;(<span class="tp">TKey</span> key, <span class="tp">TValue</span> val)&gt;[] _buckets;
+    <span class="kw">private int</span> _count;
+    <span class="kw">private const double</span> _loadThreshold = <span class="nm">0.75</span>;
+
+    <span class="kw">public int</span> Count =&gt; _count;
+
+    <span class="kw">public</span> <span class="mt">HashTable</span>(<span class="kw">int</span> initialCapacity = <span class="nm">16</span>)
+    {
+        _buckets = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt;[initialCapacity];
+    }
+
+    <span class="cm">// ── Core: compute bucket index ───────────────────────</span>
+    <span class="kw">private int</span> <span class="mt">BucketIndex</span>(<span class="tp">TKey</span> key)
+        =&gt; <span class="tp">Math</span>.<span class="mt">Abs</span>(key.<span class="mt">GetHashCode</span>()) % _buckets.Length;
+
+    <span class="cm">// ── Put (insert or update) ───────────────────────────</span>
+    <span class="kw">public void</span> <span class="mt">Put</span>(<span class="tp">TKey</span> key, <span class="tp">TValue</span> value)
+    {
+        <span class="kw">if</span> ((double)(_count + <span class="nm">1</span>) / _buckets.Length &gt; _loadThreshold)
+            <span class="mt">Rehash</span>();
+
+        <span class="kw">int</span> idx = <span class="mt">BucketIndex</span>(key);
+        _buckets[idx] ??= <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt;();
+
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; _buckets[idx].Count; i++)
+        {
+            <span class="kw">if</span> (<span class="tp">EqualityComparer</span>&lt;<span class="tp">TKey</span>&gt;.Default.<span class="mt">Equals</span>(_buckets[idx][i].key, key))
+            {
+                _buckets[idx][i] = (key, value);  <span class="cm">// update existing</span>
+                <span class="kw">return</span>;
+            }
+        }
+        _buckets[idx].<span class="mt">Add</span>((key, value));  <span class="cm">// new entry</span>
+        _count++;
+    }
+
+    <span class="cm">// ── Get ──────────────────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">TryGet</span>(<span class="tp">TKey</span> key, <span class="kw">out</span> <span class="tp">TValue</span>? value)
+    {
+        <span class="kw">int</span> idx = <span class="mt">BucketIndex</span>(key);
+        <span class="kw">if</span> (_buckets[idx] != <span class="kw">null</span>)
+            <span class="kw">foreach</span> (<span class="kw">var</span> (k, v) <span class="kw">in</span> _buckets[idx])
+                <span class="kw">if</span> (<span class="tp">EqualityComparer</span>&lt;<span class="tp">TKey</span>&gt;.Default.<span class="mt">Equals</span>(k, key))
+                    { value = v; <span class="kw">return true</span>; }
+        value = <span class="kw">default</span>;
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// ── Indexer ──────────────────────────────────────────</span>
+    <span class="kw">public</span> <span class="tp">TValue</span> <span class="kw">this</span>[<span class="tp">TKey</span> key]
+    {
+        <span class="kw">get</span>
+        {
+            <span class="kw">if</span> (<span class="mt">TryGet</span>(key, <span class="kw">out var</span> v)) <span class="kw">return</span> v!;
+            <span class="kw">throw new</span> <span class="tp">KeyNotFoundException</span>($<span class="st">"Key '{key}' not found"</span>);
+        }
+        <span class="kw">set</span> =&gt; <span class="mt">Put</span>(key, value);
+    }
+
+    <span class="cm">// ── Remove ───────────────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">Remove</span>(<span class="tp">TKey</span> key)
+    {
+        <span class="kw">int</span> idx = <span class="mt">BucketIndex</span>(key);
+        <span class="kw">if</span> (_buckets[idx] == <span class="kw">null</span>) <span class="kw">return false</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; _buckets[idx].Count; i++)
+        {
+            <span class="kw">if</span> (<span class="tp">EqualityComparer</span>&lt;<span class="tp">TKey</span>&gt;.Default.<span class="mt">Equals</span>(_buckets[idx][i].key, key))
+            {
+                _buckets[idx].<span class="mt">RemoveAt</span>(i);
+                _count--;
+                <span class="kw">return true</span>;
+            }
+        }
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// ── ContainsKey ──────────────────────────────────────</span>
+    <span class="kw">public bool</span> <span class="mt">ContainsKey</span>(<span class="tp">TKey</span> key) =&gt; <span class="mt">TryGet</span>(key, <span class="kw">out</span> _);
+
+    <span class="cm">// ── Rehash (double capacity) ─────────────────────────</span>
+    <span class="kw">private void</span> <span class="mt">Rehash</span>()
+    {
+        <span class="kw">var</span> old = _buckets;
+        _buckets = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="tp">TKey</span>, <span class="tp">TValue</span>)&gt;[old.Length * <span class="nm">2</span>];
+        _count = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">var</span> bucket <span class="kw">in</span> old)
+            <span class="kw">if</span> (bucket != <span class="kw">null</span>)
+                <span class="kw">foreach</span> (<span class="kw">var</span> (k, v) <span class="kw">in</span> bucket)
+                    <span class="mt">Put</span>(k, v);
+    }
+}
+
+<span class="cm">// ── Demo ─────────────────────────────────────────────────</span>
+<span class="kw">class</span> <span class="tp">Program</span>
+{
+    <span class="kw">static void</span> <span class="mt">Main</span>()
+    {
+        <span class="kw">var</span> ht = <span class="kw">new</span> <span class="tp">HashTable</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
+        ht.<span class="mt">Put</span>(<span class="st">"Alice"</span>, <span class="nm">92</span>);
+        ht.<span class="mt">Put</span>(<span class="st">"Bob"</span>,   <span class="nm">85</span>);
+        ht.<span class="mt">Put</span>(<span class="st">"Carol"</span>, <span class="nm">91</span>);
+        ht[<span class="st">"Alice"</span>] = <span class="nm">95</span>;  <span class="cm">// update via indexer</span>
+
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(ht[<span class="st">"Alice"</span>]);   <span class="cm">// 95</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(ht.<span class="mt">ContainsKey</span>(<span class="st">"Dave"</span>));  <span class="cm">// False</span>
+        ht.<span class="mt">Remove</span>(<span class="st">"Bob"</span>);
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(ht.Count);  <span class="cm">// 2</span>
+
+        <span class="cm">/* ── Output ──
+        95
+        False
+        2
+        */</span>
+    }
+}</pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Complete Python Implementation</div>
+
+<span class="lang-label lang-py">Python</span>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="kw">class</span> <span class="tp">HashTable</span>:
+    <span class="kw">def</span> <span class="mt">__init__</span>(<span class="tp">self</span>, initial_capacity=<span class="nm">16</span>):
+        <span class="tp">self</span>._capacity = initial_capacity
+        <span class="tp">self</span>._buckets  = [<span class="kw">None</span>] * initial_capacity  <span class="cm"># list of lists</span>
+        <span class="tp">self</span>._count    = <span class="nm">0</span>
+        <span class="tp">self</span>._load_threshold = <span class="nm">0.75</span>
+
+    <span class="kw">def</span> <span class="mt">_index</span>(<span class="tp">self</span>, key):
+        <span class="kw">return</span> <span class="mt">abs</span>(<span class="mt">hash</span>(key)) % <span class="tp">self</span>._capacity
+
+    <span class="kw">def</span> <span class="mt">put</span>(<span class="tp">self</span>, key, value):
+        <span class="kw">if</span> (<span class="tp">self</span>._count + <span class="nm">1</span>) / <span class="tp">self</span>._capacity > <span class="tp">self</span>._load_threshold:
+            <span class="tp">self</span>.<span class="mt">_rehash</span>()
+        idx = <span class="tp">self</span>.<span class="mt">_index</span>(key)
+        <span class="kw">if</span> <span class="tp">self</span>._buckets[idx] <span class="kw">is None</span>:
+            <span class="tp">self</span>._buckets[idx] = []
+        <span class="kw">for</span> i, (k, v) <span class="kw">in</span> <span class="mt">enumerate</span>(<span class="tp">self</span>._buckets[idx]):
+            <span class="kw">if</span> k == key:
+                <span class="tp">self</span>._buckets[idx][i] = (key, value)  <span class="cm"># update</span>
+                <span class="kw">return</span>
+        <span class="tp">self</span>._buckets[idx].<span class="mt">append</span>((key, value))
+        <span class="tp">self</span>._count += <span class="nm">1</span>
+
+    <span class="kw">def</span> <span class="mt">get</span>(<span class="tp">self</span>, key, default=<span class="kw">None</span>):
+        idx = <span class="tp">self</span>.<span class="mt">_index</span>(key)
+        <span class="kw">if</span> <span class="tp">self</span>._buckets[idx]:
+            <span class="kw">for</span> k, v <span class="kw">in</span> <span class="tp">self</span>._buckets[idx]:
+                <span class="kw">if</span> k == key:
+                    <span class="kw">return</span> v
+        <span class="kw">return</span> default
+
+    <span class="kw">def</span> <span class="mt">remove</span>(<span class="tp">self</span>, key):
+        idx = <span class="tp">self</span>.<span class="mt">_index</span>(key)
+        <span class="kw">if</span> <span class="tp">self</span>._buckets[idx]:
+            <span class="kw">for</span> i, (k, v) <span class="kw">in</span> <span class="mt">enumerate</span>(<span class="tp">self</span>._buckets[idx]):
+                <span class="kw">if</span> k == key:
+                    <span class="tp">self</span>._buckets[idx].<span class="mt">pop</span>(i)
+                    <span class="tp">self</span>._count -= <span class="nm">1</span>
+                    <span class="kw">return True</span>
+        <span class="kw">return False</span>
+
+    <span class="kw">def</span> <span class="mt">contains</span>(<span class="tp">self</span>, key):
+        <span class="kw">return</span> <span class="tp">self</span>.<span class="mt">get</span>(key) <span class="kw">is not None</span>
+
+    <span class="kw">def</span> <span class="mt">_rehash</span>(<span class="tp">self</span>):
+        old = <span class="tp">self</span>._buckets
+        <span class="tp">self</span>._capacity *= <span class="nm">2</span>
+        <span class="tp">self</span>._buckets = [<span class="kw">None</span>] * <span class="tp">self</span>._capacity
+        <span class="tp">self</span>._count = <span class="nm">0</span>
+        <span class="kw">for</span> bucket <span class="kw">in</span> old:
+            <span class="kw">if</span> bucket:
+                <span class="kw">for</span> k, v <span class="kw">in</span> bucket:
+                    <span class="tp">self</span>.<span class="mt">put</span>(k, v)
+
+    <span class="kw">def</span> <span class="mt">__setitem__</span>(<span class="tp">self</span>, key, value): <span class="tp">self</span>.<span class="mt">put</span>(key, value)
+    <span class="kw">def</span> <span class="mt">__getitem__</span>(<span class="tp">self</span>, key):
+        v = <span class="tp">self</span>.<span class="mt">get</span>(key)
+        <span class="kw">if</span> v <span class="kw">is None</span>: <span class="kw">raise</span> <span class="tp">KeyError</span>(key)
+        <span class="kw">return</span> v
+    <span class="kw">def</span> <span class="mt">__len__</span>(<span class="tp">self</span>): <span class="kw">return</span> <span class="tp">self</span>._count
+
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    ht = <span class="tp">HashTable</span>()
+    ht.<span class="mt">put</span>(<span class="st">"Alice"</span>, <span class="nm">92</span>)
+    ht.<span class="mt">put</span>(<span class="st">"Bob"</span>,   <span class="nm">85</span>)
+    ht[<span class="st">"Alice"</span>] = <span class="nm">95</span>   <span class="cm"># update via __setitem__</span>
+
+    <span class="mt">print</span>(ht[<span class="st">"Alice"</span>])         <span class="cm"># 95</span>
+    <span class="mt">print</span>(ht.<span class="mt">contains</span>(<span class="st">"Bob"</span>))  <span class="cm"># True</span>
+    ht.<span class="mt">remove</span>(<span class="st">"Bob"</span>)
+    <span class="mt">print</span>(<span class="mt">len</span>(ht))               <span class="cm"># 1</span>
+
+    <span class="cm"># Output:</span>
+    <span class="cm"># 95</span>
+    <span class="cm"># True</span>
+    <span class="cm"># 1</span></pre>
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Complexity Analysis</div>
+
+<table>
+    <thead>
+        <tr><th>Operation</th><th>Average Case</th><th>Worst Case</th><th>Condition for Worst</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Insert</td><td class="g">O(1)</td><td class="r">O(n)</td><td>All keys hash to same bucket</td></tr>
+        <tr><td>Lookup</td><td class="g">O(1)</td><td class="r">O(n)</td><td>All keys hash to same bucket</td></tr>
+        <tr><td>Delete</td><td class="g">O(1)</td><td class="r">O(n)</td><td>All keys hash to same bucket</td></tr>
+        <tr><td>Rehash</td><td class="o">O(n)</td><td class="r">O(n)</td><td>Always O(n) but amortized O(1) per insert</td></tr>
+        <tr><td>Space</td><td colspan="3">O(n + m) where m = capacity</td></tr>
+    </tbody>
+</table>
+
+<div class="realworld">
+    <strong>🌍 Real-World Performance:</strong> In practice, hash tables are among the fastest data structures available. Python's <code>dict</code>, .NET's <code>Dictionary&lt;T,V&gt;</code>, Java's <code>HashMap</code>, and virtually every language's standard map are hash-based. Redis — the in-memory database used by millions of services — is fundamentally a giant hash table at its core.
+</div>
+
+<hr>
+
+<!-- ═══════ SECTION 11 ═══════ -->
+<div class="section-heading">Section 11 — Check Your Understanding</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q1. Two keys A and B have the same hash code. What term describes this event, and which property of hash functions cannot prevent it?</div>
+    <div class="quiz-meta">Hint: Think about the pigeonhole principle.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">This is a <strong>collision</strong>. Because the key space is infinite (any string) and the hash code space is finite (32-bit int = ~4 billion values), collisions are mathematically unavoidable by the pigeonhole principle. Even a perfect hash function for a fixed set cannot avoid collisions for arbitrary inputs. The <strong>injectivity</strong> property is the one that cannot be guaranteed for arbitrary inputs.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q2. You have a hash table with capacity 10 and 7 elements. What is the load factor, and should you rehash?</div>
+    <div class="quiz-meta">Hint: λ = n / capacity. Default threshold = 0.75.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">λ = 7/10 = <strong>0.70</strong>. This is just below the 0.75 threshold, so <strong>no rehash yet</strong>. But adding one more element would bring λ to 0.8, triggering a rehash to capacity ~20.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q3. Why is open addressing typically faster in practice despite separate chaining being simpler to implement?</div>
+    <div class="quiz-meta">Hint: Think about memory and CPU caches.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">Open addressing stores all data in one contiguous array, so CPU cache prefetching works effectively — once you load one memory page, nearby elements are already in the cache. Separate chaining requires following pointers to heap-allocated nodes, each at random memory addresses, causing <strong>cache misses</strong> on every probe. This makes open addressing ~2–5× faster in practice at low load factors, even though the algorithm is conceptually the same O(1).</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q4. In double hashing, why must h2(key) be non-zero and coprime to the table capacity?</div>
+    <div class="quiz-meta">Hint: What happens if h2 = 2 and capacity = 8?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">If h2(key) = 2 and capacity = 8, the probe sequence visits indices: i, i+2, i+4, i+6, i+0 (wraps), i+2... — only even indices! Half the table is unreachable, and the algorithm may falsely report "table full" when there are empty slots at odd indices. By requiring h2 to be <strong>coprime to capacity</strong> (gcd = 1), we guarantee the probe sequence visits all <em>n</em> slots before repeating, ensuring complete coverage.</div>
+</div>
+
+<div class="quiz-block">
+    <div class="quiz-q">Q5. Why is GetHashCode() in C# not guaranteed to be consistent across different program runs (since .NET 4.5)?</div>
+    <div class="quiz-meta">Hint: Think about security and HashDoS attacks.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">To prevent <strong>Hash DoS (denial of service) attacks</strong>. An attacker who knows a deterministic hash function can craft a large set of strings that all hash to the same bucket, degrading a web server's Dictionary lookups from O(1) to O(n) and causing CPU exhaustion. Since .NET 4.5, a random seed is injected per-process-run, so the attacker cannot predict which strings will collide. This means you must never persist hash codes across process boundaries (e.g., don't store them in databases or files).</div>
+</div>
+
+<hr>
+
+<div class="nav-box">
+    <strong>✅ Module 8A Complete!</strong><br><br>
+    You now understand: hash functions (DJB2, FNV-1a, polynomial rolling), separate chaining vs open addressing,
+    load factor &amp; rehashing, and why hash tables achieve O(1) average time.<br><br>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="../phase4/m07g_practice.html">Module 7G — Advanced Trees Practice</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m08b_collections.html">Module 8B — Dictionary, HashSet &amp; LRU Cache</a>
+</div>
+
+<button class="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+<div class="toast" id="toast">✅ Module 8A marked complete!</div>
+    <script>var MODULE_ID = 'm08a';</script>
+    <script src="../dsa.js"></script>
+</body>
+</html>
