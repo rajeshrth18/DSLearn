@@ -2,7 +2,7 @@
 
 A self-paced, browser-based DSA course written entirely in C#. Zero setup required — open any HTML file directly in a browser or visit the live site.
 
-**Live site:** https://dslearn.wasmer.app
+**Live website:** https://dslearn.wasmer.app
 
 ---
 
