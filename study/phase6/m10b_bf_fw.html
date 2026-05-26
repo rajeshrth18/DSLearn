@@ -1,95 +1,94 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 10B � Bellman-Ford &amp; Floyd-Warshall | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 10B — Bellman-Ford &amp; Floyd-Warshall | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
-    <h1>Module 10 � Part B</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 10 — Part B</h1>
     <div class="tagline">Bellman-Ford &amp; Floyd-Warshall</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Handle negative weights, detect negative cycles, and solve all-pairs shortest paths</p>
     <div class="badges">
-        <span>? Estimated Time: 2.5 Hours</span>
-        <span>?? Intermediate�Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 10 of Phase 6</span>
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 10 of Phase 6</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 10 � Graph Algorithms:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
-    ? <strong>Part B</strong> � <em>You are here</em> � Bellman-Ford &amp; Floyd-Warshall<br>
-    ? <strong>Part C</strong> � <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
-    ? <strong>Part D</strong> � <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
-    ? <strong>Part E</strong> � <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
-    ? <strong>Part F</strong> � <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
-    ? <strong>Part G</strong> � <a href="m10g_practice.html">Practice: 12 Problems</a><br>
-    ? <strong>Part H</strong> � <a href="m10h_astar.html">A* Search Algorithm</a><br>
-    ? <strong>Part I</strong> � <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Bellman-Ford &amp; Floyd-Warshall<br>
+    ⬜ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
     <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
 </div>
 
-<!-- ------------------------------------------------------- PART 1: BELLMAN-FORD -->
-<div class="section-heading">Part 1 � Bellman-Ford Algorithm</div>
+<!-- ═══════════════════════════════════════════════════════ PART 1: BELLMAN-FORD -->
+<div class="section-heading">Part 1 — Bellman-Ford Algorithm</div>
 
 <!-- SECTION 1 -->
-<div class="section-heading">Section 1 � What is Bellman-Ford?</div>
+<div class="section-heading">Section 1 — What is Bellman-Ford?</div>
 
-<p>Dijkstra's algorithm is fast, but it breaks on graphs with negative edge weights. <strong>Bellman-Ford</strong>, developed independently by Richard Bellman (1958) and Lester Ford Jr. (1956), handles negative edges and can also <em>detect</em> negative weight cycles � cycles where the total weight is negative, making "shortest paths" undefined (you can keep looping forever to reduce cost).</p>
+<p>Dijkstra's algorithm is fast, but it breaks on graphs with negative edge weights. <strong>Bellman-Ford</strong>, developed independently by Richard Bellman (1958) and Lester Ford Jr. (1956), handles negative edges and can also <em>detect</em> negative weight cycles — cycles where the total weight is negative, making "shortest paths" undefined (you can keep looping forever to reduce cost).</p>
 
-<p>The key insight: instead of greedily picking the closest vertex like Dijkstra, Bellman-Ford takes a simpler brute-force approach � it <strong>relaxes all edges V-1 times</strong>. By the V-1th pass, the shortest path to every reachable vertex is guaranteed to be found (since the longest possible simple path in a V-vertex graph has V-1 edges).</p>
+<p>The key insight: instead of greedily picking the closest vertex like Dijkstra, Bellman-Ford takes a simpler brute-force approach — it <strong>relaxes all edges V-1 times</strong>. By the V-1th pass, the shortest path to every reachable vertex is guaranteed to be found (since the longest possible simple path in a V-vertex graph has V-1 edges).</p>
 
 <div class="tip">
-    <strong>?? Why V-1 passes?</strong> The shortest path between any two vertices in a graph with V vertices can use at most V-1 edges (otherwise it would revisit a vertex, creating a cycle � but if all cycles had positive weight, the path without the cycle would be shorter). Each relaxation pass adds one more "hop" of confidence. After k passes, we know the true shortest paths using at most k edges.
+    <strong>💡 Why V-1 passes?</strong> The shortest path between any two vertices in a graph with V vertices can use at most V-1 edges (otherwise it would revisit a vertex, creating a cycle — but if all cycles had positive weight, the path without the cycle would be shorter). Each relaxation pass adds one more "hop" of confidence. After k passes, we know the true shortest paths using at most k edges.
 </div>
 
-<div class="diagram">BELLMAN-FORD HANDLES NEGATIVE EDGES � Example
+<div class="diagram">BELLMAN-FORD HANDLES NEGATIVE EDGES — Example
 
 Graph (directed):
-  A --(6)--? B --(-3)--? D
-  �           ?            ?
+  A ──(6)──▶ B ──(-3)──▶ D
+  │           ▲            ▲
  (7)         (5)          (2)
-  ?           �            �
-  C --(8)--? E --(-4)--? A?  ? no, let's use:
+  ▼           │            │
+  C ──(8)──▶ E ──(−4)──▶ A?  ← no, let's use:
 
 Cleaner example:
   Vertices: A B C D E
   Edges:
-    A?B  6      A?E  7
-    B?C  5      B?D -4     ? NEGATIVE
-    C?B -2      ? NEGATIVE
-    D?A  2      D?C  7
-    E?B  8      E?D  9
+    A→B  6      A→E  7
+    B→C  5      B→D -4     ← NEGATIVE
+    C→B -2      ← NEGATIVE
+    D→A  2      D→C  7
+    E→B  8      E→D  9
 
-Initial: dist[A]=0, all others=8
+Initial: dist[A]=0, all others=∞
 
 Pass 1 (relax all edges once):
-  A?B: dist[B] = min(8, 0+6) = 6
-  A?E: dist[E] = min(8, 0+7) = 7
-  B?C: dist[C] = min(8, 6+5) = 11
-  B?D: dist[D] = min(8, 6+(-4)) = 2
-  D?A: dist[A] = min(0, 2+2) = 0  (no improvement, A=0 already)
-  D?C: dist[C] = min(11, 2+7) = 9
-  E?B: dist[B] = min(6, 7+8) = 6  (no improvement)
-  E?D: dist[D] = min(2, 7+9) = 2  (no improvement)
-  C?B: dist[B] = min(6, 11+(-2)) = 6? Wait: 9+(-2)=7 > 6. No improvement.
+  A→B: dist[B] = min(∞, 0+6) = 6
+  A→E: dist[E] = min(∞, 0+7) = 7
+  B→C: dist[C] = min(∞, 6+5) = 11
+  B→D: dist[D] = min(∞, 6+(−4)) = 2
+  D→A: dist[A] = min(0, 2+2) = 0  (no improvement, A=0 already)
+  D→C: dist[C] = min(11, 2+7) = 9
+  E→B: dist[B] = min(6, 7+8) = 6  (no improvement)
+  E→D: dist[D] = min(2, 7+9) = 2  (no improvement)
+  C→B: dist[B] = min(6, 11+(−2)) = 6? Wait: 9+(−2)=7 > 6. No improvement.
 
   After pass 1: A=0, B=6, C=9, D=2, E=7
 
 Pass 2:
-  C?B: dist[B] = min(6, 9+(-2)) = 7? No, 7>6. No.
-  B?D: dist[D] = min(2, 6+(-4)) = 2 (no change)
+  C→B: dist[B] = min(6, 9+(−2)) = 7? No, 7>6. No.
+  B→D: dist[D] = min(2, 6+(−4)) = 2 (no change)
   ... more relaxations, some improvements
 
 Pass 3, Pass 4 (V-1=4 total passes):
@@ -98,38 +97,38 @@ Pass 3, Pass 4 (V-1=4 total passes):
 <hr>
 
 <!-- SECTION 2 -->
-<div class="section-heading">Section 2 � Negative Cycle Detection</div>
+<div class="section-heading">Section 2 — Negative Cycle Detection</div>
 
-<p>After V-1 passes, if we do <strong>one more (Vth) pass</strong> and any distance can still be reduced, the graph contains a <strong>negative weight cycle</strong>. In such a graph, shortest paths are undefined � you can loop the cycle infinitely to decrease cost forever.</p>
+<p>After V-1 passes, if we do <strong>one more (Vth) pass</strong> and any distance can still be reduced, the graph contains a <strong>negative weight cycle</strong>. In such a graph, shortest paths are undefined — you can loop the cycle infinitely to decrease cost forever.</p>
 
-<div class="diagram">NEGATIVE CYCLE DETECTION � Extra Pass
+<div class="diagram">NEGATIVE CYCLE DETECTION — Extra Pass
 
-Graph:  A?B(1), B?C(2), C?A(-10)
-Cycle: A?B?C?A, weight = 1+2+(-10) = -7  ? NEGATIVE CYCLE!
+Graph:  A→B(1), B→C(2), C→A(−10)
+Cycle: A→B→C→A, weight = 1+2+(−10) = −7  ← NEGATIVE CYCLE!
 
 After V-1 passes, distances have been stabilized (for a non-negative-cycle graph).
 Doing pass V:
-  A?B: can dist[B] be reduced? B = A + 1.
-  C?A: can dist[A] be reduced? Yes! dist[A] = dist[C] + (-10) = smaller value.
+  A→B: can dist[B] be reduced? B = A + 1.
+  C→A: can dist[A] be reduced? Yes! dist[A] = dist[C] + (−10) = smaller value.
   
-  If any dist[v] changes in the Vth pass ? NEGATIVE CYCLE DETECTED.
+  If any dist[v] changes in the Vth pass → NEGATIVE CYCLE DETECTED.
 
-This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles at all.</div>
+This is Bellman-Ford's killer feature — Dijkstra cannot detect negative cycles at all.</div>
 
 <hr>
 
 <!-- SECTION 3 -->
-<div class="section-heading">Section 3 � C# Implementation</div>
+<div class="section-heading">Section 3 — C# Implementation</div>
 
-<span class="lang-label lang-cs">C# � Bellman-Ford with Negative Cycle Detection</span>
+<span class="lang-label lang-cs">C# — Bellman-Ford with Negative Cycle Detection</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
 <span class="kw">public class</span> <span class="tp">BellmanFord</span>
 {
-    <span class="cm">// Edge list representation � (from, to, weight)</span>
+    <span class="cm">// Edge list representation — (from, to, weight)</span>
     <span class="kw">private readonly</span> <span class="tp">List</span>&lt;(<span class="kw">int</span> u, <span class="kw">int</span> v, <span class="kw">int</span> w)&gt; edges = <span class="kw">new</span>();
     <span class="kw">private readonly int</span> n;  <span class="cm">// number of vertices</span>
 
@@ -137,7 +136,7 @@ This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles a
 
     <span class="kw">public void</span> <span class="mt">AddEdge</span>(<span class="kw">int</span> u, <span class="kw">int</span> v, <span class="kw">int</span> w) => edges.<span class="mt">Add</span>((u, v, w));
 
-    <span class="cm">// --- Run Bellman-Ford --------------------------------------------</span>
+    <span class="cm">// ─── Run Bellman-Ford ────────────────────────────────────────────</span>
     <span class="cm">// Returns (dist array, hasNegativeCycle)</span>
     <span class="cm">// dist[v] = shortest distance from source to v</span>
     <span class="cm">// dist[v] = int.MinValue means v is on or reachable from a negative cycle</span>
@@ -148,7 +147,7 @@ This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles a
         <span class="tp">Array</span>.<span class="mt">Fill</span>(dist, INF);
         dist[source] = <span class="nm">0</span>;
 
-        <span class="cm">// -- Phase 1: Relax all edges V-1 times --</span>
+        <span class="cm">// ── Phase 1: Relax all edges V-1 times ──</span>
         <span class="kw">for</span> (<span class="kw">int</span> pass = <span class="nm">0</span>; pass &lt; n - <span class="nm">1</span>; pass++)
         {
             <span class="kw">bool</span> updated = <span class="kw">false</span>;
@@ -161,10 +160,10 @@ This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles a
                     updated = <span class="kw">true</span>;
                 }
             }
-            <span class="kw">if</span> (!updated) <span class="kw">break</span>;  <span class="cm">// early exit � no more relaxations possible</span>
+            <span class="kw">if</span> (!updated) <span class="kw">break</span>;  <span class="cm">// early exit — no more relaxations possible</span>
         }
 
-        <span class="cm">// -- Phase 2: Check for negative cycles (Vth pass) --</span>
+        <span class="cm">// ── Phase 2: Check for negative cycles (Vth pass) ──</span>
         <span class="kw">bool</span> hasNegCycle = <span class="kw">false</span>;
         <span class="kw">foreach</span> (<span class="kw">var</span> (u, v, w) <span class="kw">in</span> edges)
         {
@@ -178,7 +177,7 @@ This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles a
         <span class="kw">return</span> (dist, hasNegCycle);
     }
 
-    <span class="cm">// --- Path Reconstruction ----------------------------------------</span>
+    <span class="cm">// ─── Path Reconstruction ────────────────────────────────────────</span>
     <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">GetPath</span>(<span class="kw">int</span> source, <span class="kw">int</span> target)
     {
         <span class="kw">const int</span> INF = <span class="kw">int</span>.MaxValue / <span class="nm">2</span>;
@@ -212,15 +211,15 @@ This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles a
         <span class="kw">var</span> (dist, hasCycle) = bf.<span class="mt">Run</span>(<span class="nm">0</span>);
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Negative cycle: {hasCycle}"</span>);  <span class="cm">// False</span>
         <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; dist.Length; i++)
-            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"0?{i}: {dist[i]}"</span>);
-        <span class="cm">// 0?0:0  0?1:2  0?2:4  0?3:-2  0?4:2  (CLRS example)</span>
+            <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"0→{i}: {dist[i]}"</span>);
+        <span class="cm">// 0→0:0  0→1:2  0→2:4  0→3:-2  0→4:2  (CLRS example)</span>
     }
 }</pre>
 </div>
 
-<span class="lang-label lang-py">Python � Bellman-Ford</span>
+<span class="lang-label lang-py">Python — Bellman-Ford</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> typing <span class="kw">import</span> List, Tuple
 
 <span class="kw">class</span> <span class="tp">BellmanFord</span>:
@@ -265,74 +264,74 @@ This is Bellman-Ford's killer feature � Dijkstra cannot detect negative cycles a
     dist, neg = bf.<span class="mt">run</span>(<span class="nm">0</span>)
     <span class="mt">print</span>(<span class="st">f"Negative cycle: {neg}"</span>)   <span class="cm"># False</span>
     <span class="kw">for</span> i, d <span class="kw">in</span> <span class="mt">enumerate</span>(dist):
-        <span class="mt">print</span>(<span class="st">f"0?{i}: {d}"</span>)
-    <span class="cm"># 0?0:0  0?1:2  0?2:4  0?3:-2  0?4:2</span></pre>
+        <span class="mt">print</span>(<span class="st">f"0→{i}: {d}"</span>)
+    <span class="cm"># 0→0:0  0→1:2  0→2:4  0→3:-2  0→4:2</span></pre>
 </div>
 
-<h3>3.1 � Complexity</h3>
+<h3>3.1 — Complexity</h3>
 <table>
     <thead>
         <tr><th>Phase</th><th>Operations</th><th>Time</th></tr>
     </thead>
     <tbody>
-        <tr><td>V-1 relaxation passes</td><td>(V-1) passes � E edge relaxations per pass</td><td class="o">O(V � E)</td></tr>
-        <tr><td>Negative cycle detection pass</td><td>1 pass � E edges</td><td>O(E)</td></tr>
-        <tr><td><strong>Total</strong></td><td></td><td class="o"><strong>O(V � E)</strong></td></tr>
+        <tr><td>V-1 relaxation passes</td><td>(V-1) passes × E edge relaxations per pass</td><td class="o">O(V × E)</td></tr>
+        <tr><td>Negative cycle detection pass</td><td>1 pass × E edges</td><td>O(E)</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td class="o"><strong>O(V × E)</strong></td></tr>
         <tr><td>Space</td><td>Edge list + distance array</td><td class="g">O(V + E)</td></tr>
     </tbody>
 </table>
-<p>Bellman-Ford is slower than Dijkstra (O(V�E) vs O((V+E)logV)) but handles any graph without negative cycles.</p>
+<p>Bellman-Ford is slower than Dijkstra (O(V×E) vs O((V+E)logV)) but handles any graph without negative cycles.</p>
 
 <hr>
 
-<!-- ------------------------------------------------------- PART 2: FLOYD-WARSHALL -->
-<div class="section-heading">Part 2 � Floyd-Warshall Algorithm</div>
+<!-- ═══════════════════════════════════════════════════════ PART 2: FLOYD-WARSHALL -->
+<div class="section-heading">Part 2 — Floyd-Warshall Algorithm</div>
 
 <!-- SECTION 4 -->
-<div class="section-heading">Section 4 � What is Floyd-Warshall?</div>
+<div class="section-heading">Section 4 — What is Floyd-Warshall?</div>
 
-<p>Both Dijkstra and Bellman-Ford are <em>single-source</em> shortest path algorithms: they find shortest distances from one source to all other vertices. But what if you need the shortest distance between <strong>every pair</strong> of vertices? Running Dijkstra V times gives O(V � (V+E)logV) � acceptable for sparse graphs, but there's a cleaner alternative.</p>
+<p>Both Dijkstra and Bellman-Ford are <em>single-source</em> shortest path algorithms: they find shortest distances from one source to all other vertices. But what if you need the shortest distance between <strong>every pair</strong> of vertices? Running Dijkstra V times gives O(V × (V+E)logV) — acceptable for sparse graphs, but there's a cleaner alternative.</p>
 
-<p><strong>Floyd-Warshall</strong> (Robert Floyd 1962, Stephen Warshall 1962) solves all-pairs shortest paths in O(V�) with a beautifully simple dynamic programming approach. It works on graphs with negative edges (but not negative cycles) and is often the simplest implementation for dense graphs.</p>
+<p><strong>Floyd-Warshall</strong> (Robert Floyd 1962, Stephen Warshall 1962) solves all-pairs shortest paths in O(V³) with a beautifully simple dynamic programming approach. It works on graphs with negative edges (but not negative cycles) and is often the simplest implementation for dense graphs.</p>
 
 <div class="tip">
-    <strong>?? The DP Intuition:</strong> Define <code>dist[i][j]</code> = shortest distance from i to j using only vertices {0, 1, ..., k} as intermediate nodes. The recurrence is: <code>dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</code> � "is going through vertex k shorter than the current best?"  Iterate k from 0 to V-1, updating the matrix. After all V iterations, <code>dist[i][j]</code> = true shortest path.
+    <strong>💡 The DP Intuition:</strong> Define <code>dist[i][j]</code> = shortest distance from i to j using only vertices {0, 1, ..., k} as intermediate nodes. The recurrence is: <code>dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</code> — "is going through vertex k shorter than the current best?"  Iterate k from 0 to V-1, updating the matrix. After all V iterations, <code>dist[i][j]</code> = true shortest path.
 </div>
 
-<h3>4.1 � Step-by-Step Walkthrough</h3>
-<div class="diagram">FLOYD-WARSHALL EXAMPLE � 4 vertices (0,1,2,3)
+<h3>4.1 — Step-by-Step Walkthrough</h3>
+<div class="diagram">FLOYD-WARSHALL EXAMPLE — 4 vertices (0,1,2,3)
 
-Edges:  0?1(3), 0?3(7), 1?0(8), 1?2(2), 2?0(5), 2?3(1), 3?0(2)
+Edges:  0→1(3), 0→3(7), 1→0(8), 1→2(2), 2→0(5), 2→3(1), 3→0(2)
 
-INITIAL distance matrix (8 = no direct edge, 0 = same vertex):
+INITIAL distance matrix (∞ = no direct edge, 0 = same vertex):
 
        0    1    2    3
-  0  [ 0    3    8    7  ]
-  1  [ 8    0    2    8  ]
-  2  [ 5    8    0    1  ]
-  3  [ 2    8    8    0  ]
+  0  [ 0    3    ∞    7  ]
+  1  [ 8    0    2    ∞  ]
+  2  [ 5    ∞    0    1  ]
+  3  [ 2    ∞    ∞    0  ]
 
 ITERATION k=0 (try using vertex 0 as intermediate):
   For each i,j: dist[i][j] = min(dist[i][j], dist[i][0] + dist[0][j])
   
-  dist[1][3] = min(8, dist[1][0]+dist[0][3]) = min(8, 8+7) = 15
-  dist[2][1] = min(8, dist[2][0]+dist[0][1]) = min(8, 5+3) = 8
+  dist[1][3] = min(∞, dist[1][0]+dist[0][3]) = min(∞, 8+7) = 15
+  dist[2][1] = min(∞, dist[2][0]+dist[0][1]) = min(∞, 5+3) = 8
   dist[2][3] = min(1,  dist[2][0]+dist[0][3]) = min(1, 5+7) = 1  (no change)
-  dist[3][1] = min(8, dist[3][0]+dist[0][1]) = min(8, 2+3) = 5
-  dist[3][2] = min(8, dist[3][0]+dist[0][2]) = min(8, 2+8) = 8  (no change)
+  dist[3][1] = min(∞, dist[3][0]+dist[0][1]) = min(∞, 2+3) = 5
+  dist[3][2] = min(∞, dist[3][0]+dist[0][2]) = min(∞, 2+∞) = ∞  (no change)
 
 After k=0:
        0    1    2    3
-  0  [ 0    3    8    7  ]
-  1  [ 8    0    2   15  ]  ? updated
-  2  [ 5    8    0    1  ]  ? updated
-  3  [ 2    5    8    0  ]  ? updated
+  0  [ 0    3    ∞    7  ]
+  1  [ 8    0    2   15  ]  ← updated
+  2  [ 5    8    0    1  ]  ← updated
+  3  [ 2    5    ∞    0  ]  ← updated
 
 ITERATION k=1 (try using vertex 1 as intermediate):
-  dist[0][2] = min(8, dist[0][1]+dist[1][2]) = min(8, 3+2) = 5
+  dist[0][2] = min(∞, dist[0][1]+dist[1][2]) = min(∞, 3+2) = 5
   dist[0][3] = min(7, dist[0][1]+dist[1][3]) = min(7, 3+15) = 7  (no change)
   dist[2][0] = min(5, dist[2][1]+dist[1][0]) = min(5, 8+8) = 5  (no change)
-  dist[3][2] = min(8, dist[3][1]+dist[1][2]) = min(8, 5+2) = 7
+  dist[3][2] = min(∞, dist[3][1]+dist[1][2]) = min(∞, 5+2) = 7
 
 ITERATION k=2, k=3 ... (continue updating)
 
@@ -343,22 +342,22 @@ FINAL matrix after all 4 iterations:
   2  [ 3    6    0    1  ]
   3  [ 2    5    7    0  ]
 
-Example: 0?3 shortest path = 6 (0?1?2?3: 3+2+1=6, better than direct 0?3=7)</div>
+Example: 0→3 shortest path = 6 (0→1→2→3: 3+2+1=6, better than direct 0→3=7)</div>
 
 <hr>
 
 <!-- SECTION 5 -->
-<div class="section-heading">Section 5 � C# Implementation</div>
+<div class="section-heading">Section 5 — C# Implementation</div>
 
-<span class="lang-label lang-cs">C# � Floyd-Warshall with Path Reconstruction</span>
+<span class="lang-label lang-cs">C# — Floyd-Warshall with Path Reconstruction</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 
 <span class="kw">public class</span> <span class="tp">FloydWarshall</span>
 {
     <span class="kw">private readonly int</span> n;
-    <span class="kw">private readonly int</span>[,] dist;    <span class="cm">// dist[i,j] = shortest distance i?j</span>
+    <span class="kw">private readonly int</span>[,] dist;    <span class="cm">// dist[i,j] = shortest distance i→j</span>
     <span class="kw">private readonly int</span>[,] next;    <span class="cm">// next[i,j] = next hop from i on path to j</span>
     <span class="kw">private const int</span> INF = <span class="nm">1_000_000_000</span>;  <span class="cm">// use large but not MaxValue (overflow risk)</span>
 
@@ -434,16 +433,16 @@ Example: 0?3 shortest path = 6 (0?1?2?3: 3+2+1=6, better than direct 0?3=7)</div
         fw.<span class="mt">AddEdge</span>(<span class="nm">3</span>,<span class="nm">0</span>,<span class="nm">2</span>);
         fw.<span class="mt">Compute</span>();
 
-        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(fw.<span class="mt">Distance</span>(<span class="nm">0</span>, <span class="nm">3</span>));           <span class="cm">// 6  (0?1?2?3)</span>
-        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">"?"</span>, fw.<span class="mt">GetPath</span>(<span class="nm">0</span>, <span class="nm">3</span>)));  <span class="cm">// 0?1?2?3</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(fw.<span class="mt">Distance</span>(<span class="nm">0</span>, <span class="nm">3</span>));           <span class="cm">// 6  (0→1→2→3)</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">"→"</span>, fw.<span class="mt">GetPath</span>(<span class="nm">0</span>, <span class="nm">3</span>)));  <span class="cm">// 0→1→2→3</span>
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(fw.<span class="mt">HasNegativeCycle</span>());          <span class="cm">// False</span>
     }
 }</pre>
 </div>
 
-<span class="lang-label lang-py">Python � Floyd-Warshall</span>
+<span class="lang-label lang-py">Python — Floyd-Warshall</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> typing <span class="kw">import</span> List, Optional
 
 <span class="kw">class</span> <span class="tp">FloydWarshall</span>:
@@ -499,19 +498,19 @@ Example: 0?3 shortest path = 6 (0?1?2?3: 3+2+1=6, better than direct 0?3=7)</div
 <hr>
 
 <!-- SECTION 6 -->
-<div class="section-heading">Section 6 � Algorithm Comparison</div>
+<div class="section-heading">Section 6 — Algorithm Comparison</div>
 
 <table>
     <thead>
         <tr><th>Feature</th><th>Dijkstra</th><th>Bellman-Ford</th><th>Floyd-Warshall</th></tr>
     </thead>
     <tbody>
-        <tr><td>Negative edge weights</td><td class="r">? No</td><td class="g">? Yes</td><td class="g">? Yes</td></tr>
-        <tr><td>Negative cycle detection</td><td class="r">? No</td><td class="g">? Yes</td><td class="g">? Yes (check diagonal)</td></tr>
-        <tr><td>Single-source</td><td class="g">? Yes</td><td class="g">? Yes</td><td class="o">All-pairs only</td></tr>
-        <tr><td>All-pairs</td><td class="o">Run V times: O(VE logV)</td><td class="o">Run V times: O(V�E)</td><td class="g">One run: O(V�)</td></tr>
-        <tr><td>Time complexity</td><td class="g">O((V+E) log V)</td><td class="o">O(V � E)</td><td class="o">O(V�)</td></tr>
-        <tr><td>Space</td><td>O(V + E)</td><td>O(V + E)</td><td class="r">O(V�)</td></tr>
+        <tr><td>Negative edge weights</td><td class="r">✗ No</td><td class="g">✓ Yes</td><td class="g">✓ Yes</td></tr>
+        <tr><td>Negative cycle detection</td><td class="r">✗ No</td><td class="g">✓ Yes</td><td class="g">✓ Yes (check diagonal)</td></tr>
+        <tr><td>Single-source</td><td class="g">✓ Yes</td><td class="g">✓ Yes</td><td class="o">All-pairs only</td></tr>
+        <tr><td>All-pairs</td><td class="o">Run V times: O(VE logV)</td><td class="o">Run V times: O(V²E)</td><td class="g">One run: O(V³)</td></tr>
+        <tr><td>Time complexity</td><td class="g">O((V+E) log V)</td><td class="o">O(V × E)</td><td class="o">O(V³)</td></tr>
+        <tr><td>Space</td><td>O(V + E)</td><td>O(V + E)</td><td class="r">O(V²)</td></tr>
         <tr><td>Dense graph</td><td class="o">Slower</td><td class="o">Medium</td><td class="g">Simplest code</td></tr>
         <tr><td>Sparse graph</td><td class="g">Fastest</td><td class="o">Medium</td><td class="r">Wasteful</td></tr>
         <tr><td>Implementation complexity</td><td>Medium</td><td class="g">Simple</td><td class="g">Very simple</td></tr>
@@ -521,96 +520,96 @@ Example: 0?3 shortest path = 6 (0?1?2?3: 3+2+1=6, better than direct 0?3=7)</div
 <hr>
 
 <!-- SECTION 7 -->
-<div class="section-heading">Section 7 � Real-World Applications</div>
+<div class="section-heading">Section 7 — Real-World Applications</div>
 
 <div class="realworld">
-    <strong>?? Bellman-Ford � Distance Vector Routing (RIP Protocol)</strong><br>
-    The Routing Information Protocol (RIP), one of the oldest internet routing protocols, uses a distributed version of Bellman-Ford. Each router knows the cost to its direct neighbors and exchanges distance vectors with neighbors iteratively. Bellman-Ford's ability to handle cost changes (including "negative" in the sense of cost decreases) makes it suitable. However, it's slow to converge � modern networks prefer OSPF (Dijkstra-based). The "count to infinity" problem in RIP is essentially Bellman-Ford's convergence on negative feedback.
+    <strong>🌍 Bellman-Ford — Distance Vector Routing (RIP Protocol)</strong><br>
+    The Routing Information Protocol (RIP), one of the oldest internet routing protocols, uses a distributed version of Bellman-Ford. Each router knows the cost to its direct neighbors and exchanges distance vectors with neighbors iteratively. Bellman-Ford's ability to handle cost changes (including "negative" in the sense of cost decreases) makes it suitable. However, it's slow to converge — modern networks prefer OSPF (Dijkstra-based). The "count to infinity" problem in RIP is essentially Bellman-Ford's convergence on negative feedback.
 </div>
 
 <div class="realworld">
-    <strong>?? Bellman-Ford � Arbitrage Detection in Finance</strong><br>
-    In currency exchange, if you can convert USD?EUR?GBP?USD and end up with more USD than you started, that's arbitrage. Model it as a graph: currencies = vertices, exchange rates = edges with weight = -log(rate). A negative cycle in this graph = arbitrage opportunity! Bellman-Ford is specifically used by financial systems to detect (and exploit) these cycles. Banks and hedge funds run this constantly on real-time exchange rate data.
+    <strong>🌍 Bellman-Ford — Arbitrage Detection in Finance</strong><br>
+    In currency exchange, if you can convert USD→EUR→GBP→USD and end up with more USD than you started, that's arbitrage. Model it as a graph: currencies = vertices, exchange rates = edges with weight = -log(rate). A negative cycle in this graph = arbitrage opportunity! Bellman-Ford is specifically used by financial systems to detect (and exploit) these cycles. Banks and hedge funds run this constantly on real-time exchange rate data.
 </div>
 
 <div class="realworld">
-    <strong>?? Floyd-Warshall � Network Analysis (All-Pairs Connectivity)</strong><br>
+    <strong>🌍 Floyd-Warshall — Network Analysis (All-Pairs Connectivity)</strong><br>
     Floyd-Warshall is used to compute the <em>transitive closure</em> of a graph (which vertices can reach which others) and to find network diameter (maximum shortest path). Applications include: social network analysis (degrees of separation for all user pairs), transportation hub analysis (which airports have good connectivity to all others), and database query optimization (finding all transitive dependencies).
 </div>
 
 <hr>
 
 <!-- SECTION 8 -->
-<div class="section-heading">Section 8 � Common Mistakes</div>
+<div class="section-heading">Section 8 — Common Mistakes</div>
 
 <div class="warning">
-    <strong>?? Floyd-Warshall: Wrong loop order � k must be the OUTER loop:</strong> The three loops must be ordered k (intermediate) ? i (source) ? j (destination). If you put k as the inner loop, the algorithm produces incorrect results because you'd be using partially-updated values for intermediate vertices that haven't been considered yet.
+    <strong>⚠️ Floyd-Warshall: Wrong loop order — k must be the OUTER loop:</strong> The three loops must be ordered k (intermediate) → i (source) → j (destination). If you put k as the inner loop, the algorithm produces incorrect results because you'd be using partially-updated values for intermediate vertices that haven't been considered yet.
 </div>
 
 <div class="warning">
-    <strong>?? Bellman-Ford: Not handling unreachable vertices:</strong> When <code>dist[u] = INF</code>, the expression <code>dist[u] + w</code> can overflow in languages with fixed-size integers. Always guard with <code>if (dist[u] == INF) continue;</code> before relaxing. In Python, <code>float('inf') + any_number</code> is still <code>inf</code>, so this is less of an issue.
+    <strong>⚠️ Bellman-Ford: Not handling unreachable vertices:</strong> When <code>dist[u] = INF</code>, the expression <code>dist[u] + w</code> can overflow in languages with fixed-size integers. Always guard with <code>if (dist[u] == INF) continue;</code> before relaxing. In Python, <code>float('inf') + any_number</code> is still <code>inf</code>, so this is less of an issue.
 </div>
 
 <div class="warning">
-    <strong>?? Floyd-Warshall O(V�) space � not suitable for large sparse graphs:</strong> A graph with 100,000 vertices would require a 100,000 � 100,000 matrix � 40 billion bytes! For large sparse graphs, always use Dijkstra (or Bellman-Ford) per source vertex instead.
+    <strong>⚠️ Floyd-Warshall O(V²) space — not suitable for large sparse graphs:</strong> A graph with 100,000 vertices would require a 100,000 × 100,000 matrix — 40 billion bytes! For large sparse graphs, always use Dijkstra (or Bellman-Ford) per source vertex instead.
 </div>
 
 <div class="warning">
-    <strong>?? Bellman-Ford early termination � don't skip the negative cycle check:</strong> Even if you add the early-exit optimization (stop when no relaxations happen in a pass), you must still perform the separate Vth-pass negative cycle check. The early exit only skips unnecessary passes when the graph has no negative cycles � it does not detect them.
+    <strong>⚠️ Bellman-Ford early termination — don't skip the negative cycle check:</strong> Even if you add the early-exit optimization (stop when no relaxations happen in a pass), you must still perform the separate Vth-pass negative cycle check. The early exit only skips unnecessary passes when the graph has no negative cycles — it does not detect them.
 </div>
 
 <hr>
 
 <!-- SECTION 9: CHECK YOUR UNDERSTANDING -->
-<div class="section-heading">Section 9 � Check Your Understanding</div>
+<div class="section-heading">Section 9 — Check Your Understanding</div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q1 � Bellman-Ford runs V-1 relaxation passes. Why exactly V-1 and not V or V+1?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="quiz-q">Q1 — Bellman-Ford runs V-1 relaxation passes. Why exactly V-1 and not V or V+1?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer:</strong> In a graph with V vertices, the longest possible simple path (a path that doesn't revisit any vertex) has at most V-1 edges. After k relaxation passes, Bellman-Ford guarantees that all shortest paths using at most k edges have been found. Therefore, after V-1 passes, all shortest paths are finalized � no simple path can be longer. Running more passes would only be needed to detect negative cycles (the Vth pass does this). Running fewer passes might miss paths with many hops.</div>
-        <div class="complexity"><strong>Key insight:</strong> If a shortest path requires more than V-1 edges, it must revisit a vertex � forming a cycle. If that cycle has positive weight, removing it gives a shorter path. If it has zero weight, the path is equivalent. Only negative-weight cycles could "help" � but those make shortest paths undefined.</div>
+        <div class="approach"><strong>Answer:</strong> In a graph with V vertices, the longest possible simple path (a path that doesn't revisit any vertex) has at most V-1 edges. After k relaxation passes, Bellman-Ford guarantees that all shortest paths using at most k edges have been found. Therefore, after V-1 passes, all shortest paths are finalized — no simple path can be longer. Running more passes would only be needed to detect negative cycles (the Vth pass does this). Running fewer passes might miss paths with many hops.</div>
+        <div class="complexity"><strong>Key insight:</strong> If a shortest path requires more than V-1 edges, it must revisit a vertex — forming a cycle. If that cycle has positive weight, removing it gives a shorter path. If it has zero weight, the path is equivalent. Only negative-weight cycles could "help" — but those make shortest paths undefined.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q2 � In Floyd-Warshall, why do we check <code>dist[i][i] &lt; 0</code> after running to detect negative cycles?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="quiz-q">Q2 — In Floyd-Warshall, why do we check <code>dist[i][i] &lt; 0</code> after running to detect negative cycles?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Answer:</strong> <code>dist[i][i]</code> represents the shortest cycle starting and ending at vertex i. Initially, <code>dist[i][i] = 0</code> (trivial zero-length cycle). After Floyd-Warshall runs, if a negative-weight cycle exists that passes through vertex i, then going around that cycle and returning to i gives a negative total cost � setting <code>dist[i][i] &lt; 0</code>. Any vertex on a negative cycle will have a negative self-distance, making this check reliable.</div>
-        <div class="complexity"><strong>Implication:</strong> If <code>dist[i][j]</code> is computed using a path that goes through a negative cycle, that distance is meaningless (could be -8). So always check for negative cycles before trusting Floyd-Warshall's output.</div>
+        <div class="approach"><strong>Answer:</strong> <code>dist[i][i]</code> represents the shortest cycle starting and ending at vertex i. Initially, <code>dist[i][i] = 0</code> (trivial zero-length cycle). After Floyd-Warshall runs, if a negative-weight cycle exists that passes through vertex i, then going around that cycle and returning to i gives a negative total cost — setting <code>dist[i][i] &lt; 0</code>. Any vertex on a negative cycle will have a negative self-distance, making this check reliable.</div>
+        <div class="complexity"><strong>Implication:</strong> If <code>dist[i][j]</code> is computed using a path that goes through a negative cycle, that distance is meaningless (could be -∞). So always check for negative cycles before trusting Floyd-Warshall's output.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q3 � When would you choose Bellman-Ford over Floyd-Warshall for all-pairs shortest paths?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="quiz-q">Q3 — When would you choose Bellman-Ford over Floyd-Warshall for all-pairs shortest paths?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>When the graph is sparse.</strong> Floyd-Warshall always runs in O(V�) and requires O(V�) space regardless of how many edges exist. For a sparse graph with E � V�, running Bellman-Ford V times gives O(V� � E) � O(V�) time and O(V + E) space � much better. For example, a road network with V=10,000 cities and E=50,000 roads: Floyd-Warshall = 10,000� = 10�� operations, matrix size = 10,000� � 4 bytes = 400MB. Running Bellman-Ford V times = 10,000 � 10,000 � 50,000 = 5�10�� � actually worse here! Better: use Dijkstra V times (no negative edges in road networks).</div>
-        <div class="complexity"><strong>Rule of thumb:</strong> Floyd-Warshall wins for dense graphs with V = 500 and when you need all-pairs. For larger graphs, run Dijkstra (or Bellman-Ford if negative edges) from each source.</div>
+        <div class="approach"><strong>When the graph is sparse.</strong> Floyd-Warshall always runs in O(V³) and requires O(V²) space regardless of how many edges exist. For a sparse graph with E ≪ V², running Bellman-Ford V times gives O(V² × E) ≪ O(V³) time and O(V + E) space — much better. For example, a road network with V=10,000 cities and E=50,000 roads: Floyd-Warshall = 10,000³ = 10¹² operations, matrix size = 10,000² × 4 bytes = 400MB. Running Bellman-Ford V times = 10,000 × 10,000 × 50,000 = 5×10¹² — actually worse here! Better: use Dijkstra V times (no negative edges in road networks).</div>
+        <div class="complexity"><strong>Rule of thumb:</strong> Floyd-Warshall wins for dense graphs with V ≤ 500 and when you need all-pairs. For larger graphs, run Dijkstra (or Bellman-Ford if negative edges) from each source.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q4 � A graph has exchange rates: USD?EUR: 0.85, EUR?GBP: 0.78, GBP?USD: 1.52. Is there an arbitrage opportunity? How would you detect it with Bellman-Ford?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="quiz-q">Q4 — A graph has exchange rates: USD→EUR: 0.85, EUR→GBP: 0.78, GBP→USD: 1.52. Is there an arbitrage opportunity? How would you detect it with Bellman-Ford?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Check: 1 USD ? 0.85 EUR ? 0.663 GBP ? 1.008 USD.</strong> Yes! You end with 1.008 USD � a 0.8% profit per cycle. This is arbitrage. To detect with Bellman-Ford: transform edge weights using w_new = -log(rate). A negative cycle in this transformed graph = a cycle where the product of exchange rates > 1 = arbitrage. The negative sum of -log(rates) corresponds to log(product of rates) > 0, i.e., product > 1. Run Bellman-Ford and check for a negative cycle using the Vth relaxation pass.</div>
-        <div class="complexity"><strong>Transformation:</strong> Edge A?B with rate r gets weight -log(r). Bellman-Ford finds the "shortest" path, which corresponds to the most profitable exchange sequence. Negative cycle = arbitrage.</div>
+        <div class="approach"><strong>Check: 1 USD → 0.85 EUR → 0.663 GBP → 1.008 USD.</strong> Yes! You end with 1.008 USD — a 0.8% profit per cycle. This is arbitrage. To detect with Bellman-Ford: transform edge weights using w_new = -log(rate). A negative cycle in this transformed graph = a cycle where the product of exchange rates > 1 = arbitrage. The negative sum of -log(rates) corresponds to log(product of rates) > 0, i.e., product > 1. Run Bellman-Ford and check for a negative cycle using the Vth relaxation pass.</div>
+        <div class="complexity"><strong>Transformation:</strong> Edge A→B with rate r gets weight -log(r). Bellman-Ford finds the "shortest" path, which corresponds to the most profitable exchange sequence. Negative cycle = arbitrage.</div>
     </div>
 </div>
 
 <div class="quiz-card">
-    <div class="quiz-q">Q5 � What is the "count-to-infinity" problem in distributed Bellman-Ford routing, and how is it mitigated?</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="quiz-q">Q5 — What is the "count-to-infinity" problem in distributed Bellman-Ford routing, and how is it mitigated?</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>The problem:</strong> In distributed routing (like RIP), when a link fails, the cost to an unreachable destination slowly counts up by 1 each round as routers update each other with outdated information. For example, if A?B fails, B tells C "I can reach A with cost 8", but C tells B "I can reach A with cost 2" (through B itself � a loop!), so B updates to cost 3, then C to 4, then B to 5... counting up to infinity. This wastes time and bandwidth before routers realize the route is gone. <strong>Mitigations:</strong> (1) Split Horizon: don't advertise a route back to the neighbor you learned it from. (2) Poison Reverse: advertise the route back but with infinite cost. (3) Maximum hop count: RIP uses 15 as infinity, treating any cost = 16 as unreachable. (4) Use OSPF (Dijkstra-based) instead, which converges faster.</div>
-        <div class="complexity"><strong>Root cause:</strong> Distributed Bellman-Ford has no global view � nodes only know their neighbors' distances, which can create routing loops during failures before convergence.</div>
+        <div class="approach"><strong>The problem:</strong> In distributed routing (like RIP), when a link fails, the cost to an unreachable destination slowly counts up by 1 each round as routers update each other with outdated information. For example, if A→B fails, B tells C "I can reach A with cost ∞", but C tells B "I can reach A with cost 2" (through B itself — a loop!), so B updates to cost 3, then C to 4, then B to 5... counting up to infinity. This wastes time and bandwidth before routers realize the route is gone. <strong>Mitigations:</strong> (1) Split Horizon: don't advertise a route back to the neighbor you learned it from. (2) Poison Reverse: advertise the route back but with infinite cost. (3) Maximum hop count: RIP uses 15 as infinity, treating any cost ≥ 16 as unreachable. (4) Use OSPF (Dijkstra-based) instead, which converges faster.</div>
+        <div class="complexity"><strong>Root cause:</strong> Distributed Bellman-Ford has no global view — nodes only know their neighbors' distances, which can create routing loops during failures before convergence.</div>
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 10B Complete</button>
-<div class="toast" id="toast">? Module 10B marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10B Complete</button>
+<div class="toast" id="toast">✅ Module 10B marked complete!</div>
     <script>var MODULE_ID = 'm10b';</script>
     <script src="../dsa.js"></script>
 </body>

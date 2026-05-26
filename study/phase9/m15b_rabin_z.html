@@ -1,57 +1,56 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 15B � Rabin-Karp &amp; Z-Algorithm | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 15B — Rabin-Karp &amp; Z-Algorithm | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 15 � Part B</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part B</h1>
     <div class="tagline">Rabin-Karp &amp; Z-Algorithm</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Rolling hashes � Z-array prefix matching � Multiple pattern search</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Rolling hashes · Z-array prefix matching · Multiple pattern search</p>
     <div class="badges">
-        <span>? Estimated: 1.5 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 15 of 17</span>
+        <span>⏱ Estimated: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 15 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 15 � String Algorithms:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m15a_kmp.html">KMP Algorithm</a><br>
-    ? <strong>Part B</strong> � <em>You are here</em> � Rabin-Karp &amp; Z-Algorithm<br>
-    ? <strong>Part C</strong> � <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
-    ? <strong>Part D</strong> � <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
-    ? <strong>Part E</strong> � <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Rabin-Karp &amp; Z-Algorithm<br>
+    ⬜ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
     <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � Rabin-Karp: Rolling Hash</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Rabin-Karp: Rolling Hash</div>
 
 <p><strong>Rabin-Karp</strong> uses hashing to speed up pattern matching. Instead of comparing characters
 one by one, it computes a hash of the pattern and slides a <em>rolling window</em> of the same length
 across the text, comparing hashes. Only when hashes match do we verify character-by-character.</p>
 
-<div class="diagram">ROLLING HASH � Text: "abcabc", Pattern: "cab" (m=3)
+<div class="diagram">ROLLING HASH — Text: "abcabc", Pattern: "cab" (m=3)
 
 Hash("cab") = hash_value
 
-Window 1: "abc"  ? compute hash ? compare with pattern hash
-Window 2: "bca"  ? ROLL: subtract 'a', shift, add 'a' (O(1) update!)
-Window 3: "cab"  ? ROLL: subtract 'b', shift, add 'b'
-                ? hash matches! ? verify "cab" == "cab" ? FOUND at index 2
-Window 4: "abc"  ? roll...
+Window 1: "abc"  → compute hash → compare with pattern hash
+Window 2: "bca"  → ROLL: subtract 'a', shift, add 'a' (O(1) update!)
+Window 3: "cab"  → ROLL: subtract 'b', shift, add 'b'
+                → hash matches! → verify "cab" == "cab" → FOUND at index 2
+Window 4: "abc"  → roll...
 
 ROLLING FORMULA:
   hash(s[i+1..i+m]) = (hash(s[i..i+m-1]) - s[i] * base^(m-1)) * base + s[i+m]
@@ -60,17 +59,17 @@ ROLLING FORMULA:
   hash = hash * base + char_value  (when building)
   hash = (hash - leading_char * pow_mod) * base + new_char  (when rolling)</div>
 
-<h3>1.1 � Why Hash? Why Rolling?</h3>
+<h3>1.1 — Why Hash? Why Rolling?</h3>
 <ul>
     <li><strong>Average case O(n + m)</strong>: Hash comparison is O(1), only do O(m) comparison on match</li>
-    <li><strong>Worst case O(n�m)</strong>: If all hash values match (hash collision), we verify each time</li>
+    <li><strong>Worst case O(n·m)</strong>: If all hash values match (hash collision), we verify each time</li>
     <li><strong>Ideal for multiple patterns</strong>: Hash all patterns, check each window against the set</li>
     <li><strong>Rolling</strong>: Update hash in O(1) by removing leading char and adding trailing char</li>
 </ul>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">RabinKarp</span>(<span class="kw">string</span> text, <span class="kw">string</span> pattern)
 {
     <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
@@ -83,7 +82,7 @@ ROLLING FORMULA:
     <span class="kw">long</span> pow = <span class="nm">1</span>;
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; m - <span class="nm">1</span>; i++) pow = pow * BASE % MOD;
 
-    <span class="cm">// Hash function: map 'a'?1, 'b'?2, ... (avoid 0 for empty prefix)</span>
+    <span class="cm">// Hash function: map 'a'→1, 'b'→2, ... (avoid 0 for empty prefix)</span>
     <span class="kw">static long</span> <span class="mt">CharVal</span>(<span class="kw">char</span> c) =&gt; c - <span class="st">'a'</span> + <span class="nm">1</span>;
 
     <span class="kw">long</span> patHash = <span class="nm">0</span>, winHash = <span class="nm">0</span>;
@@ -118,7 +117,7 @@ ROLLING FORMULA:
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">rabin_karp</span>(text: <span class="tp">str</span>, pattern: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     n, m = <span class="mt">len</span>(text), <span class="mt">len</span>(pattern)
     <span class="kw">if</span> m &gt; n:
@@ -146,8 +145,8 @@ ROLLING FORMULA:
 print(<span class="mt">rabin_karp</span>(<span class="st">"abcabcabc"</span>, <span class="st">"abc"</span>))  <span class="cm"># [0, 3, 6]</span></pre>
 </div>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Z-Algorithm</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Z-Algorithm</div>
 
 <p>The <strong>Z-algorithm</strong> computes the <strong>Z-array</strong> for a string <code>s</code>.
 <code>Z[i]</code> = length of the longest substring starting at <code>s[i]</code> that is also a
@@ -157,25 +156,25 @@ prefix of <code>s</code>. By definition, <code>Z[0]</code> is undefined (or the 
 Index:   0 1 2 3 4 5 6
 
 Z[0] = 7 (by convention, entire string)
-Z[1] = 1  ? "a" matches prefix "a" (next char 'b' ? 'a')
-Z[2] = 0  ? "b" ? 'a'
-Z[3] = 0  ? "x" ? 'a'
-Z[4] = 3  ? "aab" matches prefix "aab" (s[4..6] = "aab" = s[0..2])
-Z[5] = 1  ? "ab" ? 'a' matches, 'b' ? 'b'... wait "ab" vs prefix "aab" ? 'a'='a', 'b'='a'? No ? Z[5]=1
-Z[6] = 0  ? "b" ? 'a'
+Z[1] = 1  → "a" matches prefix "a" (next char 'b' ≠ 'a')
+Z[2] = 0  → "b" ≠ 'a'
+Z[3] = 0  → "x" ≠ 'a'
+Z[4] = 3  → "aab" matches prefix "aab" (s[4..6] = "aab" = s[0..2])
+Z[5] = 1  → "ab" → 'a' matches, 'b' ≠ 'b'... wait "ab" vs prefix "aab" → 'a'='a', 'b'='a'? No → Z[5]=1
+Z[6] = 0  → "b" ≠ 'a'
 
 Z = [7, 1, 0, 0, 3, 1, 0]
 
 Pattern matching trick: concat "pattern#text", compute Z.
-Any Z[i] == len(pattern) at position > len(pattern)+1 ? match found!</div>
+Any Z[i] == len(pattern) at position > len(pattern)+1 → match found!</div>
 
-<h3>2.1 � Building the Z-Array</h3>
-<p>The Z-algorithm maintains a window <code>[l, r]</code> � the rightmost Z-box (a substring that matches
+<h3>2.1 — Building the Z-Array</h3>
+<p>The Z-algorithm maintains a window <code>[l, r]</code> — the rightmost Z-box (a substring that matches
 a prefix). This allows O(n) construction.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span>[] <span class="mt">BuildZArray</span>(<span class="kw">string</span> s)
 {
     <span class="kw">int</span> n = s.Length;
@@ -220,7 +219,7 @@ a prefix). This allows O(n) construction.</p>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">build_z_array</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     n = <span class="mt">len</span>(s)
     z = [<span class="nm">0</span>] * n
@@ -243,19 +242,19 @@ a prefix). This allows O(n) construction.</p>
 print(<span class="mt">z_search</span>(<span class="st">"aabcaabc"</span>, <span class="st">"aabc"</span>))  <span class="cm"># [0, 4]</span></pre>
 </div>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Comparison &amp; When to Use Each</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Comparison &amp; When to Use Each</div>
 
 <table>
     <thead><tr><th>Algorithm</th><th>Preprocessing</th><th>Search</th><th>Strengths</th></tr></thead>
     <tbody>
         <tr><td>KMP</td><td>O(m)</td><td class="g">O(n)</td><td>Exact matches, deterministic, no collisions</td></tr>
         <tr><td>Rabin-Karp</td><td>O(m)</td><td>O(n) avg</td><td>Multiple patterns, 2D pattern matching</td></tr>
-        <tr><td>Z-Algorithm</td><td>�</td><td class="g">O(n)</td><td>Prefix matching, simple to implement</td></tr>
+        <tr><td>Z-Algorithm</td><td>—</td><td class="g">O(n)</td><td>Prefix matching, simple to implement</td></tr>
     </tbody>
 </table>
 
-<h3>3.1 � Rabin-Karp for Multiple Patterns</h3>
+<h3>3.1 — Rabin-Karp for Multiple Patterns</h3>
 <p>Rabin-Karp shines when searching for multiple patterns simultaneously.
 Hash all patterns into a set, then <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
@@ -290,7 +289,7 @@ Hash all patterns into a set, then <div class="lang-label lang-cs">C#</div>
 </div>
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">multi_pattern_search</span>(text: <span class="tp">str</span>, patterns: <span class="tp">list</span>[<span class="tp">str</span>]) -&gt; <span class="tp">dict</span>:
     <span class="st">"""Find all occurrences of each pattern in text using rolling hashes."""</span>
     BASE, MOD = <span class="nm">31</span>, <span class="nm">10</span>**<span class="nm">9</span> + <span class="nm">7</span>
@@ -331,17 +330,17 @@ result = <span class="mt">multi_pattern_search</span>(<span class="st">"abcabdab
 </div>
 
 <div class="note">
-    <strong>?? Key Takeaways:</strong>
+    <strong>📌 Key Takeaways:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Rabin-Karp</strong>: Best for multiple pattern search; O(n + Sm) average with a hash set</li>
+        <li><strong>Rabin-Karp</strong>: Best for multiple pattern search; O(n + Σm) average with a hash set</li>
         <li><strong>Z-Algorithm</strong>: Simple O(n) prefix matching; useful for "does pattern appear as prefix at each position"</li>
         <li>Both use the <strong>pattern + separator + text</strong> concatenation trick</li>
         <li>Choose MOD as a large prime and BASE as a prime to minimize collisions</li>
     </ul>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 15B Complete</button>
-<div class="toast" id="toast">? Module 15B complete! Rabin-Karp &amp; Z-Algorithm mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15B Complete</button>
+<div class="toast" id="toast">✅ Module 15B complete! Rabin-Karp &amp; Z-Algorithm mastered!</div>
     <script>var MODULE_ID = 'm15b';</script>
     <script src="../dsa.js"></script>
 </body>

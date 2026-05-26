@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 5B � Merge Sort & Quick Sort | DSA Masterbook</title>
+<title>Module 5B — Merge Sort & Quick Sort | DSA Masterbook</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
@@ -58,25 +58,25 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </head>
 <body>
 
-<div class="breadcrumb"><a href="../index.html">?? Home</a> � Phase 3 � Module 5 � Part B</div>
+<div class="breadcrumb"><a href="../index.html">🏠 Home</a> › Phase 3 › Module 5 › Part B</div>
 
 <div class="cover">
-  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms � Complete Course</div>
-  <h1>Module 5 � Part B</h1>
-  <div class="tagline">Merge Sort &amp; Quick Sort � The Efficient O(n log n) Algorithms</div>
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
+  <h1>Module 5 — Part B</h1>
+  <div class="tagline">Merge Sort &amp; Quick Sort — The Efficient O(n log n) Algorithms</div>
   <div class="badges">
-    <span>? Estimated: 2.5 Hours</span><span>?? Intermediate</span><span>?? C# &amp; Python</span><span>?? Phase 3 � Module 5B</span>
+    <span>⏱ Estimated: 2.5 Hours</span><span>🎯 Intermediate</span><span>💻 C# &amp; Python</span><span>📐 Phase 3 · Module 5B</span>
   </div>
 </div>
 
 <div class="nav-box">
-  <strong>?? Module 5 � Sorting Algorithms:</strong><br>
-  ? <strong>Part A</strong> � <a href="m05a_basic_sorts.html">O(n�) Sorts</a><br>
-  ? <strong>Part B</strong> � <em>You are here</em> � Merge Sort &amp; Quick Sort<br>
-  ? <strong>Part C</strong> � <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
-  ? <strong>Part D</strong> � <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
-  ? <strong>Part E</strong> � <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
-  ?? <a href="../index.html">Back to Course Index</a>
+  <strong>📂 Module 5 — Sorting Algorithms:</strong><br>
+  ✅ <strong>Part A</strong> — <a href="m05a_basic_sorts.html">O(n²) Sorts</a><br>
+  ▶ <strong>Part B</strong> — <em>You are here</em> — Merge Sort &amp; Quick Sort<br>
+  ⬜ <strong>Part C</strong> — <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
+  ⬜ <strong>Part D</strong> — <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
+  ⬜ <strong>Part E</strong> — <a href="m05e_sorting_practice.html">Practice &amp; Comparison</a><br>
+  🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
@@ -90,43 +90,43 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="toc">
-  <h2>?? Contents � Module 5B</h2>
+  <h2>📚 Contents — Module 5B</h2>
   <ol>
-    <li>Divide and Conquer Strategy <span>� The foundation of efficient sorting</span></li>
-    <li>Merge Sort � Full Explanation <span>� Split, sort, merge</span></li>
-    <li>Merge Sort Implementation <span>� Complete C# and Python code</span></li>
-    <li>Quick Sort � Full Explanation <span>� Pivot, partition, recurse</span></li>
-    <li>Quick Sort Implementation <span>� Complete C# and Python code</span></li>
-    <li>Pivot Strategies <span>� Random pivot, median-of-three</span></li>
-    <li>Merge Sort vs Quick Sort <span>� Detailed comparison</span></li>
+    <li>Divide and Conquer Strategy <span>— The foundation of efficient sorting</span></li>
+    <li>Merge Sort — Full Explanation <span>— Split, sort, merge</span></li>
+    <li>Merge Sort Implementation <span>— Complete C# and Python code</span></li>
+    <li>Quick Sort — Full Explanation <span>— Pivot, partition, recurse</span></li>
+    <li>Quick Sort Implementation <span>— Complete C# and Python code</span></li>
+    <li>Pivot Strategies <span>— Random pivot, median-of-three</span></li>
+    <li>Merge Sort vs Quick Sort <span>— Detailed comparison</span></li>
     <li>Practice Questions</li>
   </ol>
 </div>
 
-<h2 class="sec">Section 1 � Divide and Conquer</h2>
+<h2 class="sec">Section 1 — Divide and Conquer</h2>
 <p>Both merge sort and quick sort use the <strong>divide and conquer</strong> strategy:</p>
 <ol style="padding-left:20px;margin-bottom:14px">
   <li style="padding:4px 0"><strong>Divide</strong>: Split the problem into smaller sub-problems</li>
   <li style="padding:4px 0"><strong>Conquer</strong>: Solve each sub-problem recursively</li>
   <li style="padding:4px 0"><strong>Combine</strong>: Merge the solutions</li>
 </ol>
-<p>Why does this give O(n log n)? Because we split n elements into log2(n) levels, and each level does O(n) total work.</p>
+<p>Why does this give O(n log n)? Because we split n elements into log₂(n) levels, and each level does O(n) total work.</p>
 
 <div class="diagram">
-  n=8 elements split into log2(8)=3 levels:
+  n=8 elements split into log₂(8)=3 levels:
   
-  Level 0: [38,27,43,3,9,82,10,1]    ? n=8 work
-  Level 1: [38,27,43,3] [9,82,10,1]  ? n=8 total work
-  Level 2: [38,27][43,3][9,82][10,1] ? n=8 total work
-  Level 3: individual elements        ? base cases
+  Level 0: [38,27,43,3,9,82,10,1]    ← n=8 work
+  Level 1: [38,27,43,3] [9,82,10,1]  ← n=8 total work
+  Level 2: [38,27][43,3][9,82][10,1] ← n=8 total work
+  Level 3: individual elements        ← base cases
   
-  Total: 3 levels � n work each = n log n = 8 � 3 = 24 operations
-  Compare to O(n�): 8� = 64 operations
+  Total: 3 levels × n work each = n log n = 8 × 3 = 24 operations
+  Compare to O(n²): 8² = 64 operations
 </div>
 
-<h2 class="sec">Section 2 � Merge Sort Deep Dive</h2>
+<h2 class="sec">Section 2 — Merge Sort Deep Dive</h2>
 
-<h3>2.1 The Analogy � Merging Two Sorted Stacks of Papers</h3>
+<h3>2.1 The Analogy — Merging Two Sorted Stacks of Papers</h3>
 <p>Imagine you have two sorted stacks of numbered papers. To merge them into one sorted stack: look at the top of each stack, take the smaller one, place it on the result stack. Repeat until both stacks are empty. This merge operation is O(n).</p>
 <p>Merge sort works by recursively splitting the array until each piece has 1 element (trivially sorted), then merging sorted pieces back together.</p>
 
@@ -135,33 +135,33 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
   
   Split:
   [38, 27, 43, 3]
-  +-- [38, 27]
-  �   +-- [38]   (sorted)
-  �   +-- [27]   (sorted)
-  +-- [43, 3]
-      +-- [43]   (sorted)
-      +-- [3]    (sorted)
+  ├── [38, 27]
+  │   ├── [38]   (sorted)
+  │   └── [27]   (sorted)
+  └── [43, 3]
+      ├── [43]   (sorted)
+      └── [3]    (sorted)
   
   Merge:
-  [27] + [38] ? merge ? [27, 38]
-  [3]  + [43] ? merge ? [3, 43]
-  [27,38] + [3,43] ? merge ? [3, 27, 38, 43]  ?
+  [27] + [38] → merge → [27, 38]
+  [3]  + [43] → merge → [3, 43]
+  [27,38] + [3,43] → merge → [3, 27, 38, 43]  ✓
 </div>
 
 <h3>2.2 Complete Merge Sort Implementation</h3>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// --- Merge Sort � Complete Implementation -------------------------------------
-// Time:  O(n log n) � all cases (best/avg/worst identical)
-// Space: O(n) � needs auxiliary array for merging
-// Stable: Yes � equal elements keep their relative order</span>
+<span class="cm">// ─── Merge Sort — Complete Implementation ─────────────────────────────────────
+// Time:  O(n log n) — all cases (best/avg/worst identical)
+// Space: O(n) — needs auxiliary array for merging
+// Stable: Yes — equal elements keep their relative order</span>
 
 <span class="kw">class</span> <span class="tp">MergeSort</span>
 {
-    <span class="cm">/// Main sort function � divides array in half recursively</span>
+    <span class="cm">/// Main sort function — divides array in half recursively</span>
     <span class="kw">static void</span> <span class="mt">Sort</span>(<span class="kw">int</span>[] arr, <span class="kw">int</span> left, <span class="kw">int</span> right)
     {
         <span class="cm">// BASE CASE: subarray of 0 or 1 element is already sorted</span>
@@ -216,10 +216,10 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
-<span class="cm"># --- Merge Sort � Complete Implementation -------------------------------------</span>
+<span class="cm"># ─── Merge Sort — Complete Implementation ─────────────────────────────────────</span>
 
 <span class="kw">def</span> <span class="mt">merge_sort</span>(arr: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
     <span class="st">"""Merge sort: split, sort halves, merge.
@@ -256,14 +256,14 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
     <span class="mt">print</span>(<span class="st">"After: "</span>, sorted_arr)  <span class="cm"># [3, 9, 10, 27, 38, 43, 82]</span></pre>
 </div>
 
-<h2 class="sec">Section 3 � Merge Sort Counting Inversions (Bonus)</h2>
-<p>An <strong>inversion</strong> is a pair (i,j) where i &lt; j but arr[i] &gt; arr[j]. Counting inversions measures "how unsorted" an array is. Merge sort can count inversions in O(n log n) � a beautiful application!</p>
+<h2 class="sec">Section 3 — Merge Sort Counting Inversions (Bonus)</h2>
+<p>An <strong>inversion</strong> is a pair (i,j) where i &lt; j but arr[i] &gt; arr[j]. Counting inversions measures "how unsorted" an array is. Merge sort can count inversions in O(n log n) — a beautiful application!</p>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// --- Count Inversions using Modified Merge Sort -------------------------------
+<span class="cm">// ─── Count Inversions using Modified Merge Sort ───────────────────────────────
 // An inversion is a pair where arr[i] > arr[j] but i < j
 // Example: [3,1,2] has 2 inversions: (3,1) and (3,2)</span>
 
@@ -306,7 +306,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> List, Tuple
 
 <span class="kw">def</span> <span class="mt">count_inversions</span>(arr: List[<span class="tp">int</span>]) -&gt; Tuple[List[<span class="tp">int</span>], <span class="tp">int</span>]:
@@ -329,9 +329,9 @@ _, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<
 <span class="mt">print</span>(<span class="st">f"Inversions: {inv}"</span>)  <span class="cm"># 2</span></pre>
 </div>
 
-<h2 class="sec">Section 4 � Quick Sort Deep Dive</h2>
+<h2 class="sec">Section 4 — Quick Sort Deep Dive</h2>
 
-<h3>4.1 The Analogy � Sorting a Line of People by Height</h3>
+<h3>4.1 The Analogy — Sorting a Line of People by Height</h3>
 <p>Pick one person (the <strong>pivot</strong>). Ask everyone shorter to stand on the left and everyone taller to stand on the right. Now the pivot is in the perfect final position! Repeat this process for the left group and right group separately. This is quick sort.</p>
 
 <h3>4.2 The Partition Step</h3>
@@ -343,26 +343,26 @@ _, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<
   
   Partition step (Lomuto scheme):
   i=-1, scan left to right:
-  10 < 70? Yes ? i=0, arr=[10, 80, 30, 90, 40, 50, 70]
-  80 < 70? No  ? skip
-  30 < 70? Yes ? i=1, swap 30?80 ? [10, 30, 80, 90, 40, 50, 70]
-  90 < 70? No  ? skip
-  40 < 70? Yes ? i=2, swap 40?80 ? [10, 30, 40, 90, 80, 50, 70]
-  50 < 70? Yes ? i=3, swap 50?90 ? [10, 30, 40, 50, 80, 90, 70]
-  Place pivot: swap arr[i+1] ? pivot ? [10, 30, 40, 50, 70, 90, 80]
-                                                       ?
+  10 < 70? Yes → i=0, arr=[10, 80, 30, 90, 40, 50, 70]
+  80 < 70? No  → skip
+  30 < 70? Yes → i=1, swap 30↔80 → [10, 30, 80, 90, 40, 50, 70]
+  90 < 70? No  → skip
+  40 < 70? Yes → i=2, swap 40↔80 → [10, 30, 40, 90, 80, 50, 70]
+  50 < 70? Yes → i=3, swap 50↔90 → [10, 30, 40, 50, 80, 90, 70]
+  Place pivot: swap arr[i+1] ↔ pivot → [10, 30, 40, 50, 70, 90, 80]
+                                                       ↑
                                               70 is in FINAL POSITION!
   
   Recurse on [10,30,40,50] and [90,80]
 </div>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// --- Quick Sort � Complete Implementation (Lomuto Partition) ------------------
-// Time:  O(n log n) avg, O(n�) worst (when array already sorted + bad pivot)
-// Space: O(log n) avg � call stack
+<span class="cm">// ─── Quick Sort — Complete Implementation (Lomuto Partition) ──────────────────
+// Time:  O(n log n) avg, O(n²) worst (when array already sorted + bad pivot)
+// Space: O(log n) avg — call stack
 // Stable: No
 // In-place: Yes</span>
 
@@ -426,15 +426,15 @@ _, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">import</span> random
 <span class="kw">from</span> typing <span class="kw">import</span> List
 
-<span class="cm"># --- Quick Sort � Complete Implementation -------------------------------------</span>
+<span class="cm"># ─── Quick Sort — Complete Implementation ─────────────────────────────────────</span>
 
 <span class="kw">def</span> <span class="mt">quick_sort</span>(arr: List[<span class="tp">int</span>], low: <span class="tp">int</span>, high: <span class="tp">int</span>) -&gt; <span class="kw">None</span>:
     <span class="st">"""Quick sort in-place. Call with quick_sort(arr, 0, len(arr)-1)
-    Time: O(n log n) avg, O(n�) worst | Space: O(log n) | Stable: No
+    Time: O(n log n) avg, O(n²) worst | Space: O(log n) | Stable: No
     """</span>
     <span class="kw">if</span> low &lt; high:
         pivot_idx = partition(arr, low, high)
@@ -466,14 +466,14 @@ _, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<
     <span class="mt">print</span>(<span class="st">"After: "</span>, arr)  <span class="cm"># [10,30,40,50,70,80,90]</span></pre>
 </div>
 
-<h2 class="sec">Section 5 � 3-Way Quick Sort (Dutch National Flag)</h2>
+<h2 class="sec">Section 5 — 3-Way Quick Sort (Dutch National Flag)</h2>
 <p>When the array has many duplicate elements, standard quick sort degrades because all duplicates end up in one partition. The <strong>3-way partition</strong> creates three regions: &lt;pivot, =pivot, &gt;pivot. Elements equal to the pivot are already in their final positions.</p>
 
 <div class="code-block lang-cs">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// --- 3-Way Quick Sort (Dutch National Flag) -----------------------------------
+<span class="cm">// ─── 3-Way Quick Sort (Dutch National Flag) ───────────────────────────────────
 // Handles arrays with many duplicates efficiently: O(n) for all-equal arrays</span>
 
 <span class="kw">class</span> <span class="tp">ThreeWayQS</span>
@@ -497,7 +497,7 @@ _, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<
 
         <span class="mt">Sort</span>(arr, lo, lt - <span class="nm">1</span>);  <span class="cm">// sort less-than part</span>
         <span class="mt">Sort</span>(arr, gt + <span class="nm">1</span>, hi);  <span class="cm">// sort greater-than part</span>
-        <span class="cm">// skip equal part � already in final positions!</span>
+        <span class="cm">// skip equal part — already in final positions!</span>
     }
 
     <span class="kw">static void</span> <span class="mt">Main</span>()
@@ -510,7 +510,7 @@ _, inv = count_inversions([<span class="nm">3</span>,<span class="nm">1</span>,<
 </div>
 
 <div class="code-block lang-py" style="display:none">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">three_way_qs</span>(arr: List[<span class="tp">int</span>], lo: <span class="tp">int</span>, hi: <span class="tp">int</span>) -&gt; <span class="kw">None</span>:
@@ -529,62 +529,62 @@ three_way_qs(arr, <span class="nm">0</span>, <span class="mt">len</span>(arr)-<s
 <span class="mt">print</span>(arr)  <span class="cm"># [1,2,3,3,4,5,5,5,5]</span></pre>
 </div>
 
-<h2 class="sec">Section 6 � Merge Sort vs Quick Sort</h2>
+<h2 class="sec">Section 6 — Merge Sort vs Quick Sort</h2>
 
 <table class="cmplx">
   <thead><tr><th>Property</th><th>Merge Sort</th><th>Quick Sort</th></tr></thead>
   <tbody>
     <tr><td>Best Time</td><td class="qo">O(n log n)</td><td class="qg">O(n log n)</td></tr>
     <tr><td>Average Time</td><td class="qo">O(n log n)</td><td class="qo">O(n log n)</td></tr>
-    <tr><td>Worst Time</td><td class="qo">O(n log n)</td><td class="qr">O(n�) without random pivot</td></tr>
-    <tr><td>Space</td><td class="qr">O(n) � extra array needed</td><td class="qg">O(log n) � just call stack</td></tr>
-    <tr><td>Stable</td><td>? Yes</td><td>? No</td></tr>
-    <tr><td>Cache performance</td><td class="qo">Fair</td><td class="qg">Excellent � sequential access</td></tr>
+    <tr><td>Worst Time</td><td class="qo">O(n log n)</td><td class="qr">O(n²) without random pivot</td></tr>
+    <tr><td>Space</td><td class="qr">O(n) — extra array needed</td><td class="qg">O(log n) — just call stack</td></tr>
+    <tr><td>Stable</td><td>✅ Yes</td><td>❌ No</td></tr>
+    <tr><td>Cache performance</td><td class="qo">Fair</td><td class="qg">Excellent — sequential access</td></tr>
     <tr><td>Best for</td><td>Linked lists, stable needed</td><td>Arrays in memory, fastest avg</td></tr>
   </tbody>
 </table>
 
-<div class="tip"><strong>?? Real-World Choice</strong>Quick sort is typically faster in practice for in-memory arrays (better cache locality). Merge sort is preferred when: sorting linked lists (no random access), need stable sort, sorting external data (disk/database). Python's sorted() uses TimSort (merge + insertion). Java's Arrays.sort() for objects uses TimSort; for primitives uses dual-pivot quick sort.</div>
+<div class="tip"><strong>💡 Real-World Choice</strong>Quick sort is typically faster in practice for in-memory arrays (better cache locality). Merge sort is preferred when: sorting linked lists (no random access), need stable sort, sorting external data (disk/database). Python's sorted() uses TimSort (merge + insertion). Java's Arrays.sort() for objects uses TimSort; for primitives uses dual-pivot quick sort.</div>
 
-<div class="warning"><strong>?? Quick Sort Worst Case</strong>If you always pick the first or last element as pivot, and the array is already sorted, quick sort degrades to O(n�). Solution: use random pivot or median-of-three (middle element of arr[first], arr[mid], arr[last]).</div>
+<div class="warning"><strong>⚠️ Quick Sort Worst Case</strong>If you always pick the first or last element as pivot, and the array is already sorted, quick sort degrades to O(n²). Solution: use random pivot or median-of-three (middle element of arr[first], arr[mid], arr[last]).</div>
 
-<h2 class="sec">Section 7 � Practice Questions</h2>
+<h2 class="sec">Section 7 — Practice Questions</h2>
 
 <div class="quiz">
-  <div class="quiz-q">? Q1: What is the space complexity of recursive merge sort? Why?</div>
-  <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+  <div class="quiz-q">❓ Q1: What is the space complexity of recursive merge sort? Why?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
   <div class="quiz-a">
-    <div class="ans-label">? O(n) space total</div>
+    <div class="ans-label">✅ O(n) space total</div>
     <p>Two reasons: (1) The merge step creates temporary arrays totaling O(n) at each level. (2) The call stack goes O(log n) deep. The dominant term is O(n) from the temp arrays. This is the main disadvantage of merge sort over quick sort.</p>
   </div>
 </div>
 
 <div class="quiz">
-  <div class="quiz-q">? Q2: After one partition step with pivot=5 on [3,8,1,5,9,2,7], what does the array look like?</div>
-  <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+  <div class="quiz-q">❓ Q2: After one partition step with pivot=5 on [3,8,1,5,9,2,7], what does the array look like?</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
   <div class="quiz-a">
-    <div class="ans-label">? Elements &lt;5 on left, 5 in middle, elements &gt;5 on right</div>
+    <div class="ans-label">✅ Elements &lt;5 on left, 5 in middle, elements &gt;5 on right</div>
     <p>One possible result: [3, 1, 2, 5, 9, 8, 7]. The exact arrangement of elements within each group may vary by implementation, but 5 is always at its final sorted position (index 3 for this array). 5 never moves again.</p>
   </div>
 </div>
 
 <div class="quiz">
-  <div class="quiz-q">? Q3: Merge sort on [2, 4, 1, 6, 3]: trace the merge steps showing how the sorted array is built bottom-up.</div>
-  <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+  <div class="quiz-q">❓ Q3: Merge sort on [2, 4, 1, 6, 3]: trace the merge steps showing how the sorted array is built bottom-up.</div>
+  <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
   <div class="quiz-a">
-    <div class="ans-label">? Bottom-up merge trace:</div>
-    <p>Split: [2,4,1,6,3] ? [2,4] [1,6,3]<br>
-    [2,4] ? [2] [4] ? merge ? [2,4]<br>
-    [1,6,3] ? [1] [6,3] ? [6] [3] ? merge ? [3,6] ? merge [1]+[3,6] ? [1,3,6]<br>
-    Final merge: [2,4] + [1,3,6] ? [1,2,3,4,6]</p>
+    <div class="ans-label">✅ Bottom-up merge trace:</div>
+    <p>Split: [2,4,1,6,3] → [2,4] [1,6,3]<br>
+    [2,4] → [2] [4] → merge → [2,4]<br>
+    [1,6,3] → [1] [6,3] → [6] [3] → merge → [3,6] → merge [1]+[3,6] → [1,3,6]<br>
+    Final merge: [2,4] + [1,3,6] → [1,2,3,4,6]</p>
   </div>
 </div>
 
 <div class="complete-section">
-  <p style="color:#888;font-size:.9em;margin-bottom:16px">Outstanding! You've mastered Merge Sort and Quick Sort � the workhorses of efficient sorting. These appear in nearly every technical interview.</p>
-  <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">Outstanding! You've mastered Merge Sort and Quick Sort — the workhorses of efficient sorting. These appear in nearly every technical interview.</p>
+  <button class="mark-btn" id="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
   <div style="margin-top:16px">
-    <a href="m05c_linear_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part C � Linear Sorts (Counting, Radix, Bucket) ?</a>
+    <a href="m05c_linear_sorts.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Next: Part C — Linear Sorts (Counting, Radix, Bucket) →</a>
   </div>
 </div>
 
@@ -593,13 +593,13 @@ three_way_qs(arr, <span class="nm">0</span>, <span class="mt">len</span>(arr)-<s
 <script>
 const MODULE_ID = 'm05b';
 (function(){const k='dslearn_'+MODULE_ID;if(!localStorage.getItem(k))localStorage.setItem(k,'p');})();
-function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='? Completed!';b.disabled=true;showToast('? Module 5B marked as complete!');}
-(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='? Completed!';b.disabled=true;}}})();
+function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=document.getElementById('mark-btn');b.textContent='✅ Completed!';b.disabled=true;showToast('✅ Module 5B marked as complete!');}
+(function(){if(localStorage.getItem('dslearn_'+MODULE_ID)==='c'){const b=document.getElementById('mark-btn');if(b){b.textContent='✅ Completed!';b.disabled=true;}}})();
 function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
 function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
 applyLang();
-function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='? Copied!';setTimeout(()=>btn.textContent='?? Copy',2000);}).catch(()=>{btn.textContent='?? Failed';setTimeout(()=>btn.textContent='?? Copy',2000);});}
-function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'?? Hide Answer':'?? Show Answer';}
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);}).catch(()=>{btn.textContent='⚠️ Failed';setTimeout(()=>btn.textContent='📋 Copy',2000);});}
+function toggleAnswer(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'🙈 Hide Answer':'💡 Show Answer';}
 let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 </body>

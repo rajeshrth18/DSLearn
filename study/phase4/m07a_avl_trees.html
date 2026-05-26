@@ -1,37 +1,36 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 7A � AVL Trees</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 7A — AVL Trees</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 4</div>
-    <h1>Module 7 � Part A</h1>
-    <div class="tagline">AVL Trees � Self-Balancing BST with Guaranteed O(log n)</div>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 4</div>
+    <h1>Module 7 — Part A</h1>
+    <div class="tagline">AVL Trees — Self-Balancing BST with Guaranteed O(log n)</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Four rotation types (LL, LR, RL, RR) that keep the tree balanced after every insert</p>
     <div class="badges">
-        <span>? Estimated Time: 2.5 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# + Python</span>
-        <span>?? Part D of Module 6/7</span>
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part D of Module 6/7</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 7 � Advanced Trees:</strong><br><br>
-    ? <strong>Part A</strong> � <em>You are here</em> � AVL Trees<br>
-    ? <strong>Part B</strong> � <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
-    ? <strong>Part C</strong> � <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
-    ? <strong>Part D</strong> � <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
-    ? <strong>Part E</strong> � <a href="m07e_btrees.html">B-Trees</a><br>
-    ? <strong>Part F</strong> � <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
-    ? <strong>Part G</strong> � <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 7 — Advanced Trees:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — AVL Trees<br>
+    ⬜ <strong>Part B</strong> — <a href="m07b_rb_trees.html">Red-Black Trees</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m07c_heaps.html">Heaps &amp; PriorityQueue&lt;T&gt;</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m07d_trie.html">Trie (Prefix Tree)</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m07e_btrees.html">B-Trees</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m07f_lca.html">LCA &amp; Binary Lifting</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m07g_practice.html">Practice: 15 Advanced Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase4/m06a_binary_trees.html">&larr; Module 6 &mdash; Binary Trees</a>
@@ -39,148 +38,148 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents � Module 7A</h2>
+    <h2>📚 Contents — Module 7A</h2>
     <ol>
-        <li>The Analogy � The Self-Adjusting Shelf <span>� Why balance matters</span></li>
-        <li>The Problem AVL Solves <span>� Plain BST's worst-case degeneracy</span></li>
-        <li>Visual Walkthrough <span>� All 4 rotation cases with ASCII diagrams</span></li>
-        <li>Formal Definitions <span>� Balance factor, height invariant, rotation rules</span></li>
-        <li>Complete C# Implementation <span>� Full AVL tree with insert and rotations</span></li>
-        <li>Complete Python Implementation <span>� Same logic, Python idioms</span></li>
-        <li>Complexity Analysis <span>� O(log n) guaranteed vs. amortized</span></li>
-        <li>Real-World Usage <span>� Where AVL vs. Red-Black trees are preferred</span></li>
-        <li>Common Mistakes <span>� Height update order, balance factor signs</span></li>
-        <li>Check Your Understanding <span>� 5 quiz questions</span></li>
+        <li>The Analogy — The Self-Adjusting Shelf <span>— Why balance matters</span></li>
+        <li>The Problem AVL Solves <span>— Plain BST's worst-case degeneracy</span></li>
+        <li>Visual Walkthrough <span>— All 4 rotation cases with ASCII diagrams</span></li>
+        <li>Formal Definitions <span>— Balance factor, height invariant, rotation rules</span></li>
+        <li>Complete C# Implementation <span>— Full AVL tree with insert and rotations</span></li>
+        <li>Complete Python Implementation <span>— Same logic, Python idioms</span></li>
+        <li>Complexity Analysis <span>— O(log n) guaranteed vs. amortized</span></li>
+        <li>Real-World Usage <span>— Where AVL vs. Red-Black trees are preferred</span></li>
+        <li>Common Mistakes <span>— Height update order, balance factor signs</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � The Analogy: The Self-Adjusting Bookshelf</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Analogy: The Self-Adjusting Bookshelf</div>
 
-<p>Imagine a balanced mobile � the kind that hangs from the ceiling, with ornaments on each arm. If you add a heavy ornament to one side, the mobile tilts. To rebalance, you either move weights around or restructure the arms. The mobile <em>always restores balance</em> after each change.</p>
+<p>Imagine a balanced mobile — the kind that hangs from the ceiling, with ornaments on each arm. If you add a heavy ornament to one side, the mobile tilts. To rebalance, you either move weights around or restructure the arms. The mobile <em>always restores balance</em> after each change.</p>
 
-<p>An AVL tree works the same way. After each insert, it measures how "tilted" each subtree is. If a node becomes too unbalanced (difference in subtree heights &gt; 1), it performs a <strong>rotation</strong> � a structural rearrangement that preserves BST ordering while restoring balance. The tree <em>automatically adjusts itself</em> after every modification.</p>
+<p>An AVL tree works the same way. After each insert, it measures how "tilted" each subtree is. If a node becomes too unbalanced (difference in subtree heights &gt; 1), it performs a <strong>rotation</strong> — a structural rearrangement that preserves BST ordering while restoring balance. The tree <em>automatically adjusts itself</em> after every modification.</p>
 
 <div class="tip">
-    <strong>?? Named after:</strong> Georgy Adelson-Velsky and Evgenii Landis, who published the first self-balancing BST in 1962. The AVL tree was the first data structure to guarantee O(log n) search, insert, and delete in the worst case.
+    <strong>💡 Named after:</strong> Georgy Adelson-Velsky and Evgenii Landis, who published the first self-balancing BST in 1962. The AVL tree was the first data structure to guarantee O(log n) search, insert, and delete in the worst case.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � The Problem AVL Trees Solve</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Problem AVL Trees Solve</div>
 
 <p>A plain BST can degenerate into a linked list when elements are inserted in sorted order. For n = 1,000,000 elements inserted in order: height = 999,999, search = O(n). The solution? <strong>After every insert, check the balance and rotate if needed</strong>.</p>
 
 <div class="note">
-    <strong>?? AVL Tree Invariant:</strong> For every node N in an AVL tree, the difference between the heights of the left and right subtrees (called the <em>balance factor</em>) must be -1, 0, or +1.<br>
+    <strong>📌 AVL Tree Invariant:</strong> For every node N in an AVL tree, the difference between the heights of the left and right subtrees (called the <em>balance factor</em>) must be −1, 0, or +1.<br>
     <code>balance_factor(N) = height(N.right) - height(N.left)</code><br>
     If |balance_factor| &gt; 1 after an insert or delete, perform rotations to restore balance.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Visual Walkthrough: The 4 Rotation Cases</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Visual Walkthrough: The 4 Rotation Cases</div>
 
-<h3>3.1 � Right Rotation (LL Case)</h3>
-<p>Triggered when: a node is <strong>left-heavy</strong> (bf = -2) AND its left child is also left-heavy (bf = 0). The imbalance is in the Left-Left direction.</p>
-<div class="diagram">LL CASE � Insert 10, 5, 2 into empty AVL tree:
+<h3>3.1 — Right Rotation (LL Case)</h3>
+<p>Triggered when: a node is <strong>left-heavy</strong> (bf = −2) AND its left child is also left-heavy (bf ≤ 0). The imbalance is in the Left-Left direction.</p>
+<div class="diagram">LL CASE — Insert 10, 5, 2 into empty AVL tree:
 
 After insert 2, node 10 becomes unbalanced (bf = -2, left-left):
 
-   10  ? bf = -2 (unbalanced!)
+   10  ← bf = -2 (unbalanced!)
    /
-   5   ? bf = -1
+   5   ← bf = -1
   /
   2
 
 RIGHT ROTATION on node 10:
-  � The left child (5) becomes the new root of this subtree
-  � 10 becomes the right child of 5
-  � 5's right child (if any) becomes 10's left child
+  • The left child (5) becomes the new root of this subtree
+  • 10 becomes the right child of 5
+  • 5's right child (if any) becomes 10's left child
 
 BEFORE:       AFTER rotation:
    10              5
    /              / \
-   5     ?        2   10
+   5     →        2   10
   /
   2
 
 Result: balanced! bf of 5 = 0, bf of 2 = 0, bf of 10 = 0</div>
 
-<h3>3.2 � Left Rotation (RR Case)</h3>
-<p>Triggered when: a node is <strong>right-heavy</strong> (bf = +2) AND its right child is also right-heavy (bf = 0). Mirror of LL case.</p>
-<div class="diagram">RR CASE � Insert 2, 5, 10:
+<h3>3.2 — Left Rotation (RR Case)</h3>
+<p>Triggered when: a node is <strong>right-heavy</strong> (bf = +2) AND its right child is also right-heavy (bf ≥ 0). Mirror of LL case.</p>
+<div class="diagram">RR CASE — Insert 2, 5, 10:
 
 After insert 10, node 2 becomes unbalanced (bf = +2, right-right):
 
-  2   ? bf = +2 (unbalanced!)
+  2   ← bf = +2 (unbalanced!)
    \
-    5  ? bf = +1
+    5  ← bf = +1
      \
      10
 
 LEFT ROTATION on node 2:
-  � The right child (5) becomes the new root
-  � 2 becomes the left child of 5
-  � 5's left child (if any) becomes 2's right child
+  • The right child (5) becomes the new root
+  • 2 becomes the left child of 5
+  • 5's left child (if any) becomes 2's right child
 
 BEFORE:       AFTER rotation:
   2                5
    \              / \
-    5    ?        2   10
+    5    →        2   10
      \
      10</div>
 
-<h3>3.3 � Left-Right (LR) Rotation</h3>
-<p>Triggered when: node is left-heavy (bf = -2) BUT left child is right-heavy (bf = +1). Requires <strong>two rotations</strong>: first a left rotation on the left child, then a right rotation on the unbalanced node.</p>
-<div class="diagram">LR CASE � Insert 10, 2, 5:
+<h3>3.3 — Left-Right (LR) Rotation</h3>
+<p>Triggered when: node is left-heavy (bf = −2) BUT left child is right-heavy (bf = +1). Requires <strong>two rotations</strong>: first a left rotation on the left child, then a right rotation on the unbalanced node.</p>
+<div class="diagram">LR CASE — Insert 10, 2, 5:
 
 After insert 5:
-   10  ? bf = -2 (unbalanced)
+   10  ← bf = -2 (unbalanced)
    /
-   2   ? bf = +1 (right-heavy child � this is the LR signal!)
+   2   ← bf = +1 (right-heavy child — this is the LR signal!)
     \
      5
 
 STEP 1: Left rotate on the left child (2):
    10
    /
-   5    ? 5 moves up, 2 becomes its left child
+   5    ← 5 moves up, 2 becomes its left child
   /
   2
 
 STEP 2: Right rotate on unbalanced node (10):
    10          5
-   /    ?     / \
+   /    →     / \
    5           2   10
   /
   2
 
 Result: balanced!</div>
 
-<h3>3.4 � Right-Left (RL) Rotation</h3>
-<p>Triggered when: node is right-heavy (bf = +2) BUT right child is left-heavy (bf = -1). Mirror of LR case.</p>
-<div class="diagram">RL CASE � Insert 2, 10, 5:
+<h3>3.4 — Right-Left (RL) Rotation</h3>
+<p>Triggered when: node is right-heavy (bf = +2) BUT right child is left-heavy (bf = −1). Mirror of LR case.</p>
+<div class="diagram">RL CASE — Insert 2, 10, 5:
 
 After insert 5:
-  2    ? bf = +2 (unbalanced)
+  2    ← bf = +2 (unbalanced)
    \
-   10  ? bf = -1 (left-heavy child � this is the RL signal!)
+   10  ← bf = -1 (left-heavy child — this is the RL signal!)
    /
    5
 
 STEP 1: Right rotate on right child (10):
   2
    \
-    5    ? 5 moves up, 10 becomes its right child
+    5    ← 5 moves up, 10 becomes its right child
      \
      10
 
 STEP 2: Left rotate on unbalanced node (2):
   2            5
-   \    ?     / \
+   \    →     / \
     5          2   10
      \
      10
@@ -188,12 +187,12 @@ STEP 2: Left rotate on unbalanced node (2):
 Result: balanced!</div>
 
 <div class="note">
-    <strong>?? Summary of 4 Cases:</strong>
+    <strong>📌 Summary of 4 Cases:</strong>
     <table style="margin-top:10px;">
         <thead><tr><th>Case</th><th>Condition</th><th>Fix</th></tr></thead>
         <tbody>
-            <tr><td>LL (Left-Left)</td><td>bf(node) = -2, bf(left child) = 0</td><td>Right rotate on node</td></tr>
-            <tr><td>RR (Right-Right)</td><td>bf(node) = +2, bf(right child) = 0</td><td>Left rotate on node</td></tr>
+            <tr><td>LL (Left-Left)</td><td>bf(node) = -2, bf(left child) ≤ 0</td><td>Right rotate on node</td></tr>
+            <tr><td>RR (Right-Right)</td><td>bf(node) = +2, bf(right child) ≥ 0</td><td>Left rotate on node</td></tr>
             <tr><td>LR (Left-Right)</td><td>bf(node) = -2, bf(left child) = +1</td><td>Left rotate on left child, then right rotate on node</td></tr>
             <tr><td>RL (Right-Left)</td><td>bf(node) = +2, bf(right child) = -1</td><td>Right rotate on right child, then left rotate on node</td></tr>
         </tbody>
@@ -202,31 +201,31 @@ Result: balanced!</div>
 
 <hr>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Formal Definitions</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Formal Definitions</div>
 
 <ul>
-    <li><strong>Height of a node:</strong> longest path from that node to any leaf. Height of null = -1. Height of leaf = 0.</li>
-    <li><strong>Balance factor:</strong> <code>bf(N) = height(N.right) - height(N.left)</code>. Valid range: {-1, 0, +1}.</li>
-    <li><strong>AVL property:</strong> every node in the tree has |bf| = 1.</li>
-    <li><strong>Height of AVL tree:</strong> at most 1.44 � log2(n+2) - 0.328. In practice, very close to log2(n).</li>
+    <li><strong>Height of a node:</strong> longest path from that node to any leaf. Height of null = −1. Height of leaf = 0.</li>
+    <li><strong>Balance factor:</strong> <code>bf(N) = height(N.right) - height(N.left)</code>. Valid range: {−1, 0, +1}.</li>
+    <li><strong>AVL property:</strong> every node in the tree has |bf| ≤ 1.</li>
+    <li><strong>Height of AVL tree:</strong> at most 1.44 × log₂(n+2) − 0.328. In practice, very close to log₂(n).</li>
 </ul>
 
 <div class="tip">
-    <strong>?? Critical implementation order:</strong> When updating heights after rotation, ALWAYS update the children's heights before the parent's height, because the parent's height depends on children's heights. In rotations: update the node that moved DOWN first, then update the new root.
+    <strong>💡 Critical implementation order:</strong> When updating heights after rotation, ALWAYS update the children's heights before the parent's height, because the parent's height depends on children's heights. In rotations: update the node that moved DOWN first, then update the new root.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � Complete C# Implementation</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Complete C# Implementation</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 
-<span class="cm">// -- AVL Node ------------------------------------------------------</span>
+<span class="cm">// ── AVL Node ──────────────────────────────────────────────────────</span>
 <span class="kw">public class</span> <span class="tp">AVLNode</span>
 {
     <span class="kw">public int</span> Value, Height;
@@ -234,25 +233,25 @@ Result: balanced!</div>
     <span class="kw">public</span> <span class="mt">AVLNode</span>(<span class="kw">int</span> val) { Value = val; Height = <span class="nm">0</span>; }
 }
 
-<span class="cm">// -- AVL Tree ------------------------------------------------------</span>
+<span class="cm">// ── AVL Tree ──────────────────────────────────────────────────────</span>
 <span class="kw">public class</span> <span class="tp">AVLTree</span>
 {
     <span class="kw">public</span> <span class="tp">AVLNode</span>? Root;
 
-    <span class="cm">// -- Height helper (handles null) ----------------------------</span>
+    <span class="cm">// ── Height helper (handles null) ────────────────────────────</span>
     <span class="kw">private int</span> <span class="mt">H</span>(<span class="tp">AVLNode</span>? n) => n == <span class="kw">null</span> ? -<span class="nm">1</span> : n.Height;
 
-    <span class="cm">// -- Balance factor = height(right) - height(left) -----------</span>
+    <span class="cm">// ── Balance factor = height(right) - height(left) ───────────</span>
     <span class="kw">private int</span> <span class="mt">BF</span>(<span class="tp">AVLNode</span>? n) => n == <span class="kw">null</span> ? <span class="nm">0</span> : <span class="mt">H</span>(n.Right) - <span class="mt">H</span>(n.Left);
 
-    <span class="cm">// -- Update height after structural changes -------------------</span>
+    <span class="cm">// ── Update height after structural changes ───────────────────</span>
     <span class="kw">private void</span> <span class="mt">UpdateHeight</span>(<span class="tp">AVLNode</span> n) =>
         n.Height = <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="mt">H</span>(n.Left), <span class="mt">H</span>(n.Right));
 
-    <span class="cm">// -- RIGHT ROTATION (fixes LL imbalance) ---------------------</span>
+    <span class="cm">// ── RIGHT ROTATION (fixes LL imbalance) ─────────────────────</span>
     <span class="cm">//         y                x</span>
     <span class="cm">//        / \             / \</span>
-    <span class="cm">//       x   T3    ?     T1   y</span>
+    <span class="cm">//       x   T3    →     T1   y</span>
     <span class="cm">//      / \                  / \</span>
     <span class="cm">//     T1  T2               T2  T3</span>
     <span class="kw">private</span> <span class="tp">AVLNode</span> <span class="mt">RotateRight</span>(<span class="tp">AVLNode</span> y)
@@ -268,10 +267,10 @@ Result: balanced!</div>
         <span class="kw">return</span> x;               <span class="cm">// Return new root of this subtree</span>
     }
 
-    <span class="cm">// -- LEFT ROTATION (fixes RR imbalance) ----------------------</span>
+    <span class="cm">// ── LEFT ROTATION (fixes RR imbalance) ──────────────────────</span>
     <span class="cm">//       x                  y</span>
     <span class="cm">//      / \                / \</span>
-    <span class="cm">//     T1   y    ?         x   T3</span>
+    <span class="cm">//     T1   y    →         x   T3</span>
     <span class="cm">//         / \            / \</span>
     <span class="cm">//        T2  T3          T1  T2</span>
     <span class="kw">private</span> <span class="tp">AVLNode</span> <span class="mt">RotateLeft</span>(<span class="tp">AVLNode</span> x)
@@ -287,7 +286,7 @@ Result: balanced!</div>
         <span class="kw">return</span> y;
     }
 
-    <span class="cm">// -- BALANCE: apply correct rotation(s) based on balance factor -</span>
+    <span class="cm">// ── BALANCE: apply correct rotation(s) based on balance factor ─</span>
     <span class="kw">private</span> <span class="tp">AVLNode</span> <span class="mt">Balance</span>(<span class="tp">AVLNode</span> node)
     {
         <span class="mt">UpdateHeight</span>(node);
@@ -312,7 +311,7 @@ Result: balanced!</div>
         <span class="kw">return</span> node;  <span class="cm">// Already balanced (-1, 0, or 1)</span>
     }
 
-    <span class="cm">// -- INSERT ---------------------------------------------------</span>
+    <span class="cm">// ── INSERT ───────────────────────────────────────────────────</span>
     <span class="kw">public void</span> <span class="mt">Insert</span>(<span class="kw">int</span> val) => Root = <span class="mt">InsertRec</span>(Root, val);
 
     <span class="kw">private</span> <span class="tp">AVLNode</span> <span class="mt">InsertRec</span>(<span class="tp">AVLNode</span>? node, <span class="kw">int</span> val)
@@ -327,7 +326,7 @@ Result: balanced!</div>
         <span class="kw">return</span> <span class="mt">Balance</span>(node);
     }
 
-    <span class="cm">// -- CONTAINS -------------------------------------------------</span>
+    <span class="cm">// ── CONTAINS ─────────────────────────────────────────────────</span>
     <span class="kw">public bool</span> <span class="mt">Contains</span>(<span class="kw">int</span> val)
     {
         <span class="kw">var</span> n = Root;
@@ -340,18 +339,18 @@ Result: balanced!</div>
         <span class="kw">return false</span>;
     }
 
-    <span class="cm">// -- HEIGHT of root --------------------------------------------</span>
+    <span class="cm">// ── HEIGHT of root ────────────────────────────────────────────</span>
     <span class="kw">public int</span> <span class="mt">Height</span>() => <span class="mt">H</span>(Root);
 }
 
-<span class="cm">// -- Main ----------------------------------------------------------</span>
+<span class="cm">// ── Main ──────────────────────────────────────────────────────────</span>
 <span class="kw">class</span> <span class="tp">Program</span>
 {
     <span class="kw">static void</span> <span class="mt">Main</span>()
     {
         <span class="kw">var</span> avl = <span class="kw">new</span> <span class="tp">AVLTree</span>();
 
-        <span class="cm">// Insert in SORTED order � would degenerate a plain BST!</span>
+        <span class="cm">// Insert in SORTED order — would degenerate a plain BST!</span>
         <span class="kw">foreach</span> (<span class="kw">int</span> v <span class="kw">in</span> <span class="kw">new</span>[] { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span> })
             avl.<span class="mt">Insert</span>(v);
 
@@ -369,25 +368,25 @@ Result: balanced!</div>
     }
 }
 
-<span class="cm">/* -- Output ------------------------------------------------------
-   Height after inserting 1-7 in order: 2   ? AVL keeps it balanced!
+<span class="cm">/* ── Output ──────────────────────────────────────────────────────
+   Height after inserting 1-7 in order: 2   ← AVL keeps it balanced!
    Contains 4: True
    Contains 9: False
-   LR case height: 1                         ? Correctly balanced
-   ---------------------------------------------------------------- */</span></pre>
+   LR case height: 1                         ← Correctly balanced
+   ──────────────────────────────────────────────────────────────── */</span></pre>
 </div>
 
 <hr>
 
-<!-- ------- SECTION 6 ------- -->
-<div class="section-heading">Section 6 � Complete Python Implementation</div>
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Complete Python Implementation</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> typing <span class="kw">import</span> Optional
 
-<span class="cm"># -- AVL Node ------------------------------------------------------</span>
+<span class="cm"># ── AVL Node ──────────────────────────────────────────────────────</span>
 <span class="kw">class</span> <span class="tp">AVLNode</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self, val: <span class="kw">int</span>):
         self.val    = val
@@ -395,7 +394,7 @@ Result: balanced!</div>
         self.left:  Optional[<span class="st">'AVLNode'</span>] = <span class="kw">None</span>
         self.right: Optional[<span class="st">'AVLNode'</span>] = <span class="kw">None</span>
 
-<span class="cm"># -- AVL Tree ------------------------------------------------------</span>
+<span class="cm"># ── AVL Tree ──────────────────────────────────────────────────────</span>
 <span class="kw">class</span> <span class="tp">AVLTree</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self):
         self.root: Optional[<span class="tp">AVLNode</span>] = <span class="kw">None</span>
@@ -409,7 +408,7 @@ Result: balanced!</div>
     <span class="kw">def</span> <span class="mt">_update_height</span>(self, n: <span class="tp">AVLNode</span>) -> <span class="kw">None</span>:
         n.height = <span class="nm">1</span> + <span class="mt">max</span>(self.<span class="mt">_h</span>(n.left), self.<span class="mt">_h</span>(n.right))
 
-    <span class="cm"># -- Rotations ------------------------------------------------</span>
+    <span class="cm"># ── Rotations ────────────────────────────────────────────────</span>
     <span class="kw">def</span> <span class="mt">_rotate_right</span>(self, y: <span class="tp">AVLNode</span>) -> <span class="tp">AVLNode</span>:
         x  = y.left
         T2 = x.right
@@ -428,7 +427,7 @@ Result: balanced!</div>
         self.<span class="mt">_update_height</span>(y)
         <span class="kw">return</span> y
 
-    <span class="cm"># -- Balance ---------------------------------------------------</span>
+    <span class="cm"># ── Balance ───────────────────────────────────────────────────</span>
     <span class="kw">def</span> <span class="mt">_balance</span>(self, node: <span class="tp">AVLNode</span>) -> <span class="tp">AVLNode</span>:
         self.<span class="mt">_update_height</span>(node)
         bf = self.<span class="mt">_bf</span>(node)
@@ -445,7 +444,7 @@ Result: balanced!</div>
 
         <span class="kw">return</span> node
 
-    <span class="cm"># -- Insert ---------------------------------------------------</span>
+    <span class="cm"># ── Insert ───────────────────────────────────────────────────</span>
     <span class="kw">def</span> <span class="mt">insert</span>(self, val: <span class="kw">int</span>) -> <span class="kw">None</span>:
         self.root = self.<span class="mt">_insert</span>(self.root, val)
 
@@ -456,7 +455,7 @@ Result: balanced!</div>
         <span class="kw">else</span>: <span class="kw">return</span> node   <span class="cm"># Duplicate</span>
         <span class="kw">return</span> self.<span class="mt">_balance</span>(node)
 
-    <span class="cm"># -- Contains (same as plain BST) -----------------------------</span>
+    <span class="cm"># ── Contains (same as plain BST) ─────────────────────────────</span>
     <span class="kw">def</span> <span class="mt">contains</span>(self, val: <span class="kw">int</span>) -> <span class="kw">bool</span>:
         node = self.root
         <span class="kw">while</span> node:
@@ -492,95 +491,95 @@ Result: balanced!</div>
 
 <hr>
 
-<!-- ------- SECTION 7 ------- -->
-<div class="section-heading">Section 7 � Complexity Analysis</div>
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Complexity Analysis</div>
 
 <table>
     <thead>
         <tr><th>Operation</th><th>AVL Tree</th><th>Plain BST (worst)</th><th>Notes</th></tr>
     </thead>
     <tbody>
-        <tr><td>Search</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>AVL height = 1.44 log2 n</td></tr>
+        <tr><td>Search</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>AVL height ≤ 1.44 log₂ n</td></tr>
         <tr><td>Insert</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>BST insert + at most 2 rotations up the path</td></tr>
         <tr><td>Delete</td><td class="g">O(log n)</td><td class="r">O(n)</td><td>BST delete + O(log n) rebalancing passes</td></tr>
-        <tr><td>Rotations per insert</td><td class="g">At most 2</td><td>�</td><td>At most one single or double rotation</td></tr>
+        <tr><td>Rotations per insert</td><td class="g">At most 2</td><td>—</td><td>At most one single or double rotation</td></tr>
         <tr><td>Space</td><td class="o">O(n)</td><td class="g">O(n)</td><td>Height field = 1 extra int per node</td></tr>
     </tbody>
 </table>
 
 <hr>
 
-<!-- ------- SECTION 8 ------- -->
-<div class="section-heading">Section 8 � Real-World Usage</div>
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — Real-World Usage</div>
 
 <div class="realworld">
-    <strong>?? Where AVL Trees Excel:</strong> AVL trees are preferred over Red-Black trees when <em>search performance</em> is more critical than insert performance. AVL trees are <em>more strictly balanced</em> (height = 1.44 log n) than Red-Black trees (height = 2 log n), meaning searches are faster. They're used in: in-memory databases, compiler symbol tables that are built once and queried frequently, and the Windows NT kernel object manager.
+    <strong>🌍 Where AVL Trees Excel:</strong> AVL trees are preferred over Red-Black trees when <em>search performance</em> is more critical than insert performance. AVL trees are <em>more strictly balanced</em> (height ≤ 1.44 log n) than Red-Black trees (height ≤ 2 log n), meaning searches are faster. They're used in: in-memory databases, compiler symbol tables that are built once and queried frequently, and the Windows NT kernel object manager.
 </div>
 
 <div class="realworld">
-    <strong>?? AVL vs. Red-Black:</strong> Red-Black trees (Module 7B) allow slightly looser balance but require fewer rotations on insert/delete (amortized O(1) rotations vs. O(log n) for AVL). This is why most modern language standard libraries (C++ <code>std::map</code>, Java <code>TreeMap</code>, C# <code>SortedDictionary</code>) use Red-Black trees � they optimize for the "lots of inserts/deletes" workload. Use AVL when your workload is "build once, query many times."
+    <strong>🌍 AVL vs. Red-Black:</strong> Red-Black trees (Module 7B) allow slightly looser balance but require fewer rotations on insert/delete (amortized O(1) rotations vs. O(log n) for AVL). This is why most modern language standard libraries (C++ <code>std::map</code>, Java <code>TreeMap</code>, C# <code>SortedDictionary</code>) use Red-Black trees — they optimize for the "lots of inserts/deletes" workload. Use AVL when your workload is "build once, query many times."
 </div>
 
 <hr>
 
-<!-- ------- SECTION 9 ------- -->
-<div class="section-heading">Section 9 � Common Mistakes</div>
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Common Mistakes</div>
 
 <div class="warning">
-    <strong>?? Mistake 1 � Wrong height update order in rotations:</strong> Always update heights bottom-up. In a right rotation: first call <code>UpdateHeight(y)</code> (the node that moved down), then <code>UpdateHeight(x)</code> (the new root). Reversing this gives x an incorrect height because it depends on y's updated height.
+    <strong>⚠️ Mistake 1 — Wrong height update order in rotations:</strong> Always update heights bottom-up. In a right rotation: first call <code>UpdateHeight(y)</code> (the node that moved down), then <code>UpdateHeight(x)</code> (the new root). Reversing this gives x an incorrect height because it depends on y's updated height.
 </div>
 
 <div class="warning">
-    <strong>?? Mistake 2 � Not calling Balance() on the way back up:</strong> Balance must be called on EVERY ancestor of the inserted node as the recursion unwinds � not just the first unbalanced ancestor. The first rotation may fix one imbalance but higher ancestors may become unbalanced too.
+    <strong>⚠️ Mistake 2 — Not calling Balance() on the way back up:</strong> Balance must be called on EVERY ancestor of the inserted node as the recursion unwinds — not just the first unbalanced ancestor. The first rotation may fix one imbalance but higher ancestors may become unbalanced too.
 </div>
 
 <div class="warning">
-    <strong>?? Mistake 3 � Confusing LR and RL detection:</strong> LR case is when the left child is right-heavy (bf = +1). RL case is when the right child is left-heavy (bf = -1). Check the balance factor of the <em>child</em>, not the current node.
+    <strong>⚠️ Mistake 3 — Confusing LR and RL detection:</strong> LR case is when the left child is right-heavy (bf = +1). RL case is when the right child is left-heavy (bf = −1). Check the balance factor of the <em>child</em>, not the current node.
 </div>
 
 <div class="warning">
-    <strong>?? Mistake 4 � Height of null node:</strong> Always define height of null as -1 (not 0). A leaf node (height = 0) has two null children of height -1. This ensures the balance factor formula works consistently: a leaf has bf = (-1) - (-1) = 0.
+    <strong>⚠️ Mistake 4 — Height of null node:</strong> Always define height of null as −1 (not 0). A leaf node (height = 0) has two null children of height −1. This ensures the balance factor formula works consistently: a leaf has bf = (−1) − (−1) = 0.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 10 ------- -->
-<div class="section-heading">Section 10 � Check Your Understanding</div>
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section-heading">Section 10 — Check Your Understanding</div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q1. Insert 30, 20, 10 into an empty AVL tree. What rotation fires and what is the resulting root?</div>
-    <div class="quiz-meta">?? Trace the balance factors after inserting 10. What case do you see?</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+    <div class="quiz-meta">💡 Trace the balance factors after inserting 10. What case do you see?</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
     <div class="quiz-a">
-        <strong>LL case ? Right rotation ? root becomes 20.</strong><br>
-        After inserting 30, 20, 10: node 30 has bf = -2 (left-heavy). Its left child 20 has bf = -1 (also left-heavy). This is the LL case. Apply a right rotation on 30: 20 becomes the new root, 10 stays left of 20, 30 becomes right of 20. Final tree: 20 (root), left=10, right=30. All balance factors = 0.
+        <strong>LL case → Right rotation → root becomes 20.</strong><br>
+        After inserting 30, 20, 10: node 30 has bf = −2 (left-heavy). Its left child 20 has bf = −1 (also left-heavy). This is the LL case. Apply a right rotation on 30: 20 becomes the new root, 10 stays left of 20, 30 becomes right of 20. Final tree: 20 (root), left=10, right=30. All balance factors = 0.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q2. What rotation(s) fire when you insert 10, 30, 20 into an empty AVL tree?</div>
-    <div class="quiz-meta">?? After inserting 20, check the balance of node 10. Then check 30's balance factor.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+    <div class="quiz-meta">💡 After inserting 20, check the balance of node 10. Then check 30's balance factor.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
     <div class="quiz-a">
-        <strong>RL case ? Right rotation on 30, then Left rotation on 10.</strong><br>
-        After 10, 30, 20: node 10 has bf = +2 (right-heavy). Its right child 30 has bf = -1 (left-heavy). This is RL case. Step 1: right rotate 30 ? 20 moves up, 30 becomes right of 20. Step 2: left rotate 10 ? 20 becomes new root, 10 becomes left, 30 becomes right. Final: root = 20.
+        <strong>RL case → Right rotation on 30, then Left rotation on 10.</strong><br>
+        After 10, 30, 20: node 10 has bf = +2 (right-heavy). Its right child 30 has bf = −1 (left-heavy). This is RL case. Step 1: right rotate 30 → 20 moves up, 30 becomes right of 20. Step 2: left rotate 10 → 20 becomes new root, 10 becomes left, 30 becomes right. Final: root = 20.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q3. What is the maximum height of an AVL tree with 7 nodes?</div>
-    <div class="quiz-meta">?? Use the formula h = 1.44 � log2(n+2), or just think about it structurally.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+    <div class="quiz-meta">💡 Use the formula h ≤ 1.44 × log₂(n+2), or just think about it structurally.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
     <div class="quiz-a">
         <strong>Height = 2.</strong><br>
-        With 7 nodes in a perfectly balanced complete binary tree: root at level 0, 2 nodes at level 1, 4 nodes at level 2. That's 1+2+4 = 7 nodes, height = 2. Formula: ?log2(7)? = 2. In general for 7 nodes, the minimum height is ?log2(7+1)? = 3, but since we have exactly 7 = 2�-1 (perfect tree), height is exactly 2.
+        With 7 nodes in a perfectly balanced complete binary tree: root at level 0, 2 nodes at level 1, 4 nodes at level 2. That's 1+2+4 = 7 nodes, height = 2. Formula: ⌊log₂(7)⌋ = 2. In general for 7 nodes, the minimum height is ⌈log₂(7+1)⌉ = 3, but since we have exactly 7 = 2³−1 (perfect tree), height is exactly 2.
     </div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q4. After a right rotation on node Y with left child X: which node's height must be updated FIRST, and why?</div>
-    <div class="quiz-meta">?? Think about which node is now lower in the tree after the rotation.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+    <div class="quiz-meta">💡 Think about which node is now lower in the tree after the rotation.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
     <div class="quiz-a">
         <strong>Y's height must be updated first.</strong><br>
         After a right rotation, Y moves DOWN and becomes X's right child. Y's height depends on its (new) left and right children. X's height depends on Y's (updated) height. If you update X first, it sees Y's old (incorrect) height. Always update heights from the bottom up: first update the node that moved down (Y), then update the new root (X).
@@ -589,27 +588,27 @@ Result: balanced!</div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q5. You need a data structure that supports 10 million inserts (in random order) followed by 500 million searches. Should you use an AVL tree or a Red-Black tree?</div>
-    <div class="quiz-meta">?? Consider the relative search performance vs. insert performance of each tree type.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+    <div class="quiz-meta">💡 Consider the relative search performance vs. insert performance of each tree type.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
     <div class="quiz-a">
         <strong>AVL tree.</strong><br>
-        The workload is dominated by searches (500M vs. 10M inserts). AVL trees maintain stricter balance (height = 1.44 log n vs. 2 log n for Red-Black), giving faster searches. The extra rotation overhead during the 10M inserts is a one-time cost. If the workload had more inserts than searches, Red-Black would be preferable because its amortized O(1) rotation cost per insert is cheaper.
+        The workload is dominated by searches (500M vs. 10M inserts). AVL trees maintain stricter balance (height ≤ 1.44 log n vs. 2 log n for Red-Black), giving faster searches. The extra rotation overhead during the 10M inserts is a one-time cost. If the workload had more inserts than searches, Red-Black would be preferable because its amortized O(1) rotation cost per insert is cheaper.
     </div>
 </div>
 
 <br>
-<button class="mark-btn" onclick="markComplete()">? Mark Module 7A Complete</button>
-<div class="toast" id="toast">? Module 7A marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 7A Complete</button>
+<div class="toast" id="toast">✅ Module 7A marked complete!</div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>? Module 7A Complete!</strong><br><br>
+    <strong>✅ Module 7A Complete!</strong><br><br>
     You now understand: AVL balance invariant, all 4 rotation cases (LL/RR/LR/RL), height-update order,
     and why AVL trees guarantee O(log n) even for sorted input.<br><br>
-    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ? <strong>Prev:</strong> <a href="m06c_trees_practice.html">Module 6C � Trees Practice</a> &nbsp;|&nbsp;
-    ? <strong>Next:</strong> <a href="m07b_rb_trees.html">Module 7B � Red-Black Trees</a>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m06c_trees_practice.html">Module 6C — Trees Practice</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m07b_rb_trees.html">Module 7B — Red-Black Trees</a>
 </div>
     <script>var MODULE_ID = 'm07a';</script>
     <script src="../dsa.js"></script>

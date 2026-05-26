@@ -1,41 +1,40 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 19B � Interview: Trees &amp; Graphs | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 19B — Interview: Trees &amp; Graphs | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 10</div>
-    <h1>Module 19 � Part B</h1>
-    <div class="tagline">Top Interview Problems � Trees &amp; Graphs</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">15 Essential Problems � BFS/DFS � Tree Traversals � Graph Algorithms � FAANG Frequency</p>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 19 — Part B</h1>
+    <div class="tagline">Top Interview Problems — Trees &amp; Graphs</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">15 Essential Problems · BFS/DFS · Tree Traversals · Graph Algorithms · FAANG Frequency</p>
     <div class="badges">
-        <span>? Estimated Time: 3 Hours</span>
-        <span>?? FAANG Prep</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part B of Module 19</span>
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🔥 FAANG Prep</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part B of Module 19</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 10 � Module 19 � Top 50 Interview Problems:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m19a_interview_arrays.html">Arrays &amp; Strings (15 Problems)</a><br>
-    ? <strong>Part B</strong> � <em>You are here</em> � Trees &amp; Graphs (15 Problems)<br>
-    ? <strong>Part C</strong> � <a href="m19c_interview_dp.html">DP &amp; Advanced (20 Problems)</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 10 — Module 19 — Top 50 Interview Problems:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m19a_interview_arrays.html">Arrays &amp; Strings (15 Problems)</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Trees &amp; Graphs (15 Problems)<br>
+    ⬜ <strong>Part C</strong> — <a href="m19c_interview_dp.html">DP &amp; Advanced (20 Problems)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase10/m18a_patterns1.html">&larr; Module 18 &mdash; Patterns I</a>
     <a href="../phase10/m20_final_review.html">Module 20 &mdash; Final Review &rarr;</a>
 </div>
 
-<!-- ------- GROUP A: Binary Tree Fundamentals ------- -->
-<div class="section-heading">Group A � Binary Tree Fundamentals</div>
+<!-- ═══════ GROUP A: Binary Tree Fundamentals ═══════ -->
+<div class="section-heading">Group A — Binary Tree Fundamentals</div>
 
 <!-- Problem 1 -->
 <div class="problem-card">
@@ -47,9 +46,9 @@
     </div>
     <p>Invert a binary tree (swap left and right children at every node).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS / BFS</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box">Recursively swap left and right children. Base case: null ? return null. Recurse on both subtrees first, then swap.</div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Recursively swap left and right children. Base case: null → return null. Recurse on both subtrees first, then swap.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -60,7 +59,7 @@
     <span class="kw">return</span> root;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">invertTree</span>(root):
     <span class="kw">if not</span> root: <span class="kw">return None</span>
     root.left, root.right = <span class="mt">invertTree</span>(root.right), <span class="mt">invertTree</span>(root.left)
@@ -78,9 +77,9 @@
     </div>
     <p>Find the maximum depth (number of nodes along the longest root-to-leaf path).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box"><code>depth(node) = 1 + max(depth(left), depth(right))</code>. Base case: null ? 0.</div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box"><code>depth(node) = 1 + max(depth(left), depth(right))</code>. Base case: null → 0.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -88,7 +87,7 @@
 <span class="kw">public int</span> <span class="mt">MaxDepth</span>(<span class="tp">TreeNode</span> root) =&gt;
     root == <span class="kw">null</span> ? <span class="nm">0</span> : <span class="nm">1</span> + <span class="tp">Math</span>.<span class="mt">Max</span>(<span class="mt">MaxDepth</span>(root.left), <span class="mt">MaxDepth</span>(root.right));</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maxDepth</span>(root):
     <span class="kw">if not</span> root: <span class="kw">return</span> <span class="nm">0</span>
     <span class="kw">return</span> <span class="nm">1</span> + <span class="mt">max</span>(<span class="mt">maxDepth</span>(root.left), <span class="mt">maxDepth</span>(root.right))</pre></div>
@@ -105,8 +104,8 @@
     </div>
     <p>Find the length of the longest path between any two nodes (the path may not pass through the root).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS with global state</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">At each node, the diameter passing through it = depth(left) + depth(right). Track global max. Return max depth (not diameter) up the recursion.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -123,7 +122,7 @@
     <span class="mt">Dfs</span>(root); <span class="kw">return</span> best;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">diameterOfBinaryTree</span>(root):
     best = [<span class="nm">0</span>]
     <span class="kw">def</span> <span class="mt">dfs</span>(node):
@@ -145,8 +144,8 @@
     </div>
     <p>Determine if a binary tree is height-balanced (heights of subtrees differ by at most 1).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS, early termination</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Return -1 (sentinel) from DFS if subtree is unbalanced. Otherwise return height. Check both subtrees: if either returns -1, propagate -1 up. Otherwise check if |left - right| > 1.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -162,7 +161,7 @@
     <span class="kw">return</span> <span class="mt">Dfs</span>(root)!=-<span class="nm">1</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isBalanced</span>(root):
     <span class="kw">def</span> <span class="mt">dfs</span>(node):
         <span class="kw">if not</span> node: <span class="kw">return</span> <span class="nm">0</span>
@@ -183,8 +182,8 @@
     </div>
     <p>Given the roots of two binary trees, check if they are the same.</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Two trees are the same iff their roots have the same value and their left subtrees are the same and their right subtrees are the same.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -196,7 +195,7 @@
     <span class="kw">return</span> <span class="mt">IsSameTree</span>(p.left,q.left)&amp;&amp;<span class="mt">IsSameTree</span>(p.right,q.right);
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isSameTree</span>(p, q):
     <span class="kw">if not</span> p <span class="kw">and not</span> q: <span class="kw">return True</span>
     <span class="kw">if not</span> p <span class="kw">or not</span> q <span class="kw">or</span> p.val != q.val: <span class="kw">return False</span>
@@ -204,8 +203,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP B: BST Problems ------- -->
-<div class="section-heading">Group B � BST &amp; Level Order</div>
+<!-- ═══════ GROUP B: BST Problems ═══════ -->
+<div class="section-heading">Group B — BST &amp; Level Order</div>
 
 <!-- Problem 6 -->
 <div class="problem-card">
@@ -217,8 +216,8 @@
     </div>
     <p>Find the lowest common ancestor (LCA) of two nodes in a BST.</p>
     <div class="complexity-row"><span>Time: O(h)</span><span>Space: O(1)</span><span>Pattern: BST property</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">BST: if both p and q are less than current node, go left. If both greater, go right. Otherwise, current is the LCA (they split here, or one of them equals current).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -233,7 +232,7 @@
     <span class="kw">return null</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">lowestCommonAncestor</span>(root, p, q):
     <span class="kw">while</span> root:
         <span class="kw">if</span> p.val &lt; root.val <span class="kw">and</span> q.val &lt; root.val: root = root.left
@@ -252,8 +251,8 @@
     </div>
     <p>Return the level-order traversal of a binary tree (left to right, level by level).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: BFS with queue</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">BFS with a queue. At the start of each level, snapshot the current queue size. Process exactly that many nodes, add their children to the queue. Collect each level's values as a group.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -275,7 +274,7 @@
     <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">def</span> <span class="mt">levelOrder</span>(root):
     <span class="kw">if not</span> root: <span class="kw">return</span> []
@@ -301,8 +300,8 @@
     </div>
     <p>Determine if a binary tree is a valid BST.</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(h)</span><span>Pattern: DFS with bounds</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Pass min and max bounds down the recursion. Every node must satisfy <code>min < node.val < max</code>. Going left: update max to node.val. Going right: update min to node.val.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -317,7 +316,7 @@
     <span class="kw">return</span> <span class="mt">Valid</span>(root,<span class="kw">long</span>.MinValue,<span class="kw">long</span>.MaxValue);
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isValidBST</span>(root):
     <span class="kw">def</span> <span class="mt">valid</span>(node, lo, hi):
         <span class="kw">if not</span> node: <span class="kw">return True</span>
@@ -337,9 +336,9 @@
     </div>
     <p>Find the kth smallest element in a BST.</p>
     <div class="complexity-row"><span>Time: O(h+k)</span><span>Space: O(h)</span><span>Pattern: Inorder traversal</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box">Inorder traversal of BST gives elements in sorted order. Use an iterative inorder with a counter � stop when you've visited k nodes.</div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Inorder traversal of BST gives elements in sorted order. Use an iterative inorder with a counter — stop when you've visited k nodes.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -354,7 +353,7 @@
     <span class="kw">return</span> -<span class="nm">1</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">kthSmallest</span>(root, k):
     stack = []; node = root
     <span class="kw">while</span> stack <span class="kw">or</span> node:
@@ -375,8 +374,8 @@
     </div>
     <p>Given a binary tree, return the values of nodes visible when the tree is viewed from the right side.</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: BFS, last in level</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">BFS level order. For each level, the rightmost node is the visible one. Collect the last element of each BFS level.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -397,7 +396,7 @@
     <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">def</span> <span class="mt">rightSideView</span>(root):
     <span class="kw">if not</span> root: <span class="kw">return</span> []
@@ -412,8 +411,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP C: Graph Problems ------- -->
-<div class="section-heading">Group C � Graph Problems</div>
+<!-- ═══════ GROUP C: Graph Problems ═══════ -->
+<div class="section-heading">Group C — Graph Problems</div>
 
 <!-- Problem 11 -->
 <div class="problem-card">
@@ -421,12 +420,12 @@
         <span class="problem-num">#11</span>
         <span class="problem-title">Number of Islands</span>
         <span class="diff-medium">Medium</span>
-        <span style="font-size:0.85em;color:#666;">LeetCode #200 � Classic BFS/DFS</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #200 · Classic BFS/DFS</span>
     </div>
     <p>Count the number of islands (groups of connected '1's) in a 2D grid.</p>
-    <div class="complexity-row"><span>Time: O(m�n)</span><span>Space: O(m�n)</span><span>Pattern: DFS flood fill</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: DFS flood fill</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">For each unvisited '1', increment count and flood-fill (DFS or BFS) to mark all connected '1's as visited (change to '0' or use a visited set).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -445,7 +444,7 @@
     <span class="kw">return</span> count;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">numIslands</span>(grid):
     count = <span class="nm">0</span>
     <span class="kw">def</span> <span class="mt">dfs</span>(r, c):
@@ -469,8 +468,8 @@
     </div>
     <p>Deep clone an undirected graph given a reference to one of its nodes.</p>
     <div class="complexity-row"><span>Time: O(V+E)</span><span>Space: O(V)</span><span>Pattern: BFS/DFS + HashMap</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Use a hashmap from original node to cloned node. BFS/DFS the graph. When visiting a neighbor, if not cloned yet, create clone. Always use the clone from the map to avoid duplicates.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -488,7 +487,7 @@
     <span class="kw">return</span> <span class="mt">Dfs</span>(node);
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">cloneGraph</span>(node):
     <span class="kw">if not</span> node: <span class="kw">return None</span>
     clones = {}
@@ -511,8 +510,8 @@
     </div>
     <p>There are n courses. Given prerequisites, determine if it's possible to finish all courses.</p>
     <div class="complexity-row"><span>Time: O(V+E)</span><span>Space: O(V+E)</span><span>Pattern: Topological Sort / Cycle Detection</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Build a directed graph. Check for cycles using DFS with 3-color marking: white (unvisited), gray (in current path), black (fully processed). If you reach a gray node, there's a cycle.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -534,7 +533,7 @@
     <span class="kw">return true</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 <span class="kw">def</span> <span class="mt">canFinish</span>(numCourses, prerequisites):
     adj = <span class="mt">defaultdict</span>(<span class="mt">list</span>)
@@ -559,9 +558,9 @@
         <span style="font-size:0.85em;color:#666;">LeetCode #417</span>
     </div>
     <p>Find all cells where water can flow to both the Pacific and Atlantic oceans.</p>
-    <div class="complexity-row"><span>Time: O(m�n)</span><span>Space: O(m�n)</span><span>Pattern: Multi-source BFS from both oceans</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: Multi-source BFS from both oceans</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Reverse the problem: instead of flowing from cell to ocean (downhill), BFS/DFS from ocean edges uphill. Cells reachable from both Pacific edges and Atlantic edges are the answer.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -588,7 +587,7 @@
     <span class="kw">return</span> pac.<span class="mt">Intersect</span>(atl).<span class="mt">Select</span>(p=&gt;(<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;)<span class="kw">new</span>[]{p.Item1,p.Item2}).<span class="mt">ToList</span>();
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">def</span> <span class="mt">pacificAtlantic</span>(heights):
     m, n = <span class="mt">len</span>(heights), <span class="mt">len</span>(heights[<span class="nm">0</span>])
@@ -616,10 +615,10 @@
         <span style="font-size:0.85em;color:#666;">LeetCode #127</span>
     </div>
     <p>Find the minimum number of steps to transform <code>beginWord</code> to <code>endWord</code>, changing one letter at a time, where each intermediate word must exist in the word list.</p>
-    <div class="complexity-row"><span>Time: O(M��N)</span><span>Space: O(M��N)</span><span>Pattern: BFS shortest path</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box">BFS from beginWord. Neighbors of a word = all words differing by exactly one letter. Use pattern hashing: "hot" ? ["*ot", "h*t", "ho*"]. Group words by pattern for fast neighbor lookup.</div>
+    <div class="complexity-row"><span>Time: O(M²·N)</span><span>Space: O(M²·N)</span><span>Pattern: BFS shortest path</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">BFS from beginWord. Neighbors of a word = all words differing by exactly one letter. Use pattern hashing: "hot" → ["*ot", "h*t", "ho*"]. Group words by pattern for fast neighbor lookup.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -649,7 +648,7 @@
     <span class="kw">return</span> <span class="nm">0</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque, defaultdict
 <span class="kw">def</span> <span class="mt">ladderLength</span>(beginWord, endWord, wordList):
     wordSet = <span class="mt">set</span>(wordList)
@@ -669,8 +668,8 @@
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 19B Complete</button>
-<div class="toast" id="toast">? Module 19B complete! Trees &amp; Graphs mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 19B Complete</button>
+<div class="toast" id="toast">✅ Module 19B complete! Trees &amp; Graphs mastered!</div>
     <script>var MODULE_ID = 'm19b';</script>
     <script src="../dsa.js"></script>
 </body>

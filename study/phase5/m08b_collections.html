@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 8B � Dictionary, HashSet &amp; LRU Cache</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 8B — Dictionary, HashSet &amp; LRU Cache</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 5</div>
-    <h1>Module 8 � Part B</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 5</div>
+    <h1>Module 8 — Part B</h1>
     <div class="tagline">Dictionary, HashSet &amp; LRU Cache</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The hash-based collections you use every day � and the patterns that make them shine in interviews</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The hash-based collections you use every day — and the patterns that make them shine in interviews</p>
     <div class="badges">
-        <span>? Estimated Time: 1.5 Hours</span>
-        <span>?? Intermediate</span>
-        <span>?? C# + Python</span>
-        <span>?? Part B of Module 8</span>
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Intermediate</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part B of Module 8</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 8 � Hashing:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m08a_hashing.html">Hash Functions &amp; Collisions</a><br>
-    ? <strong>Part B</strong> � <em>You are here</em> � Dictionary, HashSet &amp; LRU Cache<br>
-    ? <strong>Part C</strong> � <a href="m08c_bloom_filters.html">Bloom Filters</a><br>
-    ? <strong>Part D</strong> � <a href="m08d_practice.html">Practice: 12 Problems</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 8 — Hashing:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m08a_hashing.html">Hash Functions &amp; Collisions</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Dictionary, HashSet &amp; LRU Cache<br>
+    ⬜ <strong>Part C</strong> — <a href="m08c_bloom_filters.html">Bloom Filters</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m08d_practice.html">Practice: 12 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase4/m07a_avl_trees.html">&larr; Module 7 &mdash; Advanced Trees</a>
@@ -36,28 +35,28 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents � Module 8B</h2>
+    <h2>📚 Contents — Module 8B</h2>
     <ol>
-        <li>Dictionary&lt;TKey,TValue&gt; � The Workhorse <span>� Full API, all patterns</span></li>
-        <li>HashSet&lt;T&gt; � Uniqueness &amp; Set Operations <span>� Union, Intersect, Except</span></li>
-        <li>SortedDictionary vs SortedList <span>� When order matters</span></li>
-        <li>ConcurrentDictionary � Thread Safety <span>� Atomic GetOrAdd, AddOrUpdate</span></li>
-        <li>Python dict &amp; set <span>� Insertion-ordered, set algebra</span></li>
-        <li>The Two-Sum Pattern <span>� Most common hash interview template</span></li>
-        <li>The Frequency Count Pattern <span>� Group Anagrams, Top-K</span></li>
-        <li>LRU Cache � LinkedList + Dictionary <span>� O(1) get &amp; put</span></li>
-        <li>Check Your Understanding <span>� 5 quiz questions</span></li>
+        <li>Dictionary&lt;TKey,TValue&gt; — The Workhorse <span>— Full API, all patterns</span></li>
+        <li>HashSet&lt;T&gt; — Uniqueness &amp; Set Operations <span>— Union, Intersect, Except</span></li>
+        <li>SortedDictionary vs SortedList <span>— When order matters</span></li>
+        <li>ConcurrentDictionary — Thread Safety <span>— Atomic GetOrAdd, AddOrUpdate</span></li>
+        <li>Python dict &amp; set <span>— Insertion-ordered, set algebra</span></li>
+        <li>The Two-Sum Pattern <span>— Most common hash interview template</span></li>
+        <li>The Frequency Count Pattern <span>— Group Anagrams, Top-K</span></li>
+        <li>LRU Cache — LinkedList + Dictionary <span>— O(1) get &amp; put</span></li>
+        <li>Check Your Understanding <span>— 5 quiz questions</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � Dictionary&lt;TKey,TValue&gt; � The Workhorse</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Dictionary&lt;TKey,TValue&gt; — The Workhorse</div>
 
 <p><code>Dictionary&lt;TKey,TValue&gt;</code> is .NET's built-in hash table. It is the most-used collection in C# after arrays. Under the hood it uses open addressing with linear probing (since .NET 6+, changed from chaining for better cache performance).</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">using</span> System.Linq;
@@ -66,45 +65,45 @@
 {
     <span class="kw">static void</span> <span class="mt">Main</span>()
     {
-        <span class="cm">// -- Creation -------------------------------------</span>
+        <span class="cm">// ── Creation ─────────────────────────────────────</span>
         <span class="kw">var</span> scores = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
         <span class="kw">var</span> prebuilt = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;
         {
             [<span class="st">"Alice"</span>] = <span class="nm">95</span>, [<span class="st">"Bob"</span>] = <span class="nm">87</span>, [<span class="st">"Carol"</span>] = <span class="nm">91</span>
         };
 
-        <span class="cm">// -- Add / Update ---------------------------------</span>
+        <span class="cm">// ── Add / Update ─────────────────────────────────</span>
         scores[<span class="st">"Dave"</span>] = <span class="nm">88</span>;          <span class="cm">// Add new key</span>
         scores[<span class="st">"Dave"</span>] = <span class="nm">92</span>;          <span class="cm">// Update existing key</span>
         scores.<span class="mt">Add</span>(<span class="st">"Eve"</span>, <span class="nm">79</span>);         <span class="cm">// Add (throws if key exists)</span>
         scores.<span class="mt">TryAdd</span>(<span class="st">"Eve"</span>, <span class="nm">80</span>);      <span class="cm">// Add only if not present (safe)</span>
 
-        <span class="cm">// -- Safe Lookup ----------------------------------</span>
+        <span class="cm">// ── Safe Lookup ──────────────────────────────────</span>
         <span class="kw">if</span> (scores.<span class="mt">TryGetValue</span>(<span class="st">"Dave"</span>, <span class="kw">out int</span> val))
             <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Dave: {val}"</span>);  <span class="cm">// Dave: 92</span>
 
-        <span class="cm">// -- GetValueOrDefault (no throw) -----------------</span>
+        <span class="cm">// ── GetValueOrDefault (no throw) ─────────────────</span>
         <span class="kw">int</span> frank = scores.<span class="mt">GetValueOrDefault</span>(<span class="st">"Frank"</span>, <span class="nm">0</span>);  <span class="cm">// 0 (not found)</span>
 
-        <span class="cm">// -- Increment safely (count pattern) ------------</span>
+        <span class="cm">// ── Increment safely (count pattern) ────────────</span>
         <span class="kw">string</span>[] words = { <span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span> };
         <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
         <span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> words)
             freq[w] = freq.<span class="mt">GetValueOrDefault</span>(w) + <span class="nm">1</span>;
         <span class="cm">// freq = { "the":3, "fox":1, "cat":1 }</span>
 
-        <span class="cm">// -- Remove &amp; ContainsKey -------------------------</span>
+        <span class="cm">// ── Remove &amp; ContainsKey ─────────────────────────</span>
         scores.<span class="mt">Remove</span>(<span class="st">"Eve"</span>);
         <span class="kw">bool</span> hasAlice = prebuilt.<span class="mt">ContainsKey</span>(<span class="st">"Alice"</span>);  <span class="cm">// true</span>
 
-        <span class="cm">// -- Iteration ------------------------------------</span>
+        <span class="cm">// ── Iteration ────────────────────────────────────</span>
         <span class="kw">foreach</span> (<span class="kw">var</span> kvp <span class="kw">in</span> prebuilt)
             <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"{kvp.Key}: {kvp.Value}"</span>);
 
         <span class="kw">foreach</span> (<span class="kw">var</span> (key, score) <span class="kw">in</span> prebuilt)  <span class="cm">// Deconstruct</span>
             <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"{key} scored {score}"</span>);
 
-        <span class="cm">// -- LINQ on Dictionary ---------------------------</span>
+        <span class="cm">// ── LINQ on Dictionary ───────────────────────────</span>
         <span class="kw">var</span> topScorer = prebuilt.<span class="mt">MaxBy</span>(kvp =&gt; kvp.Value);
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"Top: {topScorer.Key} = {topScorer.Value}"</span>);
 
@@ -114,7 +113,7 @@
             .<span class="mt">ToList</span>();
         <span class="cm">// highScorers = ["Alice", "Carol"]</span>
 
-        <span class="cm">/* -- Output --
+        <span class="cm">/* ── Output ──
         Dave: 92
         Alice: 95
         Bob: 87
@@ -131,7 +130,7 @@
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre class="python">
-<span class="cm"># -- dict basics -----------------------------------------</span>
+<span class="cm"># ── dict basics ─────────────────────────────────────────</span>
 scores = {}
 prebuilt = {<span class="st">"Alice"</span>: <span class="nm">95</span>, <span class="st">"Bob"</span>: <span class="nm">87</span>, <span class="st">"Carol"</span>: <span class="nm">91</span>}
 
@@ -140,7 +139,7 @@ scores[<span class="st">"Dave"</span>] = <span class="nm">88</span>             
 scores[<span class="st">"Dave"</span>] = <span class="nm">92</span>              <span class="cm"># update existing key</span>
 scores.<span class="mt">setdefault</span>(<span class="st">"Eve"</span>, <span class="nm">79</span>)     <span class="cm"># add only if absent (safe)</span>
 
-<span class="cm"># Safe lookup � no KeyError</span>
+<span class="cm"># Safe lookup — no KeyError</span>
 val = scores.<span class="mt">get</span>(<span class="st">"Frank"</span>, <span class="nm">0</span>)      <span class="cm"># 0 (not found)</span>
 
 <span class="cm"># Increment pattern (word frequency)</span>
@@ -174,14 +173,14 @@ high_scorers = [k <span class="kw">for</span> k, v <span class="kw">in</span> pr
 
 <hr>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � HashSet&lt;T&gt; � Uniqueness &amp; Set Operations</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — HashSet&lt;T&gt; — Uniqueness &amp; Set Operations</div>
 
-<p><code>HashSet&lt;T&gt;</code> is a hash table that stores only keys � no values. Its primary use: membership testing in O(1), and set algebra (union, intersection, difference). Every element is unique; duplicates are silently ignored.</p>
+<p><code>HashSet&lt;T&gt;</code> is a hash table that stores only keys — no values. Its primary use: membership testing in O(1), and set algebra (union, intersection, difference). Every element is unique; duplicates are silently ignored.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System.Collections.Generic;
 
 <span class="kw">class</span> <span class="tp">Program</span>
@@ -191,11 +190,11 @@ high_scorers = [k <span class="kw">for</span> k, v <span class="kw">in</span> pr
         <span class="kw">var</span> setA = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span> };
         <span class="kw">var</span> setB = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span> };
 
-        <span class="cm">// -- Membership (O(1)) ----------------------------</span>
+        <span class="cm">// ── Membership (O(1)) ────────────────────────────</span>
         <span class="kw">bool</span> has3 = setA.<span class="mt">Contains</span>(<span class="nm">3</span>);   <span class="cm">// true</span>
-        setA.<span class="mt">Add</span>(<span class="nm">3</span>);                     <span class="cm">// false � already exists</span>
+        setA.<span class="mt">Add</span>(<span class="nm">3</span>);                     <span class="cm">// false — already exists</span>
 
-        <span class="cm">// -- Set Algebra (modifies setA in-place) ---------</span>
+        <span class="cm">// ── Set Algebra (modifies setA in-place) ─────────</span>
         <span class="kw">var</span> union  = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(setA); union.<span class="mt">UnionWith</span>(setB);
         <span class="cm">// union = {1,2,3,4,5,6,7}</span>
 
@@ -208,17 +207,17 @@ high_scorers = [k <span class="kw">for</span> k, v <span class="kw">in</span> pr
         <span class="kw">var</span> symDiff = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(setA); symDiff.<span class="mt">SymmetricExceptWith</span>(setB);
         <span class="cm">// symDiff = {1,2,6,7}  (in A or B, but not both)</span>
 
-        <span class="cm">// -- Subset / Superset Checks ---------------------</span>
+        <span class="cm">// ── Subset / Superset Checks ─────────────────────</span>
         <span class="kw">var</span> small = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">3</span>, <span class="nm">4</span> };
         <span class="kw">bool</span> isSub = small.<span class="mt">IsSubsetOf</span>(setA);       <span class="cm">// true (3,4 are in setA)</span>
         <span class="kw">bool</span> isSuper = setA.<span class="mt">IsSupersetOf</span>(small);   <span class="cm">// true</span>
         <span class="kw">bool</span> disjoint = setA.<span class="mt">Overlaps</span>(<span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">8</span>, <span class="nm">9</span> });  <span class="cm">// false</span>
 
-        <span class="cm">// -- Classic pattern: deduplicate an array --------</span>
+        <span class="cm">// ── Classic pattern: deduplicate an array ────────</span>
         <span class="kw">int</span>[] nums = { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">3</span>, <span class="nm">4</span> };
         <span class="kw">var</span> unique = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(nums);  <span class="cm">// {1,2,3,4}</span>
 
-        <span class="cm">// -- Classic pattern: check duplicates O(n) ------</span>
+        <span class="cm">// ── Classic pattern: check duplicates O(n) ──────</span>
         <span class="kw">static bool</span> <span class="mt">HasDuplicate</span>(<span class="kw">int</span>[] arr)
         {
             <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
@@ -227,8 +226,8 @@ high_scorers = [k <span class="kw">for</span> k, v <span class="kw">in</span> pr
             <span class="kw">return false</span>;
         }
 
-        <span class="cm">/* -- Output --
-        (No direct output � demonstrates operations above)
+        <span class="cm">/* ── Output ──
+        (No direct output — demonstrates operations above)
         */</span>
     }
 }</pre>
@@ -242,7 +241,7 @@ set_b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">
 
 <span class="cm"># Membership O(1)</span>
 has3 = <span class="nm">3</span> <span class="kw">in</span> set_a               <span class="cm"># True</span>
-set_a.<span class="mt">add</span>(<span class="nm">3</span>)                      <span class="cm"># no-op � already exists</span>
+set_a.<span class="mt">add</span>(<span class="nm">3</span>)                      <span class="cm"># no-op — already exists</span>
 
 <span class="cm"># Set algebra</span>
 union    = set_a | set_b           <span class="cm"># {1,2,3,4,5,6,7}</span>
@@ -268,18 +267,18 @@ unique = <span class="mt">set</span>(nums)                 <span class="cm"># {1
         seen.<span class="mt">add</span>(x)
     <span class="kw">return False</span>
 
-<span class="cm"># frozenset � immutable, hashable (can be used as dict key)</span>
+<span class="cm"># frozenset — immutable, hashable (can be used as dict key)</span>
 fs = <span class="mt">frozenset</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
 
-<span class="cm"># Output: (no direct output � demonstrates operations above)</span></pre>
+<span class="cm"># Output: (no direct output — demonstrates operations above)</span></pre>
 </div>
 
 <hr>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � SortedDictionary vs SortedList</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — SortedDictionary vs SortedList</div>
 
-<p>When you need keys in sorted order, .NET offers two choices � both using Red-Black Trees internally, not hash tables:</p>
+<p>When you need keys in sorted order, .NET offers two choices — both using Red-Black Trees internally, not hash tables:</p>
 
 <table>
     <thead>
@@ -288,7 +287,7 @@ fs = <span class="mt">frozenset</span>([<span class="nm">1</span>, <span class="
     <tbody>
         <tr><td>Underlying structure</td><td>Red-Black Tree</td><td>Two sorted arrays</td></tr>
         <tr><td>Lookup by key</td><td class="g">O(log n)</td><td class="g">O(log n) binary search</td></tr>
-        <tr><td>Insert / Delete</td><td class="g">O(log n)</td><td class="r">O(n) � array shift</td></tr>
+        <tr><td>Insert / Delete</td><td class="g">O(log n)</td><td class="r">O(n) — array shift</td></tr>
         <tr><td>Index access (by position)</td><td class="r">Not supported</td><td class="g">O(1)</td></tr>
         <tr><td>Memory</td><td class="r">Higher (tree nodes)</td><td class="g">Lower (arrays)</td></tr>
         <tr><td>Best for</td><td>Frequent inserts/deletes</td><td>Mostly read, sorted index access</td></tr>
@@ -296,35 +295,35 @@ fs = <span class="mt">frozenset</span>([<span class="nm">1</span>, <span class="
 </table>
 
 <div class="tip">
-    <strong>?? When to choose:</strong> If you frequently add/remove keys from a sorted collection, use <code>SortedDictionary</code>. If the collection is built once and mostly read (and you need positional access), use <code>SortedList</code>. Neither is a hash table � they live in O(log n) land, not O(1).
+    <strong>💡 When to choose:</strong> If you frequently add/remove keys from a sorted collection, use <code>SortedDictionary</code>. If the collection is built once and mostly read (and you need positional access), use <code>SortedList</code>. Neither is a hash table — they live in O(log n) land, not O(1).
 </div>
 
 <hr>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � ConcurrentDictionary � Thread Safety</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — ConcurrentDictionary — Thread Safety</div>
 
 <p><code>Dictionary&lt;TKey,TValue&gt;</code> is <strong>not thread-safe</strong>. Concurrent reads are safe, but concurrent writes corrupt the internal state. For multi-threaded code, use <code>ConcurrentDictionary&lt;TKey,TValue&gt;</code>, which provides atomic operations without requiring external locks.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System.Collections.Concurrent;
 
 <span class="kw">var</span> cache = <span class="kw">new</span> <span class="tp">ConcurrentDictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
 
-<span class="cm">// GetOrAdd � atomic "get if present, compute and add if absent"</span>
+<span class="cm">// GetOrAdd — atomic "get if present, compute and add if absent"</span>
 <span class="kw">int</span> v1 = cache.<span class="mt">GetOrAdd</span>(<span class="st">"x"</span>, key =&gt; <span class="nm">42</span>);  <span class="cm">// adds and returns 42</span>
 <span class="kw">int</span> v2 = cache.<span class="mt">GetOrAdd</span>(<span class="st">"x"</span>, key =&gt; <span class="nm">99</span>);  <span class="cm">// returns 42 (already existed)</span>
 
-<span class="cm">// AddOrUpdate � atomic "add if absent, update if present"</span>
+<span class="cm">// AddOrUpdate — atomic "add if absent, update if present"</span>
 cache.<span class="mt">AddOrUpdate</span>(
     key:          <span class="st">"counter"</span>,
     addValue:     <span class="nm">1</span>,                    <span class="cm">// initial value if new</span>
     updateValueFactory: (k, old) =&gt; old + <span class="nm">1</span>  <span class="cm">// increment if exists</span>
 );
 
-<span class="cm">// TryUpdate � atomic compare-and-swap</span>
+<span class="cm">// TryUpdate — atomic compare-and-swap</span>
 cache.<span class="mt">TryUpdate</span>(<span class="st">"x"</span>, newValue: <span class="nm">100</span>, comparisonValue: <span class="nm">42</span>);
 <span class="cm">// Only updates if current value == 42 (prevents lost updates)</span>
 
@@ -348,7 +347,7 @@ cache.<span class="mt">TryUpdate</span>(<span class="st">"x"</span>, newValue: <
 cache = {}
 lock  = Lock()
 
-<span class="cm"># GetOrAdd equivalent � atomic "get if present, add if absent"</span>
+<span class="cm"># GetOrAdd equivalent — atomic "get if present, add if absent"</span>
 <span class="kw">def</span> <span class="mt">get_or_add</span>(d, key, factory):
     <span class="kw">with</span> lock:
         <span class="kw">if</span> key <span class="kw">not in</span> d: d[key] = <span class="mt">factory</span>(key)
@@ -357,7 +356,7 @@ lock  = Lock()
 v1 = <span class="mt">get_or_add</span>(cache, <span class="st">"x"</span>, <span class="kw">lambda</span> k: <span class="nm">42</span>)  <span class="cm"># adds 42</span>
 v2 = <span class="mt">get_or_add</span>(cache, <span class="st">"x"</span>, <span class="kw">lambda</span> k: <span class="nm">99</span>)  <span class="cm"># returns 42 (already exists)</span>
 
-<span class="cm"># AddOrUpdate equivalent � atomic increment</span>
+<span class="cm"># AddOrUpdate equivalent — atomic increment</span>
 freq = defaultdict(<span class="kw">int</span>)
 <span class="kw">def</span> <span class="mt">increment</span>(key):
     <span class="kw">with</span> lock: freq[key] += <span class="nm">1</span>
@@ -372,8 +371,8 @@ ts = [threading.<span class="tp">Thread</span>(target=increment, args=(w,)) <spa
 
 <hr>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � Python dict &amp; set</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Python dict &amp; set</div>
 
 <p>Python's <code>dict</code> is a hash table (open addressing with pseudorandom probing). Since Python 3.7, it also preserves <strong>insertion order</strong>. Python's <code>set</code> is the equivalent of <code>HashSet&lt;T&gt;</code>.</p>
 
@@ -386,13 +385,13 @@ ts = [threading.<span class="tp">Thread</span>(target=increment, args=(w,)) <spa
 <span class="kw">using</span> System.Linq;
 <span class="kw">using</span> System.Collections.Immutable;
 
-<span class="cm">// defaultdict equivalent � GetValueOrDefault + auto-init</span>
+<span class="cm">// defaultdict equivalent — GetValueOrDefault + auto-init</span>
 <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
 <span class="kw">foreach</span> (<span class="kw">var</span> w <span class="kw">in</span> <span class="kw">new</span>[] { <span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span> })
     freq[w] = freq.<span class="mt">GetValueOrDefault</span>(w) + <span class="nm">1</span>;
 <span class="cm">// freq = { "the":3, "fox":1, "cat":1 }</span>
 
-<span class="cm">// Counter equivalent � LINQ GroupBy</span>
+<span class="cm">// Counter equivalent — LINQ GroupBy</span>
 <span class="kw">var</span> words = <span class="kw">new</span>[] { <span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span> };
 <span class="kw">var</span> counter = words.<span class="mt">GroupBy</span>(w =&gt; w).<span class="mt">ToDictionary</span>(g =&gt; g.Key, g =&gt; g.<span class="mt">Count</span>());
 
@@ -400,21 +399,21 @@ ts = [threading.<span class="tp">Thread</span>(target=increment, args=(w,)) <spa
 <span class="kw">var</span> top2 = counter.<span class="mt">OrderByDescending</span>(kv =&gt; kv.Value).<span class="mt">Take</span>(<span class="nm">2</span>).<span class="mt">ToList</span>();
 <span class="cm">// [("the",3), ("fox",1)]</span>
 
-<span class="cm">// OrderedDict � Dictionary preserves insertion order since .NET 5+</span>
+<span class="cm">// OrderedDict — Dictionary preserves insertion order since .NET 5+</span>
 <span class="kw">var</span> ordered = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;();
 ordered[<span class="st">"first"</span>]  = <span class="nm">1</span>; ordered[<span class="st">"second"</span>] = <span class="nm">2</span>; ordered[<span class="st">"third"</span>]  = <span class="nm">3</span>;
 <span class="cm">// Iterates in insertion order: first, second, third</span>
 
-<span class="cm">// frozenset equivalent � ImmutableHashSet (System.Collections.Immutable)</span>
+<span class="cm">// frozenset equivalent — ImmutableHashSet (System.Collections.Immutable)</span>
 <span class="kw">var</span> frozen = <span class="tp">ImmutableHashSet</span>.<span class="mt">Create</span>(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>);
-<span class="kw">bool</span> has2  = frozen.<span class="mt">Contains</span>(<span class="nm">2</span>);   <span class="cm">// true � immutable, safe for dict keys</span></pre>
+<span class="kw">bool</span> has2  = frozen.<span class="mt">Contains</span>(<span class="nm">2</span>);   <span class="cm">// true — immutable, safe for dict keys</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, Counter, OrderedDict
 
-<span class="cm"># -- dict basics -----------------------------------------</span>
+<span class="cm"># ── dict basics ─────────────────────────────────────────</span>
 scores = {<span class="st">"Alice"</span>: <span class="nm">95</span>, <span class="st">"Bob"</span>: <span class="nm">87</span>}
 scores[<span class="st">"Carol"</span>] = <span class="nm">91</span>       <span class="cm"># add</span>
 scores[<span class="st">"Alice"</span>] = <span class="nm">97</span>       <span class="cm"># update</span>
@@ -425,17 +424,17 @@ del scores[<span class="st">"Bob"</span>]           <span class="cm"># remove</s
 <span class="kw">for</span> k, v <span class="kw">in</span> scores.<span class="mt">items</span>():
     <span class="mt">print</span>(f<span class="st">"{k}: {v}"</span>)
 
-<span class="cm"># -- defaultdict � never KeyError ------------------------</span>
+<span class="cm"># ── defaultdict — never KeyError ────────────────────────</span>
 freq = defaultdict(<span class="kw">int</span>)       <span class="cm"># default value = 0</span>
 <span class="kw">for</span> w <span class="kw">in</span> [<span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>]:
     freq[w] += <span class="nm">1</span>              <span class="cm"># no KeyError on first access</span>
 
-<span class="cm"># -- Counter � frequency counting in one line ------------</span>
+<span class="cm"># ── Counter — frequency counting in one line ────────────</span>
 words = [<span class="st">"the"</span>, <span class="st">"fox"</span>, <span class="st">"the"</span>, <span class="st">"cat"</span>, <span class="st">"the"</span>]
 cnt = Counter(words)           <span class="cm"># Counter({"the":3, "fox":1, "cat":1})</span>
 top2 = cnt.<span class="mt">most_common</span>(<span class="nm">2</span>)    <span class="cm"># [("the",3), ("fox",1)]</span>
 
-<span class="cm"># -- set operations ---------------------------------------</span>
+<span class="cm"># ── set operations ───────────────────────────────────────</span>
 a = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>}
 b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>}
 <span class="mt">print</span>(a | b)   <span class="cm"># union:        {1,2,3,4,5,6}</span>
@@ -443,7 +442,7 @@ b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</s
 <span class="mt">print</span>(a - b)   <span class="cm"># difference:   {1,2}</span>
 <span class="mt">print</span>(a ^ b)   <span class="cm"># sym. diff:    {1,2,5,6}</span>
 
-<span class="cm"># frozenset � immutable, hashable (can be dict key)</span>
+<span class="cm"># frozenset — immutable, hashable (can be dict key)</span>
 fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
 
 <span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
@@ -459,19 +458,19 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
 
 <hr>
 
-<!-- ------- SECTION 6 ------- -->
-<div class="section-heading">Section 6 � The Two-Sum Pattern</div>
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — The Two-Sum Pattern</div>
 
-<p>The most fundamental hash table interview pattern: replace an O(n�) nested-loop search with O(n) by storing "what we've seen" in a hash map. For each element, check if its complement already exists in the map.</p>
+<p>The most fundamental hash table interview pattern: replace an O(n²) nested-loop search with O(n) by storing "what we've seen" in a hash map. For each element, check if its complement already exists in the map.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre><span class="cm">// Two Sum � return indices of two numbers that add to target</span>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Two Sum — return indices of two numbers that add to target</span>
 <span class="cm">// O(n) time, O(n) space</span>
 <span class="kw">static int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
 {
-    <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();  <span class="cm">// value ? index</span>
+    <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();  <span class="cm">// value → index</span>
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; nums.Length; i++)
     {
         <span class="kw">int</span> complement = target - nums[i];
@@ -482,7 +481,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
     <span class="kw">return</span> <span class="tp">Array</span>.<span class="mt">Empty</span>&lt;<span class="kw">int</span>&gt;();
 }
 
-<span class="cm">// Two Sum II � sorted array variant (two pointers, O(1) space)</span>
+<span class="cm">// Two Sum II — sorted array variant (two pointers, O(1) space)</span>
 <span class="kw">static int</span>[] <span class="mt">TwoSumSorted</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
 {
     <span class="kw">int</span> lo = <span class="nm">0</span>, hi = nums.Length - <span class="nm">1</span>;
@@ -503,7 +502,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
         <span class="kw">var</span> result = <span class="mt">TwoSum</span>(<span class="kw">new</span>[] { <span class="nm">2</span>, <span class="nm">7</span>, <span class="nm">11</span>, <span class="nm">15</span> }, <span class="nm">9</span>);
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>($<span class="st">"[{result[0]}, {result[1]}]"</span>);  <span class="cm">// [0, 1]</span>
 
-        <span class="cm">/* -- Output --
+        <span class="cm">/* ── Output ──
         [0, 1]
         */</span>
     }
@@ -513,9 +512,9 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre class="python">
-<span class="cm"># Two Sum � O(n) time, O(n) space</span>
+<span class="cm"># Two Sum — O(n) time, O(n) space</span>
 <span class="kw">def</span> <span class="mt">two_sum</span>(nums, target):
-    seen = {}                       <span class="cm"># value ? index</span>
+    seen = {}                       <span class="cm"># value → index</span>
     <span class="kw">for</span> i, x <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
         complement = target - x
         <span class="kw">if</span> complement <span class="kw">in</span> seen:
@@ -523,7 +522,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
         seen[x] = i
     <span class="kw">return</span> []
 
-<span class="cm"># Two Sum II � sorted array variant (two pointers, O(1) space)</span>
+<span class="cm"># Two Sum II — sorted array variant (two pointers, O(1) space)</span>
 <span class="kw">def</span> <span class="mt">two_sum_sorted</span>(nums, target):
     lo, hi = <span class="nm">0</span>, <span class="mt">len</span>(nums) - <span class="nm">1</span>
     <span class="kw">while</span> lo &lt; hi:
@@ -541,22 +540,22 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
 
 <hr>
 
-<!-- ------- SECTION 7 ------- -->
-<div class="section-heading">Section 7 � The Frequency Count Pattern</div>
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — The Frequency Count Pattern</div>
 
 <p>Count occurrences of each element to solve grouping and top-k problems. This covers a huge class of interview questions: Group Anagrams, Top K Frequent Elements, Valid Anagram, and more.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">using</span> System.Linq;
 
 <span class="kw">class</span> <span class="tp">Program</span>
 {
-    <span class="cm">// Group Anagrams � ["eat","tea","tan","ate","nat","bat"]</span>
-    <span class="cm">// ? [["eat","tea","ate"], ["tan","nat"], ["bat"]]</span>
+    <span class="cm">// Group Anagrams — ["eat","tea","tan","ate","nat","bat"]</span>
+    <span class="cm">// → [["eat","tea","ate"], ["tan","nat"], ["bat"]]</span>
     <span class="kw">static</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">GroupAnagrams</span>(<span class="kw">string</span>[] strs)
     {
         <span class="kw">var</span> groups = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
@@ -597,7 +596,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
         <span class="kw">var</span> top = <span class="mt">TopKFrequent</span>(<span class="kw">new</span>[] { <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">2</span>, <span class="nm">3</span> }, <span class="nm">2</span>);
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">","</span>, top));
 
-        <span class="cm">/* -- Output --
+        <span class="cm">/* ── Output ──
         eat,tea,ate
         tan,nat
         bat
@@ -620,7 +619,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
         groups[key].<span class="mt">append</span>(s)
     <span class="kw">return</span> <span class="mt">list</span>(groups.<span class="mt">values</span>())
 
-<span class="cm"># Top K Frequent Elements � Counter.most_common is O(n log k)</span>
+<span class="cm"># Top K Frequent Elements — Counter.most_common is O(n log k)</span>
 <span class="kw">def</span> <span class="mt">top_k_frequent</span>(nums, k):
     <span class="kw">return</span> [x <span class="kw">for</span> x, _ <span class="kw">in</span> Counter(nums).<span class="mt">most_common</span>(k)]
 
@@ -638,14 +637,14 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
 
 <hr>
 
-<!-- ------- SECTION 8 ------- -->
-<div class="section-heading">Section 8 � LRU Cache: LinkedList + Dictionary</div>
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — LRU Cache: LinkedList + Dictionary</div>
 
 <p>The LRU (Least Recently Used) Cache is the most famous hash table interview problem. It combines a <code>Dictionary</code> for O(1) lookup with a <code>LinkedList</code> for O(1) eviction order maintenance. Both languages below implement the same O(1) get and O(1) put.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">using</span> System.Collections.Generic;
 
 <span class="kw">public class</span> <span class="tp">LRUCache</span>
@@ -664,7 +663,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
     <span class="kw">public int</span> <span class="mt">Get</span>(<span class="kw">int</span> key)
     {
         <span class="kw">if</span> (!_map.<span class="mt">TryGetValue</span>(key, <span class="kw">out var</span> node)) <span class="kw">return</span> -<span class="nm">1</span>;
-        _list.<span class="mt">Remove</span>(node);       <span class="cm">// O(1) � have the node reference</span>
+        _list.<span class="mt">Remove</span>(node);       <span class="cm">// O(1) — have the node reference</span>
         _list.<span class="mt">AddFirst</span>(node);     <span class="cm">// Move to front (most recently used)</span>
         <span class="kw">return</span> node.Value.val;
     }
@@ -693,13 +692,13 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
     {
         <span class="kw">var</span> lru = <span class="kw">new</span> <span class="tp">LRUCache</span>(<span class="nm">3</span>);
         lru.<span class="mt">Put</span>(<span class="nm">1</span>, <span class="nm">10</span>); lru.<span class="mt">Put</span>(<span class="nm">2</span>, <span class="nm">20</span>); lru.<span class="mt">Put</span>(<span class="nm">3</span>, <span class="nm">30</span>);
-        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">1</span>));   <span class="cm">// 10 � moves key 1 to front</span>
+        <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">1</span>));   <span class="cm">// 10 — moves key 1 to front</span>
         lru.<span class="mt">Put</span>(<span class="nm">4</span>, <span class="nm">40</span>);                   <span class="cm">// evicts key 2 (LRU)</span>
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">2</span>));   <span class="cm">// -1 (evicted)</span>
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">3</span>));   <span class="cm">// 30</span>
         <span class="tp">Console</span>.<span class="mt">WriteLine</span>(lru.<span class="mt">Get</span>(<span class="nm">4</span>));   <span class="cm">// 40</span>
 
-        <span class="cm">/* -- Output --
+        <span class="cm">/* ── Output ──
         10
         -1
         30
@@ -711,7 +710,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> OrderedDict
 
 <span class="kw">class</span> <span class="tp">LRUCache</span>:
@@ -723,7 +722,7 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
     <span class="kw">def</span> <span class="mt">get</span>(<span class="tp">self</span>, key: <span class="kw">int</span>) -> <span class="kw">int</span>:
         <span class="kw">if</span> key <span class="kw">not in</span> <span class="tp">self</span>._cache:
             <span class="kw">return</span> -<span class="nm">1</span>
-        <span class="tp">self</span>._cache.<span class="mt">move_to_end</span>(key)  <span class="cm"># O(1) � mark as most recently used</span>
+        <span class="tp">self</span>._cache.<span class="mt">move_to_end</span>(key)  <span class="cm"># O(1) — mark as most recently used</span>
         <span class="kw">return</span> <span class="tp">self</span>._cache[key]
 
     <span class="kw">def</span> <span class="mt">put</span>(<span class="tp">self</span>, key: <span class="kw">int</span>, value: <span class="kw">int</span>) -> <span class="kw">None</span>:
@@ -749,62 +748,62 @@ fs = frozenset([<span class="nm">1</span>, <span class="nm">2</span>, <span clas
 </div>
 
 <div class="realworld">
-    <strong>?? Real-World � LRU Everywhere:</strong> Browser tab history, CPU L1/L2 caches, database buffer pools (PostgreSQL, MySQL), operating system page replacement, CDN edge caches � all use LRU or a variant of it. LeetCode problem #146 (LRU Cache) is one of the most frequently asked in system design interviews at FAANG companies.
+    <strong>🌍 Real-World — LRU Everywhere:</strong> Browser tab history, CPU L1/L2 caches, database buffer pools (PostgreSQL, MySQL), operating system page replacement, CDN edge caches — all use LRU or a variant of it. LeetCode problem #146 (LRU Cache) is one of the most frequently asked in system design interviews at FAANG companies.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 9 ------- -->
-<div class="section-heading">Section 9 � Check Your Understanding</div>
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Check Your Understanding</div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q1. You call <code>dict[key] = value</code> when the key already exists. What happens, and how does it differ from <code>dict.Add(key, value)</code>?</div>
     <div class="quiz-meta">Hint: One throws, one doesn't.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
-    <div class="quiz-a">The indexer <code>dict[key] = value</code> is an <strong>upsert</strong> � it adds the key if absent, or silently updates the value if the key already exists. <code>dict.Add(key, value)</code> throws <code>ArgumentException</code> if the key already exists. Use <code>Add</code> when you want to ensure you're only inserting new keys (fail-fast). Use the indexer when you want to set a value regardless.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">The indexer <code>dict[key] = value</code> is an <strong>upsert</strong> — it adds the key if absent, or silently updates the value if the key already exists. <code>dict.Add(key, value)</code> throws <code>ArgumentException</code> if the key already exists. Use <code>Add</code> when you want to ensure you're only inserting new keys (fail-fast). Use the indexer when you want to set a value regardless.</div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q2. Why does <code>HashSet&lt;T&gt;.Add()</code> return a <code>bool</code>? How is this useful?</div>
     <div class="quiz-meta">Hint: It returns false when the element already exists.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
     <div class="quiz-a"><code>Add()</code> returns <code>true</code> if the element was newly inserted, <code>false</code> if it was already present. This lets you detect duplicates in a single operation: <code>if (!seen.Add(x)) return true; // duplicate found</code>. It replaces the two-step pattern of <code>Contains() + Add()</code> with a single O(1) call, both checking membership and inserting atomically.</div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q3. In the LRU cache implementation, why do we store the full <code>(key, value)</code> tuple in the LinkedList nodes instead of just the value?</div>
     <div class="quiz-meta">Hint: Think about what happens during eviction.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
-    <div class="quiz-a">During eviction, we remove the <em>last</em> node from the LinkedList (the LRU item). We then need to remove that same key from the Dictionary. If the node only stored the value, we would not know which key to delete from the Dictionary � we'd have to search for it (O(n)). By storing the key in the node, we can do <code>map.Remove(lruNode.Value.key)</code> in O(1) without any search.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">During eviction, we remove the <em>last</em> node from the LinkedList (the LRU item). We then need to remove that same key from the Dictionary. If the node only stored the value, we would not know which key to delete from the Dictionary — we'd have to search for it (O(n)). By storing the key in the node, we can do <code>map.Remove(lruNode.Value.key)</code> in O(1) without any search.</div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q4. <code>GroupAnagrams</code> uses a sorted string as the dictionary key. What is the time complexity of the full algorithm for n strings each of length k?</div>
     <div class="quiz-meta">Hint: Count the sorting cost per string.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
-    <div class="quiz-a">For each of the n strings, we sort its k characters: O(k log k) per sort. Total: <strong>O(n � k log k)</strong>. The dictionary operations are O(k) per string (to hash a key of length k), adding O(nk) which is dominated by the sort. Space: O(nk) for all keys + values.</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a">For each of the n strings, we sort its k characters: O(k log k) per sort. Total: <strong>O(n · k log k)</strong>. The dictionary operations are O(k) per string (to hash a key of length k), adding O(nk) which is dominated by the sort. Space: O(nk) for all keys + values.</div>
 </div>
 
 <div class="quiz-block">
     <div class="quiz-q">Q5. When should you choose <code>ConcurrentDictionary</code> over <code>Dictionary</code> with a <code>lock</code>?</div>
     <div class="quiz-meta">Hint: Think about fine-grained vs. coarse-grained locking.</div>
-    <button class="quiz-btn" onclick="toggleAnswer(this)">?? Show Answer</button>
-    <div class="quiz-a"><code>ConcurrentDictionary</code> uses <strong>stripe-based locking</strong> � it divides the internal array into segments, each with its own lock. Multiple threads can write to different segments simultaneously. A manual <code>lock</code> around a <code>Dictionary</code> uses a single, coarse-grained lock that serialises ALL threads. Choose <code>ConcurrentDictionary</code> when: (1) you have high concurrency with many threads, (2) writes are common, and (3) you need atomic compound operations like <code>GetOrAdd</code>. Use a manual lock when you need atomicity across multiple dictionary operations as a unit (e.g., read-then-write logic that must be atomic).</div>
+    <button class="quiz-btn" onclick="toggleAnswer(this)">💡 Show Answer</button>
+    <div class="quiz-a"><code>ConcurrentDictionary</code> uses <strong>stripe-based locking</strong> — it divides the internal array into segments, each with its own lock. Multiple threads can write to different segments simultaneously. A manual <code>lock</code> around a <code>Dictionary</code> uses a single, coarse-grained lock that serialises ALL threads. Choose <code>ConcurrentDictionary</code> when: (1) you have high concurrency with many threads, (2) writes are common, and (3) you need atomic compound operations like <code>GetOrAdd</code>. Use a manual lock when you need atomicity across multiple dictionary operations as a unit (e.g., read-then-write logic that must be atomic).</div>
 </div>
 
 <hr>
 
 <div class="nav-box">
-    <strong>? Module 8B Complete!</strong><br><br>
+    <strong>✅ Module 8B Complete!</strong><br><br>
     You now know: Dictionary&lt;K,V&gt; full API, HashSet set operations, ConcurrentDictionary atomic ops,
     Python dict/set/Counter/defaultdict, Two-Sum pattern, Frequency Count pattern, and LRU Cache implementation.<br><br>
-    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ? <strong>Prev:</strong> <a href="m08a_hashing.html">Module 8A � Hash Functions &amp; Collisions</a> &nbsp;|&nbsp;
-    ? <strong>Next:</strong> <a href="m08c_bloom_filters.html">Module 8C � Bloom Filters</a>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m08a_hashing.html">Module 8A — Hash Functions &amp; Collisions</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m08c_bloom_filters.html">Module 8C — Bloom Filters</a>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark as Complete</button>
-<div class="toast" id="toast">? Module 8B marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark as Complete</button>
+<div class="toast" id="toast">✅ Module 8B marked complete!</div>
     <script>var MODULE_ID = 'm08b';</script>
     <script src="../dsa.js"></script>
 </body>

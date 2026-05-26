@@ -1,68 +1,67 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 10F � Max Flow Algorithms | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 10F — Max Flow Algorithms | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
-    <h1>Module 10 � Part F</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 10 — Part F</h1>
     <div class="tagline">Max Flow Algorithms</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Ford-Fulkerson concept, Edmonds-Karp BFS implementation, residual graphs, and augmenting paths</p>
     <div class="badges">
-        <span>? Estimated Time: 2.5 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 10 of Phase 6</span>
+        <span>⏱ Estimated Time: 2.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 10 of Phase 6</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 10 � Graph Algorithms:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
-    ? <strong>Part B</strong> � <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
-    ? <strong>Part C</strong> � <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
-    ? <strong>Part D</strong> � <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
-    ? <strong>Part E</strong> � <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
-    ? <strong>Part F</strong> � <em>You are here</em> � Max Flow Algorithms<br>
-    ? <strong>Part G</strong> � <a href="m10g_practice.html">Practice: 12 Problems</a><br>
-    ? <strong>Part H</strong> � <a href="m10h_astar.html">A* Search Algorithm</a><br>
-    ? <strong>Part I</strong> � <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ✅ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ✅ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ✅ <strong>Part E</strong> — <a href="m10e_bridges.html">Articulation Points &amp; Bridges</a><br>
+    ▶ <strong>Part F</strong> — <em>You are here</em> — Max Flow Algorithms<br>
+    ⬜ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
     <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � The Max Flow Problem</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Max Flow Problem</div>
 
 <p>Given a directed graph with capacities on edges, a <strong>source</strong> node <em>s</em>, and a <strong>sink</strong> node <em>t</em>: find the maximum amount of "flow" that can be routed from <em>s</em> to <em>t</em> without exceeding any edge capacity.</p>
 
-<div class="diagram">Example network � what is the max flow from S to T?
+<div class="diagram">Example network — what is the max flow from S to T?
 
-      S --(10)--? A --(10)--? T
-      �                       ?
-      +--(10)--? B --(10)------+
+      S ──(10)──▶ A ──(10)──▶ T
+      │                       ▲
+      └──(10)──▶ B ──(10)──────┘
 
-  Naive: 10 via S?A?T, then 10 via S?B?T = 20 total? Seems ok here.
+  Naive: 10 via S→A→T, then 10 via S→B→T = 20 total? Seems ok here.
 
 More interesting example:
-      S --(10)--? A --(10)--? T
-      �            ?
-      +--(10)--? B-+
+      S ──(10)──▶ A ──(10)──▶ T
+      │            ▲
+      └──(10)──▶ B─┘
                 (capacity 10)
 
-  Max flow = 10 (bottleneck is A?T = 10, even though S can push 20)</div>
+  Max flow = 10 (bottleneck is A→T = 10, even though S can push 20)</div>
 
 <div class="realworld">
-    <strong>?? Real-World Applications:</strong>
+    <strong>🌍 Real-World Applications:</strong>
     <ul style="margin-top:8px;">
         <li><strong>Network routing:</strong> Maximum data throughput through a communications network</li>
         <li><strong>Bipartite matching:</strong> Assign jobs to workers, students to schools (reduces to max flow)</li>
@@ -71,29 +70,29 @@ More interesting example:
     </ul>
 </div>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Ford-Fulkerson &amp; the Residual Graph</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Ford-Fulkerson &amp; the Residual Graph</div>
 
 <h3>Core Idea</h3>
 <p>Repeatedly find an <strong>augmenting path</strong> (a path from source to sink with remaining capacity > 0) in the <strong>residual graph</strong>, then push as much flow as possible along it. Repeat until no augmenting path exists.</p>
 
 <div class="diagram">Residual Graph Concept:
 
-Original edge:    A --(cap=10, flow=6)--? B
+Original edge:    A ──(cap=10, flow=6)──▶ B
 Creates two residual edges:
-  Forward:  A --? B  (residual cap = 10 - 6 = 4)   ? can push 4 more
-  Backward: B --? A  (residual cap = 6)              ? can "undo" 6 of flow
+  Forward:  A ──▶ B  (residual cap = 10 - 6 = 4)   ← can push 4 more
+  Backward: B ──▶ A  (residual cap = 6)              ← can "undo" 6 of flow
 
 Why backward edges? They allow the algorithm to "reroute" flow
 that was committed to a suboptimal path.</div>
 
 <h3>Edmonds-Karp: BFS for Augmenting Paths</h3>
 <p>Ford-Fulkerson with BFS (instead of arbitrary path search) is called <strong>Edmonds-Karp</strong>.
-BFS guarantees we always find the <em>shortest</em> augmenting path, giving complexity <strong>O(VE�)</strong>.</p>
+BFS guarantees we always find the <em>shortest</em> augmenting path, giving complexity <strong>O(VE²)</strong>.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">MaxFlow</span>
 {
     <span class="kw">private int</span> n;
@@ -166,7 +165,7 @@ mf.<span class="mt">AddEdge</span>(<span class="nm">4</span>, <span class="nm">3
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">class</span> <span class="tp">MaxFlow</span>:
@@ -221,10 +220,10 @@ mf.<span class="mt">add_edge</span>(<span class="nm">4</span>,<span class="nm">3
 print(mf.<span class="mt">edmonds_karp</span>(<span class="nm">0</span>, <span class="nm">5</span>))  <span class="cm"># 23</span></pre>
 </div>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Max-Flow Min-Cut Theorem</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Max-Flow Min-Cut Theorem</div>
 
-<p>The <strong>Max-Flow Min-Cut Theorem</strong> states that the maximum flow from source to sink equals the minimum cut capacity � the minimum total capacity of edges whose removal would disconnect source from sink.</p>
+<p>The <strong>Max-Flow Min-Cut Theorem</strong> states that the maximum flow from source to sink equals the minimum cut capacity — the minimum total capacity of edges whose removal would disconnect source from sink.</p>
 
 <div class="diagram">Max-Flow Min-Cut Duality:
 
@@ -235,11 +234,11 @@ After running Edmonds-Karp, find the min cut:
   2. Nodes reachable from source form set A; others form set B
   3. Min-cut edges: all original edges from A to B with full capacity used
 
-Use case: "Which edges to remove to block all S?T flow?"
+Use case: "Which edges to remove to block all S→T flow?"
           Answer: the min-cut edges (cheapest capacity to remove)</div>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Bipartite Matching via Max Flow</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Bipartite Matching via Max Flow</div>
 
 <p>Any bipartite matching problem can be reduced to max flow in O(V+E):</p>
 <ol>
@@ -262,14 +261,14 @@ Use case: "Which edges to remove to block all S?T flow?"
     <span class="kw">foreach</span> (<span class="kw">var</span> e <span class="kw">in</span> edges)         mf.<span class="mt">AddEdge</span>(e[<span class="nm">0</span>], left + e[<span class="nm">1</span>], <span class="nm">1</span>);
     <span class="kw">return</span> mf.<span class="mt">EdmondsKarp</span>(src, snk);
 }
-<span class="cm">// 3 workers, 3 jobs � who can do what</span>
+<span class="cm">// 3 workers, 3 jobs — who can do what</span>
 <span class="kw">var</span> r = <span class="mt">BipartiteMatching</span>(<span class="nm">3</span>, <span class="nm">3</span>,
     <span class="kw">new</span>[]{ <span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">1</span>}, <span class="kw">new</span>[]{<span class="nm">1</span>,<span class="nm">2</span>}, <span class="kw">new</span>[]{<span class="nm">2</span>,<span class="nm">2</span>}, <span class="kw">new</span>[]{<span class="nm">3</span>,<span class="nm">3</span>} });
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(r); <span class="cm">// 3</span></pre>
 </div>
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">bipartite_matching</span>(left: <span class="tp">int</span>, right: <span class="tp">int</span>, edges: <span class="tp">list</span>[<span class="tp">tuple</span>]) -&gt; <span class="tp">int</span>:
     <span class="cm"># Nodes: 0=source, 1..left=left nodes, left+1..left+right=right nodes,</span>
     <span class="cm">#        left+right+1=sink</span>
@@ -289,17 +288,17 @@ print(<span class="mt">bipartite_matching</span>(<span class="nm">3</span>, <spa
 </div>
 
 <div class="note">
-    <strong>?? Complexity Summary:</strong>
+    <strong>📌 Complexity Summary:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Edmonds-Karp:</strong> O(VE�) � practical for medium graphs (hundreds of nodes)</li>
-        <li><strong>Dinic's Algorithm:</strong> O(V�E) � faster in practice, uses BFS layered graphs</li>
-        <li><strong>Push-Relabel:</strong> O(V�vE) � best for dense graphs</li>
+        <li><strong>Edmonds-Karp:</strong> O(VE²) — practical for medium graphs (hundreds of nodes)</li>
+        <li><strong>Dinic's Algorithm:</strong> O(V²E) — faster in practice, uses BFS layered graphs</li>
+        <li><strong>Push-Relabel:</strong> O(V²√E) — best for dense graphs</li>
     </ul>
-    For competitive programming, Edmonds-Karp is sufficient for most problems with V = 500, E = 10,000.
+    For competitive programming, Edmonds-Karp is sufficient for most problems with V ≤ 500, E ≤ 10,000.
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 10F Complete</button>
-<div class="toast" id="toast">? Module 10F complete! Max Flow mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10F Complete</button>
+<div class="toast" id="toast">✅ Module 10F complete! Max Flow mastered!</div>
     <script>var MODULE_ID = 'm10f';</script>
     <script src="../dsa.js"></script>
 </body>

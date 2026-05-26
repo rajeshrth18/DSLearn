@@ -1,43 +1,42 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 15D � Suffix Array &amp; LCP | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 15D — Suffix Array &amp; LCP | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 15 � Part D</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part D</h1>
     <div class="tagline">Suffix Array &amp; LCP Array</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">All suffixes sorted � Longest repeated substring � O(n log n) construction</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">All suffixes sorted · Longest repeated substring · O(n log n) construction</p>
     <div class="badges">
-        <span>? Estimated: 2 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 15 of 17</span>
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 15 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 15 � String Algorithms:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m15a_kmp.html">KMP Algorithm</a><br>
-    ? <strong>Part B</strong> � <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
-    ? <strong>Part C</strong> � <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
-    ? <strong>Part D</strong> � <em>You are here</em> � Suffix Array &amp; LCP<br>
-    ? <strong>Part E</strong> � <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ✅ <strong>Part B</strong> — <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
+    ✅ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Suffix Array &amp; LCP<br>
+    ⬜ <strong>Part E</strong> — <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
     <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � What is a Suffix Array?</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What is a Suffix Array?</div>
 
 <p>A <strong>Suffix Array (SA)</strong> is an array of integers giving the starting positions of all suffixes
 of a string in <em>lexicographically sorted order</em>. It is a space-efficient alternative to suffix trees
@@ -56,20 +55,20 @@ All suffixes:
   6: $
 
 Sorted lexicographically:
-  6: $        ? SA[0] = 6
-  5: a$       ? SA[1] = 5
-  3: ana$     ? SA[2] = 3
-  1: anana$   ? SA[3] = 1
-  0: banana$  ? SA[4] = 0
-  4: na$      ? SA[5] = 4
-  2: nana$    ? SA[6] = 2
+  6: $        ← SA[0] = 6
+  5: a$       ← SA[1] = 5
+  3: ana$     ← SA[2] = 3
+  1: anana$   ← SA[3] = 1
+  0: banana$  ← SA[4] = 0
+  4: na$      ← SA[5] = 4
+  2: nana$    ← SA[6] = 2
 
 SA = [6, 5, 3, 1, 0, 4, 2]</div>
 
 <table>
     <thead><tr><th>i</th><th>SA[i]</th><th>Suffix</th><th>LCP[i]</th></tr></thead>
     <tbody>
-        <tr><td>0</td><td>6</td><td>$</td><td>�</td></tr>
+        <tr><td>0</td><td>6</td><td>$</td><td>—</td></tr>
         <tr><td>1</td><td>5</td><td>a$</td><td>0</td></tr>
         <tr><td>2</td><td>3</td><td>ana$</td><td>1 ("a")</td></tr>
         <tr><td>3</td><td>1</td><td>anana$</td><td>3 ("ana")</td></tr>
@@ -83,16 +82,16 @@ SA = [6, 5, 3, 1, 0, 4, 2]</div>
 the sorted order. <code>LCP[i]</code> = LCP length between suffix <code>SA[i-1]</code> and suffix
 <code>SA[i]</code>. LCP[0] is undefined.</p>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Building the Suffix Array</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Building the Suffix Array</div>
 
-<h3>2.1 � O(n log n) via Prefix Doubling</h3>
+<h3>2.1 — O(n log n) via Prefix Doubling</h3>
 <p>Sort suffixes by their first 1 characters, then 2, then 4, ... doubling each time.
 Uses radix sort for O(n log n) total.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span>[] <span class="mt">BuildSuffixArray</span>(<span class="kw">string</span> s)
 {
     <span class="kw">int</span> n = s.Length;
@@ -130,17 +129,17 @@ Uses radix sort for O(n log n) total.</p>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">build_suffix_array</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     n = <span class="mt">len</span>(s)
     sa = <span class="mt">sorted</span>(<span class="mt">range</span>(n), key=<span class="kw">lambda</span> i: s[i:])
     <span class="kw">return</span> sa
 
-<span class="cm"># Simple O(n� log n) version for clarity</span>
+<span class="cm"># Simple O(n² log n) version for clarity</span>
 <span class="cm"># For competitive programming, use SA-IS or DC3 for O(n)</span>
 
 <span class="kw">def</span> <span class="mt">build_sa_efficient</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
-    <span class="st">"""O(n log� n) prefix doubling."""</span>
+    <span class="st">"""O(n log² n) prefix doubling."""</span>
     n = <span class="mt">len</span>(s)
     sa = <span class="mt">list</span>(<span class="mt">range</span>(n))
     rank = [<span class="mt">ord</span>(c) <span class="kw">for</span> c <span class="kw">in</span> s]
@@ -163,8 +162,8 @@ sa = <span class="mt">build_suffix_array</span>(<span class="st">"banana$"</span
 print(sa)  <span class="cm"># [6, 5, 3, 1, 0, 4, 2]</span></pre>
 </div>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � LCP Array (Kasai's Algorithm)</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — LCP Array (Kasai's Algorithm)</div>
 
 <p>Given the suffix array, Kasai's algorithm builds the LCP array in O(n) using the key insight:
 <div class="lang-label lang-cs">C#</div>
@@ -191,7 +190,7 @@ print(sa)  <span class="cm"># [6, 5, 3, 1, 0, 4, 2]</span></pre>
 </div>
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">build_lcp_array</span>(s: <span class="tp">str</span>, sa: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     n = <span class="mt">len</span>(s)
     rank = [<span class="nm">0</span>] * n
@@ -213,10 +212,10 @@ print(sa)  <span class="cm"># [6, 5, 3, 1, 0, 4, 2]</span></pre>
     <span class="kw">return</span> lcp</pre>
 </div>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Applications</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Applications</div>
 
-<h3>4.1 � Longest Repeated Substring</h3>
+<h3>4.1 — Longest Repeated Substring</h3>
 <p>The maximum value in the LCP array is the length of the longest repeated substring.
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
@@ -237,7 +236,7 @@ print(sa)  <span class="cm"># [6, 5, 3, 1, 0, 4, 2]</span></pre>
 </div>
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longest_repeated_substring</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
     sa = <span class="mt">build_suffix_array</span>(s + <span class="st">'$'</span>)
     lcp = <span class="mt">build_lcp_array</span>(s + <span class="st">'$'</span>, sa)
@@ -249,7 +248,7 @@ print(<span class="mt">longest_repeated_substring</span>(<span class="st">"banan
 print(<span class="mt">longest_repeated_substring</span>(<span class="st">"abcabc"</span>))  <span class="cm"># "abc"</span></pre>
 </div>
 
-<h3>4.2 � Count Distinct Substrings</h3>
+<h3>4.2 — Count Distinct Substrings</h3>
 <p><div class="lang-label lang-cs">C#</div>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -266,7 +265,7 @@ print(<span class="mt">longest_repeated_substring</span>(<span class="st">"abcab
 </div>
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">count_distinct_substrings</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">int</span>:
     n = <span class="mt">len</span>(s)
     sa = <span class="mt">build_suffix_array</span>(s + <span class="st">'$'</span>)
@@ -274,21 +273,21 @@ print(<span class="mt">longest_repeated_substring</span>(<span class="st">"abcab
     total = n * (n + <span class="nm">1</span>) // <span class="nm">2</span>
     <span class="kw">return</span> total - <span class="mt">sum</span>(lcp)
 
-print(<span class="mt">count_distinct_substrings</span>(<span class="st">"aab"</span>))   <span class="cm"># 5 (a, a, b, aa, ab, aab) ? unique: 5</span></pre>
+print(<span class="mt">count_distinct_substrings</span>(<span class="st">"aab"</span>))   <span class="cm"># 5 (a, a, b, aa, ab, aab) → unique: 5</span></pre>
 </div>
 
 <div class="note">
-    <strong>?? Key Takeaways:</strong>
+    <strong>📌 Key Takeaways:</strong>
     <ul style="margin-top:8px;">
         <li>SA construction: O(n log n) with prefix doubling; O(n) with SA-IS</li>
         <li>LCP construction: O(n) with Kasai's algorithm using SA and inverse SA</li>
         <li>Applications: longest repeated substring, count distinct substrings, string matching, bioinformatics</li>
-        <li>In Python, <code>sorted(range(n), key=lambda i: s[i:])</code> gives a simple O(n� log n) SA</li>
+        <li>In Python, <code>sorted(range(n), key=lambda i: s[i:])</code> gives a simple O(n² log n) SA</li>
     </ul>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 15D Complete</button>
-<div class="toast" id="toast">? Module 15D complete! Suffix Array &amp; LCP mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15D Complete</button>
+<div class="toast" id="toast">✅ Module 15D complete! Suffix Array &amp; LCP mastered!</div>
     <script>var MODULE_ID = 'm15d';</script>
     <script src="../dsa.js"></script>
 </body>

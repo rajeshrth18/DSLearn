@@ -1,49 +1,48 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 10E � Articulation Points &amp; Bridges | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 10E — Articulation Points &amp; Bridges | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
-    <h1>Module 10 � Part E</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 10 — Part E</h1>
     <div class="tagline">Articulation Points &amp; Bridges</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Tarjan's algorithm � find critical nodes and edges using DFS discovery and low values</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Tarjan's algorithm — find critical nodes and edges using DFS discovery and low values</p>
     <div class="badges">
-        <span>? Estimated Time: 1.5 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 10 of Phase 6</span>
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 10 of Phase 6</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 10 � Graph Algorithms:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
-    ? <strong>Part B</strong> � <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
-    ? <strong>Part C</strong> � <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
-    ? <strong>Part D</strong> � <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
-    ? <strong>Part E</strong> � <em>You are here</em> � Articulation Points &amp; Bridges<br>
-    ? <strong>Part F</strong> � <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
-    ? <strong>Part G</strong> � <a href="m10g_practice.html">Practice: 12 Problems</a><br>
-    ? <strong>Part H</strong> � <a href="m10h_astar.html">A* Search Algorithm</a><br>
-    ? <strong>Part I</strong> � <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 10 — Graph Algorithms:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m10a_dijkstra.html">Dijkstra's Shortest Path</a><br>
+    ✅ <strong>Part B</strong> — <a href="m10b_bf_fw.html">Bellman-Ford &amp; Floyd-Warshall</a><br>
+    ✅ <strong>Part C</strong> — <a href="m10c_mst.html">MST: Prim's &amp; Kruskal's</a><br>
+    ✅ <strong>Part D</strong> — <a href="m10d_topo_scc.html">Topological Sort &amp; SCC</a><br>
+    ▶ <strong>Part E</strong> — <em>You are here</em> — Articulation Points &amp; Bridges<br>
+    ⬜ <strong>Part F</strong> — <a href="m10f_maxflow.html">Max Flow Algorithms</a><br>
+    ⬜ <strong>Part G</strong> — <a href="m10g_practice.html">Practice: 12 Problems</a><br>
+    ⬜ <strong>Part H</strong> — <a href="m10h_astar.html">A* Search Algorithm</a><br>
+    ⬜ <strong>Part I</strong> — <a href="m10i_euler.html">Euler Path &amp; Circuit</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m09a_graph_theory.html">&larr; Module 9 &mdash; Graph Basics</a>
     <a href="../phase7/m11a_segment_trees.html">Module 11 &mdash; Segment Trees &amp; More &rarr;</a>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � What Are Articulation Points &amp; Bridges?</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — What Are Articulation Points &amp; Bridges?</div>
 
-<p>In a connected graph, some nodes and edges are more "critical" than others � removing them would
+<p>In a connected graph, some nodes and edges are more "critical" than others — removing them would
 disconnect the graph into multiple components. Identifying these is crucial for network reliability analysis.</p>
 
 <ul>
@@ -51,11 +50,11 @@ disconnect the graph into multiple components. Identifying these is crucial for 
     <li><strong>Bridge (Cut Edge):</strong> An edge whose removal disconnects the graph.</li>
 </ul>
 
-<div class="diagram">Example graph � find articulation points and bridges:
+<div class="diagram">Example graph — find articulation points and bridges:
 
-      1 -- 2 -- 3
+      1 ── 2 ── 3
       |         |
-      4    5 -- 6 -- 7
+      4    5 ── 6 ── 7
            |
            8
 
@@ -69,23 +68,23 @@ Real-world meaning: In a network, bridges are single points of failure.
 A server ON an articulation point is a critical infrastructure node.</div>
 
 <div class="realworld">
-    <strong>?? Real-World Applications:</strong>
+    <strong>🌍 Real-World Applications:</strong>
     <ul style="margin-top:8px;">
         <li><strong>Network engineering:</strong> Find links/routers that, if failed, partition the network</li>
         <li><strong>Social networks:</strong> Identify "connector" individuals who bridge communities</li>
-        <li><strong>Biology:</strong> Critical proteins in metabolic networks � knockouts cause system failure</li>
+        <li><strong>Biology:</strong> Critical proteins in metabolic networks — knockouts cause system failure</li>
         <li><strong>Transportation:</strong> Critical roads/bridges in a city road network</li>
     </ul>
 </div>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Tarjan's DFS: Discovery Time &amp; Low Value</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Tarjan's DFS: Discovery Time &amp; Low Value</div>
 
 <p>Tarjan's algorithm finds both articulation points and bridges in a single O(V+E) DFS pass using two values per node:</p>
 
 <ul>
-    <li><strong><code>disc[u]</code></strong> � Discovery time: the DFS visit order (timestamp when first visited)</li>
-    <li><strong><code>low[u]</code></strong> � Low value: the earliest discovery time reachable from the subtree rooted at <code>u</code> via back edges (excluding the parent edge)</li>
+    <li><strong><code>disc[u]</code></strong> — Discovery time: the DFS visit order (timestamp when first visited)</li>
+    <li><strong><code>low[u]</code></strong> — Low value: the earliest discovery time reachable from the subtree rooted at <code>u</code> via back edges (excluding the parent edge)</li>
 </ul>
 
 <div class="diagram">DFS Tree with back edges:
@@ -94,7 +93,7 @@ A server ON an articulation point is a critical infrastructure node.</div>
     / \
    2   3
   /     \
- 4       5 --back edge--? 1
+ 4       5 ──back edge──▶ 1
 
 disc[4]=2, low[4]=2 (no back edges from subtree of 4)
 disc[5]=3, low[5]=0 (back edge to node 1, disc=0)
@@ -104,14 +103,14 @@ Key rules:
   Artic. point:   u is an AP (non-root)  iff  low[v] >= disc[u] for some child v
   Root is AP:     root is an AP          iff  it has 2+ children in DFS tree</div>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Finding Bridges</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Finding Bridges</div>
 
-<p>An edge <code>(u, v)</code> is a bridge if and only if <code>low[v] &gt; disc[u]</code> � meaning there is no back edge from the subtree rooted at <code>v</code> that reaches <code>u</code> or above. Removing this edge would disconnect <code>v</code>'s component.</p>
+<p>An edge <code>(u, v)</code> is a bridge if and only if <code>low[v] &gt; disc[u]</code> — meaning there is no back edge from the subtree rooted at <code>v</code> that reaches <code>u</code> or above. Removing this edge would disconnect <code>v</code>'s component.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">BridgeFinder</span>
 {
     <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[] adj;
@@ -141,7 +140,7 @@ Key rules:
             {
                 <span class="mt">DFS</span>(v, u);
                 low[u] = <span class="tp">Math</span>.<span class="mt">Min</span>(low[u], low[v]);
-                <span class="kw">if</span> (low[v] &gt; disc[u])         <span class="cm">// ? Bridge condition</span>
+                <span class="kw">if</span> (low[v] &gt; disc[u])         <span class="cm">// ← Bridge condition</span>
                     bridges.<span class="mt">Add</span>((u, v));
             }
             <span class="kw">else if</span> (v != parent)              <span class="cm">// Back edge (not parent edge)</span>
@@ -159,7 +158,7 @@ Key rules:
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
 <span class="kw">def</span> <span class="mt">find_bridges</span>(n: <span class="tp">int</span>, edges: <span class="tp">list</span>[<span class="tp">tuple</span>]) -&gt; <span class="tp">list</span>[<span class="tp">tuple</span>]:
@@ -192,18 +191,18 @@ print(<span class="mt">find_bridges</span>(<span class="nm">5</span>, [(<span cl
 <span class="cm"># [(1, 3), (3, 4)]</span></pre>
 </div>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Finding Articulation Points</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Finding Articulation Points</div>
 
 <p>A vertex <code>u</code> is an articulation point if any of these hold:</p>
 <ol>
     <li><strong>Root with 2+ children:</strong> The DFS root is an AP if it has 2 or more children in the DFS tree.</li>
-    <li><strong>Non-root with low[v] &ge; disc[u]:</strong> For a non-root vertex <code>u</code> with a DFS child <code>v</code>, <code>u</code> is an AP if <code>low[v] &ge; disc[u]</code> � meaning no back edge from the subtree of <code>v</code> goes above <code>u</code>.</li>
+    <li><strong>Non-root with low[v] &ge; disc[u]:</strong> For a non-root vertex <code>u</code> with a DFS child <code>v</code>, <code>u</code> is an AP if <code>low[v] &ge; disc[u]</code> — meaning no back edge from the subtree of <code>v</code> goes above <code>u</code>.</li>
 </ol>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt; <span class="mt">FindArticulationPoints</span>(<span class="kw">int</span> n, <span class="tp">List</span>&lt;(<span class="kw">int</span>,<span class="kw">int</span>)&gt; edges)
 {
     <span class="kw">var</span> adj = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
@@ -242,7 +241,7 @@ print(<span class="mt">find_bridges</span>(<span class="nm">5</span>, [(<span cl
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">find_articulation_points</span>(n: <span class="tp">int</span>, edges: <span class="tp">list</span>[<span class="tp">tuple</span>]) -&gt; <span class="tp">set</span>[<span class="tp">int</span>]:
     adj = defaultdict(<span class="tp">list</span>)
     <span class="kw">for</span> u, v <span class="kw">in</span> edges:
@@ -274,14 +273,14 @@ print(<span class="mt">find_articulation_points</span>(<span class="nm">5</span>
 </div>
 
 <div class="note">
-    <strong>?? Complexity:</strong> O(V + E) time and space � single DFS pass.
+    <strong>📌 Complexity:</strong> O(V + E) time and space — single DFS pass.
     Both bridges and articulation points can be found in the same DFS run.
     For multigraphs (multiple edges between same pair), track edge IDs instead of parent vertex to avoid
     treating a parallel edge as a back edge.
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 10E Complete</button>
-<div class="toast" id="toast">? Module 10E complete! Articulation Points &amp; Bridges mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 10E Complete</button>
+<div class="toast" id="toast">✅ Module 10E complete! Articulation Points &amp; Bridges mastered!</div>
     <script>var MODULE_ID = 'm10e';</script>
     <script src="../dsa.js"></script>
 </body>

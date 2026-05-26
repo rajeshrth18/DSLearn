@@ -1,41 +1,40 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 19C � Interview: DP &amp; Advanced | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 19C — Interview: DP &amp; Advanced | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 10</div>
-    <h1>Module 19 � Part C</h1>
-    <div class="tagline">Top Interview Problems � DP &amp; Advanced Algorithms</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">20 Essential Problems � 1D DP � 2D DP � Backtracking � Heap � Design</p>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 19 — Part C</h1>
+    <div class="tagline">Top Interview Problems — DP &amp; Advanced Algorithms</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">20 Essential Problems · 1D DP · 2D DP · Backtracking · Heap · Design</p>
     <div class="badges">
-        <span>? Estimated Time: 4 Hours</span>
-        <span>?? FAANG Prep</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part C of Module 19</span>
+        <span>⏱ Estimated Time: 4 Hours</span>
+        <span>🔥 FAANG Prep</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 19</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 10 � Module 19 � Top 50 Interview Problems:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m19a_interview_arrays.html">Arrays &amp; Strings (15 Problems)</a><br>
-    ? <strong>Part B</strong> � <a href="m19b_interview_trees.html">Trees &amp; Graphs (15 Problems)</a><br>
-    ? <strong>Part C</strong> � <em>You are here</em> � DP &amp; Advanced (20 Problems)<br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 10 — Module 19 — Top 50 Interview Problems:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m19a_interview_arrays.html">Arrays &amp; Strings (15 Problems)</a><br>
+    ✅ <strong>Part B</strong> — <a href="m19b_interview_trees.html">Trees &amp; Graphs (15 Problems)</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — DP &amp; Advanced (20 Problems)<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase10/m18a_patterns1.html">&larr; Module 18 &mdash; Patterns I</a>
     <a href="../phase10/m20_final_review.html">Module 20 &mdash; Final Review &rarr;</a>
 </div>
 
-<!-- ------- GROUP A: 1D DP ------- -->
-<div class="section-heading">Group A � 1D Dynamic Programming</div>
+<!-- ═══════ GROUP A: 1D DP ═══════ -->
+<div class="section-heading">Group A — 1D Dynamic Programming</div>
 
 <!-- Problem 1 -->
 <div class="problem-card">
@@ -43,12 +42,12 @@
         <span class="problem-num">#1</span>
         <span class="problem-title">Climbing Stairs</span>
         <span class="diff-easy">Easy</span>
-        <span style="font-size:0.85em;color:#666;">LeetCode #70 � Fibonacci variant</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #70 · Fibonacci variant</span>
     </div>
     <p>Count the number of ways to climb n stairs (can take 1 or 2 steps at a time).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: 1D DP / Fibonacci</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box"><code>dp[i] = dp[i-1] + dp[i-2]</code>. You can arrive at step i by taking 1 step from i-1 or 2 steps from i-2. Base: dp[0]=1, dp[1]=1.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -60,7 +59,7 @@
     <span class="kw">return</span> b;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">climbStairs</span>(n):
     a, b = <span class="nm">1</span>, <span class="nm">1</span>
     <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n-<span class="nm">1</span>): a, b = b, a+b
@@ -76,10 +75,10 @@
         <span class="diff-medium">Medium</span>
         <span style="font-size:0.85em;color:#666;">LeetCode #198</span>
     </div>
-    <p>Maximize the amount robbed from houses in a row � cannot rob adjacent houses.</p>
+    <p>Maximize the amount robbed from houses in a row — cannot rob adjacent houses.</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: 1D DP</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box"><code>dp[i] = max(dp[i-1], dp[i-2] + nums[i])</code>. Either skip house i (take dp[i-1]) or rob it (take dp[i-2] + nums[i]).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -91,7 +90,7 @@
     <span class="kw">return</span> prev1;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">rob</span>(nums):
     prev2 = prev1 = <span class="nm">0</span>
     <span class="kw">for</span> n <span class="kw">in</span> nums: prev2, prev1 = prev1, <span class="mt">max</span>(prev1, prev2+n)
@@ -105,13 +104,13 @@
         <span class="problem-num">#3</span>
         <span class="problem-title">Coin Change</span>
         <span class="diff-medium">Medium</span>
-        <span style="font-size:0.85em;color:#666;">LeetCode #322 � Classic unbounded knapsack</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #322 · Classic unbounded knapsack</span>
     </div>
     <p>Find the fewest coins to make up amount, given coins of different denominations (unlimited supply).</p>
-    <div class="complexity-row"><span>Time: O(n�amount)</span><span>Space: O(amount)</span><span>Pattern: BFS or 1D DP</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box"><code>dp[a] = min(dp[a - c] + 1)</code> for each coin c = a. Initialize dp[0]=0, rest to infinity. BFS also works (treating amount as a graph node, each coin as an edge).</div>
+    <div class="complexity-row"><span>Time: O(n·amount)</span><span>Space: O(amount)</span><span>Pattern: BFS or 1D DP</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box"><code>dp[a] = min(dp[a - c] + 1)</code> for each coin c ≤ a. Initialize dp[0]=0, rest to infinity. BFS also works (treating amount as a graph node, each coin as an edge).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -125,7 +124,7 @@
     <span class="kw">return</span> dp[amount]&gt;amount?-<span class="nm">1</span>:dp[amount];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">coinChange</span>(coins, amount):
     dp = [<span class="mt">float</span>(<span class="st">'inf'</span>)] * (amount+<span class="nm">1</span>); dp[<span class="nm">0</span>] = <span class="nm">0</span>
     <span class="kw">for</span> a <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, amount+<span class="nm">1</span>):
@@ -145,8 +144,8 @@
     </div>
     <p>Find the length of the longest strictly increasing subsequence.</p>
     <div class="complexity-row"><span>Time: O(n log n)</span><span>Space: O(n)</span><span>Pattern: Patience sorting / DP+binary search</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Maintain a "tails" array where tails[i] = smallest tail of all LIS of length i+1. For each element, binary search for its position in tails and replace (or extend). Length of tails = LIS length.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -162,7 +161,7 @@
     <span class="kw">return</span> tails.Count;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">import</span> bisect
 <span class="kw">def</span> <span class="mt">lengthOfLIS</span>(nums):
     tails = []
@@ -184,8 +183,8 @@
     </div>
     <p>Given a string of digits, count the number of ways to decode it (A=1, B=2, ..., Z=26).</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: 1D DP with 2 variables</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box"><code>dp[i]</code> = ways to decode s[:i]. If s[i-1] != '0': add dp[i-1] (single digit decode). If s[i-2:i] in ['10'...'26']: add dp[i-2] (two digit decode). Handle leading zeros carefully.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -204,7 +203,7 @@
     <span class="kw">return</span> prev1;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">numDecodings</span>(s):
     <span class="kw">if not</span> s <span class="kw">or</span> s[<span class="nm">0</span>]==<span class="st">'0'</span>: <span class="kw">return</span> <span class="nm">0</span>
     prev2, prev1 = <span class="nm">1</span>, <span class="nm">1</span>
@@ -218,8 +217,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP B: 2D DP ------- -->
-<div class="section-heading">Group B � 2D Dynamic Programming</div>
+<!-- ═══════ GROUP B: 2D DP ═══════ -->
+<div class="section-heading">Group B — 2D Dynamic Programming</div>
 
 <!-- Problem 6 -->
 <div class="problem-card">
@@ -229,10 +228,10 @@
         <span class="diff-medium">Medium</span>
         <span style="font-size:0.85em;color:#666;">LeetCode #62</span>
     </div>
-    <p>Count paths from top-left to bottom-right in an m�n grid (only right or down moves).</p>
-    <div class="complexity-row"><span>Time: O(m�n)</span><span>Space: O(n)</span><span>Pattern: 2D DP (space-optimized)</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <p>Count paths from top-left to bottom-right in an m×n grid (only right or down moves).</p>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(n)</span><span>Pattern: 2D DP (space-optimized)</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box"><code>dp[r][c] = dp[r-1][c] + dp[r][c-1]</code>. Optimize space: only keep one row, update left to right.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -245,7 +244,7 @@
     <span class="kw">return</span> dp[n-<span class="nm">1</span>];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">uniquePaths</span>(m, n):
     dp = [<span class="nm">1</span>] * n
     <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, m):
@@ -260,12 +259,12 @@
         <span class="problem-num">#7</span>
         <span class="problem-title">Longest Common Subsequence</span>
         <span class="diff-medium">Medium</span>
-        <span style="font-size:0.85em;color:#666;">LeetCode #1143 � Classic 2D DP</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #1143 · Classic 2D DP</span>
     </div>
     <p>Find the length of the longest common subsequence of two strings.</p>
-    <div class="complexity-row"><span>Time: O(m�n)</span><span>Space: O(m�n)</span><span>Pattern: 2D DP</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: 2D DP</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">If chars match: <code>dp[i][j] = dp[i-1][j-1] + 1</code>. Else: <code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code>.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -282,7 +281,7 @@
     <span class="kw">return</span> dp[m,n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestCommonSubsequence</span>(text1, text2):
     m, n = <span class="mt">len</span>(text1), <span class="mt">len</span>(text2)
     dp = [[<span class="nm">0</span>]*(n+<span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m+<span class="nm">1</span>)]
@@ -300,12 +299,12 @@
         <span class="problem-num">#8</span>
         <span class="problem-title">0/1 Knapsack</span>
         <span class="diff-medium">Medium</span>
-        <span style="font-size:0.85em;color:#666;">Classic problem � LeetCode #416 (variant)</span>
+        <span style="font-size:0.85em;color:#666;">Classic problem · LeetCode #416 (variant)</span>
     </div>
     <p>Given weights and values, fill a knapsack of capacity W to maximize value (each item used at most once).</p>
-    <div class="complexity-row"><span>Time: O(n�W)</span><span>Space: O(W)</span><span>Pattern: 2D DP (space-optimized 1D)</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <div class="complexity-row"><span>Time: O(n·W)</span><span>Space: O(W)</span><span>Pattern: 2D DP (space-optimized 1D)</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Iterate items. For each item, iterate capacity from W down to weight (backward to avoid reusing). <code>dp[w] = max(dp[w], dp[w-wt] + val)</code>. Backward iteration ensures each item used at most once.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -326,7 +325,7 @@
     <span class="kw">return</span> dp[t];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">knapsack01</span>(weights, values, W):
     dp = [<span class="nm">0</span>] * (W+<span class="nm">1</span>)
     <span class="kw">for</span> wt, val <span class="kw">in</span> <span class="mt">zip</span>(weights, values):
@@ -334,7 +333,7 @@
             dp[w] = <span class="mt">max</span>(dp[w], dp[w-wt]+val)
     <span class="kw">return</span> dp[W]
 
-<span class="cm"># #416 Partition Equal Subset Sum � knapsack variant</span>
+<span class="cm"># #416 Partition Equal Subset Sum — knapsack variant</span>
 <span class="kw">def</span> <span class="mt">canPartition</span>(nums):
     s = <span class="mt">sum</span>(nums)
     <span class="kw">if</span> s % <span class="nm">2</span>: <span class="kw">return False</span>
@@ -350,12 +349,12 @@
         <span class="problem-num">#9</span>
         <span class="problem-title">Edit Distance</span>
         <span class="diff-hard">Hard</span>
-        <span style="font-size:0.85em;color:#666;">LeetCode #72 � Classic 2D DP</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #72 · Classic 2D DP</span>
     </div>
     <p>Find the minimum number of operations (insert, delete, replace) to convert word1 to word2.</p>
-    <div class="complexity-row"><span>Time: O(m�n)</span><span>Space: O(m�n)</span><span>Pattern: 2D DP</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: 2D DP</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">dp[i][j] = edit distance between word1[:i] and word2[:j]. If chars match: dp[i][j] = dp[i-1][j-1]. Else: 1 + min(dp[i-1][j-1] (replace), dp[i-1][j] (delete), dp[i][j-1] (insert)).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -375,7 +374,7 @@
     <span class="kw">return</span> dp[n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">minDistance</span>(word1, word2):
     m, n = <span class="mt">len</span>(word1), <span class="mt">len</span>(word2)
     dp = <span class="mt">list</span>(<span class="mt">range</span>(n+<span class="nm">1</span>))
@@ -399,10 +398,10 @@
         <span style="font-size:0.85em;color:#666;">LeetCode #5</span>
     </div>
     <p>Find the longest palindromic substring in a given string.</p>
-    <div class="complexity-row"><span>Time: O(n�)</span><span>Space: O(1)</span><span>Pattern: Expand around center</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box">For each position, expand outward for both odd-length (center at i) and even-length (center between i and i+1) palindromes. Track the maximum. O(n�) total, O(1) space.</div>
+    <div class="complexity-row"><span>Time: O(n²)</span><span>Space: O(1)</span><span>Pattern: Expand around center</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">For each position, expand outward for both odd-length (center at i) and even-length (center between i and i+1) palindromes. Track the maximum. O(n²) total, O(1) space.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -419,7 +418,7 @@
     <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestPalindrome</span>(s):
     res = <span class="st">''</span>
     <span class="kw">def</span> <span class="mt">expand</span>(l, r):
@@ -432,8 +431,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP C: Backtracking & Advanced ------- -->
-<div class="section-heading">Group C � Backtracking &amp; Design</div>
+<!-- ═══════ GROUP C: Backtracking & Advanced ═══════ -->
+<div class="section-heading">Group C — Backtracking &amp; Design</div>
 
 <!-- Problem 11 -->
 <div class="problem-card">
@@ -445,8 +444,8 @@
     </div>
     <p>Find all unique combinations of candidates that sum to target (candidates can be used multiple times).</p>
     <div class="complexity-row"><span>Time: O(n^(T/M))</span><span>Space: O(T/M)</span><span>Pattern: Backtracking</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Backtrack. At each step, pick candidates[i] (start), recurse with reduced target, or move to next candidate (i+1) to avoid duplicates. Allows reuse of same element since we stay at same index.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -462,7 +461,7 @@
     <span class="mt">Bt</span>(<span class="nm">0</span>,<span class="kw">new</span>(),target); <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">combinationSum</span>(candidates, target):
     res = []
     <span class="kw">def</span> <span class="mt">bt</span>(start, cur, rem):
@@ -482,10 +481,10 @@
         <span class="diff-medium">Medium</span>
         <span style="font-size:0.85em;color:#666;">LeetCode #79</span>
     </div>
-    <p>Given an m�n board and a word, return true if the word exists in the grid (adjacent cells, no reuse).</p>
-    <div class="complexity-row"><span>Time: O(m�n�4^L)</span><span>Space: O(L)</span><span>Pattern: Backtracking DFS</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <p>Given an m×n board and a word, return true if the word exists in the grid (adjacent cells, no reuse).</p>
+    <div class="complexity-row"><span>Time: O(m·n·4^L)</span><span>Space: O(L)</span><span>Pattern: Backtracking DFS</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">DFS from each cell matching word[0]. Mark visited by modifying board temporarily (set to '#'), restore on backtrack. Return early if out of bounds, mismatch, or already visited.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -504,7 +503,7 @@
     <span class="kw">return false</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">exist</span>(board, word):
     m, n = <span class="mt">len</span>(board), <span class="mt">len</span>(board[<span class="nm">0</span>])
     <span class="kw">def</span> <span class="mt">dfs</span>(r, c, i):
@@ -524,12 +523,12 @@
         <span class="problem-num">#13</span>
         <span class="problem-title">LRU Cache</span>
         <span class="diff-medium">Medium</span>
-        <span style="font-size:0.85em;color:#666;">LeetCode #146 � Design</span>
+        <span style="font-size:0.85em;color:#666;">LeetCode #146 · Design</span>
     </div>
     <p>Design a data structure that follows the LRU (Least Recently Used) cache eviction policy. O(1) get and put.</p>
     <div class="complexity-row"><span>Time: O(1) each</span><span>Space: O(capacity)</span><span>Pattern: OrderedDict / Doubly linked list + HashMap</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Use Python's OrderedDict (or doubly-linked list + HashMap). On get: if key exists, move to end (most recent), return value. On put: insert/update at end, if over capacity evict first (least recent).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -551,7 +550,7 @@
     }
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> OrderedDict
 <span class="kw">class</span> <span class="tp">LRUCache</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self, capacity):
@@ -575,8 +574,8 @@
     </div>
     <p>Merge k sorted linked lists into one sorted list.</p>
     <div class="complexity-row"><span>Time: O(n log k)</span><span>Space: O(k)</span><span>Pattern: Min-heap</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Use a min-heap of (val, index, node). Initialize with the first node of each list. Each step: pop minimum, add to result, push next node from that list. Or use divide & conquer (merge pairs recursively).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -593,7 +592,7 @@
     <span class="kw">return</span> dummy.next;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 <span class="kw">def</span> <span class="mt">mergeKLists</span>(lists):
     dummy = head = ListNode(<span class="nm">0</span>)
@@ -617,8 +616,8 @@
     </div>
     <p>Find the minimum number of jumps to reach the last index.</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(1)</span><span>Pattern: Greedy BFS</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Treat each "jump range" as a BFS level. Track current level's end and next level's furthest reach. When you exhaust current level, increment jumps and advance to next level.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -633,7 +632,7 @@
     <span class="kw">return</span> jumps;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">jump</span>(nums):
     jumps = cur_end = cur_far = <span class="nm">0</span>
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="mt">len</span>(nums)-<span class="nm">1</span>):
@@ -643,8 +642,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP D: Hard Problems ------- -->
-<div class="section-heading">Group D � Hard Problems</div>
+<!-- ═══════ GROUP D: Hard Problems ═══════ -->
+<div class="section-heading">Group D — Hard Problems</div>
 
 <!-- Problem 16 -->
 <div class="problem-card">
@@ -656,9 +655,9 @@
     </div>
     <p>Find the median of two sorted arrays in O(log(m+n)) time.</p>
     <div class="complexity-row"><span>Time: O(log(min(m,n)))</span><span>Space: O(1)</span><span>Pattern: Binary search on partition</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
-    <div class="hint-box">Binary search on the smaller array to find the correct partition point. At partition (i, j): maxLeft1 = minRight2 AND maxLeft2 = minRight1. This ensures exactly half the elements are on each side.</div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
+    <div class="hint-box">Binary search on the smaller array to find the correct partition point. At partition (i, j): maxLeft1 ≤ minRight2 AND maxLeft2 ≤ minRight1. This ensures exactly half the elements are on each side.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -678,7 +677,7 @@
     <span class="kw">return</span> <span class="nm">0</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findMedianSortedArrays</span>(nums1, nums2):
     <span class="kw">if</span> <span class="mt">len</span>(nums1) > <span class="mt">len</span>(nums2): nums1, nums2 = nums2, nums1
     m, n = <span class="mt">len</span>(nums1), <span class="mt">len</span>(nums2)
@@ -705,10 +704,10 @@
         <span class="diff-hard">Hard</span>
         <span style="font-size:0.85em;color:#666;">LeetCode #51</span>
     </div>
-    <p>Place n queens on an n�n board so no two queens attack each other. Return all distinct solutions.</p>
+    <p>Place n queens on an n×n board so no two queens attack each other. Return all distinct solutions.</p>
     <div class="complexity-row"><span>Time: O(n!)</span><span>Space: O(n)</span><span>Pattern: Backtracking with sets</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Place queens row by row. Track occupied columns, diagonals (row-col), and anti-diagonals (row+col) in sets for O(1) conflict check. Backtrack if a column/diagonal is already occupied.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -729,7 +728,7 @@
     <span class="mt">Bt</span>(<span class="nm">0</span>); <span class="kw">return</span> res;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">solveNQueens</span>(n):
     cols = <span class="mt">set</span>(); diag1 = <span class="mt">set</span>(); diag2 = <span class="mt">set</span>()
     board = []; res = []
@@ -754,8 +753,8 @@
     </div>
     <p>Design a structure that supports adding numbers and finding the median in O(log n) / O(1).</p>
     <div class="complexity-row"><span>Add: O(log n)</span><span>FindMedian: O(1)</span><span>Pattern: Two heaps</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Use two heaps: max-heap for lower half, min-heap for upper half. Keep sizes balanced (differ by at most 1). Median = top of larger heap (odd total) or average of both tops (even total).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -774,7 +773,7 @@
     }
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">import</span> heapq
 <span class="kw">class</span> <span class="tp">MedianFinder</span>:
     <span class="kw">def</span> <span class="mt">__init__</span>(self): self.small = []; self.large = []  <span class="cm"># max-heap, min-heap</span>
@@ -798,9 +797,9 @@
         <span style="font-size:0.85em;color:#666;">LeetCode #10</span>
     </div>
     <p>Implement <code>'.'</code> (any single char) and <code>'*'</code> (zero or more of preceding) pattern matching.</p>
-    <div class="complexity-row"><span>Time: O(m�n)</span><span>Space: O(m�n)</span><span>Pattern: 2D DP</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <div class="complexity-row"><span>Time: O(m·n)</span><span>Space: O(m·n)</span><span>Pattern: 2D DP</span></div>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box"><code>dp[i][j]</code> = can pattern[:j] match string[:i]. Key: when p[j-1]=='*': dp[i][j] = dp[i][j-2] (use 0 times) OR (chars match AND dp[i-1][j]) (use 1+ times).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -820,7 +819,7 @@
     <span class="kw">return</span> dp[m,n];
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">isMatch</span>(s, p):
     m, n = <span class="mt">len</span>(s), <span class="mt">len</span>(p)
     dp = [[<span class="kw">False</span>]*(n+<span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m+<span class="nm">1</span>)]
@@ -847,8 +846,8 @@
     </div>
     <p>Design an algorithm to serialize a binary tree to a string and deserialize it back.</p>
     <div class="complexity-row"><span>Time: O(n)</span><span>Space: O(n)</span><span>Pattern: BFS or preorder with null markers</span></div>
-    <button class="hint-btn" onclick="toggleHint(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleSol(this)">?? Solution</button>
+    <button class="hint-btn" onclick="toggleHint(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleSol(this)">👁 Solution</button>
     <div class="hint-box">Preorder traversal: serialize node values with '#' for null. Deserialize using a queue/index to process tokens in the same order. Root of each subtree comes first.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
@@ -873,7 +872,7 @@
     }
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">class</span> <span class="tp">Codec</span>:
     <span class="kw">def</span> <span class="mt">serialize</span>(self, root):
@@ -892,8 +891,8 @@
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 19C Complete</button>
-<div class="toast" id="toast">? Module 19C complete! DP &amp; Advanced mastered! Module 19 fully done!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 19C Complete</button>
+<div class="toast" id="toast">✅ Module 19C complete! DP &amp; Advanced mastered! Module 19 fully done!</div>
     <script>var MODULE_ID = 'm19c';</script>
     <script src="../dsa.js"></script>
 </body>

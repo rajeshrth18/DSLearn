@@ -1,33 +1,32 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 17C � Computational Geometry | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 17C — Computational Geometry | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 17 � Part C</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 17 — Part C</h1>
     <div class="tagline">Computational Geometry: Cross Products, Convex Hull &amp; Intersections</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Cross Product � Graham Scan � Rotating Calipers � Segment Intersection</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Cross Product · Graham Scan · Rotating Calipers · Segment Intersection</p>
     <div class="badges">
-        <span>? Estimated Time: 2 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part C of Module 17</span>
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 9 � Supplement:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m17b_advanced_math.html">Advanced Math</a><br>
-    ? <strong>Part B</strong> � <em>You are here</em> � Computational Geometry<br>
-    ? <strong>Part C</strong> � <a href="m17d_phase9_practice.html">Mixed Practice (10 Problems)</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 9 — Supplement:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m17b_advanced_math.html">Advanced Math</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Computational Geometry<br>
+    ⬜ <strong>Part C</strong> — <a href="m17d_phase9_practice.html">Mixed Practice (10 Problems)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m16a_bit_manipulation.html">&larr; Module 16 &mdash; Bit Manipulation</a>
@@ -35,49 +34,49 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents</h2>
+    <h2>📚 Contents</h2>
     <ol>
-        <li>Section 1 � Points &amp; Vectors <span>� Representation, distance, dot product</span></li>
-        <li>Section 2 � Cross Product <span>� Turn direction, area, collinearity</span></li>
-        <li>Section 3 � Convex Hull <span>� Graham Scan O(n log n), monotone chain</span></li>
-        <li>Section 4 � Segment Intersection <span>� CCW test, general position</span></li>
-        <li>Section 5 � Rotating Calipers <span>� Diameter, max distance pair</span></li>
-        <li>Section 6 � LeetCode Map <span>� Key problems</span></li>
-        <li>Section 7 � Q&amp;A Review <span>� 5 key questions</span></li>
+        <li>Section 1 — Points &amp; Vectors <span>— Representation, distance, dot product</span></li>
+        <li>Section 2 — Cross Product <span>— Turn direction, area, collinearity</span></li>
+        <li>Section 3 — Convex Hull <span>— Graham Scan O(n log n), monotone chain</span></li>
+        <li>Section 4 — Segment Intersection <span>— CCW test, general position</span></li>
+        <li>Section 5 — Rotating Calipers <span>— Diameter, max distance pair</span></li>
+        <li>Section 6 — LeetCode Map <span>— Key problems</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � Points &amp; Vectors</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Points &amp; Vectors</div>
 
 <div class="diagram">FUNDAMENTAL CONCEPTS:
 
-Point P = (x, y)  � coordinates on 2D plane
-Vector v = B - A = (B.x - A.x, B.y - A.y)  � direction + magnitude
+Point P = (x, y)  — coordinates on 2D plane
+Vector v = B - A = (B.x - A.x, B.y - A.y)  — direction + magnitude
 
 DISTANCE:
-  |AB| = sqrt((B.x-A.x)^2 + (B.y-A.y)^2)  � Euclidean distance
+  |AB| = sqrt((B.x-A.x)^2 + (B.y-A.y)^2)  — Euclidean distance
   Manhattan: |x1-x2| + |y1-y2|
-  Note: avoid sqrt when possible � compare squared distances to avoid float errors
+  Note: avoid sqrt when possible — compare squared distances to avoid float errors
 
 DOT PRODUCT:
-  A � B = A.x * B.x + A.y * B.y = |A| * |B| * cos(?)
-  - Positive: angle between vectors < 90�
-  - Zero: perpendicular (? = 90�)
-  - Negative: angle > 90� (obtuse)
+  A · B = A.x * B.x + A.y * B.y = |A| * |B| * cos(θ)
+  - Positive: angle between vectors < 90°
+  - Zero: perpendicular (θ = 90°)
+  - Negative: angle > 90° (obtuse)
   
-  Test if angle AOB is acute/right/obtuse: sign of (B-O) � (A-O)
+  Test if angle AOB is acute/right/obtuse: sign of (B-O) · (A-O)
 
-ANGLE of vector (x, y): atan2(y, x)   ? note: atan2(y, x) not atan2(x, y)!
-  Returns angle in [-p, p]
+ANGLE of vector (x, y): atan2(y, x)   ← note: atan2(y, x) not atan2(x, y)!
+  Returns angle in [-π, π]
   For polar sort by angle: compare atan2 values or use cross product sign
 
-? FLOATING POINT: Use long integer coordinates when possible to avoid precision errors.
+⚠ FLOATING POINT: Use long integer coordinates when possible to avoid precision errors.
    Add epsilon (1e-9) for comparisons: if abs(a - b) < EPS: treat as equal</div>
 
-<span class="lang-label lang-cs">C# � Point struct</span>
+<span class="lang-label lang-cs">C# — Point struct</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">record struct</span> <span class="tp">P</span>(<span class="kw">long</span> X, <span class="kw">long</span> Y)   <span class="cm">// integer coordinates for exact arithmetic</span>
 {
     <span class="kw">public static</span> <span class="tp">P</span> <span class="kw">operator</span> -(P a, P b) => <span class="kw">new</span>(a.X - b.X, a.Y - b.Y);
@@ -91,7 +90,7 @@ ANGLE of vector (x, y): atan2(y, x)   ? note: atan2(y, x) not atan2(x, y)!
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> math <span class="kw">import</span> atan2, sqrt
 
 <span class="kw">def</span> <span class="mt">sub</span>(a, b): <span class="kw">return</span> (a[<span class="nm">0</span>]-b[<span class="nm">0</span>], a[<span class="nm">1</span>]-b[<span class="nm">1</span>])
@@ -103,43 +102,43 @@ ANGLE of vector (x, y): atan2(y, x)   ? note: atan2(y, x) not atan2(x, y)!
 
 <hr>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Cross Product (The Core Tool)</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Cross Product (The Core Tool)</div>
 
 <div class="diagram">2D CROSS PRODUCT of vectors A and B:
-  cross(A, B) = A.x * B.y - A.y * B.x = |A| * |B| * sin(?)
+  cross(A, B) = A.x * B.y - A.y * B.x = |A| * |B| * sin(θ)
 
   > 0: B is to the LEFT  of A  (counterclockwise turn / left turn)
   = 0: A and B are COLLINEAR (parallel or antiparallel)
   < 0: B is to the RIGHT of A  (clockwise turn / right turn)
 
-TURN DIRECTION at point B on path A?B?C:
-  cross(B-A, C-A)  � or equivalently cross(C-B, A-B)  
+TURN DIRECTION at point B on path A→B→C:
+  cross(B-A, C-A)  — or equivalently cross(C-B, A-B)  
   > 0: left turn (counterclockwise)
   = 0: collinear (no turn)
   < 0: right turn (clockwise)
 
   Example: A=(0,0), B=(1,0), C=(1,1)
     B-A = (1,0), C-A = (1,1)
-    cross = 1*1 - 0*1 = 1 > 0 ? left turn (CCW)
+    cross = 1*1 - 0*1 = 1 > 0 → left turn (CCW)
 
 AREA of triangle OAB (O at origin):
   Area = |cross(A, B)| / 2
 
 AREA of polygon with vertices P[0..n-1]:
-  2 * Area = |S cross(P[i], P[(i+1) % n])|  ? Shoelace formula
+  2 * Area = |Σ cross(P[i], P[(i+1) % n])|  ← Shoelace formula
   (Works for convex and concave polygons, not self-intersecting)
 
 COLLINEARITY: Three points A, B, C are collinear iff cross(B-A, C-A) == 0</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="cm">// Cross product of vectors OA and OB (all as P structs)</span>
 <span class="kw">long</span> <span class="mt">Cross</span>(<span class="tp">P</span> O, <span class="tp">P</span> A, <span class="tp">P</span> B)
     => (A - O).<span class="mt">Cross</span>(B - O);  <span class="cm">// = (A.X-O.X)*(B.Y-O.Y) - (A.Y-O.Y)*(B.X-O.X)</span>
 
-<span class="cm">// Area of polygon (�2, as long, to avoid float)</span>
+<span class="cm">// Area of polygon (×2, as long, to avoid float)</span>
 <span class="kw">long</span> <span class="mt">Area2</span>(<span class="tp">P</span>[] pts)
 {
     <span class="kw">long</span> s = <span class="nm">0</span>;
@@ -161,7 +160,7 @@ COLLINEARITY: Three points A, B, C are collinear iff cross(B-A, C-A) == 0</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">cross3</span>(O, A, B):
     <span class="st">"""Cross product of vectors OA and OB."""</span>
     <span class="kw">return</span> (A[<span class="nm">0</span>]-O[<span class="nm">0</span>]) * (B[<span class="nm">1</span>]-O[<span class="nm">1</span>]) - (A[<span class="nm">1</span>]-O[<span class="nm">1</span>]) * (B[<span class="nm">0</span>]-O[<span class="nm">0</span>])
@@ -174,8 +173,8 @@ COLLINEARITY: Three points A, B, C are collinear iff cross(B-A, C-A) == 0</div>
 
 <hr>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Convex Hull (Graham Scan)</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Convex Hull (Graham Scan)</div>
 
 <div class="diagram">CONVEX HULL: Smallest convex polygon containing all given points.
   Think of: stretching a rubber band around all the points.
@@ -183,28 +182,28 @@ COLLINEARITY: Three points A, B, C are collinear iff cross(B-A, C-A) == 0</div>
 GRAHAM SCAN ALGORITHM: O(n log n)
   1. Find the lowest point (min y, then min x). Call it P0. This is always on the hull.
   2. Sort all other points by polar angle relative to P0.
-     (Use cross product to compare: if cross(P0?A, P0?B) > 0 ? A comes before B)
+     (Use cross product to compare: if cross(P0→A, P0→B) > 0 → A comes before B)
      Ties: by distance (closer first or further first depending on application)
   3. Process points in sorted order using a STACK:
      - For each point C: while the last two stack points A, B form a non-left turn
-       (cross(A, B, C) = 0), pop B from stack.
+       (cross(A, B, C) ≤ 0), pop B from stack.
      - Push C.
   4. Stack = convex hull in CCW order.
 
-MONOTONE CHAIN (Andrew's algorithm) � often preferred, no angle sort needed:
+MONOTONE CHAIN (Andrew's algorithm) — often preferred, no angle sort needed:
   1. Sort points by (x, y).
-  2. Build LOWER hull: iterate L?R, keep CCW (pop if right turn or collinear).
-  3. Build UPPER hull: iterate R?L, same rule.
+  2. Build LOWER hull: iterate L→R, keep CCW (pop if right turn or collinear).
+  3. Build UPPER hull: iterate R→L, same rule.
   4. Combine (remove duplicate endpoints).
   Time: O(n log n) from sort, O(n) hull construction.
 
 COLLINEAR POINTS on hull edge:
-  Standard: pop if cross = 0 (excludes collinear).
+  Standard: pop if cross ≤ 0 (excludes collinear).
   Include collinear on edges: pop if cross < 0 (strict right turn only).</div>
 
-<span class="lang-label lang-cs">C# � Monotone Chain</span>
+<span class="lang-label lang-cs">C# — Monotone Chain</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public</span> <span class="tp">P</span>[] <span class="mt">ConvexHull</span>(<span class="tp">P</span>[] pts)
 {
     <span class="kw">int</span> n = pts.Length;
@@ -226,9 +225,9 @@ COLLINEAR POINTS on hull edge:
 }</pre>
 </div>
 
-<span class="lang-label lang-py">Python � Monotone Chain</span>
+<span class="lang-label lang-py">Python — Monotone Chain</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">convex_hull</span>(pts):
     pts = <span class="mt">sorted</span>(<span class="mt">set</span>(pts))
     <span class="kw">if</span> <span class="mt">len</span>(pts) &lt;= <span class="nm">1</span>: <span class="kw">return</span> pts
@@ -243,8 +242,8 @@ COLLINEAR POINTS on hull edge:
 
 <hr>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Segment Intersection</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Segment Intersection</div>
 
 <div class="diagram">DO SEGMENTS AB AND CD INTERSECT?
 
@@ -261,14 +260,14 @@ GENERAL CASE (using orientation test):
 DEGENERATE CASES (collinear points):
   If cross = 0, the point is ON the line. Check if it's on the segment:
     Point P is on segment AB iff collinear AND
-    min(A.x, B.x) = P.x = max(A.x, B.x) AND similar for y.
+    min(A.x, B.x) ≤ P.x ≤ max(A.x, B.x) AND similar for y.
 
 FIND INTERSECTION POINT of lines AB and CD:
   Parametric: P = A + t*(B-A)
   Substitute into line CD, solve for t:
   t = cross(C-A, D-C) / cross(B-A, D-C)
   Intersection = A + t*(B-A)
-  <span class="lang-label lang-cs">C# � Segment Intersection</span>
+  <span class="lang-label lang-cs">C# — Segment Intersection</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre>
@@ -292,9 +291,9 @@ FIND INTERSECTION POINT of lines AB and CD:
     <span class="kw">return false</span>;
 }</pre>
 </div>
-<span class="lang-label lang-py">Python � Segment Intersection</span>
+<span class="lang-label lang-py">Python — Segment Intersection</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">on_segment</span>(p, a, b):
     <span class="st">"""Check if p lies on segment ab (assuming p is collinear with a, b)."""</span>
     <span class="kw">return</span> (<span class="mt">min</span>(a[<span class="nm">0</span>],b[<span class="nm">0</span>]) &lt;= p[<span class="nm">0</span>] &lt;= <span class="mt">max</span>(a[<span class="nm">0</span>],b[<span class="nm">0</span>]) <span class="kw">and</span>
@@ -314,10 +313,10 @@ FIND INTERSECTION POINT of lines AB and CD:
 
 <hr>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � Rotating Calipers &amp; LeetCode Map</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Rotating Calipers &amp; LeetCode Map</div>
 
-<div class="diagram">ROTATING CALIPERS � Maximum Distance Between Two Points on Convex Hull:
+<div class="diagram">ROTATING CALIPERS — Maximum Distance Between Two Points on Convex Hull:
   The diameter of a point set = max distance between any two points.
   Brute force: O(n^2). Rotating calipers on convex hull: O(n).
   
@@ -329,7 +328,7 @@ FIND INTERSECTION POINT of lines AB and CD:
     4. Track maximum distance throughout.
   
   The key: as we advance the "base" edge, the antipodal point can only
-  move forward (never backward) � total O(n) pointer movement.
+  move forward (never backward) — total O(n) pointer movement.
 
 MINIMUM BOUNDING RECTANGLE:
   Also O(n) with rotating calipers after convex hull.
@@ -359,41 +358,41 @@ POINT-IN-CONVEX-POLYGON TEST: O(log n)
 
 <hr>
 
-<!-- ------- SECTION 6 ------- -->
-<div class="section-heading">Section 6 � Q&amp;A Review</div>
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: Why is the cross product the fundamental tool in computational geometry?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">The 2D cross product cross(A, B) = A.x*B.y - A.y*B.x encodes orientation information: its sign tells you which side B is on relative to A, without needing angles or trigonometry. This makes it exact with integer arithmetic (no floating-point errors) and O(1). Applications: (1) Turn direction (left/right/straight) when traversing a path � core of convex hull. (2) Collinearity test � three points are collinear iff cross = 0. (3) Half-plane test � which side of a line is a point on. (4) Area of triangle = |cross(A,B)|/2. (5) Segment intersection � check if endpoints are on opposite sides. Almost every geometric algorithm reduces to a sequence of cross product sign checks.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The 2D cross product cross(A, B) = A.x*B.y - A.y*B.x encodes orientation information: its sign tells you which side B is on relative to A, without needing angles or trigonometry. This makes it exact with integer arithmetic (no floating-point errors) and O(1). Applications: (1) Turn direction (left/right/straight) when traversing a path — core of convex hull. (2) Collinearity test — three points are collinear iff cross = 0. (3) Half-plane test — which side of a line is a point on. (4) Area of triangle = |cross(A,B)|/2. (5) Segment intersection — check if endpoints are on opposite sides. Almost every geometric algorithm reduces to a sequence of cross product sign checks.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: Trace through the monotone chain convex hull algorithm on points: (0,0),(1,1),(2,0),(1,2),(0,2).</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Sorted by (x,y): (0,0),(0,2),(1,1),(1,2),(2,0). Lower hull (L?R): Add (0,0)?h=[(0,0)]. Add (0,2)?h=[(0,0),(0,2)]. Add (1,1): cross((0,0),(0,2),(1,1))=(0*1-2*1)=-2=0, pop (0,2). h=[(0,0),(1,1)]. Add (1,2): cross((0,0),(1,1),(1,2))=1*2-1*1=1>0, keep. h=[(0,0),(1,1),(1,2)]. Add (2,0): cross((1,1),(1,2),(2,0))=(0*(-1)-1*1)=-1=0 pop. cross((0,0),(1,1),(2,0))=(1*0-1*2)=-2=0 pop. h=[(0,0),(2,0)]. Upper hull (R?L, t=k+1=3): starts from (1,2). Build remaining points: (1,2),(1,1),(0,2),(0,0). Final hull is the unique convex boundary enclosing all points.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Sorted by (x,y): (0,0),(0,2),(1,1),(1,2),(2,0). Lower hull (L→R): Add (0,0)→h=[(0,0)]. Add (0,2)→h=[(0,0),(0,2)]. Add (1,1): cross((0,0),(0,2),(1,1))=(0*1-2*1)=-2≤0, pop (0,2). h=[(0,0),(1,1)]. Add (1,2): cross((0,0),(1,1),(1,2))=1*2-1*1=1>0, keep. h=[(0,0),(1,1),(1,2)]. Add (2,0): cross((1,1),(1,2),(2,0))=(0*(-1)-1*1)=-1≤0 pop. cross((0,0),(1,1),(2,0))=(1*0-1*2)=-2≤0 pop. h=[(0,0),(2,0)]. Upper hull (R→L, t=k+1=3): starts from (1,2). Build remaining points: (1,2),(1,1),(0,2),(0,0). Final hull is the unique convex boundary enclosing all points.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: How do you find the maximum number of points on a line (LeetCode #149) efficiently?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">For each "anchor" point P[i], count how many other points share the same slope with P[i]. Represent slope as a reduced fraction (dy/gcd, dx/gcd) to avoid floating-point errors. Use a HashMap keyed by (dy, dx). Normalize: if dx=0 (vertical), use (1,0). If dy=0 (horizontal), use (0,1). Always make dx positive (multiply both by -1 if dx&lt;0) so that (-1,-2) and (1,2) map to the same key. Handle duplicate points separately (collinear with everything). For each anchor, find the max count in the map + duplicates. Answer = max over all anchors. Time: O(n^2) time, O(n) space. Why not cross product? Cross product checks collinearity for triples � that's O(n^3). Slope hashing per anchor is O(n^2) total.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For each "anchor" point P[i], count how many other points share the same slope with P[i]. Represent slope as a reduced fraction (dy/gcd, dx/gcd) to avoid floating-point errors. Use a HashMap keyed by (dy, dx). Normalize: if dx=0 (vertical), use (1,0). If dy=0 (horizontal), use (0,1). Always make dx positive (multiply both by -1 if dx&lt;0) so that (-1,-2) and (1,2) map to the same key. Handle duplicate points separately (collinear with everything). For each anchor, find the max count in the map + duplicates. Answer = max over all anchors. Time: O(n^2) time, O(n) space. Why not cross product? Cross product checks collinearity for triples — that's O(n^3). Slope hashing per anchor is O(n^2) total.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: Why should you prefer integer arithmetic over floating point in geometry algorithms?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Floating-point arithmetic has rounding errors (IEEE 754 doubles have ~15-16 decimal digits of precision). In geometry, sign comparisons (is cross product positive, negative, or zero?) are extremely sensitive: a value that is mathematically 0 might compute as �1e-15, causing incorrect turn direction, missed collinearities, or degenerate hull errors. Integer arithmetic is exact: if input coordinates are integers, cross products and dot products are exact integers too (as long as you use 64-bit: coordinates up to ~10^9 mean products up to ~10^18, which fits in long). Safe practices: (1) Use integer coords where possible. (2) Only convert to float for output (distances, angles). (3) When float is unavoidable, add epsilon: if abs(x) &lt; 1e-9: treat as zero. (4) Use fractions for slope representations in #149.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Floating-point arithmetic has rounding errors (IEEE 754 doubles have ~15-16 decimal digits of precision). In geometry, sign comparisons (is cross product positive, negative, or zero?) are extremely sensitive: a value that is mathematically 0 might compute as ±1e-15, causing incorrect turn direction, missed collinearities, or degenerate hull errors. Integer arithmetic is exact: if input coordinates are integers, cross products and dot products are exact integers too (as long as you use 64-bit: coordinates up to ~10^9 mean products up to ~10^18, which fits in long). Safe practices: (1) Use integer coords where possible. (2) Only convert to float for output (distances, angles). (3) When float is unavoidable, add epsilon: if abs(x) &lt; 1e-9: treat as zero. (4) Use fractions for slope representations in #149.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: What is the rotating calipers technique and what is its time complexity?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Rotating calipers uses two parallel supporting lines (like calipers) that "rotate" around a convex hull to efficiently compute properties like diameter (max distance), width, or minimum bounding rectangle. Key insight: for a convex polygon, as you advance one supporting line along an edge, the antipodal (opposite) supporting line can only advance forward in the same rotation direction � it never needs to go backward. This means both pointers together make at most 2n advances total, giving O(n) after the O(n log n) hull construction. Finding polygon diameter: start with the widest pair (antipodal points), advance the "bottom" caliper by one edge, advance the "top" until it's no longer increasing distance. Record max distance. Total: O(n log n) dominated by hull construction.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Rotating calipers uses two parallel supporting lines (like calipers) that "rotate" around a convex hull to efficiently compute properties like diameter (max distance), width, or minimum bounding rectangle. Key insight: for a convex polygon, as you advance one supporting line along an edge, the antipodal (opposite) supporting line can only advance forward in the same rotation direction — it never needs to go backward. This means both pointers together make at most 2n advances total, giving O(n) after the O(n log n) hull construction. Finding polygon diameter: start with the widest pair (antipodal points), advance the "bottom" caliper by one edge, advance the "top" until it's no longer increasing distance. Record max distance. Total: O(n log n) dominated by hull construction.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 17C Complete</button>
-<div class="toast" id="toast">? Module 17C complete! Computational Geometry mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 17C Complete</button>
+<div class="toast" id="toast">✅ Module 17C complete! Computational Geometry mastered!</div>
     <script>var MODULE_ID = 'm17c';</script>
     <script src="../dsa.js"></script>
 </body>

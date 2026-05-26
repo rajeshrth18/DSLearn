@@ -1,58 +1,57 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 15A � KMP Algorithm | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 15A — KMP Algorithm | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 15 � Part A</h1>
-    <div class="tagline">KMP Algorithm � Linear-Time Pattern Matching</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Never re-scan characters � Failure function � O(n + m)</p>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 15 — Part A</h1>
+    <div class="tagline">KMP Algorithm — Linear-Time Pattern Matching</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Never re-scan characters · Failure function · O(n + m)</p>
     <div class="badges">
-        <span>? Estimated: 2 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 15 of 17</span>
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 15 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 15 � String Algorithms:</strong><br><br>
-    ? <strong>Part A</strong> � <em>You are here</em> � KMP Algorithm<br>
-    ? <strong>Part B</strong> � <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
-    ? <strong>Part C</strong> � <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
-    ? <strong>Part D</strong> � <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
-    ? <strong>Part E</strong> � <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 15 — String Algorithms:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — KMP Algorithm<br>
+    ⬜ <strong>Part B</strong> — <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ⬜ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase8/m14a_divide_conquer.html">&larr; Module 14 &mdash; Divide &amp; Conquer</a>
     <a href="../phase9/m16a_bit_manipulation.html">Module 16 &mdash; Bit Manipulation &rarr;</a>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � The Pattern Matching Problem</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Pattern Matching Problem</div>
 
 <p>Given a <strong>text</strong> of length <em>n</em> and a <strong>pattern</strong> of length <em>m</em>,
 find all positions in the text where the pattern occurs.</p>
 
 <p>The <strong>naive approach</strong> compares the pattern at every position. When a mismatch occurs,
-it shifts the pattern by one and restarts from scratch. This is O(n � m) in the worst case.</p>
+it shifts the pattern by one and restarts from scratch. This is O(n × m) in the worst case.</p>
 
-<div class="diagram">NAIVE APPROACH � Text: "AAAB", Pattern: "AAB"
+<div class="diagram">NAIVE APPROACH — Text: "AAAB", Pattern: "AAB"
 
 Step 1: AA<b>A</b>B        Step 2: A<b>A</b>AB        Step 3: AA<b>A</b>B
         AA<b>B</b>                 A<b>A</b>B                 AA<b>B</b>
         mismatch at 2          match AA, mismatch     mismatch at 2
-        shift by 1 ?           shift by 1 ?           Found: no match
+        shift by 1 ▶           shift by 1 ▶           Found: no match
 
-Wasted work: we knew "AA" matched in step 2 � why re-check?
+Wasted work: we knew "AA" matched in step 2 — why re-check?
 KMP avoids re-checking by remembering what matched!</div>
 
 <p><strong>KMP (Knuth-Morris-Pratt)</strong> solves this by preprocessing the pattern into a
@@ -62,13 +61,13 @@ how far back can we shift the pattern without missing any match?</p>
 <table>
     <thead><tr><th>Algorithm</th><th>Preprocessing</th><th>Search</th><th>Total</th></tr></thead>
     <tbody>
-        <tr><td>Naive</td><td class="g">O(1)</td><td class="r">O(n�m)</td><td class="r">O(n�m)</td></tr>
+        <tr><td>Naive</td><td class="g">O(1)</td><td class="r">O(n·m)</td><td class="r">O(n·m)</td></tr>
         <tr><td>KMP</td><td>O(m)</td><td class="g">O(n)</td><td class="g">O(n+m)</td></tr>
     </tbody>
 </table>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � The Failure Function (LPS Array)</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Failure Function (LPS Array)</div>
 
 <p>The <strong>LPS (Longest Proper Prefix which is also a Suffix)</strong> array is the key insight of KMP.
 For each position <code>i</code> in the pattern, <code>lps[i]</code> = length of the longest
@@ -78,35 +77,35 @@ proper prefix of <code>pattern[0..i]</code> that is also a suffix.</p>
 Index:    0 1 2 3 4 5 6 7 8 9 10 11
 
 LPS computation:
-  i=0:  "A"       � no proper prefix = suffix ? lps[0] = 0
-  i=1:  "AB"      � prefixes: "A"; suffixes: "B" � no match ? lps[1] = 0
-  i=2:  "ABC"     � prefixes: "A","AB"; suffixes: "C","BC" � no match ? lps[2] = 0
-  i=3:  "ABCA"    � "A" is both prefix and suffix ? lps[3] = 1
-  i=4:  "ABCAB"   � "AB" is both prefix and suffix ? lps[4] = 2
-  i=5:  "ABCABD"  � "A","AB","ABC" vs "D","BD","ABD" � no match ? lps[5] = 0
-  i=6:  "ABCABDA" � "A" is both ? lps[6] = 1
-  i=7:  "ABCABDAB"� "AB" is both ? lps[7] = 2
-  i=8:  "ABCABDABC"� "ABC" is both ? lps[8] = 3
-  i=9:  "ABCABDABCA"� "ABCA" is both ? lps[9] = 4
-  i=10: "ABCABDABCAB"� "ABCAB" is both ? lps[10] = 5
-  i=11: "ABCABDABCABC"� "ABCABC": "ABC" is both ? lps[11] = 3... wait "ABCAB" vs "BCABC"? ? lps[11] = 3
+  i=0:  "A"       — no proper prefix = suffix → lps[0] = 0
+  i=1:  "AB"      — prefixes: "A"; suffixes: "B" — no match → lps[1] = 0
+  i=2:  "ABC"     — prefixes: "A","AB"; suffixes: "C","BC" — no match → lps[2] = 0
+  i=3:  "ABCA"    — "A" is both prefix and suffix → lps[3] = 1
+  i=4:  "ABCAB"   — "AB" is both prefix and suffix → lps[4] = 2
+  i=5:  "ABCABD"  — "A","AB","ABC" vs "D","BD","ABD" — no match → lps[5] = 0
+  i=6:  "ABCABDA" — "A" is both → lps[6] = 1
+  i=7:  "ABCABDAB"— "AB" is both → lps[7] = 2
+  i=8:  "ABCABDABC"— "ABC" is both → lps[8] = 3
+  i=9:  "ABCABDABCA"— "ABCA" is both → lps[9] = 4
+  i=10: "ABCABDABCAB"— "ABCAB" is both → lps[10] = 5
+  i=11: "ABCABDABCABC"— "ABCABC": "ABC" is both → lps[11] = 3... wait "ABCAB" vs "BCABC"? → lps[11] = 3
 
 LPS = [0, 0, 0, 1, 2, 0, 1, 2, 3, 4, 5, 3]
 
 Meaning: at position 10 (after matching "ABCABDABCAB"), if next char mismatches,
-         we already know 5 chars matched � shift back only 5 positions.</div>
+         we already know 5 chars matched — shift back only 5 positions.</div>
 
 <div class="tip">
-    <strong>?? LPS Intuition:</strong> <code>lps[i]</code> tells you: "if the pattern fails at position
+    <strong>💡 LPS Intuition:</strong> <code>lps[i]</code> tells you: "if the pattern fails at position
     <code>i+1</code>, the next comparison should start at position <code>lps[i]</code> in the pattern."
     It encodes all the shift information so the text pointer never goes backward.
 </div>
 
-<h3>2.1 � Computing LPS Array</h3>
+<h3>2.1 — Computing LPS Array</h3>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span>[] <span class="mt">BuildLPS</span>(<span class="kw">string</span> pattern)
 {
     <span class="kw">int</span> m = pattern.Length;
@@ -141,7 +140,7 @@ Meaning: at position 10 (after matching "ABCABDABCAB"), if next char mismatches,
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">build_lps</span>(pattern: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     m = <span class="mt">len</span>(pattern)
     lps = [<span class="nm">0</span>] * m
@@ -161,32 +160,32 @@ Meaning: at position 10 (after matching "ABCABDABCAB"), if next char mismatches,
     <span class="kw">return</span> lps</pre>
 </div>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � KMP Search Algorithm</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — KMP Search Algorithm</div>
 
 <p>With the LPS array built, the KMP search uses two pointers: <code>i</code> for text position and
 <code>j</code> for pattern position. When a mismatch occurs at pattern position <code>j</code>,
-instead of resetting <code>j = 0</code>, we set <code>j = lps[j-1]</code> � the text pointer
+instead of resetting <code>j = 0</code>, we set <code>j = lps[j-1]</code> — the text pointer
 <code>i</code> never moves backward.</p>
 
-<div class="diagram">KMP SEARCH � Text: "ABCABDABC", Pattern: "ABCABD", LPS: [0,0,0,1,2,0]
+<div class="diagram">KMP SEARCH — Text: "ABCABDABC", Pattern: "ABCABD", LPS: [0,0,0,1,2,0]
 
-i=0,j=0: A=A ?  ?  i=1,j=1
-i=1,j=1: B=B ?  ?  i=2,j=2
-i=2,j=2: C=C ?  ?  i=3,j=3
-i=3,j=3: A=A ?  ?  i=4,j=4
-i=4,j=4: B=B ?  ?  i=5,j=5
-i=5,j=5: D=D ?  ?  j==m ? FOUND at index 0!  j = lps[5] = 0
+i=0,j=0: A=A ✓  →  i=1,j=1
+i=1,j=1: B=B ✓  →  i=2,j=2
+i=2,j=2: C=C ✓  →  i=3,j=3
+i=3,j=3: A=A ✓  →  i=4,j=4
+i=4,j=4: B=B ✓  →  i=5,j=5
+i=5,j=5: D=D ✓  →  j==m → FOUND at index 0!  j = lps[5] = 0
 
-i=6,j=0: A=A ?  ?  i=7,j=1
-i=7,j=1: B=B ?  ?  i=8,j=2
-i=8,j=2: C=C ?  ?  i=9 (end) ? no more chars, no new match
+i=6,j=0: A=A ✓  →  i=7,j=1
+i=7,j=1: B=B ✓  →  i=8,j=2
+i=8,j=2: C=C ✓  →  i=9 (end) → no more chars, no new match
 
 Key: i never went backward! Text scanned in exactly ONE pass.</div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">KMPSearch</span>(<span class="kw">string</span> text, <span class="kw">string</span> pattern)
 {
     <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
@@ -226,7 +225,7 @@ Key: i never went backward! Text scanned in exactly ONE pass.</div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">kmp_search</span>(text: <span class="tp">str</span>, pattern: <span class="tp">str</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     n, m = <span class="mt">len</span>(text), <span class="mt">len</span>(pattern)
     <span class="kw">if</span> m == <span class="nm">0</span>:
@@ -255,8 +254,8 @@ print(<span class="mt">kmp_search</span>(<span class="st">"AABAACAADAABAAABAA"</
 <span class="cm"># Output: [0, 9, 13]</span></pre>
 </div>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Step-by-Step Walkthrough</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Step-by-Step Walkthrough</div>
 
 <p>Let's trace through building the LPS array for <code>"AAACAAAA"</code>:</p>
 
@@ -264,31 +263,31 @@ print(<span class="mt">kmp_search</span>(<span class="st">"AABAACAADAABAAABAA"</
 Index:   0 1 2 3 4 5 6 7
 
 lps[0]=0  (always)
-lps[1]: pattern[1]='A' == pattern[0]='A' ? len=1 ? lps[1]=1
-lps[2]: pattern[2]='A' == pattern[1]='A' ? len=2 ? lps[2]=2
-lps[3]: pattern[3]='C' ? pattern[2]='A' ? fallback: len=lps[1]=1
-        pattern[3]='C' ? pattern[0]='A' ? fallback: len=0
-        len==0 ? lps[3]=0
-lps[4]: pattern[4]='A' == pattern[0]='A' ? len=1 ? lps[4]=1
-lps[5]: pattern[5]='A' == pattern[1]='A' ? len=2 ? lps[5]=2
-lps[6]: pattern[6]='A' == pattern[2]='A' ? len=3 ? lps[6]=3
-lps[7]: pattern[7]='A' == pattern[3]='C'? NO ? fallback: len=lps[2]=2
-        pattern[7]='A' == pattern[2]='A' ? len=3 ? lps[7]=3... wait
-        Actually: len was 3, pattern[7]='A'==pattern[3]='C'? No ? len=lps[2]=2
-        pattern[7]='A'==pattern[2]='A' ? len=3 ? lps[7]=3
+lps[1]: pattern[1]='A' == pattern[0]='A' → len=1 → lps[1]=1
+lps[2]: pattern[2]='A' == pattern[1]='A' → len=2 → lps[2]=2
+lps[3]: pattern[3]='C' ≠ pattern[2]='A' → fallback: len=lps[1]=1
+        pattern[3]='C' ≠ pattern[0]='A' → fallback: len=0
+        len==0 → lps[3]=0
+lps[4]: pattern[4]='A' == pattern[0]='A' → len=1 → lps[4]=1
+lps[5]: pattern[5]='A' == pattern[1]='A' → len=2 → lps[5]=2
+lps[6]: pattern[6]='A' == pattern[2]='A' → len=3 → lps[6]=3
+lps[7]: pattern[7]='A' == pattern[3]='C'? NO → fallback: len=lps[2]=2
+        pattern[7]='A' == pattern[2]='A' → len=3 → lps[7]=3... wait
+        Actually: len was 3, pattern[7]='A'==pattern[3]='C'? No → len=lps[2]=2
+        pattern[7]='A'==pattern[2]='A' → len=3 → lps[7]=3
 
 LPS = [0, 1, 2, 0, 1, 2, 3, 3]</div>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � Interview Applications</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Interview Applications</div>
 
-<h3>5.1 � Shortest Palindrome (LeetCode 214)</h3>
+<h3>5.1 — Shortest Palindrome (LeetCode 214)</h3>
 <p>Add the minimum characters to the front of a string to make it a palindrome.
 Trick: reverse the string, concat with <code>#</code> separator, run KMP.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static string</span> <span class="mt">ShortestPalindrome</span>(<span class="kw">string</span> s)
 {
     <span class="kw">string</span> rev = <span class="kw">new string</span>(s.<span class="mt">Reverse</span>().<span class="mt">ToArray</span>());
@@ -297,28 +296,28 @@ Trick: reverse the string, concat with <code>#</code> separator, run KMP.</p>
     <span class="kw">int</span> k = lps[combined.Length - <span class="nm">1</span>];  <span class="cm">// longest palindrome prefix length</span>
     <span class="kw">return</span> rev[..(s.Length - k)] + s;
 }
-<span class="cm">// "aacecaaa" ? "aaacecaaa"</span></pre>
+<span class="cm">// "aacecaaa" → "aaacecaaa"</span></pre>
 </div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">shortest_palindrome</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
     rev = s[::-<span class="nm">1</span>]
     combined = s + <span class="st">"#"</span> + rev
     lps = <span class="mt">build_lps</span>(combined)
     k = lps[-<span class="nm">1</span>]   <span class="cm"># longest palindrome prefix length</span>
     <span class="kw">return</span> rev[:(<span class="mt">len</span>(s) - k)] + s
-<span class="cm"># "aacecaaa" ? "aaacecaaa"</span></pre>
+<span class="cm"># "aacecaaa" → "aaacecaaa"</span></pre>
 </div>
 
-<h3>5.2 � Repeated Substring Pattern (LeetCode 459)</h3>
+<h3>5.2 — Repeated Substring Pattern (LeetCode 459)</h3>
 <p>Check if a string is made by repeating a substring. If <code>lps[m-1] > 0</code> and
 <code>m % (m - lps[m-1]) == 0</code>, the string has a repeated pattern.</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static bool</span> <span class="mt">RepeatedSubstringPattern</span>(<span class="kw">string</span> s)
 {
     <span class="kw">int</span>[] lps = <span class="mt">BuildLPS</span>(s);
@@ -326,32 +325,32 @@ Trick: reverse the string, concat with <code>#</code> separator, run KMP.</p>
     <span class="kw">int</span> period = m - lps[m - <span class="nm">1</span>];
     <span class="kw">return</span> lps[m - <span class="nm">1</span>] &gt; <span class="nm">0</span> &amp;&amp; m % period == <span class="nm">0</span>;
 }
-<span class="cm">// "abab" ? true (period "ab")   "aba" ? false</span></pre>
+<span class="cm">// "abab" → true (period "ab")   "aba" → false</span></pre>
 </div>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">repeated_substring_pattern</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
     lps = <span class="mt">build_lps</span>(s)
     m = <span class="mt">len</span>(s)
     period = m - lps[-<span class="nm">1</span>]
     <span class="kw">return</span> lps[-<span class="nm">1</span>] &gt; <span class="nm">0</span> <span class="kw">and</span> m % period == <span class="nm">0</span>
-<span class="cm"># "abab" ? True   "aba" ? False</span></pre>
+<span class="cm"># "abab" → True   "aba" → False</span></pre>
 </div>
 
 <div class="note">
-    <strong>?? Key Takeaways:</strong>
+    <strong>📌 Key Takeaways:</strong>
     <ul style="margin-top:8px;">
-        <li>KMP runs in <strong>O(n + m)</strong> time � the text pointer never moves backward</li>
+        <li>KMP runs in <strong>O(n + m)</strong> time — the text pointer never moves backward</li>
         <li>The LPS array is built in <strong>O(m)</strong> using the same two-pointer technique</li>
         <li>KMP is useful beyond string search: palindrome detection, period detection, pattern-in-cycle problems</li>
         <li>The <code>#</code> separator trick lets you use KMP on concatenated strings safely</li>
     </ul>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 15A Complete</button>
-<div class="toast" id="toast">? Module 15A complete! KMP mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 15A Complete</button>
+<div class="toast" id="toast">✅ Module 15A complete! KMP mastered!</div>
     <script>var MODULE_ID = 'm15a';</script>
     <script src="../dsa.js"></script>
 </body>

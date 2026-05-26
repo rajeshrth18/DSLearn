@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 8D � Practice: 12 Hashing Problems</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 8D — Practice: 12 Hashing Problems</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 5</div>
-    <h1>Module 8 � Part D</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 5</div>
+    <h1>Module 8 — Part D</h1>
     <div class="tagline">Practice: 12 Hashing Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From Two Sum to custom Bloom Filters � master the hash-based interview toolkit</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">From Two Sum to custom Bloom Filters — master the hash-based interview toolkit</p>
     <div class="badges">
-        <span>?? 12 Problems</span>
-        <span>4 Easy � 5 Medium � 3 Hard</span>
-        <span>?? C# + Python</span>
-        <span>?? Part D of Module 8</span>
+        <span>📋 12 Problems</span>
+        <span>4 Easy — 5 Medium — 3 Hard</span>
+        <span>💻 C# + Python</span>
+        <span>📝 Part D of Module 8</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 8 � Hashing:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m08a_hashing.html">Hash Functions &amp; Collisions</a><br>
-    ? <strong>Part B</strong> � <a href="m08b_collections.html">Dictionary, HashSet &amp; LRU Cache</a><br>
-    ? <strong>Part C</strong> � <a href="m08c_bloom_filters.html">Bloom Filters</a><br>
-    ? <strong>Part D</strong> � <em>You are here</em> � Practice: 12 Problems<br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 8 — Hashing:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m08a_hashing.html">Hash Functions &amp; Collisions</a><br>
+    ✅ <strong>Part B</strong> — <a href="m08b_collections.html">Dictionary, HashSet &amp; LRU Cache</a><br>
+    ✅ <strong>Part C</strong> — <a href="m08c_bloom_filters.html">Bloom Filters</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Practice: 12 Problems<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase4/m07a_avl_trees.html">&larr; Module 7 &mdash; Advanced Trees</a>
@@ -36,7 +35,7 @@
 </div>
 
 <!-- ------- EASY ------- -->
-<div class="section-heading">Easy Problems (1�4)</div>
+<div class="section-heading">Easy Problems (1—4)</div>
 
 <!-- P1 -->
 <div class="problem-card">
@@ -50,14 +49,14 @@
         <span class="tag tag-topic">Array</span>
     </div>
     <p><strong>Problem:</strong> Given an array of integers <code>nums</code> and an integer <code>target</code>, return the indices of the two numbers that add up to <code>target</code>. Each input has exactly one solution. You may not use the same element twice.</p>
-    <p><strong>Example:</strong> <code>nums = [2,7,11,15], target = 9</code> ? <code>[0, 1]</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>nums = [2,7,11,15], target = 9</code> → <code>[0, 1]</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Single-pass HashMap. For each element, compute <code>complement = target - nums[i]</code>. If the complement is already in the map, return its stored index and i. Otherwise store nums[i]?i. O(n) time, O(n) space.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � single HashMap pass; each element stored/looked up once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � HashMap stores up to n elements</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Single-pass HashMap. For each element, compute <code>complement = target - nums[i]</code>. If the complement is already in the map, return its stored index and i. Otherwise store nums[i]?i. O(n) time, O(n) space.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — single HashMap pass; each element stored/looked up once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — HashMap stores up to n elements</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> target)
 {
     <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();  <span class="cm">// value ? index</span>
@@ -74,7 +73,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">def</span> <span class="mt">two_sum</span>(nums: list[<span class="kw">int</span>], target: <span class="kw">int</span>) -> list[<span class="kw">int</span>]:
     seen = {}  <span class="cm"># value ? index</span>
     <span class="kw">for</span> i, n <span class="kw">in</span> <span class="mt">enumerate</span>(nums):
@@ -101,14 +100,14 @@
         <span class="tag tag-topic">String</span>
     </div>
     <p><strong>Problem:</strong> Given two strings <code>s</code> and <code>t</code>, return <code>true</code> if <code>t</code> is an anagram of <code>s</code>, and <code>false</code> otherwise.</p>
-    <p><strong>Example:</strong> <code>s = "anagram", t = "nagaram"</code> ? <code>true</code> &nbsp;|&nbsp; <code>s = "rat", t = "car"</code> ? <code>false</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>s = "anagram", t = "nagaram"</code> → <code>true</code> &nbsp;|&nbsp; <code>s = "rat", t = "car"</code> → <code>false</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Count character frequencies with a dictionary (or a 26-element array for lowercase ASCII). Increment for every char in s, decrement for every char in t. If all counts are zero at the end, it's an anagram. O(n) time, O(1) space (fixed 26-letter alphabet).</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � two passes, one per string &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) � 26-element fixed-size frequency array</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Count character frequencies with a dictionary (or a 26-element array for lowercase ASCII). Increment for every char in s, decrement for every char in t. If all counts are zero at the end, it's an anagram. O(n) time, O(1) space (fixed 26-letter alphabet).</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — two passes, one per string &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — 26-element fixed-size frequency array</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static bool</span> <span class="mt">IsAnagram</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
 {
     <span class="kw">if</span> (s.Length != t.Length) <span class="kw">return false</span>;
@@ -124,12 +123,12 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">is_anagram</span>(s: <span class="kw">str</span>, t: <span class="kw">str</span>) -> <span class="kw">bool</span>:
     <span class="kw">return</span> Counter(s) == Counter(t)
-    <span class="cm"># Or: return sorted(s) == sorted(t)  � O(n log n)</span>
+    <span class="cm"># Or: return sorted(s) == sorted(t)  — O(n log n)</span>
 
 <span class="cm"># is_anagram("anagram", "nagaram") ? True</span></pre>
         </div>
@@ -148,14 +147,14 @@
         <span class="tag tag-topic">Array</span>
     </div>
     <p><strong>Problem:</strong> Given an integer array <code>nums</code>, return <code>true</code> if any value appears at least twice in the array, and <code>false</code> if every element is distinct.</p>
-    <p><strong>Example:</strong> <code>[1,2,3,1]</code> ? <code>true</code> &nbsp;|&nbsp; <code>[1,2,3,4]</code> ? <code>false</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>[1,2,3,1]</code> → <code>true</code> &nbsp;|&nbsp; <code>[1,2,3,4]</code> → <code>false</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Use a HashSet. For each element, try to add it. <code>Add()</code> returns false if the element already exists � that's a duplicate. O(n) time, O(n) space.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � single pass adding each element to HashSet &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � HashSet stores up to n elements</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Use a HashSet. For each element, try to add it. <code>Add()</code> returns false if the element already exists — that's a duplicate. O(n) time, O(n) space.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — single pass adding each element to HashSet &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — HashSet stores up to n elements</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static bool</span> <span class="mt">ContainsDuplicate</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">var</span> seen = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
@@ -166,7 +165,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">def</span> <span class="mt">contains_duplicate</span>(nums: list[<span class="kw">int</span>]) -> <span class="kw">bool</span>:
     <span class="kw">return</span> <span class="mt">len</span>(nums) != <span class="mt">len</span>(<span class="mt">set</span>(nums))
     <span class="cm"># Or explicit: seen = set(); return any(x in seen or seen.add(x) for x in nums)</span></pre>
@@ -186,14 +185,14 @@
         <span class="tag tag-topic">String</span>
     </div>
     <p><strong>Problem:</strong> Given a string <code>s</code>, find the first non-repeating character and return its index. If it does not exist, return -1.</p>
-    <p><strong>Example:</strong> <code>"leetcode"</code> ? <code>0</code> &nbsp;|&nbsp; <code>"aabb"</code> ? <code>-1</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>"leetcode"</code> → <code>0</code> &nbsp;|&nbsp; <code>"aabb"</code> → <code>-1</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Two-pass. Pass 1: count frequency of each character. Pass 2: iterate the string again and return the index of the first character with count == 1. O(n) time, O(1) space (26 letters).</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � two passes over the string &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) � 26-element fixed-size frequency array</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Two-pass. Pass 1: count frequency of each character. Pass 2: iterate the string again and return the index of the first character with count == 1. O(n) time, O(1) space (26 letters).</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — two passes over the string &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — 26-element fixed-size frequency array</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span> <span class="mt">FirstUniqChar</span>(<span class="kw">string</span> s)
 {
     <span class="kw">var</span> freq = <span class="kw">new int</span>[<span class="nm">26</span>];
@@ -206,7 +205,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">first_uniq_char</span>(s: <span class="kw">str</span>) -> <span class="kw">int</span>:
@@ -222,7 +221,7 @@
 </div>
 
 <!-- ------- MEDIUM ------- -->
-<div class="section-heading">Medium Problems (5�9)</div>
+<div class="section-heading">Medium Problems (5—9)</div>
 
 <!-- P5 -->
 <div class="problem-card">
@@ -237,14 +236,14 @@
         <span class="tag tag-topic">Sorting</span>
     </div>
     <p><strong>Problem:</strong> Given an array of strings, group the anagrams together. You can return the answer in any order.</p>
-    <p><strong>Example:</strong> <code>["eat","tea","tan","ate","nat","bat"]</code> ? <code>[["bat"],["nat","tan"],["ate","eat","tea"]]</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>["eat","tea","tan","ate","nat","bat"]</code> → <code>[["bat"],["nat","tan"],["ate","eat","tea"]]</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Use a sorted string as the dictionary key � anagrams share the same sorted form. Group all strings with the same sorted key together. O(n�k�log k) where k = max string length.</div>
-        <div class="complexity"><strong>Time:</strong> O(n�k log k) � sort each string of length k; n strings total &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n�k) � HashMap stores n entries, each key/value up to length k</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Use a sorted string as the dictionary key — anagrams share the same sorted form. Group all strings with the same sorted key together. O(n—k—log k) where k = max string length.</div>
+        <div class="complexity"><strong>Time:</strong> O(n—k log k) — sort each string of length k; n strings total &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n—k) — HashMap stores n entries, each key/value up to length k</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">GroupAnagrams</span>(<span class="kw">string</span>[] strs)
 {
     <span class="kw">var</span> groups = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt;();
@@ -261,7 +260,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
 <span class="kw">def</span> <span class="mt">group_anagrams</span>(strs: list[<span class="kw">str</span>]) -> list[list[<span class="kw">str</span>]]:
@@ -285,14 +284,14 @@
         <span class="tag tag-topic">Prefix Sum</span>
     </div>
     <p><strong>Problem:</strong> Given an array of integers <code>nums</code> and an integer <code>k</code>, return the total number of subarrays whose sum equals <code>k</code>.</p>
-    <p><strong>Example:</strong> <code>nums = [1,1,1], k = 2</code> ? <code>2</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>nums = [1,1,1], k = 2</code> → <code>2</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Prefix sum + HashMap. Keep a running prefix sum. For each position, check how many earlier prefix sums equal <code>currentSum - k</code> (because <code>sum[l..r] = prefixSum[r] - prefixSum[l-1]</code>). Store prefix sum frequencies. O(n) time.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � single pass with O(1) HashMap lookup per step &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � prefix sum frequency map</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Prefix sum + HashMap. Keep a running prefix sum. For each position, check how many earlier prefix sums equal <code>currentSum - k</code> (because <code>sum[l..r] = prefixSum[r] - prefixSum[l-1]</code>). Store prefix sum frequencies. O(n) time.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — single pass with O(1) HashMap lookup per step &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — prefix sum frequency map</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span> <span class="mt">SubarraySum</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> prefixCount = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; { [<span class="nm">0</span>] = <span class="nm">1</span> };
@@ -309,7 +308,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
 <span class="kw">def</span> <span class="mt">subarray_sum</span>(nums: list[<span class="kw">int</span>], k: <span class="kw">int</span>) -> <span class="kw">int</span>:
@@ -338,14 +337,14 @@
         <span class="tag tag-topic">Array</span>
     </div>
     <p><strong>Problem:</strong> Given an unsorted array of integers, find the length of the longest consecutive elements sequence. Must run in O(n).</p>
-    <p><strong>Example:</strong> <code>[100,4,200,1,3,2]</code> ? <code>4</code> (the sequence 1,2,3,4)</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>[100,4,200,1,3,2]</code> → <code>4</code> (the sequence 1,2,3,4)</p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Add all numbers to a HashSet. For each number n that has no left neighbour (n-1 not in set), it's the start of a sequence. Extend the sequence by checking n+1, n+2, ... and tracking the length. Only start sequences at their beginning to avoid O(n�) recounts.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � each number visited at most twice (start check + extend) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � HashSet of all n numbers</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Add all numbers to a HashSet. For each number n that has no left neighbour (n-1 not in set), it's the start of a sequence. Extend the sequence by checking n+1, n+2, ... and tracking the length. Only start sequences at their beginning to avoid O(n—) recounts.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — each number visited at most twice (start check + extend) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — HashSet of all n numbers</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span> <span class="mt">LongestConsecutive</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">var</span> numSet = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;(nums);
@@ -363,7 +362,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">def</span> <span class="mt">longest_consecutive</span>(nums: list[<span class="kw">int</span>]) -> <span class="kw">int</span>:
     num_set = <span class="mt">set</span>(nums)
     best = <span class="nm">0</span>
@@ -394,14 +393,14 @@
         <span class="tag tag-topic">Bucket Sort</span>
     </div>
     <p><strong>Problem:</strong> Given an integer array <code>nums</code> and an integer <code>k</code>, return the <code>k</code> most frequent elements. The answer may be returned in any order.</p>
-    <p><strong>Example:</strong> <code>nums = [1,1,1,2,2,3], k = 2</code> ? <code>[1,2]</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>nums = [1,1,1,2,2,3], k = 2</code> → <code>[1,2]</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Count frequencies with a HashMap. Use bucket sort: create an array of size n+1 where index = frequency, bucket[i] contains all numbers with that frequency. Collect from highest bucket down until k elements. O(n) time.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � frequency count + bucket sort &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � frequency HashMap + n+1 bucket array</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Count frequencies with a HashMap. Use bucket sort: create an array of size n+1 where index = frequency, bucket[i] contains all numbers with that frequency. Collect from highest bucket down until k elements. O(n) time.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — frequency count + bucket sort &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — frequency HashMap + n+1 bucket array</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span>[] <span class="mt">TopKFrequent</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">var</span> freq = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt;();
@@ -426,7 +425,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">top_k_frequent</span>(nums: list[<span class="kw">int</span>], k: <span class="kw">int</span>) -> list[<span class="kw">int</span>]:
@@ -451,14 +450,14 @@
         <span class="tag tag-topic">Design</span>
     </div>
     <p><strong>Problem:</strong> Design a data structure that follows the constraints of a Least Recently Used (LRU) cache. Implement the <code>LRUCache</code> class with <code>get(key)</code> (returns -1 if not found) and <code>put(key, value)</code> (evicts least recently used if over capacity). Both operations must run in O(1) average time.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Combine a Dictionary (key ? LinkedList node) for O(1) lookup with a doubly LinkedList for O(1) order maintenance. Most recently used = head. Least recently used = tail. On every access, move node to head.</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Combine a Dictionary (key ? LinkedList node) for O(1) lookup with a doubly LinkedList for O(1) order maintenance. Most recently used = head. Least recently used = tail. On every access, move node to head.</div>
         <div class="complexity"><strong>Time:</strong> O(1) &amp;mdash; get and put use HashMap + doubly linked list; O(1) per op &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(capacity) &amp;mdash; HashMap + LinkedList bounded by cache size</div>
-        <div class="tip"><strong>?? Full implementation covered in Module 8B, Section 8.</strong> The solution below is a compact recap.</div>
+        <div class="tip"><strong>📚 Full implementation covered in Module 8B, Section 8.</strong> The solution below is a compact recap.</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">LRUCache</span>
 {
     <span class="kw">private readonly int</span> _cap;
@@ -484,7 +483,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> OrderedDict
 
 <span class="kw">class</span> <span class="tp">LRUCache</span>:
@@ -504,7 +503,7 @@
 </div>
 
 <!-- ------- HARD ------- -->
-<div class="section-heading">Hard Problems (10�12)</div>
+<div class="section-heading">Hard Problems (10—12)</div>
 
 <!-- P10 -->
 <div class="problem-card">
@@ -519,14 +518,14 @@
         <span class="tag tag-topic">Two Pointers</span>
     </div>
     <p><strong>Problem:</strong> Given strings <code>s</code> and <code>t</code>, return the minimum window in <code>s</code> which contains all the characters in <code>t</code>. If no such window exists, return empty string.</p>
-    <p><strong>Example:</strong> <code>s = "ADOBECODEBANC", t = "ABC"</code> ? <code>"BANC"</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>s = "ADOBECODEBANC", t = "ABC"</code> → <code>"BANC"</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Sliding window with two hash maps. Track how many characters from t are "satisfied". Expand the right pointer until all characters are covered, then shrink the left pointer to find the minimum window. O(|s| + |t|) time.</div>
-        <div class="complexity"><strong>Time:</strong> O(|s| + |t|) � each char of s visited at most twice (expand + shrink) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(|s| + |t|) � two frequency maps</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Sliding window with two hash maps. Track how many characters from t are "satisfied". Expand the right pointer until all characters are covered, then shrink the left pointer to find the minimum window. O(|s| + |t|) time.</div>
+        <div class="complexity"><strong>Time:</strong> O(|s| + |t|) — each char of s visited at most twice (expand + shrink) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(|s| + |t|) — two frequency maps</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static string</span> <span class="mt">MinWindow</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
 {
     <span class="kw">if</span> (s.Length == <span class="nm">0</span> || t.Length == <span class="nm">0</span>) <span class="kw">return</span> <span class="st">""</span>;
@@ -558,7 +557,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">min_window</span>(s: <span class="kw">str</span>, t: <span class="kw">str</span>) -> <span class="kw">str</span>:
@@ -601,14 +600,14 @@
         <span class="tag tag-topic">Sliding Window</span>
     </div>
     <p><strong>Problem:</strong> Given an integer array <code>nums</code> and an integer <code>k</code>, return the number of good subarrays. A good subarray is a subarray with exactly <code>k</code> different integers.</p>
-    <p><strong>Example:</strong> <code>nums = [1,2,1,2,3], k = 2</code> ? <code>7</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>nums = [1,2,1,2,3], k = 2</code> → <code>7</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Key insight: exactly(k) = atMost(k) - atMost(k-1). The <code>atMost(k)</code> helper counts subarrays with at most k distinct integers using a sliding window with a frequency map. O(n) time.</div>
-        <div class="complexity"><strong>Time:</strong> O(n) � two sliding window passes over the array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) � frequency map in each window</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Key insight: exactly(k) = atMost(k) - atMost(k-1). The <code>atMost(k)</code> helper counts subarrays with at most k distinct integers using a sliding window with a frequency map. O(n) time.</div>
+        <div class="complexity"><strong>Time:</strong> O(n) — two sliding window passes over the array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — frequency map in each window</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static int</span> <span class="mt">SubarraysWithKDistinct</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
     =&gt; <span class="mt">AtMost</span>(nums, k) - <span class="mt">AtMost</span>(nums, k - <span class="nm">1</span>);
 
@@ -633,7 +632,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
 <span class="kw">def</span> <span class="mt">subarrays_with_k_distinct</span>(nums: list[<span class="kw">int</span>], k: <span class="kw">int</span>) -> <span class="kw">int</span>:
@@ -667,14 +666,14 @@
         <span class="tag tag-topic">Design</span>
     </div>
     <p><strong>Problem:</strong> Design a Bloom filter that supports <code>Add(item)</code> and <code>MightContain(item)</code>. Given an expected capacity and a target false positive rate, choose optimal parameters. False negatives must be impossible.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-            <div class="approach"><strong>?? Approach:</strong> Use m = -n�ln(p) / (ln 2)� bits and k = (m/n)�ln 2 hash functions. Use double hashing (two base hashes + linear combination) to approximate k independent hash functions cheaply. Store bits in a <code>BitArray</code> (C#) or <code>bytearray</code> (Python).</div>
+            <div class="approach"><strong>🧠 Approach:</strong> Use m = -n—ln(p) / (ln 2)— bits and k = (m/n)—ln 2 hash functions. Use double hashing (two base hashes + linear combination) to approximate k independent hash functions cheaply. Store bits in a <code>BitArray</code> (C#) or <code>bytearray</code> (Python).</div>
         <div class="complexity"><strong>Time:</strong> O(k) per insert/query &amp;mdash; k hash function evaluations &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(m) &amp;mdash; m-bit array where m = -n&amp;times;ln(p)/(ln 2)&amp;sup2;</div>
-        <div class="tip"><strong>?? Full implementation covered in Module 8C, Sections 6 &amp; 7.</strong> Below is a self-contained sketch of the key design decisions.</div>
+        <div class="tip"><strong>📚 Full implementation covered in Module 8C, Sections 6 &amp; 7.</strong> Below is a self-contained sketch of the key design decisions.</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="cm">// Key design decisions for a Bloom Filter:</span>
 
 <span class="cm">// 1. Compute optimal parameters</span>
@@ -685,22 +684,22 @@
 
 <span class="cm">// 2. Use double hashing to simulate k independent hash functions</span>
 <span class="cm">//    h_i(x) = (h1(x) + i * h2(x)) % m</span>
-<span class="cm">//    Only two actual hash computations per item � O(1) setup</span>
+<span class="cm">//    Only two actual hash computations per item — O(1) setup</span>
 
 <span class="cm">// 3. Store state in BitArray (m/8 bytes, very compact)</span>
 <span class="kw">var</span> bits = <span class="kw">new</span> <span class="tp">BitArray</span>(m);
 
 <span class="cm">// 4. Add: set k bits</span>
-<span class="cm">// 5. MightContain: check k bits � return false if ANY bit is 0</span>
+<span class="cm">// 5. MightContain: check k bits — return false if ANY bit is 0</span>
 <span class="cm">// 6. NEVER clear bits ? no false negatives possible</span>
 
 <span class="cm">// Memory comparison (n=10000, p=1%):
-// Bloom filter: m � 95,851 bits � 12 KB
-// HashSet&lt;string&gt; (avg 10 chars): 10000 � ~40 bytes � 400 KB  (33� larger)</span></pre>
+// Bloom filter: m — 95,851 bits — 12 KB
+// HashSet&lt;string&gt; (avg 10 chars): 10000 — ~40 bytes — 400 KB  (33— larger)</span></pre>
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-            <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">import</span> math, hashlib
 
 <span class="kw">class</span> <span class="tp">BloomFilter</span>:
@@ -729,12 +728,12 @@
 
 <div class="nav-box">
     <strong>? Module 8 Complete!</strong><br><br>
-    You've finished all four parts of Module 8 � Hashing. You covered hash function internals, collision resolution,
+    You've finished all four parts of Module 8 — Hashing. You covered hash function internals, collision resolution,
     all .NET and Python hash collections, the Two-Sum and Frequency-Count patterns, LRU cache, Bloom filters,
     Count-Min Sketch, and solved 12 problems from easy to hard.<br><br>
-    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ? <strong>Prev:</strong> <a href="m08c_bloom_filters.html">Module 8C � Bloom Filters</a> &nbsp;|&nbsp;
-    ? <strong>Next:</strong> <a href="../phase6/m09a_graph_theory.html">Module 9A � Graph Basics</a>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ? <strong>Prev:</strong> <a href="m08c_bloom_filters.html">Module 8C — Bloom Filters</a> &nbsp;|&nbsp;
+    ? <strong>Next:</strong> <a href="../phase6/m09a_graph_theory.html">Module 9A — Graph Basics</a>
 </div>
 
 <button class="mark-btn" onclick="markComplete()">? Mark as Complete</button>

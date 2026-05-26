@@ -1,36 +1,35 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 16C � String Practice | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 16C — String Practice | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 16 � Part C</h1>
-    <div class="tagline">String Algorithm Practice � 10 Curated Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">KMP � Z-Function � Rabin-Karp � Trie � Palindromes � Anagrams</p>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part C</h1>
+    <div class="tagline">String Algorithm Practice — 10 Curated Problems</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">KMP · Z-Function · Rabin-Karp · Trie · Palindromes · Anagrams</p>
     <div class="badges">
-        <span>? Estimated Time: 3 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part C of Module 16</span>
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 16</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 9 � Module 15:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m15a_kmp.html">KMP Algorithm</a><br>
-    ? <strong>Part B</strong> � <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
-    ? <strong>Part C</strong> � <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
-    ? <strong>Part D</strong> � <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
-    ? <strong>Part E</strong> � <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
-    ? <strong>Part F</strong> � <em>You are here</em> � Practice: 10 String Problems<br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 9 — Module 15:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m15a_kmp.html">KMP Algorithm</a><br>
+    ✅ <strong>Part B</strong> — <a href="m15b_rabin_z.html">Rabin-Karp &amp; Z-Algorithm</a><br>
+    ✅ <strong>Part C</strong> — <a href="m15c_palindromes.html">Manacher's (Palindromes)</a><br>
+    ✅ <strong>Part D</strong> — <a href="m15d_suffix_array.html">Suffix Array &amp; LCP</a><br>
+    ✅ <strong>Part E</strong> — <a href="m15e_aho_corasick.html">Aho-Corasick (Multi-Pattern)</a><br>
+    ▶ <strong>Part F</strong> — <em>You are here</em> — Practice: 10 String Problems<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
@@ -38,11 +37,11 @@
 </div>
 
 <div class="note">
-    <strong>?? How to Use:</strong> Attempt each problem independently (15+ min) before reading the hint. Write your solution before viewing the code. Problems progress from medium to hard within each group.
+    <strong>📝 How to Use:</strong> Attempt each problem independently (15+ min) before reading the hint. Write your solution before viewing the code. Problems progress from medium to hard within each group.
 </div>
 
-<!-- ------- GROUP A ------- -->
-<div class="section-heading">Group A � Pattern Matching</div>
+<!-- ═══════ GROUP A ═══════ -->
+<div class="section-heading">Group A — Pattern Matching</div>
 
 <!-- P1 -->
 <div class="problem-card">
@@ -50,14 +49,14 @@
         <span class="badge easy">Easy</span>
         <span class="badge topic">KMP</span>
     </div>
-    <h3>#28 � Find the Index of First Occurrence in a String</h3>
+    <h3>#28 — Find the Index of First Occurrence in a String</h3>
     <p>Given strings <code>haystack</code> and <code>needle</code>, return the index of the first occurrence of <code>needle</code> in <code>haystack</code>, or -1 if not present.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">Classic KMP application. Build the failure function (LPS array) from needle, then scan haystack. When a mismatch occurs at position j in needle, fall back to lps[j-1] instead of restarting.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">StrStr</span>(<span class="kw">string</span> haystack, <span class="kw">string</span> needle)
 {
     <span class="kw">if</span> (needle.Length == <span class="nm">0</span>) <span class="kw">return</span> <span class="nm">0</span>;
@@ -79,7 +78,7 @@
     <span class="kw">return</span> -<span class="nm">1</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">strStr</span>(haystack, needle):
     <span class="kw">if not</span> needle: <span class="kw">return</span> <span class="nm">0</span>
     m = <span class="mt">len</span>(needle); lps = [<span class="nm">0</span>]*m; ln = <span class="nm">0</span>; k = <span class="nm">1</span>
@@ -105,14 +104,14 @@
         <span class="badge topic">Z-Function</span>
         <span class="badge topic">KMP</span>
     </div>
-    <h3>#459 � Repeated Substring Pattern</h3>
+    <h3>#459 — Repeated Substring Pattern</h3>
     <p>Given a string <code>s</code>, return true if it can be constructed by taking a substring and appending multiple copies of it.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">Two approaches: (1) KMP: build lps array; if lps[n-1] > 0 and n % (n - lps[n-1]) == 0, return true. (2) String trick: s is repeated iff s appears in (s+s)[1:-1].</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public bool</span> <span class="mt">RepeatedSubstringPattern</span>(<span class="kw">string</span> s)
 {
     <span class="cm">// KMP approach: check if period divides n</span>
@@ -128,7 +127,7 @@
     <span class="kw">return</span> lps[n - <span class="nm">1</span>] > <span class="nm">0</span> &amp;&amp; n % period == <span class="nm">0</span>;
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">repeatedSubstringPattern</span>(s):
     <span class="kw">return</span> s <span class="kw">in</span> (s+s)[<span class="nm">1</span>:-<span class="nm">1</span>]  <span class="cm"># elegant O(n) trick</span></pre></div>
     </div>
@@ -141,10 +140,10 @@
         <span class="badge topic">KMP</span>
         <span class="badge topic">String</span>
     </div>
-    <h3>#1392 � Longest Happy Prefix</h3>
+    <h3>#1392 — Longest Happy Prefix</h3>
     <p>A "happy prefix" is a prefix of string s that is also a suffix (but not the whole string). Return the longest such prefix, or "" if none.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">The KMP failure function (LPS array) directly gives this answer. lps[n-1] = length of the longest proper prefix that is also a suffix. <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -161,7 +160,7 @@
 }</pre>
         </div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestPrefix</span>(s):
     n = <span class="mt">len</span>(s); lps = [<span class="nm">0</span>]*n; ln=<span class="nm">0</span>; i=<span class="nm">1</span>
     <span class="kw">while</span> i&lt;n:
@@ -172,8 +171,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP B ------- -->
-<div class="section-heading">Group B � Substrings &amp; Palindromes</div>
+<!-- ═══════ GROUP B ═══════ -->
+<div class="section-heading">Group B — Substrings &amp; Palindromes</div>
 
 <!-- P4 -->
 <div class="problem-card">
@@ -182,14 +181,14 @@
         <span class="badge topic">Sliding Window</span>
         <span class="badge topic">Hash Map</span>
     </div>
-    <h3>#438 � Find All Anagrams in a String</h3>
+    <h3>#438 — Find All Anagrams in a String</h3>
     <p>Given strings <code>s</code> and <code>p</code>, return all start indices of p's anagrams in s.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">Use a sliding window of size len(p). Maintain a frequency count of the window. An anagram exists when the window's frequency matches p's frequency. Track a "matches" counter to avoid full frequency comparison each step.</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="kw">int</span>&gt; <span class="mt">FindAnagrams</span>(<span class="kw">string</span> s, <span class="kw">string</span> p)
 {
     <span class="kw">var</span> res = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
@@ -208,7 +207,7 @@
 }
 <span class="kw">bool</span> <span class="mt">ArrayEqual</span>(<span class="kw">int</span>[] a, <span class="kw">int</span>[] b) { <span class="kw">for</span> (<span class="kw">int</span> i=<span class="nm">0</span>;i&lt;<span class="nm">26</span>;i++) <span class="kw">if</span>(a[i]!=b[i]) <span class="kw">return false</span>; <span class="kw">return true</span>; }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
 <span class="kw">def</span> <span class="mt">findAnagrams</span>(s, p):
     m = <span class="mt">len</span>(p); need = <span class="tp">Counter</span>(p); win = <span class="tp">Counter</span>(s[:m]); res = []
@@ -228,11 +227,11 @@
         <span class="badge topic">Manacher</span>
         <span class="badge topic">Palindrome</span>
     </div>
-    <h3>#5 � Longest Palindromic Substring</h3>
+    <h3>#5 — Longest Palindromic Substring</h3>
     <p>Given string <code>s</code>, return the longest palindromic substring.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
-    <div class="hint-box">Manacher's algorithm finds all palindromes in O(n) using a "mirror" trick similar to KMP/Z-function. For competitive use: expand-around-center is O(n�) but simpler and often fast enough. O(n) Manacher: transform s to "#a#b#a#", <span class="lang-label lang-cs">C# (Manacher O(n))</span>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">Manacher's algorithm finds all palindromes in O(n) using a "mirror" trick similar to KMP/Z-function. For competitive use: expand-around-center is O(n²) but simpler and often fast enough. O(n) Manacher: transform s to "#a#b#a#", <span class="lang-label lang-cs">C# (Manacher O(n))</span>
         <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre>
@@ -253,7 +252,7 @@
 }</pre>
         </div>
         <span class="lang-label lang-py">Python (Manacher O(n))</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestPalindrome</span>(s):
     <span class="cm"># Transform: insert '#' between chars and at boundaries</span>
     t = <span class="st">'#'</span> + <span class="st">'#'</span>.<span class="mt">join</span>(s) + <span class="st">'#'</span>
@@ -280,11 +279,11 @@
         <span class="badge topic">Palindrome</span>
         <span class="badge topic">DP</span>
     </div>
-    <h3>#132 � Palindrome Partitioning II</h3>
+    <h3>#132 — Palindrome Partitioning II</h3>
     <p>Given string <code>s</code>, return the minimum number of cuts needed to partition <code>s</code> into palindromes.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
-    <div class="hint-box">DP: dp[i] = min cuts for s[0..i]. For each i, try all j = i where s[j..i] is a palindrome: dp[i] = min(dp[j-1] + 1). Pre-compute isPalin[j][i] in O(n�). Start with dp[i] = i (max cuts = one char each). <span class="lang-label lang-cs">C#</span>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
+    <div class="hint-box">DP: dp[i] = min cuts for s[0..i]. For each i, try all j ≤ i where s[j..i] is a palindrome: dp[i] = min(dp[j-1] + 1). Pre-compute isPalin[j][i] in O(n²). Start with dp[i] = i (max cuts = one char each). <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre>
@@ -307,7 +306,7 @@
 }</pre>
         </div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">minCut</span>(s):
     n = <span class="mt">len</span>(s)
     <span class="cm"># is_p[i][j] = True if s[i..j] is palindrome</span>
@@ -326,8 +325,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP C ------- -->
-<div class="section-heading">Group C � Trie &amp; Rolling Hash</div>
+<!-- ═══════ GROUP C ═══════ -->
+<div class="section-heading">Group C — Trie &amp; Rolling Hash</div>
 
 <!-- P7 -->
 <div class="problem-card">
@@ -336,10 +335,10 @@
         <span class="badge topic">Trie</span>
         <span class="badge topic">Backtracking</span>
     </div>
-    <h3>#212 � Word Search II</h3>
+    <h3>#212 — Word Search II</h3>
     <p>Given a board of characters and a list of words, return all words found in the board (adjacent horizontal/vertical cells). Each cell used at most once per word.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">Build a Trie from all words. DFS/backtrack from each cell, following the trie. When you reach a word-end node, add it to results and mark that trie node (to avoid duplicates). Prune branches where the current prefix matches no trie node. <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -370,7 +369,7 @@
 }</pre>
         </div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">findWords</span>(board, words):
     <span class="cm"># Build trie</span>
     trie = {}
@@ -406,10 +405,10 @@
         <span class="badge topic">Rolling Hash</span>
         <span class="badge topic">Binary Search</span>
     </div>
-    <h3>#1044 � Longest Duplicate Substring</h3>
+    <h3>#1044 — Longest Duplicate Substring</h3>
     <p>Given string <code>s</code>, return the longest substring that appears at least twice. If none, return "".</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">Binary search on the length L. For each L, use Rabin-Karp rolling hash to check if any substring of length L appears twice (store hashes in a set). If duplicate found, try longer; else shorter. <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -435,7 +434,7 @@
 }</pre>
         </div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestDupSubstring</span>(s):
     n = <span class="mt">len</span>(s); MOD = (<span class="nm">1</span>&lt;&lt;<span class="nm">61</span>)-<span class="nm">1</span>; BASE = <span class="nm">131</span>
 
@@ -462,8 +461,8 @@
     </div>
 </div>
 
-<!-- ------- GROUP D ------- -->
-<div class="section-heading">Group D � Advanced Challenges</div>
+<!-- ═══════ GROUP D ═══════ -->
+<div class="section-heading">Group D — Advanced Challenges</div>
 
 <!-- P9 -->
 <div class="problem-card">
@@ -472,14 +471,14 @@
         <span class="badge topic">Two Pointers</span>
         <span class="badge topic">Sliding Window</span>
     </div>
-    <h3>#76 � Minimum Window Substring</h3>
+    <h3>#76 — Minimum Window Substring</h3>
     <p>Given strings <code>s</code> and <code>t</code>, return the minimum window substring of <code>s</code> that contains all characters of <code>t</code>. If none, return "".</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">Sliding window: expand right until all chars of t are covered. Then shrink from left while still covered. Track the minimum window. Use a `need` counter dict and a `formed` count (how many chars are currently satisfied) to check coverage in O(1).</div>
     <div class="sol-box">
         <span class="lang-label lang-cs">C#</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public string</span> <span class="mt">MinWindow</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
 {
     <span class="kw">var</span> need = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
@@ -498,7 +497,7 @@
     <span class="kw">return</span> minLen == <span class="kw">int</span>.MaxValue ? <span class="st">""</span> : s.<span class="mt">Substring</span>(minL, minLen);
 }</pre></div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
 <span class="kw">def</span> <span class="mt">minWindow</span>(s, t):
     need = <span class="tp">Counter</span>(t); win = {}; have = required = <span class="mt">len</span>(need)
@@ -521,10 +520,10 @@
         <span class="badge topic">KMP</span>
         <span class="badge topic">String Construction</span>
     </div>
-    <h3>#214 � Shortest Palindrome</h3>
+    <h3>#214 — Shortest Palindrome</h3>
     <p>Given string <code>s</code>, find the shortest palindrome you can form by adding characters in front of <code>s</code>.</p>
-    <button class="hint-btn" onclick="toggleBox(this)">?? Hint</button>
-    <button class="sol-btn" onclick="toggleBox(this)">? Solution</button>
+    <button class="hint-btn" onclick="toggleBox(this)">💡 Hint</button>
+    <button class="sol-btn" onclick="toggleBox(this)">✅ Solution</button>
     <div class="hint-box">We need to find the longest palindromic prefix of s. Once we know it (length k), we prepend the reverse of s[k:] to s. To find the longest palindromic prefix: form the string s + "#" + reverse(s), compute KMP failure function. <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
@@ -542,10 +541,10 @@
     <span class="kw">int</span> k=lps[n-<span class="nm">1</span>];  <span class="cm">// length of longest palindromic prefix</span>
     <span class="kw">return</span> <span class="kw">new string</span>(s.<span class="mt">Substring</span>(k).<span class="mt">Reverse</span>().<span class="mt">ToArray</span>()) + s;
 }
-<span class="cm">// "aacecaaa" ? k=7, prepend reverse("a") ? "aaacecaaa"</span></pre>
+<span class="cm">// "aacecaaa" → k=7, prepend reverse("a") → "aaacecaaa"</span></pre>
         </div>
         <span class="lang-label lang-py">Python</span>
-        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">shortestPalindrome</span>(s):
     <span class="kw">if not</span> s: <span class="kw">return</span> s
     combined = s + <span class="st">'#'</span> + s[::-<span class="nm">1</span>]  <span class="cm"># '#' prevents cross-match</span>
@@ -556,12 +555,12 @@
         <span class="kw">else</span>: i += <span class="nm">1</span>
     k = lps[-<span class="nm">1</span>]  <span class="cm"># length of longest palindromic prefix</span>
     <span class="kw">return</span> s[k:][::-<span class="nm">1</span>] + s  <span class="cm"># prepend reverse of non-palindromic suffix</span>
-<span class="cm"># "aacecaaa" ? k=7, prepend "a"[::-1] ? "aaacecaaa"</span></pre></div>
+<span class="cm"># "aacecaaa" → k=7, prepend "a"[::-1] → "aaacecaaa"</span></pre></div>
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 16C Complete</button>
-<div class="toast" id="toast">? Module 16C complete! Module 16 � String Algorithms fully mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16C Complete</button>
+<div class="toast" id="toast">✅ Module 16C complete! Module 16 — String Algorithms fully mastered!</div>
     <script>var MODULE_ID = 'm16c';</script>
     <script src="../dsa.js"></script>
 </body>

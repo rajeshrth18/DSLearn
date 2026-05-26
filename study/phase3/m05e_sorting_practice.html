@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 5E — Sorting Practice Problems | DSA Masterbook</title>
+<title>Module 5E â€” Sorting Practice Problems | DSA Masterbook</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.8;color:#2c2c2c;max-width:960px;margin:0 auto;padding:30px 20px 80px;background:#f5f6fa}
@@ -67,25 +67,25 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </head>
 <body>
 
-<div class="breadcrumb"><a href="../index.html">?? Home</a> — Phase 3 — Module 5 — Part E</div>
+<div class="breadcrumb"><a href="../index.html">ğŸ  Home</a> â€” Phase 3 â€” Module 5 â€” Part E</div>
 
 <div class="cover">
-  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms — Complete Course</div>
-  <h1>Module 5 — Part E</h1>
-  <div class="tagline">Sorting Practice — 15 Problems from Easy to Hard</div>
+  <div class="mod-label">C# &amp; Python Data Structures &amp; Algorithms â€” Complete Course</div>
+  <h1>Module 5 â€” Part E</h1>
+  <div class="tagline">Sorting Practice â€” 15 Problems from Easy to Hard</div>
   <div class="badges">
-    <span>? Estimated: 3 Hours</span><span>?? All Levels</span><span>?? C# &amp; Python</span><span>?? Phase 3 — Module 5E</span>
+    <span>â± Estimated: 3 Hours</span><span>ğŸ¯ All Levels</span><span>ğŸ’» C# &amp; Python</span><span>ğŸ“ Phase 3 â€” Module 5E</span>
   </div>
 </div>
 
 <div class="nav-box">
-  <strong>?? Module 5 — Sorting Algorithms:</strong><br>
-  ? <strong>Part A</strong> — <a href="m05a_basic_sorts.html">O(n—) Sorts</a><br>
-  ? <strong>Part B</strong> — <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
-  ? <strong>Part C</strong> — <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
-  ? <strong>Part D</strong> — <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
-  ? <strong>Part E</strong> — <em>You are here</em> — Practice &amp; Comparison<br>
-  ?? <a href="../index.html">Back to Course Index</a>
+  <strong>ğŸ“‚ Module 5 â€” Sorting Algorithms:</strong><br>
+  âœ… <strong>Part A</strong> â€” <a href="m05a_basic_sorts.html">O(nâ€”) Sorts</a><br>
+  âœ… <strong>Part B</strong> â€” <a href="m05b_efficient_sorts.html">Merge Sort &amp; Quick Sort</a><br>
+  âœ… <strong>Part C</strong> â€” <a href="m05c_linear_sorts.html">Linear Sorts</a><br>
+  âœ… <strong>Part D</strong> â€” <a href="m05d_dotnet_sorting.html">.NET / Python Sorting APIs</a><br>
+  â–¶ <strong>Part E</strong> â€” <em>You are here</em> â€” Practice &amp; Comparison<br>
+  ğŸ  <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase3/m04a_recursion.html">&larr; Module 4 &mdash; Recursion</a>
@@ -99,55 +99,55 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
 </div>
 
 <div class="toc">
-  <h2>?? Contents — Module 5E</h2>
+  <h2>ğŸ“š Contents â€” Module 5E</h2>
   <ol>
-    <li>Master Comparison Table — all sorting algorithms</li>
-    <li>Easy Problems (1—5) <span>— Foundation warmup</span></li>
-    <li>Medium Problems (6—11) <span>— Classic interview problems</span></li>
-    <li>Hard Problems (12—15) <span>— Expert-level challenges</span></li>
+    <li>Master Comparison Table â€” all sorting algorithms</li>
+    <li>Easy Problems (1â€”5) <span>â€” Foundation warmup</span></li>
+    <li>Medium Problems (6â€”11) <span>â€” Classic interview problems</span></li>
+    <li>Hard Problems (12â€”15) <span>â€” Expert-level challenges</span></li>
   </ol>
 </div>
 
-<h2 class="sec">Master Comparison — All Sorting Algorithms</h2>
+<h2 class="sec">Master Comparison â€” All Sorting Algorithms</h2>
 
 <table class="cmplx">
   <thead>
     <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Stable</th><th>Notes</th></tr>
   </thead>
   <tbody>
-    <tr><td>Bubble Sort</td><td class="qg">O(n)</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td>O(1)</td><td>?</td><td>Adaptive with swapped flag</td></tr>
-    <tr><td>Selection Sort</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td>O(1)</td><td>?</td><td>Min writes (n-1 swaps)</td></tr>
-    <tr><td>Insertion Sort</td><td class="qg">O(n)</td><td class="qr">O(n—)</td><td class="qr">O(n—)</td><td>O(1)</td><td>?</td><td>Best for nearly-sorted &lt;50 items</td></tr>
+    <tr><td>Bubble Sort</td><td class="qg">O(n)</td><td class="qr">O(nâ€”)</td><td class="qr">O(nâ€”)</td><td>O(1)</td><td>?</td><td>Adaptive with swapped flag</td></tr>
+    <tr><td>Selection Sort</td><td class="qr">O(nâ€”)</td><td class="qr">O(nâ€”)</td><td class="qr">O(nâ€”)</td><td>O(1)</td><td>?</td><td>Min writes (n-1 swaps)</td></tr>
+    <tr><td>Insertion Sort</td><td class="qg">O(n)</td><td class="qr">O(nâ€”)</td><td class="qr">O(nâ€”)</td><td>O(1)</td><td>?</td><td>Best for nearly-sorted &lt;50 items</td></tr>
     <tr><td>Merge Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(n)</td><td>?</td><td>Guaranteed O(n log n), stable</td></tr>
-    <tr><td>Quick Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(n—)*</td><td>O(log n)</td><td>?</td><td>*Rare with random pivot. Fastest avg</td></tr>
-    <tr><td>3-Way Quick Sort</td><td class="qg">O(n)</td><td class="qg">O(n log n)</td><td class="qr">O(n—)*</td><td>O(log n)</td><td>?</td><td>O(n) for all-equal arrays</td></tr>
+    <tr><td>Quick Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(nâ€”)*</td><td>O(log n)</td><td>?</td><td>*Rare with random pivot. Fastest avg</td></tr>
+    <tr><td>3-Way Quick Sort</td><td class="qg">O(n)</td><td class="qg">O(n log n)</td><td class="qr">O(nâ€”)*</td><td>O(log n)</td><td>?</td><td>O(n) for all-equal arrays</td></tr>
     <tr><td>Counting Sort</td><td class="qg">O(n+k)</td><td class="qg">O(n+k)</td><td class="qg">O(n+k)</td><td class="qr">O(n+k)</td><td>?</td><td>k = value range; integers only</td></tr>
-    <tr><td>Radix Sort</td><td class="qg">O(d—n)</td><td class="qg">O(d—n)</td><td class="qg">O(d—n)</td><td class="qr">O(n+b)</td><td>?</td><td>d=digits, b=base. Integers/strings</td></tr>
-    <tr><td>Bucket Sort</td><td class="qg">O(n)</td><td class="qg">O(n)</td><td class="qr">O(n—)</td><td class="qr">O(n+k)</td><td>?</td><td>Uniform distribution needed</td></tr>
+    <tr><td>Radix Sort</td><td class="qg">O(dâ€”n)</td><td class="qg">O(dâ€”n)</td><td class="qg">O(dâ€”n)</td><td class="qr">O(n+b)</td><td>?</td><td>d=digits, b=base. Integers/strings</td></tr>
+    <tr><td>Bucket Sort</td><td class="qg">O(n)</td><td class="qg">O(n)</td><td class="qr">O(nâ€”)</td><td class="qr">O(n+k)</td><td>?</td><td>Uniform distribution needed</td></tr>
     <tr><td>Heap Sort</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qg">O(1)</td><td>?</td><td>In-place, guaranteed O(n log n)</td></tr>
     <tr><td>TimSort (.NET/Python)</td><td class="qg">O(n)</td><td class="qg">O(n log n)</td><td class="qg">O(n log n)</td><td class="qr">O(n)</td><td>?</td><td>Hybrid merge+insertion; adaptive</td></tr>
   </tbody>
 </table>
 
-<h2 class="sec">Easy Problems (1—5)</h2>
+<h2 class="sec">Easy Problems (1â€”5)</h2>
 
 <!-- P1 -->
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">1</div>
-    <div class="quiz-q">Sort Colors (Dutch National Flag) — Given array with values 0, 1, 2 only, sort in-place in a single pass without using sort().</div>
+    <div class="quiz-q">Sort Colors (Dutch National Flag) â€” Given array with values 0, 1, 2 only, sort in-place in a single pass without using sort().</div>
     <span class="badge easy">Easy</span>
   </div>
-  <div class="quiz-meta">?? Approach: 3-pointer (low, mid, high). O(n) time, O(1) space.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: 3-pointer (low, mid, high). O(n) time, O(1) space.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Use 3 pointers (low, mid, high) to partition in-place. Elements before low = 0, between low and mid = 1, after high = 2. Swap 0s left, 2s right, advance mid for 1s — all in a single O(n) pass.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) — single pass with 3 pointers &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place, no extra memory</div>
+    <div class="approach"><strong>Approach:</strong> Use 3 pointers (low, mid, high) to partition in-place. Elements before low = 0, between low and mid = 1, after high = 2. Swap 0s left, 2s right, advance mid for 1s â€” all in a single O(n) pass.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) â€” single pass with 3 pointers &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” in-place, no extra memory</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
-<span class="cm">// LeetCode 75 — Sort Colors
+<span class="cm">// LeetCode 75 â€” Sort Colors
 // Constraint: single pass, in-place</span>
 
 <span class="kw">class</span> <span class="tp">SortColors</span>
@@ -172,7 +172,7 @@ table.cmplx tr:nth-child(even) td{background:#f8f9fa}
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">sort_colors</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="kw">None</span>:
@@ -192,19 +192,19 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">2</div>
-    <div class="quiz-q">Kth Largest Element — Find the kth largest element in an unsorted array without fully sorting it.</div>
+    <div class="quiz-q">Kth Largest Element â€” Find the kth largest element in an unsorted array without fully sorting it.</div>
     <span class="badge easy">Easy</span>
   </div>
-  <div class="quiz-meta">?? Approach: Quickselect — partition-based O(n) average. Or min-heap of size k: O(n log k).</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Quickselect â€” partition-based O(n) average. Or min-heap of size k: O(n log k).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Quickselect: randomly choose pivot, partition so pivot lands in final sorted position. The kth largest is the (n-k)th smallest. Recurse only on the half containing the target index — expected O(n) with random pivot.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) average, O(n&sup2;) worst &amp;mdash; Quickselect with random pivot &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(log n) — recursion stack depth (log n levels)</div>
+    <div class="approach"><strong>Approach:</strong> Quickselect: randomly choose pivot, partition so pivot lands in final sorted position. The kth largest is the (n-k)th smallest. Recurse only on the half containing the target index â€” expected O(n) with random pivot.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) average, O(n&sup2;) worst &amp;mdash; Quickselect with random pivot &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(log n) â€” recursion stack depth (log n levels)</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
-<span class="cm">// LeetCode 215 — Kth Largest Element
+<span class="cm">// LeetCode 215 â€” Kth Largest Element
 // Quickselect: partition then recurse only on the side containing k</span>
 
 <span class="kw">class</span> <span class="tp">KthLargest</span>
@@ -243,7 +243,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">import</span> random
 <span class="kw">from</span> typing <span class="kw">import</span> List
 
@@ -271,16 +271,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">3</div>
-    <div class="quiz-q">Meeting Rooms — Given meeting intervals [[s1,e1],[s2,e2],...], determine if a person can attend all meetings (no overlaps).</div>
+    <div class="quiz-q">Meeting Rooms â€” Given meeting intervals [[s1,e1],[s2,e2],...], determine if a person can attend all meetings (no overlaps).</div>
     <span class="badge easy">Easy</span>
   </div>
-  <div class="quiz-meta">?? Approach: Sort by start time. Check if any meeting starts before previous one ends.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Sort by start time. Check if any meeting starts before previous one ends.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Sort meetings by start time. Then do a linear scan: if any meeting starts before the previous one ends (curr.start &lt; prev.end), there's an overlap and the person cannot attend all meetings.</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) — sorting dominates &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place sort comparison</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) â€” sorting dominates &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” in-place sort comparison</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">MeetingRooms</span>
@@ -305,7 +305,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">can_attend_all</span>(intervals: List[List[<span class="tp">int</span>]]) -&gt; <span class="tp">bool</span>:
@@ -324,16 +324,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">4</div>
-    <div class="quiz-q">Valid Anagram — Given two strings, determine if one is an anagram of the other using sorting.</div>
+    <div class="quiz-q">Valid Anagram â€” Given two strings, determine if one is an anagram of the other using sorting.</div>
     <span class="badge easy">Easy</span>
   </div>
-  <div class="quiz-meta">?? Approach: Sort both strings, compare. O(n log n). Also solvable with counting sort O(n).</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Sort both strings, compare. O(n log n). Also solvable with counting sort O(n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Sort both strings and compare (O(n log n)). Or faster: use a 26-element frequency array, increment for chars in s, decrement for chars in t. If all frequencies are zero, strings are anagrams.</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) sort, or O(n) with counting array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — 26-element fixed-size array</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) sort, or O(n) with counting array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” 26-element fixed-size array</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">ValidAnagram</span>
@@ -361,13 +361,13 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">is_anagram</span>(s: <span class="tp">str</span>, t: <span class="tp">str</span>) -&gt; <span class="tp">bool</span>:
     <span class="cm"># Option 1: Sort</span>
     <span class="kw">return</span> <span class="mt">sorted</span>(s) == <span class="mt">sorted</span>(t)  <span class="cm"># O(n log n)</span>
-    <span class="cm"># Option 2: Counter (counting sort concept) — O(n)</span>
+    <span class="cm"># Option 2: Counter (counting sort concept) â€” O(n)</span>
     <span class="cm"># return Counter(s) == Counter(t)</span>
 
 <span class="mt">print</span>(is_anagram(<span class="st">"anagram"</span>, <span class="st">"nagaram"</span>))  <span class="cm"># True</span>
@@ -379,16 +379,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">5</div>
-    <div class="quiz-q">Merge Intervals — Given a list of intervals, merge all overlapping intervals.</div>
+    <div class="quiz-q">Merge Intervals â€” Given a list of intervals, merge all overlapping intervals.</div>
     <span class="badge easy">Easy</span>
   </div>
-  <div class="quiz-meta">?? Approach: Sort by start. Merge current with previous if overlapping.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Sort by start. Merge current with previous if overlapping.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Sort intervals by start time. Initialize result with the first interval. For each subsequent interval: if it overlaps the last result interval (curr.start &le; last.end), extend the end; otherwise append as a new interval.</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) — sorting dominates; merge scan is O(n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — output list of merged intervals</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) â€” sorting dominates; merge scan is O(n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” output list of merged intervals</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
@@ -414,7 +414,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">merge_intervals</span>(intervals: List[List[<span class="tp">int</span>]]) -&gt; List[List[<span class="tp">int</span>]]:
@@ -429,22 +429,22 @@ sort_colors(arr)
   </div>
 </div>
 
-<h2 class="sec">Medium Problems (6—11)</h2>
+<h2 class="sec">Medium Problems (6â€”11)</h2>
 
 <!-- P6 -->
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">6</div>
-    <div class="quiz-q">Largest Number — Arrange an array of non-negative integers to form the largest possible number.</div>
+    <div class="quiz-q">Largest Number â€” Arrange an array of non-negative integers to form the largest possible number.</div>
     <span class="badge medium">Medium</span>
   </div>
-  <div class="quiz-meta">?? Approach: Custom comparator — compare ab vs ba string concatenations. O(n log n).</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Custom comparator â€” compare ab vs ba string concatenations. O(n log n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Custom comparator: for two numbers a and b, compare string concatenations ab vs ba. If "ab" &gt; "ba", a should come first. Sort all numbers using this comparator descending. Edge case: if result starts with 0 (all zeros), return "0".</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n &times; L) — sort with string comparator; L = avg digit length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n &times; L) — string output list</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n &times; L) â€” sort with string comparator; L = avg digit length &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n &times; L) â€” string output list</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">LargestNumber</span>
@@ -461,7 +461,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> functools <span class="kw">import</span> cmp_to_key
 <span class="kw">from</span> typing <span class="kw">import</span> List
 
@@ -481,16 +481,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">7</div>
-    <div class="quiz-q">H-Index — A researcher has citations[i] for ith paper. Find the H-Index: maximum h such that h papers have at least h citations.</div>
+    <div class="quiz-q">H-Index â€” A researcher has citations[i] for ith paper. Find the H-Index: maximum h such that h papers have at least h citations.</div>
     <span class="badge medium">Medium</span>
   </div>
-  <div class="quiz-meta">?? Approach: Sort descending. Scan until citations[i] &lt; i+1. O(n log n).</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Sort descending. Scan until citations[i] &lt; i+1. O(n log n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Sort citations in descending order. At index i (0-based), at least i+1 papers have citations[i] or more citations. The h-index is the largest i+1 where citations[i] &ge; i+1 — stop scanning when citations[i] &lt; i+1.</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) — sorting &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — linear scan with one variable</div>
+    <div class="approach"><strong>Approach:</strong> Sort citations in descending order. At index i (0-based), at least i+1 papers have citations[i] or more citations. The h-index is the largest i+1 where citations[i] &ge; i+1 â€” stop scanning when citations[i] &lt; i+1.</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) â€” sorting &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” linear scan with one variable</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">HIndex</span>
@@ -507,7 +507,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">def</span> <span class="mt">h_index</span>(citations):
     citations.<span class="mt">sort</span>(reverse=<span class="kw">True</span>)
     h = <span class="nm">0</span>
@@ -524,16 +524,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">8</div>
-    <div class="quiz-q">Find All Duplicates — Given an integer array where each element is between 1 and n, find all elements that appear twice. Use O(1) extra space.</div>
+    <div class="quiz-q">Find All Duplicates â€” Given an integer array where each element is between 1 and n, find all elements that appear twice. Use O(1) extra space.</div>
     <span class="badge medium">Medium</span>
   </div>
-  <div class="quiz-meta">?? Approach: Use array indices as a "visited" marker by negating values. O(n) time, O(1) space.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Use array indices as a "visited" marker by negating values. O(n) time, O(1) space.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Use array indices as a hash set without extra space. For each value v, negate arr[|v|-1] (use absolute value since values may already be negative). After marking, scan for positive values: their (index+1) is a missing number.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) — two linear passes over the array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — negation trick uses no extra space</div>
+    <div class="complexity"><strong>Time:</strong> O(n) â€” two linear passes over the array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” negation trick uses no extra space</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
@@ -554,7 +554,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">find_duplicates</span>(nums: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
@@ -573,16 +573,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">9</div>
-    <div class="quiz-q">Sort Array By Parity — Move all even numbers before odd numbers. The order within each group doesn't matter.</div>
+    <div class="quiz-q">Sort Array By Parity â€” Move all even numbers before odd numbers. The order within each group doesn't matter.</div>
     <span class="badge medium">Medium</span>
   </div>
-  <div class="quiz-meta">?? Approach: Two-pointer in-place O(n). Or stable version: sort by parity key.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Two-pointer in-place O(n). Or stable version: sort by parity key.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Two pointers in-place: left pointer scans from start (looking for odd number), right pointer from end (looking for even number). Swap when left is odd and right is even, then advance both. Continue until pointers meet.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) — each element examined at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place swaps only</div>
+    <div class="complexity"><strong>Time:</strong> O(n) â€” each element examined at most once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” in-place swaps only</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">SortParity</span>
@@ -601,7 +601,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">def</span> <span class="mt">sort_array_by_parity</span>(arr):
     <span class="cm"># One-liner using key (stable, O(n log n))</span>
     <span class="kw">return</span> <span class="mt">sorted</span>(arr, key=<span class="kw">lambda</span> x: x % <span class="nm">2</span>)  <span class="cm"># even=0 first, odd=1 second</span>
@@ -614,16 +614,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">10</div>
-    <div class="quiz-q">Non-overlapping Intervals — Given intervals, find the minimum number to remove to make the rest non-overlapping.</div>
+    <div class="quiz-q">Non-overlapping Intervals â€” Given intervals, find the minimum number to remove to make the rest non-overlapping.</div>
     <span class="badge medium">Medium</span>
   </div>
-  <div class="quiz-meta">?? Approach: Greedy — sort by end time. Keep interval if it doesn't overlap. Count removals.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Greedy â€” sort by end time. Keep interval if it doesn't overlap. Count removals.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Greedy: sort intervals by end time. Keep an interval if it does not overlap with the last kept interval. When two intervals overlap, discard the one with the later end time (keep the one ending sooner — it leaves maximum room for future intervals).</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) — sort by end time; scan is O(n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — scan with one variable tracking last kept end</div>
+    <div class="approach"><strong>Approach:</strong> Greedy: sort intervals by end time. Keep an interval if it does not overlap with the last kept interval. When two intervals overlap, discard the one with the later end time (keep the one ending sooner â€” it leaves maximum room for future intervals).</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) â€” sort by end time; scan is O(n) &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” scan with one variable tracking last kept end</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">NonOverlapping</span>
@@ -643,7 +643,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">def</span> <span class="mt">erase_overlap_intervals</span>(intervals):
     intervals.<span class="mt">sort</span>(key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])
     count, prev_end = <span class="nm">0</span>, <span class="mt">float</span>(<span class="st">'-inf'</span>)
@@ -660,16 +660,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">11</div>
-    <div class="quiz-q">Sort Characters by Frequency — Given a string, sort its characters in decreasing order based on the frequency of characters.</div>
+    <div class="quiz-q">Sort Characters by Frequency â€” Given a string, sort its characters in decreasing order based on the frequency of characters.</div>
     <span class="badge medium">Medium</span>
   </div>
-  <div class="quiz-meta">?? Approach: Count frequencies, sort by count descending (bucket sort for O(n)).</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Count frequencies, sort by count descending (bucket sort for O(n)).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Count element frequencies using a HashMap. Then use bucket sort: create n+1 buckets indexed by frequency; add each element to its frequency bucket. Scan buckets from highest to lowest to collect the top k elements.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) — HashMap counting + bucket sort &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — frequency map + n+1 bucket array</div>
+    <div class="complexity"><strong>Time:</strong> O(n) â€” HashMap counting + bucket sort &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” frequency map + n+1 bucket array</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 <span class="kw">using</span> System.Linq;
@@ -688,7 +688,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">frequency_sort</span>(s: <span class="tp">str</span>) -&gt; <span class="tp">str</span>:
@@ -700,22 +700,22 @@ sort_colors(arr)
   </div>
 </div>
 
-<h2 class="sec">Hard Problems (12—15)</h2>
+<h2 class="sec">Hard Problems (12â€”15)</h2>
 
 <!-- P12 -->
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">12</div>
-    <div class="quiz-q">Count Smaller Numbers After Self — For each number in nums, count how many smaller numbers appear to its right.</div>
+    <div class="quiz-q">Count Smaller Numbers After Self â€” For each number in nums, count how many smaller numbers appear to its right.</div>
     <span class="badge hard">Hard</span>
   </div>
-  <div class="quiz-meta">?? Approach: Modified merge sort — count during merge phase. O(n log n).</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Modified merge sort â€” count during merge phase. O(n log n).</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Modified merge sort with index tracking. Sort an index array by value. During each merge step: when a right-side element is placed before remaining left-side elements, add the count of remaining left elements to that right element's answer (each is an inversion).</div>
-    <div class="complexity"><strong>Time:</strong> O(n log n) — merge sort with O(1) extra work per comparison &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — index array + temporary merge arrays</div>
+    <div class="complexity"><strong>Time:</strong> O(n log n) â€” merge sort with O(1) extra work per comparison &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” index array + temporary merge arrays</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 <span class="kw">using</span> System.Collections.Generic;
 
@@ -759,7 +759,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">count_smaller</span>(nums: List[<span class="tp">int</span>]) -&gt; List[<span class="tp">int</span>]:
@@ -792,16 +792,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">13</div>
-    <div class="quiz-q">Maximum Gap — Given an unsorted array, find the maximum difference between successive elements in its sorted form. Must run in O(n) time and space.</div>
+    <div class="quiz-q">Maximum Gap â€” Given an unsorted array, find the maximum difference between successive elements in its sorted form. Must run in O(n) time and space.</div>
     <span class="badge hard">Hard</span>
   </div>
-  <div class="quiz-meta">?? Approach: Bucket sort + pigeonhole principle. Gap must come from different buckets.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Bucket sort + pigeonhole principle. Gap must come from different buckets.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
-    <div class="approach"><strong>Approach:</strong> Pigeonhole principle: n numbers spanning [min, max] have n-1 gaps; the max gap is &ge; (max-min)/(n-1). Create buckets of that minimum gap size. The maximum gap must span across adjacent non-empty bucket boundaries — check only consecutive non-empty buckets.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) — bucket sort; each element placed once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) — n-1 buckets each storing (min, max) pair</div>
+    <div class="approach"><strong>Approach:</strong> Pigeonhole principle: n numbers spanning [min, max] have n-1 gaps; the max gap is &ge; (max-min)/(n-1). Create buckets of that minimum gap size. The maximum gap must span across adjacent non-empty bucket boundaries â€” check only consecutive non-empty buckets.</div>
+    <div class="complexity"><strong>Time:</strong> O(n) â€” bucket sort; each element placed once &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(n) â€” n-1 buckets each storing (min, max) pair</div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">import</span> math
 <span class="kw">from</span> typing <span class="kw">import</span> List
 
@@ -831,7 +831,7 @@ sort_colors(arr)
 <span class="mt">print</span>(maximum_gap([<span class="nm">10</span>]))          <span class="cm"># 0</span>
 <span class="mt">print</span>(maximum_gap([<span class="nm">1</span>,<span class="nm">10000000</span>])) <span class="cm"># 9999999</span></pre></div></div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">MaximumGap</span>
@@ -860,16 +860,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">14</div>
-    <div class="quiz-q">Median of Two Sorted Arrays — Find the median of two sorted arrays in O(log(min(m,n))) time.</div>
+    <div class="quiz-q">Median of Two Sorted Arrays â€” Find the median of two sorted arrays in O(log(min(m,n))) time.</div>
     <span class="badge hard">Hard</span>
   </div>
-  <div class="quiz-meta">?? Approach: Binary search on partition of smaller array.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Binary search on partition of smaller array.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Binary search on a partition of the smaller array. Find split i of A and j=(m+n+1)/2-i of B such that A[i-1] &le; B[j] and B[j-1] &le; A[i]. This ensures the left half has the correct elements. Compute median from the four boundary values.</div>
-    <div class="complexity"><strong>Time:</strong> O(log(min(m,n))) — binary search on shorter array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — just partition index variables</div>
+    <div class="complexity"><strong>Time:</strong> O(log(min(m,n))) â€” binary search on shorter array &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” just partition index variables</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">MedianTwoSortedArrays</span>
@@ -897,7 +897,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">find_median_sorted_arrays</span>(nums1: List[<span class="tp">int</span>], nums2: List[<span class="tp">int</span>]) -&gt; <span class="tp">float</span>:
@@ -926,16 +926,16 @@ sort_colors(arr)
 <div class="quiz">
   <div class="quiz-header">
     <div class="prob-num">15</div>
-    <div class="quiz-q">Wiggle Sort II — Given unsorted array, reorder such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]...</div>
+    <div class="quiz-q">Wiggle Sort II â€” Given unsorted array, reorder such that nums[0] &lt; nums[1] &gt; nums[2] &lt; nums[3]...</div>
     <span class="badge hard">Hard</span>
   </div>
-  <div class="quiz-meta">?? Approach: Find median (Quickselect), then 3-way partition + virtual indexing trick.</div>
-  <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+  <div class="quiz-meta">ğŸ§  Approach: Find median (Quickselect), then 3-way partition + virtual indexing trick.</div>
+  <button class="sol-btn" onclick="toggleSolution(this)">ğŸ’¡ Show Solution</button>
   <div class="sol">
     <div class="approach"><strong>Approach:</strong> Find the median using Quickselect (O(n)). Apply 3-way Dutch National Flag partition around the median. Use virtual index mapping (odd indices: n-2, n-4,... then even: n-1, n-3,...) to interleave small and large values in-place without needing a separate array.</div>
-    <div class="complexity"><strong>Time:</strong> O(n) — Quickselect for median + 3-way partition &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) — in-place with virtual index mapping</div>
+    <div class="complexity"><strong>Time:</strong> O(n) â€” Quickselect for median + 3-way partition &amp;nbsp;|&amp;nbsp; <strong>Space:</strong> O(1) â€” in-place with virtual index mapping</div>
     <div class="lang-cs">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">using</span> System;
 
 <span class="kw">class</span> <span class="tp">WiggleSortII</span>
@@ -957,7 +957,7 @@ sort_colors(arr)
     }
 }</pre></div></div>
     <div class="lang-py" style="display:none">
-    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">ğŸ“‹ Copy</button>
     <pre><span class="kw">from</span> typing <span class="kw">import</span> List
 
 <span class="kw">def</span> <span class="mt">wiggle_sort</span>(nums: List[<span class="tp">int</span>]) -&gt; <span class="kw">None</span>:
@@ -972,12 +972,12 @@ sort_colors(arr)
 
 arr = [<span class="nm">1</span>,<span class="nm">5</span>,<span class="nm">1</span>,<span class="nm">1</span>,<span class="nm">6</span>,<span class="nm">4</span>]
 wiggle_sort(arr)
-<span class="mt">print</span>(arr)  <span class="cm"># [1,6,1,5,1,4] — verify: 1<6>1<5>1<4 ?</span></pre></div></div>
+<span class="mt">print</span>(arr)  <span class="cm"># [1,6,1,5,1,4] â€” verify: 1<6>1<5>1<4 ?</span></pre></div></div>
   </div>
 </div>
 
 <div class="complete-section">
-  <p style="color:#888;font-size:.9em;margin-bottom:16px">?? Excellent work! You've completed all 5 sorting modules. From O(n—) basics to O(n) linear sorts, API mastery, and 15 practice problems — you're now a sorting expert!</p>
+  <p style="color:#888;font-size:.9em;margin-bottom:16px">ğŸ‰ Excellent work! You've completed all 5 sorting modules. From O(nâ€”) basics to O(n) linear sorts, API mastery, and 15 practice problems â€” you're now a sorting expert!</p>
   <button class="mark-btn" id="mark-btn" onclick="markComplete()">? Mark as Complete</button>
   <div style="margin-top:16px">
     <a href="../index.html" style="color:#9b59b6;font-weight:700;text-decoration:none">Back to Course Index ? Next Phase: Trees ??</a>
@@ -994,8 +994,8 @@ function markComplete(){localStorage.setItem('dslearn_'+MODULE_ID,'c');const b=d
 function applyLang(){const l=localStorage.getItem('dslearn_lang')||'cs';document.querySelectorAll('.lang-cs').forEach(e=>e.style.display=l==='cs'?'':'none');document.querySelectorAll('.lang-py').forEach(e=>e.style.display=l==='py'?'':'none');document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===l));}
 function setLang(l){localStorage.setItem('dslearn_lang',l);applyLang();}
 applyLang();
-function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='? Copied!';setTimeout(()=>btn.textContent='?? Copy',2000);}).catch(()=>{btn.textContent='? Failed';setTimeout(()=>btn.textContent='?? Copy',2000);});}
-function toggleSolution(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'?? Hide Solution':'?? Show Solution';}
+function copyCode(btn){const pre=btn.parentElement.querySelector('pre');navigator.clipboard.writeText(pre.textContent).then(()=>{btn.textContent='âœ… Copied!';setTimeout(()=>btn.textContent='ğŸ“‹ Copy',2000);}).catch(()=>{btn.textContent='âŒ Failed';setTimeout(()=>btn.textContent='ğŸ“‹ Copy',2000);});}
+function toggleSolution(btn){const a=btn.nextElementSibling;const h=a.style.display==='none'||!a.style.display;a.style.display=h?'block':'none';btn.textContent=h?'ğŸ™ˆ Hide Solution':'ğŸ’¡ Show Solution';}
 let _tt;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 </body>

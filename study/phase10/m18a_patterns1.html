@@ -1,33 +1,32 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 18A � Two Pointers &amp; Sliding Window | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 18A — Two Pointers &amp; Sliding Window | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 10</div>
-    <h1>Module 18 � Part A</h1>
-    <div class="tagline">Two Pointers &amp; Sliding Window � The Most Common Interview Patterns</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Fast/Slow � Left/Right � Fixed Window � Variable Window � Shrink on Condition</p>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 10</div>
+    <h1>Module 18 — Part A</h1>
+    <div class="tagline">Two Pointers &amp; Sliding Window — The Most Common Interview Patterns</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Fast/Slow · Left/Right · Fixed Window · Variable Window · Shrink on Condition</p>
     <div class="badges">
-        <span>? Estimated Time: 2 Hours</span>
-        <span>?? Intermediate�Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part A of Module 18</span>
+        <span>⏱ Estimated Time: 2 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part A of Module 18</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 10 � Module 18 � Problem-Solving Patterns:</strong><br><br>
-    ? <strong>Part A</strong> � <em>You are here</em> � Two Pointers &amp; Sliding Window<br>
-    ? <strong>Part B</strong> � <a href="m18b_patterns2.html">Intervals &amp; Top K Elements</a><br>
-    ? <strong>Part C</strong> � <a href="m18c_patterns3.html">Modified Binary Search &amp; Subsets</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 10 — Module 18 — Problem-Solving Patterns:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Two Pointers &amp; Sliding Window<br>
+    ⬜ <strong>Part B</strong> — <a href="m18b_patterns2.html">Intervals &amp; Top K Elements</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m18c_patterns3.html">Modified Binary Search &amp; Subsets</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m17a_backtracking.html">&larr; Module 17 &mdash; Backtracking+</a>
@@ -35,20 +34,20 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents</h2>
+    <h2>📚 Contents</h2>
     <ol>
-        <li>Section 1 � Two Pointers: Opposite Ends <span>� Sorted array, pair sum</span></li>
-        <li>Section 2 � Two Pointers: Same Direction <span>� Fast/slow, in-place editing</span></li>
-        <li>Section 3 � Fixed-Size Sliding Window <span>� Window sum, max subarray of size k</span></li>
-        <li>Section 4 � Variable Sliding Window <span>� Expand/shrink, condition-driven</span></li>
-        <li>Section 5 � Template Gallery <span>� Copy-paste patterns</span></li>
-        <li>Section 6 � LeetCode Map <span>� Key problems by sub-pattern</span></li>
-        <li>Section 7 � Q&amp;A Review <span>� 5 key questions</span></li>
+        <li>Section 1 — Two Pointers: Opposite Ends <span>— Sorted array, pair sum</span></li>
+        <li>Section 2 — Two Pointers: Same Direction <span>— Fast/slow, in-place editing</span></li>
+        <li>Section 3 — Fixed-Size Sliding Window <span>— Window sum, max subarray of size k</span></li>
+        <li>Section 4 — Variable Sliding Window <span>— Expand/shrink, condition-driven</span></li>
+        <li>Section 5 — Template Gallery <span>— Copy-paste patterns</span></li>
+        <li>Section 6 — LeetCode Map <span>— Key problems by sub-pattern</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � Two Pointers: Opposite Ends</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Two Pointers: Opposite Ends</div>
 
 <div class="diagram">OPPOSITE-ENDS PATTERN:
   Two pointers start at the two ends of the array.
@@ -62,10 +61,10 @@
     - 3Sum (reduce to 2-pointer after fixing first element)
     - Palindrome check
 
-VISUAL � Two Sum II on [2, 7, 11, 15], target=9:
-  L=0, R=3   ?  2+15=17 > 9  ?  R--
-  L=0, R=2   ?  2+11=13 > 9  ?  R--
-  L=0, R=1   ?  2+7=9  == 9  ?  FOUND [0, 1]
+VISUAL — Two Sum II on [2, 7, 11, 15], target=9:
+  L=0, R=3   →  2+15=17 > 9  →  R--
+  L=0, R=2   →  2+11=13 > 9  →  R--
+  L=0, R=1   →  2+7=9  == 9  →  FOUND [0, 1]
 
 TEMPLATE:
   L, R = 0, n-1
@@ -74,10 +73,10 @@ TEMPLATE:
       elif need_bigger: L++
       else: R--</div>
 
-<span class="lang-label lang-cs">C# � Two Sum II + Container With Most Water</span>
+<span class="lang-label lang-cs">C# — Two Sum II + Container With Most Water</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre><span class="cm">// #167 Two Sum II � sorted array, O(n) time, O(1) space</span>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #167 Two Sum II — sorted array, O(n) time, O(1) space</span>
 <span class="kw">public int</span>[] <span class="mt">TwoSum</span>(<span class="kw">int</span>[] numbers, <span class="kw">int</span> target)
 {
     <span class="kw">int</span> L = <span class="nm">0</span>, R = numbers.Length - <span class="nm">1</span>;
@@ -89,7 +88,7 @@ TEMPLATE:
     <span class="kw">return</span> Array.Empty&lt;<span class="kw">int</span>&gt;();
 }
 
-<span class="cm">// #11 Container With Most Water � O(n)</span>
+<span class="cm">// #11 Container With Most Water — O(n)</span>
 <span class="kw">public int</span> <span class="mt">MaxArea</span>(<span class="kw">int</span>[] height)
 {
     <span class="kw">int</span> L = <span class="nm">0</span>, R = height.Length - <span class="nm">1</span>, best = <span class="nm">0</span>;
@@ -100,7 +99,7 @@ TEMPLATE:
     <span class="kw">return</span> best;
 }
 
-<span class="cm">// #15 3Sum � O(n�), sorted, no duplicates in answer</span>
+<span class="cm">// #15 3Sum — O(n²), sorted, no duplicates in answer</span>
 <span class="kw">public</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">ThreeSum</span>(<span class="kw">int</span>[] nums)
 {
     <span class="tp">Array</span>.<span class="mt">Sort</span>(nums);
@@ -124,7 +123,7 @@ TEMPLATE:
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">twoSumSorted</span>(numbers, target):
     L, R = <span class="nm">0</span>, <span class="mt">len</span>(numbers)-<span class="nm">1</span>
     <span class="kw">while</span> L &lt; R:
@@ -152,17 +151,17 @@ TEMPLATE:
 
 <hr>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Two Pointers: Same Direction (Fast/Slow)</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Two Pointers: Same Direction (Fast/Slow)</div>
 
 <div class="diagram">SAME-DIRECTION PATTERNS:
 
-1. FAST/SLOW (Floyd's � cycle detection):
+1. FAST/SLOW (Floyd's — cycle detection):
    slow = slow.next          (1 step)
    fast = fast.next.next     (2 steps)
-   If fast meets slow ? cycle exists.
+   If fast meets slow → cycle exists.
    To find cycle start: after meeting, put one pointer at head,
-   advance both by 1 until they meet ? cycle entry point.
+   advance both by 1 until they meet → cycle entry point.
 
 2. IN-PLACE ARRAY EDITING (overwrite mode):
    slow = write position (how many valid elements kept so far)
@@ -171,7 +170,7 @@ TEMPLATE:
    Write arr[slow] only when arr[fast] meets the keep condition.
    
    Example: Remove duplicates from sorted array
-   [1,1,2,3,3] ? slow writes unique values as fast scans
+   [1,1,2,3,3] → slow writes unique values as fast scans
    Result: [1,2,3,_,_], return slow (= 3)
 
 3. REMOVE ELEMENT:
@@ -180,8 +179,8 @@ TEMPLATE:
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre><span class="cm">// #26 Remove Duplicates from Sorted Array � O(n), O(1)</span>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #26 Remove Duplicates from Sorted Array — O(n), O(1)</span>
 <span class="kw">public int</span> <span class="mt">RemoveDuplicates</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> slow = <span class="nm">1</span>;
@@ -190,7 +189,7 @@ TEMPLATE:
     <span class="kw">return</span> slow;
 }
 
-<span class="cm">// #141 Linked List Cycle � Floyd's algorithm</span>
+<span class="cm">// #141 Linked List Cycle — Floyd's algorithm</span>
 <span class="kw">public bool</span> <span class="mt">HasCycle</span>(<span class="tp">ListNode</span>? head)
 {
     <span class="tp">ListNode</span>? slow = head, fast = head;
@@ -202,7 +201,7 @@ TEMPLATE:
     <span class="kw">return false</span>;
 }
 
-<span class="cm">// #142 Linked List Cycle II � Find cycle start</span>
+<span class="cm">// #142 Linked List Cycle II — Find cycle start</span>
 <span class="kw">public</span> <span class="tp">ListNode</span>? <span class="mt">DetectCycle</span>(<span class="tp">ListNode</span>? head)
 {
     <span class="tp">ListNode</span>? slow = head, fast = head;
@@ -220,7 +219,7 @@ TEMPLATE:
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">removeDuplicates</span>(nums):
     slow = <span class="nm">1</span>
     <span class="kw">for</span> fast <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, <span class="mt">len</span>(nums)):
@@ -237,8 +236,8 @@ TEMPLATE:
 
 <hr>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Fixed-Size Sliding Window</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Fixed-Size Sliding Window</div>
 
 <div class="diagram">FIXED WINDOW (size = k):
   Maintain a window of exactly k elements.
@@ -248,8 +247,8 @@ TEMPLATE:
   
   Examples:
     - Max sum of subarray of size k: O(n) vs O(n*k) brute force
-    - Max of each window of size k (#239 Sliding Window Maximum) � use deque
-    - Find all anagrams (#438) � character frequency window
+    - Max of each window of size k (#239 Sliding Window Maximum) — use deque
+    - Find all anagrams (#438) — character frequency window
 
 TEMPLATE:
   Initialize window (first k elements)
@@ -266,8 +265,8 @@ DEQUE FOR WINDOW MAX: O(n) total
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre><span class="cm">// #239 Sliding Window Maximum � O(n) using deque of indices</span>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// #239 Sliding Window Maximum — O(n) using deque of indices</span>
 <span class="kw">public int</span>[] <span class="mt">MaxSlidingWindow</span>(<span class="kw">int</span>[] nums, <span class="kw">int</span> k)
 {
     <span class="kw">int</span> n = nums.Length;
@@ -296,7 +295,7 @@ DEQUE FOR WINDOW MAX: O(n) total
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">maxSlidingWindow</span>(nums, k):
@@ -311,10 +310,10 @@ DEQUE FOR WINDOW MAX: O(n) total
 
 <hr>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Variable Sliding Window</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Variable Sliding Window</div>
 
-<div class="diagram">VARIABLE WINDOW � Expand right freely, shrink left on violation:
+<div class="diagram">VARIABLE WINDOW — Expand right freely, shrink left on violation:
   
   PATTERN:
     L = 0
@@ -323,7 +322,7 @@ DEQUE FOR WINDOW MAX: O(n) total
         while window_invalid:
             remove arr[L] from window
             L += 1
-        update answer with (R - L + 1)   ? or (R - L + 1 for max) / L for min
+        update answer with (R - L + 1)   ← or (R - L + 1 for max) / L for min
   
   When to use:
     - Longest substring without repeating characters (#3)
@@ -335,12 +334,12 @@ INVARIANT: After the while loop, window [L..R] always satisfies the constraint.
   For maximum window: update answer AFTER while loop (window is valid).
   For minimum window: update answer INSIDE while loop (window is valid and shrinking).
 
-TRICK for "at most k" ? "exactly k":
-  f(exactly k) = f(at most k) - f(at most k-1)  ? powerful decomposition</div>
+TRICK for "at most k" → "exactly k":
+  f(exactly k) = f(at most k) - f(at most k-1)  ← powerful decomposition</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="cm">// #3 Longest Substring Without Repeating Characters</span>
 <span class="kw">public int</span> <span class="mt">LengthOfLongestSubstring</span>(<span class="kw">string</span> s)
 {
@@ -355,7 +354,7 @@ TRICK for "at most k" ? "exactly k":
     <span class="kw">return</span> ans;
 }
 
-<span class="cm">// #76 Minimum Window Substring � O(n+m)</span>
+<span class="cm">// #76 Minimum Window Substring — O(n+m)</span>
 <span class="kw">public string</span> <span class="mt">MinWindow</span>(<span class="kw">string</span> s, <span class="kw">string</span> t)
 {
     <span class="kw">var</span> need = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="kw">char</span>, <span class="kw">int</span>&gt;();
@@ -378,7 +377,7 @@ TRICK for "at most k" ? "exactly k":
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> Counter
 
 <span class="kw">def</span> <span class="mt">lengthOfLongestSubstring</span>(s):
@@ -405,15 +404,15 @@ TRICK for "at most k" ? "exactly k":
 
 <hr>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � LeetCode Map &amp; Q&amp;A</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — LeetCode Map &amp; Q&amp;A</div>
 
 <table>
     <thead><tr><th>Pattern</th><th>LeetCode #</th><th>Problem</th><th>Complexity</th></tr></thead>
     <tbody>
         <tr><td><strong>Opposite Ends</strong></td><td>#167</td><td>Two Sum II</td><td class="g">O(n)</td></tr>
         <tr><td><strong>Opposite Ends</strong></td><td>#11</td><td>Container With Most Water</td><td class="g">O(n)</td></tr>
-        <tr><td><strong>Opposite Ends</strong></td><td>#15</td><td>3Sum</td><td class="o">O(n�)</td></tr>
+        <tr><td><strong>Opposite Ends</strong></td><td>#15</td><td>3Sum</td><td class="o">O(n²)</td></tr>
         <tr><td><strong>Opposite Ends</strong></td><td>#42</td><td>Trapping Rain Water</td><td class="g">O(n)</td></tr>
         <tr><td><strong>Fast/Slow</strong></td><td>#141</td><td>Linked List Cycle</td><td class="g">O(n)</td></tr>
         <tr><td><strong>Fast/Slow</strong></td><td>#26</td><td>Remove Duplicates</td><td class="g">O(n)</td></tr>
@@ -426,36 +425,36 @@ TRICK for "at most k" ? "exactly k":
 
 <div class="quiz-card">
     <div class="q">Q1: How do you decide whether to use two pointers vs. a hash map for "Two Sum"?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">If the array is <strong>sorted</strong> (or you can sort it): two pointers is O(n) time and O(1) space � optimal. If unsorted and sorting would break index requirements (LeetCode #1 wants original indices): use a hash map for O(n) time and O(n) space. If sorted and you need original indices after sorting � two pointers but track original indices. Rule of thumb: sorted + pair sum ? two pointers. Unsorted + any pair sum ? hash map. The two-pointer works because of monotonicity: moving L right increases the sum, moving R left decreases it � a binary-search-like logical structure.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">If the array is <strong>sorted</strong> (or you can sort it): two pointers is O(n) time and O(1) space — optimal. If unsorted and sorting would break index requirements (LeetCode #1 wants original indices): use a hash map for O(n) time and O(n) space. If sorted and you need original indices after sorting — two pointers but track original indices. Rule of thumb: sorted + pair sum → two pointers. Unsorted + any pair sum → hash map. The two-pointer works because of monotonicity: moving L right increases the sum, moving R left decreases it — a binary-search-like logical structure.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q2: What's the key insight that makes the variable sliding window O(n) instead of O(n�)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">The L pointer never moves backward. Each element is added once (when R includes it) and removed once (when L passes it). Total pointer movement: O(2n) = O(n). By contrast, a naive approach fixes L and scans all R from L to n, giving O(n�). The critical design: instead of re-scanning the window from scratch each time, we maintain an incrementally updated data structure (counter, sum, set) so adding/removing an element is O(1). This makes each step O(1) and the total O(n). This amortized analysis is the core of all sliding window efficiency.</div>
+    <div class="q">Q2: What's the key insight that makes the variable sliding window O(n) instead of O(n²)?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The L pointer never moves backward. Each element is added once (when R includes it) and removed once (when L passes it). Total pointer movement: O(2n) = O(n). By contrast, a naive approach fixes L and scans all R from L to n, giving O(n²). The critical design: instead of re-scanning the window from scratch each time, we maintain an incrementally updated data structure (counter, sum, set) so adding/removing an element is O(1). This makes each step O(1) and the total O(n). This amortized analysis is the core of all sliding window efficiency.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: When should you use a monotone deque in a sliding window problem?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Use a monotone deque when you need the maximum (or minimum) of a sliding window efficiently. A plain max-tracking variable fails because when the current max leaves the window (gets removed from the left), you don't know what the new max is without scanning. A sorted structure would work but sorting per window is O(n log k). A monotone deque maintains indices in strictly decreasing (for max) or increasing (for min) value order. Key operations: (1) Remove expired indices from front (left of window). (2) Remove useless elements from back (smaller than incoming element, since they'll never be the max). The front is always the current window's max. Each element is pushed/popped at most once ? O(n) total.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Use a monotone deque when you need the maximum (or minimum) of a sliding window efficiently. A plain max-tracking variable fails because when the current max leaves the window (gets removed from the left), you don't know what the new max is without scanning. A sorted structure would work but sorting per window is O(n log k). A monotone deque maintains indices in strictly decreasing (for max) or increasing (for min) value order. Key operations: (1) Remove expired indices from front (left of window). (2) Remove useless elements from back (smaller than incoming element, since they'll never be the max). The front is always the current window's max. Each element is pushed/popped at most once → O(n) total.</div>
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q4: Explain the "at most k distinct ? exactly k distinct" transformation.</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Count(exactly k) = Count(at most k) - Count(at most k-1). Why? "At most k" includes windows with 0, 1, 2, ..., k distinct values. Subtracting "at most k-1" removes those with 0 to k-1 distinct, leaving exactly those with k distinct. This is powerful because the variable window template naturally handles "at most k" (expand right, shrink left when distinct > k). The "exactly k" variant is hard to code directly (window boundaries are not clean) but trivially decomposable. Example: LeetCode #904 (fruit into baskets) asks "longest subarray with at most 2 distinct" � directly a variable window. #992 asks "subarrays with exactly k odd numbers" � use the decomposition.</div>
+    <div class="q">Q4: Explain the "at most k distinct → exactly k distinct" transformation.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Count(exactly k) = Count(at most k) - Count(at most k-1). Why? "At most k" includes windows with 0, 1, 2, ..., k distinct values. Subtracting "at most k-1" removes those with 0 to k-1 distinct, leaving exactly those with k distinct. This is powerful because the variable window template naturally handles "at most k" (expand right, shrink left when distinct > k). The "exactly k" variant is hard to code directly (window boundaries are not clean) but trivially decomposable. Example: LeetCode #904 (fruit into baskets) asks "longest subarray with at most 2 distinct" — directly a variable window. #992 asks "subarrays with exactly k odd numbers" — use the decomposition.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: Why does the two-pointer approach for Container With Most Water always move the shorter side?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Area = min(height[L], height[R]) � (R - L). The width decreases by 1 with each move. To potentially increase area, we need to increase the height component. The height is determined by the shorter side. If we move the taller side inward: min(height[L], height[R]) can only stay the same or decrease (the limiting factor is still the short side), while width decreases � area can only decrease or stay. If we move the shorter side inward: the new min might be larger (if we find a taller bar), potentially increasing area despite the smaller width. Keeping the taller side is always the greedy choice because it leaves the "potential" open. Moving the shorter side is the only move that could possibly improve the answer.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Area = min(height[L], height[R]) × (R - L). The width decreases by 1 with each move. To potentially increase area, we need to increase the height component. The height is determined by the shorter side. If we move the taller side inward: min(height[L], height[R]) can only stay the same or decrease (the limiting factor is still the short side), while width decreases — area can only decrease or stay. If we move the shorter side inward: the new min might be larger (if we find a taller bar), potentially increasing area despite the smaller width. Keeping the taller side is always the greedy choice because it leaves the "potential" open. Moving the shorter side is the only move that could possibly improve the answer.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 18A Complete</button>
-<div class="toast" id="toast">? Module 18A complete! Two Pointers &amp; Sliding Window mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 18A Complete</button>
+<div class="toast" id="toast">✅ Module 18A complete! Two Pointers &amp; Sliding Window mastered!</div>
     <script>var MODULE_ID = 'm18a';</script>
     <script src="../dsa.js"></script>
 </body>

@@ -1,41 +1,40 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 16A � Bit Operations &amp; Tricks | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 16A — Bit Operations &amp; Tricks | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 16 � Part A</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part A</h1>
     <div class="tagline">Bit Operations &amp; Tricks</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">AND � OR � XOR � Shifts � Masks � All the cleverness of bits</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">AND · OR · XOR · Shifts · Masks · All the cleverness of bits</p>
     <div class="badges">
-        <span>? Estimated: 1.5 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 16 of 17</span>
+        <span>⏱ Estimated: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 16 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 16 � Bit Manipulation:</strong><br><br>
-    ? <strong>Part A</strong> � <em>You are here</em> � Bit Operations &amp; Tricks<br>
-    ? <strong>Part B</strong> � <a href="m16b_bit_problems.html">Classic Bit Problems</a><br>
-    ? <strong>Part C</strong> � <a href="m16c_randomized.html">Randomized Algorithms</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 16 — Bit Manipulation:</strong><br><br>
+    ▶ <strong>Part A</strong> — <em>You are here</em> — Bit Operations &amp; Tricks<br>
+    ⬜ <strong>Part B</strong> — <a href="m16b_bit_problems.html">Classic Bit Problems</a><br>
+    ⬜ <strong>Part C</strong> — <a href="m16c_randomized.html">Randomized Algorithms</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
     <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � Binary Representation</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — Binary Representation</div>
 
 <p>Every integer is stored in binary (base-2). Understanding how bits work is essential for
 writing efficient code and solving classic interview problems in O(1) or O(log n).</p>
@@ -44,9 +43,9 @@ writing efficient code and solving classic interview problems in O(1) or O(log n
 
 Decimal: 42
 Binary:  0000 0000 0000 0000 0000 0000 0010 1010
-                                         ?  ??
+                                         ↑  ↑↑
                                   bit5=1  bit3=1, bit1=1
-                                  2^5 + 2^3 + 2^1 = 32+8+2 = 42 ?
+                                  2^5 + 2^3 + 2^1 = 32+8+2 = 42 ✓
 
 Bit positions: rightmost = bit 0 (least significant) = LSB
                leftmost  = bit 31 (most significant) = MSB
@@ -55,8 +54,8 @@ Negative numbers (two's complement):
   -1 in 32 bits = 1111 1111 1111 1111 1111 1111 1111 1111
   -42 = flip bits of 42, then add 1</div>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � The Six Bitwise Operators</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — The Six Bitwise Operators</div>
 
 <table>
     <thead><tr><th>Operator</th><th>Symbol</th><th>Description</th><th>Example (5=101, 3=011)</th></tr></thead>
@@ -71,46 +70,46 @@ Negative numbers (two's complement):
 </table>
 
 <div class="tip">
-    <strong>?? Quick Math:</strong> Left shift by k = multiply by 2^k; Right shift by k = divide by 2^k (integer).
+    <strong>💡 Quick Math:</strong> Left shift by k = multiply by 2^k; Right shift by k = divide by 2^k (integer).
     <br><code>n &lt;&lt; 1 = 2n</code> &nbsp; <code>n &gt;&gt; 1 = n/2</code> &nbsp; <code>1 &lt;&lt; k = 2^k</code>
 </div>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Essential Bit Tricks</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Essential Bit Tricks</div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre><span class="cm">// -- Single Bit Operations --------------------------------</span>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// ── Single Bit Operations ────────────────────────────────</span>
 <span class="kw">bool</span> <span class="mt">GetBit</span>(<span class="kw">int</span> n, <span class="kw">int</span> i)  =&gt; (n &amp; (<span class="nm">1</span> &lt;&lt; i)) != <span class="nm">0</span>;   <span class="cm">// is bit i set?</span>
 <span class="kw">int</span>  <span class="mt">SetBit</span>(<span class="kw">int</span> n, <span class="kw">int</span> i)  =&gt; n | (<span class="nm">1</span> &lt;&lt; i);            <span class="cm">// set bit i to 1</span>
 <span class="kw">int</span>  <span class="mt">ClearBit</span>(<span class="kw">int</span> n, <span class="kw">int</span> i) =&gt; n &amp; ~(<span class="nm">1</span> &lt;&lt; i);         <span class="cm">// clear bit i to 0</span>
 <span class="kw">int</span>  <span class="mt">ToggleBit</span>(<span class="kw">int</span> n, <span class="kw">int</span> i) =&gt; n ^ (<span class="nm">1</span> &lt;&lt; i);          <span class="cm">// flip bit i</span>
 
-<span class="cm">// -- Check/Test -------------------------------------------</span>
-<span class="kw">bool</span> <span class="mt">IsEven</span>(<span class="kw">int</span> n) =&gt; (n &amp; <span class="nm">1</span>) == <span class="nm">0</span>;          <span class="cm">// last bit = 0 ? even</span>
+<span class="cm">// ── Check/Test ───────────────────────────────────────────</span>
+<span class="kw">bool</span> <span class="mt">IsEven</span>(<span class="kw">int</span> n) =&gt; (n &amp; <span class="nm">1</span>) == <span class="nm">0</span>;          <span class="cm">// last bit = 0 → even</span>
 <span class="kw">bool</span> <span class="mt">IsPowerOf2</span>(<span class="kw">int</span> n) =&gt; n &gt; <span class="nm">0</span> &amp;&amp; (n &amp; (n-<span class="nm">1</span>)) == <span class="nm">0</span>;  <span class="cm">// only one bit set</span>
 
-<span class="cm">// -- Remove / Isolate -------------------------------------</span>
-<span class="kw">int</span> <span class="mt">RemoveLSB</span>(<span class="kw">int</span> n) =&gt; n &amp; (n - <span class="nm">1</span>);   <span class="cm">// clear lowest set bit  (e.g. 12?8)</span>
-<span class="kw">int</span> <span class="mt">IsolateLSB</span>(<span class="kw">int</span> n) =&gt; n &amp; (-n);      <span class="cm">// keep only lowest set bit (e.g. 12?4)</span>
+<span class="cm">// ── Remove / Isolate ─────────────────────────────────────</span>
+<span class="kw">int</span> <span class="mt">RemoveLSB</span>(<span class="kw">int</span> n) =&gt; n &amp; (n - <span class="nm">1</span>);   <span class="cm">// clear lowest set bit  (e.g. 12→8)</span>
+<span class="kw">int</span> <span class="mt">IsolateLSB</span>(<span class="kw">int</span> n) =&gt; n &amp; (-n);      <span class="cm">// keep only lowest set bit (e.g. 12→4)</span>
 <span class="kw">int</span> <span class="mt">IsolateMSB</span>(<span class="kw">int</span> n) =&gt; <span class="nm">1</span> &lt;&lt; (<span class="nm">31</span> - <span class="tp">System</span>.<span class="tp">Numerics</span>.<span class="tp">BitOperations</span>.<span class="mt">LeadingZeroCount</span>((<span class="kw">uint</span>)n));
 
-<span class="cm">// -- Absolute Value without branch -----------------------</span>
+<span class="cm">// ── Absolute Value without branch ───────────────────────</span>
 <span class="kw">int</span> <span class="mt">AbsNoBranch</span>(<span class="kw">int</span> n)
 {
     <span class="kw">int</span> mask = n &gt;&gt; <span class="nm">31</span>;  <span class="cm">// all 0s if positive, all 1s if negative</span>
     <span class="kw">return</span> (n ^ mask) - mask;
 }
 
-<span class="cm">// -- Swap without temp ------------------------------------</span>
+<span class="cm">// ── Swap without temp ────────────────────────────────────</span>
 <span class="kw">void</span> <span class="mt">SwapXOR</span>(<span class="kw">ref int</span> a, <span class="kw">ref int</span> b)
 {
     <span class="kw">if</span> (a == b) <span class="kw">return</span>;  <span class="cm">// IMPORTANT: same variable check</span>
     a ^= b;  b ^= a;  a ^= b;
 }
 
-<span class="cm">// -- Count set bits (popcount) ----------------------------</span>
+<span class="cm">// ── Count set bits (popcount) ────────────────────────────</span>
 <span class="kw">int</span> <span class="mt">Popcount</span>(<span class="kw">int</span> n)
 {
     <span class="kw">int</span> count = <span class="nm">0</span>;
@@ -122,22 +121,22 @@ Negative numbers (two's complement):
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre class="python"><span class="cm"># -- Single Bit Operations --------------------------------</span>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre class="python"><span class="cm"># ── Single Bit Operations ────────────────────────────────</span>
 get_bit    = <span class="kw">lambda</span> n, i: (n >> i) &amp; <span class="nm">1</span>           <span class="cm"># is bit i set?</span>
 set_bit    = <span class="kw">lambda</span> n, i: n | (<span class="nm">1</span> << i)            <span class="cm"># set bit i to 1</span>
 clear_bit  = <span class="kw">lambda</span> n, i: n &amp; ~(<span class="nm">1</span> << i)           <span class="cm"># clear bit i</span>
 toggle_bit = <span class="kw">lambda</span> n, i: n ^ (<span class="nm">1</span> << i)            <span class="cm"># toggle bit i</span>
 
-<span class="cm"># -- Check/Test -------------------------------------------</span>
+<span class="cm"># ── Check/Test ───────────────────────────────────────────</span>
 is_even        = <span class="kw">lambda</span> n: (n &amp; <span class="nm">1</span>) == <span class="nm">0</span>
 is_power_of_2  = <span class="kw">lambda</span> n: n &gt; <span class="nm">0</span> <span class="kw">and</span> (n &amp; (n - <span class="nm">1</span>)) == <span class="nm">0</span>
 
-<span class="cm"># -- Remove / Isolate -------------------------------------</span>
+<span class="cm"># ── Remove / Isolate ─────────────────────────────────────</span>
 remove_lsb  = <span class="kw">lambda</span> n: n &amp; (n - <span class="nm">1</span>)   <span class="cm"># clear lowest set bit</span>
 isolate_lsb = <span class="kw">lambda</span> n: n &amp; (-n)        <span class="cm"># keep only lowest set bit</span>
 
-<span class="cm"># -- Count set bits ---------------------------------------</span>
+<span class="cm"># ── Count set bits ───────────────────────────────────────</span>
 popcount_slow = <span class="kw">lambda</span> n: <span class="mt">bin</span>(n).<span class="mt">count</span>(<span class="st">'1'</span>)   <span class="cm"># Python's shortcut</span>
 
 <span class="kw">def</span> <span class="mt">popcount</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:             <span class="cm"># Brian Kernighan's</span>
@@ -151,20 +150,20 @@ popcount_slow = <span class="kw">lambda</span> n: <span class="mt">bin</span>(n)
 print(<span class="mt">is_power_of_2</span>(<span class="nm">16</span>))   <span class="cm"># True</span>
 print(<span class="mt">is_power_of_2</span>(<span class="nm">10</span>))   <span class="cm"># False</span>
 print(<span class="mt">popcount</span>(<span class="nm">42</span>))        <span class="cm"># 3 (42 = 101010)</span>
-print(<span class="mt">remove_lsb</span>(<span class="nm">12</span>))     <span class="cm"># 8  (12=1100 ? 1000)</span>
-print(<span class="mt">isolate_lsb</span>(<span class="nm">12</span>))    <span class="cm"># 4  (12=1100 ? 0100)</span></pre>
+print(<span class="mt">remove_lsb</span>(<span class="nm">12</span>))     <span class="cm"># 8  (12=1100 → 1000)</span>
+print(<span class="mt">isolate_lsb</span>(<span class="nm">12</span>))    <span class="cm"># 4  (12=1100 → 0100)</span></pre>
 </div>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Bitmask Techniques</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Bitmask Techniques</div>
 
-<h3>4.1 � Enumerate All Subsets of a Set</h3>
+<h3>4.1 — Enumerate All Subsets of a Set</h3>
 <p>A bitmask of <em>n</em> bits can represent any subset of an n-element set.
 Iterate from 0 to 2^n - 1 to enumerate all 2^n subsets in O(2^n).</p>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">static void</span> <span class="mt">AllSubsets</span>(<span class="kw">int</span>[] arr)
 {
     <span class="kw">int</span> n = arr.Length;
@@ -190,7 +189,7 @@ Iterate from 0 to 2^n - 1 to enumerate all 2^n subsets in O(2^n).</p>
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">all_subsets</span>(arr: <span class="tp">list</span>) -&gt; <span class="tp">list</span>:
     n = <span class="mt">len</span>(arr)
     result = []
@@ -211,13 +210,13 @@ print(<span class="mt">all_subsets</span>([<span class="nm">1</span>, <span clas
 </div>
 
 <div class="note">
-    <strong>?? Bitmask DP:</strong> Many DP problems on small sets (n = 20) use bitmask DP.
+    <strong>📌 Bitmask DP:</strong> Many DP problems on small sets (n ≤ 20) use bitmask DP.
     State = a bitmask representing which elements have been used. Classic: Travelling Salesman,
     Minimum Cost to Connect All Nodes, Assignment Problems.
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 16A Complete</button>
-<div class="toast" id="toast">? Module 16A complete! Bit Operations mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16A Complete</button>
+<div class="toast" id="toast">✅ Module 16A complete! Bit Operations mastered!</div>
     <script>var MODULE_ID = 'm16a';</script>
     <script src="../dsa.js"></script>
 </body>

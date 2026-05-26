@@ -1,36 +1,35 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 12C � 2D DP: Knapsack, LCS, Edit Distance | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 12C — 2D DP: Knapsack, LCS, Edit Distance | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 8</div>
-    <h1>Module 12 � Part C</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 8</div>
+    <h1>Module 12 — Part C</h1>
     <div class="tagline">2D Dynamic Programming</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">0/1 Knapsack � Longest Common Subsequence � Edit Distance � Unique Paths</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">0/1 Knapsack · Longest Common Subsequence · Edit Distance · Unique Paths</p>
     <div class="badges">
-        <span>? Estimated Time: 3 Hours</span>
-        <span>?? Intermediate�Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part C of Module 12</span>
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Intermediate–Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part C of Module 12</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 8 � Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m12a_dp_intro.html">DP Introduction</a><br>
-    ? <strong>Part B</strong> � <a href="m12b_dp_1d.html">1D DP: Coin Change, LIS, Fibonacci</a><br>
-    ? <strong>Part C</strong> � <em>You are here</em> � 2D DP<br>
-    ? <strong>Part D</strong> � <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
-    ? <strong>Part E</strong> � <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
-    ? <strong>Part F</strong> � <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 8 — Dynamic Programming, Greedy &amp; D&amp;C:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m12a_dp_intro.html">DP Introduction</a><br>
+    ✅ <strong>Part B</strong> — <a href="m12b_dp_1d.html">1D DP: Coin Change, LIS, Fibonacci</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — 2D DP<br>
+    ⬜ <strong>Part D</strong> — <a href="m12d_dp_trees.html">DP on Trees &amp; Graphs</a><br>
+    ⬜ <strong>Part E</strong> — <a href="m12e_dp_practice.html">DP Practice: 20 Problems</a><br>
+    ⬜ <strong>Part F</strong> — <a href="m12f_matrix_exp.html">Matrix Exponentiation</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase7/m11a_segment_trees.html">&larr; Module 11 &mdash; Segment Trees &amp; More</a>
@@ -38,20 +37,20 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents</h2>
+    <h2>📚 Contents</h2>
     <ol>
-        <li>Section 1 � 0/1 Knapsack <span>� Classic resource-constrained selection</span></li>
-        <li>Section 2 � Longest Common Subsequence <span>� LeetCode #1143</span></li>
-        <li>Section 3 � Edit Distance <span>� LeetCode #72</span></li>
-        <li>Section 4 � Unique Paths <span>� LeetCode #62 grid traversal</span></li>
-        <li>Section 5 � Maximal Square <span>� LeetCode #221</span></li>
-        <li>Section 6 � Space Optimization for 2D DP <span>� Rolling rows</span></li>
-        <li>Section 7 � Q&amp;A Review <span>� 5 key questions</span></li>
+        <li>Section 1 — 0/1 Knapsack <span>— Classic resource-constrained selection</span></li>
+        <li>Section 2 — Longest Common Subsequence <span>— LeetCode #1143</span></li>
+        <li>Section 3 — Edit Distance <span>— LeetCode #72</span></li>
+        <li>Section 4 — Unique Paths <span>— LeetCode #62 grid traversal</span></li>
+        <li>Section 5 — Maximal Square <span>— LeetCode #221</span></li>
+        <li>Section 6 — Space Optimization for 2D DP <span>— Rolling rows</span></li>
+        <li>Section 7 — Q&amp;A Review <span>— 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � 0/1 Knapsack</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — 0/1 Knapsack</div>
 
 <p>Given n items, each with weight w[i] and value v[i], and a knapsack capacity W, 
 maximize total value without exceeding weight W. Each item can be taken at most once (0/1).</p>
@@ -63,7 +62,7 @@ RECURRENCE:
   Take item i (if w[i] <= w): dp[i][w] = dp[i-1][w - w[i]] + v[i]
   dp[i][w] = max of the two
 
-BASE: dp[0][w] = 0 for all w (no items ? 0 value)
+BASE: dp[0][w] = 0 for all w (no items → 0 value)
 
 EXAMPLE: items = [(w=2,v=6), (w=2,v=10), (w=3,v=12)], W=5
 
@@ -73,11 +72,11 @@ i=1  0   0  6  6  6  6    (item 0: w=2,v=6)
 i=2  0   0  10 10 16 16   (item 1: w=2,v=10; can combine: 10+6=16 at w=4)
 i=3  0   0  10 12 16 22   (item 2: w=3,v=12; combine: 10+12=22 at w=5)
 
-Answer: dp[3][5] = 22 ? (take items 1 and 2: 10+12=22, weight=2+3=5)</div>
+Answer: dp[3][5] = 22 ✓ (take items 1 and 2: 10+12=22, weight=2+3=5)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">Knapsack01</span>(<span class="kw">int</span>[] weights, <span class="kw">int</span>[] values, <span class="kw">int</span> W)
 {
     <span class="kw">int</span> n = weights.Length;
@@ -106,7 +105,7 @@ Answer: dp[3][5] = 22 ? (take items 1 and 2: 10+12=22, weight=2+3=5)</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">knapsack01</span>(weights, values, W):
     n = <span class="mt">len</span>(weights)
     dp = [[<span class="nm">0</span>] * (W + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n + <span class="nm">1</span>)]
@@ -127,15 +126,15 @@ Answer: dp[3][5] = 22 ? (take items 1 and 2: 10+12=22, weight=2+3=5)</div>
 </div>
 
 <div class="warning">
-    <strong>?? 0/1 vs Unbounded Knapsack (Coin Change):</strong>
+    <strong>⚠️ 0/1 vs Unbounded Knapsack (Coin Change):</strong>
     In 0/1 knapsack, traverse the weight dimension <strong>right-to-left</strong> to prevent using the same item twice. 
     In unbounded knapsack (Coin Change), traverse <strong>left-to-right</strong> to allow reuse.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � Longest Common Subsequence (LeetCode #1143)</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — Longest Common Subsequence (LeetCode #1143)</div>
 
 <p><em>Find the length of the longest common subsequence of two strings.</em></p>
 
@@ -154,16 +153,16 @@ EXAMPLE: text1 = "abcde", text2 = "ace"
        ""  a  c  e
     ""  0  0  0  0
     a   0  1  1  1    a==a: dp[0][0]+1=1
-    b   0  1  1  1    b?c: max(dp[0][1],dp[1][0])=1
+    b   0  1  1  1    b≠c: max(dp[0][1],dp[1][0])=1
     c   0  1  2  2    c==c: dp[1][1]+1=2
     d   0  1  2  2
     e   0  1  2  3    e==e: dp[3][2]+1=3
 
-Answer: dp[5][3] = 3 ?  ("ace")</div>
+Answer: dp[5][3] = 3 ✓  ("ace")</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">LongestCommonSubsequence</span>(<span class="tp">string</span> text1, <span class="tp">string</span> text2)
 {
     <span class="kw">int</span> m = text1.Length, n = text2.Length;
@@ -179,7 +178,7 @@ Answer: dp[5][3] = 3 ?  ("ace")</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">longestCommonSubsequence</span>(text1, text2):
     m, n = <span class="mt">len</span>(text1), <span class="mt">len</span>(text2)
     dp = [[<span class="nm">0</span>] * (n + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m + <span class="nm">1</span>)]
@@ -192,8 +191,8 @@ Answer: dp[5][3] = 3 ?  ("ace")</div>
 
 <hr>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Edit Distance (LeetCode #72)</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Edit Distance (LeetCode #72)</div>
 
 <p><em>Minimum insertions, deletions, and substitutions to convert word1 to word2.</em></p>
 
@@ -222,11 +221,11 @@ EXAMPLE: word1="horse", word2="ros"
     s   4  3  3  2
     e   5  4  4  3
 
-Answer: dp[5][3] = 3 ?  (horse?rorse?rose?ros)</div>
+Answer: dp[5][3] = 3 ✓  (horse→rorse→rose→ros)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">MinDistance</span>(<span class="tp">string</span> word1, <span class="tp">string</span> word2)
 {
     <span class="kw">int</span> m = word1.Length, n = word2.Length;
@@ -245,7 +244,7 @@ Answer: dp[5][3] = 3 ?  (horse?rorse?rose?ros)</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">minDistance</span>(word1, word2):
     m, n = <span class="mt">len</span>(word1), <span class="mt">len</span>(word2)
     dp = [[<span class="nm">0</span>] * (n + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m + <span class="nm">1</span>)]
@@ -259,40 +258,40 @@ Answer: dp[5][3] = 3 ?  (horse?rorse?rose?ros)</div>
 </div>
 
 <div class="realworld">
-    <strong>?? Edit Distance Applications:</strong>
+    <strong>🌍 Edit Distance Applications:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Spell checkers</strong> � "did you mean X?" (find words within edit distance 1 or 2)</li>
-        <li><strong>DNA sequence alignment</strong> � Needleman-Wunsch algorithm is edit distance with custom scoring</li>
-        <li><strong>git diff</strong> � LCS-based difference algorithm</li>
-        <li><strong>Natural language processing</strong> � fuzzy string matching, record linkage</li>
+        <li><strong>Spell checkers</strong> — "did you mean X?" (find words within edit distance 1 or 2)</li>
+        <li><strong>DNA sequence alignment</strong> — Needleman-Wunsch algorithm is edit distance with custom scoring</li>
+        <li><strong>git diff</strong> — LCS-based difference algorithm</li>
+        <li><strong>Natural language processing</strong> — fuzzy string matching, record linkage</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Unique Paths (LeetCode #62)</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Unique Paths (LeetCode #62)</div>
 
-<p><em>Count paths from top-left to bottom-right of an m�n grid, moving only right or down.</em></p>
+<p><em>Count paths from top-left to bottom-right of an m×n grid, moving only right or down.</em></p>
 
 <div class="diagram">STATE: dp[i][j] = number of paths to reach cell (i,j)
 
 RECURRENCE: dp[i][j] = dp[i-1][j] + dp[i][j-1]  (from above + from left)
 BASE: dp[0][j] = 1, dp[i][0] = 1  (only one way to travel along edges)
 
-EXAMPLE: 3�3 grid
+EXAMPLE: 3×3 grid
 dp:
   1  1  1
   1  2  3
   1  3  6
 
-Answer: dp[2][2] = 6 ?
+Answer: dp[2][2] = 6 ✓
 
 Math shortcut: C(m+n-2, m-1) = (m+n-2)! / ((m-1)! * (n-1)!)</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">UniquePaths</span>(<span class="kw">int</span> m, <span class="kw">int</span> n)
 {
     <span class="kw">int</span>[] dp = <span class="tp">Enumerable</span>.<span class="mt">Repeat</span>(<span class="nm">1</span>, n).<span class="mt">ToArray</span>();
@@ -305,7 +304,7 @@ Math shortcut: C(m+n-2, m-1) = (m+n-2)! / ((m-1)! * (n-1)!)</div>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">uniquePaths</span>(m, n):
     dp = [<span class="nm">1</span>] * n
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, m):
@@ -316,8 +315,8 @@ Math shortcut: C(m+n-2, m-1) = (m+n-2)! / ((m-1)! * (n-1)!)</div>
 
 <hr>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � Maximal Square (LeetCode #221)</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Maximal Square (LeetCode #221)</div>
 
 <p><em>Find the largest square containing only 1s in a binary matrix.</em></p>
 
@@ -340,11 +339,11 @@ EXAMPLE:
   1 0 0 1   1 0 0 1
 
   dp[2][3] = 1 + min(dp[1][3]=1, dp[2][2]=1, dp[1][2]=1) = 2
-  Answer: max(dp)� = 2� = 4 ?</div>
+  Answer: max(dp)² = 2² = 4 ✓</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">MaximalSquare</span>(<span class="kw">char</span>[][] matrix)
 {
     <span class="kw">int</span> m = matrix.Length, n = matrix[<span class="nm">0</span>].Length, maxSide = <span class="nm">0</span>;
@@ -363,7 +362,7 @@ EXAMPLE:
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">maximalSquare</span>(matrix):
     m, n = <span class="mt">len</span>(matrix), <span class="mt">len</span>(matrix[<span class="nm">0</span>])
     dp = [[<span class="nm">0</span>] * (n + <span class="nm">1</span>) <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(m + <span class="nm">1</span>)]
@@ -378,11 +377,11 @@ EXAMPLE:
 
 <hr>
 
-<!-- ------- SECTION 6 ------- -->
-<div class="section-heading">Section 6 � Space Optimization for 2D DP</div>
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Space Optimization for 2D DP</div>
 
 <p>When dp[i][j] only depends on row i-1, we can use two 1D arrays (prev and curr) 
-instead of the full 2D table, reducing O(m�n) space to O(n).</p>
+instead of the full 2D table, reducing O(m×n) space to O(n).</p>
 
 <div class="diagram">LCS: ROLLING ROWS
 
@@ -408,7 +407,7 @@ LCS O(n) space:
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">LCS_SpaceOpt</span>(<span class="tp">string</span> text1, <span class="tp">string</span> text2)
 {
     <span class="kw">int</span> n = text2.Length;
@@ -445,24 +444,24 @@ LCS O(n) space:
 
 <hr>
 
-<!-- ------- SECTION 7 ------- -->
-<div class="section-heading">Section 7 � Q&amp;A Review</div>
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: Why does 0/1 knapsack require traversing the weight dimension right-to-left in the space-optimized version?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
     <div class="answer">In the 2D version, dp[i][w] = max(dp[i-1][w], dp[i-1][w-wi]+vi). When we collapse to 1D, dp[w] must use the value from the PREVIOUS row (item i-1), not the current row (item i). If we traverse left-to-right, dp[w-wi] might already be updated with item i's value before we compute dp[w], effectively allowing item i to be used multiple times (unbounded knapsack behavior). Traversing right-to-left ensures dp[w-wi] still holds the previous row's value when we compute dp[w]. This is the crucial difference: RIGHT-TO-LEFT = 0/1 knapsack, LEFT-TO-RIGHT = unbounded knapsack.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: In LCS, what does dp[i][j] = dp[i-1][j-1] + 1 mean intuitively, vs dp[i][j] = max(dp[i-1][j], dp[i][j-1])?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">When text1[i-1] == text2[j-1]: the characters match, so we can extend the LCS found in text1[0..i-2] and text2[0..j-2] by one character. dp[i-1][j-1] is the LCS length without these last two characters, and we add 1 for the match. When characters don't match: we can either skip text1[i-1] (use dp[i-1][j] � LCS of text1 up to i-1 and all of text2 up to j) or skip text2[j-1] (use dp[i][j-1]). We take the max of both options. The key insight: we never "lose" a match by taking the max � if there was a better match available, it's captured in one of the two sub-tables.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">When text1[i-1] == text2[j-1]: the characters match, so we can extend the LCS found in text1[0..i-2] and text2[0..j-2] by one character. dp[i-1][j-1] is the LCS length without these last two characters, and we add 1 for the match. When characters don't match: we can either skip text1[i-1] (use dp[i-1][j] — LCS of text1 up to i-1 and all of text2 up to j) or skip text2[j-1] (use dp[i][j-1]). We take the max of both options. The key insight: we never "lose" a match by taking the max — if there was a better match available, it's captured in one of the two sub-tables.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: Edit distance has three operations: insert, delete, replace. How do the three terms in the recurrence correspond to each operation?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
     <div class="answer">dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) maps as follows:
     - dp[i-1][j] corresponds to <strong>DELETE</strong>: we had dp[i-1][j] cost to convert word1[0..i-2] to word2[0..j-1], then we delete word1[i-1], costing 1 more.
     - dp[i][j-1] corresponds to <strong>INSERT</strong>: we had dp[i][j-1] cost to convert word1[0..i-1] to word2[0..j-2], then we insert word2[j-1], costing 1 more.
@@ -471,19 +470,19 @@ LCS O(n) space:
 </div>
 
 <div class="quiz-card">
-    <div class="q">Q4: Maximal Square � why is dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) correct?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Think of dp[i][j] as the side of the largest ALL-1s square with its bottom-right corner at (i,j). For a square of side k to have its bottom-right at (i,j), we need: a (k-1)�(k-1) square with bottom-right at (i-1,j) [top neighbor], a (k-1)�(k-1) square with bottom-right at (i,j-1) [left neighbor], and a (k-1)�(k-1) square with bottom-right at (i-1,j-1) [diagonal neighbor]. The bottleneck is the minimum of these three � even if two are large, the smallest one limits the square we can form. So dp[i][j] = 1 + min(three neighbors). This works because all-1s squares are "closed under intersection" in a specific geometric way.</div>
+    <div class="q">Q4: Maximal Square — why is dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) correct?</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Think of dp[i][j] as the side of the largest ALL-1s square with its bottom-right corner at (i,j). For a square of side k to have its bottom-right at (i,j), we need: a (k-1)×(k-1) square with bottom-right at (i-1,j) [top neighbor], a (k-1)×(k-1) square with bottom-right at (i,j-1) [left neighbor], and a (k-1)×(k-1) square with bottom-right at (i-1,j-1) [diagonal neighbor]. The bottleneck is the minimum of these three — even if two are large, the smallest one limits the square we can form. So dp[i][j] = 1 + min(three neighbors). This works because all-1s squares are "closed under intersection" in a specific geometric way.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: How do you reconstruct the actual LCS string (not just its length)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">Backtrack from dp[m][n]: Start at (i=m, j=n). If text1[i-1] == text2[j-1]: this character is part of the LCS � prepend it to result, move to (i-1, j-1). Else: if dp[i-1][j] > dp[i][j-1], move up to (i-1, j). Else move left to (i, j-1). Stop when i=0 or j=0. This requires the full 2D table � you CANNOT reconstruct with the space-optimized version. For Edit Distance reconstruction: similarly backtrack, at each cell recording which operation (insert/delete/replace) led to the minimum, then follow the path back from (m,n) to (0,0).</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">Backtrack from dp[m][n]: Start at (i=m, j=n). If text1[i-1] == text2[j-1]: this character is part of the LCS — prepend it to result, move to (i-1, j-1). Else: if dp[i-1][j] > dp[i][j-1], move up to (i-1, j). Else move left to (i, j-1). Stop when i=0 or j=0. This requires the full 2D table — you CANNOT reconstruct with the space-optimized version. For Edit Distance reconstruction: similarly backtrack, at each cell recording which operation (insert/delete/replace) led to the minimum, then follow the path back from (m,n) to (0,0).</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 12C Complete</button>
-<div class="toast" id="toast">? Module 12C marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 12C Complete</button>
+<div class="toast" id="toast">✅ Module 12C marked complete!</div>
     <script>var MODULE_ID = 'm12c';</script>
     <script src="../dsa.js"></script>
 </body>

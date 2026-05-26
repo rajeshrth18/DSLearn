@@ -1,36 +1,35 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 11F � K-D Trees | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 11F — K-D Trees | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 7</div>
-    <h1>Module 11 � Part F</h1>
-    <div class="tagline">K-D Trees � Spatial Data Structures</div>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 7</div>
+    <h1>Module 11 — Part F</h1>
+    <div class="tagline">K-D Trees — Spatial Data Structures</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Partition k-dimensional space for efficient nearest neighbor and range search</p>
     <div class="badges">
-        <span>? Estimated Time: 1.5 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Part F of Module 11</span>
+        <span>⏱ Estimated Time: 1.5 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Part F of Module 11</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Phase 7 � Advanced Data Structures:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m11a_segment_trees.html">Segment Trees</a><br>
-    ? <strong>Part B</strong> � <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
-    ? <strong>Part C</strong> � <a href="m11c_union_find.html">Disjoint Set Union</a><br>
-    ? <strong>Part D</strong> � <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
-    ? <strong>Part E</strong> � <a href="m11e_skip_lists.html">Skip Lists</a><br>
-    ? <strong>Part F</strong> � <em>You are here</em> � K-D Trees<br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Phase 7 — Advanced Data Structures:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m11a_segment_trees.html">Segment Trees</a><br>
+    ✅ <strong>Part B</strong> — <a href="m11b_fenwick_trees.html">Fenwick Trees (BIT)</a><br>
+    ✅ <strong>Part C</strong> — <a href="m11c_union_find.html">Disjoint Set Union</a><br>
+    ✅ <strong>Part D</strong> — <a href="m11d_sparse_tables.html">Sparse Tables</a><br>
+    ✅ <strong>Part E</strong> — <a href="m11e_skip_lists.html">Skip Lists</a><br>
+    ▶ <strong>Part F</strong> — <em>You are here</em> — K-D Trees<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase6/m10a_dijkstra.html">&larr; Module 10 &mdash; Advanced Graphs</a>
@@ -38,22 +37,22 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents</h2>
+    <h2>📚 Contents</h2>
     <ol>
-        <li>Section 1 � The Spatial Query Problem <span>� Nearest neighbor and range search</span></li>
-        <li>Section 2 � K-D Tree Structure <span>� Alternating axis splits</span></li>
-        <li>Section 3 � Build: O(n log n) <span>� Median-split construction</span></li>
-        <li>Section 4 � Nearest Neighbor Search <span>� Branch-and-bound pruning</span></li>
-        <li>Section 5 � Range Search <span>� Find all points in a rectangle</span></li>
-        <li>Section 6 � Full C# &amp; Python Implementations <span>� 2D K-D Tree</span></li>
-        <li>Section 7 � K-D Tree Limitations <span>� The curse of dimensionality</span></li>
-        <li>Section 8 � LeetCode Walkthroughs <span>� #973, #1162, closest pair</span></li>
-        <li>Section 9 � Q&amp;A Review <span>� 5 key questions</span></li>
+        <li>Section 1 — The Spatial Query Problem <span>— Nearest neighbor and range search</span></li>
+        <li>Section 2 — K-D Tree Structure <span>— Alternating axis splits</span></li>
+        <li>Section 3 — Build: O(n log n) <span>— Median-split construction</span></li>
+        <li>Section 4 — Nearest Neighbor Search <span>— Branch-and-bound pruning</span></li>
+        <li>Section 5 — Range Search <span>— Find all points in a rectangle</span></li>
+        <li>Section 6 — Full C# &amp; Python Implementations <span>— 2D K-D Tree</span></li>
+        <li>Section 7 — K-D Tree Limitations <span>— The curse of dimensionality</span></li>
+        <li>Section 8 — LeetCode Walkthroughs <span>— #973, #1162, closest pair</span></li>
+        <li>Section 9 — Q&amp;A Review <span>— 5 key questions</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 1 ------- -->
-<div class="section-heading">Section 1 � The Spatial Query Problem</div>
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section-heading">Section 1 — The Spatial Query Problem</div>
 
 <p>Given a set of points in k-dimensional space, answer queries like:</p>
 <ul>
@@ -66,16 +65,16 @@
     <thead><tr><th>Approach</th><th>Build</th><th>NN Query</th><th>Range Query</th></tr></thead>
     <tbody>
         <tr><td>Brute force (linear scan)</td><td class="g">O(1)</td><td class="r">O(n)</td><td class="r">O(n)</td></tr>
-        <tr><td>Grid partition</td><td class="o">O(n)</td><td class="o">O(1) avg cell lookup + neighbors</td><td class="o">O(r�/cell�)</td></tr>
-        <tr><td><strong>K-D Tree</strong></td><td class="o"><strong>O(n log n)</strong></td><td class="g"><strong>O(log n) avg</strong></td><td class="g"><strong>O(vn + k)</strong></td></tr>
+        <tr><td>Grid partition</td><td class="o">O(n)</td><td class="o">O(1) avg cell lookup + neighbors</td><td class="o">O(r²/cell²)</td></tr>
+        <tr><td><strong>K-D Tree</strong></td><td class="o"><strong>O(n log n)</strong></td><td class="g"><strong>O(log n) avg</strong></td><td class="g"><strong>O(√n + k)</strong></td></tr>
         <tr><td>Ball Tree / R-Tree</td><td class="r">O(n log n)</td><td class="g">O(log n)</td><td class="g">Better for high-d</td></tr>
     </tbody>
 </table>
 
 <div class="realworld">
-    <strong>?? Real-World Applications:</strong>
+    <strong>🌍 Real-World Applications:</strong>
     <ul style="margin-top:8px;">
-        <li><strong>Machine learning:</strong> K-Nearest Neighbors (KNN) classification � <code>sklearn.KNeighborsClassifier</code> uses K-D Trees internally</li>
+        <li><strong>Machine learning:</strong> K-Nearest Neighbors (KNN) classification — <code>sklearn.KNeighborsClassifier</code> uses K-D Trees internally</li>
         <li><strong>Geographic information systems:</strong> "Find all restaurants within 2 km of my location"</li>
         <li><strong>Computer graphics:</strong> Collision detection, photon mapping, ray tracing acceleration</li>
         <li><strong>Robotics:</strong> Point cloud processing (LIDAR), motion planning</li>
@@ -85,25 +84,25 @@
 
 <hr>
 
-<!-- ------- SECTION 2 ------- -->
-<div class="section-heading">Section 2 � K-D Tree Structure</div>
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section-heading">Section 2 — K-D Tree Structure</div>
 
 <p>A K-D Tree is a binary tree where each internal node splits the space along one axis. 
 At depth d, the split is along axis d mod k. Each node stores one point.</p>
 
-<div class="diagram">2D K-D TREE EXAMPLE � Points: (7,2),(5,4),(9,6),(4,7),(8,1),(2,3),(1,5)
+<div class="diagram">2D K-D TREE EXAMPLE — Points: (7,2),(5,4),(9,6),(4,7),(8,1),(2,3),(1,5)
 
-Step 1: Sort by x, pick median ? (7,2) is root. Split: x=7.
+Step 1: Sort by x, pick median → (7,2) is root. Split: x=7.
   Left subtree:  all points with x < 7: {(5,4),(4,7),(2,3),(1,5)}
-  Right subtree: all points with x = 7: {(9,6),(8,1)}
+  Right subtree: all points with x ≥ 7: {(9,6),(8,1)}
 
 Step 2 (depth 1, split by y):
-  Left: sort by y ? (2,3) is median. Split: y=3.
+  Left: sort by y → (2,3) is median. Split: y=3.
     Left: {(1,5)}...  Wait, y<3: {(5,4)? No, 4>3}
     Actually: {(5,4),(4,7),(2,3),(1,5)} sorted by y: (2,3),(5,4),(1,5),(4,7)
     Median = (5,4) or (1,5). Choose (5,4).
     Left: y < 4: {(2,3),(1,5)... wait 5>4}. y<4: {(2,3)}
-    Right: y = 4: {(1,5),(4,7)}
+    Right: y ≥ 4: {(1,5),(4,7)}
 
 TREE STRUCTURE:
                         (7,2) x-split
@@ -132,15 +131,15 @@ VISUAL SPACE PARTITION:
 
 <hr>
 
-<!-- ------- SECTION 3 ------- -->
-<div class="section-heading">Section 3 � Build: O(n log n)</div>
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section-heading">Section 3 — Build: O(n log n)</div>
 
 <p>At each level, choose the median point along the current axis. Using <code>nth_element</code> 
-(partial sort) this is O(n) per level � O(log n) levels = O(n log n) total.</p>
+(partial sort) this is O(n) per level × O(log n) levels = O(n log n) total.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public class</span> <span class="tp">KDNode</span>
 {
     <span class="kw">public</span> <span class="kw">double</span>[] point;
@@ -198,8 +197,8 @@ VISUAL SPACE PARTITION:
 
 <hr>
 
-<!-- ------- SECTION 4 ------- -->
-<div class="section-heading">Section 4 � Nearest Neighbor Search</div>
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section-heading">Section 4 — Nearest Neighbor Search</div>
 
 <p>The NN search uses <strong>branch-and-bound pruning</strong>: when the closest possible point 
 in a subtree (the perpendicular distance to the splitting hyperplane) is farther than the 
@@ -208,34 +207,34 @@ current best, skip that entire subtree.</p>
 <div class="diagram">NEAREST NEIGHBOR of query point (3, 5)
 
 Start at root (7,2):
-  Distance = sqrt((7-3)�+(2-5)�) = sqrt(16+9) = sqrt(25) = 5.0
+  Distance = sqrt((7-3)²+(2-5)²) = sqrt(16+9) = sqrt(25) = 5.0
   Best so far: 5.0 at (7,2)
-  Query[x=0]=3 < node[x=0]=7 ? go LEFT first (closer side)
+  Query[x=0]=3 < node[x=0]=7 → go LEFT first (closer side)
 
 At (5,4):
-  Distance = sqrt((5-3)�+(4-5)�) = sqrt(4+1) = sqrt(5) � 2.24
+  Distance = sqrt((5-3)²+(4-5)²) = sqrt(4+1) = sqrt(5) ≈ 2.24
   Best: 2.24 at (5,4)
-  Query[y=1]=5 = node[y=1]=4 ? go RIGHT first
+  Query[y=1]=5 ≥ node[y=1]=4 → go RIGHT first
 
 At (4,7):
-  Distance = sqrt(1+4) = sqrt(5) � 2.24  tie, keep (5,4) as best
+  Distance = sqrt(1+4) = sqrt(5) ≈ 2.24  tie, keep (5,4) as best
   
 Back at (5,4), try LEFT subtree: (2,3)
-  |query[y] - split[y]| = |5-4| = 1 < best=2.24 ? MUST explore left
+  |query[y] - split[y]| = |5-4| = 1 < best=2.24 → MUST explore left
 At (2,3):
-  Distance = sqrt(1+4) = sqrt(5) � 2.24  still tie, keep (5,4)
+  Distance = sqrt(1+4) = sqrt(5) ≈ 2.24  still tie, keep (5,4)
 At (1,5):
   Distance = sqrt(4+0) = 2.0
   Best: 2.0 at (1,5)!
 
 Back at root (7,2): try RIGHT subtree
-  |query[x] - split[x]| = |3-7| = 4 > best=2.0 ? PRUNE right subtree
+  |query[x] - split[x]| = |3-7| = 4 > best=2.0 → PRUNE right subtree
 
-Result: nearest neighbor is (1,5) at distance 2.0 ?</div>
+Result: nearest neighbor is (1,5) at distance 2.0 ✓</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public</span> (<span class="kw">double</span>[] point, <span class="kw">double</span> dist) <span class="mt">NearestNeighbor</span>(<span class="kw">double</span>[] query)
 {
     <span class="kw">double</span>[] best = <span class="kw">null</span>;
@@ -295,16 +294,16 @@ Result: nearest neighbor is (1,5) at distance 2.0 ?</div>
 
 <hr>
 
-<!-- ------- SECTION 5 ------- -->
-<div class="section-heading">Section 5 � Range Search</div>
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section-heading">Section 5 — Range Search</div>
 
-<p>Find all points within a rectangular region [xmin, xmax] � [ymin, ymax]. 
+<p>Find all points within a rectangular region [xmin, xmax] × [ymin, ymax]. 
 At each node: if the node's split axis range doesn't overlap the query range, prune. 
 If the point lies within the range, include it.</p>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public</span> <span class="tp">List</span>&lt;<span class="kw">double</span>[]&gt; <span class="mt">RangeSearch</span>(<span class="kw">double</span>[] lo, <span class="kw">double</span>[] hi)
 {
     <span class="kw">var</span> result = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">double</span>[]&gt;();
@@ -354,12 +353,12 @@ If the point lies within the range, include it.</p>
 
 <hr>
 
-<!-- ------- SECTION 6 ------- -->
-<div class="section-heading">Section 6 � Full C# &amp; Python Implementations</div>
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section-heading">Section 6 — Full C# &amp; Python Implementations</div>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="cm">// Complete 2D K-D Tree</span>
 <span class="kw">public class</span> <span class="tp">KDTree2D</span>
 {
@@ -379,7 +378,7 @@ If the point lies within the range, include it.</p>
             <span class="mt">Build</span>(pts[(m+<span class="nm">1</span>)..], <span class="nm">1</span>-d));
     }
 
-    <span class="cm">/// Find nearest neighbor � returns distance squared</span>
+    <span class="cm">/// Find nearest neighbor — returns distance squared</span>
     <span class="kw">public int</span> <span class="mt">NearestDistSq</span>(<span class="kw">int</span> qx, <span class="kw">int</span> qy)
     {
         <span class="kw">int</span> best = <span class="kw">int</span>.MaxValue;
@@ -402,7 +401,7 @@ If the point lies within the range, include it.</p>
 
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">import</span> math
 
 <span class="kw">class</span> <span class="tp">KDTree</span>:
@@ -447,25 +446,25 @@ nn, dist = kd.<span class="mt">nearest</span>([<span class="nm">3</span>, <span 
 
 <hr>
 
-<!-- ------- SECTION 7 ------- -->
-<div class="section-heading">Section 7 � K-D Tree Limitations</div>
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section-heading">Section 7 — K-D Tree Limitations</div>
 
 <h3>The Curse of Dimensionality</h3>
-<p>K-D Trees work well for low dimensions (k = 10-20), but degrade badly in high dimensions:</p>
+<p>K-D Trees work well for low dimensions (k ≤ 10-20), but degrade badly in high dimensions:</p>
 
 <div class="diagram">WHY HIGH DIMENSIONS BREAK K-D TREES
 
 In d dimensions, a hypersphere of radius r has volume ~ r^d.
-The ratio of hypersphere volume to hypercube volume ? 0 as d grows.
+The ratio of hypersphere volume to hypercube volume → 0 as d grows.
 
 For nearest neighbor search:
-  - In 2D: the NN sphere intersects few partition boxes ? prune most
+  - In 2D: the NN sphere intersects few partition boxes → prune most
   - In d=20+: the NN sphere may intersect ALL 2^20 = 1M partition boxes
-    ? no pruning, degrades to O(n) linear scan
+    → no pruning, degrades to O(n) linear scan
 
 ROUGH RULE: K-D Trees give speedup over brute force when n >> 2^k
-  k=2:  speedup when n >> 4        ?
-  k=10: speedup when n >> 1024     ? (for n=10^6)
+  k=2:  speedup when n >> 4        ✓
+  k=10: speedup when n >> 1024     ✓ (for n=10^6)
   k=20: speedup when n >> 10^6    marginal
   k=50: nearly always slower than brute force
 
@@ -476,29 +475,29 @@ ALTERNATIVES FOR HIGH DIMENSIONS:
   - Locality Sensitive Hashing (LSH)</div>
 
 <div class="warning">
-    <strong>?? Interview Note:</strong> In interviews, K-D Trees come up for 2D/3D spatial problems. 
+    <strong>⚠️ Interview Note:</strong> In interviews, K-D Trees come up for 2D/3D spatial problems. 
     For high-dimensional ML tasks (embeddings, vector search), mention that approximate methods 
-    like HNSW or FAISS are industry-standard � K-D Trees don't scale.
+    like HNSW or FAISS are industry-standard — K-D Trees don't scale.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 8 ------- -->
-<div class="section-heading">Section 8 � LeetCode Walkthroughs</div>
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section-heading">Section 8 — LeetCode Walkthroughs</div>
 
-<h3>LeetCode #973 � K Closest Points to Origin (Medium)</h3>
+<h3>LeetCode #973 — K Closest Points to Origin (Medium)</h3>
 <p><em>Given an array of points, return the k closest to the origin.</em></p>
 <div class="note">
-    <strong>?? K-D Tree approach:</strong> Build K-D Tree in O(n log n), then query k-nearest-neighbors 
+    <strong>📝 K-D Tree approach:</strong> Build K-D Tree in O(n log n), then query k-nearest-neighbors 
     using a max-heap of size k. However, for this specific problem, 
-    the optimal solution is a max-heap of size k in O(n log k) time � simpler and faster. 
+    the optimal solution is a max-heap of size k in O(n log k) time — simpler and faster. 
     Alternatively, QuickSelect gives O(n) expected time. K-D Tree shines when the same 
     point set is queried many times.
 </div>
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
-<pre><span class="cm">// Optimal: max-heap of size k � O(n log k)</span>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm">// Optimal: max-heap of size k — O(n log k)</span>
 <span class="kw">public int</span>[][] <span class="mt">KClosest</span>(<span class="kw">int</span>[][] points, <span class="kw">int</span> k)
 {
     <span class="cm">// Max-heap by distance squared</span>
@@ -521,7 +520,7 @@ ALTERNATIVES FOR HIGH DIMENSIONS:
 <span class="kw">import</span> heapq
 
 <span class="kw">def</span> <span class="mt">k_closest</span>(points: list, k: <span class="tp">int</span>) -&gt; list:
-    <span class="cm"># Max-heap by distance squared � O(n log k)</span>
+    <span class="cm"># Max-heap by distance squared — O(n log k)</span>
     max_heap = []
     <span class="kw">for</span> p <span class="kw">in</span> points:
         d = p[<span class="nm">0</span>]*p[<span class="nm">0</span>] + p[<span class="nm">1</span>]*p[<span class="nm">1</span>]
@@ -532,52 +531,52 @@ ALTERNATIVES FOR HIGH DIMENSIONS:
 <span class="cm"># K-D Tree is better when n is fixed and you query many different (qx,qy,k) requests.</span></pre>
 </div>
 
-<h3>LeetCode #1162 � As Far From Land as Possible (Medium)</h3>
+<h3>LeetCode #1162 — As Far From Land as Possible (Medium)</h3>
 <p><em>Find the water cell with maximum distance to the nearest land cell.</em></p>
 <div class="note">
-    <strong>?? BFS approach (optimal � O(n�)):</strong> Multi-source BFS from all land cells simultaneously. 
+    <strong>📝 BFS approach (optimal — O(n²)):</strong> Multi-source BFS from all land cells simultaneously. 
     The last cell reached by BFS has the maximum distance to any land. 
     K-D Tree approach: build tree from all land cell coordinates, then for each water cell, 
-    query nearest neighbor. Both approaches are O(n�) but BFS has much better constants.
+    query nearest neighbor. Both approaches are O(n²) but BFS has much better constants.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 9 ------- -->
-<div class="section-heading">Section 9 � Q&amp;A Review</div>
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section-heading">Section 9 — Q&amp;A Review</div>
 
 <div class="quiz-card">
     <div class="q">Q1: Why do we choose the median point (not the mean) as the splitting plane in K-D tree construction?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">The median ensures a balanced tree � exactly half the points go to each subtree, guaranteeing tree height O(log n). Using the mean would depend on data distribution: if points are skewed, one subtree could get 90% of the points while the other gets 10%, leading to a highly unbalanced tree and O(n) queries in the worst case. The median is the exact center of the sorted list, so it always splits into two halves of size ?n/2? and ?n/2?. Note: finding the exact median takes O(n) via QuickSelect, giving overall O(n log n) build time.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The median ensures a balanced tree — exactly half the points go to each subtree, guaranteeing tree height O(log n). Using the mean would depend on data distribution: if points are skewed, one subtree could get 90% of the points while the other gets 10%, leading to a highly unbalanced tree and O(n) queries in the worst case. The median is the exact center of the sorted list, so it always splits into two halves of size ⌊n/2⌋ and ⌈n/2⌉. Note: finding the exact median takes O(n) via QuickSelect, giving overall O(n log n) build time.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q2: In the NN search, why must we check the "far side" of a split sometimes? What's the condition?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">The nearest neighbor might be on the "far side" of a splitting plane. Example: query = (3,5), split at x=7. The near side is x &lt; 7. Even though most close points are on the near side, a point like (2,4) is only distance ~1.4 away but still on the near side. However, if the current best distance is less than the perpendicular distance to the splitting plane |query[axis] - node[axis]|, then no point on the far side can be closer � prune it. Condition to check far side: <code>diff� &lt; bestDistSq</code> where diff = query[axis] - node[axis]. Without this check, the algorithm degenerates to O(n).</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The nearest neighbor might be on the "far side" of a splitting plane. Example: query = (3,5), split at x=7. The near side is x &lt; 7. Even though most close points are on the near side, a point like (2,4) is only distance ~1.4 away but still on the near side. However, if the current best distance is less than the perpendicular distance to the splitting plane |query[axis] - node[axis]|, then no point on the far side can be closer — prune it. Condition to check far side: <code>diff² &lt; bestDistSq</code> where diff = query[axis] - node[axis]. Without this check, the algorithm degenerates to O(n).</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q3: What is the expected time complexity of K-D tree NN search, and under what conditions is it O(log n)?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">For uniformly distributed points in k dimensions, NN search takes O(2^k + log n) expected time. For k=2: O(log n) � O(log n). For k=3: O(8 + log n) = O(log n). For k=20: O(10^6 + log n) � O(n) � the tree is useless. The O(log n) analysis assumes the tree is balanced (median splits) AND the pruning condition eliminates the majority of the tree. In the best case (2D, random data), only O(vn) nodes need to be visited for range queries (the O(vn + k) bound for range search), and O(log n) for NN. These bounds break down when dimensions increase because the hyperplane distance becomes small relative to NN distance, defeating pruning.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">For uniformly distributed points in k dimensions, NN search takes O(2^k + log n) expected time. For k=2: O(log n) ≈ O(log n). For k=3: O(8 + log n) = O(log n). For k=20: O(10^6 + log n) ≈ O(n) — the tree is useless. The O(log n) analysis assumes the tree is balanced (median splits) AND the pruning condition eliminates the majority of the tree. In the best case (2D, random data), only O(√n) nodes need to be visited for range queries (the O(√n + k) bound for range search), and O(log n) for NN. These bounds break down when dimensions increase because the hyperplane distance becomes small relative to NN distance, defeating pruning.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q4: How does a K-D tree generalize to k dimensions? What changes between 2D and kD?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">The algorithm is identical � only the axis selection changes. At depth d, split along axis d mod k (cycling through all k dimensions). The splitting condition in search/insert/delete uses <code>point[axis]</code> where axis cycles. The pruning condition in NN search uses <code>diff = query[axis] - node[axis]</code> for the current axis only (perpendicular distance to hyperplane). Distance computation uses all k coordinates. The tree structure, build algorithm, and query algorithms are otherwise unchanged. This is why K-D trees are elegant: the same code handles 2D, 3D, and 100D by just changing the dimension parameter k.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">The algorithm is identical — only the axis selection changes. At depth d, split along axis d mod k (cycling through all k dimensions). The splitting condition in search/insert/delete uses <code>point[axis]</code> where axis cycles. The pruning condition in NN search uses <code>diff = query[axis] - node[axis]</code> for the current axis only (perpendicular distance to hyperplane). Distance computation uses all k coordinates. The tree structure, build algorithm, and query algorithms are otherwise unchanged. This is why K-D trees are elegant: the same code handles 2D, 3D, and 100D by just changing the dimension parameter k.</div>
 </div>
 
 <div class="quiz-card">
     <div class="q">Q5: What is a "ball tree" and how does it compare to a K-D tree?</div>
-    <button class="toggle-btn" onclick="toggle(this)">? Show Answer</button>
-    <div class="answer">A ball tree (also called metric tree or BallTree) partitions points into nested hyperspheres ("balls") rather than axis-aligned hyperplanes. Each internal node represents a ball containing all its descendants. For NN search: if the distance from the query to the ball's surface (ball_center_dist - ball_radius) is greater than the current best, prune the entire ball. Advantages over K-D tree: (1) Better performance for high-dimensional or non-uniformly distributed data. (2) Not restricted to axis-aligned splits � handles data on curved manifolds better. (3) In practice, ball trees outperform K-D trees for d &gt; 10. Disadvantages: more complex to build, higher constant factors. Python scikit-learn supports both: <code>KNeighborsClassifier(algorithm='kd_tree')</code> vs <code>algorithm='ball_tree'</code>.</div>
+    <button class="toggle-btn" onclick="toggle(this)">▶ Show Answer</button>
+    <div class="answer">A ball tree (also called metric tree or BallTree) partitions points into nested hyperspheres ("balls") rather than axis-aligned hyperplanes. Each internal node represents a ball containing all its descendants. For NN search: if the distance from the query to the ball's surface (ball_center_dist - ball_radius) is greater than the current best, prune the entire ball. Advantages over K-D tree: (1) Better performance for high-dimensional or non-uniformly distributed data. (2) Not restricted to axis-aligned splits — handles data on curved manifolds better. (3) In practice, ball trees outperform K-D trees for d &gt; 10. Disadvantages: more complex to build, higher constant factors. Python scikit-learn supports both: <code>KNeighborsClassifier(algorithm='kd_tree')</code> vs <code>algorithm='ball_tree'</code>.</div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 11F Complete</button>
-<div class="toast" id="toast">? Module 11F marked complete! ?? Phase 7 finished!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 11F Complete</button>
+<div class="toast" id="toast">✅ Module 11F marked complete! 🎉 Phase 7 finished!</div>
     <script>var MODULE_ID = 'm11f';</script>
     <script src="../dsa.js"></script>
 </body>

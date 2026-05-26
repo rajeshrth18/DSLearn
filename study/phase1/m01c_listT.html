@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 1C � List&lt;T&gt; Dynamic Arrays</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 1C — List&lt;T&gt; Dynamic Arrays</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms � Complete Course</div>
-    <h1>Module 1 � Part C</h1>
-    <div class="tagline">List&lt;T&gt; � Dynamic Arrays</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The most-used collection in C# � understand it completely</p>
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 1 — Part C</h1>
+    <div class="tagline">List&lt;T&gt; — Dynamic Arrays</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">The most-used collection in C# — understand it completely</p>
     <div class="badges">
-        <span>? Estimated Time: 60�75 Min</span>
-        <span>?? Beginner Level</span>
-        <span>?? Language: C#</span>
-        <span>?? Part C of Module 1</span>
+        <span>⏱ Estimated Time: 60–75 Min</span>
+        <span>🎯 Beginner Level</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part C of Module 1</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 1 � Foundations:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m01a_bigO_arrays.html">Big O, Complexity, Arrays</a><br>
-    ? <strong>Part B</strong> � <a href="m01b_strings.html">Strings &amp; StringBuilder</a><br>
-    ? <strong>Part C</strong> � <em>You are here</em> � List&lt;T&gt; Dynamic Arrays<br>
-    ? <strong>Part D</strong> � <a href="m01d_practice.html">Practice: 15 Problems</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 1 — Foundations:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m01a_bigO_arrays.html">Big O, Complexity, Arrays</a><br>
+    ✅ <strong>Part B</strong> — <a href="m01b_strings.html">Strings &amp; StringBuilder</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — List&lt;T&gt; Dynamic Arrays<br>
+    ⬜ <strong>Part D</strong> — <a href="m01d_practice.html">Practice: 15 Problems</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <span style="color:#888">&larr; (First Module)</span>
@@ -36,18 +35,18 @@
 </div>
 
 <div class="toc">
-    <h2>?? Contents � Part C</h2>
+    <h2>📚 Contents — Part C</h2>
     <ol start="7">
-        <li>Section 7.1 � What Is List&lt;T&gt;? <span>� The array problem it solves</span></li>
-        <li>Section 7.2 � How Capacity Doubling Works <span>� Internal buffer mechanism</span></li>
-        <li>Section 7.3 � All List&lt;T&gt; Operations <span>� Add, Insert, Remove, Search, Sort...</span></li>
-        <li>Section 7.4 � LINQ on List&lt;T&gt; <span>� Where, Select, OrderBy, Aggregate...</span></li>
-        <li>Section 7.5 � Collection Comparison Guide <span>� Array vs List vs others</span></li>
+        <li>Section 7.1 — What Is List&lt;T&gt;? <span>— The array problem it solves</span></li>
+        <li>Section 7.2 — How Capacity Doubling Works <span>— Internal buffer mechanism</span></li>
+        <li>Section 7.3 — All List&lt;T&gt; Operations <span>— Add, Insert, Remove, Search, Sort...</span></li>
+        <li>Section 7.4 — LINQ on List&lt;T&gt; <span>— Where, Select, OrderBy, Aggregate...</span></li>
+        <li>Section 7.5 — Collection Comparison Guide <span>— Array vs List vs others</span></li>
     </ol>
 </div>
 
-<!-- ------- SECTION 7.1 ------- -->
-<div class="section-heading">Section 7.1 � What Is List&lt;T&gt; and Why It Exists</div>
+<!-- ═══════ SECTION 7.1 ═══════ -->
+<div class="section-heading">Section 7.1 — What Is List&lt;T&gt; and Why It Exists</div>
 
 <p>Arrays are powerful, but they have one critical limitation: <strong>fixed size</strong>.
 You must declare the size when you create an array, and that size never changes.
@@ -56,16 +55,16 @@ In real applications, you almost never know the exact number of items you'll hav
 it when needed.</p>
 
 <div class="realworld">
-    <strong>?? Real-World Analogy � The Expandable Folder:</strong><br>
-    A regular array is like a filing cabinet with exactly 10 slots � fixed forever.<br>
-    <code>List&lt;T&gt;</code> is like an accordion folder � it starts small, and when you run out of space,
+    <strong>🌍 Real-World Analogy — The Expandable Folder:</strong><br>
+    A regular array is like a filing cabinet with exactly 10 slots — fixed forever.<br>
+    <code>List&lt;T&gt;</code> is like an accordion folder — it starts small, and when you run out of space,
     you get a <em>bigger folder</em>, copy everything in, and keep going. The user never sees the swap.
 </div>
 
 <h3>Why Not Just Always Use List&lt;T&gt;?</h3>
 <p>Arrays still win in specific scenarios:</p>
 <ul>
-    <li><strong>Known fixed size:</strong> A 12-month budget, a 3�3 matrix � size is baked into the domain. Arrays communicate intent clearly.</li>
+    <li><strong>Known fixed size:</strong> A 12-month budget, a 3×3 matrix — size is baked into the domain. Arrays communicate intent clearly.</li>
     <li><strong>Multi-dimensional data:</strong> <code>int[,]</code> is more expressive than a list of lists.</li>
     <li><strong>Performance-critical inner loops:</strong> Arrays are slightly faster because there's no bounds-check overhead from the abstraction layer.</li>
     <li><strong>Interop with legacy/unsafe code:</strong> C APIs expect raw arrays, not managed List objects.</li>
@@ -77,7 +76,7 @@ it when needed.</p>
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="kw">using</span> System.Collections.Generic; <span class="cm">// Required namespace</span>
 
-<span class="cm">// -- Creating a List ----------------------------------------------</span>
+<span class="cm">// ── Creating a List ──────────────────────────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;    nums    = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();            <span class="cm">// empty, starts with cap=0</span>
 <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; names   = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;();         <span class="cm">// empty</span>
 <span class="tp">List</span>&lt;<span class="kw">double</span>&gt; prices  = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">double</span>&gt;(<span class="nm">100</span>);      <span class="cm">// pre-allocate 100 slots</span>
@@ -85,7 +84,7 @@ it when needed.</p>
 <span class="cm">// Initialize with values (collection initializer):</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; scores = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">85</span>, <span class="nm">92</span>, <span class="nm">78</span>, <span class="nm">96</span>, <span class="nm">88</span> };
 
-<span class="cm">// C# 9+ � simplified with 'new()' when type is clear from context:</span>
+<span class="cm">// C# 9+ — simplified with 'new()' when type is clear from context:</span>
 <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; cities = <span class="kw">new</span>() { <span class="st">"London"</span>, <span class="st">"Paris"</span>, <span class="st">"Tokyo"</span> };
 
 <span class="cm">// Convert from existing array or other IEnumerable:</span>
@@ -115,18 +114,18 @@ list2 = <span class="mt">list</span>(<span class="mt">range</span>(<span class="
 
 <hr>
 
-<!-- ------- SECTION 7.2 ------- -->
-<div class="section-heading">Section 7.2 � How Capacity Doubling Works</div>
+<!-- ═══════ SECTION 7.2 ═══════ -->
+<div class="section-heading">Section 7.2 — How Capacity Doubling Works</div>
 
 <p>This is the most important concept for understanding List performance.
 The secret is: <code>List&lt;T&gt;</code> maintains an <strong>internal array</strong> (the <em>backing store</em>)
 whose <code>Capacity</code> is always &gt;= <code>Count</code>. When the array fills up, it doubles the capacity.</p>
 
-<div class="diagram">LIST INTERNAL GROWTH � Adding items one by one
+<div class="diagram">LIST INTERNAL GROWTH — Adding items one by one
 
 State:  Count=0, Capacity=0, InternalArray=[]
 
-Add(10): Count becomes 1 ? array is empty ? allocate Capacity=4
+Add(10): Count becomes 1 → array is empty → allocate Capacity=4
   InternalArray: [ 10 |  _ |  _ |  _ ]   Count=1, Cap=4
 
 Add(20): Count=2, fits in capacity
@@ -138,17 +137,17 @@ Add(30): Count=3, fits
 Add(40): Count=4, fits (exactly fills)
   InternalArray: [ 10 | 20 | 30 | 40 ]   Count=4, Cap=4
 
-Add(50): Count would become 5, Cap=4 is FULL ? DOUBLE to Cap=8
-  ? Allocate new 8-element array
-  ? Copy 4 elements into new array    ? O(n) cost here
-  ? Place 50 at index 4
+Add(50): Count would become 5, Cap=4 is FULL → DOUBLE to Cap=8
+  → Allocate new 8-element array
+  → Copy 4 elements into new array    ← O(n) cost here
+  → Place 50 at index 4
   InternalArray: [ 10 | 20 | 30 | 40 | 50 |  _ |  _ |  _ ]  Cap=8
 
-Growth sequence: 0 ? 4 ? 8 ? 16 ? 32 ? 64 ? 128 ? ...
+Growth sequence: 0 → 4 → 8 → 16 → 32 → 64 → 128 → ...
 
 AMORTIZED O(1): A resize happens after EVERY n/2 adds.
-  Total copy work for n adds = 2 + 4 + 8 + ... + n = 2n - 2 = O(n)
-  Spread across n operations: O(n) / n = O(1) per add ?</div>
+  Total copy work for n adds = 2 + 4 + 8 + ... + n = 2n − 2 = O(n)
+  Spread across n operations: O(n) / n = O(1) per add ✓</div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -167,10 +166,10 @@ list.<span class="mt">Add</span>(<span class="nm">1</span>);
 <span class="kw">for</span>(<span class="kw">int</span> i=<span class="nm">6</span>; i&lt;=<span class="nm">9</span>; i++) list.<span class="mt">Add</span>(i);
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Count={list.Count}, Capacity={list.Capacity}"</span>); <span class="cm">// 9, 16</span>
 
-<span class="cm">// -- Pre-allocate if you know approximate size --------------------</span>
+<span class="cm">// ── Pre-allocate if you know approximate size ────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; optimized = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(<span class="nm">1000</span>); <span class="cm">// no resizes for first 1000 adds</span>
 
-<span class="cm">// -- TrimExcess � free unused capacity (saves memory, prevents future add) --</span>
+<span class="cm">// ── TrimExcess — free unused capacity (saves memory, prevents future add) ──</span>
 list.<span class="mt">TrimExcess</span>(); <span class="cm">// shrinks Capacity to match Count exactly</span>
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="st">$"Count={list.Count}, Capacity={list.Capacity}"</span>); <span class="cm">// 9, 9</span></pre>
 </div>
@@ -203,35 +202,35 @@ lst2 = []
 </div>
 
 <div class="note">
-    <strong>?? Count vs Capacity � Don't Confuse Them:</strong>
+    <strong>📌 Count vs Capacity — Don't Confuse Them:</strong>
     <ul style="margin-top:8px;">
-        <li><code>list.Count</code> � How many elements you've actually added (the logical size)</li>
-        <li><code>list.Capacity</code> � How many elements fit in the current internal array (physical size)</li>
-        <li>Capacity is always = Count. You iterate up to Count � never Capacity.</li>
+        <li><code>list.Count</code> — How many elements you've actually added (the logical size)</li>
+        <li><code>list.Capacity</code> — How many elements fit in the current internal array (physical size)</li>
+        <li>Capacity is always ≥ Count. You iterate up to Count — never Capacity.</li>
     </ul>
 </div>
 
 <hr>
 
-<!-- ------- SECTION 7.3 ------- -->
-<div class="section-heading">Section 7.3 � All List&lt;T&gt; Operations</div>
+<!-- ═══════ SECTION 7.3 ═══════ -->
+<div class="section-heading">Section 7.3 — All List&lt;T&gt; Operations</div>
 
-<h3>7.3.1 � Adding Elements</h3>
+<h3>7.3.1 — Adding Elements</h3>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="tp">List</span>&lt;<span class="kw">string</span>&gt; fruits = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; { <span class="st">"Apple"</span>, <span class="st">"Banana"</span>, <span class="st">"Cherry"</span> };
 
-<span class="cm">// Add to end � O(1) amortized</span>
+<span class="cm">// Add to end — O(1) amortized</span>
 fruits.<span class="mt">Add</span>(<span class="st">"Date"</span>);                         <span class="cm">// [Apple,Banana,Cherry,Date]</span>
 
-<span class="cm">// Insert at index � O(n) due to shifting</span>
+<span class="cm">// Insert at index — O(n) due to shifting</span>
 fruits.<span class="mt">Insert</span>(<span class="nm">1</span>, <span class="st">"Avocado"</span>);               <span class="cm">// [Apple,Avocado,Banana,Cherry,Date]</span>
 
 <span class="cm">// Add multiple items at once</span>
 fruits.<span class="mt">AddRange</span>(<span class="kw">new</span>[] { <span class="st">"Elderberry"</span>, <span class="st">"Fig"</span> }); <span class="cm">// adds 2 more to end</span>
-fruits.<span class="mt">InsertRange</span>(<span class="nm">0</span>, <span class="kw">new</span>[] { <span class="st">"A�a�"</span> });      <span class="cm">// inserts at beginning</span></pre>
+fruits.<span class="mt">InsertRange</span>(<span class="nm">0</span>, <span class="kw">new</span>[] { <span class="st">"Açaí"</span> });      <span class="cm">// inserts at beginning</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -250,30 +249,30 @@ fruits.<span class="mt">extend</span>([<span class="st">&quot;Elderberry&quot;</
 fruits[<span class="nm">0</span>:<span class="nm">0</span>] = [<span class="st">&quot;Aca&iacute;&quot;</span>]                        <span class="cm"># inserts at beginning (slice assignment)</span></pre>
 </div>
 
-<h3>7.3.2 � Reading &amp; Searching</h3>
+<h3>7.3.2 — Reading &amp; Searching</h3>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="tp">List</span>&lt;<span class="kw">int</span>&gt; nums = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">20</span>, <span class="nm">40</span>, <span class="nm">30</span> };
 
-<span class="cm">// Index access � O(1)</span>
+<span class="cm">// Index access — O(1)</span>
 <span class="kw">int</span> first = nums[<span class="nm">0</span>];           <span class="cm">// 10</span>
 <span class="kw">int</span> last  = nums[^<span class="nm">1</span>];          <span class="cm">// 30  (C# 8+ index-from-end)</span>
 <span class="kw">int</span> count = nums.Count;         <span class="cm">// 6</span>
 
-<span class="cm">// Existence check � O(n)</span>
+<span class="cm">// Existence check — O(n)</span>
 <span class="kw">bool</span> has30 = nums.<span class="mt">Contains</span>(<span class="nm">30</span>); <span class="cm">// true</span>
 
-<span class="cm">// Position search � O(n)</span>
-<span class="kw">int</span> idx      = nums.<span class="mt">IndexOf</span>(<span class="nm">20</span>);      <span class="cm">// 1  � first occurrence</span>
-<span class="kw">int</span> lastIdx  = nums.<span class="mt">LastIndexOf</span>(<span class="nm">20</span>); <span class="cm">// 3  � last occurrence</span>
+<span class="cm">// Position search — O(n)</span>
+<span class="kw">int</span> idx      = nums.<span class="mt">IndexOf</span>(<span class="nm">20</span>);      <span class="cm">// 1  — first occurrence</span>
+<span class="kw">int</span> lastIdx  = nums.<span class="mt">LastIndexOf</span>(<span class="nm">20</span>); <span class="cm">// 3  — last occurrence</span>
 <span class="kw">int</span> notFound = nums.<span class="mt">IndexOf</span>(<span class="nm">99</span>);     <span class="cm">// -1</span>
 
-<span class="cm">// Find with predicate � O(n)</span>
-<span class="kw">int</span> gt25     = nums.<span class="mt">Find</span>(x =&gt; x &gt; <span class="nm">25</span>);         <span class="cm">// 30  � first match</span>
-<span class="kw">int</span> findIdx  = nums.<span class="mt">FindIndex</span>(x =&gt; x &gt; <span class="nm">25</span>);    <span class="cm">// 2   � index of first match</span>
-<span class="kw">int</span> findLast = nums.<span class="mt">FindLastIndex</span>(x =&gt; x == <span class="nm">30</span>);<span class="cm">// 5   � last match index</span>
+<span class="cm">// Find with predicate — O(n)</span>
+<span class="kw">int</span> gt25     = nums.<span class="mt">Find</span>(x =&gt; x &gt; <span class="nm">25</span>);         <span class="cm">// 30  — first match</span>
+<span class="kw">int</span> findIdx  = nums.<span class="mt">FindIndex</span>(x =&gt; x &gt; <span class="nm">25</span>);    <span class="cm">// 2   — index of first match</span>
+<span class="kw">int</span> findLast = nums.<span class="mt">FindLastIndex</span>(x =&gt; x == <span class="nm">30</span>);<span class="cm">// 5   — last match index</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; allGt25 = nums.<span class="mt">FindAll</span>(x =&gt; x &gt; <span class="nm">25</span>); <span class="cm">// [30,40,30]</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -300,31 +299,31 @@ gt25_idx = <span class="mt">next</span>(i <span class="kw">for</span> i, x <span
 all_gt25 = [x <span class="kw">for</span> x <span class="kw">in</span> nums <span class="kw">if</span> x &gt; <span class="nm">25</span>]                          <span class="cm"># [30, 40, 30]</span></pre>
 </div>
 
-<h3>7.3.3 � Removing Elements</h3>
+<h3>7.3.3 — Removing Elements</h3>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="tp">List</span>&lt;<span class="kw">string</span>&gt; colors = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; { <span class="st">"Red"</span>, <span class="st">"Green"</span>, <span class="st">"Blue"</span>, <span class="st">"Red"</span>, <span class="st">"Yellow"</span> };
 
-<span class="cm">// Remove first matching value � O(n)</span>
+<span class="cm">// Remove first matching value — O(n)</span>
 colors.<span class="mt">Remove</span>(<span class="st">"Red"</span>);            <span class="cm">// removes FIRST "Red": [Green,Blue,Red,Yellow]</span>
 
-<span class="cm">// Remove by index � O(n) due to shifting</span>
+<span class="cm">// Remove by index — O(n) due to shifting</span>
 colors.<span class="mt">RemoveAt</span>(<span class="nm">0</span>);              <span class="cm">// removes index 0 "Green": [Blue,Red,Yellow]</span>
 
-<span class="cm">// Remove range � O(n)</span>
+<span class="cm">// Remove range — O(n)</span>
 colors.<span class="mt">RemoveRange</span>(<span class="nm">0</span>, <span class="nm">2</span>);       <span class="cm">// removes 2 items from index 0: [Yellow]</span>
 
-<span class="cm">// Remove all matching predicate � O(n)</span>
+<span class="cm">// Remove all matching predicate — O(n)</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; data = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span>, <span class="nm">8</span> };
 <span class="kw">int</span> removed = data.<span class="mt">RemoveAll</span>(x =&gt; x % <span class="nm">2</span> == <span class="nm">0</span>); <span class="cm">// removes evens: 4 removed</span>
 <span class="cm">// data = [1,3,5,7]</span>
 
-<span class="cm">// Remove last element cheaply (no shifting!) � O(1)</span>
-data.<span class="mt">RemoveAt</span>(data.Count - <span class="nm">1</span>);   <span class="cm">// removes 7 � no shifting!</span>
+<span class="cm">// Remove last element cheaply (no shifting!) — O(1)</span>
+data.<span class="mt">RemoveAt</span>(data.Count - <span class="nm">1</span>);   <span class="cm">// removes 7 — no shifting!</span>
 
-<span class="cm">// Clear all � O(1) with GC (references cleared, no resize)</span>
+<span class="cm">// Clear all — O(1) with GC (references cleared, no resize)</span>
 data.<span class="mt">Clear</span>();                     <span class="cm">// data = []</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -354,24 +353,24 @@ data.<span class="mt">clear</span>()   <span class="cm"># data = []</span></pre>
 </div>
 
 <div class="tip">
-    <strong>?? Performance Trick � Remove from End:</strong><br>
-    <code>RemoveAt(list.Count - 1)</code> removes the last element in <strong>O(1)</strong> � no elements need to shift.
+    <strong>💡 Performance Trick — Remove from End:</strong><br>
+    <code>RemoveAt(list.Count - 1)</code> removes the last element in <strong>O(1)</strong> — no elements need to shift.
     If you find yourself removing from the end frequently (like a stack), <code>List&lt;T&gt;</code> is fine.
     If you're removing from the front constantly, consider <code>Queue&lt;T&gt;</code> or <code>LinkedList&lt;T&gt;</code>.
 </div>
 
-<h3>7.3.4 � Sorting &amp; Ordering</h3>
+<h3>7.3.4 — Sorting &amp; Ordering</h3>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="tp">List</span>&lt;<span class="kw">int</span>&gt; nums = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">64</span>, <span class="nm">25</span>, <span class="nm">12</span>, <span class="nm">22</span>, <span class="nm">11</span> };
 
-<span class="cm">// Sort ascending (in-place) � O(n log n)</span>
+<span class="cm">// Sort ascending (in-place) — O(n log n)</span>
 nums.<span class="mt">Sort</span>();
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, nums)); <span class="cm">// 11, 12, 22, 25, 64</span>
 
-<span class="cm">// Sort descending � using Comparison&lt;T&gt; delegate</span>
+<span class="cm">// Sort descending — using Comparison&lt;T&gt; delegate</span>
 nums.<span class="mt">Sort</span>((a, b) =&gt; b.CompareTo(a));
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, nums)); <span class="cm">// 64, 25, 22, 12, 11</span>
 
@@ -383,11 +382,11 @@ nums.<span class="mt">Sort</span>((a, b) =&gt; b.CompareTo(a));
 students.<span class="mt">Sort</span>((a, b) =&gt; a.Age.CompareTo(b.Age)); <span class="cm">// sort by age ascending</span>
 <span class="cm">// [Bob=19, Alice=20, Charlie=22]</span>
 
-<span class="cm">// Reverse the list � O(n)</span>
+<span class="cm">// Reverse the list — O(n)</span>
 nums.<span class="mt">Reverse</span>();
 <span class="tp">Console</span>.<span class="mt">WriteLine</span>(<span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, nums)); <span class="cm">// 11, 12, 22, 25, 64</span>
 
-<span class="cm">// Binary search (must be sorted first!) � O(log n)</span>
+<span class="cm">// Binary search (must be sorted first!) — O(log n)</span>
 <span class="kw">int</span> position = nums.<span class="mt">BinarySearch</span>(<span class="nm">22</span>); <span class="cm">// 2</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -418,32 +417,32 @@ nums.<span class="mt">reverse</span>()
 position = bisect.<span class="mt">bisect_left</span>(nums, <span class="nm">22</span>)  <span class="cm"># 2 (if found)</span></pre>
 </div>
 
-<h3>7.3.5 � Converting &amp; Copying</h3>
+<h3>7.3.5 — Converting &amp; Copying</h3>
 
 <span class="lang-label lang-cs">C#</span>
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre><span class="tp">List</span>&lt;<span class="kw">int</span>&gt; list = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; { <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span> };
 
-<span class="cm">// List ? Array</span>
-<span class="kw">int</span>[] arr = list.<span class="mt">ToArray</span>(); <span class="cm">// creates a copy � O(n)</span>
+<span class="cm">// List → Array</span>
+<span class="kw">int</span>[] arr = list.<span class="mt">ToArray</span>(); <span class="cm">// creates a copy — O(n)</span>
 
-<span class="cm">// List ? string (for display)</span>
+<span class="cm">// List → string (for display)</span>
 <span class="kw">string</span> display = <span class="kw">string</span>.<span class="mt">Join</span>(<span class="st">", "</span>, list); <span class="cm">// "1, 2, 3, 4, 5"</span>
 
 <span class="cm">// Shallow copy</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; copy = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;(list);      <span class="cm">// copies all elements</span>
-<span class="tp">List</span>&lt;<span class="kw">int</span>&gt; sub  = list.<span class="mt">GetRange</span>(<span class="nm">1</span>, <span class="nm">3</span>);    <span class="cm">// [2,3,4] � 3 items from index 1</span>
+<span class="tp">List</span>&lt;<span class="kw">int</span>&gt; sub  = list.<span class="mt">GetRange</span>(<span class="nm">1</span>, <span class="nm">3</span>);    <span class="cm">// [2,3,4] — 3 items from index 1</span>
 
-<span class="cm">// ConvertAll � transforms each element into a new type</span>
+<span class="cm">// ConvertAll — transforms each element into a new type</span>
 <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; asStrings = list.<span class="mt">ConvertAll</span>(x =&gt; x.<span class="mt">ToString</span>()); <span class="cm">// ["1","2","3","4","5"]</span>
 <span class="tp">List</span>&lt;<span class="kw">double</span>&gt; doubled  = list.<span class="mt">ConvertAll</span>(x =&gt; (kw)x * <span class="nm">1.5</span>); <span class="cm">// [1.5,3.0,4.5,6.0,7.5]</span>
 
-<span class="cm">// Exists / TrueForAll � boolean checks</span>
+<span class="cm">// Exists / TrueForAll — boolean checks</span>
 <span class="kw">bool</span> anyNeg = list.<span class="mt">Exists</span>(x =&gt; x &lt; <span class="nm">0</span>);        <span class="cm">// false</span>
 <span class="kw">bool</span> allPos = list.<span class="mt">TrueForAll</span>(x =&gt; x &gt; <span class="nm">0</span>);    <span class="cm">// true</span>
 
-<span class="cm">// ForEach � executes action on each item</span>
+<span class="cm">// ForEach — executes action on each item</span>
 list.<span class="mt">ForEach</span>(x =&gt; <span class="tp">Console</span>.<span class="mt">Write</span>(x + <span class="st">" "</span>)); <span class="cm">// 1 2 3 4 5</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
@@ -476,7 +475,7 @@ all_pos = <span class="mt">all</span>(x &gt; <span class="nm">0</span> <span cla
 </div>
 
 <div class="realworld">
-    <strong>?? Real-World Use � Shopping Cart:</strong>
+    <strong>🌍 Real-World Use — Shopping Cart:</strong>
 <pre style="margin:10px 0 0 0;"><span class="kw">var</span> cart = <span class="kw">new</span> <span class="tp">List</span>&lt;(<span class="kw">string</span> Item, <span class="kw">decimal</span> Price, <span class="kw">int</span> Qty)&gt;();
 cart.<span class="mt">Add</span>((<span class="st">"Laptop"</span>, <span class="nm">999.99m</span>, <span class="nm">1</span>));
 cart.<span class="mt">Add</span>((<span class="st">"Mouse"</span>,  <span class="nm">29.99m</span>,  <span class="nm">2</span>));
@@ -495,12 +494,12 @@ cart.<span class="mt">ForEach</span>(item =&gt; total += item.Price * item.Qty);
 
 <hr>
 
-<!-- ------- SECTION 7.4 ------- -->
-<div class="section-heading">Section 7.4 � LINQ on List&lt;T&gt;</div>
+<!-- ═══════ SECTION 7.4 ═══════ -->
+<div class="section-heading">Section 7.4 — LINQ on List&lt;T&gt;</div>
 
 <p>LINQ (Language Integrated Query) adds powerful query methods to any collection.
-When used on <code>List&lt;T&gt;</code>, LINQ operations iterate the list � so most are O(n)
-unless documented otherwise. They return lazy <code>IEnumerable&lt;T&gt;</code> � they don't execute until you iterate (or call <code>ToList()</code>/<code>ToArray()</code>).</p>
+When used on <code>List&lt;T&gt;</code>, LINQ operations iterate the list — so most are O(n)
+unless documented otherwise. They return lazy <code>IEnumerable&lt;T&gt;</code> — they don't execute until you iterate (or call <code>ToList()</code>/<code>ToArray()</code>).</p>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -510,44 +509,44 @@ unless documented otherwise. They return lazy <code>IEnumerable&lt;T&gt;</code> 
 
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; nums = <span class="kw">new</span>() { <span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">9</span>, <span class="nm">2</span>, <span class="nm">6</span>, <span class="nm">5</span>, <span class="nm">3</span> };
 
-<span class="cm">// -- FILTERING � Where --------------------------------------------</span>
+<span class="cm">// ── FILTERING — Where ────────────────────────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; evens = nums.<span class="mt">Where</span>(x =&gt; x % <span class="nm">2</span> == <span class="nm">0</span>).<span class="mt">ToList</span>(); <span class="cm">// [4,2,6]</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; big   = nums.<span class="mt">Where</span>(x =&gt; x &gt; <span class="nm">4</span>).<span class="mt">ToList</span>();       <span class="cm">// [5,9,6,5]</span>
 
-<span class="cm">// -- TRANSFORMATION � Select --------------------------------------</span>
+<span class="cm">// ── TRANSFORMATION — Select ──────────────────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;    squared = nums.<span class="mt">Select</span>(x =&gt; x * x).<span class="mt">ToList</span>();       <span class="cm">// [9,1,16,1,25,81,4,36,25,9]</span>
 <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; strs   = nums.<span class="mt">Select</span>(x =&gt; $<span class="st">"#{x}"</span>).<span class="mt">ToList</span>();     <span class="cm">// ["#3","#1","#4",...]</span>
 
-<span class="cm">// -- ORDERING � OrderBy, OrderByDescending ------------------------</span>
+<span class="cm">// ── ORDERING — OrderBy, OrderByDescending ────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; sorted  = nums.<span class="mt">OrderBy</span>(x =&gt; x).<span class="mt">ToList</span>();             <span class="cm">// [1,1,2,3,3,4,5,5,6,9]</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; sortedD = nums.<span class="mt">OrderByDescending</span>(x =&gt; x).<span class="mt">ToList</span>(); <span class="cm">// [9,6,5,5,4,3,3,2,1,1]</span>
 
-<span class="cm">// -- AGGREGATION --------------------------------------------------</span>
+<span class="cm">// ── AGGREGATION ──────────────────────────────────────────────────</span>
 <span class="kw">int</span>    total  = nums.<span class="mt">Sum</span>();              <span class="cm">// 39</span>
 <span class="kw">double</span> avg    = nums.<span class="mt">Average</span>();         <span class="cm">// 3.9</span>
 <span class="kw">int</span>    max    = nums.<span class="mt">Max</span>();              <span class="cm">// 9</span>
 <span class="kw">int</span>    min    = nums.<span class="mt">Min</span>();              <span class="cm">// 1</span>
-<span class="kw">int</span>    cnt    = nums.<span class="mt">Count</span>();            <span class="cm">// 10 � .Count() method = O(1) on List</span>
-<span class="kw">int</span>    cntEvn = nums.<span class="mt">Count</span>(x =&gt; x % <span class="nm">2</span> == <span class="nm">0</span>); <span class="cm">// 3  � count matching predicate</span>
+<span class="kw">int</span>    cnt    = nums.<span class="mt">Count</span>();            <span class="cm">// 10 — .Count() method = O(1) on List</span>
+<span class="kw">int</span>    cntEvn = nums.<span class="mt">Count</span>(x =&gt; x % <span class="nm">2</span> == <span class="nm">0</span>); <span class="cm">// 3  — count matching predicate</span>
 
-<span class="cm">// -- ELEMENT ACCESS -----------------------------------------------</span>
-<span class="kw">int</span> f1  = nums.<span class="mt">First</span>();                   <span class="cm">// 3  � throws if empty</span>
-<span class="kw">int</span> f2  = nums.<span class="mt">First</span>(x =&gt; x &gt; <span class="nm">7</span>);        <span class="cm">// 9  � first matching</span>
-<span class="kw">int</span> f3  = nums.<span class="mt">FirstOrDefault</span>(x =&gt; x &gt; <span class="nm">50</span>); <span class="cm">// 0  � 0 (default int) if not found</span>
-<span class="kw">int</span> s1  = nums.<span class="mt">Single</span>(x =&gt; x == <span class="nm">9</span>);      <span class="cm">// 9  � throws if not exactly 1 match</span>
-<span class="kw">int</span> l1  = nums.<span class="mt">Last</span>();                    <span class="cm">// 3  � last element</span>
+<span class="cm">// ── ELEMENT ACCESS ───────────────────────────────────────────────</span>
+<span class="kw">int</span> f1  = nums.<span class="mt">First</span>();                   <span class="cm">// 3  — throws if empty</span>
+<span class="kw">int</span> f2  = nums.<span class="mt">First</span>(x =&gt; x &gt; <span class="nm">7</span>);        <span class="cm">// 9  — first matching</span>
+<span class="kw">int</span> f3  = nums.<span class="mt">FirstOrDefault</span>(x =&gt; x &gt; <span class="nm">50</span>); <span class="cm">// 0  — 0 (default int) if not found</span>
+<span class="kw">int</span> s1  = nums.<span class="mt">Single</span>(x =&gt; x == <span class="nm">9</span>);      <span class="cm">// 9  — throws if not exactly 1 match</span>
+<span class="kw">int</span> l1  = nums.<span class="mt">Last</span>();                    <span class="cm">// 3  — last element</span>
 
-<span class="cm">// -- EXISTENCE CHECKS ---------------------------------------------</span>
-<span class="kw">bool</span> any  = nums.<span class="mt">Any</span>(x =&gt; x &gt; <span class="nm">8</span>);    <span class="cm">// true  � stops at first match</span>
-<span class="kw">bool</span> all  = nums.<span class="mt">All</span>(x =&gt; x &gt; <span class="nm">0</span>);    <span class="cm">// true  � checks all</span>
+<span class="cm">// ── EXISTENCE CHECKS ─────────────────────────────────────────────</span>
+<span class="kw">bool</span> any  = nums.<span class="mt">Any</span>(x =&gt; x &gt; <span class="nm">8</span>);    <span class="cm">// true  — stops at first match</span>
+<span class="kw">bool</span> all  = nums.<span class="mt">All</span>(x =&gt; x &gt; <span class="nm">0</span>);    <span class="cm">// true  — checks all</span>
 
-<span class="cm">// -- DEDUPLICATION � Distinct -------------------------------------</span>
+<span class="cm">// ── DEDUPLICATION — Distinct ─────────────────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; unique = nums.<span class="mt">Distinct</span>().<span class="mt">ToList</span>(); <span class="cm">// [3,1,4,5,9,2,6]</span>
 
-<span class="cm">// -- SKIP / TAKE � Pagination -------------------------------------</span>
+<span class="cm">// ── SKIP / TAKE — Pagination ─────────────────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; page2 = nums.<span class="mt">Skip</span>(<span class="nm">4</span>).<span class="mt">Take</span>(<span class="nm">4</span>).<span class="mt">ToList</span>(); <span class="cm">// skip 4, take 4: [5,9,2,6]</span>
 
-<span class="cm">// -- CHAINING MULTIPLE OPERATIONS ---------------------------------</span>
+<span class="cm">// ── CHAINING MULTIPLE OPERATIONS ─────────────────────────────────</span>
 <span class="tp">List</span>&lt;<span class="kw">string</span>&gt; result = nums
     .<span class="mt">Where</span>(x =&gt; x &gt; <span class="nm">3</span>)            <span class="cm">// filter: [4,5,9,6,5]</span>
     .<span class="mt">Distinct</span>()                    <span class="cm">// dedupe: [4,5,9,6]</span>
@@ -604,16 +603,16 @@ result = [f<span class="st">&quot;#{x}&quot;</span> <span class="kw">for</span> 
 </div>
 
 <div class="note">
-    <strong>?? LINQ is Lazy (Deferred Execution):</strong><br>
-    <code>.Where()</code>, <code>.Select()</code>, <code>.OrderBy()</code> do NOT execute immediately � they build a query pipeline.<br>
+    <strong>📌 LINQ is Lazy (Deferred Execution):</strong><br>
+    <code>.Where()</code>, <code>.Select()</code>, <code>.OrderBy()</code> do NOT execute immediately — they build a query pipeline.<br>
     Execution happens when you call <code>ToList()</code>, <code>ToArray()</code>, <code>foreach</code>, or an aggregator like <code>Count()</code> / <code>Sum()</code>.<br>
     This means you can chain 5 operations and the list is iterated only <em>once</em>.
 </div>
 
 <hr>
 
-<!-- ------- SECTION 7.5 ------- -->
-<div class="section-heading">Section 7.5 � Collection Comparison Guide</div>
+<!-- ═══════ SECTION 7.5 ═══════ -->
+<div class="section-heading">Section 7.5 — Collection Comparison Guide</div>
 
 <h3>ArrayList vs List&lt;T&gt;</h3>
 <p><code>ArrayList</code> is an old .NET 1.x collection (before generics existed).
@@ -625,7 +624,7 @@ causing boxing/unboxing overhead and zero compile-time type safety.</p>
         <tr><th>Feature</th><th>ArrayList (legacy)</th><th>List&lt;T&gt; (modern)</th></tr>
     </thead>
     <tbody>
-        <tr><td>Type safety</td><td class="r">None � stores object</td><td class="g">Full � generic T</td></tr>
+        <tr><td>Type safety</td><td class="r">None — stores object</td><td class="g">Full — generic T</td></tr>
         <tr><td>Value type performance</td><td class="r">Boxing/unboxing</td><td class="g">No boxing</td></tr>
         <tr><td>Compile-time errors</td><td class="r">Runtime only</td><td class="g">Compile-time</td></tr>
         <tr><td>LINQ support</td><td class="r">Awkward (Cast required)</td><td class="g">Full native support</td></tr>
@@ -634,7 +633,7 @@ causing boxing/unboxing overhead and zero compile-time type safety.</p>
     </tbody>
 </table>
 
-<h3>Which Collection to Use � Decision Table</h3>
+<h3>Which Collection to Use — Decision Table</h3>
 <table>
     <thead>
         <tr><th>Scenario</th><th>Best Choice</th><th>Reason</th></tr>
@@ -647,15 +646,15 @@ causing boxing/unboxing overhead and zero compile-time type safety.</p>
         <tr><td>Frequent insert/delete at middle</td><td class="o">LinkedList&lt;T&gt;</td><td>O(1) insert with node reference</td></tr>
         <tr><td>Fast existence checks, no duplicates</td><td class="o">HashSet&lt;T&gt;</td><td>O(1) average Contains/Add</td></tr>
         <tr><td>Key-value lookup (dictionary)</td><td class="o">Dictionary&lt;K,V&gt;</td><td>O(1) average lookup by key</td></tr>
-        <tr><td>Sorted key-value pairs</td><td class="o">SortedDictionary&lt;K,V&gt;</td><td>O(log n) � keeps keys sorted</td></tr>
+        <tr><td>Sorted key-value pairs</td><td class="o">SortedDictionary&lt;K,V&gt;</td><td>O(log n) — keeps keys sorted</td></tr>
         <tr><td>Priority processing (min/max)</td><td class="o">PriorityQueue&lt;T,P&gt;</td><td>O(log n) peek/dequeue</td></tr>
     </tbody>
 </table>
 
 <div class="tip">
-    <strong>?? Golden Rule of Collection Choice:</strong><br>
+    <strong>💡 Golden Rule of Collection Choice:</strong><br>
     Start with <code>List&lt;T&gt;</code>. Switch to a specialized collection only when a specific
-    operation is a bottleneck. Profile first � premature optimization is the root of all evil.
+    operation is a bottleneck. Profile first — premature optimization is the root of all evil.
 </div>
 
 <h3>Complete List&lt;T&gt; Operations Summary</h3>
@@ -664,12 +663,12 @@ causing boxing/unboxing overhead and zero compile-time type safety.</p>
         <tr><th>Method / Property</th><th>Complexity</th><th>Description</th></tr>
     </thead>
     <tbody>
-        <tr><td><code>list[i]</code> � index get/set</td><td class="g">O(1)</td><td>Direct array access</td></tr>
+        <tr><td><code>list[i]</code> — index get/set</td><td class="g">O(1)</td><td>Direct array access</td></tr>
         <tr><td><code>list.Count</code></td><td class="g">O(1)</td><td>Number of elements</td></tr>
         <tr><td><code>list.Add(item)</code></td><td class="g">O(1) amortized</td><td>Append to end</td></tr>
         <tr><td><code>list.AddRange()</code></td><td class="o">O(k)</td><td>Append k items</td></tr>
         <tr><td><code>list.Insert(i, item)</code></td><td class="r">O(n)</td><td>Shift elements right from i</td></tr>
-        <tr><td><code>list.RemoveAt(end)</code></td><td class="g">O(1)</td><td>Last element � no shift</td></tr>
+        <tr><td><code>list.RemoveAt(end)</code></td><td class="g">O(1)</td><td>Last element — no shift</td></tr>
         <tr><td><code>list.RemoveAt(i)</code></td><td class="r">O(n)</td><td>Shift elements left from i</td></tr>
         <tr><td><code>list.Remove(val)</code></td><td class="r">O(n)</td><td>Search + shift</td></tr>
         <tr><td><code>list.RemoveAll(pred)</code></td><td class="r">O(n)</td><td>Single-pass removal</td></tr>
@@ -685,16 +684,16 @@ causing boxing/unboxing overhead and zero compile-time type safety.</p>
 </table>
 
 <div class="nav-box">
-    <strong>? Module 1 Part C Complete!</strong><br><br>
+    <strong>✅ Module 1 Part C Complete!</strong><br><br>
     <strong>Key Takeaways:</strong><br>
-    � <code>List&lt;T&gt;</code> internally wraps a regular array and doubles capacity when full<br>
-    � <code>Add()</code> is O(1) amortized � occasional O(n) resize spread over many adds<br>
-    � <code>Count</code> = logical size. <code>Capacity</code> = physical buffer size. Always iterate up to Count<br>
-    � LINQ is lazy � chains build a pipeline, executed only when enumerated<br>
-    � Remove from end is O(1). Remove from middle/start is O(n) due to shifting<br><br>
-    ? <strong>Previous:</strong> <a href="m01b_strings.html">Part B � Strings &amp; StringBuilder</a><br>
-    ? <strong>Next:</strong> <a href="m01d_practice.html">Part D � 15 Practice Problems</a><br>
-    ?? <a href="../index.html">Course Index</a>
+    • <code>List&lt;T&gt;</code> internally wraps a regular array and doubles capacity when full<br>
+    • <code>Add()</code> is O(1) amortized — occasional O(n) resize spread over many adds<br>
+    • <code>Count</code> = logical size. <code>Capacity</code> = physical buffer size. Always iterate up to Count<br>
+    • LINQ is lazy — chains build a pipeline, executed only when enumerated<br>
+    • Remove from end is O(1). Remove from middle/start is O(n) due to shifting<br><br>
+    ⬅ <strong>Previous:</strong> <a href="m01b_strings.html">Part B — Strings &amp; StringBuilder</a><br>
+    ➡ <strong>Next:</strong> <a href="m01d_practice.html">Part D — 15 Practice Problems</a><br>
+    🏠 <a href="../index.html">Course Index</a>
 </div>
 
     <script src="../dsa.js"></script>

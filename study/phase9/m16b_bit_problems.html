@@ -1,53 +1,52 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 16B � Classic Bit Problems | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 16B — Classic Bit Problems | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 9</div>
-    <h1>Module 16 � Part B</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 9</div>
+    <h1>Module 16 — Part B</h1>
     <div class="tagline">Classic Bit Manipulation Problems</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">XOR tricks � Counting bits � Single Number � Missing Number</p>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">XOR tricks · Counting bits · Single Number · Missing Number</p>
     <div class="badges">
-        <span>? Estimated: 2 Hours</span>
-        <span>?? Advanced</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? Module 16 of 17</span>
+        <span>⏱ Estimated: 2 Hours</span>
+        <span>🎯 Advanced</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 Module 16 of 17</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 16 � Bit Manipulation:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m16a_bit_manipulation.html">Bit Operations &amp; Tricks</a><br>
-    ? <strong>Part B</strong> � <em>You are here</em> � Classic Bit Problems<br>
-    ? <strong>Part C</strong> � <a href="m16c_randomized.html">Randomized Algorithms</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 16 — Bit Manipulation:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m16a_bit_manipulation.html">Bit Operations &amp; Tricks</a><br>
+    ▶ <strong>Part B</strong> — <em>You are here</em> — Classic Bit Problems<br>
+    ⬜ <strong>Part C</strong> — <a href="m16c_randomized.html">Randomized Algorithms</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase9/m15a_kmp.html">&larr; Module 15 &mdash; String Algorithms</a>
     <a href="../phase9/m17a_backtracking.html">Module 17 &mdash; Backtracking+ &rarr;</a>
 </div>
 
-<!-- ------- PROBLEM 1 ------- -->
-<div class="section-heading">Problem 1 � Single Number (LC 136)</div>
+<!-- ═══════ PROBLEM 1 ═══════ -->
+<div class="section-heading">Problem 1 — Single Number (LC 136)</div>
 
 <div class="problem-card">
     <div class="prob-title">Single Number</div>
     <div class="prob-meta">LeetCode 136 &nbsp;|&nbsp; Easy &nbsp;|&nbsp; XOR trick</div>
     <p>Given a non-empty array where every element appears twice except one, find the one that appears only once. Must run in O(n) time and O(1) space.</p>
-    <p><strong>Key insight:</strong> XOR of a number with itself = 0. XOR with 0 = the number. So XOR all elements � pairs cancel out, leaving the unique one.</p>
+    <p><strong>Key insight:</strong> XOR of a number with itself = 0. XOR with 0 = the number. So XOR all elements — pairs cancel out, leaving the unique one.</p>
     <p><code>4 ^ 1 ^ 2 ^ 1 ^ 2 = 4</code></p>
 </div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">SingleNumber</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> result = <span class="nm">0</span>;
@@ -58,7 +57,7 @@
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">from</span> functools <span class="kw">import</span> reduce
 <span class="kw">from</span> operator  <span class="kw">import</span> xor
 
@@ -68,8 +67,8 @@
 print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>, <span class="nm">2</span>]))  <span class="cm"># 4</span></pre>
 </div>
 
-<!-- ------- PROBLEM 2 ------- -->
-<div class="section-heading">Problem 2 � Single Number II (LC 137)</div>
+<!-- ═══════ PROBLEM 2 ═══════ -->
+<div class="section-heading">Problem 2 — Single Number II (LC 137)</div>
 
 <div class="problem-card">
     <div class="prob-title">Single Number II</div>
@@ -80,7 +79,7 @@ print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span cl
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">SingleNumber2</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> result = <span class="nm">0</span>;
@@ -96,7 +95,7 @@ print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span cl
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">single_number2</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">int</span>:
     result = <span class="nm">0</span>
     <span class="kw">for</span> bit <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">32</span>):
@@ -109,19 +108,19 @@ print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span cl
     <span class="kw">return</span> result</pre>
 </div>
 
-<!-- ------- PROBLEM 3 ------- -->
-<div class="section-heading">Problem 3 � Counting Bits (LC 338)</div>
+<!-- ═══════ PROBLEM 3 ═══════ -->
+<div class="section-heading">Problem 3 — Counting Bits (LC 338)</div>
 
 <div class="problem-card">
     <div class="prob-title">Counting Bits</div>
     <div class="prob-meta">LeetCode 338 &nbsp;|&nbsp; Easy &nbsp;|&nbsp; DP + Bit</div>
     <p>Given n, return an array of length n+1 where answer[i] = number of 1-bits in binary representation of i.</p>
-    <p><strong>Key insight:</strong> <code>dp[i] = dp[i >> 1] + (i &amp; 1)</code> � right-shift removes one bit; the LSB tells you if that bit was 1.</p>
+    <p><strong>Key insight:</strong> <code>dp[i] = dp[i >> 1] + (i &amp; 1)</code> — right-shift removes one bit; the LSB tells you if that bit was 1.</p>
 </div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span>[] <span class="mt">CountBits</span>(<span class="kw">int</span> n)
 {
     <span class="kw">int</span>[] dp = <span class="kw">new int</span>[n + <span class="nm">1</span>];
@@ -133,7 +132,7 @@ print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span cl
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">count_bits</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     dp = [<span class="nm">0</span>] * (n + <span class="nm">1</span>)
     <span class="kw">for</span> i <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">1</span>, n + <span class="nm">1</span>):
@@ -143,20 +142,20 @@ print(<span class="mt">single_number</span>([<span class="nm">4</span>, <span cl
 print(<span class="mt">count_bits</span>(<span class="nm">5</span>))  <span class="cm"># [0, 1, 1, 2, 1, 2]</span></pre>
 </div>
 
-<!-- ------- PROBLEM 4 ------- -->
-<div class="section-heading">Problem 4 � Missing Number (LC 268)</div>
+<!-- ═══════ PROBLEM 4 ═══════ -->
+<div class="section-heading">Problem 4 — Missing Number (LC 268)</div>
 
 <div class="problem-card">
     <div class="prob-title">Missing Number</div>
     <div class="prob-meta">LeetCode 268 &nbsp;|&nbsp; Easy &nbsp;|&nbsp; XOR or Math</div>
     <p>Given array [0..n] with one number missing, find the missing number.</p>
-    <p><strong>XOR approach:</strong> XOR indices 0..n with all array values � everything cancels except the missing number.</p>
+    <p><strong>XOR approach:</strong> XOR indices 0..n with all array values — everything cancels except the missing number.</p>
     <p><strong>Math approach:</strong> Expected sum = n*(n+1)/2. Missing = expected - actual sum.</p>
 </div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span> <span class="mt">MissingNumber</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> missing = nums.Length;  <span class="cm">// start with XOR of n</span>
@@ -175,7 +174,7 @@ print(<span class="mt">count_bits</span>(<span class="nm">5</span>))  <span clas
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">missing_number</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">int</span>:
     n = <span class="mt">len</span>(nums)
     <span class="kw">return</span> n * (n + <span class="nm">1</span>) // <span class="nm">2</span> - <span class="mt">sum</span>(nums)
@@ -183,19 +182,19 @@ print(<span class="mt">count_bits</span>(<span class="nm">5</span>))  <span clas
 print(<span class="mt">missing_number</span>([<span class="nm">3</span>, <span class="nm">0</span>, <span class="nm">1</span>]))  <span class="cm"># 2</span></pre>
 </div>
 
-<!-- ------- PROBLEM 5 ------- -->
-<div class="section-heading">Problem 5 � Find Two Non-Repeating Numbers (LC 260)</div>
+<!-- ═══════ PROBLEM 5 ═══════ -->
+<div class="section-heading">Problem 5 — Find Two Non-Repeating Numbers (LC 260)</div>
 
 <div class="problem-card">
-    <div class="prob-title">Single Number III � Two Unique Elements</div>
+    <div class="prob-title">Single Number III — Two Unique Elements</div>
     <div class="prob-meta">LeetCode 260 &nbsp;|&nbsp; Medium &nbsp;|&nbsp; XOR partition</div>
     <p>Every element appears twice except two distinct numbers. Find both in O(n) time and O(1) space.</p>
-    <p><strong>Approach:</strong> XOR all ? get xor = a^b. Find any set bit in xor (use <code>xor &amp; -xor</code> to isolate LSB). Partition numbers by that bit ? XOR each partition to get a and b.</p>
+    <p><strong>Approach:</strong> XOR all → get xor = a^b. Find any set bit in xor (use <code>xor &amp; -xor</code> to isolate LSB). Partition numbers by that bit → XOR each partition to get a and b.</p>
 </div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public int</span>[] <span class="mt">SingleNumber3</span>(<span class="kw">int</span>[] nums)
 {
     <span class="kw">int</span> xorAll = <span class="nm">0</span>;
@@ -214,7 +213,7 @@ print(<span class="mt">missing_number</span>([<span class="nm">3</span>, <span c
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">single_number3</span>(nums: <span class="tp">list</span>[<span class="tp">int</span>]) -&gt; <span class="tp">list</span>[<span class="tp">int</span>]:
     xor_all = <span class="nm">0</span>
     <span class="kw">for</span> n <span class="kw">in</span> nums: xor_all ^= n       <span class="cm"># xor_all = a ^ b</span>
@@ -228,12 +227,12 @@ print(<span class="mt">missing_number</span>([<span class="nm">3</span>, <span c
 print(<span class="mt">single_number3</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">2</span>, <span class="nm">5</span>]))  <span class="cm"># [3, 5]</span></pre>
 </div>
 
-<!-- ------- PROBLEM 6 ------- -->
-<div class="section-heading">Problem 6 � Reverse Bits (LC 190)</div>
+<!-- ═══════ PROBLEM 6 ═══════ -->
+<div class="section-heading">Problem 6 — Reverse Bits (LC 190)</div>
 
 <div class="lang-label lang-cs">C#</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre><span class="kw">public uint</span> <span class="mt">ReverseBits</span>(<span class="kw">uint</span> n)
 {
     <span class="kw">uint</span> result = <span class="nm">0</span>;
@@ -248,7 +247,7 @@ print(<span class="mt">single_number3</span>([<span class="nm">1</span>, <span c
 
 <div class="lang-label lang-py">Python</div>
 <div class="code-block">
-<button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+<button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
 <pre class="python"><span class="kw">def</span> <span class="mt">reverse_bits</span>(n: <span class="tp">int</span>) -&gt; <span class="tp">int</span>:
     result = <span class="nm">0</span>
     <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(<span class="nm">32</span>):
@@ -260,8 +259,8 @@ print(<span class="mt">reverse_bits</span>(<span class="nm">0b000000101001010000
 <span class="cm"># 964176192 = 0b00111001011110000010100101000000</span></pre>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 16B Complete</button>
-<div class="toast" id="toast">? Module 16B complete! Classic Bit Problems mastered!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 16B Complete</button>
+<div class="toast" id="toast">✅ Module 16B complete! Classic Bit Problems mastered!</div>
     <script>var MODULE_ID = 'm16b';</script>
     <script src="../dsa.js"></script>
 </body>

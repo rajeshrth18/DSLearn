@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 2C � Linked List Practice Problems</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 2C — Linked List Practice Problems</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# Data Structures &amp; Algorithms � Complete Course</div>
-    <h1>Module 2 � Part C</h1>
-    <div class="tagline">Linked List Practice � 12 Problems from Easy to Hard</div>
-    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Essential interview problems � pointers, two-pointer tricks, recursion</p>
+    <div class="module-label">C# Data Structures &amp; Algorithms — Complete Course</div>
+    <h1>Module 2 — Part C</h1>
+    <div class="tagline">Linked List Practice — 12 Problems from Easy to Hard</div>
+    <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">Essential interview problems — pointers, two-pointer tricks, recursion</p>
     <div class="badges">
-        <span>? Estimated Time: 3�4 Hours</span>
-        <span>?? Beginner�Hard</span>
-        <span>?? Language: C#</span>
-        <span>?? Part C of Module 2</span>
+        <span>⏱ Estimated Time: 3–4 Hours</span>
+        <span>🎯 Beginner–Hard</span>
+        <span>💻 Language: C#</span>
+        <span>📝 Part C of Module 2</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 2 � Linked Lists:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m02a_singly_ll.html">Singly Linked List</a><br>
-    ? <strong>Part B</strong> � <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
-    ? <strong>Part C</strong> � <em>You are here</em> � Practice: 12 Problems<br>
-    ? <strong>Part D</strong> � <a href="m02d_floyd.html">Floyd's Cycle Detection</a><br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 2 — Linked Lists:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m02a_singly_ll.html">Singly Linked List</a><br>
+    ✅ <strong>Part B</strong> — <a href="m02b_doubly_circular.html">Doubly &amp; Circular Linked Lists</a><br>
+    ▶ <strong>Part C</strong> — <em>You are here</em> — Practice: 12 Problems<br>
+    ⬜ <strong>Part D</strong> — <a href="m02d_floyd.html">Floyd's Cycle Detection</a><br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase1/m01a_bigO_arrays.html">&larr; Module 1 &mdash; Big O &amp; Arrays</a>
@@ -36,25 +35,25 @@
 </div>
 
 <div class="toc">
-    <h2>?? Problem List</h2>
+    <h2>📚 Problem List</h2>
     <ol>
-        <li>Reverse a Linked List <span>� Easy � Two-pointer in-place</span></li>
-        <li>Find the Middle Node <span>� Easy � Fast &amp; slow pointer</span></li>
-        <li>Detect a Cycle <span>� Easy � Floyd's algorithm</span></li>
-        <li>Remove Nth Node from End <span>� Medium � Two-pointer gap</span></li>
-        <li>Merge Two Sorted Lists <span>� Medium � Merge logic</span></li>
-        <li>Remove Duplicates from Sorted List <span>� Easy � Single pass</span></li>
-        <li>Intersection of Two Lists <span>� Medium � Length difference</span></li>
-        <li>Palindrome Linked List <span>� Medium � Reverse half</span></li>
-        <li>Reorder List <span>� Medium � Find middle + reverse + merge</span></li>
-        <li>Sort Linked List <span>� Hard � Merge sort</span></li>
-        <li>Flatten a Multilevel Doubly List <span>� Hard � Recursion/iteration</span></li>
-        <li>Copy List with Random Pointer <span>� Hard � HashMap cloning</span></li>
+        <li>Reverse a Linked List <span>— Easy · Two-pointer in-place</span></li>
+        <li>Find the Middle Node <span>— Easy · Fast &amp; slow pointer</span></li>
+        <li>Detect a Cycle <span>— Easy · Floyd's algorithm</span></li>
+        <li>Remove Nth Node from End <span>— Medium · Two-pointer gap</span></li>
+        <li>Merge Two Sorted Lists <span>— Medium · Merge logic</span></li>
+        <li>Remove Duplicates from Sorted List <span>— Easy · Single pass</span></li>
+        <li>Intersection of Two Lists <span>— Medium · Length difference</span></li>
+        <li>Palindrome Linked List <span>— Medium · Reverse half</span></li>
+        <li>Reorder List <span>— Medium · Find middle + reverse + merge</span></li>
+        <li>Sort Linked List <span>— Hard · Merge sort</span></li>
+        <li>Flatten a Multilevel Doubly List <span>— Hard · Recursion/iteration</span></li>
+        <li>Copy List with Random Pointer <span>— Hard · HashMap cloning</span></li>
     </ol>
 </div>
 
 <div class="note">
-    <strong>?? How to Use This Section:</strong> Each problem shows the challenge first. Try to solve it
+    <strong>📌 How to Use This Section:</strong> Each problem shows the challenge first. Try to solve it
     yourself before revealing the answer. The node class used throughout:
 </div>
 
@@ -94,8 +93,8 @@
     <span class="kw">return</span> dummy.next</pre>
 </div>
 
-<!-- ------- PROBLEMS ------- -->
-<div class="section-heading">Problems 1�4: Pointer Fundamentals</div>
+<!-- ═══════ PROBLEMS ═══════ -->
+<div class="section-heading">Problems 1–4: Pointer Fundamentals</div>
 
 <!-- Problem 1 -->
 <div class="problem-card easy">
@@ -103,12 +102,12 @@
         <span class="prob-num">01</span>
         <span class="prob-title">Reverse a Linked List</span>
         <span class="diff easy">Easy</span>
-        <span class="prob-meta">? 10 min � O(n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 10 min · O(n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Given the head of a singly linked list, reverse the list in-place and return the new head.</p>
-    <p><strong>Example:</strong> <code>1 ? 2 ? 3 ? 4 ? 5</code> ? returns <code>5 ? 4 ? 3 ? 2 ? 1</code></p>
+    <p><strong>Example:</strong> <code>1 → 2 → 3 → 4 → 5</code> → returns <code>5 → 4 → 3 → 2 → 1</code></p>
     <p><strong>Constraints:</strong> Must be O(1) space (no new list, no array).</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -143,7 +142,7 @@
 <div class="code-block">
 <button class="copy-btn" onclick="copyCode(this)">&#128203; Copy</button>
 <pre>
-<span class="cm"># Iterative � O(n) time, O(1) space</span>
+<span class="cm"># Iterative — O(n) time, O(1) space</span>
 <span class="kw">def</span> <span class="mt">reverse_list</span>(head: <span class="tp">ListNode</span>) -&gt; <span class="tp">ListNode</span>:
     prev, curr = <span class="kw">None</span>, head
     <span class="kw">while</span> curr:
@@ -153,7 +152,7 @@
         curr      = nxt
     <span class="kw">return</span> prev
 
-<span class="cm"># Recursive � O(n) time, O(n) stack</span>
+<span class="cm"># Recursive — O(n) time, O(n) stack</span>
 <span class="kw">def</span> <span class="mt">reverse_recursive</span>(head):
     <span class="kw">if not</span> head <span class="kw">or not</span> head.next: <span class="kw">return</span> head
     new_head       = <span class="mt">reverse_recursive</span>(head.next)
@@ -161,7 +160,7 @@
     head.next      = <span class="kw">None</span>
     <span class="kw">return</span> new_head</pre>
 </div>
-        <div class="tip"><strong>?? Key Insight:</strong> Three pointers: <code>prev</code>, <code>current</code>, <code>next</code>. Always save <code>next</code> before overwriting <code>current.next</code>, or you lose the rest of the list.</div>
+        <div class="tip"><strong>💡 Key Insight:</strong> Three pointers: <code>prev</code>, <code>current</code>, <code>next</code>. Always save <code>next</code> before overwriting <code>current.next</code>, or you lose the rest of the list.</div>
     </div>
 </div>
 
@@ -171,11 +170,11 @@
         <span class="prob-num">02</span>
         <span class="prob-title">Find the Middle Node</span>
         <span class="diff easy">Easy</span>
-        <span class="prob-meta">? 10 min � O(n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 10 min · O(n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Find the middle node of a linked list. If the list has even length, return the <strong>second</strong> middle node.</p>
-    <p><strong>Example:</strong> <code>1?2?3?4?5</code> ? <code>node(3)</code>. <code>1?2?3?4</code> ? <code>node(3)</code> (second middle).</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>1→2→3→4→5</code> → <code>node(3)</code>. <code>1→2→3→4</code> → <code>node(3)</code> (second middle).</p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -198,7 +197,7 @@
 // Start: slow=1, fast=1
 // Step 1: slow=2, fast=3
 // Step 2: slow=3, fast=5
-// Step 3: fast.next=null ? stop. slow=3 ?</span></pre>
+// Step 3: fast.next=null → stop. slow=3 ✓</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -211,7 +210,7 @@
         fast = fast.next.next
     <span class="kw">return</span> slow  <span class="cm"># for even length returns SECOND middle (LC 876)</span></pre>
 </div>
-        <div class="tip"><strong>?? Fast &amp; Slow Pointer:</strong> When fast moves 2� as fast as slow, slow is at the middle when fast reaches the end. For even-length lists, fast ends at the last node ? slow lands on the second middle.</div>
+        <div class="tip"><strong>💡 Fast &amp; Slow Pointer:</strong> When fast moves 2× as fast as slow, slow is at the middle when fast reaches the end. For even-length lists, fast ends at the last node → slow lands on the second middle.</div>
     </div>
 </div>
 
@@ -221,11 +220,11 @@
         <span class="prob-num">03</span>
         <span class="prob-title">Detect a Cycle (Linked List Cycle)</span>
         <span class="diff easy">Easy</span>
-        <span class="prob-meta">? 10 min � O(n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 10 min · O(n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Return <code>true</code> if the linked list has a cycle, <code>false</code> otherwise. A cycle means some node's <code>next</code> points to a previously visited node.</p>
     <p><strong>Constraint:</strong> Must use O(1) extra space (not a HashSet of visited nodes).</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -242,7 +241,7 @@
         fast = fast.next.next;
         <span class="kw">if</span> (slow == fast) <span class="kw">return true</span>;  <span class="cm">// They met inside the cycle</span>
     }
-    <span class="kw">return false</span>;  <span class="cm">// fast hit null � no cycle</span>
+    <span class="kw">return false</span>;  <span class="cm">// fast hit null — no cycle</span>
 }
 
 <span class="cm">// O(n) HashSet approach (easier to understand but O(n) space):
@@ -265,7 +264,7 @@
         <span class="kw">if</span> slow == fast: <span class="kw">return</span> <span class="kw">True</span>
     <span class="kw">return</span> <span class="kw">False</span></pre>
 </div>
-        <div class="tip"><strong>?? Why Floyd's Works:</strong> Both pointers eventually enter the cycle. The fast pointer gains 1 step on slow per iteration � like two runners on a circular track. The gap closes by 1 each step, so they must meet within at most C iterations (C = cycle length). If there's no cycle, fast reaches <code>null</code> first.</div>
+        <div class="tip"><strong>💡 Why Floyd's Works:</strong> Both pointers eventually enter the cycle. The fast pointer gains 1 step on slow per iteration — like two runners on a circular track. The gap closes by 1 each step, so they must meet within at most C iterations (C = cycle length). If there's no cycle, fast reaches <code>null</code> first.</div>
     </div>
 </div>
 
@@ -275,11 +274,11 @@
         <span class="prob-num">04</span>
         <span class="prob-title">Remove Nth Node from End of List</span>
         <span class="diff medium">Medium</span>
-        <span class="prob-meta">? 15 min � O(n) time � O(1) space � One pass</span>
+        <span class="prob-meta">⏱ 15 min · O(n) time · O(1) space · One pass</span>
     </div>
     <p><strong>Problem:</strong> Remove the n-th node from the <em>end</em> of the list in one pass. Return the new head.</p>
-    <p><strong>Example:</strong> <code>1?2?3?4?5</code>, n=2 ? <code>1?2?3?5</code> (removed node 4, which is 2nd from end)</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>1→2→3→4→5</code>, n=2 → <code>1→2→3→5</code> (removed node 4, which is 2nd from end)</p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -322,13 +321,13 @@
     slow.next = slow.next.next   <span class="cm"># skip the nth node</span>
     <span class="kw">return</span> dummy.next</pre>
 </div>
-        <div class="diagram">TWO-POINTER GAP TECHNIQUE � n=2, list: 1?2?3?4?5
+        <div class="diagram">TWO-POINTER GAP TECHNIQUE — n=2, list: 1→2→3→4→5
 
-dummy?1?2?3?4?5?null
-  ?fast and slow both start at dummy
+dummy→1→2→3→4→5→null
+  ↑fast and slow both start at dummy
 
 Move fast n+1=3 steps forward:
-fast: dummy?1?2?3  (now at node 3)
+fast: dummy→1→2→3  (now at node 3)
 slow: dummy
 
 Move both until fast==null:
@@ -336,14 +335,14 @@ Step 1: fast=4, slow=1
 Step 2: fast=5, slow=2
 Step 3: fast=null, slow=3
 
-slow.next = node(4) ? the node to remove!
+slow.next = node(4) → the node to remove!
 slow.next = slow.next.next = node(5)
 
-RESULT: 1?2?3?5 ?</div>
+RESULT: 1→2→3→5 ✓</div>
     </div>
 </div>
 
-<div class="section-heading">Problems 5�8: Merging &amp; Restructuring</div>
+<div class="section-heading">Problems 5–8: Merging &amp; Restructuring</div>
 
 <!-- Problem 5 -->
 <div class="problem-card medium">
@@ -351,11 +350,11 @@ RESULT: 1?2?3?5 ?</div>
         <span class="prob-num">05</span>
         <span class="prob-title">Merge Two Sorted Lists</span>
         <span class="diff medium">Medium</span>
-        <span class="prob-meta">? 15 min � O(m+n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 15 min · O(m+n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Merge two sorted linked lists into one sorted linked list. Return the head of the merged list.</p>
-    <p><strong>Example:</strong> <code>1?2?4</code> and <code>1?3?4</code> ? <code>1?1?2?3?4?4</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>1→2→4</code> and <code>1→3→4</code> → <code>1→1→2→3→4→4</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -409,7 +408,7 @@ public ListNode? MergeTwoListsRec(ListNode? l1, ListNode? l2)
         l1.next = <span class="mt">merge_recursive</span>(l1.next, l2); <span class="kw">return</span> l1
     l2.next = <span class="mt">merge_recursive</span>(l1, l2.next); <span class="kw">return</span> l2</pre>
 </div>
-        <div class="tip"><strong>?? Dummy Head Pattern:</strong> A dummy sentinel node at the start avoids special-casing the first element. <code>dummy.next</code> is always the real head of the result. Use this pattern any time you're building a new linked list.</div>
+        <div class="tip"><strong>💡 Dummy Head Pattern:</strong> A dummy sentinel node at the start avoids special-casing the first element. <code>dummy.next</code> is always the real head of the result. Use this pattern any time you're building a new linked list.</div>
     </div>
 </div>
 
@@ -419,11 +418,11 @@ public ListNode? MergeTwoListsRec(ListNode? l1, ListNode? l2)
         <span class="prob-num">06</span>
         <span class="prob-title">Remove Duplicates from Sorted List</span>
         <span class="diff easy">Easy</span>
-        <span class="prob-meta">? 10 min � O(n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 10 min · O(n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Given a sorted linked list, remove all duplicates so each value appears only once.</p>
-    <p><strong>Example:</strong> <code>1?1?2?3?3</code> ? <code>1?2?3</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> <code>1→1→2→3→3</code> → <code>1→2→3</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -441,7 +440,7 @@ public ListNode? MergeTwoListsRec(ListNode? l1, ListNode? l2)
     }
     <span class="kw">return</span> head;
 }
-<span class="cm">// Key: don't advance current when you skip � the new next might ALSO be a duplicate!</span></pre>
+<span class="cm">// Key: don't advance current when you skip — the new next might ALSO be a duplicate!</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -456,7 +455,7 @@ public ListNode? MergeTwoListsRec(ListNode? l1, ListNode? l2)
             curr = curr.next             <span class="cm"># advance only in else</span>
     <span class="kw">return</span> head</pre>
 </div>
-        <div class="tip"><strong>?? The Critical Subtlety:</strong> Only advance <code>current</code> in the <code>else</code> branch � when no node was skipped. After skipping a duplicate, the new <code>current.next</code> could be yet another duplicate of the same value. The sorted property guarantees duplicates are always adjacent, so a single pass is sufficient.</div>
+        <div class="tip"><strong>💡 The Critical Subtlety:</strong> Only advance <code>current</code> in the <code>else</code> branch — when no node was skipped. After skipping a duplicate, the new <code>current.next</code> could be yet another duplicate of the same value. The sorted property guarantees duplicates are always adjacent, so a single pass is sufficient.</div>
     </div>
 </div>
 
@@ -466,11 +465,11 @@ public ListNode? MergeTwoListsRec(ListNode? l1, ListNode? l2)
         <span class="prob-num">07</span>
         <span class="prob-title">Intersection of Two Linked Lists</span>
         <span class="diff medium">Medium</span>
-        <span class="prob-meta">? 20 min � O(m+n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 20 min · O(m+n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Find the node at which two singly linked lists intersect (share the same node object). Return null if no intersection.</p>
-    <p><strong>Example:</strong> List A: <code>a1?a2?c1?c2?c3</code>, List B: <code>b1?b2?b3?c1?c2?c3</code> ? return <code>c1</code></p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Example:</strong> List A: <code>a1→a2→c1→c2→c3</code>, List B: <code>b1→b2→b3→c1→c2→c3</code> → return <code>c1</code></p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -505,13 +504,13 @@ public ListNode? MergeTwoListsRec(ListNode? l1, ListNode? l2)
         b = b.next <span class="kw">if</span> b <span class="kw">else</span> headA
     <span class="kw">return</span> a   <span class="cm"># None if no intersection</span></pre>
 </div>
-        <div class="diagram">WHY THIS WORKS � lenA=5, lenB=6, shared tail=3 nodes
+        <div class="diagram">WHY THIS WORKS — lenA=5, lenB=6, shared tail=3 nodes
 
 pA travels: a1 a2 c1 c2 c3 | b1 b2 b3 [c1]  total = 8
 pB travels: b1 b2 b3 c1 c2 c3 | a1 a2 [c1]  total = 8
 
-Both travel lenA + lenB = 5+6 = 11 steps to meet at c1 ?
-If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
+Both travel lenA + lenB = 5+6 = 11 steps to meet at c1 ✓
+If no intersection: both reach null at step 11 → pA==pB==null ✓</div>
     </div>
 </div>
 
@@ -521,12 +520,12 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         <span class="prob-num">08</span>
         <span class="prob-title">Palindrome Linked List</span>
         <span class="diff medium">Medium</span>
-        <span class="prob-meta">? 20 min � O(n) time � O(1) space</span>
+        <span class="prob-meta">⏱ 20 min · O(n) time · O(1) space</span>
     </div>
     <p><strong>Problem:</strong> Return <code>true</code> if a linked list is a palindrome (reads the same forward and backward).</p>
-    <p><strong>Examples:</strong> <code>1?2?2?1</code> ? <code>true</code>. <code>1?2?3</code> ? <code>false</code>.</p>
+    <p><strong>Examples:</strong> <code>1→2→2→1</code> → <code>true</code>. <code>1→2→3</code> → <code>false</code>.</p>
     <p><strong>Constraint:</strong> O(1) extra space (no converting to array).</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -593,11 +592,11 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         left = left.next; right = right.next
     <span class="kw">return</span> result</pre>
 </div>
-        <div class="tip"><strong>?? Three-Step O(1) Space Pattern:</strong> (1) Find middle with fast &amp; slow pointer. (2) Reverse the second half in-place. (3) Compare both halves node by node. Restoring the second half after comparison is good practice � it leaves the list unchanged for the caller.</div>
+        <div class="tip"><strong>💡 Three-Step O(1) Space Pattern:</strong> (1) Find middle with fast &amp; slow pointer. (2) Reverse the second half in-place. (3) Compare both halves node by node. Restoring the second half after comparison is good practice — it leaves the list unchanged for the caller.</div>
     </div>
 </div>
 
-<div class="section-heading">Problems 9�12: Advanced Techniques</div>
+<div class="section-heading">Problems 9–12: Advanced Techniques</div>
 
 <!-- Problem 9 -->
 <div class="problem-card medium">
@@ -605,12 +604,12 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         <span class="prob-num">09</span>
         <span class="prob-title">Reorder List</span>
         <span class="diff medium">Medium</span>
-        <span class="prob-meta">? 25 min � O(n) time � O(1) space � 3-step pattern</span>
+        <span class="prob-meta">⏱ 25 min · O(n) time · O(1) space · 3-step pattern</span>
     </div>
-    <p><strong>Problem:</strong> Reorder a list so that: <code>L0?L1?�?Ln-1?Ln</code> becomes <code>L0?Ln?L1?Ln-1?L2?Ln-2?�</code></p>
-    <p><strong>Example:</strong> <code>1?2?3?4?5</code> ? <code>1?5?2?4?3</code></p>
-    <p>Modify in-place � do not return a value.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <p><strong>Problem:</strong> Reorder a list so that: <code>L0→L1→…→Ln-1→Ln</code> becomes <code>L0→Ln→L1→Ln-1→L2→Ln-2→…</code></p>
+    <p><strong>Example:</strong> <code>1→2→3→4→5</code> → <code>1→5→2→4→3</code></p>
+    <p>Modify in-place — do not return a value.</p>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -649,10 +648,10 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         second = sn;
     }
 }
-<span class="cm">// Trace: 1?2?3?4?5
-// Middle: slow=3. Split: [1?2?3] and [4?5]
-// Reverse second: [5?4]
-// Merge: 1?5?2?4?3 ?</span></pre>
+<span class="cm">// Trace: 1→2→3→4→5
+// Middle: slow=3. Split: [1→2→3] and [4→5]
+// Reverse second: [5→4]
+// Merge: 1→5→2→4→3 ✓</span></pre>
 </div>
 <span class="lang-label lang-py">Python</span>
 <div class="code-block">
@@ -675,7 +674,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         second.next  = tmp1
         first, second = tmp1, tmp2</pre>
 </div>
-        <div class="tip"><strong>?? Compose Three Patterns:</strong> This is a composition of problems you already solved: (1) P2 � find middle. (2) P1 � reverse a list. (3) Merge two halves alternately (like P5 but interleaved, not sorted by value). Each step is O(n); total: O(n) time, O(1) space.</div>
+        <div class="tip"><strong>💡 Compose Three Patterns:</strong> This is a composition of problems you already solved: (1) P2 — find middle. (2) P1 — reverse a list. (3) Merge two halves alternately (like P5 but interleaved, not sorted by value). Each step is O(n); total: O(n) time, O(1) space.</div>
     </div>
 </div>
 
@@ -685,12 +684,12 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         <span class="prob-num">10</span>
         <span class="prob-title">Sort Linked List (Merge Sort)</span>
         <span class="diff hard">Hard</span>
-        <span class="prob-meta">? 30 min � O(n log n) time � O(log n) space (recursion)</span>
+        <span class="prob-meta">⏱ 30 min · O(n log n) time · O(log n) space (recursion)</span>
     </div>
     <p><strong>Problem:</strong> Sort a linked list in O(n log n) time and O(1) auxiliary space (or O(log n) recursive stack).</p>
-    <p><strong>Example:</strong> <code>4?2?1?3</code> ? <code>1?2?3?4</code></p>
+    <p><strong>Example:</strong> <code>4→2→1→3</code> → <code>1→2→3→4</code></p>
     <p><strong>Why not QuickSort?</strong> Random access is O(n), making pivot selection expensive. Merge sort is natural for linked lists.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -752,7 +751,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
     right = <span class="mt">sort_list</span>(mid)
     <span class="kw">return</span> <span class="mt">merge_two_lists</span>(left, right)</pre>
 </div>
-        <div class="tip"><strong>?? Why Merge Sort, Not Quick Sort?</strong> Arrays suit QuickSort (cheap random access for pivot selection). Linked lists suit MergeSort � <code>GetMid</code> and <code>Merge</code> are both natural O(n) pointer operations. The recursion halves the list each level, giving O(n log n) guaranteed. QuickSort on a list is O(n) per partition pass = O(n�) worst case.</div>
+        <div class="tip"><strong>💡 Why Merge Sort, Not Quick Sort?</strong> Arrays suit QuickSort (cheap random access for pivot selection). Linked lists suit MergeSort — <code>GetMid</code> and <code>Merge</code> are both natural O(n) pointer operations. The recursion halves the list each level, giving O(n log n) guaranteed. QuickSort on a list is O(n) per partition pass = O(n²) worst case.</div>
     </div>
 </div>
 
@@ -762,7 +761,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         <span class="prob-num">11</span>
         <span class="prob-title">Flatten a Multilevel Doubly Linked List</span>
         <span class="diff hard">Hard</span>
-        <span class="prob-meta">? 35 min � O(n) time � O(n) space (recursion)</span>
+        <span class="prob-meta">⏱ 35 min · O(n) time · O(n) space (recursion)</span>
     </div>
     <p><strong>Problem:</strong> A doubly linked list where some nodes have a <code>child</code> pointer to another doubly linked list. Flatten it so all nodes are on a single level.</p>
     <p><strong>Example:</strong></p>
@@ -772,8 +771,8 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
             |
            10
 
-? 1 - 2 - 7 - 8 - 10 - 9 - 3 - 4 - 5 - 6</pre>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+→ 1 - 2 - 7 - 8 - 10 - 9 - 3 - 4 - 5 - 6</pre>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -832,7 +831,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         curr = curr.next
     <span class="kw">return</span> head</pre>
 </div>
-        <div class="tip"><strong>?? Inline the Child List:</strong> When you find a node with a child, splice the entire child sublist between <code>curr</code> and <code>curr.next</code>. Walk to the child's tail, reconnect it to the original <code>next</code>, then continue scanning. Nested children at deeper levels are handled naturally as the outer loop advances through what was just inserted.</div>
+        <div class="tip"><strong>💡 Inline the Child List:</strong> When you find a node with a child, splice the entire child sublist between <code>curr</code> and <code>curr.next</code>. Walk to the child's tail, reconnect it to the original <code>next</code>, then continue scanning. Nested children at deeper levels are handled naturally as the outer loop advances through what was just inserted.</div>
     </div>
 </div>
 
@@ -842,11 +841,11 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         <span class="prob-num">12</span>
         <span class="prob-title">Copy List with Random Pointer</span>
         <span class="diff hard">Hard</span>
-        <span class="prob-meta">? 30 min � O(n) time � O(n) space � Deep clone</span>
+        <span class="prob-meta">⏱ 30 min · O(n) time · O(n) space · Deep clone</span>
     </div>
     <p><strong>Problem:</strong> Each node has <code>next</code> AND a <code>random</code> pointer to any node in the list (or null). Deep copy the entire list.</p>
     <p><strong>Challenge:</strong> When you create a copy of node i, node i's <code>random</code> might point to node j which hasn't been copied yet.</p>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
 
 <span class="lang-label lang-cs">C#</span>
@@ -862,7 +861,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
 {
     <span class="kw">if</span> (head == <span class="kw">null</span>) <span class="kw">return null</span>;
 
-    <span class="cm">// Map: original node ? its copy</span>
+    <span class="cm">// Map: original node → its copy</span>
     <span class="kw">var</span> map = <span class="kw">new</span> <span class="tp">Dictionary</span>&lt;<span class="tp">RNode</span>, <span class="tp">RNode</span>&gt;();
 
     <span class="cm">// Pass 1: Create all copies (next and random = null for now)</span>
@@ -886,7 +885,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
 }
 
 <span class="cm">// O(1) space alternative: interleave original + copy nodes, then separate.
-// [1]?[2]?[3] becomes [1]?[1']?[2]?[2']?[3]?[3']?null
+// [1]→[2]→[3] becomes [1]→[1']→[2]→[2']→[3]→[3']→null
 // Set copy.random = original.random.next (= random's copy)
 // Then restore original list by separating every other node.</span></pre>
 </div>
@@ -912,7 +911,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         curr = curr.next
     <span class="kw">return</span> node_map[head]</pre>
 </div>
-        <div class="tip"><strong>?? HashMap Pattern:</strong> Whenever you need to clone a structure with cross-references, use a HashMap from original ? copy. In pass 1, create all nodes. In pass 2, wire all pointers using the map as a lookup table.</div>
+        <div class="tip"><strong>💡 HashMap Pattern:</strong> Whenever you need to clone a structure with cross-references, use a HashMap from original → copy. In pass 1, create all nodes. In pass 2, wire all pointers using the map as a lookup table.</div>
     </div>
 </div>
 
@@ -925,7 +924,7 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
         <tr><th>Pattern</th><th>Problems It Solves</th><th>Template</th></tr>
     </thead>
     <tbody>
-        <tr><td><strong>Fast &amp; Slow Pointer</strong></td><td>Middle node, cycle detection, palindrome</td><td>fast=2� speed as slow</td></tr>
+        <tr><td><strong>Fast &amp; Slow Pointer</strong></td><td>Middle node, cycle detection, palindrome</td><td>fast=2× speed as slow</td></tr>
         <tr><td><strong>Two-Pointer Gap</strong></td><td>Nth from end, same list</td><td>advance fast by N first, then move both</td></tr>
         <tr><td><strong>Dummy Head</strong></td><td>Merge, remove, build result</td><td><code>ListNode dummy = new(0); tail = dummy;</code></td></tr>
         <tr><td><strong>Three-Pointer Reverse</strong></td><td>Reverse, palindrome, reorder</td><td>prev=null, curr=head, save next first</td></tr>
@@ -935,12 +934,12 @@ If no intersection: both reach null at step 11 ? pA==pB==null ?</div>
 </table>
 
 <div class="nav-box">
-    <strong>? Module 2 Complete!</strong><br><br>
+    <strong>✅ Module 2 Complete!</strong><br><br>
     You have now mastered singly linked lists, doubly linked lists, circular lists, and all 12 practice
     problems covering the essential interview patterns. Ready for Module 3!<br><br>
-    ?? <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
-    ? <strong>Prev:</strong> <a href="m02b_doubly_circular.html">Part B � Doubly &amp; Circular</a> &nbsp;|&nbsp;
-    ? <strong>Next:</strong> <a href="m03a_stacks.html">Module 3A � Stacks</a>
+    🏠 <a href="../index.html">Back to Course Index</a> &nbsp;|&nbsp;
+    ◀ <strong>Prev:</strong> <a href="m02b_doubly_circular.html">Part B — Doubly &amp; Circular</a> &nbsp;|&nbsp;
+    ▶ <strong>Next:</strong> <a href="m03a_stacks.html">Module 3A — Stacks</a>
 </div>
 
 <script>
@@ -948,10 +947,10 @@ function toggleSolution(btn) {
     var sol = btn.nextElementSibling;
     if (sol.style.display === "block") {
         sol.style.display = "none";
-        btn.textContent = "?? Show Solution";
+        btn.textContent = "💡 Show Solution";
     } else {
         sol.style.display = "block";
-        btn.textContent = "?? Hide Solution";
+        btn.textContent = "🙈 Hide Solution";
     }
 }
 </script>

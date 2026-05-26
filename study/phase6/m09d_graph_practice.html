@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module 9D � Graph Practice Problems | DSA Masterbook</title>
-    <script>(function(){var t=localStorage.getItem("dslearn_theme")||"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+    <title>Module 9D — Graph Practice Problems | DSA Masterbook</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
 <div class="cover">
-    <div class="module-label">C# &amp; Python � Data Structures &amp; Algorithms � Phase 6</div>
-    <h1>Module 9 � Part D</h1>
+    <div class="module-label">C# &amp; Python — Data Structures &amp; Algorithms — Phase 6</div>
+    <h1>Module 9 — Part D</h1>
     <div class="tagline">Graph Practice Problems</div>
     <p style="opacity:0.7;font-size:0.9em;margin-bottom:20px;">12 problems: BFS, DFS, cycle detection, topological sort, flood fill, and graph construction</p>
     <div class="badges">
-        <span>? Estimated Time: 3 Hours</span>
-        <span>?? Mixed Difficulty</span>
-        <span>?? C# &amp; Python</span>
-        <span>?? 12 Problems</span>
+        <span>⏱ Estimated Time: 3 Hours</span>
+        <span>🎯 Mixed Difficulty</span>
+        <span>💻 C# &amp; Python</span>
+        <span>📝 12 Problems</span>
     </div>
 </div>
 
 <div class="nav-box">
-    <strong>?? Module 9 � Graph Fundamentals:</strong><br><br>
-    ? <strong>Part A</strong> � <a href="m09a_graph_theory.html">Graph Theory &amp; Representations</a><br>
-    ? <strong>Part B</strong> � <a href="m09b_bfs.html">Breadth-First Search (BFS)</a><br>
-    ? <strong>Part C</strong> � <a href="m09c_dfs.html">Depth-First Search (DFS)</a><br>
-    ? <strong>Part D</strong> � <em>You are here</em> � Practice: 12 Problems<br>
-    ?? <a href="../index.html">Back to Course Index</a>
+    <strong>📂 Module 9 — Graph Fundamentals:</strong><br><br>
+    ✅ <strong>Part A</strong> — <a href="m09a_graph_theory.html">Graph Theory &amp; Representations</a><br>
+    ✅ <strong>Part B</strong> — <a href="m09b_bfs.html">Breadth-First Search (BFS)</a><br>
+    ✅ <strong>Part C</strong> — <a href="m09c_dfs.html">Depth-First Search (DFS)</a><br>
+    ▶ <strong>Part D</strong> — <em>You are here</em> — Practice: 12 Problems<br>
+    🏠 <a href="../index.html">Back to Course Index</a>
 </div>
 <div class="module-nav">
     <a href="../phase5/m08a_hashing.html">&larr; Module 8 &mdash; Hashing</a>
@@ -37,21 +36,21 @@
 
 <div class="section-heading">Problems Overview</div>
 <ul>
-    <li><strong>P1�P3:</strong> BFS fundamentals (traversal, shortest path, level tracking)</li>
-    <li><strong>P4�P6:</strong> DFS fundamentals (cycle detection, topo sort, connected components)</li>
-    <li><strong>P7�P9:</strong> Grid problems (islands, flood fill, shortest grid path)</li>
-    <li><strong>P10�P12:</strong> Classic interview problems (clone graph, word ladder, course schedule)</li>
+    <li><strong>P1–P3:</strong> BFS fundamentals (traversal, shortest path, level tracking)</li>
+    <li><strong>P4–P6:</strong> DFS fundamentals (cycle detection, topo sort, connected components)</li>
+    <li><strong>P7–P9:</strong> Grid problems (islands, flood fill, shortest grid path)</li>
+    <li><strong>P10–P12:</strong> Classic interview problems (clone graph, word ladder, course schedule)</li>
 </ul>
 
 <hr>
 
-<!-- -------------------------------------------------------------- P1 -->
+<!-- ══════════════════════════════════════════════════════════════ P1 -->
 <div class="section-heading">BFS Problems</div>
 
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P1</span>
-        <span class="prob-title">BFS Level Order � Return level-by-level groups</span>
+        <span class="prob-title">BFS Level Order — Return level-by-level groups</span>
         <span class="diff-badge diff-easy">Easy</span>
     </div>
     <p class="prob-desc">Given a graph as an adjacency list and a start vertex, return the vertices grouped by BFS level. Level 0 = [start], Level 1 = [direct neighbors], etc.</p>
@@ -64,13 +63,13 @@
         [[A], [B, C], [D, E, F]]
     </div>
     <div class="hint"><strong>Hint:</strong> Track level by processing queue size at start of each level iteration.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> Standard BFS with level grouping. At the start of each iteration, check how many nodes are currently in the queue � that is the count for the current level. Dequeue exactly that many nodes, add to the current level's list, and enqueue their unvisited neighbors. Each iteration of the outer while-loop processes one complete level.</div>
+        <div class="approach"><strong>Approach:</strong> Standard BFS with level grouping. At the start of each iteration, check how many nodes are currently in the queue — that is the count for the current level. Dequeue exactly that many nodes, add to the current level's list, and enqueue their unvisited neighbors. Each iteration of the outer while-loop processes one complete level.</div>
         <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V) for queue and visited set</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; <span class="mt">LevelOrder</span>(
     <span class="tp">Dictionary</span>&lt;<span class="kw">string</span>, <span class="tp">List</span>&lt;<span class="kw">string</span>&gt;&gt; graph, <span class="kw">string</span> start)
 {
@@ -98,7 +97,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">level_order</span>(graph, start):
@@ -125,7 +124,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P2</span>
-        <span class="prob-title">Shortest Path � BFS with path reconstruction</span>
+        <span class="prob-title">Shortest Path — BFS with path reconstruction</span>
         <span class="diff-badge diff-easy">Easy</span>
     </div>
     <p class="prob-desc">Given an unweighted undirected graph and two vertices, return the shortest path between them as a list of vertices. Return an empty list if no path exists.</p>
@@ -135,16 +134,16 @@
     </div>
     <div class="io-box">
         <div class="lbl">Expected Output</div>
-        [1, 2, 4, 5]  or  [1, 3, 4, 5]  (both valid � length 4)
+        [1, 2, 4, 5]  or  [1, 3, 4, 5]  (both valid — length 4)
     </div>
     <div class="hint"><strong>Hint:</strong> Use a parent dictionary to track how each vertex was reached. Reconstruct by tracing parents backward from end to start.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach:</strong> Run BFS from start. For each vertex discovered, record its parent (the vertex that discovered it). When BFS reaches the end vertex, trace parent pointers from end back to start, building the path in reverse, then reverse it. If BFS exhausts without finding end, return empty list. The parent dictionary doubles as the visited set.</div>
         <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V) for parent map and queue</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt; <span class="mt">ShortestPath</span>(
     <span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; graph, <span class="kw">int</span> start, <span class="kw">int</span> end)
 {
@@ -175,7 +174,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">shortest_path</span>(graph, start, end):
@@ -202,7 +201,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P3</span>
-        <span class="prob-title">Rotting Oranges � Multi-source BFS</span>
+        <span class="prob-title">Rotting Oranges — Multi-source BFS</span>
         <span class="diff-badge diff-med">Medium</span>
     </div>
     <p class="prob-desc">A grid contains fresh oranges (1), rotten oranges (2), and empty cells (0). Every minute, any fresh orange adjacent (4-directional) to a rotten orange also becomes rotten. Return the minimum number of minutes until all oranges are rotten, or -1 if impossible.</p>
@@ -214,14 +213,14 @@
         <div class="lbl">Expected Output</div>
         4
     </div>
-    <div class="hint"><strong>Hint:</strong> Multi-source BFS � enqueue ALL rotten oranges simultaneously at the start, then spread level by level. Count levels = minutes elapsed.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="hint"><strong>Hint:</strong> Multi-source BFS — enqueue ALL rotten oranges simultaneously at the start, then spread level by level. Count levels = minutes elapsed.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> This is a classic multi-source BFS. First, scan the grid to enqueue all initially rotten oranges and count total fresh oranges. Run BFS � each level represents one minute of rotting. When BFS ends, check if any fresh oranges remain. If fresh count > 0, return -1 (isolated fresh oranges that can never rot). Otherwise return the number of levels processed (minutes elapsed). The "level count" tracks elapsed time.</div>
-        <div class="complexity"><strong>Time:</strong> O(rows � cols) &nbsp;|&nbsp; <strong>Space:</strong> O(rows � cols) for the queue</div>
+        <div class="approach"><strong>Approach:</strong> This is a classic multi-source BFS. First, scan the grid to enqueue all initially rotten oranges and count total fresh oranges. Run BFS — each level represents one minute of rotting. When BFS ends, check if any fresh oranges remain. If fresh count > 0, return -1 (isolated fresh oranges that can never rot). Otherwise return the number of levels processed (minutes elapsed). The "level count" tracks elapsed time.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) for the queue</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static int</span> <span class="mt">OrangesRotting</span>(<span class="kw">int</span>[][] grid)
 {
     <span class="kw">int</span> rows = grid.Length, cols = grid[<span class="nm">0</span>].Length, fresh = <span class="nm">0</span>, minutes = <span class="nm">0</span>;
@@ -257,7 +256,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">oranges_rotting</span>(grid):
@@ -282,7 +281,7 @@
 </div>
 
 <hr>
-<!-- -------------------------------------------------------------- DFS -->
+<!-- ══════════════════════════════════════════════════════════════ DFS -->
 <div class="section-heading">DFS Problems</div>
 
 <!-- P4 -->
@@ -295,20 +294,20 @@
     <p class="prob-desc">Given an undirected graph as an adjacency list, return true if the graph contains a cycle, false otherwise.</p>
     <div class="io-box">
         <div class="lbl">Input 1</div>
-        {1:[2,3], 2:[1,3], 3:[1,2]}  ?  true  (triangle: 1-2-3-1)
+        {1:[2,3], 2:[1,3], 3:[1,2]}  →  true  (triangle: 1-2-3-1)
     </div>
     <div class="io-box">
         <div class="lbl">Input 2</div>
-        {1:[2], 2:[1,3], 3:[2]}  ?  false  (path: 1-2-3)
+        {1:[2], 2:[1,3], 3:[2]}  →  false  (path: 1-2-3)
     </div>
     <div class="hint"><strong>Hint:</strong> DFS back edge = cycle. If a neighbor is visited AND is not our direct parent, we found a cycle.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> Run DFS from each unvisited vertex (handles disconnected graphs). Pass the parent vertex to each DFS call. For each neighbor, if it's unvisited, recurse. If it's visited and is NOT our parent, we found a back edge � a cycle exists. The "not parent" condition is crucial because undirected edges appear as A?B and B?A; the B?A direction should not falsely report a cycle.</div>
+        <div class="approach"><strong>Approach:</strong> Run DFS from each unvisited vertex (handles disconnected graphs). Pass the parent vertex to each DFS call. For each neighbor, if it's unvisited, recurse. If it's visited and is NOT our parent, we found a back edge — a cycle exists. The "not parent" condition is crucial because undirected edges appear as A→B and B→A; the B→A direction should not falsely report a cycle.</div>
         <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V) for visited set and recursion stack</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static bool</span> <span class="mt">HasCycle</span>(<span class="tp">Dictionary</span>&lt;<span class="kw">int</span>, <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;&gt; graph)
 {
     <span class="kw">var</span> visited = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">int</span>&gt;();
@@ -329,7 +328,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">has_cycle</span>(graph):
     visited = <span class="mt">set</span>()
     <span class="kw">def</span> <span class="mt">dfs</span>(v, parent):
@@ -348,7 +347,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P5</span>
-        <span class="prob-title">Course Schedule � Can you finish all courses?</span>
+        <span class="prob-title">Course Schedule — Can you finish all courses?</span>
         <span class="diff-badge diff-med">Medium</span>
     </div>
     <p class="prob-desc">There are <code>n</code> courses (0 to n-1). Given a list of prerequisites [a, b] meaning "b must be taken before a", determine if it's possible to finish all courses.</p>
@@ -358,22 +357,22 @@
     </div>
     <div class="io-box">
         <div class="lbl">Expected Output</div>
-        true  (order: 0?1?2?3  or  0?2?1?3)
+        true  (order: 0→1→2→3  or  0→2→1→3)
     </div>
     <div class="hint"><strong>Hint:</strong> This is cycle detection in a directed graph. If the prerequisite graph has a cycle, it's impossible to finish all courses.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> Build a directed graph where edge b?a means "take b before a". Then detect if this directed graph has a cycle using three-color DFS (WHITE/GRAY/BLACK). If any cycle exists, return false (impossible). No cycle = DAG = valid schedule exists. The three-color approach is required for directed graphs � the undirected "parent check" approach doesn't work here because edges are directional.</div>
+        <div class="approach"><strong>Approach:</strong> Build a directed graph where edge b→a means "take b before a". Then detect if this directed graph has a cycle using three-color DFS (WHITE/GRAY/BLACK). If any cycle exists, return false (impossible). No cycle = DAG = valid schedule exists. The three-color approach is required for directed graphs — the undirected "parent check" approach doesn't work here because edges are directional.</div>
         <div class="complexity"><strong>Time:</strong> O(V + E) where V = n courses, E = prerequisites.Length &nbsp;|&nbsp; <strong>Space:</strong> O(V + E) for the graph + O(V) for color array</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static bool</span> <span class="mt">CanFinish</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs)
 {
     <span class="kw">var</span> adj   = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
     <span class="kw">var</span> color = <span class="kw">new int</span>[n];  <span class="cm">// 0=white, 1=gray, 2=black</span>
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; n; i++) adj[i] = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;();
-    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> prereqs) adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]);  <span class="cm">// b?a edge</span>
+    <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> prereqs) adj[p[<span class="nm">1</span>]].<span class="mt">Add</span>(p[<span class="nm">0</span>]);  <span class="cm">// b→a edge</span>
 
     <span class="kw">bool</span> <span class="mt">Dfs</span>(<span class="kw">int</span> v)
     {
@@ -393,7 +392,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">can_finish</span>(n, prereqs):
     adj = [[] <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
     <span class="kw">for</span> a, b <span class="kw">in</span> prereqs: adj[b].<span class="mt">append</span>(a)
@@ -414,7 +413,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P6</span>
-        <span class="prob-title">Course Schedule II � Return topological order</span>
+        <span class="prob-title">Course Schedule II — Return topological order</span>
         <span class="diff-badge diff-med">Medium</span>
     </div>
     <p class="prob-desc">Same setup as P5, but instead of just returning true/false, return the order in which courses should be taken. Return an empty array if impossible.</p>
@@ -426,14 +425,14 @@
         <div class="lbl">Expected Output</div>
         [0, 1, 2, 3]  or  [0, 2, 1, 3]  (any valid topological order)
     </div>
-    <div class="hint"><strong>Hint:</strong> Extend P5 � use DFS post-order. When a vertex is fully processed (all neighbors done), add it to the result. Reverse at end. Stop and return [] if cycle detected.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="hint"><strong>Hint:</strong> Extend P5 — use DFS post-order. When a vertex is fully processed (all neighbors done), add it to the result. Reverse at end. Stop and return [] if cycle detected.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach:</strong> Extend the three-color DFS from P5. After processing all neighbors of a vertex (setting it to BLACK), append it to the result list (post-order). If we detect a cycle at any point, set a flag and stop. After all DFS calls, if no cycle, reverse the result list for correct topological order. This combines cycle detection and topological sort in one DFS pass.</div>
         <div class="complexity"><strong>Time:</strong> O(V + E) &nbsp;|&nbsp; <strong>Space:</strong> O(V + E)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static int</span>[] <span class="mt">FindOrder</span>(<span class="kw">int</span> n, <span class="kw">int</span>[][] prereqs)
 {
     <span class="kw">var</span> adj    = <span class="kw">new</span> <span class="tp">List</span>&lt;<span class="kw">int</span>&gt;[n];
@@ -464,7 +463,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">find_order</span>(n, prereqs):
     adj    = [[] <span class="kw">for</span> _ <span class="kw">in</span> <span class="mt">range</span>(n)]
     <span class="kw">for</span> a, b <span class="kw">in</span> prereqs: adj[b].<span class="mt">append</span>(a)
@@ -491,7 +490,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P7</span>
-        <span class="prob-title">Number of Islands � Count connected land regions</span>
+        <span class="prob-title">Number of Islands — Count connected land regions</span>
         <span class="diff-badge diff-med">Medium</span>
     </div>
     <p class="prob-desc">Given a 2D grid of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and formed by connecting adjacent lands horizontally or vertically.</p>
@@ -504,13 +503,13 @@
         3
     </div>
     <div class="hint"><strong>Hint:</strong> DFS flood fill. Each time you find '1', increment count and DFS-flood-fill the entire island (marking all connected '1's as visited).</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> Iterate through every cell. When a '1' is found, increment the island count, then run DFS (flood fill) to mark all connected '1' cells as '2' (visited). DFS checks all 4 directions, marks valid '1' cells as '2', and recursively continues. After the DFS call, the entire island is marked. Continue scanning � next unvisited '1' is a new island.</div>
-        <div class="complexity"><strong>Time:</strong> O(rows � cols) � each cell visited at most twice (once in scan, once in flood fill) &nbsp;|&nbsp; <strong>Space:</strong> O(rows � cols) recursion stack worst case</div>
+        <div class="approach"><strong>Approach:</strong> Iterate through every cell. When a '1' is found, increment the island count, then run DFS (flood fill) to mark all connected '1' cells as '2' (visited). DFS checks all 4 directions, marks valid '1' cells as '2', and recursively continues. After the DFS call, the entire island is marked. Continue scanning — next unvisited '1' is a new island.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) — each cell visited at most twice (once in scan, once in flood fill) &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) recursion stack worst case</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static int</span> <span class="mt">NumIslands</span>(<span class="kw">char</span>[][] grid)
 {
     <span class="kw">int</span> count = <span class="nm">0</span>;
@@ -528,7 +527,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">num_islands</span>(grid):
     rows, cols, count = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>]), <span class="nm">0</span>
     <span class="kw">def</span> <span class="mt">fill</span>(r, c):
@@ -559,14 +558,14 @@
         <div class="lbl">Expected Output</div>
         3  (island at top-left: cells (0,0),(0,1),(1,1))
     </div>
-    <div class="hint"><strong>Hint:</strong> Extend flood fill � return the size of each island from the recursive DFS. Take the max across all islands.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="hint"><strong>Hint:</strong> Extend flood fill — return the size of each island from the recursive DFS. Take the max across all islands.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> Same as Number of Islands, but the flood-fill DFS returns an integer � the area of the island it fills. Each recursive call returns 1 (for the current cell) plus the sum of areas returned by the four directional recursions. The main loop tracks the maximum area seen. Mark visited cells as 0 (or a separate value) to avoid revisiting.</div>
-        <div class="complexity"><strong>Time:</strong> O(rows � cols) &nbsp;|&nbsp; <strong>Space:</strong> O(rows � cols) recursion stack</div>
+        <div class="approach"><strong>Approach:</strong> Same as Number of Islands, but the flood-fill DFS returns an integer — the area of the island it fills. Each recursive call returns 1 (for the current cell) plus the sum of areas returned by the four directional recursions. The main loop tracks the maximum area seen. Mark visited cells as 0 (or a separate value) to avoid revisiting.</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) recursion stack</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static int</span> <span class="mt">MaxAreaOfIsland</span>(<span class="kw">int</span>[][] grid)
 {
     <span class="kw">int</span> maxArea = <span class="nm">0</span>;
@@ -584,7 +583,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">def</span> <span class="mt">max_area_of_island</span>(grid):
     rows, cols = <span class="mt">len</span>(grid), <span class="mt">len</span>(grid[<span class="nm">0</span>])
     <span class="kw">def</span> <span class="mt">fill</span>(r, c):
@@ -600,7 +599,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P9</span>
-        <span class="prob-title">Walls and Gates � BFS to fill distances</span>
+        <span class="prob-title">Walls and Gates — BFS to fill distances</span>
         <span class="diff-badge diff-med">Medium</span>
     </div>
     <p class="prob-desc">A grid has: -1 (wall/obstacle), 0 (gate), INF (2^31-1, empty room). Fill each empty room with the distance to the nearest gate. If unreachable, leave as INF.</p>
@@ -613,13 +612,13 @@
         [[3,-1,0,1],[2,2,1,-1],[1,-1,2,-1],[0,-1,3,4]]
     </div>
     <div class="hint"><strong>Hint:</strong> Multi-source BFS starting from all gates simultaneously. BFS naturally fills minimum distances level by level.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach:</strong> Multi-source BFS starting from all gate cells (value = 0) simultaneously. Enqueue all gates at the start. BFS spreads outward level by level. For each empty room (INF) reached, set its value to the current BFS level (distance from nearest gate). Walls (-1) and already-filled rooms are skipped. Because BFS is level-by-level, the first time each room is reached is always the minimum distance. This is more efficient than running BFS from each gate separately.</div>
-        <div class="complexity"><strong>Time:</strong> O(rows � cols) � multi-source BFS visits each cell once &nbsp;|&nbsp; <strong>Space:</strong> O(rows � cols)</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) — multi-source BFS visits each cell once &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static void</span> <span class="mt">WallsAndGates</span>(<span class="kw">int</span>[][] rooms)
 {
     <span class="kw">const int</span> INF = <span class="kw">int</span>.MaxValue;
@@ -646,7 +645,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">walls_and_gates</span>(rooms):
@@ -672,26 +671,26 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P10</span>
-        <span class="prob-title">Clone Graph � Deep copy of a graph</span>
+        <span class="prob-title">Clone Graph — Deep copy of a graph</span>
         <span class="diff-badge diff-med">Medium</span>
     </div>
     <p class="prob-desc">Given a reference to a node in a connected undirected graph, return a deep copy of the graph. Each node contains a value and a list of neighbors.</p>
     <div class="io-box">
         <div class="lbl">Input</div>
-        Node(1, neighbors=[Node(2), Node(4)]) ? (graph: 1-2-3-4-1 cycle)
+        Node(1, neighbors=[Node(2), Node(4)]) → (graph: 1-2-3-4-1 cycle)
     </div>
     <div class="io-box">
         <div class="lbl">Expected Output</div>
         A new graph with same structure but all new node objects
     </div>
-    <div class="hint"><strong>Hint:</strong> Use a HashMap to map original nodes to their clones. BFS/DFS traversal � when creating neighbors, check the map first to avoid creating duplicates.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="hint"><strong>Hint:</strong> Use a HashMap to map original nodes to their clones. BFS/DFS traversal — when creating neighbors, check the map first to avoid creating duplicates.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
         <div class="approach"><strong>Approach:</strong> Use BFS with a dictionary mapping each original node to its clone. Start by creating a clone of the source node. For each node dequeued, iterate over its neighbors. If a neighbor hasn't been cloned yet, create its clone and enqueue it. Either way, add the clone of the neighbor to the current node's cloned neighbors list. The dictionary ensures each node is cloned exactly once, preventing infinite loops in cyclic graphs.</div>
-        <div class="complexity"><strong>Time:</strong> O(V + E) � each node and edge processed once &nbsp;|&nbsp; <strong>Space:</strong> O(V) for the clone map and queue</div>
+        <div class="complexity"><strong>Time:</strong> O(V + E) — each node and edge processed once &nbsp;|&nbsp; <strong>Space:</strong> O(V) for the clone map and queue</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public class</span> <span class="tp">Node</span> {
     <span class="kw">public int</span> val;
     <span class="kw">public</span> <span class="tp">List</span>&lt;<span class="tp">Node</span>&gt; neighbors;
@@ -724,7 +723,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">class</span> <span class="tp">Node</span>:
@@ -752,7 +751,7 @@
 <div class="prob-card">
     <div class="prob-header">
         <span class="prob-num">P11</span>
-        <span class="prob-title">Word Ladder � Transform one word to another</span>
+        <span class="prob-title">Word Ladder — Transform one word to another</span>
         <span class="diff-badge diff-hard">Hard</span>
     </div>
     <p class="prob-desc">Given a begin word, end word, and word list, find the minimum number of steps to transform beginWord into endWord, changing only one letter at a time. Each intermediate word must be in the word list.</p>
@@ -762,16 +761,16 @@
     </div>
     <div class="io-box">
         <div class="lbl">Expected Output</div>
-        5  (hit?hot?dot?dog?cog)
+        5  (hit→hot→dot→dog→cog)
     </div>
-    <div class="hint"><strong>Hint:</strong> Model as BFS on an implicit graph � two words are "neighbors" if they differ by exactly one character. BFS finds the minimum transformation steps.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <div class="hint"><strong>Hint:</strong> Model as BFS on an implicit graph — two words are "neighbors" if they differ by exactly one character. BFS finds the minimum transformation steps.</div>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> BFS on an implicit word graph. Each word is a vertex; two words are connected if they differ by exactly one letter. Put wordList into a HashSet for O(1) lookups. Start BFS from beginWord with distance 1. At each step, try changing each position of the current word to each of 26 letters � if the result is in the word set, enqueue it. Remove words from the set when visited to avoid revisiting. If endWord is reached, return its distance. The key insight: don't pre-build the adjacency list � generate neighbors on-the-fly.</div>
-        <div class="complexity"><strong>Time:</strong> O(M� � N) where M = word length, N = wordList size � for each of N words, we try M positions � 26 letters = O(26M) = O(M) neighbors, each requiring O(M) string construction &nbsp;|&nbsp; <strong>Space:</strong> O(M � N)</div>
+        <div class="approach"><strong>Approach:</strong> BFS on an implicit word graph. Each word is a vertex; two words are connected if they differ by exactly one letter. Put wordList into a HashSet for O(1) lookups. Start BFS from beginWord with distance 1. At each step, try changing each position of the current word to each of 26 letters — if the result is in the word set, enqueue it. Remove words from the set when visited to avoid revisiting. If endWord is reached, return its distance. The key insight: don't pre-build the adjacency list — generate neighbors on-the-fly.</div>
+        <div class="complexity"><strong>Time:</strong> O(M² × N) where M = word length, N = wordList size — for each of N words, we try M positions × 26 letters = O(26M) = O(M) neighbors, each requiring O(M) string construction &nbsp;|&nbsp; <strong>Space:</strong> O(M × N)</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static int</span> <span class="mt">LadderLength</span>(<span class="kw">string</span> beginWord, <span class="kw">string</span> endWord, <span class="tp">IList</span>&lt;<span class="kw">string</span>&gt; wordList)
 {
     <span class="kw">var</span> wordSet = <span class="kw">new</span> <span class="tp">HashSet</span>&lt;<span class="kw">string</span>&gt;(wordList);
@@ -806,7 +805,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 <span class="kw">import</span> string
 
@@ -836,7 +835,7 @@
         <span class="prob-title">Pacific Atlantic Water Flow</span>
         <span class="diff-badge diff-hard">Hard</span>
     </div>
-    <p class="prob-desc">A rectangular grid represents terrain heights. Rain water can flow from a cell to an adjacent cell if the adjacent cell's height is = current cell's height. The Pacific Ocean borders the top/left edges; Atlantic borders the bottom/right edges. Find all cells from which water can flow to BOTH oceans.</p>
+    <p class="prob-desc">A rectangular grid represents terrain heights. Rain water can flow from a cell to an adjacent cell if the adjacent cell's height is ≤ current cell's height. The Pacific Ocean borders the top/left edges; Atlantic borders the bottom/right edges. Find all cells from which water can flow to BOTH oceans.</p>
     <div class="io-box">
         <div class="lbl">Input</div>
         heights=[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
@@ -846,13 +845,13 @@
         [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
     </div>
     <div class="hint"><strong>Hint:</strong> Reverse-BFS from each ocean's border. Find all cells reachable from Pacific (flowing backward = going uphill). Do same for Atlantic. The answer = intersection of both sets.</div>
-    <button class="sol-btn" onclick="toggleSolution(this)">?? Show Solution</button>
+    <button class="sol-btn" onclick="toggleSolution(this)">💡 Show Solution</button>
     <div class="sol">
-        <div class="approach"><strong>Approach:</strong> Instead of simulating water flowing from each cell (expensive), reverse the problem: BFS from ocean borders going "uphill." Start multi-source BFS from all Pacific border cells (top row + left column) � expand to any neighbor with height = current (water can flow from neighbor down to current, so neighbor CAN reach this ocean). Do the same starting from all Atlantic border cells (bottom row + right column). The answer is the intersection of cells reachable from both BFS runs. This elegant reversal turns an O(V�) problem into O(V+E).</div>
-        <div class="complexity"><strong>Time:</strong> O(rows � cols) � two BFS passes, each visiting each cell once &nbsp;|&nbsp; <strong>Space:</strong> O(rows � cols) for the two visited sets</div>
+        <div class="approach"><strong>Approach:</strong> Instead of simulating water flowing from each cell (expensive), reverse the problem: BFS from ocean borders going "uphill." Start multi-source BFS from all Pacific border cells (top row + left column) — expand to any neighbor with height ≥ current (water can flow from neighbor down to current, so neighbor CAN reach this ocean). Do the same starting from all Atlantic border cells (bottom row + right column). The answer is the intersection of cells reachable from both BFS runs. This elegant reversal turns an O(V²) problem into O(V+E).</div>
+        <div class="complexity"><strong>Time:</strong> O(rows × cols) — two BFS passes, each visiting each cell once &nbsp;|&nbsp; <strong>Space:</strong> O(rows × cols) for the two visited sets</div>
         <span class="lang-label lang-cs">C#</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre><span class="kw">public static</span> <span class="tp">IList</span>&lt;<span class="tp">IList</span>&lt;<span class="kw">int</span>&gt;&gt; <span class="mt">PacificAtlantic</span>(<span class="kw">int</span>[][] h)
 {
     <span class="kw">int</span> rows = h.Length, cols = h[<span class="nm">0</span>].Length;
@@ -891,7 +890,7 @@
         </div>
         <span class="lang-label lang-py">Python</span>
         <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">?? Copy</button>
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
         <pre class="python"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="mt">pacific_atlantic</span>(heights):
@@ -918,8 +917,8 @@
     </div>
 </div>
 
-<button class="mark-btn" onclick="markComplete()">? Mark Module 9D Complete</button>
-<div class="toast" id="toast">? Module 9D marked complete!</div>
+<button class="mark-btn" onclick="markComplete()">✅ Mark Module 9D Complete</button>
+<div class="toast" id="toast">✅ Module 9D marked complete!</div>
     <script>var MODULE_ID = 'm09d';</script>
     <script src="../dsa.js"></script>
 </body>
