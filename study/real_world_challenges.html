@@ -2357,19 +2357,24 @@
     <div class="note"><strong>Real-World Scale:</strong> Calendly processes millions of scheduling requests daily. For each booking link visit, it fetches the host's calendar (n busy slots), runs MergeIntervals + FindFreeSlots in O(n log n), and displays available windows in under 200ms. Google "Find a time" extends this to 10+ attendees by intersecting each person's free slots with a two-pointer O(m+n) merge — the same algorithm you learned in Phase 1.</div>
   </div>
 
-  <div class="challenge" id="rate-limiter">
+  <!-- ═══════════════════════ RATE LIMITER ═══════════════════════ -->
+  <h2 id="rate-limiter">18. API Rate Limiting — Stripe / Cloudflare / GitHub</h2>
+
+  <div class="challenge">
     <div class="challenge-header">
       <div class="challenge-icon">🚦</div>
       <div class="challenge-meta">
-        <h3>18) API Rate Limiter (Token Bucket + Sliding Window)</h3>
-        <div class="company">Company: Stripe / Cloudflare / GitHub</div>
+        <h3>Throttle Requests with Token Bucket &amp; Sliding Window</h3>
+        <div class="company">Stripe · Cloudflare · GitHub · AWS API Gateway</div>
+        <div style="margin-top:6px">
         <span class="algo-tag">HashMap</span>
         <span class="algo-tag">Queue</span>
         <span class="algo-tag">Sliding Window</span>
         <span class="algo-tag">Greedy</span>
-        <span class="phase-ref">Phase 1</span>
-        <span class="phase-ref">Phase 3</span>
+        <span class="phase-ref">Phase 1 — Arrays / Queues</span>
+        <span class="phase-ref">Phase 3 — Hash Tables</span>
         <span class="scale">Scale: 50M req/min</span>
+        </div>
       </div>
     </div>
     <p>
@@ -2478,18 +2483,23 @@ class SlidingWindowRateLimiter:
     </div>
   </div>
 
-  <div class="challenge" id="lru-cache">
+  <!-- ═══════════════════════ LRU CACHE ═══════════════════════ -->
+  <h2 id="lru-cache">19. LRU Cache — Redis / Netflix / Meta</h2>
+
+  <div class="challenge">
     <div class="challenge-header">
       <div class="challenge-icon">🧠</div>
       <div class="challenge-meta">
-        <h3>19) LRU Cache for Hot Data</h3>
-        <div class="company">Company: Redis / Netflix / Meta</div>
+        <h3>Build O(1) Get/Put Cache with Eviction Policy</h3>
+        <div class="company">Redis · Netflix · Meta · Memcached · CDN Edge Caches</div>
+        <div style="margin-top:6px">
         <span class="algo-tag">HashMap</span>
         <span class="algo-tag">Doubly Linked List</span>
         <span class="algo-tag">Cache Eviction</span>
-        <span class="phase-ref">Phase 2</span>
-        <span class="phase-ref">Phase 3</span>
+        <span class="phase-ref">Phase 2 — Linked Lists</span>
+        <span class="phase-ref">Phase 3 — Hash Tables</span>
         <span class="scale">Scale: 100M key lookups/sec</span>
+        </div>
       </div>
     </div>
     <p>
@@ -2602,18 +2612,23 @@ class LRUCache:
     </div>
   </div>
 
-  <div class="challenge" id="leaderboard">
+  <!-- ═══════════════════════ LEADERBOARD ═══════════════════════ -->
+  <h2 id="leaderboard">20. Real-Time Leaderboard — Riot Games / Duolingo / Strava</h2>
+
+  <div class="challenge">
     <div class="challenge-header">
       <div class="challenge-icon">🏆</div>
       <div class="challenge-meta">
-        <h3>20) Real-Time Leaderboard (Fenwick Tree)</h3>
-        <div class="company">Company: Riot Games / Duolingo / Strava</div>
+        <h3>Instant Rank Queries with Fenwick Tree</h3>
+        <div class="company">Riot Games · Duolingo · Strava · Discord · Xbox Live</div>
+        <div style="margin-top:6px">
         <span class="algo-tag">Fenwick Tree</span>
         <span class="algo-tag">Prefix Sum</span>
         <span class="algo-tag">Order Statistics</span>
-        <span class="phase-ref">Phase 7</span>
-        <span class="phase-ref">Phase 4</span>
+        <span class="phase-ref">Phase 4 — Heaps / Trees</span>
+        <span class="phase-ref">Phase 7 — Advanced Trees</span>
         <span class="scale">Scale: 10M score updates/hour</span>
+        </div>
       </div>
     </div>
     <p>
