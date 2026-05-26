@@ -12,11 +12,18 @@ A self-paced, browser-based DSA course written entirely in C#. Zero setup requir
 |---|---|
 | **Language** | C# (.NET) |
 | **Modules** | 20 |
-| **HTML Files** | 77 |
+| **HTML Files** | 90 |
 | **Phases** | 10 |
 | **Practice Problems** | 80+ |
+| **Real-World Challenges** | 20 |
 | **Estimated Study Time** | ~100 hours |
 | **Level** | Beginner → Advanced |
+
+**Features:**
+- 🌙 Dark/Light theme toggle on all pages
+- 📋 One-click code copy buttons
+- ✅ Progress tracking with localStorage
+- 📱 Responsive design for all devices
 
 ---
 
@@ -78,7 +85,9 @@ A self-paced, browser-based DSA course written entirely in C#. Zero setup requir
 ```
 study/
 ├── index.html                  ← Course master index (start here)
-├── real_world_challenges.html  ← Real-world algorithm applications
+├── real_world_challenges.html  ← 20 real-world algorithm applications
+├── styles.css                  ← Shared stylesheet (dark/light themes)
+├── dsa.js                      ← Shared JavaScript (theme, copy, progress)
 ├── phase1/  – phase10/         ← Module HTML files per phase
 Staticfile                      ← Wasmer static site config
 ```
