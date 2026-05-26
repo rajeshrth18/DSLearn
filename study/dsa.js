@@ -211,26 +211,21 @@
         if (document.getElementById('theme-toggle')) return;
         if (document.querySelector('.toolbar')) return;
 
-        // Find container to append toggle - try multiple selectors
-        var container = document.querySelector('.nav-bar') ||
-                        document.querySelector('.module-nav') ||
-                        document.querySelector('.nav-box');
-        if (!container) return;
-
+        // Create floating theme toggle button (bottom-right corner)
         var btn = document.createElement('button');
         btn.id = 'theme-toggle';
-        btn.className = 'theme-toggle-btn';
+        btn.className = 'theme-toggle-btn theme-toggle-float';
         var theme = document.documentElement.getAttribute('data-theme') || 'light';
         btn.textContent = theme === 'dark' ? '☀️' : '🌙';
         btn.title = 'Toggle dark/light mode';
-        btn.onclick = window.toggleTheme;
-
-        // For module-nav, insert at beginning; otherwise append
-        if (container.classList.contains('module-nav')) {
-            container.insertBefore(btn, container.firstChild);
-        } else {
-            container.appendChild(btn);
-        }
+        btn.addEventListener('click', function() {
+            var curr = document.documentElement.getAttribute('data-theme') || 'light';
+            var newTheme = curr === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('dslearn_theme', newTheme);
+            btn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+        document.body.appendChild(btn);
     }
 
     window.setTheme = function (theme) {
