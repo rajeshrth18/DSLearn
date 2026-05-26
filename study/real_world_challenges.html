@@ -110,6 +110,13 @@
 
     <p>Google Maps has over <strong>1 billion users</strong> requesting routes every day. The road network of a country contains hundreds of millions of intersections (nodes) and roads (edges). A naive Dijkstra would be too slow — real systems use a hierarchy of optimizations.</p>
 
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Find the minimum travel-time path between two intersections in a weighted directed graph with ~300 million nodes and ~1 billion edges.<br>
+      <strong>Naive Approach:</strong> BFS ignores edge weights — it minimises hops, not time. Dijkstra is correct but explores every node equally outward in all directions, visiting ~10 million nodes before reaching a distant destination.<br>
+      <strong>Key Insight:</strong> A* adds a heuristic h(v) = straight-line distance from v to the destination (always ≤ actual road time, so it's <em>admissible</em>). This guides expansion toward the goal, skipping irrelevant areas of the map. Real systems layer <em>Contraction Hierarchies</em> on top — pre-contracting unimportant nodes into shortcuts reduces queries from millions of node-visits to thousands.
+    </div>
+
     <div class="diagram">
   Road Network Graph:
   ┌─────────────────────────────────────────┐
@@ -216,6 +223,18 @@
 <span class="cm"># Result: London&#8594;Edinburgh in milliseconds on a billion-node graph</span></pre>
 </div>
 
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1. Initialise:</strong> g[src] = 0, all others = ∞. Push src onto a min-heap with priority f = h(src, dst) (straight-line estimate to destination).<br>
+      <strong>2. Main loop:</strong> Pop node u with the lowest f-score. If u == dst, path is found — trace back through prev[] to reconstruct it.<br>
+      <strong>3. Relaxation:</strong> For each road u→v with travel time w: tentative = g[u] + w. If tentative &lt; g[v]: update g[v], set prev[v] = u, enqueue v with f = tentative + h(v, dst).<br>
+      <strong>4. Heuristic (Haversine):</strong> Straight-line Earth-surface distance — always ≤ actual road distance. This <em>admissibility</em> guarantee means A* never overshoots and always finds the optimal path.<br>
+      <strong>5. Reconstruction:</strong> Follow prev[] backward from dst to src, then reverse the list.<br>
+      <strong>⏱ Time:</strong> O(E log V) worst-case — in practice far fewer edges are relaxed because the heuristic skips unpromising nodes.<br>
+      <strong>💾 Space:</strong> O(V) for g[], prev[], and the priority queue.<br>
+      <strong>Why not Dijkstra?</strong> Dijkstra expands nodes in concentric circles from the source. A* stretches that frontier toward the destination — provably correct because h is admissible.
+    </div>
+
     <div class="note"><strong>Real-World Scale:</strong> Google Maps' road network has ~300 million nodes. Standard Dijkstra explores all of them. Contraction Hierarchies reduce this to ~10,000 nodes per query. Live traffic updates modify edge weights — the system re-runs routing every few seconds for active navigations.</div>
   </div>
 
@@ -240,6 +259,13 @@
     </div>
 
     <p>LinkedIn's "People You May Know" finds users who share mutual connections. This is a classic graph problem: find all nodes within 2 hops from the current user. At LinkedIn's scale, the social graph has billions of edges.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> For a given user with D direct connections, find all 2nd-degree connections (friends-of-friends not yet directly connected) and rank them by number of shared mutual friends.<br>
+      <strong>Naive Approach:</strong> Full BFS to depth 2 works but visits every node in the 2-hop neighbourhood once. For LinkedIn (950M users, avg 200 connections each), a single BFS per page load = 200 × 200 = 40,000 candidates — but BFS has queue overhead. There's a simpler way.<br>
+      <strong>Key Insight:</strong> Skip BFS entirely. Iterate over each friend's connection list directly. Every person you reach this way is a friend-of-friend. Count how many different friends led to the same candidate — that count is the mutual connection score. O(D²) where D = average degree, with no queue needed.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -322,6 +348,18 @@
     <span class="kw">return</span> -<span class="nm">1</span>  <span class="cm"># Not connected</span>
 <span class="cm"># LinkedIn famously showed that average degrees of separation = 4.7 (not 6)</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1.</strong> Store direct connections in a HashSet for O(1) membership checks ("is this person already connected?").<br>
+      <strong>2.</strong> For each 1st-degree friend, iterate their connection list — these are the 2nd-degree candidates.<br>
+      <strong>3.</strong> Skip if the candidate is the user themselves or already in the direct set.<br>
+      <strong>4.</strong> Each time the same candidate appears via a different mutual friend, increment their counter. This count = number of shared connections = recommendation strength.<br>
+      <strong>5.</strong> Sort the candidates dictionary by value (descending) and return the top 10.<br>
+      <strong>⏱ Time:</strong> O(D²) for the scan + O(K log K) for sorting K unique candidates — linear in the social neighbourhood size.<br>
+      <strong>💾 Space:</strong> O(D) for the direct HashSet + O(D²) worst-case for the counts dictionary.<br>
+      <strong>Degrees of Separation BFS:</strong> The second function uses standard BFS with a level counter. The 4.7 average on LinkedIn is not 6 — dense professional networks shrink path lengths dramatically.
+    </div>
   </div>
 
   <!-- ═══════════════════════ PACKAGE MANAGER ═══════════════════════ -->
@@ -345,6 +383,13 @@
     </div>
 
     <p>When you run <code>dotnet add package Newtonsoft.Json</code>, the package manager must install all dependencies in the correct order — a package must be installed <strong>after</strong> all its dependencies. This is exactly <strong>topological sort</strong>. If a circular dependency exists, installation must fail with an error.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given a dependency graph (directed: edge A→B means A depends on B), produce a valid install order where every package appears only after all of its dependencies have been installed. Detect cycles and fail with a clear error.<br>
+      <strong>Naive Approach:</strong> Try a random install order, retry when it fails. With n packages this can take O(n!) tries. Recursive "install dependencies first" can revisit the same package exponentially when many packages share a dependency.<br>
+      <strong>Key Insight:</strong> Model as a Directed Acyclic Graph (DAG). Kahn's topological sort tracks <em>in-degree</em> (how many uninstalled dependencies each package still has). Packages with in-degree 0 are ready to install. Installing one decrements the in-degree of packages that depended on it — if any reach 0, they become ready. Cycle detection is automatic: if the installed count &lt; total packages, some in-degrees never reached 0.
+    </div>
 
     <div class="diagram">
   Your App
@@ -427,6 +472,17 @@
 <span class="cm"># Time: O(V+E), Space: O(V)</span>
 <span class="cm"># This is literally what `npm install` and `dotnet restore` do internally</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1. Build in-degree map:</strong> For every package, count how many others list it as a dependency. in_degree[X] = number of packages that must be installed before X.<br>
+      <strong>2. Seed queue:</strong> Any package with in-degree 0 has no dependencies → add to the install queue immediately.<br>
+      <strong>3. Process queue:</strong> Dequeue a package, add to the install order. For each package that depended on it, decrement their in-degree. If any reach 0, enqueue them.<br>
+      <strong>4. Repeat until queue is empty.</strong> If installed count &lt; total packages → a cycle exists (some in-degrees never reached 0 → those packages are stuck waiting on each other).<br>
+      <strong>⏱ Time:</strong> O(V + E) — every node and every edge is processed exactly once.<br>
+      <strong>💾 Space:</strong> O(V) for the in-degree map and the queue.<br>
+      <strong>Why Kahn's over DFS?</strong> DFS topological sort also works but Kahn's naturally surfaces cycles (remaining unprocessed nodes) and is iterative — no recursion stack overflow on large dependency trees.
+    </div>
   </div>
 
   <!-- ═══════════════════════ SEARCH ENGINE ═══════════════════════ -->
@@ -452,6 +508,13 @@
     </div>
 
     <p>Google's search box has three algorithmic layers working together: <strong>Trie</strong> for instant prefix autocomplete, <strong>Edit Distance DP</strong> for "Did you mean X?" spell correction, and <strong>Inverted Index</strong> (hash map from word → documents) for finding matching pages.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Three separate challenges: (a) given a typed prefix, return the top-K most-searched completions instantly; (b) given a misspelled query, identify the closest known query; (c) given a multi-word query, find all documents containing those words and rank them.<br>
+      <strong>Naive Approach:</strong> (a) Scan all known queries for prefix match = O(n); (b) compute edit distance against every word in the vocabulary = O(n × m × k); (c) scan every word in every document for each query word = O(D × W) per word. All three are too slow at Google's scale.<br>
+      <strong>Key Insight:</strong> Pre-build three specialised structures: a <em>Trie</em> reduces prefix lookup to O(prefix_length). An optimised <em>Edit Distance DP</em> uses the space-efficient rolling-array approach and only computes against a curated vocabulary. The <em>Inverted Index</em> — built at crawl time — turns document search into a hash lookup + set intersection.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -560,6 +623,19 @@
 <span class="cm">#   index[&quot;algorithms&quot;] &#8594; {doc1, doc3, doc9}</span>
 <span class="cm">#   INTERSECT &#8594; {doc1, doc9} &#8594; ranked by PageRank score</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Trie Autocomplete:</strong><br>
+      <strong>1.</strong> Insert each known query with its frequency — each character is a Trie node edge. Lookup a prefix by walking the Trie in O(|prefix|).<br>
+      <strong>2.</strong> DFS/BFS from the prefix node collects all completions. A min-heap of size K during collection gives top-K in O(results × log K) without full sorting.<br><br>
+      <strong>Edit Distance Spell Correction:</strong><br>
+      <strong>3.</strong> Build DP table: dp[i][j] = minimum edits (insert/delete/substitute) to convert s[0..i] into t[0..j]. Three choices per cell: diagonal (substitute/match), left (insert), up (delete).<br>
+      <strong>4.</strong> Space-optimised: only keep the previous row. Queries within edit distance 1–2 of a known query → "Did you mean X?"<br><br>
+      <strong>Inverted Index Search:</strong><br>
+      <strong>5.</strong> At crawl time, build index[word] = sorted list of document IDs. Query "C# algorithms": look up index["C#"] and index["algorithms"], intersect the two sorted lists with a two-pointer merge in O(m+n).<br>
+      <strong>⏱ Trie:</strong> O(|prefix|) lookup. <strong>Edit distance:</strong> O(m × n). <strong>Index lookup:</strong> O(|query_words|) hash ops + O(m+n) intersection.
+    </div>
   </div>
 
   <!-- ═══════════════════════ COMPILER ═══════════════════════ -->
@@ -585,6 +661,13 @@
     </div>
 
     <p>When you write <code>int x = (3 + 4) * 2 - 1;</code>, the C# compiler uses a stack to parse and evaluate that expression. The Roslyn compiler also uses a Trie-based symbol table for name resolution and topological sort for build project ordering.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given an arithmetic expression string with numbers, operators (+−×÷), parentheses, and precedence rules (× before +), compute the correct result. Parentheses override precedence.<br>
+      <strong>Naive Approach:</strong> Evaluating left-to-right without precedence gives wrong answers: "2 + 3 × 4" evaluated as (2+3)×4 = 20 instead of the correct 2+(3×4) = 14. Building a full AST (Abstract Syntax Tree) then evaluating it works but requires two passes.<br>
+      <strong>Key Insight:</strong> Dijkstra's Shunting-Yard algorithm solves this in a single pass with two stacks — one for operands, one for operators. When an operator arrives, first flush all pending operators of equal or higher precedence from the stack (applying them immediately), then push the new operator. Parentheses act as precedence barriers. This naturally produces correct evaluation order.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -666,6 +749,18 @@
     <span class="kw">return</span> nums[<span class="nm">0</span>]
 <span class="cm"># This is the Shunting-Yard algorithm &#8212; how every compiler/interpreter works</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1. Numbers:</strong> Push immediately onto the nums stack.<br>
+      <strong>2. Operator (+−×÷):</strong> Before pushing, inspect the top of the ops stack. While the top has equal or higher precedence AND is not an open parenthesis, pop it and apply it (pop two nums, compute result, push result back). Then push the new operator.<br>
+      <strong>3. Open parenthesis '(':</strong> Push directly — it blocks lower-precedence operators from being flushed through it.<br>
+      <strong>4. Close parenthesis ')':</strong> Keep applying operators from the ops stack until '(' is found. Pop and discard the '('.<br>
+      <strong>5. End of expression:</strong> Apply all remaining operators in the ops stack left-to-right.<br>
+      <strong>Example — "3 + 4 × 2":</strong> Push 3. Push '+'. Push 4. See '×' (higher than '+') — push '×' without flushing '+'. Push 2. End: apply '×' first (4×2=8), then '+' (3+8=11). ✓<br>
+      <strong>⏱ Time:</strong> O(n) — each token is pushed and popped at most once from each stack.<br>
+      <strong>💾 Space:</strong> O(n) — both stacks hold at most O(n) elements for deeply nested expressions.
+    </div>
   </div>
 
   <!-- ═══════════════════════ STOCK EXCHANGE ═══════════════════════ -->
@@ -689,6 +784,13 @@
     </div>
 
     <p>An exchange's order book matches buyers and sellers. Buy orders are sorted by <strong>descending price</strong> (highest bid wins), sell orders by <strong>ascending price</strong> (lowest ask wins). When the best bid ≥ best ask, a trade executes. This uses two priority queues (max-heap for bids, min-heap for asks).</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Maintain two sorted collections of live orders — bids (sorted highest-first) and asks (sorted lowest-first). On each incoming order, check for a match: a buy order at price P matches any ask priced ≤ P; a sell order at price P matches any bid priced ≥ P. Fill as many shares as possible (partial fills allowed), then add the remainder to the book.<br>
+      <strong>Naive Approach:</strong> An array requires O(n log n) sort on every insert and O(n) scan for matching — catastrophic at NASDAQ's 30 billion orders/day.<br>
+      <strong>Key Insight:</strong> Two priority queues provide O(log n) insert/extract. A max-heap for bids always surfaces the best (highest) bid at the top. A min-heap for asks always surfaces the cheapest ask. Each match cycle is O(log n) — the fill loop runs only for actual fills, not for the full book.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -755,6 +857,20 @@
 <span class="cm"># Real exchanges use lock-free data structures and FPGA hardware</span>
 <span class="cm"># Latency target: match an order in under 1 microsecond</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Buy order arrives at price P, quantity Q:</strong><br>
+      <strong>1.</strong> Peek the min-ask. If ask_price ≤ P, a trade is possible at the ask price (sellers' guaranteed price).<br>
+      <strong>2.</strong> Compute fill_qty = min(order.qty, ask.qty). Record the trade at ask_price. Decrement both quantities.<br>
+      <strong>3.</strong> If the ask is fully filled, dequeue it. If partially filled, push the remainder back to the min-heap.<br>
+      <strong>4.</strong> Repeat while ask_price ≤ P and remaining order quantity &gt; 0.<br>
+      <strong>5.</strong> Any unfilled remainder: enqueue to the bid max-heap (becomes a resting limit order on the book).<br>
+      <strong>Sell orders:</strong> Mirror image — match against the max-bid while bid_price ≥ ask_price.<br>
+      <strong>Price-time priority:</strong> The C# implementation uses a Queue per price level inside the SortedDictionary — orders at the same price execute FIFO (earliest submitted first).<br>
+      <strong>⏱ Time:</strong> O(log n) per order for heap operations. O(k log n) for k partial fills.<br>
+      <strong>💾 Space:</strong> O(n) for n outstanding limit orders across both sides.
+    </div>
   </div>
 
   <!-- ═══════════════════════ WAREHOUSE ROUTING ═══════════════════════ -->
@@ -778,6 +894,13 @@
     </div>
 
     <p>An order might contain 7 items scattered across a warehouse. A robot must pick all items and return to the packing station in the minimum total distance. With 7 items, there are 7! = 5040 possible orders — manageable with bitmask DP (<strong>n ≤ 20</strong> is the sweet spot).</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given n item locations and a start/end position (packing station), find the visit order that minimises total travel distance. Distances between locations are pre-computed by Dijkstra/BFS on the warehouse grid (handling obstacles like shelving units). This is the Travelling Salesman Problem (TSP) — NP-hard in general, but tractable for small n with bitmask DP.<br>
+      <strong>Naive Approach:</strong> Try all n! orderings. For n=7: 5,040 — fine. For n=20: 2.4 × 10¹⁸ — completely impossible. Even greedy "nearest unvisited item" is fast but gives a suboptimal path (can be 25% longer than optimal).<br>
+      <strong>Key Insight:</strong> Represent the set of visited items as a bitmask (integer). State = (bitmask of visited items, index of the last item visited). With n items there are n × 2ⁿ unique states. For each state, try adding each unvisited item — O(n) transitions. Total: O(n² × 2ⁿ). For n=15: ~30M operations, completes in milliseconds. Amazon limits pick batches to ~15 items specifically because 2¹⁵ = 32K is tractable.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -844,6 +967,17 @@
     <span class="kw">return</span> ans
 <span class="cm"># O(n&#178; * 2^n) &#8212; Amazon limits order batches to ~15 items per robot trip</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Pre-computation:</strong> Run BFS/Dijkstra from the start position and from each item location to compute all pairwise distances (accounting for walls/obstacles on the grid).<br>
+      <strong>1. DP state:</strong> dp[mask][i] = minimum distance to visit exactly the items encoded in <em>mask</em>, ending at item i.<br>
+      <strong>2. Base case:</strong> dp[1&lt;&lt;i][i] = dist[start][item_i] for each item i — cost to travel directly from start to just that one item.<br>
+      <strong>3. Transition:</strong> For every (mask, u) where u is in mask and dp[mask][u] is known, try extending to each unvisited item v (not in mask): dp[mask|(1&lt;&lt;v)][v] = min(current value, dp[mask][u] + dist[item_u][item_v]).<br>
+      <strong>4. Answer:</strong> Iterate all last items u in the full mask and find min(dp[full_mask][u] + dist[item_u][start]) — the final leg returning to the packing station.<br>
+      <strong>⏱ Time:</strong> O(n² × 2ⁿ) — for n=15: ~30M operations (milliseconds on modern hardware).<br>
+      <strong>💾 Space:</strong> O(n × 2ⁿ) for the DP table — for n=15: ~500KB.
+    </div>
   </div>
 
   <!-- ═══════════════════════ GIT ═══════════════════════ -->
@@ -868,6 +1002,13 @@
     </div>
 
     <p>When you run <code>git diff</code>, Git computes the <strong>Longest Common Subsequence (LCS)</strong> between two file versions to find the minimal set of line additions/deletions. The commit history is a <strong>Directed Acyclic Graph (DAG)</strong> where <code>git rebase</code> is a topological sort.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given two versions of a file (arrays of lines), produce a compact diff that shows the minimum additions (+) and deletions (-). The foundation is finding the Longest Common Subsequence (LCS) — lines that appear in both files in the same order. Lines NOT in the LCS are either added or deleted.<br>
+      <strong>Naive Approach:</strong> Enumerate all possible common subsequences between two files — exponential time. Even checking every pair of lines naively is O(m × n × avg_line_length), prohibitively slow for large source files.<br>
+      <strong>Key Insight:</strong> LCS DP solves this in O(m × n) with a 2D table. dp[i][j] = length of LCS of the first i lines of old and first j lines of new. Backtracking through the table produces the diff. Git further uses <em>patience diff</em> — an LCS variant that first anchors on unique lines, producing more human-readable diffs on code.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -930,6 +1071,20 @@
 <span class="cm"># Git also uses content-defined chunking with rolling hashes (Rabin-Karp)</span>
 <span class="cm"># to split large files into blocks before diffing &#8212; reducing O(n&#178;) work</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1. Build DP table:</strong> dp[i][j] = LCS length of old[0..i-1] and new[0..j-1].<br>
+      &nbsp;&nbsp;• If old[i-1] == new[j-1]: dp[i][j] = dp[i-1][j-1] + 1 (extend the common sequence)<br>
+      &nbsp;&nbsp;• Otherwise: dp[i][j] = max(dp[i-1][j], dp[i][j-1]) (skip one side, keep the best)<br>
+      <strong>2. Backtrack to build the diff:</strong> Start at dp[m][n] and walk backwards.<br>
+      &nbsp;&nbsp;• Diagonal move (lines match): output " " (unchanged)<br>
+      &nbsp;&nbsp;• Move left (from dp[i][j-1]): output "+" (new line added in the new file)<br>
+      &nbsp;&nbsp;• Move up (from dp[i-1][j]): output "-" (old line deleted from the old file)<br>
+      <strong>3. Commit DAG:</strong> Git's commit history is a DAG where merge commits have two parents. <code>git log</code> = topological sort of the DAG. <code>git rebase</code> = replay commits from one branch onto another in topological order.<br>
+      <strong>⏱ Time:</strong> O(m × n) to build the DP table; O(m + n) to reconstruct the diff via backtracking.<br>
+      <strong>💾 Space:</strong> O(m × n) for the full table. Optimisable to O(min(m, n)) if only the LCS length is needed.
+    </div>
   </div>
 
   <!-- ═══════════════════════ FRAUD DETECTION ═══════════════════════ -->
@@ -955,6 +1110,13 @@
     </div>
 
     <p>Fraud detection runs multiple checks simultaneously: a <strong>sliding window</strong> checks if too many transactions occurred in the last 60 seconds (velocity fraud), <strong>Union-Find</strong> clusters accounts that share devices/IPs to find fraud rings, and <strong>rolling hashes</strong> deduplicate retry attempts.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Two independent fraud signals must run in real time on a stream of 65,000 transactions/second: (a) <em>Velocity fraud</em> — flag if a single account makes more than k transactions in the last t seconds; (b) <em>Fraud rings</em> — cluster accounts that share hardware fingerprints (device ID, IP, card number) and flag clusters of 3 or more as suspicious.<br>
+      <strong>Naive Approach:</strong> (a) Scan all historical transactions per account = O(n) per check. (b) Build a new graph and run connected-components on every transaction = O(V + E) each time. Both are too slow at Visa's throughput.<br>
+      <strong>Key Insight:</strong> (a) A sliding-window deque/queue naturally expires old timestamps in O(1) amortised — just pop the front while oldest timestamp is outside the window. (b) Union-Find is incrementally maintained: each new shared fingerprint triggers a union() call in O(α(V)) ≈ O(1). Fraud rings are detected by grouping accounts that share the same root node.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -1022,6 +1184,20 @@
     <span class="kw">return</span> {root: accts <span class="kw">for</span> root, accts <span class="kw">in</span> groups.<span class="mt">items</span>() <span class="kw">if</span> len(accts) &gt;= <span class="nm">3</span>}
 <span class="cm"># Visa processes these checks in under 100 milliseconds per transaction</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Velocity Check (Sliding Window):</strong><br>
+      <strong>1.</strong> Maintain a queue (deque) of timestamps for each account.<br>
+      <strong>2.</strong> On each new transaction at time <em>now</em>: pop from the front while (now - front) &gt; window duration. These timestamps are expired — outside the window.<br>
+      <strong>3.</strong> Push the new timestamp. If queue size &gt; maxTx → velocity fraud.<br>
+      <strong>Why a queue?</strong> Timestamps are always inserted at the back and expired from the front (FIFO) — O(1) amortised, no searching needed.<br><br>
+      <strong>Fraud Ring (Union-Find):</strong><br>
+      <strong>4.</strong> When accounts A and B share any fingerprint (device, IP, card): call union(A, B). Path compression in find() ensures all subsequent find() calls are O(1) amortised.<br>
+      <strong>5.</strong> Group all accounts by their root node (the canonical representative of each connected cluster). Clusters with 3+ members → flag for investigation.<br>
+      <strong>Why Union-Find over graph BFS?</strong> BFS requires the full graph structure upfront. Union-Find is incremental — it merges clusters one fingerprint match at a time, in real time as transactions arrive.<br>
+      <strong>⏱ Time:</strong> O(1) amortised per velocity check. O(α(V)) per union/find ≈ O(1). <strong>💾 Space:</strong> O(W) per account for the window; O(V) for Union-Find.
+    </div>
   </div>
 
   <!-- ═══════════════════════ VIDEO GAME ═══════════════════════ -->
@@ -1045,6 +1221,13 @@
     </div>
 
     <p>In every open-world game, NPCs (enemies, allies, vehicles) navigate around obstacles in real time. This is A* on a grid or navigation mesh. Games like The Witcher 3 run hundreds of pathfinding queries per frame (60fps), so optimization is critical.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> On a 2D grid (0 = walkable, 1 = wall), find the shortest path between two cells. Allow 8-directional movement — diagonal moves cost √2 ≈ 1.414 (longer distance covered). Must run for hundreds of NPCs in under 16ms (one frame at 60fps).<br>
+      <strong>Naive Approach:</strong> BFS gives the path with fewest steps but treats all moves as cost 1 — diagonals and cardinal moves are equal, producing paths that are geometrically longer than necessary. No heuristic means BFS expands in all directions equally — slow on large grids.<br>
+      <strong>Key Insight:</strong> A* on a grid with Euclidean heuristic (straight-line distance to goal) is optimal for weighted movement. Only nodes closer to the goal are expanded. Real games go further: they pre-bake the walkable terrain into a <em>Navigation Mesh</em> (NavMesh) — a set of convex polygons. A* on ~2,000 NavMesh polygons is 100× faster than A* on a 1,000×1,000 grid of 1M cells.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -1123,6 +1306,17 @@
 <span class="cm"># Games use navigation meshes (NavMesh) instead of raw grids for large worlds</span>
 <span class="cm"># NavMesh = convex polygon graph &#8594; A* on much fewer nodes</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1. Initialise:</strong> g[src] = 0, all others = ∞. Push src onto the priority queue with f = h(src, dst).<br>
+      <strong>2. 8-directional movement costs:</strong> The 4 cardinal directions cost 1.0; the 4 diagonal directions cost √2 ≈ 1.414. This makes diagonal moves proportionally more expensive since they cover more Euclidean distance.<br>
+      <strong>3. Relaxation:</strong> For each walkable neighbour (nr, nc): tentative = g[r][c] + step_cost. If tentative &lt; g[nr][nc]: update g, set prev[nr][nc] = current cell, push with f = tentative + h((nr,nc), dst).<br>
+      <strong>4. Goal check:</strong> On dequeue, if current == dst → backtrack through prev[][] to build the path (reversed, then flip).<br>
+      <strong>5. Heuristic h = Euclidean:</strong> √((r₂-r₁)² + (c₂-c₁)²) is always ≤ any walkable path — admissible, so A* finds the true optimal path.<br>
+      <strong>⏱ Time:</strong> O(E log V) where V = walkable cells, E = 8V edges. In practice, the heuristic prunes large portions of the grid — far faster than Dijkstra.<br>
+      <strong>💾 Space:</strong> O(V) for g[][], prev[][], and the priority queue.
+    </div>
   </div>
 
   <!-- ═══════════════════════ DNA / BIOINFORMATICS ═══════════════════════ -->
@@ -1147,6 +1341,13 @@
     </div>
 
     <p>Comparing two DNA sequences to find genetic mutations is equivalent to computing edit distance. The Smith-Waterman algorithm (a DP variant) finds the <strong>best local alignment</strong> — the most similar substring between two sequences, ignoring mismatched ends.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given two DNA sequences (strings of A/C/G/T characters), find the highest-scoring local alignment — the pair of substrings that are most similar, accounting for matches (+2), mismatches (-1), and gaps/insertions (-1). Unlike <em>global</em> alignment (Needleman-Wunsch, which aligns full sequences), local alignment (Smith-Waterman) finds where the sequences are most similar regardless of mismatched ends.<br>
+      <strong>Naive Approach:</strong> Checking every pair of substrings from both sequences is O(m² × n²) — completely infeasible for a genome of 30,000 bases.<br>
+      <strong>Key Insight:</strong> Smith-Waterman fills an (m+1)×(n+1) DP table similar to edit distance, but with one critical difference: all negative scores are reset to 0 (<em>local reset</em>). This means the algorithm "forgets" poor-quality matches and restarts. The cell with the globally maximum value anywhere in the table marks the end of the best local alignment. Backtrack from that cell (stopping when you hit a 0) to retrieve the aligned region.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -1217,6 +1418,19 @@
 <span class="cm"># NCBI BLAST uses this to align your DNA sample against 3 billion known sequences</span>
 <span class="cm"># Hashing (k-mer seeds) narrows candidates before running full Smith-Waterman</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>1. Fill DP table:</strong> dp[i][j] = best alignment score when seq1[i-1] aligns to seq2[j-1].<br>
+      &nbsp;&nbsp;• Diagonal: dp[i-1][j-1] + score (match_score if chars equal, else mismatch_penalty)<br>
+      &nbsp;&nbsp;• Up: dp[i-1][j] + gap_penalty (gap in seq2 — one character from seq1 has no match)<br>
+      &nbsp;&nbsp;• Left: dp[i][j-1] + gap_penalty (gap in seq1 — one character from seq2 has no match)<br>
+      &nbsp;&nbsp;• <strong>Local reset: dp[i][j] = max(0, three options above)</strong> — the key difference from global alignment.<br>
+      <strong>2. Track max:</strong> Record the cell (maxPos) with the highest score across the entire table.<br>
+      <strong>3. Traceback:</strong> From maxPos, follow the choices made (diagonal/up/left) until reaching a cell with value 0 — this gives the best-matching local region.<br>
+      <strong>4. BLAST uses this in two phases:</strong> First, fast k-mer hashing finds candidate regions. Then Smith-Waterman runs on those candidates only — reducing the full O(m × n) work to a fraction of the genome.<br>
+      <strong>⏱ Time:</strong> O(m × n) — fill the entire table once. <strong>💾 Space:</strong> O(m × n) for the table; O(min(m,n)) if only the score is needed.
+    </div>
   </div>
 
   <!-- ═══════════════════════ CDN ═══════════════════════ -->
@@ -1240,6 +1454,13 @@
     </div>
 
     <p>When you stream Netflix, your request is routed to one of hundreds of edge servers. <strong>Consistent hashing</strong> maps both requests and servers onto a virtual ring. A request goes to the nearest server clockwise on the ring — adding/removing servers only remaps a fraction of keys (vs. ~100% with plain modulo hashing).</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Route each request to the same server consistently (cache coherence), distribute load evenly across n servers (uniform hashing), and when a server is added or removed, minimise the number of keys that need to be remapped (stability).<br>
+      <strong>Naive Approach:</strong> server = hash(requestKey) % n. This is O(1) but adding or removing a server changes n — almost every key maps to a different server. CDN cache miss rate spikes to ~100% — all cached content becomes unreachable instantly, causing a thundering-herd failure.<br>
+      <strong>Key Insight:</strong> Place both servers and request keys on a virtual ring (hash space 0 to 2³²). A request maps to the nearest server clockwise. Adding a server only "steals" keys from the next server clockwise (~1/n keys). Removing a server only "gives" its keys to the next server (~1/n keys). Virtual nodes (150 per server) prevent hotspots by distributing each server's responsibility evenly across the ring.
+    </div>
 
 
 <span class="lang-label lang-cs">C#</span>
@@ -1318,6 +1539,19 @@
 <span class="cm"># Adding 1 server redistributes only 1/n requests (not all)</span>
 <span class="cm"># Virtual nodes ensure even distribution even with heterogeneous servers</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>AddServer:</strong><br>
+      <strong>1.</strong> For each virtual node i (0 to 149): compute hash("serverName#i") and insert into a SortedDictionary keyed by the hash value. 150 virtual nodes per server spreads its responsibility across the ring, preventing one server from becoming a hotspot.<br>
+      <strong>RemoveServer:</strong><br>
+      <strong>2.</strong> Remove all 150 virtual node entries. Only the keys that previously mapped to this server's ring segments are remapped — they go to the successor server on the ring. On average: 1/n of all keys remapped.<br>
+      <strong>GetServer (request routing):</strong><br>
+      <strong>3.</strong> Compute hash(requestKey). Scan the SortedDictionary for the first entry whose key ≥ the hash ("first server clockwise"). If none found, wrap around to the first entry in the ring.<br>
+      <strong>4.</strong> Why SortedDictionary?</strong> It supports O(log n) insert, delete, and successor queries — exactly what "find first clockwise server" requires. A plain HashMap can't do this.<br>
+      <strong>⏱ Time:</strong> O(V log n) per add/remove (V = 150 virtual nodes). O(log n) per request routing.<br>
+      <strong>💾 Space:</strong> O(S × V) where S = number of servers — for 100 servers with 150 vnodes = 15,000 entries.
+    </div>
   </div>
 
   <!-- ═══════════════════════ RIDE HAILING ═══════════════════════ -->
@@ -1341,6 +1575,13 @@
     </div>
 
     <p>When you request a ride, Uber must find the nearest available driver among millions of moving vehicles — in under 100ms. Brute-force O(n) scan of every driver is too slow. <strong>Geohashing</strong> partitions the Earth into a grid; only drivers in nearby cells are evaluated, shrinking the candidate pool from millions to dozens.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given a rider's GPS coordinates, find the k nearest available drivers from a pool of 5.4 million constantly-moving vehicles — in under 100ms. Drivers update their locations every 4 seconds, so the data structure must also support fast writes.<br>
+      <strong>Naive Approach:</strong> Compute Haversine distance from the rider to every driver = O(5.4M) per request. At millions of ride requests per hour, this saturates CPU entirely.<br>
+      <strong>Key Insight:</strong> Geohashing converts 2D coordinates into a hierarchical string where nearby locations share a common prefix. Store drivers in a hash map keyed by their geohash cell. To find nearby drivers: look up only the 9 cells (rider's cell + 8 neighbours) — cutting the candidate pool from 5.4M to ~50–200. Run exact Haversine + min-heap only on this tiny set for k-nearest ranking.
+    </div>
 
     <div class="diagram">
   Geohash Grid (each cell ≈ 1.2km × 0.6km at precision 6):
@@ -1447,6 +1688,19 @@
 <span class="cm"># 5.4M drivers &#215; 1 update/4sec = 1.35M location writes/sec &#8594; sharded Redis</span></pre>
 </div>
 
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>UpdateDriver (every 4 seconds per driver):</strong><br>
+      <strong>1.</strong> Encode the driver's new GPS position as a geohash string (bitwise subdivision: alternate lat/lng bits for precision 6 = 12 characters).<br>
+      <strong>2.</strong> Remove driver from their old cell's list; add to new cell's list. O(1) dictionary operations.<br>
+      <strong>FindNearest (on ride request):</strong><br>
+      <strong>3.</strong> Encode rider's position. Enumerate all 9 cells (own cell + 8 neighbours by ±1 offset in each grid direction).<br>
+      <strong>4.</strong> For each driver in all 9 cells: compute exact Haversine distance and push (distance, driver) onto a min-heap.<br>
+      <strong>5.</strong> Pop k elements → the k nearest drivers sorted by real GPS distance.<br>
+      <strong>Why 9 cells?</strong> A driver just across a cell boundary would be missed if only 1 cell is checked. 8 neighbours guarantee complete coverage (assuming cell size ≥ expected match radius).<br>
+      <strong>⏱ Time:</strong> O(D log k) per request where D ≈ 50–200 — effectively O(1) vs O(5.4M) brute-force. <strong>💾 Space:</strong> O(n) for the geohash dictionary.
+    </div>
+
     <div class="note"><strong>Real-World Scale:</strong> Without geohashing, matching 1 rider against 5.4M drivers takes ~500ms. With geohash precision-6 cells (~1.2km wide), only ~50 drivers per cell are evaluated — &lt;1ms. Uber's S2 library extends this to curved-Earth geometry with hierarchical cells from 0.44cm² to half the globe.</div>
   </div>
 
@@ -1471,6 +1725,13 @@
     </div>
 
     <p>Spotify's "Discover Weekly" selects 30 personalised songs from ~50,000 candidates per user. Fully sorting 50,000 songs to take 30 wastes work. A <strong>min-heap of size K</strong> does it in O(n log K) — maintaining only the current Top-30, instantly evicting the weakest candidate as a better one arrives.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> From ~50,000 candidate songs scored by a relevance model, select the top k (e.g., 30) for a personalised playlist. Do this for 600 million users every week within memory and compute limits that make distributed batch processing feasible.<br>
+      <strong>Naive Approach:</strong> Full sort of 50,000 candidates per user = O(50K × log 50K) ≈ 800K comparisons. For 600M users: 480 trillion comparisons. Even distributed across a Spark cluster, full sorting is wasteful — we only need 30 items, not a full ranking.<br>
+      <strong>Key Insight:</strong> A min-heap of fixed size k is the optimal data structure for "top-K from a stream". Maintain the best k seen so far. For each new candidate: if it beats the current worst (heap minimum), evict the worst and insert the new one. Total: O(n log k) vs O(n log n). log(30) ≈ 5 vs log(50K) ≈ 16 — 3× faster per user, and the heap holds only 30 items in memory throughout.
+    </div>
 
     <div class="diagram">
   Top-K with min-heap of size K=3 (weakest score always on top for fast eviction):
@@ -1561,6 +1822,19 @@
 <span class="cm"># Runs as a Spark batch job every Monday for 600M users in parallel</span></pre>
 </div>
 
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Top-K Min-Heap:</strong><br>
+      <strong>1.</strong> Create an empty min-heap (priority = score, so the <em>lowest</em> score is always at the top).<br>
+      <strong>2.</strong> For each candidate song: enqueue it. If heap size exceeds k, dequeue the minimum (the weakest song in the current top-k is evicted).<br>
+      <strong>3.</strong> After all candidates: the heap contains exactly the k highest-scoring songs.<br>
+      <strong>4.</strong> Sort descending by score for the final ranked playlist.<br>
+      <strong>Why min-heap, not max-heap?</strong> We want to cheaply evict the <em>worst</em> item in our current best-k. A min-heap puts the worst at the top → O(1) peek, O(log k) eviction.<br><br>
+      <strong>Sliding Window Trending:</strong><br>
+      <strong>5.</strong> Left pointer expires events older than the window (nowMs - windowMs); right pointer adds new play events. Maintain a counts dict — increment on add, decrement and delete-if-zero on expire.<br>
+      <strong>⏱ Time:</strong> O(n log k) for Top-K; O(n) for sliding window. <strong>💾 Space:</strong> O(k) for the heap; O(unique tracks) for the window counts.
+    </div>
+
     <div class="tip"><strong>Real-World Scale:</strong> Spotify generates Discover Weekly for 600M users every Monday. Per user: ~50K candidates × log(30) ≈ 750K heap operations. Across 600M users on a distributed Spark cluster, this completes over the weekend. The min-heap ensures each worker holds only 30 items in memory regardless of the candidate pool size — a crucial memory bound at scale.</div>
   </div>
 
@@ -1585,6 +1859,13 @@
     </div>
 
     <p>When you run <code>SELECT * FROM orders WHERE date BETWEEN '2024-01-01' AND '2024-12-31'</code>, without an index the database scans every row (O(n) — catastrophic on a billion rows). A <strong>B-Tree index</strong> jumps directly to the matching range in O(log n) disk-page reads. Every <code>CREATE INDEX</code> builds one.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> For a table with 1 billion rows, support fast range queries (WHERE date BETWEEN A AND B) with millisecond latency. The rows live on disk — each random disk read adds ~10ms. Minimising disk I/Os is the primary goal.<br>
+      <strong>Naive Approach:</strong> A hash index answers exact lookups (WHERE date = X) in O(1) but is useless for ranges — hashing destroys sorted order. A regular BST supports ranges but can be deeply unbalanced and has poor disk I/O locality (each pointer hop may load a different disk page).<br>
+      <strong>Key Insight:</strong> A B-Tree packs ~100 sorted keys per 8KB disk page. Each level reduces the search space by 100×. For 1 billion rows: log₁₀₀(10⁹) = 4.5 → just 5 disk reads to reach the first matching row. Leaf pages are linked in a sorted doubly-linked list → range results stream forward sequentially without further tree traversal. Sequential disk I/O is 100× faster than random.
+    </div>
 
     <div class="diagram">
   B-Tree index on orders.date (m = 100 keys/page, each page = 8 KB):
@@ -1675,6 +1956,20 @@
 <span class="cm"># CREATE INDEX is O(n log n) to build; every subsequent query is O(log n + k)</span></pre>
 </div>
 
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Building the Index (CREATE INDEX):</strong><br>
+      <strong>1.</strong> Sort all (key, rowId) pairs by key — O(n log n). Insert into the SortedList/B-Tree structure.<br>
+      <strong>2.</strong> In a real B-Tree, keys are packed into 8KB pages (~100 per page), then parent pages are built bottom-up until the root is reached. Total height = ⌊logₘ(n)⌋ where m ≈ 100.<br>
+      <strong>Range Scan (SELECT ... WHERE date BETWEEN lo AND hi):</strong><br>
+      <strong>3.</strong> Binary search for the first key ≥ lo. In a real B-Tree, this means descending from root → internal nodes → leaf via O(logₘ n) disk reads.<br>
+      <strong>4.</strong> Stream forward through the leaf page linked list while key ≤ hi. Each leaf page holds ~100 consecutive sorted rows → excellent sequential disk I/O locality.<br>
+      <strong>5.</strong> Stop when a key exceeds hi.<br>
+      <strong>⏱ Time:</strong> O(log n) to find range start + O(k/m) page reads for k matching rows.<br>
+      <strong>💾 Space:</strong> O(n) for the index — roughly the same size as the indexed column.<br>
+      <strong>Why not a hash index for ranges?</strong> Hash functions randomise key distribution — there's no concept of "next key after X". B-Trees maintain physical sort order across all disk pages.
+    </div>
+
     <div class="note"><strong>Real-World Scale:</strong> On a 1-billion-row table, a B-Tree date range query touches just 4–5 disk pages to reach the first matching row, then streams results sequentially. Without an index: 1 billion row reads. With index: 5 reads. Adding <code>CREATE INDEX ON orders(date)</code> can make a query <strong>200,000,000× faster</strong>. This is why database indexing is the highest-ROI optimization in backend engineering.</div>
   </div>
 
@@ -1699,6 +1994,13 @@
     </div>
 
     <p>A Bitcoin block holds ~3000 transactions (~1.5MB). A mobile wallet needs to confirm one transaction without downloading the full block. A <strong>Merkle tree</strong> hashes pairs of transactions bottom-up into a single root hash. To prove TxA is in the block requires only O(log n) sibling hashes — just 12 hashes (384 bytes) for a 4096-transaction block.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> A Bitcoin block contains ~3000 transactions. A mobile SPV wallet needs to verify that one specific transaction is included in a confirmed block, without downloading the full 1.5MB block data — let alone the 500GB+ blockchain history.<br>
+      <strong>Naive Approach:</strong> Download the entire block, scan for the transaction. Multiply by the full blockchain: completely impractical for mobile devices on cellular connections.<br>
+      <strong>Key Insight:</strong> A Merkle tree hashes pairs of transactions bottom-up to produce a single 32-byte root hash stored in the compact 80-byte block header. To prove TxA exists: only O(log n) sibling hashes are needed (the "Merkle proof path"). Any tamper with TxA changes its leaf hash, propagating upward to invalidate the root — fraud is cryptographically detectable with just ~384 bytes of proof.
+    </div>
 
     <div class="diagram">
   Merkle Tree (4 transactions → height = 2):
@@ -1827,6 +2129,20 @@
 <span class="cm"># Ethereum extends this to Merkle-Patricia Tries for state, transactions, receipts</span></pre>
 </div>
 
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Building the Merkle Tree (at block creation):</strong><br>
+      <strong>1.</strong> Hash each transaction with SHA-256 → the leaf hashes.<br>
+      <strong>2.</strong> If the number of leaves is odd, duplicate the last one (Bitcoin's tie-breaking convention).<br>
+      <strong>3.</strong> Pair-hash each level: parent = SHA-256(leftChild &#8741; rightChild). Repeat until 1 root hash remains. Total work: O(n) hashing operations.<br>
+      <strong>Generating a Merkle Proof (for a wallet verifying one payment):</strong><br>
+      <strong>4.</strong> At each level, record the sibling hash and its position (left or right). These O(log n) hashes form the proof path from the leaf to the root.<br>
+      <strong>5.</strong> For n=4096 transactions: 12 sibling hashes × 32 bytes = 384 bytes total proof.<br>
+      <strong>Verification (mobile wallet, no block download needed):</strong><br>
+      <strong>6.</strong> Start with H(TxA). For each (sibling, position) in proof: combine in the correct order and hash. If final result == trusted block header Merkle root → transaction confirmed present.<br>
+      <strong>⏱ Time:</strong> O(n) to build; O(log n) to generate and verify proofs. <strong>💾 Space:</strong> O(n) for full tree; O(log n) for a proof.
+    </div>
+
     <div class="tip"><strong>Real-World Scale:</strong> Bitcoin SPV (Simplified Payment Verification) wallets — used by millions of mobile apps — never download the full 500GB+ blockchain. They store only 80-byte block headers and request Merkle proofs on demand. To verify 1 transaction in a 4096-transaction block: download 12 hashes (384 bytes) vs ~2MB of raw transactions. That's a 5000× bandwidth saving — all thanks to a binary hash tree.</div>
   </div>
 
@@ -1852,6 +2168,13 @@
     </div>
 
     <p>Calendar apps constantly solve three interval problems: (1) <strong>merge overlapping meetings</strong> into consolidated busy blocks, (2) <strong>count rooms needed</strong> at peak (minimum conference rooms for a day), and (3) <strong>find free slots</strong> long enough for a new meeting. All three are solved with sort + sweep line.</p>
+
+    <div class="tip">
+      <strong>🔍 Problem Breakdown</strong><br><br>
+      <strong>The Problem:</strong> Given a list of [start, end] meeting intervals, solve three related problems: (a) merge all overlapping meetings into consolidated busy blocks; (b) find the minimum number of conference rooms needed (= peak simultaneous meetings); (c) list all free time gaps of at least minDuration minutes between the busy blocks.<br>
+      <strong>Naive Approach:</strong> For each meeting, check all others for overlap — O(n²). For room counting, simulate minute-by-minute throughout the day — O(1440 × n). Neither scales to calendar systems with millions of events.<br>
+      <strong>Key Insight:</strong> Sort once by start time in O(n log n), then a single linear sweep solves all three: overlapping meetings extend a "current busy block"; room counting uses a min-heap of active meeting end-times (if the earliest-ending meeting finishes before a new one starts, that room is reused); free slots are the gaps between merged busy blocks.
+    </div>
 
     <div class="diagram">
   Meetings: [9-11] [10-12] [13-15] [14-16] [16-17]
@@ -1968,6 +2291,21 @@
 <span class="cm"># Google &quot;Find a time&quot;: fetch all attendees&#39; calendars &#8594; intersect free slots</span>
 <span class="cm"># Intersection of two free-slot lists: O(m+n) two-pointer merge</span></pre>
 </div>
+
+    <div class="realworld">
+      <strong>📖 Solution Walkthrough</strong><br><br>
+      <strong>Merge Intervals:</strong><br>
+      <strong>1.</strong> Sort by start time. Begin with the first meeting as the "current block".<br>
+      <strong>2.</strong> For each subsequent meeting: if it starts at or before the current block's end (overlap or touching), extend the block's end to max(current_end, meeting_end). Otherwise, save the current block and start a new one.<br>
+      <strong>Min Rooms (Meeting Room II):</strong><br>
+      <strong>3.</strong> Sort by start time. Use a min-heap of active meeting end-times.<br>
+      <strong>4.</strong> For each meeting: if the earliest-ending active meeting (heap minimum) ended ≤ this meeting's start → that room is free (pop). Push this meeting's end time onto the heap.<br>
+      <strong>5.</strong> The heap size at any point = rooms currently occupied. Final heap size = peak rooms needed = answer.<br>
+      <strong>Free Slots:</strong><br>
+      <strong>6.</strong> After merging, scan gaps between consecutive busy blocks. Each gap ≥ minDuration is a bookable window. Don't forget the gap before the first meeting and after the last.<br>
+      <strong>⏱ Time:</strong> O(n log n) for sort + O(n log n) for heap operations — all three algorithms share the initial sort step.<br>
+      <strong>💾 Space:</strong> O(n) for merged results and the heap.
+    </div>
 
     <div class="note"><strong>Real-World Scale:</strong> Calendly processes millions of scheduling requests daily. For each booking link visit, it fetches the host's calendar (n busy slots), runs MergeIntervals + FindFreeSlots in O(n log n), and displays available windows in under 200ms. Google "Find a time" extends this to 10+ attendees by intersecting each person's free slots with a two-pointer O(m+n) merge — the same algorithm you learned in Phase 1.</div>
   </div>
